@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeHeader extends StatefulWidget {
@@ -14,7 +14,7 @@ class _HomeHeaderState extends State<HomeHeader> {
   final PageController _pageController = PageController();
   Timer? _timer;
   int _currentPage = 0;
-  final int _totalPages = 2;
+  final int _totalPages = 3;
 
   @override
   void initState() {
@@ -62,12 +62,17 @@ class _HomeHeaderState extends State<HomeHeader> {
               subtitle: '모두가 주목하는!',
               description: '아이들의 특별한 순간을 위해',
             ),
+            buildPage(
+              imagePath: 'assets/images/home/main_bn03.png',
+              title: '새로운 스타일',
+              subtitle: '모두가 주목하는!',
+              description: '아이들의 특별한 순간을 위해',
+            ),
           ],
         ),
         Positioned(
-          bottom: 115.0,
-          left: 0,
-          right: 327,
+          top: Responsive.getHeight(context, 536),
+          left: Responsive.getWidth(context, 19),
           child: Center(
             child: SmoothPageIndicator(
               controller: _pageController,
@@ -95,23 +100,22 @@ class _HomeHeaderState extends State<HomeHeader> {
       children: [
         Container(
           width: double.infinity,
-          height: 625.0,
+          height: Responsive.getHeight(context, 625),
           child: Image.asset(
             imagePath,
             fit: BoxFit.cover, // 이미지를 전체 화면에 맞추고 가로 여백 없이 설정
           ),
         ),
         Positioned(
-          bottom: 140.8,
-          left: 16.0,
-          right: 20.0,
+          top: Responsive.getHeight(context, 409),
+          left: Responsive.getWidth(context, 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 30.0,
+                  fontSize: Responsive.getFont(context, 30),
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -119,16 +123,16 @@ class _HomeHeaderState extends State<HomeHeader> {
               Text(
                 subtitle,
                 style: TextStyle(
-                  fontSize: 30.0,
+                  fontSize: Responsive.getFont(context, 30),
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 8.0),
+              SizedBox(height: Responsive.getHeight(context, 13.82)),
               Text(
                 description,
                 style: TextStyle(
-                  fontSize: 16.0,
+                  fontSize: Responsive.getFont(context, 16),
                   color: Colors.white,
                 ),
               ),
