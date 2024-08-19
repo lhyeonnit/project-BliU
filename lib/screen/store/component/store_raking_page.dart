@@ -1,6 +1,8 @@
+import 'package:BliU/screen/store/store_detail_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:bliu/screen/store/component/store_age_group_selection.dart';
-import 'package:bliu/screen/store/component/store_style_group_selection.dart';
+import 'package:BliU/screen/store/component/store_age_group_selection.dart';
+import 'package:BliU/screen/store/component/store_style_group_selection.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../dummy/store_ranking.dart';
 
@@ -72,42 +74,64 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(left: 16.0, top: 16),
             child: Row(
               children: [
-                Expanded(
-                  child: ElevatedButton(
+                // 연령 버튼
+                Flexible(
+                  child: OutlinedButton(
                     onPressed: _showAgeGroupSelection,
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.white, // 배경 흰색
+                      side: BorderSide(color: Colors.grey), // 테두리 회색
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min, // 텍스트에 맞게 크기 조정
                       children: [
-                        Expanded(
+                        Flexible(
                           child: Text(
                             getSelectedAgeGroupsText(),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
+                            style: TextStyle(color: Colors.black), // 글자색 검은색
                           ),
                         ),
-                        const Icon(Icons.arrow_drop_down),
+                        const SizedBox(width: 4.0),
+                        const Icon(Icons.arrow_drop_down, color: Colors.black),
+                        // 아이콘도 검은색
                       ],
                     ),
                   ),
                 ),
                 const SizedBox(width: 8.0),
-                Expanded(
-                  child: ElevatedButton(
+                // 스타일 버튼
+                Flexible(
+                  child: OutlinedButton(
                     onPressed: _showStyleSelection,
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.white, // 배경 흰색
+                      side: BorderSide(color: Colors.grey), // 테두리 회색
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min, // 텍스트에 맞게 크기 조정
                       children: [
-                        Expanded(
+                        Flexible(
                           child: Text(
                             getSelectedStylesText(),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
+                            style: TextStyle(color: Colors.black), // 글자색 검은색
                           ),
                         ),
-                        const Icon(Icons.arrow_drop_down),
+                        const SizedBox(width: 4.0),
+                        const Icon(Icons.arrow_drop_down, color: Colors.black),
+                        // 아이콘도 검은색
                       ],
                     ),
                   ),
@@ -119,99 +143,105 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
             child: ListView.builder(
               itemCount: stores.length,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${stores[index]['rank']}',
-                            style: TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(width: 8),
-                          CircleAvatar(
-                            backgroundImage:
-                            NetworkImage(stores[index]['logo']),
-                            radius: 20,
-                          ),
-                          SizedBox(width: 8),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  stores[index]['name'],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                     stores[index]['description'],
-                                  style: TextStyle(color: Colors.grey),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
+                return GestureDetector(
+                  onTap: () {
+                    // Navigate to store_detail page when item is tapped
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StoreDetailScreen(
+                            // Pass the store data to the detail screen
                             ),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              '${stores[index]['rank']}',
+                              style: TextStyle(
+                                fontSize: 24,
+                              ),
+                            ),
+                            Image.asset(
+                              'assets/images/store/brand_logo.png',
+                              width: 80,
+                              height: 80,
+                              fit: BoxFit.contain,
+                            ),
+                            Expanded(
                               child: Column(
-                                mainAxisSize: MainAxisSize.min, // 여백을 최소화하기 위해 mainAxisSize를 설정
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  IconButton(
-                                    padding: EdgeInsets.zero, // 아이콘 버튼의 여백 없애기
-                                    icon: Icon(Icons.bookmark_border),
-                                    constraints: BoxConstraints(), // 아이콘 버튼의 기본 크기 제한 해제
-                                    onPressed: () {},
+                                  Text(
+                                    stores[index]['name'],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                   Text(
-                                    stores[index]['scrapCount'],
+                                    stores[index]['description'],
                                     style: TextStyle(color: Colors.grey),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: 120,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: stores[index]['images'].length,
-                          itemBuilder: (context, imageIndex) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child:  AspectRatio(
-                                aspectRatio: 1.0,
-                                child: Image.network(
-                                  stores[index]['images'][imageIndex],
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Container(
-                                      color: Colors.grey[200],
-                                      child: Center(
-                                        child: Text(
-                                          'Image not available',
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ),
-                                    );
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    // 여기에 onTap 동작을 추가하세요.
                                   },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      width: 17,
+                                      height: 17,
+                                      child: SvgPicture.asset(
+                                        'assets/images/store/book_mark.svg',
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
+                                Text(
+                                  stores[index]['scrapCount']!,
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ),
-                      Divider(),
-                    ],
+
+                        // Add space between rows and image carousel
+                        Container(
+                          height: 120,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: stores[index]['images'].length,
+                            itemBuilder: (context, imageIndex) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: AspectRatio(
+                                  aspectRatio: 1.0,
+                                  child: Image.asset(
+                                    stores[index]['images'][imageIndex],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

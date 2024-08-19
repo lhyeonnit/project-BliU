@@ -1,8 +1,7 @@
-import 'package:bliu/screen/login_join/login_screen.dart';
-import 'package:bliu/screen/main_page.dart';
-import 'package:bliu/screen/on_boarding_screen.dart';
-import 'package:bliu/utils/permission_manager.dart';
-import 'package:bliu/utils/utils.dart';
+
+import 'package:BliU/screen/common/on_boarding_screen.dart';
+import 'package:BliU/utils/permission_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -27,9 +26,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainPage(), // OnBoardingScreen을 초기 화면으로 설정
+      home: OnBoardingScreen(), // OnBoardingScreen을 초기 화면으로 설정
     );
   }
 }

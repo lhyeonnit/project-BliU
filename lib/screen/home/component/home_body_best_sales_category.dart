@@ -19,6 +19,7 @@ class _HomeBodyBestSalesCategoryState extends State<HomeBodyBestSalesCategory> {
           Container(
             height: 50.0,
             child: TabBar(
+              tabAlignment: TabAlignment.start,
               isScrollable: true,
               labelColor: Colors.black,
               unselectedLabelColor: Colors.grey,

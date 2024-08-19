@@ -1,4 +1,4 @@
-package com.dmonster.bliu
+package com.dmonster.BliU
 
 import io.flutter.embedding.android.FlutterActivity
 

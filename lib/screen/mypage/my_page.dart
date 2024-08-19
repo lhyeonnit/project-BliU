@@ -1,4 +1,14 @@
+import 'package:BliU/screen/_component/cart_screen.dart';
+import 'package:BliU/screen/mypage/component/bottom/faq_screen.dart';
+import 'package:BliU/screen/mypage/component/bottom/setting_screen.dart';
+import 'package:BliU/screen/mypage/component/top/my_info.dart';
+import 'package:BliU/screen/mypage/component/bottom/recommend_edit.dart';
+import 'package:BliU/screen/mypage/component/bottom/service_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
+
+import 'component/bottom/notice_screen.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({super.key});
@@ -12,35 +22,36 @@ class MyPage extends StatelessWidget {
         title: const Text('마이페이지'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications_none),
+            icon: SvgPicture.asset('assets/images/my/ic_alim.svg'),
             onPressed: () {},
           ),
           Stack(
             children: [
               IconButton(
-                icon: const Icon(Icons.shopping_bag_outlined),
-                onPressed: () {},
+                padding: EdgeInsets.only(right: 10),
+                icon: SvgPicture.asset("assets/images/product/ic_cart.svg"),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CartScreen()),
+                  );
+                },
               ),
               Positioned(
-                right: 11,
-                top: 11,
+                right: 10,
+                top: 20,
                 child: Container(
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  constraints: const BoxConstraints(
-                    minWidth: 12,
-                    minHeight: 12,
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
+                    color: Colors.pinkAccent,
+                    shape: BoxShape.circle,
                   ),
                   child: const Text(
                     '2',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
@@ -48,101 +59,114 @@ class MyPage extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundImage: const NetworkImage(
-                        'https://example.com/profile_image.png'), // 프로필 이미지 URL을 여기에 추가하세요
-                    // Error handling 추가
-                    onBackgroundImageError: (_, __) {
-                      // 이미지 로딩 실패 시 처리 로직 추가
-                      print("이미지 로딩 실패");
-                    },
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          '김아름님 안녕하세요',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        const Text('id1234'),
-                      ],
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    child: const Text('내정보수정'),
-                  ),
-                ],
-              ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          MyInfo(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildIconButton(
+                    '주문·배송', 'assets/images/my/mypage_ic01.svg', () {}, ''),
+                _buildIconButton(
+                    '나의리뷰', 'assets/images/my/mypage_ic02.svg', () {}, '100'),
+                _buildIconButton(
+                    '쿠폰함', 'assets/images/my/mypage_ic03_1.svg', () {}, '2'),
+                _buildIconButton('포인트', 'assets/images/my/mypage_ic04.svg',
+                        () {}, '200,000'),
+              ],
             ),
-            const Divider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildIconButton('주문·배송', Icons.local_shipping_outlined, () {}),
-                  _buildIconButton('나의리뷰', Icons.rate_review_outlined, () {}),
-                  _buildIconButton('쿠폰함', Icons.card_giftcard_outlined, () {}),
-                  _buildIconButton('포인트', Icons.attach_money_outlined, () {}),
-                ],
-              ),
-            ),
-            const Divider(),
-            _buildSection('쇼핑정보'),
-            _buildSectionItem('추천정보관리', () {}),
-            const Divider(),
-            _buildSection('고객서비스'),
-            _buildSectionItem('FAQ', () {}),
-            _buildSectionItem('공지사항', () {}),
-            _buildSectionItem('고객센터', () {}),
-            _buildSectionItem('설정', () {}),
-            _buildSectionItem('로그아웃', () {}),
-          ],
-        ),
+          ),
+          SizedBox(height: 20),
+          Container(
+            width: double.infinity,
+            color: Color(0xFFF5F9F9), // 색상 적용
+            height: 10,
+          ),
+          SizedBox(height: 30),
+          _buildSection('쇼핑정보'),
+          _buildSectionItem('추천정보관리', () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RecommendEdit()),
+            );
+          }),
+          SizedBox(height: 30),
+          _buildSection('고객서비스'),
+          _buildSectionItem('FAQ', () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FAQScreen()),
+            );
+          }),
+          _buildSectionItem('공지사항', () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NoticeScreen()),
+            );
+          }),
+          _buildSectionItem('고객센터', () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ServiceScreen()),
+            );
+          }),
+          _buildSectionItem('설정', () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettingScreen()),
+            );
+          }),
+          Padding(
+            padding: const EdgeInsets.only(left: 4.0),
+            child: TextButton(
+                child: Text(
+                  '로그아웃',
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500),
+                ),
+                onPressed: () {}),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildIconButton(String label, IconData icon, VoidCallback onPressed) {
+  Widget _buildIconButton(String label, String icon, VoidCallback onPressed,
+      String num) {
     return Column(
       children: [
         IconButton(
-          icon: Icon(icon, size: 30),
+          icon: SvgPicture.asset(
+            icon,
+            width: 40,
+            height: 40,
+          ),
           onPressed: onPressed,
         ),
-        Text(label),
+        Text(
+          label,
+          style: TextStyle(fontSize: 16),
+        ),
+        Text(
+          num,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }
 
   Widget _buildSection(String title) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Text(
         title,
         style: const TextStyle(
-          fontSize: 14,
+          fontSize: 16,
           color: Colors.grey,
         ),
       ),
@@ -150,10 +174,29 @@ class MyPage extends StatelessWidget {
   }
 
   Widget _buildSectionItem(String title, VoidCallback onPressed) {
-    return ListTile(
-      title: Text(title),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+    return InkWell(
       onTap: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 16), // 최소한의 간격으로 조절 가능
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.black,
+              size: 16,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

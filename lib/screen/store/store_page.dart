@@ -1,7 +1,7 @@
-import 'package:bliu/screen/store/component/store_age_group_selection.dart';
-import 'package:bliu/screen/store/component/store_favorie_page.dart';
-import 'package:bliu/screen/store/component/store_raking_page.dart';
-import 'package:bliu/screen/store/component/store_style_group_selection.dart';
+import 'package:BliU/screen/store/component/store_age_group_selection.dart';
+import 'package:BliU/screen/store/component/store_favorie_page.dart';
+import 'package:BliU/screen/store/component/store_raking_page.dart';
+import 'package:BliU/screen/store/component/store_style_group_selection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -44,6 +44,7 @@ class _StorePageState extends State<StorePage> with SingleTickerProviderStateMix
           indicatorColor: Colors.black,
           labelColor: Colors.black,
           unselectedLabelColor: Colors.grey,
+
         ),
       ),
       body:TabBarView(

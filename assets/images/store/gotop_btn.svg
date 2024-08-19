@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="58" height="58" viewBox="0 0 58 58">
+  <defs>
+    <filter id="타원_11" x="0" y="0" width="58" height="58" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.071"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="gotop_btn" transform="translate(9 46) rotate(-90)">
+    <g transform="matrix(0, 1, -1, 0, 46, -9)" filter="url(#타원_11)">
+      <g id="타원_11-2" data-name="타원 11" transform="translate(9 46) rotate(-90)" fill="#fff" stroke="#eaeaea" stroke-width="1">
+        <circle cx="20" cy="20" r="20" stroke="none"/>
+        <circle cx="20" cy="20" r="19.5" fill="none"/>
+      </g>
+    </g>
+    <g id="gotop_btn-2" data-name="gotop_btn" transform="translate(29 11) rotate(90)">
+      <rect id="사각형_16507" data-name="사각형 16507" width="19" height="19" fill="none"/>
+      <path id="패스_25" data-name="패스 25" d="M12.286,6.143,6.143,0,0,6.143" transform="translate(3.357 5.814)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/>
+    </g>
+  </g>
+</svg>

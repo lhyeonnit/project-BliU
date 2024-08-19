@@ -1,5 +1,5 @@
-import 'package:bliu/widget/product_item_widget.dart';
-import 'package:bliu/widget/top_widget.dart';
+import 'package:BliU/widget/product_item_widget.dart';
+import 'package:BliU/widget/top_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

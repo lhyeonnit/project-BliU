@@ -2,11 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:bliu/screen/category/category_page.dart';
-import 'package:bliu/screen/home/home_page.dart';
-import 'package:bliu/screen/like/like_page.dart';
-import 'package:bliu/screen/mypage/my_page.dart';
-import 'package:bliu/screen/store/store_page.dart';
+import 'package:BliU/screen/category/category_page.dart';
+import 'package:BliU/screen/home/home_page.dart';
+import 'package:BliU/screen/like/like_page.dart';
+import 'package:BliU/screen/mypage/my_page.dart';
+import 'package:BliU/screen/store/store_page.dart';
 
 import '_component/custom_bottom_navigation_bar.dart';
 

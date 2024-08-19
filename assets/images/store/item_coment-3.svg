@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+  <g id="item_coment" transform="translate(-0.108)">
+    <rect id="사각형_16779" data-name="사각형 16779" width="14" height="14" transform="translate(0.108)" fill="none"/>
+    <g id="_002.대화_채팅" data-name="002.대화,채팅" transform="translate(-1.309 -3.191)">
+      <path id="패스_5" data-name="패스 5" d="M7,10H8.283v1.283H7Z" transform="translate(-1.792 -2.15)" fill="#a4a4a4"/>
+      <path id="패스_6" data-name="패스 6" d="M12.283,10H11v1.283h1.283Z" transform="translate(-3.225 -2.15)" fill="#a4a4a4"/>
+      <path id="패스_7" data-name="패스 7" d="M15,10h1.283v1.283H15Z" transform="translate(-4.659 -2.15)" fill="#a4a4a4"/>
+      <path id="패스_8" data-name="패스 8" d="M3.283,4H13.549a1.287,1.287,0,0,1,1.283,1.283V11.7a1.287,1.287,0,0,1-1.283,1.283H9.058l-3.85,3.208V12.983H3.283A1.287,1.287,0,0,1,2,11.7V5.283A1.287,1.287,0,0,1,3.283,4Zm10.266,7.7V5.283H3.283V11.7H6.491v1.752l1.745-1.456.359-.3Z" fill="#a4a4a4" fill-rule="evenodd"/>
+    </g>
+  </g>
+</svg>

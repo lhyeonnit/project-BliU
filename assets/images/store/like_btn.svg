@@ -1,0 +1,15 @@
+<svg id="like_btn" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="34" viewBox="0 0 34 34">
+  <defs>
+    <filter id="패스_39027" x="0.368" y="2.717" width="33.174" height="30.162" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feFlood flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <rect id="사각형_16779" data-name="사각형 16779" width="34" height="34" fill="none"/>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#패스_39027)">
+    <path id="패스_39027-2" data-name="패스 39027" d="M33.787,64.562S24,59.292,24,53.082A5.082,5.082,0,0,1,29.082,48a4.957,4.957,0,0,1,4.705,3.011A4.957,4.957,0,0,1,38.492,48a5.082,5.082,0,0,1,5.082,5.082C43.574,59.292,33.787,64.562,33.787,64.562Z" transform="translate(-16.83 -38.48)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+  </g>
+</svg>

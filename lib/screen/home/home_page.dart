@@ -1,11 +1,11 @@
-import 'package:bliu/screen/_component/cart_screen.dart';
-import 'package:bliu/screen/_component/search_screen.dart';
-import 'package:bliu/screen/home/component/home_body_ai.dart';
-import 'package:bliu/screen/home/component/home_body_best_sales.dart';
-import 'package:bliu/screen/home/component/home_body_category.dart';
-import 'package:bliu/screen/home/component/home_body_exhibition.dart';
-import 'package:bliu/screen/home/component/home_footer.dart';
-import 'package:bliu/screen/home/component/home_header.dart';
+import 'package:BliU/screen/_component/cart_screen.dart';
+import 'package:BliU/screen/_component/search_screen.dart';
+import 'package:BliU/screen/home/component/home_body_ai.dart';
+import 'package:BliU/screen/home/component/home_body_best_sales.dart';
+import 'package:BliU/screen/home/component/home_body_category.dart';
+import 'package:BliU/screen/home/component/home_body_exhibition.dart';
+import 'package:BliU/screen/home/component/home_footer.dart';
+import 'package:BliU/screen/home/component/home_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

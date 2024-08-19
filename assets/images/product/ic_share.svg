@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="ic_share" transform="translate(0.1)">
+    <rect id="사각형_16576" data-name="사각형 16576" width="24" height="24" transform="translate(-0.1)" fill="none"/>
+    <circle id="타원_654" data-name="타원 654" cx="2.987" cy="2.987" r="2.987" transform="translate(2.991 8.961)" fill="none" stroke="#ababab" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"/>
+    <circle id="타원_655" data-name="타원 655" cx="2.987" cy="2.987" r="2.987" transform="translate(13.446 15.681)" fill="none" stroke="#ababab" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"/>
+    <circle id="타원_656" data-name="타원 656" cx="2.987" cy="2.987" r="2.987" transform="translate(13.446 2.24)" fill="none" stroke="#ababab" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"/>
+    <line id="선_71" data-name="선 71" x1="5.431" y2="3.491" transform="translate(8.49 6.842)" fill="none" stroke="#ababab" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"/>
+    <line id="선_72" data-name="선 72" x2="5.431" y2="3.491" transform="translate(8.49 13.563)" fill="none" stroke="#ababab" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"/>
+  </g>
+</svg>

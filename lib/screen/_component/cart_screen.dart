@@ -82,7 +82,6 @@ class _CartScreenState extends State<CartScreen> {
       appBar: AppBar(
         title: Text('장바구니'),
         backgroundColor: Colors.white,
-        elevation: 1,
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Stack(

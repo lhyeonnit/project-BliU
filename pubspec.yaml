@@ -1,4 +1,4 @@
-name: bliu
+name: BliU
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -52,6 +52,7 @@ dependencies:
   carousel_slider: ^4.2.1
   flutter_native_splash: ^2.4.1
   flutter_launcher_icons: ^0.13.1
+  flutter_switch: ^0.3.2
 #  flutter_naver_login: ^1.8.0
 #  kakao_flutter_sdk: ^1.9.3
 
@@ -85,22 +86,24 @@ flutter:
     - assets/images/exhibition/
     - assets/images/login/
     - assets/images/product/
+    - assets/images/store/
+    - assets/images/my/
   #   - images/a_dot_ham.jpeg
 
 flutter_native_splash:
-   color: "#ffffff" # 스플래시 화면의 배경색
-   image: assets/images/start_logo.png # 스플래시 화면에 표시할 이미지
-   android: true # 안드로이드에서 스플래시 화면 활성화
-   ios: true # iOS에서 스플래시 화면 활성화
-   web: false # 웹에서 스플래시 화면 비활성화
-   fullscreen: true # 전체 화면 사용 여부
-   android_gravity: center # 안드로이드에서 이미지 정렬 방식
-   ios_content_mode: scaleAspectFill # iOS에서 이미지 정렬 방식
+  color: "#ffffff" # 스플래시 화면의 배경색
+  image: assets/images/start_logo.png # 스플래시 화면에 표시할 이미지
+  android: true # 안드로이드에서 스플래시 화면 활성화
+  ios: true # iOS에서 스플래시 화면 활성화
+  web: false # 웹에서 스플래시 화면 비활성화
+  fullscreen: true # 전체 화면 사용 여부
+  android_gravity: center # 안드로이드에서 이미지 정렬 방식
+  ios_content_mode: scaleAspectFill # iOS에서 이미지 정렬 방식
 
 flutter_launcher_icons:
-    android: "launcher_icon"
-    ios: true
-    image_path: "assets/images/start_logo.png"
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/start_logo.png"
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

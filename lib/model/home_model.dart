@@ -1,5 +1,5 @@
-import 'package:bliu/api/dio_services.dart';
-import 'package:bliu/model_listener/home_model_listener.dart';
+import 'package:BliU/api/dio_services.dart';
+import 'package:BliU/model_listener/home_model_listener.dart';
 import 'package:dio/dio.dart';
 
 class HomeModel {

@@ -1,5 +1,5 @@
-import 'package:bliu/api/dio_interceptor.dart';
-import 'package:bliu/const/constant.dart';
+import 'package:BliU/api/dio_interceptor.dart';
+import 'package:BliU/const/constant.dart';
 import 'package:dio/dio.dart';
 
 class DioServices {
