@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart'; // 'flutter_svg' 패키지 이름에 오타가 있어서 수정했습니다.
+import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../utils/responsive.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
@@ -13,41 +15,56 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: [
-        _buildNavItem(
-          index: 0,
-          iconPath: 'assets/images/home/bottom_store.svg',
-          label: 'home',
-        ),
-        _buildNavItem(
-          index: 1,
-          iconPath: 'assets/images/home/bottom_like.svg',
-          label: 'like',
-        ),
-        _buildNavItem(
-          index: 2,
-          iconPath: 'assets/images/home/bottom_home.svg',
-          label: 'store',
-        ),
-        _buildNavItem(
-          index: 3,
-          iconPath: 'assets/images/home/bottom_cate.svg',
-          label: 'cate',
-        ),
-        _buildNavItem(
-          index: 4,
-          iconPath: 'assets/images/home/bottom_my.svg',
-          label: 'my',
-        ),
-      ],
-      currentIndex: selectedIndex,
-      selectedItemColor: Colors.black,
-      onTap: onItemTapped,
-      backgroundColor: Colors.white, // 바 배경 색상 설정
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      type: BottomNavigationBarType.fixed,
+    return Container(
+      height: Responsive.getHeight(context, 65), // BottomNavigationBar 높이 설정
+      decoration: BoxDecoration(
+        color: Colors.white, // 바 배경 색상 설정
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 6,
+            offset: Offset(0, 0), // 그림자 위치
+          ),
+        ],
+      ),
+      child: BottomNavigationBar(
+        items: [
+          _buildNavItem(
+            index: 0,
+            iconPath: 'assets/images/home/bottom_store.svg',
+            label: 'home',
+          ),
+          _buildNavItem(
+            index: 1,
+            iconPath: 'assets/images/home/bottom_like.svg',
+            label: 'like',
+          ),
+          _buildNavItem(
+            index: 2,
+            iconPath: 'assets/images/home/bottom_home.svg',
+            label: 'store',
+          ),
+          _buildNavItem(
+            index: 3,
+            iconPath: 'assets/images/home/bottom_cate.svg',
+            label: 'cate',
+          ),
+          _buildNavItem(
+            index: 4,
+            iconPath: 'assets/images/home/bottom_my.svg',
+            label: 'my',
+          ),
+        ],
+        currentIndex: selectedIndex,
+        selectedItemColor: Colors.black,
+        onTap: onItemTapped,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+        elevation: 0, // 그림자 제거
+      ),
     );
   }
 

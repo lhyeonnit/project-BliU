@@ -91,8 +91,8 @@ flutter:
   #   - images/a_dot_ham.jpeg
 
 flutter_native_splash:
-  color: "#ffffff" # 스플래시 화면의 배경색
-  image: assets/images/start_logo.png # 스플래시 화면에 표시할 이미지
+  color: "#000000" # 스플래시 화면의 배경색
+  image: assets/images/splash.png # 스플래시 화면에 표시할 이미지
   android: true # 안드로이드에서 스플래시 화면 활성화
   ios: true # iOS에서 스플래시 화면 활성화
   web: false # 웹에서 스플래시 화면 비활성화
