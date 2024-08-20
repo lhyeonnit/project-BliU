@@ -116,7 +116,13 @@ class _HomePageState extends State<HomePage> {
                     [
                       HomeBodyCategory(),
                       HomeBodyAi(),
-                      HomeBodyExhibition(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 30.0),
+                        child: SizedBox(
+                          height: 451, // 고정된 높이
+                          child: HomeBodyExhibition(),
+                        ),
+                      ),
                       HomeBodyBestSales(),
                       HomeFooter(),
                     ],
