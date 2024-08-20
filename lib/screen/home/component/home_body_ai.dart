@@ -26,141 +26,161 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 20),
-          SizedBox(
-            height: 277,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: isFavoriteList.length, // 리스트의 길이를 사용
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProductDetailScreen(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: SizedBox(
+              height: Responsive.getHeight(context, 277),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: isFavoriteList.length, // 리스트의 길이를 사용
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetailScreen(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      width: 160,
+                      padding: EdgeInsets.only(right: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
                       ),
-                    );
-                  },
-                  child: Container(
-                    width: 160,
-                    padding: EdgeInsets.only(right: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(5)),
+                                child: Image.asset(
+                                  'assets/images/home/exhi.png',
+                                  height: 160,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isFavoriteList[index] =
+                                      !isFavoriteList[index]; // 좋아요 상태 토글
+                                    });
+                                  },
+                                  child: SvgPicture.asset(
+                                    'assets/images/home/like_btn.svg',
+                                    color: isFavoriteList[index]
+                                        ? Color(0xFFFF6191)
+                                        : null,
+                                    // 좋아요 상태에 따라 내부 색상 변경
+                                    height: Responsive.getHeight(context, 34),
+                                    width: Responsive.getWidth(context, 34),
+                                    // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: Responsive.getHeight(context, 12),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '꿈꾸는데이지',
+                                style: TextStyle(
+                                    fontSize: Responsive.getFont(context, 12),
+                                    color: Colors.grey),
+                              ),
+                              SizedBox(
+                                  height: Responsive.getHeight(context, 4)),
+                              Text(
+                                '꿈꾸는 데이지 안나 토션 레이스 베스트',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(
+                                height: Responsive.getHeight(context, 12),
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                textBaseline: TextBaseline.alphabetic,
+                                children: [
+                                  Text(
+                                    '15%',
+                                    style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: Color(0xFFFF6192),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(width: Responsive.getWidth(context, 2)),
+                                  Text(
+                                    '32,800원',
+                                    style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 14),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: Responsive.getHeight(context, 10),
+                              ),
+                              Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/images/home/item_like.svg',
+                                    width: Responsive.getWidth(context, 13),
+                                    height: Responsive.getHeight(context, 11),
+                                  ),
+                                  SizedBox(width: 3),
+                                  Text(
+                                    '13,000',
+                                    style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 12),
+                                      color: Colors.grey,
+                                    ),
+                                    maxLines: 1,
+                                  ),
+                                  SizedBox(width: 10),
+                                  SvgPicture.asset(
+                                    'assets/images/home/item_comment.svg',
+                                    width: Responsive.getWidth(context, 13),
+                                    height: Responsive.getHeight(context, 12),
+                                  ),
+                                  SizedBox(width: 3),
+                                  Text(
+                                    '49',
+                                    style: TextStyle(
+                                        fontSize:
+                                        Responsive.getFont(context, 12),
+                                        color: Colors.grey),
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                              child: Image.asset(
-                                'assets/images/home/exhi.png',
-                                height: 160,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Positioned(
-                              top: 0,
-                              right: 0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isFavoriteList[index] = !isFavoriteList[index]; // 좋아요 상태 토글
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                  'assets/images/home/like_btn.svg',
-                                  color: isFavoriteList[index] ? Color(0xFFFF6191) : null, // 좋아요 상태에 따라 내부 색상 변경
-                                  height: Responsive.getHeight(context, 34),
-                                  width: Responsive.getWidth(context, 34),
-                                  // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
-                                ),
-                              ),
-                            ),
-
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '꿈꾸는데이지',
-                              style: TextStyle(
-                                  fontSize: Responsive.getFont(context, 12),
-                                  color: Colors.grey),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              '꿈꾸는 데이지 안나 토션 레이스 베스트',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Text(
-                                  '15%',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                SizedBox(width: 4),
-                                Text(
-                                  '32,800원',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  maxLines: 1,
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.favorite_outline,
-                                  size: 14,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(width: 4),
-                                Text(
-                                  '13,000',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
-                                  maxLines: 1,
-                                ),
-                                Spacer(),
-                                Icon(
-                                  Icons.people,
-                                  size: 14,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(width: 4),
-                                Text(
-                                  '49',
-                                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                                  maxLines: 1,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ],
