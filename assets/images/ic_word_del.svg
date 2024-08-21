@@ -1,0 +1,11 @@
+<svg id="ic_word_del" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <path id="패스_39134" data-name="패스 39134" d="M7.756,0A7.756,7.756,0,1,1,0,7.756,7.756,7.756,0,0,1,7.756,0Z" transform="translate(4.244 4.244)" fill="#a4a4a4"/>
+  <path id="패스_38434" data-name="패스 38434" d="M12,0A12,12,0,1,1,0,12,12,12,0,0,1,12,0Z" fill="none"/>
+  <g id="ic_close" transform="translate(7 6.999)">
+    <rect id="사각형_27" data-name="사각형 27" width="11" height="11" fill="none"/>
+    <g id="그룹_12117" data-name="그룹 12117" transform="translate(1.999 2.001)">
+      <line id="선_39" data-name="선 39" x1="6" y2="6" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/>
+      <line id="선_40" data-name="선 40" x1="6" y1="6" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/>
+    </g>
+  </g>
+</svg>

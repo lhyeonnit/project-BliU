@@ -118,10 +118,27 @@ class _SearchScreenState extends State<SearchScreen> {
                             contentPadding:
                                 EdgeInsets.only(left: 16, bottom: 8),
                             labelStyle: TextStyle(
-                                fontSize: Responsive.getFont(context, 14)),
+                              fontSize: Responsive.getFont(context, 14),
+                            ),
                             hintText: '검색어를 입력해 주세요',
                             border: InputBorder.none,
+                            suffixIcon: _searchController.text.isNotEmpty
+                                ? GestureDetector(
+                                      onTap: () {
+                                        _searchController.clear();
+                                        setState(() {});
+                                      },
+                                      child: SvgPicture.asset(
+                                        'assets/images/ic_word_del.svg',
+                                        fit: BoxFit.contain,
+                                      ),
+                                    )
+                                : null,
+                            suffixIconConstraints: BoxConstraints.tight(Size(24, 24)),
                           ),
+                          onChanged: (value) {
+                            setState(() {});
+                          },
                           onSubmitted: (value) {
                             if (value.isNotEmpty) {
                               _saveSearch(value);
@@ -130,22 +147,22 @@ class _SearchScreenState extends State<SearchScreen> {
                           },
                         ),
                       ),
-                      SizedBox(
-                        width: Responsive.getWidth(context, 17),
-                      ),
-                      IconButton(
-                        icon: SvgPicture.asset(
-                          'assets/images/home/ic_top_sch_w.svg',
-                          color: Colors.black,
-                          fit: BoxFit.contain,
+                      Padding(
+                        padding: EdgeInsets.only(top: 8,left: 10, bottom: 8, right: 15),
+                        child: GestureDetector(
+                          onTap: () {
+                            String search = _searchController.text;
+                            if (search.isNotEmpty) {
+                              _saveSearch(search);
+                              _searchController.clear();
+                            }
+                          },
+                          child: SvgPicture.asset(
+                            'assets/images/home/ic_top_sch_w.svg',
+                            color: Colors.black,
+                            fit: BoxFit.contain,
+                          ),
                         ),
-                        onPressed: () {
-                          String search = _searchController.text;
-                          if (search.isNotEmpty) {
-                            _saveSearch(search);
-                            _searchController.clear();
-                          }
-                        },
                       ),
                     ],
                   ),
@@ -179,8 +196,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 if (_searchHistory.isEmpty)
                   Padding(
                     padding: const EdgeInsets.only(top: 40.0),
-                    child:
-                    Text('검색기록이 없습니다.', style: TextStyle(color: Colors.grey,fontSize: 14)),
+                    child: Text('검색기록이 없습니다.',
+                        style: TextStyle(color: Colors.grey, fontSize: 14)),
                   ),
                 if (_searchHistory.isNotEmpty) ...[
                   Padding(
@@ -207,7 +224,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                 Text(
                                   '전체삭제',
                                   style: TextStyle(
-                                      fontSize: Responsive.getFont(context, 14)),
+                                      fontSize:
+                                          Responsive.getFont(context, 14)),
                                 ),
                               ],
                             ),
@@ -220,8 +238,10 @@ class _SearchScreenState extends State<SearchScreen> {
                     height: 15,
                   ),
                   Wrap(
-                    spacing: Responsive.getWidth(context, 4), // 검색어들 간의 가로 간격
-                    runSpacing: Responsive.getHeight(context, 8), // 검색어들 간의 세로 간격
+                    spacing: Responsive.getWidth(context, 4),
+                    // 검색어들 간의 가로 간격
+                    runSpacing: Responsive.getHeight(context, 8),
+                    // 검색어들 간의 세로 간격
                     children: _searchHistory.map((search) {
                       return Chip(
                         padding: EdgeInsets.symmetric(
@@ -346,7 +366,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               children: [
                                 ClipRRect(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
+                                      BorderRadius.all(Radius.circular(5)),
                                   child: Image.asset(
                                     'assets/images/home/exhi.png',
                                     height: 160,
@@ -363,11 +383,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                     Text(
                                       '꿈꾸는데이지',
                                       style: TextStyle(
-                                          fontSize: Responsive.getFont(context, 12),
+                                          fontSize:
+                                              Responsive.getFont(context, 12),
                                           color: Colors.grey),
                                     ),
                                     SizedBox(
-                                        height: Responsive.getHeight(context, 4)),
+                                        height:
+                                            Responsive.getHeight(context, 4)),
                                     Text(
                                       '꿈꾸는 데이지 안나 토션 레이스 베스트',
                                       style: TextStyle(
@@ -381,25 +403,24 @@ class _SearchScreenState extends State<SearchScreen> {
                                     ),
                                     Row(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.baseline,
+                                          CrossAxisAlignment.baseline,
                                       textBaseline: TextBaseline.alphabetic,
                                       children: [
                                         Text(
                                           '15%',
                                           style: TextStyle(
                                             fontSize:
-                                            Responsive.getFont(context, 14),
+                                                Responsive.getFont(context, 14),
                                             color: Color(0xFFFF6192),
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        SizedBox(
-                                            width: 2),
+                                        SizedBox(width: 2),
                                         Text(
                                           '32,800원',
                                           style: TextStyle(
                                             fontSize:
-                                            Responsive.getFont(context, 14),
+                                                Responsive.getFont(context, 14),
                                             fontWeight: FontWeight.bold,
                                           ),
                                           maxLines: 1,
