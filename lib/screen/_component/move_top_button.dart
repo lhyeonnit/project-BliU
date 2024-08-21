@@ -17,18 +17,17 @@ class MoveTopButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      bottom: 0,
-      right: 0,
-      child: GestureDetector(
-        onTap: _moveToTop, // 버튼을 누르면 맨 위로 이동
-        child: Image.asset(
-          'assets/images/gotop_btn.png',
-          width: 60,
-          height: 60,
-          fit: BoxFit.cover,
+    return Align(
+      alignment: Alignment.bottomRight,
+        child: GestureDetector(
+          onTap: _moveToTop, // 버튼을 누르면 맨 위로 이동
+          child: Image.asset(
+            'assets/images/gotop_btn.png',
+            width: 60,
+            height: 60,
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-    );
+      );
   }
 }

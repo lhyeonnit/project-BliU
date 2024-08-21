@@ -47,6 +47,26 @@ class AlarmScreenState extends State<AlarmScreen> with TopWidgetDelegate {
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          child: Container(
+            color: Color(0xFFF4F4F4), // 하단 구분선 색상
+            height: 1.0, // 구분선의 두께 설정
+            child: Container(
+              height: 1.0, // 그림자 부분의 높이
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFFF4F4F4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0,
+                  ),
+                ],
+              ),
+
+            ),
+          ),
+        ),
       ),
       body: Stack(
         children: [

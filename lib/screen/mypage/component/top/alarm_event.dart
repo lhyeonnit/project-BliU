@@ -1,25 +1,35 @@
-import 'package:BliU/screen/mypage/component/bottom/event_detail.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../bottom/notice_detail.dart';
 
-class AlarmEvent extends StatelessWidget {
+class AlarmEvent extends StatefulWidget {
   const AlarmEvent({super.key});
 
   @override
+  _AlarmEventState createState() => _AlarmEventState();
+}
+
+class _AlarmEventState extends State<AlarmEvent> {
+  bool _isPressed = false;
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector( // 전체 컨테이너를 클릭 가능한 위젯으로 만듭니다.
+    return GestureDetector(
       onTap: () {
+        setState(() {
+          _isPressed = true;
+        });
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EventDetail(), // 클릭 시 이동할 화면
+            builder: (context) => NoticeDetail(),
           ),
         );
       },
       child: Container(
+        color: _isPressed ? Colors.white : Color(0xFFF5F9F9), // 눌린 상태에 따라 색상 변경
         width: double.infinity,
         child: Container(
           width: Responsive.getWidth(context, 380),
@@ -37,7 +47,6 @@ class AlarmEvent extends StatelessWidget {
                   ),
                 ),
               ),
-
               SizedBox(
                 width: Responsive.getWidth(context, 15),
               ),
@@ -63,7 +72,7 @@ class AlarmEvent extends StatelessWidget {
                             width: Responsive.getWidth(context, 5),
                           ),
                           Text(
-                            '여름 신상 레인코트 입고 안내',
+                            '장마 필수템 레인코트',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: Responsive.getFont(context, 15),
@@ -124,4 +133,3 @@ class AlarmEvent extends StatelessWidget {
     );
   }
 }
-

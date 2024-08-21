@@ -4,21 +4,32 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../bottom/notice_detail.dart';
 
-class AlarmNotice extends StatelessWidget {
+class AlarmNotice extends StatefulWidget {
   const AlarmNotice({super.key});
 
   @override
+  _AlarmNoticeState createState() => _AlarmNoticeState();
+}
+
+class _AlarmNoticeState extends State<AlarmNotice> {
+  bool _isPressed = false;
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector( // 전체 컨테이너를 클릭 가능한 위젯으로 만듭니다.
+    return GestureDetector(
       onTap: () {
+        setState(() {
+          _isPressed = true;
+        });
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => NoticeDetail(), // 클릭 시 이동할 화면
+            builder: (context) => NoticeDetail(),
           ),
         );
       },
       child: Container(
+        color: _isPressed ? Colors.white : Color(0xFFF5F9F9), // 눌린 상태에 따라 색상 변경
         width: double.infinity,
         child: Container(
           width: Responsive.getWidth(context, 380),
@@ -36,7 +47,6 @@ class AlarmNotice extends StatelessWidget {
                   ),
                 ),
               ),
-
               SizedBox(
                 width: Responsive.getWidth(context, 15),
               ),
@@ -123,4 +133,3 @@ class AlarmNotice extends StatelessWidget {
     );
   }
 }
-
