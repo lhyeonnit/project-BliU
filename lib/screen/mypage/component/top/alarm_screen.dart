@@ -1,10 +1,12 @@
+import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/mypage/component/top/alarm_event.dart';
 import 'package:BliU/utils/responsive.dart';
-import 'package:BliU/widget/alarm_item_widget.dart';
+import 'package:BliU/screen/mypage/component/top/alarm_notice.dart';
 import 'package:BliU/widget/top_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-//알림
+// 알림 화면
 class AlarmScreen extends StatefulWidget {
   const AlarmScreen({super.key});
 
@@ -14,13 +16,16 @@ class AlarmScreen extends StatefulWidget {
 
 class AlarmScreenState extends State<AlarmScreen> with TopWidgetDelegate {
   List<Widget> _viewArr = [];
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
 
+    // 리스트 항목 추가
     for (int i = 0; i < 10; i++) {
-      _viewArr.add(AlarmItemWidget());
+      _viewArr.add(AlarmNotice());
+      _viewArr.add(AlarmEvent());
     }
   }
 
@@ -46,19 +51,10 @@ class AlarmScreenState extends State<AlarmScreen> with TopWidgetDelegate {
       body: Stack(
         children: [
           ListView(
-            scrollDirection: Axis.vertical,
+            controller: _scrollController,  // ScrollController 설정
             children: _viewArr,
           ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(0, 0, 10, 10),
-            alignment: Alignment.bottomRight,
-            child: Container(
-              // TODO 탑 버튼
-              width: 40,
-              height: 40,
-              color: Colors.red,
-            ),
-          )
+          MoveTopButton(scrollController: _scrollController), // 같은 ScrollController를 전달
         ],
       ),
     );
