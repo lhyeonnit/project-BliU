@@ -1,6 +1,11 @@
 //검색
+import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../product/product_detail_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -9,10 +14,19 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   List<String> _searchHistory = [];
+  final ScrollController _scrollController = ScrollController();
+
   List<String> _popularSearches = [
-    '레인부츠', '새학기 등록', '여름옷', '썸머룩',
-    '레인코트', '동원록', '수영복', '원피스',
-    '가디건', '래시가드'
+    '레인부츠',
+    '새학기 등록',
+    '여름옷',
+    '썸머룩',
+    '레인코트',
+    '동원록',
+    '수영복',
+    '원피스',
+    '가디건',
+    '래시가드'
   ];
   List<String> _suggestedItems = [
     '우이동금순 안나 도션 레이스 베스트',
@@ -56,127 +70,378 @@ class _SearchScreenState extends State<SearchScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: TextField(
-          controller: _searchController,
-          decoration: InputDecoration(
-            hintText: '검색어를 입력해 주세요',
-            border: InputBorder.none,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          child: Container(
+            color: Color(0xFFF4F4F4), // 하단 구분선 색상
+            height: 1.0, // 구분선의 두께 설정
+            child: Container(
+              height: 1.0, // 그림자 부분의 높이
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFFF4F4F4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0,
+                  ),
+                ],
+              ),
+            ),
           ),
-          onSubmitted: (value) {
-            if (value.isNotEmpty) {
-              _saveSearch(value);
-              _searchController.clear();
-            }
+        ),
+        leading: IconButton(
+          icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
+          onPressed: () {
+            Navigator.pop(context); // 뒤로가기 동작
           },
+        ),
+        title: Container(
+          width: double.infinity,
+          height: 56,
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 8),
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF5F9F9),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          style: TextStyle(decorationThickness: 0),
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            contentPadding:
+                                EdgeInsets.only(left: 16, bottom: 8),
+                            labelStyle: TextStyle(
+                              fontSize: Responsive.getFont(context, 14),
+                            ),
+                            hintText: '검색어를 입력해 주세요',
+                            border: InputBorder.none,
+                            suffixIcon: _searchController.text.isNotEmpty
+                                ? GestureDetector(
+                                      onTap: () {
+                                        _searchController.clear();
+                                        setState(() {});
+                                      },
+                                      child: SvgPicture.asset(
+                                        'assets/images/ic_word_del.svg',
+                                        fit: BoxFit.contain,
+                                      ),
+                                    )
+                                : null,
+                            suffixIconConstraints: BoxConstraints.tight(Size(24, 24)),
+                          ),
+                          onChanged: (value) {
+                            setState(() {});
+                          },
+                          onSubmitted: (value) {
+                            if (value.isNotEmpty) {
+                              _saveSearch(value);
+                              _searchController.clear();
+                            }
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 8,left: 10, bottom: 8, right: 15),
+                        child: GestureDetector(
+                          onTap: () {
+                            String search = _searchController.text;
+                            if (search.isNotEmpty) {
+                              _saveSearch(search);
+                              _searchController.clear();
+                            }
+                          },
+                          child: SvgPicture.asset(
+                            'assets/images/home/ic_top_sch_w.svg',
+                            color: Colors.black,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: SvgPicture.asset("assets/images/product/ic_smart.svg"),
             onPressed: () {
-              String search = _searchController.text;
-              if (search.isNotEmpty) {
-                _saveSearch(search);
-                _searchController.clear();
-              }
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.clear),
-            onPressed: () {
-              _clearSearchHistory();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(),
+                ),
+              );
             },
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (_searchHistory.isEmpty)
-              Text('검색기록이 없습니다.', style: TextStyle(color: Colors.grey)),
-            if (_searchHistory.isNotEmpty) ...[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('최근 검색어'),
-                  TextButton(
-                    onPressed: _clearSearchHistory,
-                    child: Text('전체삭제'),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            controller: _scrollController,
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (_searchHistory.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 40.0),
+                    child: Text('검색기록이 없습니다.',
+                        style: TextStyle(color: Colors.grey, fontSize: 14)),
                   ),
-                ],
-              ),
-              Wrap(
-                spacing: 8.0,
-                children: _searchHistory.map((search) {
-                  return Chip(
-                    label: Text(search),
-                    onDeleted: () {
-                      setState(() {
-                        _searchHistory.remove(search);
-                      });
-                    },
-                  );
-                }).toList(),
-              ),
-            ],
-            SizedBox(height: 16.0),
-            Text('인기 검색어'),
-            GridView.builder(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: _popularSearches.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 4,
-                mainAxisSpacing: 8.0,
-                crossAxisSpacing: 8.0,
-              ),
-              itemBuilder: (context, index) {
-                return Text('${index + 1}. ${_popularSearches[index]}');
-              },
-            ),
-            SizedBox(height: 16.0),
-            Text('이런 아이템은 어떠세요?'),
-            SizedBox(
-              height: 200.0,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: _suggestedItems.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: 150.0,
-                    margin: EdgeInsets.only(right: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                if (_searchHistory.isNotEmpty) ...[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 40.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Image.asset(
-                          'assets/images/home/exhi.png',
-                          width: 150.0,
-                          height: 150.0,
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 8.0),
                         Text(
-                          _suggestedItems[index],
-                          overflow: TextOverflow.ellipsis, // 글자 생략 설정
-                          maxLines: 1, // 한 줄로 제한
+                          '최근 검색어',
+                          style: TextStyle(
+                              fontSize: Responsive.getFont(context, 18),
+                              fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          '15% 32,800원',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                          overflow: TextOverflow.ellipsis, // 글자 생략 설정
-                          maxLines: 1, // 한 줄로 제한
+                        Container(
+                          child: GestureDetector(
+                            onTap: _clearSearchHistory,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset('assets/images/ic_delet.svg'),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  '전체삭제',
+                                  style: TextStyle(
+                                      fontSize:
+                                          Responsive.getFont(context, 14)),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                  );
-                },
-              ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Wrap(
+                    spacing: Responsive.getWidth(context, 4),
+                    // 검색어들 간의 가로 간격
+                    runSpacing: Responsive.getHeight(context, 8),
+                    // 검색어들 간의 세로 간격
+                    children: _searchHistory.map((search) {
+                      return Chip(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 11,
+                          horizontal: Responsive.getWidth(context, 20),
+                        ),
+                        labelPadding: EdgeInsets.only(right: 5),
+                        // 텍스트와 아이콘 사이 간격
+                        label: Text(
+                          search,
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Colors.black,
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(19), // 둥근 모서리 설정
+                          side: BorderSide(
+                            color: Color(0xFFDDDDDD), // 테두리 색상 설정
+                          ),
+                        ),
+                        backgroundColor: Colors.white,
+                        // 배경 색상
+                        deleteIcon: Icon(
+                          Icons.close,
+                          size: 14,
+                          color: Color(0xFFACACAC), // 닫기 아이콘 색상
+                        ),
+                        onDeleted: () {
+                          setState(() {
+                            _searchHistory.remove(search); // 삭제 기능
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ],
+                SizedBox(height: 40.0),
+                Container(
+                  width: Responsive.getWidth(context, 380),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '인기 검색어',
+                        style: TextStyle(
+                            fontSize: Responsive.getFont(context, 18),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 20.0),
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: _popularSearches.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 9,
+                          mainAxisSpacing: 15.0,
+                          crossAxisSpacing: 10.0,
+                        ),
+                        itemBuilder: (context, index) {
+                          return Container(
+                            width: Responsive.getWidth(context, 185),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${index + 1}',
+                                  style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 15),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  width: Responsive.getWidth(context, 10),
+                                ),
+                                Text(
+                                  '${_popularSearches[index]}',
+                                  style: TextStyle(
+                                    fontSize: Responsive.getFont(context, 15),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 40.0),
+                Text(
+                  '이런 아이템은 어떠세요?',
+                  style: TextStyle(
+                      fontSize: Responsive.getFont(context, 18),
+                      fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: SizedBox(
+                    height: Responsive.getHeight(context, 253),
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 10, // 리스트의 길이를 사용
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductDetailScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 160,
+                            padding: EdgeInsets.only(right: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  child: Image.asset(
+                                    'assets/images/home/exhi.png',
+                                    height: 160,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: Responsive.getHeight(context, 12),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '꿈꾸는데이지',
+                                      style: TextStyle(
+                                          fontSize:
+                                              Responsive.getFont(context, 12),
+                                          color: Colors.grey),
+                                    ),
+                                    SizedBox(
+                                        height:
+                                            Responsive.getHeight(context, 4)),
+                                    Text(
+                                      '꿈꾸는 데이지 안나 토션 레이스 베스트',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(
+                                      height: Responsive.getHeight(context, 12),
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.baseline,
+                                      textBaseline: TextBaseline.alphabetic,
+                                      children: [
+                                        Text(
+                                          '15%',
+                                          style: TextStyle(
+                                            fontSize:
+                                                Responsive.getFont(context, 14),
+                                            color: Color(0xFFFF6192),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(width: 2),
+                                        Text(
+                                          '32,800원',
+                                          style: TextStyle(
+                                            fontSize:
+                                                Responsive.getFont(context, 14),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          MoveTopButton(scrollController: _scrollController),
+        ],
       ),
     );
   }

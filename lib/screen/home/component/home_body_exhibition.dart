@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -48,21 +49,31 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: Responsive.getWidth(context, 380),
-          height: 420,
-          child: PageView.builder(
-            controller: _pageController,
-            itemCount: _totalPages,
-            itemBuilder: (context, index) {
-              return buildPage(
-                imagePath: 'assets/images/home/main_bn0${index + 1}.png',
-                title: index == 0 ? '우리 아이를 위한 포근한 선택' : '새로운 스타일',
-                subtitle: index == 0
-                    ? '집에서도 스타일리시하게!\n우리 아이를 위한 홈웨어 컬렉션.'
-                    : '모두가 주목하는!\n아이들의 특별한 순간을 위해.',
-              );
-            },
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ExhibitionScreen(),
+              ),
+            );
+          },
+          child: Container(
+            width: Responsive.getWidth(context, 380),
+            height: 420,
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: _totalPages,
+              itemBuilder: (context, index) {
+                return buildPage(
+                  imagePath: 'assets/images/home/main_bn0${index + 1}.png',
+                  title: index == 0 ? '우리 아이를 위한 포근한 선택' : '새로운 스타일',
+                  subtitle: index == 0
+                      ? '집에서도 스타일리시하게!\n우리 아이를 위한 홈웨어 컬렉션.'
+                      : '모두가 주목하는!\n아이들의 특별한 순간을 위해.',
+                );
+              },
+            ),
           ),
         ),
         SizedBox(height: 25),
@@ -143,33 +154,63 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                 height: 84,
                 child: Row(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(5.0),
-                      child: Image.asset(
-                        'assets/images/home/exhi.png',
-                        width: Responsive.getWidth(context, 84),
-                        height: Responsive.getHeight(context, 84),
-                        fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetailScreen(),
+                          ),
+                        );
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5.0),
+                        child: Image.asset(
+                          'assets/images/home/exhi.png',
+                          width: Responsive.getWidth(context, 84),
+                          height: Responsive.getHeight(context, 84),
+                          fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                        ),
                       ),
                     ),
                     SizedBox(width: Responsive.getWidth(context, 10)),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(5.0),
-                      child: Image.asset(
-                        'assets/images/home/exhi.png',
-                        width: Responsive.getWidth(context, 84),
-                        height: Responsive.getHeight(context, 84),
-                        fit: BoxFit.cover,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetailScreen(),
+                          ),
+                        );
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5.0),
+                        child: Image.asset(
+                          'assets/images/home/exhi.png',
+                          width: Responsive.getWidth(context, 84),
+                          height: Responsive.getHeight(context, 84),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     SizedBox(width: Responsive.getWidth(context, 10)),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(5.0),
-                      child: Image.asset(
-                        'assets/images/home/exhi.png',
-                        width: Responsive.getWidth(context, 84),
-                        height: Responsive.getHeight(context, 84),
-                        fit: BoxFit.cover,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetailScreen(),
+                          ),
+                        );
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5.0),
+                        child: Image.asset(
+                          'assets/images/home/exhi.png',
+                          width: Responsive.getWidth(context, 84),
+                          height: Responsive.getHeight(context, 84),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     SizedBox(width: Responsive.getWidth(context, 10)),
@@ -178,49 +219,48 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                         padding: EdgeInsets.zero, // 여백 없앰
                         minimumSize: Size.zero, // 최소 사이즈를 0으로 설정하여 여백 제거
                       ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ExhibitionScreen(),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ExhibitionScreen(),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // 원형 컨테이너 안에 텍스트
+                          Container(
+                            width: Responsive.getWidth(context, 58),
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
                             ),
-                          );
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // 원형 컨테이너 안에 텍스트
-                            Container(
-                              width: Responsive.getWidth(context, 58),
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '+35',
-                                style: TextStyle(
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 10), // 간격을 위한 SizedBox
-                            // '자세히보기' 텍스트
-                            Text(
-                              '자세히보기',
+                            alignment: Alignment.center,
+                            child: Text(
+                              '+35',
                               style: TextStyle(
-                                fontSize: Responsive.getFont(context, 12),
-                                color: Colors.white,
+                                fontSize: Responsive.getFont(context, 14),
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
                               ),
-                              textAlign: TextAlign.center,
                             ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(height: 10), // 간격을 위한 SizedBox
+                          // '자세히보기' 텍스트
+                          Text(
+                            '자세히보기',
+                            style: TextStyle(
+                              fontSize: Responsive.getFont(context, 12),
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-
+                    ),
                   ],
                 ),
               )

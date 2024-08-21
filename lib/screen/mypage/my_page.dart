@@ -1,9 +1,11 @@
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/faq_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/setting_screen.dart';
+import 'package:BliU/screen/mypage/component/top/alarm_screen.dart';
 import 'package:BliU/screen/mypage/component/top/my_info.dart';
 import 'package:BliU/screen/mypage/component/bottom/recommend_edit.dart';
 import 'package:BliU/screen/mypage/component/bottom/service_screen.dart';
+import 'package:BliU/screen/mypage/component/top/point_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
@@ -23,7 +25,12 @@ class MyPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: SvgPicture.asset('assets/images/my/ic_alim.svg'),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AlarmScreen()),
+              );
+            },
           ),
           Stack(
             children: [
@@ -75,7 +82,10 @@ class MyPage extends StatelessWidget {
                 _buildIconButton(
                     '쿠폰함', 'assets/images/my/mypage_ic03_1.svg', () {}, '2'),
                 _buildIconButton('포인트', 'assets/images/my/mypage_ic04.svg',
-                        () {}, '200,000'),
+                        () {Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => PointScreen()),
+                        );}, '200,000'),
               ],
             ),
           ),
