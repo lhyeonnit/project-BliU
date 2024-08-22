@@ -1,4 +1,5 @@
 import 'package:BliU/screen/store/store_detail_screen.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import '../dummy/store_favorie.dart';
 import 'detail/store_category.dart';
@@ -26,21 +27,19 @@ class _StoreFavoritePageState extends State<StoreFavoriePage> {
           return [
             SliverToBoxAdapter(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0, top: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '즐겨찾기 ${favoriteStores.length}',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
+                  Container(
+                    margin: EdgeInsets.only(left: 16, top: 20),
+                    child: Text(
+                      '즐겨찾기 ${favoriteStores.length}',
+                      style: TextStyle(fontSize: Responsive.getFont(context, 14)),
                     ),
                   ),
+                  SizedBox(height: 15,),
                   Container(
                     height: 360, // 즐겨찾기 항목의 고정된 높이
+                    margin: ,
                     child: PageView.builder(
                       controller: _pageController,
                       itemCount: totalPages,
@@ -72,54 +71,77 @@ class _StoreFavoritePageState extends State<StoreFavoriePage> {
                                   ),
                                 );
                               },
-                              child: Row(
-                                children: [
-                                  // 로고 이미지
-                                  Image.asset(
-                                    'assets/images/store/brand_logo.png',
-                                    width: 70,
-                                    height: 70,
-                                    fit: BoxFit.contain,
-                                  ),
-                                  // 상점 이름과 설명
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          displayedStores[index]['name']!,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                          ),
+                              child: Container(
+                                child: Row(
+                                  children: [
+                                    // 로고 이미지
+                                    Container(
+                                      height: 40,
+                                      width: 40,
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
+                                        // 사진의 모서리 둥글게 설정
+                                        border: Border.all(
+                                          color: Color(0xFFDDDDDD), // 테두리 색상 설정
+                                          width: 1.0, // 테두리 두께 설정
                                         ),
-                                        Text(
-                                          displayedStores[index]
-                                              ['description']!,
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 15,
-                                          ),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
+                                        // 사진의 모서리만 둥글게 설정
+                                        child: Image.asset(
+                                          'assets/images/home/exhi.png',
+                                          fit: BoxFit.contain,
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                  // 즐겨찾기 아이콘과 스크랩 수
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 16.0),
-                                    child: Column(
-                                      children: [
-                                        Icon(Icons.bookmark,
-                                            color: Colors.pink),
-                                        Text(
-                                          displayedStores[index]['scrapCount']!,
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ],
+                                    // 상점 이름과 설명
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            displayedStores[index]['name']!,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          Text(
+                                            displayedStores[index]
+                                                ['description']!,
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    // 즐겨찾기 아이콘과 스크랩 수
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 16.0),
+                                      child: Column(
+                                        children: [
+                                          Icon(Icons.bookmark,
+                                              color: Colors.pink),
+                                          Text(
+                                            displayedStores[index]
+                                                ['scrapCount']!,
+                                            style:
+                                                TextStyle(color: Colors.grey),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },
