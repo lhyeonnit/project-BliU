@@ -1,4 +1,7 @@
+import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/store_detail_screen.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:BliU/screen/store/component/store_age_group_selection.dart';
 import 'package:BliU/screen/store/component/store_style_group_selection.dart';
@@ -16,6 +19,7 @@ class StoreRakingPage extends StatefulWidget {
 class _StoreRakingPageState extends State<StoreRakingPage> {
   List<String> selectedAgeGroups = [];
   List<String> selectedStyles = [];
+  ScrollController _scrollController = ScrollController();
 
   void _showAgeGroupSelection() {
     showModalBottomSheet(
@@ -74,7 +78,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 16),
+            padding: const EdgeInsets.only(left: 16.0, top: 20),
             child: Row(
               children: [
                 // 연령 버튼
@@ -83,9 +87,9 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                     onPressed: _showAgeGroupSelection,
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.white, // 배경 흰색
-                      side: BorderSide(color: Colors.grey), // 테두리 회색
+                      side: BorderSide(color: Color(0xFFDDDDDD)), // 테두리 회색
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(19),
                       ),
                     ),
                     child: Row(
@@ -96,26 +100,29 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                             getSelectedAgeGroupsText(),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style: TextStyle(color: Colors.black), // 글자색 검은색
+                            style: TextStyle(
+                                fontSize: Responsive.getFont(context, 14),
+                                color: Colors.black), // 글자색 검은색
                           ),
                         ),
-                        const SizedBox(width: 4.0),
-                        const Icon(Icons.arrow_drop_down, color: Colors.black),
+                        const SizedBox(width: 5.0),
+                        SvgPicture.asset(
+                            'assets/images/product/filter_select.svg'),
                         // 아이콘도 검은색
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(width: 8.0),
+                const SizedBox(width: 4.0),
                 // 스타일 버튼
                 Flexible(
                   child: OutlinedButton(
                     onPressed: _showStyleSelection,
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.white, // 배경 흰색
-                      side: BorderSide(color: Colors.grey), // 테두리 회색
+                      side: BorderSide(color: Color(0xFFDDDDDD)), // 테두리 회색
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(19),
                       ),
                     ),
                     child: Row(
@@ -126,11 +133,14 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                             getSelectedStylesText(),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style: TextStyle(color: Colors.black), // 글자색 검은색
+                            style: TextStyle(
+                                fontSize: Responsive.getFont(context, 14),
+                                color: Colors.black), // 글자색 검은색
                           ),
                         ),
-                        const SizedBox(width: 4.0),
-                        const Icon(Icons.arrow_drop_down, color: Colors.black),
+                        const SizedBox(width: 5.0),
+                        SvgPicture.asset(
+                            'assets/images/product/filter_select.svg'),
                         // 아이콘도 검은색
                       ],
                     ),
@@ -140,111 +150,170 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: stores.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    // Navigate to store_detail page when item is tapped
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => StoreDetailScreen(
-                            // Pass the store data to the detail screen
-                            ),
+            child: Stack(
+              children: [
+                ListView.builder(
+                  controller: _scrollController,
+                  itemCount: stores.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
                       ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                      child: Container(
+                        height: 184,
+                        margin: EdgeInsets.only(top: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              '${stores[index]['rank']}',
-                              style: TextStyle(
-                                fontSize: 24,
-                              ),
-                            ),
-                            Image.asset(
-                              'assets/images/store/brand_logo.png',
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.contain,
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    stores[index]['name'],
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    stores[index]['description'],
-                                    style: TextStyle(color: Colors.grey),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    // 여기에 onTap 동작을 추가하세요.
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: 17,
-                                      height: 17,
-                                      child: SvgPicture.asset(
-                                        'assets/images/store/book_mark.svg',
-                                        fit: BoxFit.contain,
+                            Container(
+                              height: 44,
+                              width: Responsive.getWidth(context, 378),
+                              child: GestureDetector(
+                                onTap: () {
+                                  // Navigate to store_detail page when item is tapped
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => StoreDetailScreen(
+                                        // Pass the store data to the detail screen
                                       ),
                                     ),
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '${stores[index]['rank']}',
+                                      style: TextStyle(
+                                          fontSize: Responsive.getFont(context, 24),
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Container(
+                                      height: 40,
+                                      width: 40,
+                                      margin: EdgeInsets.symmetric(horizontal: 10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)), // 사진의 모서리 둥글게 설정
+                                        border: Border.all(
+                                          color: Color(0xFFDDDDDD), // 테두리 색상 설정
+                                          width: 1.0, // 테두리 두께 설정
+                                        ),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)), // 사진의 모서리만 둥글게 설정
+                                        child: Image.asset(
+                                          'assets/images/home/exhi.png',
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            stores[index]['name'],
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize:
+                                              Responsive.getFont(context, 14),
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Text(
+                                            stores[index]['description'],
+                                            style: TextStyle(
+                                                fontSize:
+                                                Responsive.getFont(context, 13),
+                                                color: Color(0xFF7B7B7B)),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            // 여기에 onTap 동작을 추가하세요.
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 6),
+                                            width: 30,
+                                            height: 30,
+                                            child: SvgPicture.asset(
+                                              'assets/images/store/book_mark.svg',
+                                              fit: BoxFit.contain,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 14,
+                                          child: Text(
+                                            stores[index]['scrapCount']!,
+                                            style: TextStyle(
+                                                fontSize:
+                                                Responsive.getFont(context, 12),
+                                                color: Color(0xFFA4A4A4)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                // Navigate to store_detail page when item is tapped
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductDetailScreen(
+                                    ),
                                   ),
+                                );
+                              },
+                              child: Container(
+                                height: 120,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: stores[index]['images'].length,
+                                  itemBuilder: (context, imageIndex) {
+                                    return Container(
+                                      width: 120,
+                                      margin: EdgeInsets.only(right: 5),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(6), // 모서리 둥글게 설정
+                                        child: Image.asset(
+                                          stores[index]['images'][imageIndex],
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
-                                Text(
-                                  stores[index]['scrapCount']!,
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ],
+                              ),
                             ),
                           ],
                         ),
-
-                        // Add space between rows and image carousel
-                        Container(
-                          height: 120,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: stores[index]['images'].length,
-                            itemBuilder: (context, imageIndex) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: AspectRatio(
-                                  aspectRatio: 1.0,
-                                  child: Image.asset(
-                                    stores[index]['images'][imageIndex],
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
+                      ),
+                    );
+                  },
+                ),
+                MoveTopButton(scrollController: _scrollController),
+              ],
             ),
           ),
         ],
