@@ -91,7 +91,7 @@ class _AlarmNoticeState extends State<AlarmNotice> {
                             color: Color(0xFF7B7B7B),
                             fontSize: Responsive.getFont(context, 14),
                           ),
-                          maxLines: 3,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
