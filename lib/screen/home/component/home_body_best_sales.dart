@@ -11,13 +11,7 @@ class HomeBodyBestSales extends StatefulWidget {
 }
 
 class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
-  String sortOrder = '최신순';
 
-  void _onSortOrderChanged() {
-    setState(() {
-      sortOrder = sortOrder == '최신순' ? '인기순' : '최신순';
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,20 +33,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
     //     HomeBodyBestSalesCategory(),
     //     Padding(
     //       padding: const EdgeInsets.all(16.0),
-    //       child: Row(
-    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //         children: [
-    //           ElevatedButton(
-    //             onPressed: _onSortOrderChanged,
-    //             child: Row(
-    //               children: [
-    //                 Icon(Icons.sort, size: 20.0),
-    //                 SizedBox(width: 4.0),
-    //                 Text(sortOrder),
-    //               ],
-    //             ),
-    //           ),
-    //           ElevatedButton(
+    //       child: ElevatedButton(
     //             onPressed: () {},
     //             child: Row(
     //               children: [
@@ -60,8 +41,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
     //                 Icon(Icons.arrow_drop_down, size: 20.0),
     //               ],
     //             ),
-    //           ),
-    //         ],
+    //
     //       ),
     //     ),
     //     Expanded(

@@ -20,6 +20,8 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
   List<String> selectedAgeGroups = [];
   List<String> selectedStyles = [];
   ScrollController _scrollController = ScrollController();
+  List<bool> isBookmarked = List<bool>.generate(10, (index) => false);
+
 
   void _showAgeGroupSelection() {
     showModalBottomSheet(
@@ -242,15 +244,20 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            // 여기에 onTap 동작을 추가하세요.
+                                            setState(() {
+                                              isBookmarked[index] =
+                                              !isBookmarked[index];
+                                            });
                                           },
                                           child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 8, vertical: 6),
+                                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                                             width: 30,
                                             height: 30,
                                             child: SvgPicture.asset(
                                               'assets/images/store/book_mark.svg',
+                                              color: isBookmarked[index] ? Color(0xFFFF6192) : null, // 아이콘 색상 변경
+                                              height: Responsive.getHeight(context, 30),
+                                              width: Responsive.getWidth(context, 30),
                                               fit: BoxFit.contain,
                                             ),
                                           ),
@@ -260,9 +267,9 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                           child: Text(
                                             stores[index]['scrapCount']!,
                                             style: TextStyle(
-                                                fontSize:
-                                                Responsive.getFont(context, 12),
-                                                color: Color(0xFFA4A4A4)),
+                                              color: Color(0xFFA4A4A4),
+                                              fontSize: Responsive.getFont(context, 12),
+                                            ),
                                           ),
                                         ),
                                       ],
