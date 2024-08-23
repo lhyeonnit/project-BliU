@@ -75,7 +75,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                     });
                                   },
                                   child: SvgPicture.asset(
-                                    'assets/images/home/like_btn.svg',
+                                    isFavoriteList[index] ? 'assets/images/home/like_btn_fill.svg' : 'assets/images/home/like_btn.svg',
                                     color: isFavoriteList[index]
                                         ? Color(0xFFFF6191)
                                         : null,

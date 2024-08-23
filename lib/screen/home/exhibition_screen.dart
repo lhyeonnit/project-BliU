@@ -148,23 +148,23 @@ class ExhibitionScreenState extends State<ExhibitionScreen>
                     color: Color(0xFF7B7B7B)),
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-              child: GridView.builder(
-                shrinkWrap: true,
-                // 리스트 자식 높이 크기의 합 만큼으로 영역 고정
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 8.0,
-                    childAspectRatio: 0.6),
-                itemCount: 10,
-                itemBuilder: (BuildContext context, int index) {
-                  return StoreCategoryItem();
-                },
-              ),
-            )
+            // Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+            //   child: GridView.builder(
+            //     shrinkWrap: true,
+            //     // 리스트 자식 높이 크기의 합 만큼으로 영역 고정
+            //     physics: const NeverScrollableScrollPhysics(),
+            //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            //         crossAxisCount: 2,
+            //         crossAxisSpacing: 8.0,
+            //         mainAxisSpacing: 8.0,
+            //         childAspectRatio: 0.6),
+            //     itemCount: 10,
+            //     itemBuilder: (BuildContext context, int index) {
+            //       return StoreCategoryItem(index: index,);
+            //     },
+            //   ),
+            // )
           ],
         ),
       ),

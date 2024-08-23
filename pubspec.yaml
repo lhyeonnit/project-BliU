@@ -53,6 +53,7 @@ dependencies:
   flutter_native_splash: ^2.4.1
   flutter_launcher_icons: ^0.13.1
   flutter_switch: ^0.3.2
+  infinite_scroll_pagination: ^4.0.0
 #  flutter_naver_login: ^1.8.0
 #  kakao_flutter_sdk: ^1.9.3
 

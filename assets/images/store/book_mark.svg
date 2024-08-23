@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="11.51" height="13.712" viewBox="0 0 11.51 13.712">
   <g id="그룹_37610" data-name="그룹 37610" transform="translate(0.8 0.8)">
-    <path id="패스_39146" data-name="패스 39146" d="M7.955,12.21l4.955,2.9V3H3V15.112Z" transform="translate(-3 -3)" fill="none" stroke="#ddd" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+    <path id="패스_39146" data-name="패스 39146" d="M7.955,12.21l4.955,2.9V3H3V15.112Z" transform="translate(-3 -3)"
+        fill="#FFF" stroke="#DDD" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
   </g>
 </svg>
