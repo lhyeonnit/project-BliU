@@ -4,10 +4,11 @@ import 'package:BliU/utils/permission_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
   // 세로 모드 고정
   await SystemChrome.setPreferredOrientations([
@@ -18,7 +19,8 @@ Future<void> main() async {
   await Utils.getInstance();
   await PermissionManager().requestPermission();
 
-  runApp(const MyApp());
+
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -26,7 +28,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       home: OnBoardingScreen(), // OnBoardingScreen을 초기 화면으로 설정
     );
