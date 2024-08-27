@@ -1,7 +1,6 @@
 import 'package:BliU/screen/main_page.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -101,7 +100,12 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                           child: SizedBox(
                             child: InkWell(
                               onTap: () {
-                                Get.off(() => const MainPage()); // MainPage로 이동하고 온보딩 화면 제거
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MainPage(),
+                                  ),
+                                );
                               },
                               child: Container(
                                 width: Responsive.getWidth(context, 88),

@@ -1,5 +1,5 @@
 import 'package:BliU/screen/store/component/store_age_group_selection.dart';
-import 'package:BliU/screen/store/component/store_favorie_page.dart';
+import 'package:BliU/screen/store/component/store_favorite_page.dart';
 import 'package:BliU/screen/store/component/store_ranking_page.dart';
 import 'package:BliU/screen/store/component/store_style_group_selection.dart';
 import 'package:flutter/cupertino.dart';
@@ -92,7 +92,7 @@ class _StorePageState extends State<StorePage>
         controller: _tabController,
         children: [
           StoreRakingPage(),
-          StoreFavoriePage(),
+          StoreFavoritePage(),
         ],
       ),
     );
