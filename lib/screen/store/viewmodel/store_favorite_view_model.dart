@@ -20,7 +20,7 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
   final Ref ref;
   StoreFavoriteViewModel(super.state, this.ref) {
     _loadSearchHistory();
-    notifyInit();  // ViewModel 초기화 시 데이터를 가져옴
+    notifyInit(); // ViewModel 초기화 시 데이터를 가져옴
   }
 
   Future<void> notifyInit() async {
@@ -32,16 +32,28 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
       ResponseDTO responseDTO = await StoreRepository().fetchBookmarkList(mtIdx, pg);
 
       if (responseDTO.status == 200 && responseDTO.response != null) {
-        // Map the response to BookmarkResponseDTO and BookmarkStoreDTO
-        List<BookmarkStoreDTO> bookmarkStoreDTO = List<BookmarkStoreDTO>.from(
-            (responseDTO.response as List).map((item) => BookmarkStoreDTO.fromJson(item))
-        );
+        if (responseDTO.response is Map<String, dynamic>) {
+          // Response is a map, parse as BookmarkResponseDTO
+          BookmarkResponseDTO bookmarkResponse = BookmarkResponseDTO.fromJson(responseDTO.response);
 
-        // Update the state with the fetched data
-        state = StoreFavoriteModel(
-          bookmarkResponseDTO: BookmarkResponseDTO(result: true, stores: bookmarkStoreDTO),
-          bookmarkStoreDTO: bookmarkStoreDTO,
-        );
+          // Update the state with the fetched data
+          state = StoreFavoriteModel(
+            bookmarkResponseDTO: bookmarkResponse,
+            bookmarkStoreDTO: bookmarkResponse.stores,
+          );
+        } else if (responseDTO.response is List<BookmarkStoreDTO>) {
+          // Response is already a List of BookmarkStoreDTO, no need for conversion
+          List<BookmarkStoreDTO> bookmarkStores = responseDTO.response as List<BookmarkStoreDTO>;
+
+          // Update the state with the fetched data
+          state = StoreFavoriteModel(
+            bookmarkResponseDTO: BookmarkResponseDTO(result: true, count: bookmarkStores.length, stores: bookmarkStores),
+            bookmarkStoreDTO: bookmarkStores,
+          );
+        } else {
+          print('Unexpected response format');
+          state = null;
+        }
       } else {
         // Handle error and set state to null
         print('Error: ${responseDTO.errorMessage}');
@@ -53,6 +65,7 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
       state = null;
     }
   }
+
 
   List<String> searchHistory = [];
   TextEditingController searchController = TextEditingController();
@@ -89,6 +102,8 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
                 stIdx: s.stIdx,
                 stName: s.stName,
                 stProfile: s.stProfile,
+                styleTxt: s.styleTxt,
+                ageTxt: s.ageTxt,
                 stLike: newLikeCount,
               );
             }
