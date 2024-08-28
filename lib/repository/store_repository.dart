@@ -2,12 +2,13 @@ import 'package:BliU/screen/store/viewmodel/store_favorite_view_model.dart';
 import 'package:dio/dio.dart';
 import 'package:BliU/data/response_dto.dart';
 
-import '../data/dto/store_bookmark_data.dart'; // ResponseDTO에 맞게 경로 수정
-
+import '../data/dto/store_bookmark_data.dart';
+import '../data/dto/store_favorite_product_data.dart'; // ResponseDTO에 맞게 경로 수정
 
 class StoreRepository {
   final Dio _dio = Dio();
-  final String _baseUrl = 'https://bground.api.dmonster.kr/api/user'; // 실제 base URL로 교체
+  final String _baseUrl =
+      'https://bground.api.dmonster.kr/api/user'; // 실제 base URL로 교체
 
   StoreRepository() {
     _dio.options.contentType = Headers.formUrlEncodedContentType;
@@ -119,35 +120,96 @@ class StoreRepository {
     }
   }
 
-
   // 3. 즐겨찾기한 상점의 상품 목록 조회
-  Future<ResponseDTO> fetchStoreProducts({
-    required int mtIdx,
-    required int stIdx,
-    required int pg,
-    required String category,
-  }) async {
+  Future<ResponseDTO> fetchStoreProducts(int mtIdx,
+      int pg,
+      String searchTxt,
+      String category,
+      String age,
+      int sort,) async {
     try {
       final response = await _dio.post(
         '$_baseUrl/store/product',
+        options: Options(
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        ),
         data: {
           'mt_idx': mtIdx.toString(),
-          'st_idx': stIdx.toString(),
           'pg': pg.toString(),
+          'search_txt': searchTxt,
           'category': category,
+          'age': age,
+          'sort': sort.toString(),
         },
       );
 
-      if (response.statusCode == 200) {
-        // Store 상품 목록 DTO로 변환
-        return ResponseDTO.fromJson(response.data);
+      print(response.data);
+
+      // 응답 성공 시
+      if (response.statusCode == 200 && response.data != null) {
+        if (response.data is List) {
+          // 응답이 List 타입인 경우, List<ProductDTO>로 처리
+          List<ProductDTO> storeFavoriteProductList = (response.data as List)
+              .map((item) => ProductDTO.fromJson(item as Map<String, dynamic>))
+              .toList();
+
+          return ResponseDTO(
+            status: response.statusCode!,
+            errorMessage: '',
+            response: storeFavoriteProductList, // ProductDTO 리스트 반환
+          );
+        } else if (response.data is Map<String, dynamic> &&
+            response.data['result'] == true) {
+          // 응답이 Map<String, dynamic>인 경우 처리
+          final Map<String, dynamic> storeFavoriteProductListJson = response
+              .data;
+
+          if (storeFavoriteProductListJson.containsKey('data') &&
+              storeFavoriteProductListJson['data'].containsKey('list')) {
+            final List<
+                dynamic> listJson = storeFavoriteProductListJson['data']['list'];
+
+            // ProductDTO 리스트로 변환
+            List<ProductDTO> storeFavoriteProductList = listJson.map((item) {
+              return ProductDTO.fromJson(item as Map<String, dynamic>);
+            }).toList();
+
+            return ResponseDTO(
+              status: response.statusCode!,
+              errorMessage: '',
+              response: storeFavoriteProductList, // ProductDTO 리스트 반환
+            );
+          } else {
+            return ResponseDTO(
+              status: response.statusCode!,
+              errorMessage: 'Invalid response structure: Missing data or list field',
+              response: null,
+            );
+          }
+        } else {
+          // 다른 예상치 못한 응답 구조의 경우 처리
+          return ResponseDTO(
+            status: response.statusCode!,
+            errorMessage: 'Unexpected response structure',
+            response: null,
+          );
+        }
       } else {
-        print("Error: ${response.statusCode}, ${response.data}");
-        return ResponseDTO.fromJson(response.data);
+        return ResponseDTO(
+          status: response.statusCode!,
+          errorMessage: response.data['message'] ?? 'Unknown error',
+          response: null,
+        );
       }
     } catch (e) {
       print("Error fetching store products: $e");
-      return ResponseDTO(status: 500, errorMessage: 'Error', response: null);
+      return ResponseDTO(
+        status: 500,
+        errorMessage: 'Error fetching store products: $e',
+        response: null,
+      );
     }
   }
 }

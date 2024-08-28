@@ -3,118 +3,150 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:BliU/utils/responsive.dart';
-
+import 'package:BliU/data/dto/store_favorite_product_data.dart'; // ProductDTO 클래스가 있는 파일
 
 class StoreCategoryItem extends ConsumerWidget {
-  final int tabIndex;
 
-  StoreCategoryItem({required this.tabIndex});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(storeCategoryViewModelProvider)[tabIndex];
-    final viewModel = ref.read(storeCategoryViewModelProvider.notifier);
+    final model = ref.watch(storeCategoryViewModelProvider);
 
-    return NotificationListener<ScrollNotification>(
-      onNotification: (ScrollNotification notification) {
-        if (notification.metrics.pixels ==
-            notification.metrics.maxScrollExtent) {
-          viewModel.loadMore(tabIndex);
-        }
-        return true;
-      },
-      child: GridView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 12.0,
-          mainAxisSpacing: 30.0,
-          childAspectRatio: 0.8,
-        ),
-        itemCount: state.products.length + (state.isLoading ? 1 : 0),
-        itemBuilder: (context, index) {
-          if (index >= state.products.length) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          final product = state.products[index];
-          return GestureDetector(
-            onTap: () {
-              // 상품 클릭 시 이동 처리 등
-            },
-            child: Container(
-              height: 301,
-              width: Responsive.getWidth(context, 184),
+    if (model == null || model.productDetail == null) {
+      return Center(child: CircularProgressIndicator()); // 로딩 중일 때 처리
+    }
+
+    return Container(
+          height: 301,
+          width: Responsive.getWidth(context, 184),
+          child: GridView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 12.0,
+            mainAxisSpacing: 30.0,
+            childAspectRatio: 0.65,
+          ),
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: model.productDetail!.length,
+          itemBuilder: (context, index) {
+            if (index >= model.productDetail!.length) {
+              return Center(
+                  child: CircularProgressIndicator()); // 추가 로딩 시 로딩 인디케이터
+            }
+
+            final ProductDTO product = model.productDetail![index];
+
+            return GestureDetector(
+              onTap: () {
+                // 상품 클릭 시 상세 화면 이동 처리
+              },
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        child: Image.asset(
-                          'assets/images/home/exhi.png',
-                          fit: BoxFit.contain,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          child: Image.network(
+                            product.ptImg,
+                            fit: BoxFit.contain,
+                            height: Responsive.getHeight(context, 184),
+                            width: double.infinity,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Image.asset('assets/images/home/exhi.png'),
+                          ),
                         ),
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: SvgPicture.asset(
-                          'assets/images/home/like_btn.svg',
-                          height: Responsive.getHeight(context, 34),
-                          width: Responsive.getWidth(context, 34),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: SvgPicture.asset(
+                            'assets/images/home/like_btn.svg',
+                            height: Responsive.getHeight(context, 34),
+                            width: Responsive.getWidth(context, 34),
+                          ),
                         ),
+                      ],
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      product.ptName,
+                      style: TextStyle(
+                        fontSize: Responsive.getFont(context, 14),
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: Responsive.getHeight(context, 12),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '상품명 $product',
-                        style: TextStyle(
-                          fontSize: Responsive.getFont(context, 14),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height:12),
+                    Row(
+                      children: [
+                        Text(
+                          '${product.ptDiscountPer}%',
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Color(0xFFFF6192),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(height: Responsive.getHeight(context, 12)),
+                        SizedBox(width: Responsive.getWidth(context, 2)),
+                        Text(
+                          '${product.ptSellingPrice}원',
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+                    if (product.ptLike > 0 || product.ptReviewCount > 0)
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
                         children: [
-                          Text(
-                            '15%',
-                            style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Color(0xFFFF6192),
-                              fontWeight: FontWeight.bold,
+                          if (product.ptLike > 0) ...[
+                            SvgPicture.asset(
+                              'assets/images/home/item_like.svg',
+                              width: Responsive.getWidth(context, 13),
+                              height: Responsive.getHeight(context, 11),
                             ),
-                          ),
-                          SizedBox(width: Responsive.getWidth(context, 2)),
-                          Text(
-                            '32,800원',
-                            style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.bold,
+                            SizedBox(width: 3),
+                            Text(
+                              '${product.ptLike}',
+                              style: TextStyle(
+                                fontSize: Responsive.getFont(context, 12),
+                                color: Colors.grey,
+                              ),
+                              maxLines: 1,
                             ),
-                            maxLines: 1,
-                          ),
+                          ],
+                          if (product.ptReviewCount > 0) ...[
+                            SizedBox(width: 10),
+                            SvgPicture.asset(
+                              'assets/images/home/item_comment.svg',
+                              width: Responsive.getWidth(context, 13),
+                              height: Responsive.getHeight(context, 12),
+                            ),
+                            SizedBox(width: 3),
+                            Text(
+                              '${product.ptReviewCount}',
+                              style: TextStyle(
+                                fontSize: Responsive.getFont(context, 12),
+                                color: Colors.grey,
+                              ),
+                              maxLines: 1,
+                            ),
+                          ],
                         ],
                       ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+
+                  ],
+                ),
+              );
+          },
+        ),
     );
   }
 }

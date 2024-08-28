@@ -2,6 +2,8 @@ class BookmarkStoreDTO {
   final int stIdx;
   final String stName;
   final String stProfile;
+  final String ageTxt;
+  final String styleTxt;
   final int stLike;
 
   BookmarkStoreDTO({
@@ -9,6 +11,8 @@ class BookmarkStoreDTO {
     required this.stName,
     required this.stProfile,
     required this.stLike,
+    required this.ageTxt,
+    required this.styleTxt,
   });
 
   // JSON 데이터를 BookmarkStoreDTO 객체로 변환하는 factory 메서드
@@ -17,6 +21,8 @@ class BookmarkStoreDTO {
       stIdx: json['st_idx'],  // int로 안전하게 변환
       stName: json['st_name'],
       stProfile: json['st_profile'],
+      ageTxt: json['age_txt'],
+      styleTxt: json['style_txt'],
       stLike: json['st_like'],  // int로 안전하게 변환
     );
   }
@@ -28,26 +34,41 @@ class BookmarkStoreDTO {
       'st_name': stName,
       'st_profile': stProfile,
       'st_like': stLike,
+      'age_txt': ageTxt,
+      'style_txt': styleTxt,
     };
   }
 }
 
-
 class BookmarkResponseDTO {
   final bool result;
+  final int count;  // 추가된 count 필드
   final List<BookmarkStoreDTO> stores;
 
   BookmarkResponseDTO({
     required this.result,
+    required this.count,  // count 추가
     required this.stores,
   });
 
   factory BookmarkResponseDTO.fromJson(Map<String, dynamic> json) {
     return BookmarkResponseDTO(
       result: json['result'],
+      count: json['data']['count'],  // count 값을 추출
       stores: (json['data']['list'] as List)
           .map((item) => BookmarkStoreDTO.fromJson(item))
           .toList(),
     );
+  }
+
+  // BookmarkResponseDTO 객체를 JSON으로 변환하는 메서드
+  Map<String, dynamic> toJson() {
+    return {
+      'result': result,
+      'data': {
+        'count': count,  // count 포함
+        'list': stores.map((store) => store.toJson()).toList(),
+      },
+    };
   }
 }
