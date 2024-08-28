@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:BliU/utils/responsive.dart';
-
+import 'package:BliU/data/dto/store_favorite_product_data.dart'; // ProductDTO 클래스가 있는 파일
 
 class StoreCategoryItem extends ConsumerWidget {
   final int tabIndex;
@@ -12,14 +12,20 @@ class StoreCategoryItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(storeCategoryViewModelProvider)[tabIndex];
+    final state = ref.watch(storeCategoryViewModelProvider);
     final viewModel = ref.read(storeCategoryViewModelProvider.notifier);
+
+    if (state == null || state.productDetail == null) {
+      return Center(child: CircularProgressIndicator()); // 로딩 중일 때 처리
+    }
 
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification notification) {
-        if (notification.metrics.pixels ==
-            notification.metrics.maxScrollExtent) {
-          viewModel.loadMore(tabIndex);
+        if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {
+          viewModel.loadMore(
+            tabIndex: tabIndex,
+            mtIdx: 2, // 예시값
+          );
         }
         return true;
       },
@@ -31,17 +37,17 @@ class StoreCategoryItem extends ConsumerWidget {
           mainAxisSpacing: 30.0,
           childAspectRatio: 0.8,
         ),
-        itemCount: state.products.length + (state.isLoading ? 1 : 0),
+        itemCount: state.productDetail!.length + (state.isLoading ? 1 : 0),
         itemBuilder: (context, index) {
-          if (index >= state.products.length) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+          if (index >= state.productDetail!.length) {
+            return Center(child: CircularProgressIndicator()); // 추가 로딩 시 로딩 인디케이터
           }
-          final product = state.products[index];
+
+          final ProductDTO product = state.productDetail![index];
+
           return GestureDetector(
             onTap: () {
-              // 상품 클릭 시 이동 처리 등
+              // 상품 클릭 시 상세 화면 이동 처리
             },
             child: Container(
               height: 301,
@@ -53,9 +59,12 @@ class StoreCategoryItem extends ConsumerWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
-                        child: Image.asset(
-                          'assets/images/home/exhi.png',
+                        child: Image.network(
+                          product.ptImg,
                           fit: BoxFit.contain,
+                          height: Responsive.getHeight(context, 200),
+                          width: double.infinity,
+                          errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/home/exhi.png'),
                         ),
                       ),
                       Positioned(
@@ -69,43 +78,34 @@ class StoreCategoryItem extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: Responsive.getHeight(context, 12),
+                  SizedBox(height: Responsive.getHeight(context, 12)),
+                  Text(
+                    product.ptName,
+                    style: TextStyle(
+                      fontSize: Responsive.getFont(context, 14),
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  SizedBox(height: Responsive.getHeight(context, 12)),
+                  Row(
                     children: [
                       Text(
-                        '상품명 $product',
+                        '${product.ptDiscountPer}%',
                         style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
+                          color: Color(0xFFFF6192),
+                          fontWeight: FontWeight.bold,
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: Responsive.getHeight(context, 12)),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
-                        children: [
-                          Text(
-                            '15%',
-                            style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Color(0xFFFF6192),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(width: Responsive.getWidth(context, 2)),
-                          Text(
-                            '32,800원',
-                            style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 1,
-                          ),
-                        ],
+                      SizedBox(width: Responsive.getWidth(context, 2)),
+                      Text(
+                        '${product.ptSellingPrice}원',
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
                       ),
                     ],
                   ),

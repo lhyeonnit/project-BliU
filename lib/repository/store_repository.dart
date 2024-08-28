@@ -2,12 +2,13 @@ import 'package:BliU/screen/store/viewmodel/store_favorite_view_model.dart';
 import 'package:dio/dio.dart';
 import 'package:BliU/data/response_dto.dart';
 
-import '../data/dto/store_bookmark_data.dart'; // ResponseDTO에 맞게 경로 수정
-
+import '../data/dto/store_bookmark_data.dart';
+import '../data/dto/store_favorite_product_data.dart'; // ResponseDTO에 맞게 경로 수정
 
 class StoreRepository {
   final Dio _dio = Dio();
-  final String _baseUrl = 'https://bground.api.dmonster.kr/api/user'; // 실제 base URL로 교체
+  final String _baseUrl =
+      'https://bground.api.dmonster.kr/api/user'; // 실제 base URL로 교체
 
   StoreRepository() {
     _dio.options.contentType = Headers.formUrlEncodedContentType;
@@ -119,35 +120,64 @@ class StoreRepository {
     }
   }
 
-
   // 3. 즐겨찾기한 상점의 상품 목록 조회
-  Future<ResponseDTO> fetchStoreProducts({
-    required int mtIdx,
-    required int stIdx,
-    required int pg,
-    required String category,
-  }) async {
+  Future<ResponseDTO> fetchStoreProducts(
+      int mtIdx,
+      int pg,
+      String searchTxt,
+      String category,
+      String age,
+      int sort,) async {
     try {
       final response = await _dio.post(
         '$_baseUrl/store/product',
+        options: Options(
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        ),
         data: {
           'mt_idx': mtIdx.toString(),
-          'st_idx': stIdx.toString(),
           'pg': pg.toString(),
+          'search_txt': searchTxt,
           'category': category,
+          'age': age,
+          'sort': sort.toString(),
         },
       );
 
-      if (response.statusCode == 200) {
-        // Store 상품 목록 DTO로 변환
-        return ResponseDTO.fromJson(response.data);
+      print(response.data);
+
+      // 응답 성공 시
+      if (response.statusCode == 200 && response.data['result'] == true) {
+        // `data` 객체에서 count와 list를 추출하여 DTO로 변환
+        final storeFavoriteProductResponseDTO = StoreFavoriteProductResponseDTO.fromJson(response.data);
+
+        // ProductListDTO의 리스트로 반환된 데이터 추출
+        List<ProductDTO> favoriteProductList = storeFavoriteProductResponseDTO.data.list;
+
+        // 성공적으로 데이터가 반환되었을 경우, ResponseDTO로 래핑하여 반환
+        return ResponseDTO(
+          status: response.statusCode!,
+          errorMessage: '',
+          response: favoriteProductList, // `ProductDTO` 리스트로 반환
+        );
       } else {
-        print("Error: ${response.statusCode}, ${response.data}");
-        return ResponseDTO.fromJson(response.data);
+        // 오류가 발생한 경우 처리
+        return ResponseDTO(
+          status: response.statusCode!,
+          errorMessage: response.data['message'] ?? 'Unknown error',
+          response: null,
+        );
       }
     } catch (e) {
+      // 예외 발생 시 처리
       print("Error fetching store products: $e");
-      return ResponseDTO(status: 500, errorMessage: 'Error', response: null);
+      return ResponseDTO(
+        status: 500,
+        errorMessage: 'Error fetching store products: $e',
+        response: null,
+      );
     }
   }
 }

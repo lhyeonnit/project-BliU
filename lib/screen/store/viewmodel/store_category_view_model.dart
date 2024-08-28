@@ -1,72 +1,149 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:BliU/data/dto/store_favorite_product_data.dart';
+import 'package:BliU/repository/store_repository.dart';
+import 'package:BliU/data/response_dto.dart';
 
-final storeCategoryViewModelProvider = StateNotifierProvider<StoreCategoryViewModel, List<StoreCategoryState>>(
-      (ref) => StoreCategoryViewModel(),
-);
+// 모델 클래스 정의 (데이터 상태를 관리하기 위한 DTO)
+class StoreCategoryModel {
+  StoreFavoriteProductResponseDTO? storeFavoriteProductResponseDTO;
+  ProductListDTO? productListDTO;
+  List<ProductDTO>? productDetail;
+  bool isLoading;
+  bool hasMore;
+  int page; // 페이지 번호 추가
 
-class StoreCategoryState {
-  final List<String> products;
-  final bool isLoading;
-  final bool hasMore;
-
-  StoreCategoryState({
-    required this.products,
+  StoreCategoryModel({
+    required this.storeFavoriteProductResponseDTO,
+    required this.productListDTO,
+    required this.productDetail,
     required this.isLoading,
     required this.hasMore,
+    required this.page,
   });
 
-  StoreCategoryState copyWith({
-    List<String>? products,
+  // copyWith 메서드를 통해 상태 복사 및 수정
+  StoreCategoryModel copyWith({
+    StoreFavoriteProductResponseDTO? storeFavoriteProductResponseDTO,
+    ProductListDTO? productListDTO,
+    List<ProductDTO>? productDetail,
     bool? isLoading,
     bool? hasMore,
+    int? page,
   }) {
-    return StoreCategoryState(
-      products: products ?? this.products,
+    return StoreCategoryModel(
+      storeFavoriteProductResponseDTO: storeFavoriteProductResponseDTO ?? this.storeFavoriteProductResponseDTO,
+      productListDTO: productListDTO ?? this.productListDTO,
+      productDetail: productDetail ?? this.productDetail,
       isLoading: isLoading ?? this.isLoading,
       hasMore: hasMore ?? this.hasMore,
+      page: page ?? this.page,
     );
   }
 }
 
-class StoreCategoryViewModel extends StateNotifier<List<StoreCategoryState>> {
-  StoreCategoryViewModel()
-      : super(List.generate(
-      9,
-          (_) => StoreCategoryState(
-        products: List.generate(10, (index) => '상품 $index'),
-        isLoading: false,
-        hasMore: true,
-      )));
+// ViewModel 정의
+class StoreCategoryViewModel extends StateNotifier<StoreCategoryModel?> {
+  final Ref ref;
 
-  void loadMore(int tabIndex) async {
-    if (state[tabIndex].isLoading || !state[tabIndex].hasMore) return;
+  StoreCategoryViewModel(this.ref) : super(null) {
+    notifyInit(); // ViewModel 초기화 시 데이터를 가져옴
+  }
 
-    state = state.asMap().map((index, categoryState) {
-      if (index == tabIndex) {
-        return MapEntry(
-          index,
-          categoryState.copyWith(isLoading: true),
+  Future<void> notifyInit() async {
+    int mtIdx = 2;
+    int pg = 1;
+    String searchTxt = '';
+    String category = 'all';
+    String age = 'all';
+    int sort = 2;
+
+    // 로딩 상태로 업데이트
+    state = StoreCategoryModel(
+      storeFavoriteProductResponseDTO: null,
+      productListDTO: null,
+      productDetail: [],
+      isLoading: true,
+      hasMore: true,
+      page: 1,
+    );
+
+    try {
+      // 실제 API 호출
+      final ResponseDTO responseDTO = await StoreRepository().fetchStoreProducts(
+        mtIdx,
+        pg,
+        searchTxt,
+        category,
+        age,
+        sort,
+      );
+
+      if (responseDTO.status == 200 && responseDTO.response != null) {
+        StoreFavoriteProductResponseDTO storeFavoriteProductResponseDTO = StoreFavoriteProductResponseDTO.fromJson(responseDTO.response);
+        ProductListDTO productListDTO = storeFavoriteProductResponseDTO.data;
+
+        state = state?.copyWith(
+          storeFavoriteProductResponseDTO: storeFavoriteProductResponseDTO,
+          productListDTO: productListDTO,
+          productDetail: productListDTO.list,
+          isLoading: false,
+          hasMore: productListDTO.list.length >= 10,
         );
+      } else {
+        throw Exception('Failed to load products');
       }
-      return MapEntry(index, categoryState);
-    }).values.toList();
+    } catch (e) {
+      state = state?.copyWith(isLoading: false);
+      print("Error loading products: $e");
+    }
+  }
 
-    // Simulate API call
-    await Future.delayed(Duration(seconds: 2));
+  Future<void> loadMore({
+    required int tabIndex,
+    required int mtIdx,
+    String searchTxt = '',
+    String category = 'all',
+    String age = 'all',
+    int sort = 2,
+  }) async {
+    if (state == null || state!.isLoading || !state!.hasMore) return;
 
-    state = state.asMap().map((index, categoryState) {
-      if (index == tabIndex) {
-        final newProducts = List<String>.generate(10, (i) => '상품 ${categoryState.products.length + i}');
-        return MapEntry(
-          index,
-          categoryState.copyWith(
-            products: [...categoryState.products, ...newProducts],
-            isLoading: false,
-            hasMore: newProducts.length >= 10,
-          ),
+    int nextPage = state!.page + 1; // 다음 페이지 설정
+
+    state = state?.copyWith(isLoading: true);
+
+    try {
+      // 추가 데이터 로드
+      final ResponseDTO responseDTO = await StoreRepository().fetchStoreProducts(
+        mtIdx,
+        nextPage,
+        searchTxt,
+        category,
+        age,
+        sort,
+      );
+
+      if (responseDTO.status == 200 && responseDTO.response != null) {
+        ProductListDTO newProductListDTO = ProductListDTO.fromJson(responseDTO.response['data']);
+
+        state = state?.copyWith(
+          productDetail: [...state!.productDetail!, ...newProductListDTO.list],
+          isLoading: false,
+          hasMore: newProductListDTO.list.length >= 10, // 데이터가 10개 이상인 경우만 계속 로드 가능
+          page: nextPage, // 페이지 번호 증가
         );
+      } else {
+        throw Exception('Failed to load more products');
       }
-      return MapEntry(index, categoryState);
-    }).values.toList();
+    } catch (e) {
+      state = state?.copyWith(isLoading: false);
+      print("Error loading more products: $e");
+    }
   }
 }
+
+
+// ViewModel Provider 정의
+final storeCategoryViewModelProvider =
+StateNotifierProvider<StoreCategoryViewModel, StoreCategoryModel?>(
+        (ref) => StoreCategoryViewModel(ref));
