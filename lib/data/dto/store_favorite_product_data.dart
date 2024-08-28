@@ -76,8 +76,8 @@ class ProductListDTO {
   // Factory method to create ProductListDTO from JSON
   factory ProductListDTO.fromJson(Map<String, dynamic> json) {
     return ProductListDTO(
-      count: json['count'],
-      list: (json['list'] as List).map((item) => ProductDTO.fromJson(item)).toList(),
+      count: json['data']['count'],
+      list: (json['data']['list'] as List).map((item) => ProductDTO.fromJson(item)).toList(),
     );
   }
 

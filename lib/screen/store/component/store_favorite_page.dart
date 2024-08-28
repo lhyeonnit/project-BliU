@@ -17,6 +17,8 @@ class StoreFavoritePage extends ConsumerWidget {
     final storeFavoriteList = model?.bookmarkStoreDTO ?? [];
     final int itemsPerPage = 5;
     final PageController pageController = PageController();
+    ScrollController _scrollController = ScrollController();
+
     final totalItem = model?.bookmarkResponseDTO?.count ?? 0; // null인 경우 0으로 처리
 
     // 상태가 null인 경우, 로딩 상태로 처리
@@ -35,13 +37,12 @@ class StoreFavoritePage extends ConsumerWidget {
         children: [
           ListView(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
+              Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: 20,),
                     Container(
-                      margin: const EdgeInsets.only(top: 20),
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
                         '즐겨찾기 $totalItem',
                         style: TextStyle(
@@ -50,6 +51,7 @@ class StoreFavoritePage extends ConsumerWidget {
                     ),
                     const SizedBox(height: 15),
                     Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
                       height: 305, // 즐겨찾기 항목의 고정된 높이
                       width: Responsive.getWidth(context, 378),
                       child: PageView.builder(
@@ -209,6 +211,7 @@ class StoreFavoritePage extends ConsumerWidget {
                     ),
                     Container(
                       height: 44,
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
                       width: Responsive.getWidth(context, 380),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
@@ -279,10 +282,9 @@ class StoreFavoritePage extends ConsumerWidget {
                     StoreCategory(),
                   ],
                 ),
-              ),
             ],
           ),
-          MoveTopButton(scrollController: ScrollController()),
+          MoveTopButton(scrollController: _scrollController),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:BliU/screen/store/component/detail/store_category_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,7 +17,7 @@ class StoreCategory extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tabController = useTabController(initialLength: categories.length); // useTabController 사용
-    final storeCategoryViewModel = ref.watch(storeCategoryViewModelProvider); // ViewModel 상태 가져오기
+    final model = ref.watch(storeCategoryViewModelProvider); // ViewModel 상태 가져오기
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,46 +105,22 @@ class StoreCategory extends HookConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(left: 16.0),
           child: Text(
-            '상품 ${storeCategoryViewModel?.productDetail?.length ?? 0}', // 상품 개수 텍스트
+            '상품 ${model?.productDetail?.length ?? 0}', // 상품 개수 텍스트
             style: TextStyle(
                 fontSize: Responsive.getFont(context, 14),
                 color: Colors.black),
           ),
         ),
-        Expanded(
+        Container(
+          height: 1000,
           child: TabBarView(
-            controller: tabController,
-            children: List.generate(categories.length, (index) {
-              // 각 카테고리의 상태를 확인
-              final categoryState = storeCategoryViewModel;
-
-              // 로딩 상태 처리
-              if (categoryState?.isLoading == true) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              // 상품이 없는 경우 처리
-              if (categoryState?.productDetail == null ||
-                  categoryState!.productDetail!.isEmpty) {
-                return const Center(child: Text('상품이 없습니다.'));
-              }
-
-              // 상품 리스트
-              return ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                itemCount: categoryState.productDetail!.length,
-                itemBuilder: (context, productIndex) {
-                  final product = categoryState.productDetail![productIndex];
-                  return ListTile(
-                    leading: Image.network(product.ptImg),
-                    title: Text(product.ptName),
-                    subtitle: Text('${product.ptSellingPrice}원'),
-                    // 실제 데이터 필드에 따라 수정
-                  );
-                },
-              );
-            }),
-          ),
+              controller: tabController,
+              children: List.generate(categories.length, (index) {
+                // 상품 리스트
+                return StoreCategoryItem();
+                  },
+              ),
+            ),
         ),
       ],
     );

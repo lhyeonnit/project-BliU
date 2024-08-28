@@ -121,8 +121,7 @@ class StoreRepository {
   }
 
   // 3. 즐겨찾기한 상점의 상품 목록 조회
-  Future<ResponseDTO> fetchStoreProducts(
-      int mtIdx,
+  Future<ResponseDTO> fetchStoreProducts(int mtIdx,
       int pg,
       String searchTxt,
       String category,
@@ -149,21 +148,55 @@ class StoreRepository {
       print(response.data);
 
       // 응답 성공 시
-      if (response.statusCode == 200 && response.data['result'] == true) {
-        // `data` 객체에서 count와 list를 추출하여 DTO로 변환
-        final storeFavoriteProductResponseDTO = StoreFavoriteProductResponseDTO.fromJson(response.data);
+      if (response.statusCode == 200 && response.data != null) {
+        if (response.data is List) {
+          // 응답이 List 타입인 경우, List<ProductDTO>로 처리
+          List<ProductDTO> storeFavoriteProductList = (response.data as List)
+              .map((item) => ProductDTO.fromJson(item as Map<String, dynamic>))
+              .toList();
 
-        // ProductListDTO의 리스트로 반환된 데이터 추출
-        List<ProductDTO> favoriteProductList = storeFavoriteProductResponseDTO.data.list;
+          return ResponseDTO(
+            status: response.statusCode!,
+            errorMessage: '',
+            response: storeFavoriteProductList, // ProductDTO 리스트 반환
+          );
+        } else if (response.data is Map<String, dynamic> &&
+            response.data['result'] == true) {
+          // 응답이 Map<String, dynamic>인 경우 처리
+          final Map<String, dynamic> storeFavoriteProductListJson = response
+              .data;
 
-        // 성공적으로 데이터가 반환되었을 경우, ResponseDTO로 래핑하여 반환
-        return ResponseDTO(
-          status: response.statusCode!,
-          errorMessage: '',
-          response: favoriteProductList, // `ProductDTO` 리스트로 반환
-        );
+          if (storeFavoriteProductListJson.containsKey('data') &&
+              storeFavoriteProductListJson['data'].containsKey('list')) {
+            final List<
+                dynamic> listJson = storeFavoriteProductListJson['data']['list'];
+
+            // ProductDTO 리스트로 변환
+            List<ProductDTO> storeFavoriteProductList = listJson.map((item) {
+              return ProductDTO.fromJson(item as Map<String, dynamic>);
+            }).toList();
+
+            return ResponseDTO(
+              status: response.statusCode!,
+              errorMessage: '',
+              response: storeFavoriteProductList, // ProductDTO 리스트 반환
+            );
+          } else {
+            return ResponseDTO(
+              status: response.statusCode!,
+              errorMessage: 'Invalid response structure: Missing data or list field',
+              response: null,
+            );
+          }
+        } else {
+          // 다른 예상치 못한 응답 구조의 경우 처리
+          return ResponseDTO(
+            status: response.statusCode!,
+            errorMessage: 'Unexpected response structure',
+            response: null,
+          );
+        }
       } else {
-        // 오류가 발생한 경우 처리
         return ResponseDTO(
           status: response.statusCode!,
           errorMessage: response.data['message'] ?? 'Unknown error',
@@ -171,7 +204,6 @@ class StoreRepository {
         );
       }
     } catch (e) {
-      // 예외 발생 시 처리
       print("Error fetching store products: $e");
       return ResponseDTO(
         status: 500,

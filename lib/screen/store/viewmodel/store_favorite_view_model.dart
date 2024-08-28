@@ -70,6 +70,7 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
   List<String> searchHistory = [];
   TextEditingController searchController = TextEditingController();
 
+
   // 검색 기록 불러오기
   Future<void> _loadSearchHistory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
