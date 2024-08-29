@@ -11,13 +11,24 @@ class StoreCategory extends HookConsumerWidget {
   const StoreCategory({Key? key}) : super(key: key);
 
   final List<String> categories = const [
-    '전체', '아우터', '상의', '하의', '원피스', '슈즈', '세트/한벌옷', '언더웨어/홈웨어', '악세서리', '베이비 잡화'
+    '전체',
+    '아우터',
+    '상의',
+    '하의',
+    '원피스',
+    '슈즈',
+    '세트/한벌옷',
+    '언더웨어/홈웨어',
+    '악세서리',
+    '베이비 잡화'
   ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tabController = useTabController(initialLength: categories.length); // useTabController 사용
-    final model = ref.watch(storeCategoryViewModelProvider); // ViewModel 상태 가져오기
+    final tabController = useTabController(
+        initialLength: categories.length); // useTabController 사용
+    final model =
+        ref.watch(storeCategoryViewModelProvider); // ViewModel 상태 가져오기
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,6 +42,7 @@ class StoreCategory extends HookConsumerWidget {
               fontSize: Responsive.getFont(context, 14),
               fontWeight: FontWeight.w600,
             ),
+            overlayColor: WidgetStateColor.transparent,
             indicatorColor: Colors.black,
             indicatorSize: TabBarIndicatorSize.tab,
             labelColor: Colors.black,
@@ -107,20 +119,25 @@ class StoreCategory extends HookConsumerWidget {
           child: Text(
             '상품 ${model?.productDetail?.length ?? 0}', // 상품 개수 텍스트
             style: TextStyle(
-                fontSize: Responsive.getFont(context, 14),
-                color: Colors.black),
+                fontSize: Responsive.getFont(context, 14), color: Colors.black),
           ),
         ),
+        SizedBox(height: 20,),
         Container(
-          height: 1000,
+          // 기본 세로 길이를 301로 설정하고, 상품이 더 있으면 301씩 추가
+          height: (model?.productDetail?.length ?? 0) > 0
+              ? 331 * ((model!.productDetail!.length + 1) ~/ 2).toDouble()
+              : 0.0,
           child: TabBarView(
-              controller: tabController,
-              children: List.generate(categories.length, (index) {
+            controller: tabController,
+            children: List.generate(
+              categories.length,
+                  (index) {
                 // 상품 리스트
                 return StoreCategoryItem();
-                  },
-              ),
+              },
             ),
+          ),
         ),
       ],
     );

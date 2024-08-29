@@ -17,15 +17,13 @@ class StoreCategoryItem extends ConsumerWidget {
     }
 
     return Container(
-          height: 301,
           width: Responsive.getWidth(context, 184),
           child: GridView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 12.0,
-            mainAxisSpacing: 30.0,
-            childAspectRatio: 0.65,
+            childAspectRatio: 0.55,
           ),
           physics: NeverScrollableScrollPhysics(),
           itemCount: model.productDetail!.length,
@@ -70,6 +68,14 @@ class StoreCategoryItem extends ConsumerWidget {
                     ),
                     SizedBox(height: 12),
                     Text(
+                      product.stName,
+                      style: TextStyle(
+                        fontSize: Responsive.getFont(context, 12),
+                        color: Color(0xFF7B7B7B),
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
                       product.ptName,
                       style: TextStyle(
                         fontSize: Responsive.getFont(context, 14),
@@ -79,6 +85,8 @@ class StoreCategoryItem extends ConsumerWidget {
                     ),
                     SizedBox(height:12),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
                       children: [
                         Text(
                           '${product.ptDiscountPer}%',
@@ -88,14 +96,13 @@ class StoreCategoryItem extends ConsumerWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: Responsive.getWidth(context, 2)),
+                        SizedBox(width: 2),
                         Text(
-                          '${product.ptSellingPrice}원',
+                          '${product.ptPrice}원',
                           style: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
                           ),
-                          maxLines: 1,
                         ),
                       ],
                     ),
@@ -103,44 +110,39 @@ class StoreCategoryItem extends ConsumerWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    if (product.ptLike > 0 || product.ptReviewCount > 0)
-                      Row(
-                        children: [
-                          if (product.ptLike > 0) ...[
-                            SvgPicture.asset(
-                              'assets/images/home/item_like.svg',
-                              width: Responsive.getWidth(context, 13),
-                              height: Responsive.getHeight(context, 11),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/images/home/item_like.svg',
+                          width: Responsive.getWidth(context, 13),
+                          height: Responsive.getHeight(context, 11),
+                        ),
+                        SizedBox(width: 3),
+                        Text(
+                          '${product.ptLike}',
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 12),
+                            color: Colors.grey,
+                          ),
+                        ),
+                        if (product.ptReviewCount > 0) ...[
+                          SizedBox(width: 10),
+                          SvgPicture.asset(
+                            'assets/images/home/item_comment.svg',
+                            width: Responsive.getWidth(context, 13),
+                            height: Responsive.getHeight(context, 12),
+                          ),
+                          SizedBox(width: 3),
+                          Text(
+                            '${product.ptReviewCount}',
+                            style: TextStyle(
+                              fontSize: Responsive.getFont(context, 12),
+                              color: Colors.grey,
                             ),
-                            SizedBox(width: 3),
-                            Text(
-                              '${product.ptLike}',
-                              style: TextStyle(
-                                fontSize: Responsive.getFont(context, 12),
-                                color: Colors.grey,
-                              ),
-                              maxLines: 1,
-                            ),
-                          ],
-                          if (product.ptReviewCount > 0) ...[
-                            SizedBox(width: 10),
-                            SvgPicture.asset(
-                              'assets/images/home/item_comment.svg',
-                              width: Responsive.getWidth(context, 13),
-                              height: Responsive.getHeight(context, 12),
-                            ),
-                            SizedBox(width: 3),
-                            Text(
-                              '${product.ptReviewCount}',
-                              style: TextStyle(
-                                fontSize: Responsive.getFont(context, 12),
-                                color: Colors.grey,
-                              ),
-                              maxLines: 1,
-                            ),
-                          ],
+                          ),
                         ],
-                      ),
+                      ],
+                    )
 
                   ],
                 ),

@@ -5,6 +5,7 @@ class ProductDTO {
   final String ptName;
   final int ptDiscountPer;
   final int ptSellingPrice;
+  final int ptPrice;
   final String ptImg;
   final int ptLike;
   final int ptReviewCount;
@@ -19,6 +20,7 @@ class ProductDTO {
     required this.ptName,
     required this.ptDiscountPer,
     required this.ptSellingPrice,
+    required this.ptPrice,
     required this.ptImg,
     required this.ptLike,
     required this.ptReviewCount,
@@ -36,6 +38,7 @@ class ProductDTO {
       ptName: json['pt_name'],
       ptDiscountPer: json['pt_discount_per'],
       ptSellingPrice: json['pt_selling_price'],
+      ptPrice: json['pt_price'],
       ptImg: json['pt_img'],
       ptLike: json['pt_like'],
       ptReviewCount: json['pt_review_count'],
@@ -54,6 +57,7 @@ class ProductDTO {
       'pt_name': ptName,
       'pt_discount_per': ptDiscountPer,
       'pt_selling_price': ptSellingPrice,
+      'pt_price': ptPrice,
       'pt_img': ptImg,
       'pt_like': ptLike,
       'pt_review_count': ptReviewCount,
