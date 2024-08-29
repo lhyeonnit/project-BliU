@@ -26,10 +26,9 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
-            child: SizedBox(
+          Container(
               height: Responsive.getHeight(context, 277),
+              margin: EdgeInsets.symmetric(vertical: 20),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: isFavoriteList.length, // 리스트의 길이를 사용
@@ -106,7 +105,6 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                 '꿈꾸는 데이지 안나 토션 레이스 베스트',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  fontWeight: FontWeight.bold,
                                 ),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
@@ -133,45 +131,46 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                       fontSize: Responsive.getFont(context, 14),
                                       fontWeight: FontWeight.bold,
                                     ),
-                                    maxLines: 1,
                                   ),
                                 ],
                               ),
                               SizedBox(
                                 height: Responsive.getHeight(context, 10),
                               ),
-                              Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/images/home/item_like.svg',
-                                    width: Responsive.getWidth(context, 13),
-                                    height: Responsive.getHeight(context, 11),
-                                  ),
-                                  SizedBox(width: 3),
-                                  Text(
-                                    '13,000',
-                                    style: TextStyle(
-                                      fontSize: Responsive.getFont(context, 12),
-                                      color: Colors.grey,
+                              Container(
+                                height: Responsive.getHeight(context, 14),
+                                child: Row(
+
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/images/home/item_like.svg',
+                                      width: Responsive.getWidth(context, 13),
+                                      height: Responsive.getHeight(context, 11),
                                     ),
-                                    maxLines: 1,
-                                  ),
-                                  SizedBox(width: 10),
-                                  SvgPicture.asset(
-                                    'assets/images/home/item_comment.svg',
-                                    width: Responsive.getWidth(context, 13),
-                                    height: Responsive.getHeight(context, 12),
-                                  ),
-                                  SizedBox(width: 3),
-                                  Text(
-                                    '49',
-                                    style: TextStyle(
-                                        fontSize:
-                                        Responsive.getFont(context, 12),
-                                        color: Colors.grey),
-                                    maxLines: 1,
-                                  ),
-                                ],
+                                    SizedBox(width: 3),
+                                    Text(
+                                      '13,000',
+                                      style: TextStyle(
+                                        fontSize: Responsive.getFont(context, 12),
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    SvgPicture.asset(
+                                      'assets/images/home/item_comment.svg',
+                                      width: Responsive.getWidth(context, 13),
+                                      height: Responsive.getHeight(context, 12),
+                                    ),
+                                    SizedBox(width: 3),
+                                    Text(
+                                      '49',
+                                      style: TextStyle(
+                                          fontSize:
+                                          Responsive.getFont(context, 12),
+                                          color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -182,7 +181,6 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                 },
               ),
             ),
-          ),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:BliU/screen/store/component/detail/store_category.dart';
+import 'package:BliU/screen/store/component/store_age_group_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,6 +21,8 @@ class StoreFavoritePage extends ConsumerWidget {
     ScrollController _scrollController = ScrollController();
 
     final totalItem = model?.bookmarkResponseDTO?.count ?? 0; // null인 경우 0으로 처리
+    List<String> selectedAgeGroups = [];
+
 
     // 상태가 null인 경우, 로딩 상태로 처리
     if (storeFavoriteList.isEmpty) {
@@ -38,158 +41,137 @@ class StoreFavoritePage extends ConsumerWidget {
           ListView(
             children: [
               Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 20,),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        '즐겨찾기 $totalItem',
-                        style: TextStyle(
-                            fontSize: Responsive.getFont(context, 14)),
-                      ),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      '즐겨찾기 $totalItem',
+                      style: TextStyle(fontSize: Responsive.getFont(context, 14)),
                     ),
-                    const SizedBox(height: 15),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      height: 305, // 즐겨찾기 항목의 고정된 높이
-                      width: Responsive.getWidth(context, 378),
-                      child: PageView.builder(
-                        controller: pageController,
-                        itemCount: (totalItem / itemsPerPage).ceil(),
-                        onPageChanged: (int page) {
-                          storeFavoriteViewModel.searchController
-                              .clear(); // 페이지 변경 시 검색 필드 초기화
-                        },
-                        itemBuilder: (context, pageIndex) {
-                          final startIndex = pageIndex * itemsPerPage;
-                          final endIndex = startIndex + itemsPerPage;
-                          final displayedStores = storeFavoriteList.sublist(
-                            startIndex,
-                            endIndex > totalItem ? totalItem : endIndex,
-                          );
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    height: totalItem <= 5 ? (totalItem * 60.0) : 305, // 아이템 수에 따라 높이 조정
+                    width: Responsive.getWidth(context, 378),
+                    child: PageView.builder(
+                      controller: pageController,
+                      itemCount: (totalItem / itemsPerPage).ceil(),
+                      onPageChanged: (int page) {
+                        storeFavoriteViewModel.searchController.clear(); // 페이지 변경 시 검색 필드 초기화
+                      },
+                      itemBuilder: (context, pageIndex) {
+                        final startIndex = pageIndex * itemsPerPage;
+                        final endIndex = startIndex + itemsPerPage;
+                        final displayedStores = storeFavoriteList.sublist(
+                          startIndex,
+                          endIndex > totalItem ? totalItem : endIndex,
+                        );
 
-                          return ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: displayedStores.length,
-                            itemBuilder: (context, index) {
-                              final store = displayedStores[index];
+                        return ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: displayedStores.length,
+                          itemBuilder: (context, index) {
+                            final store = displayedStores[index];
 
-                              return GestureDetector(
-                                onTap: () {
-                                  // 상점 상세 화면으로 이동 (필요 시 구현)
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.only(bottom: 15),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 40,
-                                        width: 40,
-                                        margin:
-                                            const EdgeInsets.only(right: 10),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          border: Border.all(
-                                              color: const Color(0xFFDDDDDD),
-                                              width: 1.0),
-                                        ),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: store.stProfile.isNotEmpty
-                                              ? Image.network(store.stProfile,
-                                                  fit: BoxFit.contain)
-                                              : Image.asset(
-                                                  'assets/images/home/exhi.png'),
-                                        ),
+                            return GestureDetector(
+                              onTap: () {
+                                // 상점 상세 화면으로 이동 (필요 시 구현)
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(bottom: 15),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 40,
+                                      width: 40,
+                                      margin: const EdgeInsets.only(right: 10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(
+                                            color: const Color(0xFFDDDDDD), width: 1.0),
                                       ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              store.stName,
-                                              style: TextStyle(
-                                                  fontSize: Responsive.getFont(
-                                                      context, 14)),
-                                            ),
-                                            const SizedBox(height: 4),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  store.styleTxt,
-                                                  style: TextStyle(
-                                                      fontSize:
-                                                          Responsive.getFont(
-                                                              context, 13),
-                                                      color: Color(0xFF7B7B7B)),
-                                                ),
-                                                // Text(
-                                                //   store.ageTxt,
-                                                //   style: TextStyle(
-                                                //       fontSize:
-                                                //       Responsive.getFont(context, 13),
-                                                //       color: Color(0xFF7B7B7B)),
-                                                // ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: store.stProfile.isNotEmpty
+                                            ? Image.network(store.stProfile,
+                                            fit: BoxFit.contain)
+                                            : Image.asset(
+                                            'assets/images/home/exhi.png'),
                                       ),
-                                      Column(
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            height: Responsive.getHeight(
-                                                context, 30),
-                                            width: Responsive.getWidth(
-                                                context, 30),
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 8),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                // 북마크 상태 변경 (토글)
-                                                // storeFavoriteViewModel
-                                                //     .toggleBookmark(store);
-                                              },
-                                              child: SvgPicture.asset(
-                                                'assets/images/store/book_mark.svg',
-                                                color: store.stLike > 0
-                                                    ? const Color(0xFFFF6192)
-                                                    : Colors.grey,
-                                                fit: BoxFit.contain,
-                                              ),
-                                            ),
-                                          ),
                                           Text(
-                                            '${store.stLike}',
+                                            store.stName,
                                             style: TextStyle(
-                                              color: const Color(0xFFA4A4A4),
-                                              fontSize: Responsive.getFont(
-                                                  context, 12),
-                                            ),
+                                                fontSize: Responsive.getFont(context, 14)),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                store.styleTxt,
+                                                style: TextStyle(
+                                                    fontSize:
+                                                    Responsive.getFont(context, 13),
+                                                    color: Color(0xFF7B7B7B)),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          height: Responsive.getHeight(context, 30),
+                                          width: Responsive.getWidth(context, 30),
+                                          padding: EdgeInsets.symmetric(vertical: 8),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              // 북마크 상태 변경 (토글)
+                                            },
+                                            child: SvgPicture.asset(
+                                              'assets/images/store/book_mark.svg',
+                                              color: store.stLike > 0
+                                                  ? const Color(0xFFFF6192)
+                                                  : Colors.grey,
+                                              fit: BoxFit.contain,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          '${store.stLike}',
+                                          style: TextStyle(
+                                            color: const Color(0xFFA4A4A4),
+                                            fontSize:
+                                            Responsive.getFont(context, 12),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              );
-                            },
-                          );
-                        },
-                      ),
+                              ),
+                            );
+                          },
+                        );
+                      },
                     ),
+                  ),
+                  if (totalItem > 5) // 5개 이상일 때만 페이지네이션 표시
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
-                          (storeFavoriteList.length / itemsPerPage).ceil(),
-                          (index) {
+                          (storeFavoriteList.length / itemsPerPage).ceil(), (index) {
                         // Safe access to PageController.page, setting it to 0 if uninitialized
                         final currentPage = pageController.hasClients &&
-                                pageController.page != null
+                            pageController.page != null
                             ? pageController.page!.round()
                             : 0;
 
@@ -206,82 +188,76 @@ class StoreFavoritePage extends ConsumerWidget {
                         );
                       }),
                     ),
-                    SizedBox(
-                      height: 30,
+                  SizedBox(height: 30),
+                  Container(
+                    height: 44,
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    width: Responsive.getWidth(context, 380),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: const Color(0xFFE1E1E1)),
                     ),
-                    Container(
-                      height: 44,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      width: Responsive.getWidth(context, 380),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: const Color(0xFFE1E1E1)),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              style: const TextStyle(decorationThickness: 0),
-                              controller:
-                                  storeFavoriteViewModel.searchController,
-                              decoration: InputDecoration(
-                                contentPadding:
-                                    const EdgeInsets.only(left: 16, bottom: 8),
-                                hintText: '즐겨찾기한 스토어 상품 검색',
-                                hintStyle: TextStyle(
-                                    color: const Color(0xFF595959),
-                                    fontSize: Responsive.getFont(context, 14)),
-                                border: InputBorder.none,
-                                suffixIcon: storeFavoriteViewModel
-                                        .searchController.text.isNotEmpty
-                                    ? GestureDetector(
-                                        onTap: () {
-                                          storeFavoriteViewModel
-                                              .searchController
-                                              .clear();
-                                        },
-                                        child: SvgPicture.asset(
-                                          'assets/images/ic_word_del.svg',
-                                          fit: BoxFit.contain,
-                                        ),
-                                      )
-                                    : null,
-                                suffixIconConstraints:
-                                    BoxConstraints.tight(const Size(24, 24)),
-                              ),
-                              onSubmitted: (value) {
-                                if (value.isNotEmpty) {
-                                  storeFavoriteViewModel.saveSearch(value);
-                                }
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
-                            child: GestureDetector(
-                              onTap: () {
-                                final search = storeFavoriteViewModel
-                                    .searchController.text;
-                                if (search.isNotEmpty) {
-                                  storeFavoriteViewModel.saveSearch(search);
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            style: const TextStyle(decorationThickness: 0),
+                            controller: storeFavoriteViewModel.searchController,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(left: 16, bottom: 8),
+                              hintText: '즐겨찾기한 스토어 상품 검색',
+                              hintStyle: TextStyle(
+                                  color: const Color(0xFF595959),
+                                  fontSize: Responsive.getFont(context, 14)),
+                              border: InputBorder.none,
+                              suffixIcon:
+                              storeFavoriteViewModel.searchController.text.isNotEmpty
+                                  ? GestureDetector(
+                                onTap: () {
                                   storeFavoriteViewModel.searchController
                                       .clear();
-                                }
-                              },
-                              child: SvgPicture.asset(
-                                'assets/images/home/ic_top_sch_w.svg',
-                                color: Colors.black,
-                                fit: BoxFit.contain,
-                              ),
+                                },
+                                child: SvgPicture.asset(
+                                  'assets/images/ic_word_del.svg',
+                                  fit: BoxFit.contain,
+                                ),
+                              )
+                                  : null,
+                              suffixIconConstraints:
+                              BoxConstraints.tight(const Size(24, 24)),
+                            ),
+                            onSubmitted: (value) {
+                              if (value.isNotEmpty) {
+                                storeFavoriteViewModel.saveSearch(value);
+                              }
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                          child: GestureDetector(
+                            onTap: () {
+                              final search =
+                                  storeFavoriteViewModel.searchController.text;
+                              if (search.isNotEmpty) {
+                                storeFavoriteViewModel.saveSearch(search);
+                                storeFavoriteViewModel.searchController.clear();
+                              }
+                            },
+                            child: SvgPicture.asset(
+                              'assets/images/home/ic_top_sch_w.svg',
+                              color: Colors.black,
+                              fit: BoxFit.contain,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    StoreCategory(),
-                  ],
-                ),
+                  ),
+                  StoreCategory(),
+                ],
+              ),
             ],
           ),
           MoveTopButton(scrollController: _scrollController),

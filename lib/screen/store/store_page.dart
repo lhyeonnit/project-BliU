@@ -78,6 +78,7 @@ class _StorePageState extends State<StorePage>
                     Tab(text: '랭킹'),
                     Tab(text: '즐겨찾기'),
                   ],
+                  overlayColor: WidgetStateColor.transparent,
                   indicatorColor: Colors.black,
                   indicatorSize: TabBarIndicatorSize.tab, // 인디케이터가 각 탭의 길이에 맞게 조정됨
                   labelColor: Colors.black,

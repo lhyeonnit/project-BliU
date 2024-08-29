@@ -39,6 +39,14 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
     );
   }
 
+  String getSelectedAgeGroupsText() {
+    if (selectedAgeGroups.isEmpty) {
+      return '연령';
+    } else {
+      return selectedAgeGroups.join(', ');
+    }
+  }
+
   void _showStyleSelection() {
     showModalBottomSheet(
       context: context,
@@ -54,14 +62,6 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
         );
       },
     );
-  }
-
-  String getSelectedAgeGroupsText() {
-    if (selectedAgeGroups.isEmpty) {
-      return '연령';
-    } else {
-      return selectedAgeGroups.join(', ');
-    }
   }
 
   String getSelectedStylesText() {
@@ -224,9 +224,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                         ),
                                       ),
                                       Container(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(top: 3.0, bottom: 2),
-                                          child: Column(
+                                        child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
@@ -247,14 +245,12 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                             ],
                                           ),
                                         ),
-                                      ),
                                     ],
                                   ),
                                 ),
                                 SizedBox(width: Responsive.getWidth(context, 75)),
                                 Container(
-                                  width: Responsive.getWidth(context, 30),
-                                  margin: EdgeInsets.only(top: 6),
+                                  margin: EdgeInsets.only(top: 3),
                                   child: Column(
                                     children: [
                                       GestureDetector(
@@ -265,8 +261,8 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                           });
                                         },
                                         child: Container(
-                                          width: Responsive.getWidth(context, 13.77),
-                                          height: Responsive.getHeight(context, 16.84),
+                                          width: Responsive.getWidth(context, 14),
+                                          height: Responsive.getHeight(context, 17),
                                           child: SvgPicture.asset(
                                             'assets/images/store/book_mark.svg',
                                             color: isBookmarked[storeIndex]
@@ -276,6 +272,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                           ),
                                         ),
                                       ),
+                                      SizedBox(height: Responsive.getHeight(context, 2),),
                                       Text(
                                         stores[storeIndex]['scrapCount']!,
                                         style: TextStyle(

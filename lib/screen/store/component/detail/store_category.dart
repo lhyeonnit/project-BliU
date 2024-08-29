@@ -42,6 +42,7 @@ class StoreCategory extends HookConsumerWidget {
               fontSize: Responsive.getFont(context, 14),
               fontWeight: FontWeight.w600,
             ),
+            overlayColor: WidgetStateColor.transparent,
             indicatorColor: Colors.black,
             indicatorSize: TabBarIndicatorSize.tab,
             labelColor: Colors.black,
@@ -121,12 +122,17 @@ class StoreCategory extends HookConsumerWidget {
                 fontSize: Responsive.getFont(context, 14), color: Colors.black),
           ),
         ),
+        SizedBox(height: 20,),
         Container(
+          // 기본 세로 길이를 301로 설정하고, 상품이 더 있으면 301씩 추가
+          height: (model?.productDetail?.length ?? 0) > 0
+              ? 331 * ((model!.productDetail!.length + 1) ~/ 2).toDouble()
+              : 0.0,
           child: TabBarView(
             controller: tabController,
             children: List.generate(
               categories.length,
-              (index) {
+                  (index) {
                 // 상품 리스트
                 return StoreCategoryItem();
               },

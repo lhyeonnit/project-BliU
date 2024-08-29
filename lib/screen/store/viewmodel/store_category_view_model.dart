@@ -4,29 +4,37 @@ import 'package:BliU/data/dto/store_favorite_product_data.dart';
 import 'package:BliU/repository/store_repository.dart';
 import 'package:BliU/data/response_dto.dart';
 
+import '../component/store_age_group_selection.dart';
+
 // 모델 클래스 정의 (데이터 상태를 관리하기 위한 DTO)
 class StoreCategoryModel {
   final StoreFavoriteProductResponseDTO? storeFavoriteProductResponseDTO;
   final ProductListDTO? productListDTO;
   final List<ProductDTO>? productDetail;
 
+
   StoreCategoryModel({
     required this.storeFavoriteProductResponseDTO,
     required this.productListDTO,
     required this.productDetail,
+
   });
 
+  
   // copyWith 메서드를 통해 상태 복사 및 수정
   StoreCategoryModel copyWith({
     StoreFavoriteProductResponseDTO? storeFavoriteProductResponseDTO,
     ProductListDTO? productListDTO,
     List<ProductDTO>? productDetail,
+    List<String>? selectedAgeGroups,
+
   }) {
     return StoreCategoryModel(
       storeFavoriteProductResponseDTO:
       storeFavoriteProductResponseDTO ?? this.storeFavoriteProductResponseDTO,
       productListDTO: productListDTO ?? this.productListDTO,
       productDetail: productDetail ?? this.productDetail,
+
     );
   }
 }
@@ -52,6 +60,7 @@ class StoreCategoryViewModel extends StateNotifier<StoreCategoryModel?> {
       storeFavoriteProductResponseDTO: null,
       productListDTO: null,
       productDetail: [],
+
     );
 
     try {
@@ -130,6 +139,31 @@ class StoreCategoryViewModel extends StateNotifier<StoreCategoryModel?> {
       print("Error loading more products: $e");
     }
   }
+
+  // // 연령대 선택 BottomSheet 호출 및 상태 업데이트
+  // void showAgeGroupSelection(BuildContext context) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     backgroundColor: Colors.white,
+  //     builder: (BuildContext context) {
+  //       return StoreAgeGroupSelection(
+  //         selectedAgeGroups: state?.selectedAgeGroups ?? [],
+  //         onSelectionChanged: (List<String> newSelection) {
+  //           state = state?.copyWith(selectedAgeGroups: newSelection);
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
+  //
+  // // 선택된 연령대 텍스트 반환
+  // String getSelectedAgeGroupsText() {
+  //   if (state?.selectedAgeGroups.isEmpty ?? true) {
+  //     return '연령';
+  //   } else {
+  //     return state?.selectedAgeGroups.join(', ') ?? '연령';
+  //   }
+  // }
 }
 
 // ViewModel Provider 정의

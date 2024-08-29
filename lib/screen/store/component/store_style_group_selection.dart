@@ -138,7 +138,7 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
         ),
         shape: StadiumBorder(
           side: BorderSide(
-            color: isSelected ? Color(0xFFFF6192) : Colors.grey,
+            color: isSelected ? Color(0xFFFF6192) : Color(0xFFDDDDDD),
           ),
         ),
         backgroundColor: Colors.white,
