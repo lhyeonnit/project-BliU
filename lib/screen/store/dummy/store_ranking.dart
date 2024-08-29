@@ -9,6 +9,7 @@ final List<Map<String, dynamic>> stores = List.generate(10, (index) {
       'assets/images/store/store_detail.png',
       'assets/images/store/store_detail.png',
       'assets/images/store/store_detail.png',
+      'assets/images/store/store_detail.png',
     ]
   };
 });

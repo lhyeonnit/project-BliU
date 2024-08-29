@@ -1,3 +1,4 @@
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class StoreAgeGroupSelection extends StatefulWidget {
@@ -33,49 +34,82 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      width: Responsive.getWidth(context, 412),
+      padding:  EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
-            '연령대',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16.0),
-          Wrap(
-            spacing: 8.0,
-            runSpacing: 8.0,
-            children: [
-              _buildAgeGroupChip('베이비(0-24개월)'),
-              _buildAgeGroupChip('키즈(3-8세)'),
-              _buildAgeGroupChip('주니어(9세이상)'),
-            ],
-          ),
-          const SizedBox(height: 16.0),
-          Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.refresh),
-                onPressed: () {
-                  setState(() {
-                    _tempSelectedAgeGroups.clear();
-                  });
-                },
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(3),
               ),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: () {
-                  widget.onSelectionChanged(_tempSelectedAgeGroups);
-                  Navigator.pop(context);
-                },
-                child: const Text('선택완료'),
-              ),
-            ],
+            ),
+          ),
+           SizedBox(height: 16.0),
+           Container(
+             padding: EdgeInsets.symmetric(horizontal: 16),
+             child: Text(
+              '연령대',
+              style: TextStyle(fontSize: Responsive.getFont(context, 18), fontWeight: FontWeight.bold),
+                       ),
+           ),
+          const SizedBox(height: 16.0),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildAgeGroupChip('베이비(0-24개월)'),
+                _buildAgeGroupChip('키즈(3-8세)'),
+                _buildAgeGroupChip('주니어(9세이상)'),
+              ],
+            ),
+          ),
+          SizedBox(height: Responsive.getHeight(context, 20)),
+          Padding(
+            padding:  EdgeInsets.symmetric(horizontal: Responsive.getWidth(context, 9)),
+            child: Row(
+              children: [
+                Container(
+                  width: Responsive.getWidth(context, 48),
+                  height: Responsive.getHeight(context, 48),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(color: Color(0xFFDDDDDD))),
+                  child: GestureDetector(
+                    child: Icon(Icons.refresh),
+                    onTap: () {
+                      setState(() {
+                        _tempSelectedAgeGroups.clear();
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: Responsive.getWidth(context, 9),
+                ),
+                Container(
+                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6)),color: Colors.black),
+                  width: Responsive.getWidth(context, 336),
+                  height: Responsive.getHeight(context, 48),
+                  child: GestureDetector(
+                    child:  Center(child: Text('선택완료',style: TextStyle(color: Colors.white),)),
+                    onTap: () {
+                      widget.onSelectionChanged(_tempSelectedAgeGroups);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -90,14 +124,15 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
         label: Text(
           ageGroup,
           style: TextStyle(
-            color: isSelected ? Colors.pink : Colors.black,
+            fontSize: Responsive.getFont(context, 14),
+            color: isSelected ? Color(0xFFFF6192) : Colors.black,
           ),
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
         ),
         shape: StadiumBorder(
           side: BorderSide(
-            color: isSelected ? Colors.pink : Colors.grey,
+            color: isSelected ? Color(0xFFFF6192) : Colors.grey,
           ),
         ),
         backgroundColor: Colors.white,
