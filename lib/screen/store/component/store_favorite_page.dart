@@ -111,15 +111,30 @@ class StoreFavoritePage extends ConsumerWidget {
                                             style: TextStyle(
                                                 fontSize: Responsive.getFont(context, 14)),
                                           ),
-                                          const SizedBox(height: 4),
                                           Row(
                                             children: [
-                                              Text(
-                                                store.styleTxt,
-                                                style: TextStyle(
-                                                    fontSize:
-                                                    Responsive.getFont(context, 13),
-                                                    color: Color(0xFF7B7B7B)),
+                                              Expanded(
+                                                child: Text(
+                                                  store.styleTxt,
+                                                  style: TextStyle(
+                                                    fontSize: Responsive.getFont(context, 13),
+                                                    color: Color(0xFF7B7B7B),
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                              SizedBox(width: 5), // 텍스트 간 여백을 추가
+                                              Expanded(
+                                                child: Text(
+                                                  store.ageTxt,
+                                                  style: TextStyle(
+                                                    fontSize: Responsive.getFont(context, 13),
+                                                    color: Color(0xFF7B7B7B),
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -176,7 +191,7 @@ class StoreFavoritePage extends ConsumerWidget {
                             : 0;
 
                         return Container(
-                          margin: const EdgeInsets.only(right: 6),
+                          margin: const EdgeInsets.only(right: 6,top: 25),
                           width: 6.0,
                           height: 6.0,
                           decoration: BoxDecoration(
