@@ -38,6 +38,7 @@ class _StorePageState extends State<StorePage>
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
         title: Text("스토어"),
         titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),

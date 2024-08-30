@@ -5,6 +5,7 @@ import 'package:BliU/screen/mypage/component/top/alarm_screen.dart';
 import 'package:BliU/screen/mypage/component/top/my_info.dart';
 import 'package:BliU/screen/mypage/component/bottom/recommend_edit.dart';
 import 'package:BliU/screen/mypage/component/bottom/service_screen.dart';
+import 'package:BliU/screen/mypage/component/top/my_review_screen.dart';
 import 'package:BliU/screen/mypage/component/top/point_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -21,6 +22,8 @@ class MyPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
+
         title: const Text('마이페이지'),
         actions: [
           IconButton(
@@ -78,14 +81,20 @@ class MyPage extends StatelessWidget {
                 _buildIconButton(
                     '주문·배송', 'assets/images/my/mypage_ic01.svg', () {}, ''),
                 _buildIconButton(
-                    '나의리뷰', 'assets/images/my/mypage_ic02.svg', () {}, '100'),
+                    '나의리뷰', 'assets/images/my/mypage_ic02.svg', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyReviewScreen()),
+                  );
+                }, '100'),
                 _buildIconButton(
                     '쿠폰함', 'assets/images/my/mypage_ic03_1.svg', () {}, '2'),
-                _buildIconButton('포인트', 'assets/images/my/mypage_ic04.svg',
-                        () {Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => PointScreen()),
-                        );}, '200,000'),
+                _buildIconButton('포인트', 'assets/images/my/mypage_ic04.svg', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PointScreen()),
+                  );
+                }, '200,000'),
               ],
             ),
           ),
@@ -146,8 +155,8 @@ class MyPage extends StatelessWidget {
     );
   }
 
-  Widget _buildIconButton(String label, String icon, VoidCallback onPressed,
-      String num) {
+  Widget _buildIconButton(
+      String label, String icon, VoidCallback onPressed, String num) {
     return Column(
       children: [
         IconButton(
@@ -187,7 +196,8 @@ class MyPage extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 16), // 최소한의 간격으로 조절 가능
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+        // 최소한의 간격으로 조절 가능
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
