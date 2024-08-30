@@ -230,7 +230,6 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                               Text(
                                                 stores[storeIndex]['name'],
                                                 style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
                                                   fontSize: Responsive.getFont(context, 14),
                                                 ),
                                                 overflow: TextOverflow.ellipsis,

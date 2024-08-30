@@ -58,6 +58,7 @@ class _HomePageState extends State<HomePage> {
                   slivers: [
                     SliverAppBar(
                       pinned: true,
+                      automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
                       backgroundColor:
                       _isScrolled ? Colors.white : Colors.transparent,
                       expandedHeight: 625,
