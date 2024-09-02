@@ -5,8 +5,7 @@ import 'package:BliU/const/constant.dart';
 import 'package:dio/dio.dart';
 
 class DefaultRepository {
-  Dio _defaultDio = Dio();
-  Dio _multiPartDio = Dio();
+  Dio _dio = Dio();
 
   DefaultRepository() {
     BaseOptions options = BaseOptions(
@@ -14,26 +13,24 @@ class DefaultRepository {
       connectTimeout: const Duration(milliseconds: 10000),
       receiveTimeout: const Duration(milliseconds: 10000),
       sendTimeout: const Duration(milliseconds: 10000),
-      // headers: {},
+      headers: {
+        'Authorization': 'Bearer bground_bliu_dmonter_20240729'
+      },
     );
 
-    _defaultDio = Dio(options);
-    //_defaultDio.options.contentType = Headers.formUrlEncodedContentType;
-    //_defaultDio.options.headers['Authorization'] = 'Bearer bground_bliu_dmonter_20240729'; // 실제 인증 토큰으로 교체
-    _defaultDio.interceptors.add(DioInterceptor());
-
-    _multiPartDio = Dio(options);
-    _multiPartDio.interceptors.add(DioInterceptor());
-    _multiPartDio.options.contentType = Headers.multipartFormDataContentType;
-    _multiPartDio.options.maxRedirects.isFinite;
+    _dio = Dio(options);
+    _dio.interceptors.add(DioInterceptor());
+    _dio.options.contentType = Headers.formUrlEncodedContentType;
   }
   // POST
   Future<Response<dynamic>?> reqPost({
     required String url,
-    Map<String, dynamic>? data,
+    Object? data,
   }) async {
     try {
-      final response = await _defaultDio.post(
+      _dio.options.contentType = Headers.formUrlEncodedContentType;
+
+      final response = await _dio.post(
         url,
         data: data,
       );
@@ -46,10 +43,12 @@ class DefaultRepository {
   //POST FILE
   Future<Response<dynamic>?> reqPostFiles({
     required String url,
-    Map<String, dynamic>? data,
+    FormData? data,
   }) async {
     try {
-      final response = await _multiPartDio.post(
+      _dio.options.contentType = Headers.multipartFormDataContentType;
+
+      final response = await _dio.post(
         url,
         data: data,
       );
@@ -60,12 +59,14 @@ class DefaultRepository {
     }
   }
   //GET
-  Future<Response<dynamic>?> reqMyPageOrderReturnCategory({
+  Future<Response<dynamic>?> reqGet({
     required String url,
     Map<String, dynamic>? data,
   }) async {
     try {
-      final response = await _defaultDio.get(
+      _dio.options.contentType = Headers.formUrlEncodedContentType;
+
+      final response = await _dio.get(
           url,
           queryParameters: data,
       );
