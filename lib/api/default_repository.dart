@@ -12,7 +12,9 @@ class DefaultRepository {
       connectTimeout: const Duration(milliseconds: 10000),
       receiveTimeout: const Duration(milliseconds: 10000),
       sendTimeout: const Duration(milliseconds: 10000),
-      // headers: {},
+      headers: {
+        'Authorization': 'Bearer bground_bliu_dmonter_20240729'
+      },
     );
 
     _defaultDio = Dio(options);
