@@ -22,12 +22,12 @@ class StoreDetailScreen extends StatelessWidget {
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
-            SliverToBoxAdapter(
+            const SliverToBoxAdapter(
               child: StoreInfoPage(), // 상단 고정된 컨텐츠
             ),
           ];
         },
-        body: StoreCategory(), // 내부 스크롤 가능한 카테고리 및 그리드뷰
+        body: const StoreCategory(), // 내부 스크롤 가능한 카테고리 및 그리드뷰
       ),
     );
   }

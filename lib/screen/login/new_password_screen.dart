@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'login_screen.dart';
 
 class NewPasswordScreen extends StatefulWidget {
+  const NewPasswordScreen({super.key});
+
   @override
   _NewPasswordScreenState createState() => _NewPasswordScreenState();
 }
@@ -33,7 +35,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -42,35 +44,35 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 '새 비밀번호 입력',
                 style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 3),
-              Text(
+              const SizedBox(height: 3),
+              const Text(
                 '안전한 비밀번호는 8자 이상, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.',
                 style: TextStyle(color: Colors.grey),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildPasswordField('새 비밀번호 *', _passwordController,
                   '8~20자의 영문 대/소문자, 숫자, 특수문자로 입력'),
               if (!_isPasswordValid)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                const Padding(
+                  padding: EdgeInsets.only(top: 8.0),
                   child: Text(
                     '비밀번호를 입력해주세요.',
                     style: TextStyle(color: Colors.red),
                   ),
                 ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildPasswordField('비밀번호 재입력 *',
                   _confirmPasswordController, '비밀번호 재입력'),
               if (!_isConfirmPasswordValid)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                const Padding(
+                  padding: EdgeInsets.only(top: 8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -85,7 +87,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     ],
                   ),
                 ),
-              Spacer(),
+              const Spacer(),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -99,16 +101,16 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
+                          builder: (context) => const LoginScreen(),
                         ),
                       );
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
                   ),
-                  child: Text(
+                  child: const Text(
                     '확인',
                     style: TextStyle(color: Colors.white),
                   ),
@@ -128,9 +130,9 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       children: [
         Text(
           label,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         TextField(
           controller: controller,
           obscureText: true,
@@ -139,7 +141,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
           },
           decoration: InputDecoration(
             hintText: hintText,
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
           ),
         ),
       ],

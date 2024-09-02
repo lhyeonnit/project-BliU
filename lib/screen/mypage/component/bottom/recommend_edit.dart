@@ -52,7 +52,7 @@ class _RecommendEditState extends State<RecommendEdit> {
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
-        title: Text(
+        title: const Text(
           '추천정보',
           style: TextStyle(color: Colors.black),
         ),
@@ -64,44 +64,44 @@ class _RecommendEditState extends State<RecommendEdit> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 출생년도 선택
-                Text(
+                const Text(
                   '자녀의 출생년도',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 GestureDetector(
                   onTap: () {
                     _showDateBottomSheet(context); // 출생년도 선택 모달 표시
                   },
                   child: Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Column(
                       children: [
-                        Text(
+                        const Text(
                           '출생년도',
                           style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           selectedDate,
-                          style: TextStyle(fontSize: 14, color: Colors.pink),
+                          style: const TextStyle(fontSize: 14, color: Colors.pink),
                         ),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // 성별 선택
-                Text(
+                const Text(
                   '자녀의 성별',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -111,8 +111,8 @@ class _RecommendEditState extends State<RecommendEdit> {
                           _selectGender('Boy');
                         },
                         child: Container(
-                          padding: EdgeInsets.all(8),
-                          margin: EdgeInsets.symmetric(horizontal: 4.0),
+                          padding: const EdgeInsets.all(8),
+                          margin: const EdgeInsets.symmetric(horizontal: 4.0),
                           // 박스 사이에 약간의 여백을 추가
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -126,7 +126,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                           child: Column(
                             children: [
                               CircleAvatar(
-                                backgroundImage: AssetImage(
+                                backgroundImage: const AssetImage(
                                     'assets/images/gender_select_boy.png'),
                                 backgroundColor: Colors.white,
                                 radius: 40,
@@ -144,7 +144,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Text(
                                 'Boy',
                                 style: TextStyle(
@@ -164,8 +164,8 @@ class _RecommendEditState extends State<RecommendEdit> {
                           _selectGender('Girl');
                         },
                         child: Container(
-                          padding: EdgeInsets.all(8),
-                          margin: EdgeInsets.symmetric(horizontal: 4.0),
+                          padding: const EdgeInsets.all(8),
+                          margin: const EdgeInsets.symmetric(horizontal: 4.0),
                           // 박스 사이에 약간의 여백을 추가
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -179,7 +179,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                           child: Column(
                             children: [
                               CircleAvatar(
-                                backgroundImage: AssetImage(
+                                backgroundImage: const AssetImage(
                                     'assets/images/gender_select_girl.png'),
                                 backgroundColor: Colors.white,
                                 radius: 40,
@@ -196,7 +196,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Text(
                                 'Girl',
                                 style: TextStyle(
@@ -213,12 +213,12 @@ class _RecommendEditState extends State<RecommendEdit> {
                   ],
                 ),
 
-                SizedBox(height: 16),
-                Text(
+                const SizedBox(height: 16),
+                const Text(
                   '선호 스타일',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Wrap(
                   spacing: 8.0,
                   runSpacing: 8.0,
@@ -253,20 +253,20 @@ class _RecommendEditState extends State<RecommendEdit> {
                     );
                   }).toList(),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
                     // 확인 버튼 동작
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyPage()),
+                      MaterialPageRoute(builder: (context) => const MyPage()),
                     );
                   },
-                  child: Text('확인'),
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 48),
+                    minimumSize: const Size(double.infinity, 48),
                     backgroundColor: Colors.grey, // 버튼 배경색
                   ),
+                  child: const Text('확인'),
                 ),
               ],
             ),

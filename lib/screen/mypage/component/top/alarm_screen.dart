@@ -15,7 +15,7 @@ class AlarmScreen extends StatefulWidget {
 }
 
 class AlarmScreenState extends State<AlarmScreen> with TopWidgetDelegate {
-  List<Widget> _viewArr = [];
+  final List<Widget> _viewArr = [];
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -24,8 +24,8 @@ class AlarmScreenState extends State<AlarmScreen> with TopWidgetDelegate {
 
     // 리스트 항목 추가
     for (int i = 0; i < 10; i++) {
-      _viewArr.add(AlarmNotice());
-      _viewArr.add(AlarmEvent());
+      _viewArr.add(const AlarmNotice());
+      _viewArr.add(const AlarmEvent());
     }
   }
 
@@ -35,7 +35,7 @@ class AlarmScreenState extends State<AlarmScreen> with TopWidgetDelegate {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('알림'),
+        title: const Text('알림'),
         titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
@@ -48,13 +48,13 @@ class AlarmScreenState extends State<AlarmScreen> with TopWidgetDelegate {
           },
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
           child: Container(
-            color: Color(0xFFF4F4F4), // 하단 구분선 색상
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
             height: 1.0, // 구분선의 두께 설정
             child: Container(
               height: 1.0, // 그림자 부분의 높이
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     color: Color(0xFFF4F4F4),

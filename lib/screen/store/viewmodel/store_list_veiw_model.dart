@@ -1,7 +1,6 @@
 import 'package:BliU/data/dto/store_data.dart';
 import 'package:BliU/repository/store_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/material.dart';
 
 class StoreDetailModel {
   final StoreDetailDataDTO? storeDetailData;
@@ -63,7 +62,7 @@ class StoreDetailViewModel extends StateNotifier<StoreDetailModel?> {
 // StoreDetailViewModel을 사용하는 Riverpod Provider
 final storeDetailProvider = StateNotifierProvider.family<StoreDetailViewModel, StoreDetailModel?, int>((ref, stIdx) {
   final repository = ref.read(storeRepositoryProvider);
-  final mtIdx = 2; // 실제 사용자의 mtIdx로 교체 필요
+  const mtIdx = 2; // 실제 사용자의 mtIdx로 교체 필요
   final viewModel = StoreDetailViewModel(
     storeRepository: repository,
     mtIdx: mtIdx,

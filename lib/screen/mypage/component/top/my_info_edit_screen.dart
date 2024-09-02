@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class MyInfoEditScreen extends StatefulWidget {
+  const MyInfoEditScreen({super.key});
+
   @override
   _MyInfoEditScreenState createState() => _MyInfoEditScreenState();
 }
 
 class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool _isIdChecked = false;
+  final bool _isIdChecked = false;
   bool _isAllFieldsFilled = false;
   String? _selectedGender; // 성별을 저장하는 변수
 
@@ -54,11 +56,12 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != _selectedDate)
+    if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
         _checkIfAllFieldsFilled();
       });
+    }
   }
 
   @override
@@ -73,7 +76,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
-        title: Text(
+        title: const Text(
           '내정보수정',
           style: TextStyle(color: Colors.black),
         ),
@@ -86,18 +89,18 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 '내 정보 수정',
                 style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
+              const Text(
                 '회원님의 개인정보 및 연락처, 주소 등을 수정할 수 있습니다.',
                 style: TextStyle(color: Colors.grey),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               Row(
                 children: [
@@ -107,14 +110,14 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                 ],
               ),
 
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildTextField(
                   '비밀번호 *', _passwordController, '비밀번호 입력(숫자, 특수기호 포함한 7~15자)',
                   obscureText: true),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildTextField('', _confirmPasswordController, '비밀번호 재입력',
                   obscureText: true),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -127,10 +130,10 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                     backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: Colors.grey),
+                      side: const BorderSide(color: Colors.grey),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     '변경',
                     style: TextStyle(
                       color: Colors.black,
@@ -141,7 +144,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   Expanded(
@@ -150,7 +153,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                       keyboardType: TextInputType.phone,
                     ),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   SizedBox(
                     width: 100, // 가로 길이를 100으로 고정
                     child: Padding(
@@ -163,10 +166,10 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(color: Colors.grey),
+                            side: const BorderSide(color: Colors.grey),
                           ),
                         ),
-                        child: Text(
+                        child: const Text(
                           '변경',
                           style: TextStyle(
                             color: Colors.black,
@@ -179,7 +182,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   Expanded(
@@ -187,7 +190,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                       '이름 *', _nameController, '이름 입력',
                     ),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   SizedBox(
                     width: 100, // 가로 길이를 100으로 고정
                     child: Padding(
@@ -200,10 +203,10 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(color: Colors.grey),
+                            side: const BorderSide(color: Colors.grey),
                           ),
                         ),
-                        child: Text(
+                        child: const Text(
                           '변경',
                           style: TextStyle(
                             color: Colors.black,
@@ -217,8 +220,8 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                 ],
               ),
 
-              SizedBox(height: 20),
-              Row(
+              const SizedBox(height: 20),
+              const Row(
                 children: [
                   Text('생년월일',
                       style: TextStyle(
@@ -231,7 +234,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                           fontWeight: FontWeight.bold, color: Colors.red)),
                 ],
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               GestureDetector(
                 onTap: () => _selectDate(context),
                 child: AbsorbPointer(
@@ -244,12 +247,12 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                       ''),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               IconButton(
                 onPressed: () {},
                 icon: Image.asset('assets/images/login/coupon_banner.png'),
               ),
-              Row(
+              const Row(
                 children: [
                   Text('성별',
                       style: TextStyle(
@@ -262,13 +265,13 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                           fontWeight: FontWeight.bold, color: Colors.red)),
                 ],
               ), // 성별 선택 타이틀
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Row(
                 children: [
                   Expanded(
                     child: _buildGenderButton('남자'),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: _buildGenderButton('여자'),
                   ),
@@ -277,7 +280,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
               Center(
                 child: TextButton(
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     '회원탈퇴',
                     style: TextStyle(color: Colors.grey),
                     textAlign: TextAlign.center, // 텍스트 가운데 정렬
@@ -285,7 +288,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                 ),
               ),
 
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -295,7 +298,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MyPage(),
+                        builder: (context) => const MyPage(),
                       ),
                     );
                   }
@@ -303,9 +306,9 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
                     _isAllFieldsFilled ? Colors.black : Colors.grey[300],
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
                   ),
-                  child: Text(
+                  child: const Text(
                     '저장',
                     style: TextStyle(color: Colors.white),
                   ),
@@ -327,15 +330,15 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label.isNotEmpty)
-          Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
-        if (label.isNotEmpty) SizedBox(height: 8),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+        if (label.isNotEmpty) const SizedBox(height: 8),
         TextField(
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType,
           decoration: InputDecoration(
             hintText: hintText,
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
             suffixIcon: suffixIcon,
           ),
         ),
@@ -357,7 +360,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
         backgroundColor: isSelected ? Colors.pinkAccent : Colors.white,
         side: BorderSide(color: isSelected ? Colors.pinkAccent : Colors.grey),
         elevation: 0,
-        padding: EdgeInsets.symmetric(vertical: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
       ),
       child: Text(gender),
     );

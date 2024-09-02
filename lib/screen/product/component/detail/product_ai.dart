@@ -16,14 +16,14 @@ class _ProductAiState extends State<ProductAi> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
+        const Padding(
+          padding: EdgeInsets.all(16.0),
           child: Text(
             '연관 상품',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
-        Container(
+        SizedBox(
           height: 280, // 높이를 설정하여 이미지 카드들이 가로로 스크롤되도록 함
           child: ListView.builder(
             scrollDirection: Axis.horizontal, // 가로 스크롤 가능하도록 설정
@@ -39,7 +39,7 @@ class _ProductAiState extends State<ProductAi> {
                       Stack(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(10)), // 사진의 모서리만 둥글게 설정
+                            borderRadius: const BorderRadius.all(Radius.circular(10)), // 사진의 모서리만 둥글게 설정
                             child: Image.asset(
                               'assets/images/home/exhi.png', // 실제 이미지 경로로 변경
                               height: 160,
@@ -70,8 +70,8 @@ class _ProductAiState extends State<ProductAi> {
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

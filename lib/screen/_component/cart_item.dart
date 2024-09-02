@@ -10,13 +10,13 @@ class CartItem extends StatefulWidget {
   final Function(int) onDelete;
 
   const CartItem({
-    Key? key,
+    super.key,
     required this.item,
     required this.index,
     required this.onIncrementQuantity,
     required this.onDecrementQuantity,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   State<CartItem> createState() => _CartItemState();
@@ -32,7 +32,7 @@ class _CartItemState extends State<CartItem> {
       child: Container(
         width: Responsive.getWidth(context, 380),
         color: Colors.white,
-        margin: EdgeInsets.only(bottom: 20.0),
+        margin: const EdgeInsets.only(bottom: 20.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -43,19 +43,19 @@ class _CartItemState extends State<CartItem> {
                 });
               },
               child: Container(
-                padding: EdgeInsets.all(6),
+                padding: const EdgeInsets.all(6),
                 height: 22,
                 width: 22,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                  border: Border.all(color: _isSelected ? Color(0xFFFF6191) : Color(0xFFCCCCCC)),
-                  color: _isSelected ? Color(0xFFFF6191) : Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(6)),
+                  border: Border.all(color: _isSelected ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC)),
+                  color: _isSelected ? const Color(0xFFFF6191) : Colors.white,
                 ),
                 child: SvgPicture.asset(
                   'assets/images/check01_off.svg', // 올바른 경로
                   color: _isSelected
                       ? Colors.white
-                      : Color(0xFFCCCCCC), // 체크 여부에 따라 색상 변경
+                      : const Color(0xFFCCCCCC), // 체크 여부에 따라 색상 변경
                   height: 10, // 아이콘의 높이
                   width: 10, // 아이콘의 너비
                   fit: BoxFit.contain,
@@ -66,7 +66,7 @@ class _CartItemState extends State<CartItem> {
             Container(
               width: 90,
               height: 90,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(6)),
               ),
               child: Image.asset(
@@ -79,7 +79,7 @@ class _CartItemState extends State<CartItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: Responsive.getWidth(context, 204),
                     child: Text(
                       widget.item['productName'], // widget.item 사용
@@ -91,21 +91,21 @@ class _CartItemState extends State<CartItem> {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     widget.item['item'], // widget.item 사용
                     style: TextStyle(
                       fontSize: Responsive.getFont(context, 13),
-                      color: Color(0xFF7B7B7B),
+                      color: const Color(0xFF7B7B7B),
                     ),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   Container(
                     width: Responsive.getWidth(context, 96),
                     height: 32,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(22)),
-                      border: Border.all(color: Color(0xFFE3E3E3)),
+                      borderRadius: const BorderRadius.all(Radius.circular(22)),
+                      border: Border.all(color: const Color(0xFFE3E3E3)),
                     ),
                     padding: EdgeInsets.symmetric(
                       vertical: 6,
@@ -116,7 +116,7 @@ class _CartItemState extends State<CartItem> {
                       children: [
                         GestureDetector(
                           onTap: () => widget.onDecrementQuantity(widget.index),
-                          child: Icon(Icons.remove, size: 15),
+                          child: const Icon(Icons.remove, size: 15),
                         ),
                         Text(
                           widget.item['quantity'].toString(), // widget.item 사용
@@ -126,15 +126,15 @@ class _CartItemState extends State<CartItem> {
                         ),
                         GestureDetector(
                           onTap: () => widget.onIncrementQuantity(widget.index),
-                          child: Icon(Icons.add, size: 15),
+                          child: const Icon(Icons.add, size: 15),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     '${widget.item['price']}원', // widget.item 사용
-                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

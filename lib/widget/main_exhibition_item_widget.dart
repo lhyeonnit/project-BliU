@@ -15,7 +15,7 @@ class MainExhibitionItemWidget extends StatelessWidget {
           Container(
             margin: const EdgeInsets.fromLTRB(20, 0, 20, 15),
             alignment: Alignment.bottomCenter,
-            child: Column(
+            child: const Column(
               children: [
 
               ],

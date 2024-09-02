@@ -32,7 +32,7 @@ class NoticeList extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NoticeDetail(),
+                  builder: (context) => const NoticeDetail(),
                 ),
               );
             },

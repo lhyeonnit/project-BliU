@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ServiceMyInquiryScreen extends StatefulWidget {
-  const ServiceMyInquiryScreen({Key? key}) : super(key: key);
+  const ServiceMyInquiryScreen({super.key});
 
   @override
   _ServiceMyInquiryScreenState createState() => _ServiceMyInquiryScreenState();
@@ -52,7 +52,7 @@ class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with Si
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
+        children: const [
           ServiceInquiryProduct(),
           ServiceInquiryOne(),
         ],

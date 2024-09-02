@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class FAQScreen extends StatefulWidget {
-  const FAQScreen({Key? key}) : super(key: key);
+  const FAQScreen({super.key});
 
   @override
   _FAQScreenState createState() => _FAQScreenState();
@@ -85,7 +85,7 @@ class _FAQScreenState extends State<FAQScreen> {
               },
               decoration: InputDecoration(
                 hintText: '내용을 입력해 주세요.',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: Colors.grey.shade300),
@@ -131,10 +131,10 @@ class _FAQScreenState extends State<FAQScreen> {
               },
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Container(
             width: double.infinity,
-            color: Color(0xFFF5F9F9), // 색상 적용
+            color: const Color(0xFFF5F9F9), // 색상 적용
             height: 10,
           ),
           Expanded(
@@ -153,7 +153,7 @@ class _FAQScreenState extends State<FAQScreen> {
                         children: [
                           Text(
                             faq['category']!,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),

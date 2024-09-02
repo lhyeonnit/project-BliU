@@ -5,6 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'join_form_screen.dart';
 
 class JoinAgreeScreen extends StatefulWidget {
+  const JoinAgreeScreen({super.key});
+
   @override
   _JoinAgreeScreenState createState() => _JoinAgreeScreenState();
 }
@@ -49,19 +51,19 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               '회원가입 약관동의',
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 3),
-            Text(
+            const SizedBox(height: 3),
+            const Text(
               '회원가입을 위해 약관에 동의해 주세요!',
               style: TextStyle(color: Colors.grey),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             _buildAgreementOption(
               title: '서비스 약관 동의',
               value: _serviceAgreement,
@@ -92,9 +94,9 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                 });
               },
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
                 border: Border.all(color: Colors.grey),
@@ -102,13 +104,13 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
               child: CheckboxListTile(
                 value: _allAgreed,
                 onChanged: _updateAllAgreed,
-                title: Text('전체 동의합니다.'),
+                title: const Text('전체 동의합니다.'),
                 controlAffinity: ListTileControlAffinity.leading,
                 contentPadding: EdgeInsets.zero,
                 activeColor: Colors.pinkAccent,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Divider(thickness: 1.5, color: Colors.grey[300]),
             SizedBox(
               width: double.infinity, // 버튼을 화면의 너비만큼 길게 설정
@@ -119,16 +121,16 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => JoinFormScreen(),
+                      builder: (context) => const JoinFormScreen(),
                     ),
                   );
                 }
                     : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _allAgreed ? Colors.black : Colors.grey[300],
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
                 ),
-                child: Text(
+                child: const Text(
                   '다음',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -154,7 +156,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
           controlAffinity: ListTileControlAffinity.leading,
           contentPadding: EdgeInsets.zero,
           activeColor: Colors.pinkAccent,
-          secondary: Icon(Icons.arrow_forward_ios),
+          secondary: const Icon(Icons.arrow_forward_ios),
         ),
       ],
     );

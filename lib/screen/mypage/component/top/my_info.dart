@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'my_info_edit_check.dart';
-import 'my_info_edit_screen.dart';
 
 class MyInfo extends StatelessWidget {
   const MyInfo({super.key});
@@ -12,26 +11,26 @@ class MyInfo extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             radius: 40,
-            backgroundImage: const AssetImage(
+            backgroundImage: AssetImage(
                 'assets/images/my/gender_select_boy.png'),
             backgroundColor: Colors.pinkAccent,
           ),
           const SizedBox(width: 10),
-          Expanded(
+          const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   '김아름님 안녕하세요',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 4),
-                const Text('id1234'),
+                SizedBox(height: 4),
+                Text('id1234'),
               ],
             ),
           ),
@@ -40,7 +39,7 @@ class MyInfo extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MyInfoEditCheck(),
+                  builder: (context) => const MyInfoEditCheck(),
                 ),
               );
 
@@ -48,7 +47,7 @@ class MyInfo extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
-                side: BorderSide(color: Colors.grey),
+                side: const BorderSide(color: Colors.grey),
               ),
               backgroundColor: Colors.white,
             ),

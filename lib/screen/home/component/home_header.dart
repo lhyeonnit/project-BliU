@@ -19,8 +19,8 @@ class _HomeHeaderState extends State<HomeHeader> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
         if (_currentPage < _totalPages - 1) {
           _currentPage++;
         } else {
@@ -29,7 +29,7 @@ class _HomeHeaderState extends State<HomeHeader> {
 
         _pageController.animateToPage(
           _currentPage,
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           curve: Curves.easeIn,
         );
       });
@@ -77,7 +77,7 @@ class _HomeHeaderState extends State<HomeHeader> {
             child: SmoothPageIndicator(
               controller: _pageController,
               count: _totalPages,
-              effect: WormEffect(
+              effect: const WormEffect(
                 dotWidth: 6.0,
                 dotHeight: 6.0,
                 activeDotColor: Colors.white,
@@ -98,7 +98,7 @@ class _HomeHeaderState extends State<HomeHeader> {
   }) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           width: double.infinity,
           height: Responsive.getHeight(context, 625),
           child: Image.asset(

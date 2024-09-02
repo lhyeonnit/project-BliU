@@ -20,7 +20,7 @@ Future<void> main() async {
   await PermissionManager().requestPermission();
 
 
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       ),
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
-      home: OnBoardingScreen(), // OnBoardingScreen을 초기 화면으로 설정
+      home: const OnBoardingScreen(), // OnBoardingScreen을 초기 화면으로 설정
     );
   }
 }

@@ -11,7 +11,7 @@ class CouponCard extends StatefulWidget {
   final bool isDownloaded;
   final VoidCallback onDownload;
 
-  const CouponCard({
+  const CouponCard({super.key, 
     required this.discount,
     required this.title,
     required this.expiryDate,
@@ -90,7 +90,7 @@ class _CouponCardState extends State<CouponCard> {
                             color: isDownloaded ? Colors.grey : Colors.redAccent,
                           ),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         Expanded(
                           child: Text(
                             widget.title,
@@ -103,7 +103,7 @@ class _CouponCardState extends State<CouponCard> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
                       widget.expiryDate,
                       style: TextStyle(
@@ -111,7 +111,7 @@ class _CouponCardState extends State<CouponCard> {
                         color: isDownloaded ? Colors.grey : Colors.black,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
                       widget.discountDetails,
                       style: TextStyle(

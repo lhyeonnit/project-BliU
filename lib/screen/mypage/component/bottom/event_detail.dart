@@ -26,18 +26,18 @@ class EventDetail extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
+            const Center(
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     'SUMMER SEASON OFF!',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
+                  SizedBox(height: 8),
+                  Text(
                     '2023-01-01',
                     style: TextStyle(
                       fontSize: 14,

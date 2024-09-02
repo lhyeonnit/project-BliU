@@ -17,13 +17,15 @@ class HomeBodyCategory extends StatelessWidget {
     {'name': '악세서리', 'icon': 'assets/images/home/cate_ic06.svg'},
   ];
 
+  HomeBodyCategory({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: Responsive.getHeight(context, 30.0)),
       child: Container(
         height: Responsive.getHeight(context, 115.0),
-        padding: EdgeInsets.only(left: 16),
+        padding: const EdgeInsets.only(left: 16),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: categories.length,
@@ -36,7 +38,7 @@ class HomeBodyCategory extends StatelessWidget {
                 // 모든 카테고리 아이콘을 눌렀을 때 같은 페이지로 이동
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProductListScreen()),
+                  MaterialPageRoute(builder: (context) => const ProductListScreen()),
                 );
               },
               child: Padding(
@@ -79,7 +81,7 @@ class HomeBodyCategory extends StatelessWidget {
                               fit: BoxFit.contain,
                             ),
                           ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Container(
                       alignment: Alignment.topCenter,
                       width: Responsive.getWidth(context, 70.0),

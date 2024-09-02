@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class StoreInfoPage extends StatelessWidget {
-  const StoreInfoPage({Key? key}) : super(key: key);
+  const StoreInfoPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class StoreInfoPage extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: 45),
+          const SizedBox(height: 45),
           // 상점 정보 부분
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -45,19 +45,19 @@ class StoreInfoPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 상점명 및 정보
-                Expanded(
+                const Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         '밀크마일',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      const Text(
+                      SizedBox(height: 4),
+                      Text(
                         '캐주얼 (Casual), 키즈(3-8세)',
                         style: TextStyle(
                           fontSize: 14,
@@ -73,7 +73,7 @@ class StoreInfoPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey.shade300),
                         borderRadius: BorderRadius.circular(20.0),
@@ -102,9 +102,9 @@ class StoreInfoPage extends StatelessWidget {
           const SizedBox(height: 16),
 
           // 설명 텍스트
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: const Text(
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text(
               '저희 키즈 의류 쇼핑몰은 다양한 스타일과 고품질의 어린이 의류 브랜드들을 자랑합니다. 각 브랜드는 아이들의 편안함과 안전을 최우선으로 생각하며, 트렌디하면서도 실용적인 디자인을 제공합니다. 모든 의류는 친환경 소재로 제작되어 아이들의 민감한 피부에도 심하고 착용할 수 있습니다.',
               style: TextStyle(
                 fontSize: 14,
@@ -127,7 +127,7 @@ class StoreInfoPage extends StatelessWidget {
                   backgroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.grey),
+                    side: const BorderSide(color: Colors.grey),
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),

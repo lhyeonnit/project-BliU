@@ -1,7 +1,5 @@
 import 'package:BliU/screen/_component/cart_screen.dart';
-import 'package:BliU/screen/store/component/detail/store_category_item.dart';
 import 'package:BliU/utils/responsive.dart';
-import 'package:BliU/widget/product_item_widget.dart';
 import 'package:BliU/widget/top_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,20 +33,20 @@ class ExhibitionScreenState extends State<ExhibitionScreen>
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
-        title: Text("우리 아이를 위한 포근한 선택"),
+        title: const Text("우리 아이를 위한 포근한 선택"),
         titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
           child: Container(
-            color: Color(0xFFF4F4F4), // 하단 구분선 색상
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
             height: 1.0, // 구분선의 두께 설정
             child: Container(
               height: 1.0, // 그림자 부분의 높이
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     color: Color(0xFFF4F4F4),
@@ -68,7 +66,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen>
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SearchScreen(),
+                  builder: (context) => const SearchScreen(),
                 ),
               );
             },
@@ -82,7 +80,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CartScreen(),
+                      builder: (context) => const CartScreen(),
                     ),
                   );
                 },
@@ -91,9 +89,9 @@ class ExhibitionScreenState extends State<ExhibitionScreen>
                 right: 8,
                 top: 28,
                 child: Container(
-                  padding: EdgeInsets.all(2),
+                  padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
-                    color: Color(0xFFFF6191),
+                    color: const Color(0xFFFF6191),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   constraints: BoxConstraints(
@@ -118,7 +116,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen>
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: 620,
               width: Responsive.getWidth(context, 412),
               child: Image.asset(
@@ -145,7 +143,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen>
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF7B7B7B)),
+                    color: const Color(0xFF7B7B7B)),
               ),
             ),
             // Container(

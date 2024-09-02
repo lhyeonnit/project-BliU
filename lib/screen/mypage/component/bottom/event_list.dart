@@ -33,7 +33,7 @@ class EventList extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => EventDetail(),
+                  builder: (context) => const EventDetail(),
                 ),
               );
             },

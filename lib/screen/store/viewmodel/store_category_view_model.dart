@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:BliU/data/dto/store_favorite_product_data.dart';
 import 'package:BliU/repository/store_repository.dart';
 import 'package:BliU/data/response_dto.dart';
 
-import '../component/store_age_group_selection.dart';
 
 // 모델 클래스 정의 (데이터 상태를 관리하기 위한 DTO)
 class StoreCategoryModel {

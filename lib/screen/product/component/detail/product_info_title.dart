@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../_component/coupon_receive_screen.dart';
 
 class ProductInfoTitle extends StatelessWidget {
+  const ProductInfoTitle({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -17,7 +19,7 @@ class ProductInfoTitle extends StatelessWidget {
               Container(
                 width: 50,
                 height: 50,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle, // 이미지를 동그랗게 만들기
                   image: DecorationImage(
                     image: AssetImage('assets/images/home/exhi.png'),
@@ -26,7 +28,7 @@ class ProductInfoTitle extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               // 나머지 텍스트와 공유 버튼을 포함한 컬럼
               Expanded(
                 child: Column(
@@ -40,7 +42,7 @@ class ProductInfoTitle extends StatelessWidget {
                           onPressed: () {
                             // 브랜드명 버튼 동작
                           },
-                          child: Row(
+                          child: const Row(
                             children: [
                               Text(
                                 '밀크마일', // 브랜드명
@@ -52,28 +54,28 @@ class ProductInfoTitle extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Spacer(), // 공간을 채워서 오른쪽 정렬
+                        const Spacer(), // 공간을 채워서 오른쪽 정렬
                         // 공유 버튼
                         IconButton(
-                          icon: Icon(Icons.share, color: Colors.black),
+                          icon: const Icon(Icons.share, color: Colors.black),
                           onPressed: () {
                             // 공유 버튼 동작
                           },
                         ),
                       ],
                     ),
-                    SizedBox(height: 8), // 첫 번째 줄과 제목 사이 간격
+                    const SizedBox(height: 8), // 첫 번째 줄과 제목 사이 간격
                     // 상품 제목
-                    Text(
+                    const Text(
                       '[밀크마일] [균일특가+무배] 밀크마일 에스더버니 12종 10,900원 균일가 상하복/원피스/티셔츠',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 8), // 제목과 가격 정보 사이 간격
+                    const SizedBox(height: 8), // 제목과 가격 정보 사이 간격
                     // 가격 정보
-                    Row(
+                    const Row(
                       children: [
                         Text(
                           '10%', // 할인률
@@ -107,7 +109,7 @@ class ProductInfoTitle extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 15), // 로고 및 텍스트와 구분선 사이 간격
+          const SizedBox(height: 15), // 로고 및 텍스트와 구분선 사이 간격
           // 구분선
           Divider(
             height: 1,
@@ -117,13 +119,13 @@ class ProductInfoTitle extends StatelessWidget {
             // 왼쪽 여백
             endIndent: 5, // 오른쪽 여백
           ),
-          SizedBox(height: 15), // 구분선과 배송비 정보 사이 간격
+          const SizedBox(height: 15), // 구분선과 배송비 정보 사이 간격
           // 배송비 정보
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Column(
               children: [
-                Row(
+                const Row(
                   children: [
                     Text(
                       '배송비', // 배송비 텍스트
@@ -143,17 +145,17 @@ class ProductInfoTitle extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text(
+                    const Text(
                       '쿠폰',
                       style: TextStyle(fontSize: 14, color: Colors.black),
                     ),
-                    SizedBox(width: 35),
+                    const SizedBox(width: 35),
                     TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CouponReceiveScreen(),
+                            builder: (context) => const CouponReceiveScreen(),
                           ),
                         );
                       },
@@ -162,8 +164,8 @@ class ProductInfoTitle extends StatelessWidget {
                           border: Border.all(color: Colors.grey),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 8),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 8),
                           child: Text(
                             '쿠폰 다운로드',
                             style: TextStyle(fontSize: 14, color: Colors.black),

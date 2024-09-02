@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class HomeBodyBestSalesCategory extends StatefulWidget {
+  const HomeBodyBestSalesCategory({super.key});
+
   @override
   _HomeBodyBestSalesCategoryState createState() =>
       _HomeBodyBestSalesCategoryState();
@@ -34,25 +36,25 @@ class _HomeBodyBestSalesCategoryState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
+        SizedBox(
           height: 50.0,
           child: TabBar(
             controller: _tabController,
             isScrollable: true,
-            labelColor: Color(0xFFFF6192), // 선택된 탭 텍스트 색상
+            labelColor: const Color(0xFFFF6192), // 선택된 탭 텍스트 색상
             unselectedLabelColor: Colors.black, // 선택되지 않은 탭 텍스트 색상
-            indicatorColor: Color(0xFFFF6192), // 선택된 탭 아래의 선 색상
+            indicatorColor: const Color(0xFFFF6192), // 선택된 탭 아래의 선 색상
             indicatorWeight: 2.0,
             tabs: categories.map((category) {
               return Tab(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: _tabController.index == categories.indexOf(category)
-                          ? Color(0xFFFF6192)
-                          : Color(0xFFDDDDDD),
+                          ? const Color(0xFFFF6192)
+                          : const Color(0xFFDDDDDD),
                       width: 1.0,
                     ),
                     color: _tabController.index == categories.indexOf(category)
@@ -64,7 +66,7 @@ class _HomeBodyBestSalesCategoryState
                     style: TextStyle(
                       fontSize: 14,
                       color: _tabController.index == categories.indexOf(category)
-                          ? Color(0xFFFF6192)
+                          ? const Color(0xFFFF6192)
                           : Colors.black,
                     ),
                   ),

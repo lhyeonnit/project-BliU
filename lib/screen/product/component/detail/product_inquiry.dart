@@ -16,8 +16,8 @@ class _ProductInquiryState extends State<ProductInquiry> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
           child: Text(
             '상품문의',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -25,7 +25,7 @@ class _ProductInquiryState extends State<ProductInquiry> {
         ),
         ListView.builder(
           shrinkWrap: true, // 리스트가 다른 스크롤뷰 내에 있으므로 높이 제한
-          physics: NeverScrollableScrollPhysics(), // 부모 스크롤에 따라 스크롤
+          physics: const NeverScrollableScrollPhysics(), // 부모 스크롤에 따라 스크롤
           itemCount: 4, // 페이지당 문의 개수
           itemBuilder: (context, index) {
             return Padding(
@@ -38,20 +38,20 @@ class _ProductInquiryState extends State<ProductInquiry> {
                     children: [
                       Text(
                         index % 2 == 0 ? '답변완료' : '미답변',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
                       ),
-                      Text('jw**********   2024.04.14', style: TextStyle(color: Colors.grey)),
+                      const Text('jw**********   2024.04.14', style: TextStyle(color: Colors.grey)),
                     ],
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
-                      Icon(Icons.lock, size: 16, color: Colors.grey),
-                      SizedBox(width: 4),
+                      const Icon(Icons.lock, size: 16, color: Colors.grey),
+                      const SizedBox(width: 4),
                       Expanded(
                         child: Text(
                           index % 2 == 0 ? '비밀글입니다.' : '안녕하세요 배송언제되나요?',
-                          style: TextStyle(fontSize: 14, color: Colors.black),
+                          style: const TextStyle(fontSize: 14, color: Colors.black),
                         ),
                       ),
                     ],
@@ -68,7 +68,7 @@ class _ProductInquiryState extends State<ProductInquiry> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                icon: Icon(Icons.arrow_back_ios),
+                icon: const Icon(Icons.arrow_back_ios),
                 onPressed: currentPage > 1
                     ? () {
                   setState(() {
@@ -79,10 +79,10 @@ class _ProductInquiryState extends State<ProductInquiry> {
               ),
               Text(
                 '${currentPage.toString().padLeft(2, '0')} / $totalPages',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
               IconButton(
-                icon: Icon(Icons.arrow_forward_ios),
+                icon: const Icon(Icons.arrow_forward_ios),
                 onPressed: currentPage < totalPages
                     ? () {
                   setState(() {

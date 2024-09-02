@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
 class SettingScreen extends StatefulWidget {
+  const SettingScreen({super.key});
+
   @override
   _SettingScreenState createState() => _SettingScreenState();
 }
@@ -38,7 +40,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         '알림',
                         style: TextStyle(
                             fontSize: 16,
@@ -65,7 +67,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   _buildCustomTile(
                     '이용약관',
                         () {

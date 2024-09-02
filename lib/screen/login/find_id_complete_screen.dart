@@ -6,7 +6,9 @@ import 'find_password_screen.dart';
 import 'login_screen.dart';
 
 class FindIdCompleteScreen extends StatelessWidget {
-  final String userId = "ID_1234"; // 찾은 아이디를 여기에 넣습니다.
+  final String userId = "ID_1234";
+
+  const FindIdCompleteScreen({super.key}); // 찾은 아이디를 여기에 넣습니다.
 
   @override
   Widget build(BuildContext context) {
@@ -27,21 +29,21 @@ class FindIdCompleteScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             CircleAvatar(
               radius: 40,
               backgroundColor: Colors.grey[200],
-              child: Icon(Icons.check, color: Colors.black, size: 40),
+              child: const Icon(Icons.check, color: Colors.black, size: 40),
             ),
-            SizedBox(height: 24),
-            Text(
+            const SizedBox(height: 24),
+            const Text(
               '회원님의 아이디는',
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text.rich(
+            const Text.rich(
               TextSpan(
                 text: 'ID_1234', // 실제 찾은 아이디를 여기에 넣습니다.
                 style: TextStyle(
@@ -61,13 +63,13 @@ class FindIdCompleteScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 8),
-            Text(
+            const SizedBox(height: 8),
+            const Text(
               '아이디 찾기가 완료되었습니다. 로그인해 주세요.',
               style: TextStyle(color: Colors.grey),
               textAlign: TextAlign.center,
             ),
-            Spacer(),
+            const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -78,17 +80,17 @@ class FindIdCompleteScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FindPasswordScreen(),
+                          builder: (context) => const FindPasswordScreen(),
                         ),
                       );
                     },
                     style: OutlinedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
                     ),
-                    child: Text('비밀번호 찾기'),
+                    child: const Text('비밀번호 찾기'),
                   ),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
@@ -96,15 +98,15 @@ class FindIdCompleteScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
+                          builder: (context) => const LoginScreen(),
                         ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
                       backgroundColor: Colors.black,
                     ),
-                    child: Text(
+                    child: const Text(
                       '로그인',
                       style: TextStyle(color: Colors.white),
                     ),
@@ -112,7 +114,7 @@ class FindIdCompleteScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
           ],
         ),
       ),

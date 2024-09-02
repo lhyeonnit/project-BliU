@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../product_detail_screen.dart';
 
 class ProductListCard extends StatefulWidget {
+  const ProductListCard({super.key});
+
   @override
   _ProductListCardState createState() => _ProductListCardState();
 }
@@ -16,7 +18,7 @@ class _ProductListCardState extends State<ProductListCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductDetailScreen(), // 실제 ProductDetailScreen 클래스를 사용해야 합니다.
+            builder: (context) => const ProductDetailScreen(), // 실제 ProductDetailScreen 클래스를 사용해야 합니다.
           ),
         );
       },
@@ -31,7 +33,7 @@ class _ProductListCardState extends State<ProductListCard> {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(10)), // 사진의 모서리만 둥글게 설정
+                  borderRadius: const BorderRadius.all(Radius.circular(10)), // 사진의 모서리만 둥글게 설정
                   child: Image.asset(
                     'assets/images/home/exhi.png', // 실제 이미지 경로로 변경
                     height: 180,
@@ -57,8 +59,8 @@ class _ProductListCardState extends State<ProductListCard> {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

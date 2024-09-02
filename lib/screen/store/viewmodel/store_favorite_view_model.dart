@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/dto/store_bookmark_data.dart';
-import '../../../main.dart';
 import '../../../repository/store_repository.dart';
 
 class StoreFavoriteModel {

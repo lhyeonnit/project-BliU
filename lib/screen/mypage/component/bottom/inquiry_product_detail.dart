@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class InquiryProductDetail extends StatelessWidget {
-  const InquiryProductDetail({Key? key}) : super(key: key);
+  const InquiryProductDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +36,10 @@ class InquiryProductDetail extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
                 const SizedBox(width: 12),
-                Expanded(
+                const Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         '[꼬마별빛] [꼬잉특가+무배] 꼬마별빛 에스더니니 12종 10,900원 균일가 상하...',
                         style: TextStyle(
@@ -67,7 +67,7 @@ class InquiryProductDetail extends StatelessWidget {
             // 문의 상태와 내용
             Row(
               children: [
-                Text(
+                const Text(
                   '답변완료',
                   style: TextStyle(
                     fontSize: 16,
@@ -75,10 +75,10 @@ class InquiryProductDetail extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(width: 10,),
+                const SizedBox(width: 10,),
                 Container(
-                  margin: EdgeInsets.only(top: 3),
-                  child: Text(
+                  margin: const EdgeInsets.only(top: 3),
+                  child: const Text(
                     '2024.04.14',
                     style: TextStyle(
                       fontSize: 14,
@@ -137,7 +137,7 @@ class InquiryProductDetail extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
-                  side: BorderSide(color: Colors.grey),
+                  side: const BorderSide(color: Colors.grey),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -160,7 +160,7 @@ class InquiryProductDetail extends StatelessWidget {
                   fit: BoxFit.fitHeight,
                 ),
                 Container(
-                  child: Column(
+                  child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(

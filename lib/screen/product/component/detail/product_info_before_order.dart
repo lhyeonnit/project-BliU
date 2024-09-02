@@ -29,9 +29,9 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     _InfoRow(label: '택배사', value: 'CJ대한통운'),
                     _InfoRow(label: '배송비', value: '기본 배송비 0000원 / 50,000 이상 무료'),
                     _InfoRow(label: '추가 배송비', value: '도서산간 추가배송비 3000, 제주 추가배송비 3000'),
@@ -90,13 +90,13 @@ class _InfoRow extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               value,
-              style: TextStyle(color: Colors.black54),
+              style: const TextStyle(color: Colors.black54),
             ),
           ),
         ],

@@ -4,7 +4,7 @@ import '../product/dummy/coupon_list.dart';
 import '../product/component/detail/coupon_card.dart';
 
 class CouponReceiveScreen extends StatefulWidget {
-  const CouponReceiveScreen({Key? key}) : super(key: key);
+  const CouponReceiveScreen({super.key});
 
   @override
   _CouponReceiveScreenState createState() => _CouponReceiveScreenState();

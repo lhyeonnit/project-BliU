@@ -32,19 +32,19 @@ class MyPage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AlarmScreen()),
+                MaterialPageRoute(builder: (context) => const AlarmScreen()),
               );
             },
           ),
           Stack(
             children: [
               IconButton(
-                padding: EdgeInsets.only(right: 10),
+                padding: const EdgeInsets.only(right: 10),
                 icon: SvgPicture.asset("assets/images/product/ic_cart.svg"),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CartScreen()),
+                    MaterialPageRoute(builder: (context) => const CartScreen()),
                   );
                 },
               ),
@@ -73,7 +73,7 @@ class MyPage extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          MyInfo(),
+          const MyInfo(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
@@ -85,69 +85,69 @@ class MyPage extends StatelessWidget {
                     '나의리뷰', 'assets/images/my/mypage_ic02.svg', () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MyReviewScreen()),
+                    MaterialPageRoute(builder: (context) => const MyReviewScreen()),
                   );
                 }, '100'),
                 _buildIconButton(
                     '쿠폰함', 'assets/images/my/mypage_ic03_1.svg', () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MyCouponScreen()),
+                    MaterialPageRoute(builder: (context) => const MyCouponScreen()),
                   );
                 }, '2'),
                 _buildIconButton('포인트', 'assets/images/my/mypage_ic04.svg', () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PointScreen()),
+                    MaterialPageRoute(builder: (context) => const PointScreen()),
                   );
                 }, '200,000'),
               ],
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Container(
             width: double.infinity,
-            color: Color(0xFFF5F9F9), // 색상 적용
+            color: const Color(0xFFF5F9F9), // 색상 적용
             height: 10,
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           _buildSection('쇼핑정보'),
           _buildSectionItem('추천정보관리', () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => RecommendEdit()),
+              MaterialPageRoute(builder: (context) => const RecommendEdit()),
             );
           }),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           _buildSection('고객서비스'),
           _buildSectionItem('FAQ', () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => FAQScreen()),
+              MaterialPageRoute(builder: (context) => const FAQScreen()),
             );
           }),
           _buildSectionItem('공지사항', () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => NoticeScreen()),
+              MaterialPageRoute(builder: (context) => const NoticeScreen()),
             );
           }),
           _buildSectionItem('고객센터', () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ServiceScreen()),
+              MaterialPageRoute(builder: (context) => const ServiceScreen()),
             );
           }),
           _buildSectionItem('설정', () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SettingScreen()),
+              MaterialPageRoute(builder: (context) => const SettingScreen()),
             );
           }),
           Padding(
             padding: const EdgeInsets.only(left: 4.0),
             child: TextButton(
-                child: Text(
+                child: const Text(
                   '로그아웃',
                   style: TextStyle(
                       fontSize: 16,
@@ -175,11 +175,11 @@ class MyPage extends StatelessWidget {
         ),
         Text(
           label,
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
         Text(
           num,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ],
     );

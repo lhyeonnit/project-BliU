@@ -1,5 +1,4 @@
 import 'package:BliU/screen/store/component/detail/store_category.dart';
-import 'package:BliU/screen/store/component/store_age_group_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,9 +15,9 @@ class StoreFavoritePage extends ConsumerWidget {
     final storeFavoriteViewModel =
         ref.read(storeFavoriteViewModelProvider.notifier);
     final storeFavoriteList = model?.bookmarkStoreDTO ?? [];
-    final int itemsPerPage = 5;
+    const int itemsPerPage = 5;
     final PageController pageController = PageController();
-    ScrollController _scrollController = ScrollController();
+    ScrollController scrollController = ScrollController();
 
     final totalItem = model?.bookmarkResponseDTO?.count ?? 0; // null인 경우 0으로 처리
     List<String> selectedAgeGroups = [];
@@ -43,7 +42,7 @@ class StoreFavoritePage extends ConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
@@ -118,19 +117,19 @@ class StoreFavoritePage extends ConsumerWidget {
                                                   store.styleTxt,
                                                   style: TextStyle(
                                                     fontSize: Responsive.getFont(context, 13),
-                                                    color: Color(0xFF7B7B7B),
+                                                    color: const Color(0xFF7B7B7B),
                                                   ),
                                                   maxLines: 1,
                                                   overflow: TextOverflow.ellipsis,
                                                 ),
                                               ),
-                                              SizedBox(width: 5), // 텍스트 간 여백을 추가
+                                              const SizedBox(width: 5), // 텍스트 간 여백을 추가
                                               Expanded(
                                                 child: Text(
                                                   store.ageTxt,
                                                   style: TextStyle(
                                                     fontSize: Responsive.getFont(context, 13),
-                                                    color: Color(0xFF7B7B7B),
+                                                    color: const Color(0xFF7B7B7B),
                                                   ),
                                                   maxLines: 1,
                                                   overflow: TextOverflow.ellipsis,
@@ -146,7 +145,7 @@ class StoreFavoritePage extends ConsumerWidget {
                                         Container(
                                           height: Responsive.getHeight(context, 30),
                                           width: Responsive.getWidth(context, 30),
-                                          padding: EdgeInsets.symmetric(vertical: 8),
+                                          padding: const EdgeInsets.symmetric(vertical: 8),
                                           child: GestureDetector(
                                             onTap: () {
                                               // 북마크 상태 변경 (토글)
@@ -203,7 +202,7 @@ class StoreFavoritePage extends ConsumerWidget {
                         );
                       }),
                     ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   Container(
                     height: 44,
                     margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -270,12 +269,12 @@ class StoreFavoritePage extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  StoreCategory(),
+                  const StoreCategory(),
                 ],
               ),
             ],
           ),
-          MoveTopButton(scrollController: _scrollController),
+          MoveTopButton(scrollController: scrollController),
         ],
       ),
     );

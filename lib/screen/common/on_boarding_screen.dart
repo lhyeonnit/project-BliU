@@ -103,7 +103,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MainPage(),
+                                    builder: (context) => const MainPage(),
                                   ),
                                 );
                               },

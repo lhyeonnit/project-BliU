@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ProductBanner extends StatefulWidget {
+  const ProductBanner({super.key});
+
   @override
   _ProductBannerState createState() => _ProductBannerState();
 }
@@ -33,7 +35,7 @@ class _ProductBannerState extends State<ProductBanner> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
+    return SizedBox(
       width: screenWidth, // 가로 길이를 화면 전체로 설정
       height: screenWidth, // 세로 길이도 가로 길이와 동일하게 설정
       child: Stack(
@@ -61,14 +63,14 @@ class _ProductBannerState extends State<ProductBanner> {
             bottom: 10,
             right: 10,
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
                 '${_currentPage + 1}/${_images.length}',
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
           ),
