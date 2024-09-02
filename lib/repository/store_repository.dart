@@ -24,13 +24,8 @@ class StoreRepository {
           'category': category,
         },
       );
-      return null;
-      if (response.statusCode == 200) {
-        return ResponseDTO.fromJson(response.data);
-      } else {
-        print("Error: ${response.statusCode}, ${response.data}");
-        return ResponseDTO.fromJson(response.data);
-      }
+      return response;
+
     } catch (e) {
       print("Error toggling store like: $e");
       return null;
@@ -53,12 +48,7 @@ class StoreRepository {
       );
 
       return response;
-      if (response.statusCode == 200) {
-        return ResponseDTO.fromJson(response.data);
-      } else {
-        print("Error: ${response.statusCode}, ${response.data}");
-        return ResponseDTO.fromJson(response.data);
-      }
+
     } catch (e) {
       print("Error toggling store like: $e");
       return null;
@@ -78,32 +68,6 @@ class StoreRepository {
 
       return response;
 
-      if (response.statusCode == 200 && response.data['result'] == true) {
-        // 응답 데이터를 최상위 레벨에서 Map<String, dynamic>으로 가져옴
-        final Map<String, dynamic> bookmarkListJson = response.data;
-
-        // `data` -> `list` 경로를 통해 실제 리스트를 추출
-        final List<dynamic> listJson = bookmarkListJson['data']['list'];
-
-        // Mapping JSON to BookmarkStoreDTO objects
-        List<BookmarkStoreDTO> bookmarkList = listJson.map((item) {
-          return BookmarkStoreDTO.fromJson(item as Map<String, dynamic>);
-        }).toList();
-
-        // 성공적으로 데이터가 반환되었을 경우, ResponseDTO로 래핑하여 반환
-        return ResponseDTO(
-          status: response.statusCode!,
-          errorMessage: '',
-          response: bookmarkList,
-        );
-      } else {
-        // 오류가 발생한 경우 처리
-        return ResponseDTO(
-          status: response.statusCode!,
-          errorMessage: response.data['message'] ?? 'Unknown error',
-          response: null,
-        );
-      }
     } catch (e) {
       print("Error toggling store like: $e");
       return null;
@@ -135,67 +99,10 @@ class StoreRepository {
           'sort': sort.toString(),
         },
       );
-      return null;
-
-      // 응답 성공 시
-      if (response.statusCode == 200 && response.data != null) {
-        if (response.data is List) {
-          // 응답이 List 타입인 경우, List<ProductDTO>로 처리
-          List<ProductDTO> storeFavoriteProductList = (response.data as List)
-              .map((item) => ProductDTO.fromJson(item as Map<String, dynamic>))
-              .toList();
-
-          return ResponseDTO(
-            status: response.statusCode!,
-            errorMessage: '',
-            response: storeFavoriteProductList, // ProductDTO 리스트 반환
-          );
-        } else if (response.data is Map<String, dynamic> &&
-            response.data['result'] == true) {
-          // 응답이 Map<String, dynamic>인 경우 처리
-          final Map<String, dynamic> storeFavoriteProductListJson = response
-              .data;
-
-          if (storeFavoriteProductListJson.containsKey('data') &&
-              storeFavoriteProductListJson['data'].containsKey('list')) {
-            final List<
-                dynamic> listJson = storeFavoriteProductListJson['data']['list'];
-
-            // ProductDTO 리스트로 변환
-            List<ProductDTO> storeFavoriteProductList = listJson.map((item) {
-              return ProductDTO.fromJson(item as Map<String, dynamic>);
-            }).toList();
-
-            return ResponseDTO(
-              status: response.statusCode!,
-              errorMessage: '',
-              response: storeFavoriteProductList, // ProductDTO 리스트 반환
-            );
-          } else {
-            return ResponseDTO(
-              status: response.statusCode!,
-              errorMessage: 'Invalid response structure: Missing data or list field',
-              response: null,
-            );
-          }
-        } else {
-          // 다른 예상치 못한 응답 구조의 경우 처리
-          return ResponseDTO(
-            status: response.statusCode!,
-            errorMessage: 'Unexpected response structure',
-            response: null,
-          );
-        }
-      } else {
-        return ResponseDTO(
-          status: response.statusCode!,
-          errorMessage: response.data['message'] ?? 'Unknown error',
-          response: null,
-        );
-      }
+      return response;
     } catch (e) {
       print("Error toggling store like: $e");
       return null;
     }
   }
-}}
+}
