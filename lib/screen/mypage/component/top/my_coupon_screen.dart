@@ -57,6 +57,7 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 height: 40,
@@ -99,27 +100,35 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Expanded(
-              //   child: ListView.builder(
-              //     itemCount: couponData.length,
-              //     itemBuilder: (context, index) {
-              //       final coupon = couponData[index];
-              //       return CouponCard(
-              //         discount: coupon["discount"]!,
-              //         title: coupon["title"]!,
-              //         expiryDate: coupon["expiryDate"]!,
-              //         discountDetails: coupon["discountDetails"]!,
-              //         isDownloaded: couponStatus[index], // 상태 전달
-              //         onDownload: () {
-              //           setState(() {
-              //             couponStatus[index] = true; // 쿠폰 상태 업데이트
-              //           });
-              //         },
-              //         couponKey: index.toString(), // 고유한 키 전달
-              //       );
-              //     },
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text('쿠폰 ${couponData.length}'),
+              ),
+              const SizedBox(height: 10),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: couponData.length,
+                  itemBuilder: (context, index) {
+                    final coupon = couponData[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: CouponCard(
+                        discount: coupon["discount"]!,
+                        title: coupon["title"]!,
+                        expiryDate: coupon["expiryDate"]!,
+                        discountDetails: coupon["discountDetails"]!,
+                        isDownloaded: couponStatus[index], // 상태 전달
+                        onDownload: () {
+                          setState(() {
+                            couponStatus[index] = true; // 쿠폰 상태 업데이트
+                          });
+                        },
+                        couponKey: index.toString(), // 고유한 키 전달
+                      ),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
       ),

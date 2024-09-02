@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CouponCard extends StatefulWidget {
@@ -132,10 +133,8 @@ class _CouponCardState extends State<CouponCard> {
                 children: [
                   GestureDetector(
                     onTap: isDownloaded ? null : _handleDownload,
-                    child: Icon(
-                      isDownloaded ? Icons.download_done : Icons.download,
-                      size: 30,
-                      color: isDownloaded ? Colors.grey : Colors.black,
+                    child: SvgPicture.asset(
+                      isDownloaded ? 'assets/images/store/ic_cu_down_end.svg' : 'assets/images/store/ic_cu_down.svg',
                     ),
                   ),
                   const SizedBox(height: 8),
