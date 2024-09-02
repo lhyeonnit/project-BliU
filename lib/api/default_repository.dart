@@ -1,11 +1,26 @@
+import 'package:BliU/api/dio_interceptor.dart';
+import 'package:BliU/const/constant.dart';
 import 'package:dio/dio.dart';
 
 class DefaultRepository {
-  final Dio _defaultDio = Dio();
-  final Dio _multiPartDio = Dio();
+  Dio _defaultDio = Dio();
+  Dio _multiPartDio = Dio();
 
   DefaultRepository() {
-    _multiPartDio.options.contentType = 'multipart/form-data';
+    BaseOptions options = BaseOptions(
+      baseUrl: Constant.USER_URL,
+      connectTimeout: const Duration(milliseconds: 10000),
+      receiveTimeout: const Duration(milliseconds: 10000),
+      sendTimeout: const Duration(milliseconds: 10000),
+      // headers: {},
+    );
+
+    _defaultDio = Dio(options);
+    _defaultDio.interceptors.add(DioInterceptor());
+
+    _multiPartDio = Dio(options);
+    _multiPartDio.interceptors.add(DioInterceptor());
+    _multiPartDio.options.contentType = Headers.multipartFormDataContentType;
     _multiPartDio.options.maxRedirects.isFinite;
   }
   // POST
