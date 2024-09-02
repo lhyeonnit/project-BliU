@@ -36,7 +36,7 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
       final response = await repository.reqPost(
           url: Constant.apiStoreBookMarkUrl, data: requestData);
 
-      if (response == 200 && requestData['result'] == true) {
+      if (response == 200) {
         // 응답 데이터를 최상위 레벨에서 Map<String, dynamic>으로 가져옴
         final Map<String, dynamic> bookmarkListJson = requestData;
 
