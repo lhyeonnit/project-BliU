@@ -1,21 +1,14 @@
+import 'package:BliU/const/constant.dart';
 import 'package:dio/dio.dart';
-import 'package:BliU/data/response_dto.dart';
 
 import '../data/dto/store_bookmark_data.dart';
 import '../data/dto/store_favorite_product_data.dart'; // ResponseDTO에 맞게 경로 수정
 
 class StoreRepository {
   final Dio _dio = Dio();
-  final String _baseUrl =
-      'https://bground.api.dmonster.kr/api/user'; // 실제 base URL로 교체
 
-  StoreRepository() {
-    _dio.options.contentType = Headers.formUrlEncodedContentType;
-    _dio.options.headers['Authorization'] =
-    'Bearer bground_bliu_dmonter_20240729'; // 실제 인증 토큰으로 교체
-  }
 
-  Future<ResponseDTO> fetchStore({
+  Future<Response<dynamic>?> fetchStore({
     required int mtIdx,
     required int stIdx,
     required int pg,
@@ -23,7 +16,7 @@ class StoreRepository {
   }) async {
     try {
       final response = await _dio.post(
-        '$_baseUrl/store/',
+        Constant.apiStoreUrl,
         data: {
           'mt_idx': mtIdx.toString(),
           'st_idx': stIdx.toString(),
@@ -31,6 +24,7 @@ class StoreRepository {
           'category': category,
         },
       );
+      return null;
       if (response.statusCode == 200) {
         return ResponseDTO.fromJson(response.data);
       } else {
@@ -39,24 +33,26 @@ class StoreRepository {
       }
     } catch (e) {
       print("Error toggling store like: $e");
-      return ResponseDTO(status: 500, errorMessage: 'Error', response: null);
+      return null;
     }
   }
 
+
   // 1. 즐겨찾기 등록/해제
-  Future<ResponseDTO> toggleStoreLike({
+  Future<Response<dynamic>?> toggleStoreLike({
     required int mtIdx,
     required int stIdx,
   }) async {
     try {
       final response = await _dio.post(
-        '$_baseUrl/store/like',
+        Constant.apiStoreLikeUrl,
         data: {
           'mt_idx': mtIdx.toString(),
           'st_idx': stIdx.toString(),
         },
       );
 
+      return response;
       if (response.statusCode == 200) {
         return ResponseDTO.fromJson(response.data);
       } else {
@@ -65,22 +61,22 @@ class StoreRepository {
       }
     } catch (e) {
       print("Error toggling store like: $e");
-      return ResponseDTO(status: 500, errorMessage: 'Error', response: null);
+      return null;
     }
   }
 
   // 2. 즐겨찾기 목록 조회
-  Future<ResponseDTO> fetchBookmarkList(int mtIdx, int pg) async {
+  Future<Response<dynamic>?> fetchBookmarkList({required int mtIdx, required int pg}) async {
     try {
       final response = await _dio.post(
-        '$_baseUrl/store/bookmark',
+        Constant.apiStoreBookMarkUrl,
         data: {
           'mt_idx': mtIdx.toString(),
           'pg': pg.toString(),
         },
       );
 
-      print(response.data); // 응답 데이터 확인용
+      return response;
 
       if (response.statusCode == 200 && response.data['result'] == true) {
         // 응답 데이터를 최상위 레벨에서 Map<String, dynamic>으로 가져옴
@@ -109,26 +105,22 @@ class StoreRepository {
         );
       }
     } catch (e) {
-      // 예외 발생 시 처리
-      print("Error fetching bookmark list: $e");
-      return ResponseDTO(
-        status: 500,
-        errorMessage: 'Error fetching bookmark list: $e',
-        response: null,
-      );
+      print("Error toggling store like: $e");
+      return null;
     }
   }
 
   // 3. 즐겨찾기한 상점의 상품 목록 조회
-  Future<ResponseDTO> fetchStoreProducts(int mtIdx,
-      int pg,
-      String searchTxt,
-      String category,
-      String age,
-      int sort,) async {
+  Future<Response<dynamic>?> fetchStoreProducts({
+    required int mtIdx,
+    required int pg,
+    required String searchTxt,
+    required String category,
+    required String age,
+    required int sort}) async {
     try {
       final response = await _dio.post(
-        '$_baseUrl/store/product',
+        Constant.apiStoreProductsUrl,
         options: Options(
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -143,8 +135,7 @@ class StoreRepository {
           'sort': sort.toString(),
         },
       );
-
-      print(response.data);
+      return null;
 
       // 응답 성공 시
       if (response.statusCode == 200 && response.data != null) {
@@ -203,12 +194,8 @@ class StoreRepository {
         );
       }
     } catch (e) {
-      print("Error fetching store products: $e");
-      return ResponseDTO(
-        status: 500,
-        errorMessage: 'Error fetching store products: $e',
-        response: null,
-      );
+      print("Error toggling store like: $e");
+      return null;
     }
   }
-}
+}}

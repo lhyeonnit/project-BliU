@@ -1,4 +1,3 @@
-import 'package:BliU/data/response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,8 +26,13 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
     int pg = 1;
 
     try {
-      // Call the repository function to fetch bookmarks
-      ResponseDTO responseDTO = await StoreRepository().fetchBookmarkList(mtIdx, pg);
+
+
+      if () {
+
+      }else{
+        print('Error: ${responseDTO.errorMessage}');
+      } state = null;
 
       if (responseDTO.status == 200 && responseDTO.response != null) {
         if (responseDTO.response is Map<String, dynamic>) {
@@ -55,7 +59,7 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
         }
       } else {
         // Handle error and set state to null
-        print('Error: ${responseDTO.errorMessage}');
+
         state = null;
       }
     } catch (e) {
