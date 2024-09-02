@@ -17,12 +17,12 @@ class _CategoryPageState extends State<CategoryPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('카테고리'),
+        title: const Text('카테고리'),
       ),
       body: Row(
         children: [
           // 왼쪽 상위 카테고리 목록
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
             child: ListView.builder(
               itemCount: categories.length,
@@ -53,10 +53,10 @@ class _CategoryPageState extends State<CategoryPage> {
                             width: 40,
                             height: 40,
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Text(
                             category['ct_name']!,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -68,19 +68,19 @@ class _CategoryPageState extends State<CategoryPage> {
                     ...subCategories[int.parse(category['ct_idx']!)]!
                         .map((subCategory) => ListTile(
                       title: Text(subCategory),
-                      trailing: Icon(Icons.arrow_forward_ios),
+                      trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         // 하위 카테고리 선택 시 처리
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                            builder: (context) => ProductListScreen(),
+                            builder: (context) => const ProductListScreen(),
                         ),
                         );
                       },
                     ))
-                        .toList(),
-                    Divider(), // 상위 카테고리 구분을 위한 구분선
+                        ,
+                    const Divider(), // 상위 카테고리 구분을 위한 구분선
                   ],
                 );
               }).toList(),

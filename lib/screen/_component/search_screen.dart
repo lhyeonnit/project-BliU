@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../product/product_detail_screen.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -16,7 +18,7 @@ class _SearchScreenState extends State<SearchScreen> {
   List<String> _searchHistory = [];
   final ScrollController _scrollController = ScrollController();
 
-  List<String> _popularSearches = [
+  final List<String> _popularSearches = [
     '레인부츠',
     '새학기 등록',
     '여름옷',
@@ -28,12 +30,12 @@ class _SearchScreenState extends State<SearchScreen> {
     '가디건',
     '래시가드'
   ];
-  List<String> _suggestedItems = [
+  final List<String> _suggestedItems = [
     '우이동금순 안나 도션 레이스 베스트',
     '우이동금순 바디수트',
     '미니초원 후드티',
   ];
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -71,13 +73,13 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
           child: Container(
-            color: Color(0xFFF4F4F4), // 하단 구분선 색상
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
             height: 1.0, // 구분선의 두께 설정
             child: Container(
               height: 1.0, // 그림자 부분의 높이
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     color: Color(0xFFF4F4F4),
@@ -95,28 +97,28 @@ class _SearchScreenState extends State<SearchScreen> {
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
-        title: Container(
+        title: SizedBox(
           width: double.infinity,
           height: 56,
           child: Row(
             children: [
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 8),
+                  margin: const EdgeInsets.symmetric(vertical: 8),
                   height: 56,
                   decoration: BoxDecoration(
-                    color: Color(0xFFF5F9F9),
+                    color: const Color(0xFFF5F9F9),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
                     children: [
                       Expanded(
                         child: TextField(
-                          style: TextStyle(decorationThickness: 0),
+                          style: const TextStyle(decorationThickness: 0),
                           controller: _searchController,
                           decoration: InputDecoration(
                             contentPadding:
-                                EdgeInsets.only(left: 16, bottom: 8),
+                                const EdgeInsets.only(left: 16, bottom: 8),
                             labelStyle: TextStyle(
                               fontSize: Responsive.getFont(context, 14),
                             ),
@@ -134,7 +136,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       ),
                                     )
                                 : null,
-                            suffixIconConstraints: BoxConstraints.tight(Size(24, 24)),
+                            suffixIconConstraints: BoxConstraints.tight(const Size(24, 24)),
                           ),
                           onChanged: (value) {
                             setState(() {});
@@ -148,7 +150,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 8,left: 10, bottom: 8, right: 15),
+                        padding: const EdgeInsets.only(top: 8,left: 10, bottom: 8, right: 15),
                         child: GestureDetector(
                           onTap: () {
                             String search = _searchController.text;
@@ -178,7 +180,7 @@ class _SearchScreenState extends State<SearchScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SearchScreen(),
+                  builder: (context) => const SearchScreen(),
                 ),
               );
             },
@@ -189,13 +191,13 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           SingleChildScrollView(
             controller: _scrollController,
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (_searchHistory.isEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40.0),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 40.0),
                     child: Text('검색기록이 없습니다.',
                         style: TextStyle(color: Colors.grey, fontSize: 14)),
                   ),
@@ -218,7 +220,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SvgPicture.asset('assets/images/ic_delet.svg'),
-                                SizedBox(
+                                const SizedBox(
                                   width: 5,
                                 ),
                                 Text(
@@ -234,7 +236,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Wrap(
@@ -248,7 +250,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           vertical: 11,
                           horizontal: Responsive.getWidth(context, 20),
                         ),
-                        labelPadding: EdgeInsets.only(right: 5),
+                        labelPadding: const EdgeInsets.only(right: 5),
                         // 텍스트와 아이콘 사이 간격
                         label: Text(
                           search,
@@ -259,13 +261,13 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(19), // 둥근 모서리 설정
-                          side: BorderSide(
+                          side: const BorderSide(
                             color: Color(0xFFDDDDDD), // 테두리 색상 설정
                           ),
                         ),
                         backgroundColor: Colors.white,
                         // 배경 색상
-                        deleteIcon: Icon(
+                        deleteIcon: const Icon(
                           Icons.close,
                           size: 14,
                           color: Color(0xFFACACAC), // 닫기 아이콘 색상
@@ -279,8 +281,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     }).toList(),
                   ),
                 ],
-                SizedBox(height: 40.0),
-                Container(
+                const SizedBox(height: 40.0),
+                SizedBox(
                   width: Responsive.getWidth(context, 380),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -291,19 +293,19 @@ class _SearchScreenState extends State<SearchScreen> {
                             fontSize: Responsive.getFont(context, 18),
                             fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                       GridView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: _popularSearches.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           childAspectRatio: 9,
                           mainAxisSpacing: 15.0,
                           crossAxisSpacing: 10.0,
                         ),
                         itemBuilder: (context, index) {
-                          return Container(
+                          return SizedBox(
                             width: Responsive.getWidth(context, 185),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,7 +320,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   width: Responsive.getWidth(context, 10),
                                 ),
                                 Text(
-                                  '${_popularSearches[index]}',
+                                  _popularSearches[index],
                                   style: TextStyle(
                                     fontSize: Responsive.getFont(context, 15),
                                   ),
@@ -331,7 +333,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 40.0),
+                const SizedBox(height: 40.0),
                 Text(
                   '이런 아이템은 어떠세요?',
                   style: TextStyle(
@@ -351,14 +353,14 @@ class _SearchScreenState extends State<SearchScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ProductDetailScreen(),
+                                builder: (context) => const ProductDetailScreen(),
                               ),
                             );
                           },
                           child: Container(
                             width: 160,
-                            padding: EdgeInsets.only(right: 12),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.only(right: 12),
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                             ),
                             child: Column(
@@ -366,7 +368,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               children: [
                                 ClipRRect(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
+                                      const BorderRadius.all(Radius.circular(5)),
                                   child: Image.asset(
                                     'assets/images/home/exhi.png',
                                     height: 160,
@@ -390,7 +392,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                     SizedBox(
                                         height:
                                             Responsive.getHeight(context, 4)),
-                                    Text(
+                                    const Text(
                                       '꿈꾸는 데이지 안나 토션 레이스 베스트',
                                       style: TextStyle(
                                         fontSize: 14,
@@ -411,11 +413,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                           style: TextStyle(
                                             fontSize:
                                                 Responsive.getFont(context, 14),
-                                            color: Color(0xFFFF6192),
+                                            color: const Color(0xFFFF6192),
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        SizedBox(width: 2),
+                                        const SizedBox(width: 2),
                                         Text(
                                           '32,800원',
                                           style: TextStyle(

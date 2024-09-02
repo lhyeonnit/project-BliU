@@ -1,6 +1,5 @@
 import 'package:BliU/screen/store/component/detail/store_category_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -8,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../viewmodel/store_category_view_model.dart';
 
 class StoreCategory extends HookConsumerWidget {
-  const StoreCategory({Key? key}) : super(key: key);
+  const StoreCategory({super.key});
 
   final List<String> categories = const [
     '전체',
@@ -122,8 +121,8 @@ class StoreCategory extends HookConsumerWidget {
                 fontSize: Responsive.getFont(context, 14), color: Colors.black),
           ),
         ),
-        SizedBox(height: 20,),
-        Container(
+        const SizedBox(height: 20,),
+        SizedBox(
           // 기본 세로 길이를 301로 설정하고, 상품이 더 있으면 301씩 추가
           height: (model?.productDetail?.length ?? 0) > 0
               ? 331 * ((model!.productDetail!.length + 1) ~/ 2).toDouble()
@@ -134,7 +133,7 @@ class StoreCategory extends HookConsumerWidget {
               categories.length,
                   (index) {
                 // 상품 리스트
-                return StoreCategoryItem();
+                return const StoreCategoryItem();
               },
             ),
           ),

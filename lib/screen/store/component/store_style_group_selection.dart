@@ -8,8 +8,8 @@ class StyleSelectionSheet extends StatefulWidget {
   const StyleSelectionSheet({
     required this.selectedStyles,
     required this.onSelectionChanged,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _StyleSelectionSheetState createState() => _StyleSelectionSheetState();
@@ -38,7 +38,7 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
   Widget build(BuildContext context) {
     return Container(
       width: Responsive.getWidth(context, 412),
-      padding:  EdgeInsets.symmetric(vertical: 16.0),
+      padding:  const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -53,9 +53,9 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
               ),
             ),
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               '스타일',
               style: TextStyle(fontSize: Responsive.getFont(context, 18), fontWeight: FontWeight.bold),
@@ -63,7 +63,7 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
           ),
           const SizedBox(height: 16.0),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
             child: Wrap(
               spacing: 8.0,
               runSpacing: 8.0,
@@ -89,10 +89,10 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
                   width: Responsive.getWidth(context, 48),
                   height: Responsive.getHeight(context, 48),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                      border: Border.all(color: Color(0xFFDDDDDD))),
+                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(color: const Color(0xFFDDDDDD))),
                   child: GestureDetector(
-                    child: Icon(Icons.refresh),
+                    child: const Icon(Icons.refresh),
                     onTap: () {
                       setState(() {
                         _tempSelectedStyles.clear();
@@ -104,11 +104,11 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
                   width: Responsive.getWidth(context, 9),
                 ),
                 Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6)),color: Colors.black),
+                  decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6)),color: Colors.black),
                   width: Responsive.getWidth(context, 336),
                   height: Responsive.getHeight(context, 48),
                   child: GestureDetector(
-                    child:  Center(child: Text('선택완료',style: TextStyle(color: Colors.white),)),
+                    child:  const Center(child: Text('선택완료',style: TextStyle(color: Colors.white),)),
                     onTap: () {
                       widget.onSelectionChanged(_tempSelectedStyles);
                       Navigator.pop(context);
@@ -131,14 +131,14 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
         label: Text(
           style,
           style: TextStyle(
-            color: isSelected ? Color(0xFFFF6192) : Colors.black,
+            color: isSelected ? const Color(0xFFFF6192) : Colors.black,
           ),
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
         ),
         shape: StadiumBorder(
           side: BorderSide(
-            color: isSelected ? Color(0xFFFF6192) : Color(0xFFDDDDDD),
+            color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
           ),
         ),
         backgroundColor: Colors.white,

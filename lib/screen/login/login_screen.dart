@@ -34,7 +34,7 @@ class LoginScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MainPage(),
+                  builder: (context) => const MainPage(),
                 ),
               );
             },
@@ -46,26 +46,26 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Center(
               child: SvgPicture.asset("assets/images/home/bottom_home.svg", width: 90,),
             ),
-            SizedBox(height: 40),
-            TextField(
+            const SizedBox(height: 40),
+            const TextField(
               decoration: InputDecoration(
                 labelText: '아이디 입력',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16),
-            TextField(
+            const SizedBox(height: 16),
+            const TextField(
               obscureText: true,
               decoration: InputDecoration(
                 labelText: '비밀번호 입력',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Checkbox(
@@ -74,21 +74,21 @@ class LoginScreen extends StatelessWidget {
                     // 자동로그인 체크박스 동작
                   },
                 ),
-                Text('자동로그인'),
+                const Text('자동로그인'),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 // 로그인 버튼 동작
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
-                padding: EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.symmetric(vertical: 16),
               ),
-              child: Text('로그인', style: TextStyle(color: Colors.white),),
+              child: const Text('로그인', style: TextStyle(color: Colors.white),),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -98,42 +98,42 @@ class LoginScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => JoinAgreeScreen(),
+                        builder: (context) => const JoinAgreeScreen(),
                       ),
                     );
                   },
-                  child: Text('회원가입'),
+                  child: const Text('회원가입'),
                 ),
-                VerticalDivider(color: Colors.black),
+                const VerticalDivider(color: Colors.black),
                 TextButton(
                   onPressed: () {
                     // 아이디찾기 버튼 동작
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FindIdScreen(),
+                        builder: (context) => const FindIdScreen(),
                       ),
                     );
                   },
-                  child: Text('아이디찾기'),
+                  child: const Text('아이디찾기'),
                 ),
-                VerticalDivider(color: Colors.black),
+                const VerticalDivider(color: Colors.black),
                 TextButton(
                   onPressed: () {
                     // 비밀번호찾기 버튼 동작
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FindPasswordScreen(),
+                        builder: (context) => const FindPasswordScreen(),
                       ),
                     );
                   },
-                  child: Text('비밀번호찾기'),
+                  child: const Text('비밀번호찾기'),
                 ),
               ],
             ),
-            SizedBox(height: 24),
-            Center(
+            const SizedBox(height: 24),
+            const Center(
               child: Text(
                 'SNS 로그인',
                 style: TextStyle(
@@ -142,7 +142,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -169,16 +169,16 @@ class LoginScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Spacer(),
+            const Spacer(),
             Center(
               child: TextButton(
                 onPressed: () {
                   // 비회원 배송조회 동작
                 },
-                child: Text('비회원 배송조회'),
+                child: const Text('비회원 배송조회'),
               ),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
           ],
         ),
       ),

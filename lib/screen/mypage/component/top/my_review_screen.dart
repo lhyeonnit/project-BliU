@@ -11,7 +11,7 @@ class MyReviewScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('나의리뷰'),
+        title: const Text('나의리뷰'),
         titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
@@ -24,13 +24,13 @@ class MyReviewScreen extends StatelessWidget {
           },
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
           child: Container(
-            color: Color(0xFFF4F4F4), // 하단 구분선 색상
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
             height: 1.0, // 구분선의 두께 설정
             child: Container(
               height: 1.0, // 그림자 부분의 높이
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     color: Color(0xFFF4F4F4),

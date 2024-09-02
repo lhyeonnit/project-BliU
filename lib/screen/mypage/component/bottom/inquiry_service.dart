@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class InquiryService extends StatefulWidget {
-  const InquiryService({Key? key}) : super(key: key);
+  const InquiryService({super.key});
 
   @override
   _InquiryServiceState createState() => _InquiryServiceState();
 }
 
 class _InquiryServiceState extends State<InquiryService> {
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _contentController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class _InquiryServiceState extends State<InquiryService> {
             // 문의 제목 입력
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: '문의 제목 입력',
               ),
@@ -48,7 +48,7 @@ class _InquiryServiceState extends State<InquiryService> {
             TextField(
               controller: _contentController,
               maxLines: 5,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: '문의 내용을 최소 10자 이상 입력해 주세요.',
               ),
@@ -56,14 +56,14 @@ class _InquiryServiceState extends State<InquiryService> {
             const SizedBox(height: 16.0),
 
             // 이미지 선택 영역
-            Row(
+            const Row(
               children: [
-                const Text(
+                Text(
                   '이미지',
                   style: TextStyle(fontSize: 14),
                 ),
-                const Spacer(),
-                const Text(
+                Spacer(),
+                Text(
                   '0/4',
                   style: TextStyle(fontSize: 14, color: Colors.grey),
                 ),
@@ -83,9 +83,9 @@ class _InquiryServiceState extends State<InquiryService> {
                   border: Border.all(color: Colors.grey.shade300),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Column(
+                child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Icon(Icons.add, size: 40, color: Colors.grey),
                     Text('사진선택', style: TextStyle(color: Colors.grey)),
                   ],

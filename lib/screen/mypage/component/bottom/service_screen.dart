@@ -39,7 +39,7 @@ class ServiceScreen extends StatelessWidget {
               () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InquiryStore()),
+                  MaterialPageRoute(builder: (context) => const InquiryStore()),
                 );
               },
             ),
@@ -48,7 +48,7 @@ class ServiceScreen extends StatelessWidget {
               () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InquiryService()),
+                  MaterialPageRoute(builder: (context) => const InquiryService()),
                 );
               },
             ),
@@ -57,7 +57,7 @@ class ServiceScreen extends StatelessWidget {
               () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ServiceMyInquiryScreen()),
+                  MaterialPageRoute(builder: (context) => const ServiceMyInquiryScreen()),
                 );
               },
             ),

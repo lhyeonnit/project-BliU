@@ -5,6 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import '../login/login_screen.dart';
 
 class JoinCompleteScreen extends StatelessWidget {
+  const JoinCompleteScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,27 +28,27 @@ class JoinCompleteScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // 중앙에 이미지 추가
-            CircleAvatar(
+            const CircleAvatar(
               radius: 50,
               backgroundImage: AssetImage('assets/images/join_complete_image.png'), // 이미지 경로 설정
             ),
-            SizedBox(height: 24.0),
-            Text(
+            const SizedBox(height: 24.0),
+            const Text(
               '회원가입이 완료되었습니다.',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 8.0),
-            Text(
+            const SizedBox(height: 8.0),
+            const Text(
               '블리유의 회원이 되신 걸 환영합니다!',
               style: TextStyle(
                 fontSize: 16.0,
                 color: Colors.grey,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -55,15 +57,15 @@ class JoinCompleteScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LoginScreen(),
+                      builder: (context) => const LoginScreen(),
                     ),
                   );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
                 ),
-                child: Text(
+                child: const Text(
                   '로그인',
                   style: TextStyle(color: Colors.white),
                 ),

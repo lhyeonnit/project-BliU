@@ -19,7 +19,7 @@ class StoreRakingPage extends StatefulWidget {
 class _StoreRakingPageState extends State<StoreRakingPage> {
   List<String> selectedAgeGroups = [];
   List<String> selectedStyles = [];
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   List<bool> isBookmarked = List<bool>.generate(10, (index) => false);
 
   void _showAgeGroupSelection() {
@@ -94,12 +94,12 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                           onPressed: _showAgeGroupSelection,
                           style: OutlinedButton.styleFrom(
                             backgroundColor: Colors.white, // 배경 흰색
-                            side: BorderSide(color: Color(0xFFDDDDDD)), // 테두리 회색
+                            side: const BorderSide(color: Color(0xFFDDDDDD)), // 테두리 회색
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(19),
                             ),
                           ),
-                          child: Container(
+                          child: SizedBox(
                             height: Responsive.getHeight(context, 38),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -130,7 +130,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                           onPressed: _showStyleSelection,
                           style: OutlinedButton.styleFrom(
                             backgroundColor: Colors.white, // 배경 흰색
-                            side: BorderSide(color: Color(0xFFDDDDDD)), // 테두리 회색
+                            side: const BorderSide(color: Color(0xFFDDDDDD)), // 테두리 회색
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(19),
                             ),
@@ -166,11 +166,11 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                   padding: const EdgeInsets.only(left: 16.0),
                   child: Container(
                     height: 184,
-                    margin: EdgeInsets.only(top: 30),
+                    margin: const EdgeInsets.only(top: 30),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        SizedBox(
                           height: Responsive.getHeight(context, 40),
                           width: Responsive.getWidth(context, 378),
                           child: GestureDetector(
@@ -179,7 +179,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => StoreDetailScreen(
+                                  builder: (context) => const StoreDetailScreen(
                                     // Pass the store data to the detail screen
                                   ),
                                 ),
@@ -188,7 +188,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
+                                SizedBox(
                                   width: Responsive.getWidth(context, 30),
                                   child: Center(
                                     child: Text(
@@ -205,17 +205,17 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                       Container(
                                         height: 40,
                                         width: 40,
-                                        margin: EdgeInsets.only(right: 10),
+                                        margin: const EdgeInsets.only(right: 10),
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
+                                          borderRadius: const BorderRadius.all(
                                               Radius.circular(20)), // 사진의 모서리 둥글게 설정
                                           border: Border.all(
-                                            color: Color(0xFFDDDDDD), // 테두리 색상 설정
+                                            color: const Color(0xFFDDDDDD), // 테두리 색상 설정
                                             width: 1.0, // 테두리 두께 설정
                                           ),
                                         ),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.all(
+                                          borderRadius: const BorderRadius.all(
                                               Radius.circular(20)), // 사진의 모서리만 둥글게 설정
                                           child: Image.asset(
                                             'assets/images/home/exhi.png',
@@ -238,7 +238,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                                 stores[storeIndex]['description'],
                                                 style: TextStyle(
                                                     fontSize: Responsive.getFont(context, 13),
-                                                    color: Color(0xFF7B7B7B)),
+                                                    color: const Color(0xFF7B7B7B)),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ],
@@ -249,7 +249,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                 ),
                                 SizedBox(width: Responsive.getWidth(context, 75)),
                                 Container(
-                                  margin: EdgeInsets.only(top: 3),
+                                  margin: const EdgeInsets.only(top: 3),
                                   child: Column(
                                     children: [
                                       GestureDetector(
@@ -259,13 +259,13 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                             !isBookmarked[storeIndex];
                                           });
                                         },
-                                        child: Container(
+                                        child: SizedBox(
                                           width: Responsive.getWidth(context, 14),
                                           height: Responsive.getHeight(context, 17),
                                           child: SvgPicture.asset(
                                             'assets/images/store/book_mark.svg',
                                             color: isBookmarked[storeIndex]
-                                                ? Color(0xFFFF6192)
+                                                ? const Color(0xFFFF6192)
                                                 : null, // 아이콘 색상 변경
                                             fit: BoxFit.contain,
                                           ),
@@ -275,7 +275,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                       Text(
                                         stores[storeIndex]['scrapCount']!,
                                         style: TextStyle(
-                                          color: Color(0xFFA4A4A4),
+                                          color: const Color(0xFFA4A4A4),
                                           fontSize: Responsive.getFont(context, 12),
                                         ),
                                       ),
@@ -286,7 +286,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         GestureDetector(
@@ -295,11 +295,11 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ProductDetailScreen(),
+                                builder: (context) => const ProductDetailScreen(),
                               ),
                             );
                           },
-                          child: Container(
+                          child: SizedBox(
                             height: 120,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
@@ -307,7 +307,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                               itemBuilder: (context, imageIndex) {
                                 return Container(
                                   width: 120,
-                                  margin: EdgeInsets.only(right: 5),
+                                  margin: const EdgeInsets.only(right: 5),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(6), // 모서리 둥글게 설정
                                     child: Image.asset(

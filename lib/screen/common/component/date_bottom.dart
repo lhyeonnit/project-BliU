@@ -4,7 +4,7 @@ class DateBottom extends StatelessWidget {
   final Function(String) onDateSelected; // 선택된 날짜를 전달하기 위한 콜백 함수
   final String initialDate; // 초기 날짜
 
-  DateBottom({required this.onDateSelected, this.initialDate = '출생년도 선택'});
+  const DateBottom({super.key, required this.onDateSelected, this.initialDate = '출생년도 선택'});
 
   @override
   Widget build(BuildContext context) {
@@ -14,18 +14,18 @@ class DateBottom extends StatelessWidget {
 
     return Container(
       height: 300,
-      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 '출생년도',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               IconButton(
-                icon: Icon(Icons.close),
+                icon: const Icon(Icons.close),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -60,9 +60,9 @@ class DateBottom extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
-                padding: EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.symmetric(vertical: 16),
               ),
-              child: Text('선택하기'),
+              child: const Text('선택하기'),
             ),
           ),
         ],
@@ -74,7 +74,7 @@ class DateBottom extends StatelessWidget {
     return Expanded(
       child: ListWheelScrollView.useDelegate(
         itemExtent: 50,
-        physics: FixedExtentScrollPhysics(),
+        physics: const FixedExtentScrollPhysics(),
         onSelectedItemChanged: (index) {
           onSelected(start + index);
         },

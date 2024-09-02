@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'report_screen.dart';
 
 class ProductReviewDetail extends StatefulWidget {
+  const ProductReviewDetail({super.key});
+
   @override
   _ProductReviewDetailState createState() => _ProductReviewDetailState();
 }
@@ -56,7 +58,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Image Carousel
-            Container(
+            SizedBox(
               width: screenWidth, // 가로 길이를 화면 전체로 설정
               height: screenWidth, // 세로 길이도 가로 길이와 동일하게 설정
               child: Stack(
@@ -84,14 +86,14 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
                     bottom: 10,
                     right: 10,
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         '${_currentPage + 1}/${_images.length}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
@@ -100,9 +102,9 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
             ),
             const SizedBox(height: 16),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: const [
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: const Row(
+                children: [
                   Text(
                     'jw**********',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -116,10 +118,10 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
               ),
             ),
             const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
-                children: const [
+                children: [
                   Icon(Icons.star, color: Colors.pink, size: 20),
                   Icon(Icons.star, color: Colors.pink, size: 20),
                   Icon(Icons.star, color: Colors.pink, size: 20),
@@ -129,8 +131,8 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
               ),
             ),
             const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
                 '저희 아이를 위해 \'밀크마일 여름 티셔츠\'를 구매했는데 정말 만족스럽습니다! '
                     '옷감이 부드럽고 통기성이 좋아서 아이가 하루 종일 입고 다녀도 편안해해요. '
@@ -151,10 +153,10 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
                   // 신고 버튼 클릭시 동작
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ReportScreen()),
+                    MaterialPageRoute(builder: (context) => const ReportScreen()),
                   );
                 },
-                child: Text(
+                child: const Text(
                   '신고',
                   style: TextStyle(
                     fontSize: 12,

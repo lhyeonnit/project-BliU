@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class MyInfoEditCheck extends StatelessWidget {
-  const MyInfoEditCheck({Key? key}) : super(key: key);
+  const MyInfoEditCheck({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class MyInfoEditCheck extends StatelessWidget {
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
-        title: Text(
+        title: const Text(
           '내정보수정',
           style: TextStyle(color: Colors.black),
         ),
@@ -27,7 +27,7 @@ class MyInfoEditCheck extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               '내 정보 수정',
               style: TextStyle(
                 fontSize: 20,
@@ -35,12 +35,12 @@ class MyInfoEditCheck extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Text(
+            const Text(
               '본인 확인을 위해 한 번 더 비밀번호를 입력해주세요',
               style: TextStyle(color: Colors.grey),
             ),
             const SizedBox(height: 24),
-            Text(
+            const Text(
               '비밀번호 *',
               style: TextStyle(
                 fontSize: 16,
@@ -54,7 +54,7 @@ class MyInfoEditCheck extends StatelessWidget {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
               obscureText: true, // 비밀번호 입력을 위해 텍스트 숨김
             ),
@@ -67,7 +67,7 @@ class MyInfoEditCheck extends StatelessWidget {
                   // 확인 버튼 동작 추가
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MyInfoEditScreen()),
+                    MaterialPageRoute(builder: (context) => const MyInfoEditScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -76,7 +76,7 @@ class MyInfoEditCheck extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   '확인',
                   style: TextStyle(
                     color: Colors.white,

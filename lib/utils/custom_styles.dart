@@ -10,7 +10,7 @@ class CustomStyles {
   static const Color shadowColor = Colors.black;
   static const Color redColor = Color(0xFFF32828);
 
-  static final double defaultPadding = 16.0;
+  static const double defaultPadding = 16.0;
 
   static final BoxDecoration shadowBoxDecoration = BoxDecoration(
     color: primaryColor,
@@ -18,30 +18,30 @@ class CustomStyles {
       BoxShadow(
         color: shadowColor.withOpacity(0.1),
         blurRadius: 5.0,
-        offset: Offset(0, 4),
+        offset: const Offset(0, 4),
       ),
     ],
   );
 
-  static final TextStyle headerTextStyle = TextStyle(
+  static const TextStyle headerTextStyle = TextStyle(
     color: textColor,
     fontSize: 24.0,
     fontWeight: FontWeight.bold,
   );
 
-  static final TextStyle bodyTextStyle = TextStyle(
+  static const TextStyle bodyTextStyle = TextStyle(
     color: textColor,
     fontSize: 14.0,
     fontWeight: FontWeight.normal,
   );
 
-  static final TextStyle buttonTextStyle = TextStyle(
+  static const TextStyle buttonTextStyle = TextStyle(
     color: Colors.white,
     fontSize: 16.0,
     fontWeight: FontWeight.bold,
   );
 
-  static final TextStyle greyTextStyle = TextStyle(
+  static const TextStyle greyTextStyle = TextStyle(
     color: greyColor,
     fontSize: 14.0,
     fontWeight: FontWeight.normal,
@@ -53,7 +53,7 @@ class CustomStyles {
       BoxShadow(
         color: Colors.black.withOpacity(0.12),
         blurRadius: 4.0,
-        offset: Offset(0, 0),
+        offset: const Offset(0, 0),
       ),
     ],
   );
@@ -65,6 +65,8 @@ class CustomStyles {
 }
 
 class DashedBox extends StatelessWidget {
+  const DashedBox({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,7 +75,7 @@ class DashedBox extends StatelessWidget {
       color: CustomStyles.primaryColor,
       child: CustomPaint(
         painter: DashedBorderPainter(color: CustomStyles.borderColor),
-        child: Center(child: Text("Dashed Border")),
+        child: const Center(child: Text("Dashed Border")),
       ),
     );
   }

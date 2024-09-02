@@ -23,7 +23,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
     super.initState();
 
     // 타이머를 이용한 페이지 자동 넘기기
-    _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
       if (_currentPage < _totalPages - 1) {
         _currentPage++;
       } else {
@@ -32,7 +32,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
 
       _pageController.animateToPage(
         _currentPage,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
       );
     });
@@ -54,11 +54,11 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ExhibitionScreen(),
+                builder: (context) => const ExhibitionScreen(),
               ),
             );
           },
-          child: Container(
+          child: SizedBox(
             width: Responsive.getWidth(context, 380),
             height: 420,
             child: PageView.builder(
@@ -76,12 +76,12 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
             ),
           ),
         ),
-        SizedBox(height: 25),
+        const SizedBox(height: 25),
         Center(
           child: SmoothPageIndicator(
             controller: _pageController,
             count: _totalPages,
-            effect: WormEffect(
+            effect: const WormEffect(
               dotWidth: 6.0,
               dotHeight: 6.0,
               activeDotColor: Colors.black,
@@ -100,11 +100,11 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
   }) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           width: Responsive.getWidth(context, 380),
           height: 420,
           child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
             child: Image.asset(
               imagePath,
               fit: BoxFit.cover, // 이미지를 부모 위젯에 맞게 설정
@@ -114,7 +114,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
         Positioned.fill(
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(8.0),
                 bottomRight: Radius.circular(8.0),
               ),
@@ -149,7 +149,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                 ),
               ),
               SizedBox(height: Responsive.getHeight(context, 15)),
-              Container(
+              SizedBox(
                 width: Responsive.getWidth(context, 340),
                 height: 84,
                 child: Row(
@@ -159,7 +159,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ProductDetailScreen(),
+                            builder: (context) => const ProductDetailScreen(),
                           ),
                         );
                       },
@@ -179,7 +179,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ProductDetailScreen(),
+                            builder: (context) => const ProductDetailScreen(),
                           ),
                         );
                       },
@@ -199,7 +199,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ProductDetailScreen(),
+                            builder: (context) => const ProductDetailScreen(),
                           ),
                         );
                       },
@@ -223,7 +223,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ExhibitionScreen(),
+                            builder: (context) => const ExhibitionScreen(),
                           ),
                         );
                       },
@@ -234,7 +234,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                           Container(
                             width: Responsive.getWidth(context, 58),
                             height: 60,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle,
                             ),
@@ -248,7 +248,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10), // 간격을 위한 SizedBox
+                          const SizedBox(height: 10), // 간격을 위한 SizedBox
                           // '자세히보기' 텍스트
                           Text(
                             '자세히보기',

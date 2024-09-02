@@ -19,13 +19,13 @@ class _LikePageState extends State<LikePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('좋아요'),
+        title: const Text('좋아요'),
         backgroundColor: Colors.white,
       ),
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(vertical: 10.0),
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
             height: 50.0,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -56,7 +56,7 @@ class _LikePageState extends State<LikePage> {
                         ),
                         if (selectedCategory == categories[index])
                           Container(
-                            margin: EdgeInsets.only(top: 4.0),
+                            margin: const EdgeInsets.only(top: 4.0),
                             height: 2.0,
                             width: 20.0,
                             color: Colors.black,
@@ -69,11 +69,11 @@ class _LikePageState extends State<LikePage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   '상품 128,123',
                   style: TextStyle(
                     fontSize: 16.0,
@@ -81,7 +81,7 @@ class _LikePageState extends State<LikePage> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.filter_list),
+                  icon: const Icon(Icons.filter_list),
                   onPressed: () {
                     // 정렬방식 선택하는 액션 추가
                   },
@@ -91,8 +91,8 @@ class _LikePageState extends State<LikePage> {
           ),
           Expanded(
             child: GridView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 16.0,
                 mainAxisSpacing: 16.0,
@@ -110,7 +110,7 @@ class _LikePageState extends State<LikePage> {
   }
 
   Widget buildItemCard(Map<String, String> item) {
-    return Container(
+    return SizedBox(
       height: 300,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +123,7 @@ class _LikePageState extends State<LikePage> {
               errorBuilder: (context, error, stackTrace) {
                 return Container(
                   color: Colors.grey[200],
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Image not available',
                       style: TextStyle(color: Colors.grey),
@@ -135,7 +135,7 @@ class _LikePageState extends State<LikePage> {
           ),
         Text(
               item['brand']!,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 12.0,
               ),
@@ -144,7 +144,7 @@ class _LikePageState extends State<LikePage> {
             ),
           Text(
             item['name']!,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 14.0,
             ),
@@ -152,27 +152,27 @@ class _LikePageState extends State<LikePage> {
           ),
           Text(
             '${item['discount']} ${item['price']}',
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.pink,
               fontWeight: FontWeight.bold,
             ),
           ),
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.favorite,
                 color: Colors.grey,
                 size: 16.0,
               ),
-              SizedBox(width: 4.0),
+              const SizedBox(width: 4.0),
               Text(item['likes']!),
-              SizedBox(width: 16.0),
-              Icon(
+              const SizedBox(width: 16.0),
+              const Icon(
                 Icons.chat_bubble,
                 color: Colors.grey,
                 size: 16.0,
               ),
-              SizedBox(width: 4.0),
+              const SizedBox(width: 4.0),
               Text(item['comments']!),
             ],
           ),

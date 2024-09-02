@@ -1,7 +1,4 @@
-import 'package:BliU/screen/store/component/detail/store_category_item.dart';
-import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
-import 'home_body_best_sales_category.dart';
 
 class HomeBodyBestSales extends StatefulWidget {
   const HomeBodyBestSales({super.key});
@@ -15,7 +12,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
       // Column(
     //   crossAxisAlignment: CrossAxisAlignment.start,
     //   children: [

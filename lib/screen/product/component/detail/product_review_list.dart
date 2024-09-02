@@ -17,8 +17,8 @@ class _ProductReviewState extends State<ProductReview> {
     return ListView(
       children: [
         // 평점과 총 리뷰 수 섹션
-        Padding(
-          padding: const EdgeInsets.all(16.0),
+        const Padding(
+          padding: EdgeInsets.all(16.0),
           child: Row(
             children: [
               Text(
@@ -30,7 +30,7 @@ class _ProductReviewState extends State<ProductReview> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                padding: EdgeInsets.symmetric(horizontal: 4.0),
                 child: Text(
                   '/5.0',
                   style: TextStyle(
@@ -40,16 +40,16 @@ class _ProductReviewState extends State<ProductReview> {
                   ),
                 ),
               ),
-              const Spacer(),
-              const Text(
+              Spacer(),
+              Text(
                 '30명의 리뷰',
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
             children: [
               Icon(Icons.star, color: Colors.pink, size: 24),
@@ -79,7 +79,7 @@ class _ProductReviewState extends State<ProductReview> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProductReviewDetail(),
+                    builder: (context) => const ProductReviewDetail(),
                   ),
                 );
               },
@@ -88,7 +88,7 @@ class _ProductReviewState extends State<ProductReview> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
@@ -100,7 +100,7 @@ class _ProductReviewState extends State<ProductReview> {
                       ],
                     ),
                     const SizedBox(height: 4),
-                    Row(
+                    const Row(
                       children: [
                         Row(
                           children: [
@@ -115,7 +115,7 @@ class _ProductReviewState extends State<ProductReview> {
                     ),
                     const SizedBox(height: 8),
                     // 리뷰 텍스트 두 줄로 제한하고 넘칠 경우 생략 부호 표시
-                    Text(
+                    const Text(
                       '저희 아이를 위해 \'해피 키즈 여름 티셔츠\'를 구매했는데 정말 만족스럽습니다! 옷감이 부드럽고 통기성이 좋아서 아이가 하루 종일 입고 다닙니다.',
                       style: TextStyle(fontSize: 14, color: Colors.black),
                       maxLines: 2,
@@ -146,10 +146,10 @@ class _ProductReviewState extends State<ProductReview> {
                         // 신고 버튼 클릭시 동작
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ReportScreen()),
+                          MaterialPageRoute(builder: (context) => const ReportScreen()),
                         );
                       },
-                      child: Text(
+                      child: const Text(
                         '신고',
                         style: TextStyle(
                           fontSize: 12,
@@ -172,7 +172,7 @@ class _ProductReviewState extends State<ProductReview> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                icon: Icon(Icons.arrow_back_ios),
+                icon: const Icon(Icons.arrow_back_ios),
                 onPressed: currentPage > 1
                     ? () {
                   setState(() {
@@ -183,10 +183,10 @@ class _ProductReviewState extends State<ProductReview> {
               ),
               Text(
                 '${currentPage.toString().padLeft(2, '0')} / $totalPages',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
               IconButton(
-                icon: Icon(Icons.arrow_forward_ios),
+                icon: const Icon(Icons.arrow_forward_ios),
                 onPressed: currentPage < totalPages
                     ? () {
                   setState(() {

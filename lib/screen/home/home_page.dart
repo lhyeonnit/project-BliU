@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
 
   @override
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                           height: Responsive.getHeight(context, 40),
                         ),
                       ),
-                      flexibleSpace: FlexibleSpaceBar(
+                      flexibleSpace: const FlexibleSpaceBar(
                         background: HomeHeader(),
                       ),
                       actions: [
@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => SearchScreen(),
+                                      builder: (context) => const SearchScreen(),
                                     ),
                                   );
                                 },
@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => CartScreen(),
+                                          builder: (context) => const CartScreen(),
                                         ),
                                       );
                                     },
@@ -130,12 +130,12 @@ class _HomePageState extends State<HomePage> {
                                     right: 4,
                                     top: 20,
                                     child: Container(
-                                      padding: EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: const BoxDecoration(
                                         color: Colors.pinkAccent,
                                         shape: BoxShape.circle,
                                       ),
-                                      child: Text(
+                                      child: const Text(
                                         '2',
                                         style: TextStyle(
                                           color: Colors.white,
@@ -154,17 +154,17 @@ class _HomePageState extends State<HomePage> {
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
-                          HomeBodyCategory(),
-                          HomeBodyAi(),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 30.0),
+                           HomeBodyCategory(),
+                          const HomeBodyAi(),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 30.0),
                             child: SizedBox(
                               height: 451, // 고정된 높이
                               child: HomeBodyExhibition(),
                             ),
                           ),
-                          HomeBodyBestSales(),
-                          HomeFooter(),
+                          const HomeBodyBestSales(),
+                          const HomeFooter(),
                         ],
                       ),
                     ),

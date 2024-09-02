@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../product/product_detail_screen.dart';
 
 class HomeBodyAi extends StatefulWidget {
+  const HomeBodyAi({super.key});
+
   @override
   _HomeBodyAiState createState() => _HomeBodyAiState();
 }
@@ -28,7 +30,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
           ),
           Container(
               height: Responsive.getHeight(context, 277),
-              margin: EdgeInsets.symmetric(vertical: 20),
+              margin: const EdgeInsets.symmetric(vertical: 20),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: isFavoriteList.length, // 리스트의 길이를 사용
@@ -38,14 +40,14 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ProductDetailScreen(),
+                          builder: (context) => const ProductDetailScreen(),
                         ),
                       );
                     },
                     child: Container(
                       width: 160,
-                      padding: EdgeInsets.only(right: 12),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.only(right: 12),
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                       ),
                       child: Column(
@@ -55,7 +57,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                             children: [
                               ClipRRect(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(5)),
+                                const BorderRadius.all(Radius.circular(5)),
                                 child: Image.asset(
                                   'assets/images/home/exhi.png',
                                   height: 160,
@@ -76,7 +78,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                   child: SvgPicture.asset(
                                     isFavoriteList[index] ? 'assets/images/home/like_btn_fill.svg' : 'assets/images/home/like_btn.svg',
                                     color: isFavoriteList[index]
-                                        ? Color(0xFFFF6191)
+                                        ? const Color(0xFFFF6191)
                                         : null,
                                     // 좋아요 상태에 따라 내부 색상 변경
                                     height: Responsive.getHeight(context, 34),
@@ -101,7 +103,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                               ),
                               SizedBox(
                                   height: Responsive.getHeight(context, 4)),
-                              Text(
+                              const Text(
                                 '꿈꾸는 데이지 안나 토션 레이스 베스트',
                                 style: TextStyle(
                                   fontSize: 14,
@@ -120,7 +122,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                     '15%',
                                     style: TextStyle(
                                       fontSize: Responsive.getFont(context, 14),
-                                      color: Color(0xFFFF6192),
+                                      color: const Color(0xFFFF6192),
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -137,7 +139,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                               SizedBox(
                                 height: Responsive.getHeight(context, 10),
                               ),
-                              Container(
+                              SizedBox(
                                 height: Responsive.getHeight(context, 14),
                                 child: Row(
 
@@ -147,7 +149,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                       width: Responsive.getWidth(context, 13),
                                       height: Responsive.getHeight(context, 11),
                                     ),
-                                    SizedBox(width: 3),
+                                    const SizedBox(width: 3),
                                     Text(
                                       '13,000',
                                       style: TextStyle(
@@ -155,13 +157,13 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                         color: Colors.grey,
                                       ),
                                     ),
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     SvgPicture.asset(
                                       'assets/images/home/item_comment.svg',
                                       width: Responsive.getWidth(context, 13),
                                       height: Responsive.getHeight(context, 12),
                                     ),
-                                    SizedBox(width: 3),
+                                    const SizedBox(width: 3),
                                     Text(
                                       '49',
                                       style: TextStyle(

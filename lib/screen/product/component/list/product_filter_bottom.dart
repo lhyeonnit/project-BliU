@@ -11,7 +11,7 @@ class ProductFilterBottom extends StatelessWidget {
   final VoidCallback onApplyFilters;
 
   const ProductFilterBottom({
-    Key? key,
+    super.key,
     required this.ageOptions,
     required this.styleOptions,
     required this.selectedAgeOption,
@@ -20,12 +20,12 @@ class ProductFilterBottom extends StatelessWidget {
     required this.onStyleOptionSelected,
     required this.onResetFilters,
     required this.onApplyFilters,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,12 +40,12 @@ class ProductFilterBottom extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 16),
-            Text(
+            const SizedBox(height: 16),
+            const Text(
               '연령',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Wrap(
               spacing: 8.0,
               runSpacing: 4.0,
@@ -60,12 +60,12 @@ class ProductFilterBottom extends StatelessWidget {
                 );
               }).toList(),
             ),
-            SizedBox(height: 32),
-            Text(
+            const SizedBox(height: 32),
+            const Text(
               '스타일',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Wrap(
               spacing: 8.0,
               runSpacing: 4.0,
@@ -80,7 +80,7 @@ class ProductFilterBottom extends StatelessWidget {
                 );
               }).toList(),
             ),
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -89,7 +89,7 @@ class ProductFilterBottom extends StatelessWidget {
                   onPressed: () {
                     onResetFilters();
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.refresh,
                     color: Colors.black,
                   ),
@@ -103,7 +103,7 @@ class ProductFilterBottom extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey, // 버튼 배경색을 회색으로 설정
                   ),
-                  child: Text(
+                  child: const Text(
                     '상품보기',
                     style: TextStyle(
                       color: Colors.white, // 텍스트 색상을 흰색으로 설정

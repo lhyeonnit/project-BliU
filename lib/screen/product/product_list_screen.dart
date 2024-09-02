@@ -12,6 +12,8 @@ import 'dummy/filter_option.dart';
 
 
 class ProductListScreen extends StatefulWidget {
+  const ProductListScreen({super.key});
+
   @override
   _ProductListScreenState createState() => _ProductListScreenState();
 }
@@ -90,9 +92,9 @@ class _ProductListScreenState extends State<ProductListScreen>
             children: [
               Text(
                 _selectedCategory,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ),
-              Icon(Icons.expand_more, color: Colors.black),
+              const Icon(Icons.expand_more, color: Colors.black),
             ],
           ),
         ),
@@ -104,7 +106,7 @@ class _ProductListScreenState extends State<ProductListScreen>
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SearchScreen()),
+                MaterialPageRoute(builder: (context) => const SearchScreen()),
               );
             },
           ),
@@ -115,7 +117,7 @@ class _ProductListScreenState extends State<ProductListScreen>
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CartScreen()),
+                    MaterialPageRoute(builder: (context) => const CartScreen()),
                   );
                 },
               ),
@@ -123,12 +125,12 @@ class _ProductListScreenState extends State<ProductListScreen>
                 right: 4,
                 top: 20,
                 child: Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
                     color: Colors.pinkAccent,
                     shape: BoxShape.circle,
                   ),
-                  child: Text(
+                  child: const Text(
                     '2',
                     style: TextStyle(
                       color: Colors.white,
@@ -141,7 +143,7 @@ class _ProductListScreenState extends State<ProductListScreen>
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // TabBar 높이 조정
+          preferredSize: const Size.fromHeight(50.0), // TabBar 높이 조정
           child: Column(
             children: [
               Container(
@@ -151,7 +153,7 @@ class _ProductListScreenState extends State<ProductListScreen>
                       color: Colors.grey.withOpacity(0.1), // 그림자 색상 조정
                       spreadRadius: 1, // 그림자가 확산되는 반경
                       blurRadius: 5, // 그림자 블러 처리
-                      offset: Offset(0, 3), // 그림자가 생기는 위치
+                      offset: const Offset(0, 3), // 그림자가 생기는 위치
                     ),
                   ],
                 ),
@@ -167,7 +169,7 @@ class _ProductListScreenState extends State<ProductListScreen>
                 unselectedLabelColor: Colors.grey,
                 indicatorColor: Colors.black,
                 tabAlignment: TabAlignment.start,
-                tabs: [
+                tabs: const [
                   Tab(text: '전체'),
                   Tab(text: '자켓'),
                   Tab(text: '가디건/베스트'),
@@ -190,13 +192,13 @@ class _ProductListScreenState extends State<ProductListScreen>
                 onTap: _openSortBottomSheet, // 정렬 옵션 선택 창 열기
                 child: Row(
                   children: [
-                    Icon(Icons.swap_vert, size: 20),
-                    SizedBox(width: 4),
+                    const Icon(Icons.swap_vert, size: 20),
+                    const SizedBox(width: 4),
                     Text(
                       sortOptionSelected.isNotEmpty
                           ? sortOptionSelected
                           : '최신순', // 선택된 정렬 옵션 표시
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
@@ -204,9 +206,9 @@ class _ProductListScreenState extends State<ProductListScreen>
               Row(
                 children: [
                   _buildFilterButton(context, '연령'),
-                  SizedBox(width: 8), // 간격 추가
+                  const SizedBox(width: 8), // 간격 추가
                   _buildFilterButton(context, '스타일'),
-                  SizedBox(width: 8), // 간격 추가
+                  const SizedBox(width: 8), // 간격 추가
                   _buildFilterButton(context, '가격'),
                 ],
               ),
@@ -235,10 +237,10 @@ class _ProductListScreenState extends State<ProductListScreen>
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
-        side: BorderSide(
+        side: const BorderSide(
           color: Colors.grey,
         ),
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
       ),
       onPressed: () {
         ProductFilterBottom.show(
@@ -283,9 +285,9 @@ class _ProductListScreenState extends State<ProductListScreen>
         children: [
           Text(
             label,
-            style: TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.black),
           ),
-          Icon(
+          const Icon(
             Icons.arrow_drop_down,
             color: Colors.black,
           ),
@@ -304,13 +306,13 @@ class _ProductListScreenState extends State<ProductListScreen>
           // Padding for consistency
           child: Text(
             '상품 $productCount', // 상품 수 표시
-            style: TextStyle(fontSize: 14, color: Colors.black),
+            style: const TextStyle(fontSize: 14, color: Colors.black),
           ),
         ),
         Expanded(
           child: GridView.builder(
             padding: const EdgeInsets.all(8.0),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, // 두 개의 열
               crossAxisSpacing: 8.0,
               mainAxisSpacing: 8.0,
@@ -318,7 +320,7 @@ class _ProductListScreenState extends State<ProductListScreen>
             ),
             itemCount: productCount, // 실제 상품 수로 변경
             itemBuilder: (context, index) {
-              return ProductListCard();
+              return const ProductListCard();
             },
           ),
         ),

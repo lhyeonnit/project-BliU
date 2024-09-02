@@ -24,7 +24,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             color: Colors.grey.withOpacity(0.1),
             spreadRadius: 2,
             blurRadius: 6,
-            offset: Offset(0, 0), // 그림자 위치
+            offset: const Offset(0, 0), // 그림자 위치
           ),
         ],
       ),

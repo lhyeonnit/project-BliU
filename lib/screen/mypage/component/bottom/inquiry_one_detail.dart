@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class InquiryOneDetail extends StatelessWidget {
-  const InquiryOneDetail({Key? key}) : super(key: key);
+  const InquiryOneDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class InquiryOneDetail extends StatelessWidget {
             // 문의 상태와 내용
             Row(
               children: [
-                Text(
+                const Text(
                   '답변완료',
                   style: TextStyle(
                     fontSize: 16,
@@ -36,10 +36,10 @@ class InquiryOneDetail extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(width: 10,),
+                const SizedBox(width: 10,),
                 Container(
-                  margin: EdgeInsets.only(top: 3),
-                  child: Text(
+                  margin: const EdgeInsets.only(top: 3),
+                  child: const Text(
                     '2024.04.14',
                     style: TextStyle(
                       fontSize: 14,
@@ -98,7 +98,7 @@ class InquiryOneDetail extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
-                  side: BorderSide(color: Colors.grey),
+                  side: const BorderSide(color: Colors.grey),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -113,7 +113,7 @@ class InquiryOneDetail extends StatelessWidget {
 
             // 답변 내용
                 Container(
-                  child: Column(
+                  child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(

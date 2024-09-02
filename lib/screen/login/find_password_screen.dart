@@ -6,13 +6,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'new_password_screen.dart';
 
 class FindPasswordScreen extends StatefulWidget {
+  const FindPasswordScreen({super.key});
+
   @override
   _FindPasswordScreenState createState() => _FindPasswordScreenState();
 }
 
 class _FindPasswordScreenState extends State<FindPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool _isIdChecked = false;
+  final bool _isIdChecked = false;
   bool _isAllFieldsFilled = false;
 
   final TextEditingController _idController = TextEditingController();
@@ -62,24 +64,24 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       '비밀번호 찾기',
                       style: TextStyle(
                         fontSize: 24.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 3),
-                    Text(
+                    const SizedBox(height: 3),
+                    const Text(
                       '비밀번호를 찾으려면 아래 정보를 입력하세요.',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     _buildTextField('아이디 *', _idController, '아이디 입력'),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     _buildTextField('이름 *', _nameController, '이름 입력',
                         keyboardType: TextInputType.name),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Row(
                       children: [
                         Expanded(
@@ -87,7 +89,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                               '휴대폰번호 *', _phoneController, '-없이 숫자만 입력',
                               keyboardType: TextInputType.phone),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         ElevatedButton(
                           onPressed: _phoneController.text.isNotEmpty
                               ? () {
@@ -99,18 +101,18 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                                 ? Colors.grey[300]
                                 : Colors.grey[200],
                           ),
-                          child: Text('인증요청'),
+                          child: const Text('인증요청'),
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Row(
                       children: [
                         Expanded(
                           child: _buildTextField(
                               '', _authCodeController, '인증번호 입력'),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         ElevatedButton(
                           onPressed: _phoneController.text.isNotEmpty
                               ? () {
@@ -122,7 +124,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                                 ? Colors.grey[300]
                                 : Colors.grey[200],
                           ),
-                          child: Text('확인'),
+                          child: const Text('확인'),
                         ),
                       ],
                     ),
@@ -132,7 +134,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             width: double.infinity,
             child: ElevatedButton(
               onPressed: _isAllFieldsFilled
@@ -141,7 +143,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => NewPasswordScreen(),
+                    builder: (context) => const NewPasswordScreen(),
                   ),
                 );
               }
@@ -149,9 +151,9 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor:
                 _isAllFieldsFilled ? Colors.black : Colors.grey[300],
-                padding: EdgeInsets.symmetric(vertical: 16.0),
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
               ),
-              child: Text(
+              child: const Text(
                 '확인',
                 style: TextStyle(color: Colors.white),
               ),
@@ -171,15 +173,15 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label.isNotEmpty)
-          Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
-        if (label.isNotEmpty) SizedBox(height: 8),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+        if (label.isNotEmpty) const SizedBox(height: 8),
         TextField(
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType,
           decoration: InputDecoration(
             hintText: hintText,
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
             suffixIcon: suffixIcon,
           ),
         ),

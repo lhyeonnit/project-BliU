@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'inquiry_one_detail.dart';
 
 class ServiceInquiryOne extends StatefulWidget {
-  const ServiceInquiryOne({Key? key}) : super(key: key);
+  const ServiceInquiryOne({super.key});
 
   @override
   _ServiceInquiryOneState createState() => _ServiceInquiryOneState();
@@ -73,7 +73,7 @@ class _ServiceInquiryOneState extends State<ServiceInquiryOne> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InquiryOneDetail(),
+                        builder: (context) => const InquiryOneDetail(),
                       ),
                     );
                   },
@@ -91,7 +91,7 @@ class _ServiceInquiryOneState extends State<ServiceInquiryOne> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_back_ios, size: 16),
+                  icon: const Icon(Icons.arrow_back_ios, size: 16),
                   onPressed: currentPage > 1
                       ? () {
                     setState(() {
@@ -102,10 +102,10 @@ class _ServiceInquiryOneState extends State<ServiceInquiryOne> {
                 ),
                 Text(
                   '$currentPage / $totalPages',
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
                 IconButton(
-                  icon: Icon(Icons.arrow_forward_ios, size: 16),
+                  icon: const Icon(Icons.arrow_forward_ios, size: 16),
                   onPressed: currentPage < totalPages
                       ? () {
                     setState(() {

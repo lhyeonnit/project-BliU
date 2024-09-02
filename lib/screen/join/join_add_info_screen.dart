@@ -76,22 +76,22 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 '추가 정보',
                 style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 3),
-              Text(
+              const SizedBox(height: 3),
+              const Text(
                 '추가 정보를 입력해 주세요.',
                 style: TextStyle(color: Colors.grey),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildTextField('이름 *', _nameController, '이름 입력',
                   keyboardType: TextInputType.name),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
@@ -99,7 +99,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                         '휴대폰번호 *', _phoneController, '-없이 숫자만 입력',
                         keyboardType: TextInputType.phone),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   ElevatedButton(
                     onPressed: _phoneController.text.isNotEmpty
                         ? () {
@@ -111,17 +111,17 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                           ? Colors.grey[300]
                           : Colors.grey[200],
                     ),
-                    child: Text('인증요청'),
+                    child: const Text('인증요청'),
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
                     child: _buildTextField('', _authCodeController, '인증번호 입력'),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   ElevatedButton(
                     onPressed: _phoneController.text.isNotEmpty
                         ? () {
@@ -133,12 +133,12 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                           ? Colors.grey[300]
                           : Colors.grey[200],
                     ),
-                    child: Text('확인'),
+                    child: const Text('확인'),
                   ),
                 ],
               ),
-              SizedBox(height: 16),
-              Row(
+              const SizedBox(height: 16),
+              const Row(
                 children: [
                   Text('생년월일',
                       style: TextStyle(
@@ -151,7 +151,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                           fontWeight: FontWeight.bold, color: Colors.red)),
                 ],
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               GestureDetector(
                 onTap: () => _selectDate(context),
                 child: AbsorbPointer(
@@ -164,14 +164,14 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                       ''),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Image.asset(
                 'assets/images/login/coupon_banner.png',
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
-              SizedBox(height: 16),
-              Row(
+              const SizedBox(height: 16),
+              const Row(
                 children: [
                   Text('성별',
                       style: TextStyle(
@@ -184,19 +184,19 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                           fontWeight: FontWeight.bold, color: Colors.red)),
                 ],
               ), // 성별 선택 타이틀
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Row(
                 children: [
                   Expanded(
                     child: _buildGenderButton('남자'),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: _buildGenderButton('여자'),
                   ),
                 ],
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -206,7 +206,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MainPage(),
+                        builder: (context) => const MainPage(),
                       ),
                     );
                   }
@@ -214,9 +214,9 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
                     _isAllFieldsFilled ? Colors.black : Colors.grey[300],
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
                   ),
-                  child: Text(
+                  child: const Text(
                     '확인',
                     style: TextStyle(color: Colors.white),
                   ),
@@ -238,15 +238,15 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label.isNotEmpty)
-          Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
-        if (label.isNotEmpty) SizedBox(height: 8),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+        if (label.isNotEmpty) const SizedBox(height: 8),
         TextField(
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType,
           decoration: InputDecoration(
             hintText: hintText,
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
             suffixIcon: suffixIcon,
           ),
         ),
@@ -268,7 +268,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
         backgroundColor: isSelected ? Colors.pinkAccent : Colors.white,
         side: BorderSide(color: isSelected ? Colors.pinkAccent : Colors.grey),
         elevation: 0,
-        padding: EdgeInsets.symmetric(vertical: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
       ),
       child: Text(gender),
     );

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PointScreen extends StatefulWidget {
+  const PointScreen({super.key});
+
   @override
   _PointScreenState createState() => _PointScreenState();
 }
@@ -67,7 +69,7 @@ class _PointScreenState extends State<PointScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('포인트'),
+        title: const Text('포인트'),
         titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
@@ -80,13 +82,13 @@ class _PointScreenState extends State<PointScreen> {
           },
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
           child: Container(
-            color: Color(0xFFF4F4F4), // 하단 구분선 색상
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
             height: 1.0, // 구분선의 두께 설정
             child: Container(
               height: 1.0, // 그림자 부분의 높이
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     color: Color(0xFFF4F4F4),
@@ -102,14 +104,14 @@ class _PointScreenState extends State<PointScreen> {
       body: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 30.0),
+            padding: const EdgeInsets.only(top: 30.0),
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
-                  padding: EdgeInsets.all(20),
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Color(0xFFF5F9F9),
+                    color: const Color(0xFFF5F9F9),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Row(
@@ -174,7 +176,7 @@ class _PointScreenState extends State<PointScreen> {
                     },
                   ),
                 ),
-                Divider(thickness: 10, color: Color(0xFFF5F9F9)),
+                const Divider(thickness: 10, color: Color(0xFFF5F9F9)),
                 Expanded(
                   child: ListView.builder(
                     controller: _scrollController,
@@ -210,31 +212,31 @@ class _PointScreenState extends State<PointScreen> {
           Text(
             type,
             style: TextStyle(
-              color: type == '적립' ? Color(0xFFFF6192) : Color(0xFF7B7B7B),
+              color: type == '적립' ? const Color(0xFFFF6192) : const Color(0xFF7B7B7B),
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 point,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
                 date,
-                style: TextStyle(color: Color(0xFF7B7B7B)),
+                style: const TextStyle(color: Color(0xFF7B7B7B)),
               ),
             ],
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
             description,
-            style: TextStyle(color: Color(0xFF7B7B7B)),
+            style: const TextStyle(color: Color(0xFF7B7B7B)),
           ),
         ],
       ),

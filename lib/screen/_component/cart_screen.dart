@@ -6,12 +6,14 @@ import '../../utils/responsive.dart';
 import 'cart_item.dart';
 
 class CartScreen extends StatefulWidget {
+  const CartScreen({super.key});
+
   @override
   _CartScreenState createState() => _CartScreenState();
 }
 
 class _CartScreenState extends State<CartScreen> {
-  List<Map<String, dynamic>> _cartItems = [
+  final List<Map<String, dynamic>> _cartItems = [
     {
       'storeName': '타이니숲',
       'productName': '타이니숲 에스더버니 12종 상하복/원피스/티셔츠',
@@ -94,10 +96,10 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   bool _isAllSelected = false;
-  int _totalItems = 3;
+  final int _totalItems = 3;
   int _selectedItemsCount = 1;
 
   @override
@@ -124,20 +126,20 @@ class _CartScreenState extends State<CartScreen> {
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
-        title: Text("장바구니"),
+        title: const Text("장바구니"),
         titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
           child: Container(
-            color: Color(0xFFF4F4F4), // 하단 구분선 색상
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
             height: 1.0, // 구분선의 두께 설정
             child: Container(
               height: 1.0, // 그림자 부분의 높이
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     color: Color(0xFFF4F4F4),
@@ -157,13 +159,13 @@ class _CartScreenState extends State<CartScreen> {
               children: [
                 ListView(
                   controller: _scrollController,
-                  padding: EdgeInsets.only(bottom: 150), // 하단 고정 버튼 공간 확보
+                  padding: const EdgeInsets.only(bottom: 150), // 하단 고정 버튼 공간 확보
                   children: [
                     // 전체선택 및 전체삭제 UI
                     Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      decoration: BoxDecoration(
+                          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      decoration: const BoxDecoration(
                         border: Border(
                           bottom: BorderSide(color: Color(0xFFEEEEEE)),
                         ),
@@ -174,20 +176,20 @@ class _CartScreenState extends State<CartScreen> {
                           Row(
                             children: [
                               Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 height: 22,
                                 width: 22,
                                 decoration: BoxDecoration(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(6)),
+                                      const BorderRadius.all(Radius.circular(6)),
                                   border: Border.all(
                                     color: _isAllSelected
-                                        ? Color(0xFFCCCCCC)
-                                        : Color(0xFFFF6191),
+                                        ? const Color(0xFFCCCCCC)
+                                        : const Color(0xFFFF6191),
                                   ),
                                   color: _isAllSelected
                                       ? Colors.white
-                                      : Color(0xFFFF6191),
+                                      : const Color(0xFFFF6191),
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
@@ -200,7 +202,7 @@ class _CartScreenState extends State<CartScreen> {
                                   child: SvgPicture.asset(
                                     'assets/images/check01_off.svg', // 올바른 경로
                                     color: _isAllSelected
-                                        ? Color(0xFFCCCCCC)
+                                        ? const Color(0xFFCCCCCC)
                                         : Colors.white, // 체크 여부에 따라 색상 변경
                                     height: 10, // 아이콘의 높이
                                     width: 10, // 아이콘의 너비
@@ -208,7 +210,7 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Text(
@@ -235,7 +237,7 @@ class _CartScreenState extends State<CartScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
 
@@ -268,7 +270,7 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                           // 스토어명
                           Container(
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 10),
                             height: 40,
                             child: Row(
@@ -278,15 +280,15 @@ class _CartScreenState extends State<CartScreen> {
                                   height: 40,
                                   width: 40,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
+                                    borderRadius: const BorderRadius.all(
                                         Radius.circular(20)), // 사진의 모서리 둥글게 설정
                                     border: Border.all(
-                                      color: Color(0xFFDDDDDD), // 테두리 색상 설정
+                                      color: const Color(0xFFDDDDDD), // 테두리 색상 설정
                                       width: 1.0, // 테두리 두께 설정
                                     ),
                                   ),
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.all(
+                                    borderRadius: const BorderRadius.all(
                                         Radius.circular(20)), // 사진의 모서리만 둥글게 설정
                                     child: Image.asset(
                                       'assets/images/home/exhi.png',
@@ -297,7 +299,7 @@ class _CartScreenState extends State<CartScreen> {
                                 SizedBox(
                                     width: Responsive.getWidth(context, 10)),
                                 Container(
-                                  padding: EdgeInsets.symmetric(vertical: 12),
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
                                   child: Text(
                                     items.first['storeName'],
                                     style: TextStyle(
@@ -323,15 +325,15 @@ class _CartScreenState extends State<CartScreen> {
                               );
                             }).toList(),
                           ),
-                          SizedBox(height: 10.0),
+                          const SizedBox(height: 10.0),
 
                           // 배송비 및 결제금액
                           Container(
                             width: Responsive.getWidth(context, 380),
-                            padding: EdgeInsets.symmetric(vertical: 16.0),
-                            margin: EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
                             decoration: BoxDecoration(
-                              color: Color(0xFFF5F9F9),
+                              color: const Color(0xFFF5F9F9),
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Row(
@@ -341,7 +343,7 @@ class _CartScreenState extends State<CartScreen> {
                                   '배송비 $shippingCost원',
                                   style: TextStyle(
                                     fontSize: Responsive.getFont(context, 13),
-                                    color: Color(0xFF7B7B7B),
+                                    color: const Color(0xFF7B7B7B),
                                   ),
                                 ),
                                 SizedBox(
@@ -364,16 +366,16 @@ class _CartScreenState extends State<CartScreen> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 20.0),
+                          const SizedBox(height: 20.0),
 
                           // 마지막 스토어가 아닐 때만 구분선 추가
                           if (!isLastStore)
-                            Divider(thickness: 1, color: Color(0xFFEEEEEE)),
+                            const Divider(thickness: 1, color: Color(0xFFEEEEEE)),
                         ],
                       );
-                    }).toList(),
+                    }),
 
-                    Divider(thickness: 10, color: Color(0xFFF5F9F9)),
+                    const Divider(thickness: 10, color: Color(0xFFF5F9F9)),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 20),
@@ -388,7 +390,7 @@ class _CartScreenState extends State<CartScreen> {
                                   style: TextStyle(fontSize: Responsive.getFont(context, 14),)),
                             ],
                           ),
-                          SizedBox(height: 8.0),
+                          const SizedBox(height: 8.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -397,9 +399,9 @@ class _CartScreenState extends State<CartScreen> {
                                   style: TextStyle(fontSize: Responsive.getFont(context, 14),)),
                             ],
                           ),
-                          SizedBox(height: 15.0),
-                          Divider(thickness: 1, color: Color(0xFFEEEEEE)),
-                          SizedBox(height: 20.0),
+                          const SizedBox(height: 15.0),
+                          const Divider(thickness: 1, color: Color(0xFFEEEEEE)),
+                          const SizedBox(height: 20.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -423,7 +425,7 @@ class _CartScreenState extends State<CartScreen> {
 
           // 하단 고정된 결제 정보 및 주문하기 버튼
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20.0),
@@ -438,12 +440,12 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ],
             ),
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
             child: Column(
               children: [
                 // 상단의 회색 바 추가
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 17.0),
+                  margin: const EdgeInsets.symmetric(vertical: 17.0),
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
@@ -451,7 +453,7 @@ class _CartScreenState extends State<CartScreen> {
                     borderRadius: BorderRadius.circular(3.0),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 // 총 상품 금액, 총 배송비, 주문하기 버튼
@@ -466,7 +468,7 @@ class _CartScreenState extends State<CartScreen> {
                             fontSize: Responsive.getFont(context, 14))),
                   ],
                 ),
-                SizedBox(height: 15.0),
+                const SizedBox(height: 15.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -478,11 +480,11 @@ class _CartScreenState extends State<CartScreen> {
                             fontSize: Responsive.getFont(context, 14))),
                   ],
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 48),
+                    minimumSize: const Size(double.infinity, 48),
                     backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.0), // 모서리를 둥글게 설정

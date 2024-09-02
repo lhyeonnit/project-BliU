@@ -38,7 +38,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SearchScreen()),
+                MaterialPageRoute(builder: (context) => const SearchScreen()),
               );
             },
           ),
@@ -49,7 +49,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CartScreen()),
+                    MaterialPageRoute(builder: (context) => const CartScreen()),
                   );
                 },
               ),
@@ -80,7 +80,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
-              SliverToBoxAdapter(
+              const SliverToBoxAdapter(
                 child: Column(
                   children: [
                     ProductBanner(),
@@ -90,7 +90,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
             ];
           },
-          body: Column(
+          body: const Column(
             children: [
               TabBar(
                 labelColor: Colors.black,
