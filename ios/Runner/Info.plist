@@ -51,9 +51,62 @@
 		<string>This app required NSCameraUsageDescription permission</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>This app required NSMicrophoneUsageDescription permission</string>
-		<key>UIStatusBarHidden</key>
-		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<!-- 추가 -->
+        <key>CFBundleURLTypes</key>
+        <array>
+          <dict>
+          <key>CFBundleURLSchemes</key>
+          <array>
+            <!-- naver login -->
+            <string>bliunaverlogin</string>
+          </array>
+          </dict>
+        </array>
+
+        <key>LSApplicationQueriesSchemes</key>
+        <array>
+           <string>naversearchapp</string>
+           <string>naversearchthirdlogin</string>
+        </array>
+
+        <key>naverServiceAppUrlScheme</key>
+        <string>bliunaverlogin</string>
+
+        <!-- naver client_id -->
+        <key>naverConsumerKey</key>
+        <string>LM163s5LQFEAE9b2U_LU</string>
+
+        <!-- naver client_secret -->
+        <key>naverConsumerSecret</key>
+        <string>Xjk0N97Yrz</string>
+
+        <key>naverServiceAppName</key>
+        <string>Bliu</string>
+
+        <!-- http allows configurations -->
+        <key>NSAppTransportSecurity</key>
+        <dict>
+           <key>NSAllowsArbitraryLoads</key>
+           <true/>
+           <key>NSExceptionDomains</key>
+           <dict>
+              <key>naver.com</key>
+              <dict>
+                 <key>NSExceptionRequiresForwardSecrecy</key>
+                 <false/>
+                 <key>NSIncludesSubdomains</key>
+                 <true/>
+              </dict>
+              <key>naver.net</key>
+              <dict>
+                 <key>NSExceptionRequiresForwardSecrecy</key>
+                 <false/>
+                 <key>NSIncludesSubdomains</key>
+                 <true/>
+              </dict>
+            </dict>
+        </dict>
 	</dict>
 </plist>
