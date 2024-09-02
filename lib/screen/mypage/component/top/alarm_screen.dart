@@ -2,7 +2,6 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/alarm_event.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/screen/mypage/component/top/alarm_notice.dart';
-import 'package:BliU/widget/top_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -14,7 +13,7 @@ class AlarmScreen extends StatefulWidget {
   State<StatefulWidget> createState() => AlarmScreenState();
 }
 
-class AlarmScreenState extends State<AlarmScreen> with TopWidgetDelegate {
+class AlarmScreenState extends State<AlarmScreen> {
   final List<Widget> _viewArr = [];
   final ScrollController _scrollController = ScrollController();
 

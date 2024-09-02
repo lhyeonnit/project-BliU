@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../utils/responsive.dart';
+import '../../../product/component/detail/coupon_card.dart';
+import '../../../product/dummy/coupon_list.dart';
 
 class MyCouponScreen extends StatefulWidget {
   const MyCouponScreen({super.key});
@@ -12,7 +14,7 @@ class MyCouponScreen extends StatefulWidget {
 
 class _MyCouponScreenState extends State<MyCouponScreen> {
   List<String> categories = ['사용가능', '완료/만료'];
-
+  List<bool> couponStatus = [false, false, false];
   int selectedCategoryIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -52,67 +54,75 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
           ),
         ),
       ),
-      body: Container(
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20.0),
         child: Column(
-          children: [
-            Container(
-              height: 40,
-              padding: const EdgeInsets.symmetric(horizontal: 13.0),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  final bool isSelected = selectedCategoryIndex == index;
+            children: [
+              Container(
+                height: 40,
+                padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: categories.length,
+                  itemBuilder: (context, index) {
+                    final bool isSelected = selectedCategoryIndex == index;
 
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                    child: FilterChip(
-                      label: Text(
-                        categories[index],
-                        style: TextStyle(
-                          color:
-                              isSelected ? Colors.pink : Colors.black, // 텍스트 색상
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                      child: FilterChip(
+                        label: Text(
+                          categories[index],
+                          style: TextStyle(
+                            color:
+                                isSelected ? Colors.pink : Colors.black, // 텍스트 색상
+                          ),
                         ),
-                      ),
-                      selected: isSelected,
-                      onSelected: (bool selected) {
-                        setState(() {
-                          selectedCategoryIndex = index;
-                        });
-                      },
-                      backgroundColor: Colors.white,
-                      selectedColor: Colors.white,
-                      shape: StadiumBorder(
-                        side: BorderSide(
-                          color: isSelected ? Colors.pink : Colors.grey,
-                          // 테두리 색상
-                          width: 1.0,
+                        selected: isSelected,
+                        onSelected: (bool selected) {
+                          setState(() {
+                            selectedCategoryIndex = index;
+                          });
+                        },
+                        backgroundColor: Colors.white,
+                        selectedColor: Colors.white,
+                        shape: StadiumBorder(
+                          side: BorderSide(
+                            color: isSelected ? Colors.pink : Colors.grey,
+                            // 테두리 색상
+                            width: 1.0,
+                          ),
                         ),
+                        showCheckmark: false, // 체크 표시 없애기
                       ),
-                      showCheckmark: false, // 체크 표시 없애기
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              width: double.infinity,
-              color: const Color(0xFFF5F9F9), // 색상 적용
-              height: 10,
-            ),
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                // itemCount: getFilteredFAQData().length,
-                itemBuilder: (context, index) {
-                  return Container();
-                },
-              ),
-            ),
-          ],
-        ),
+              const SizedBox(height: 20),
+              // Expanded(
+              //   child: ListView.builder(
+              //     itemCount: couponData.length,
+              //     itemBuilder: (context, index) {
+              //       final coupon = couponData[index];
+              //       return CouponCard(
+              //         discount: coupon["discount"]!,
+              //         title: coupon["title"]!,
+              //         expiryDate: coupon["expiryDate"]!,
+              //         discountDetails: coupon["discountDetails"]!,
+              //         isDownloaded: couponStatus[index], // 상태 전달
+              //         onDownload: () {
+              //           setState(() {
+              //             couponStatus[index] = true; // 쿠폰 상태 업데이트
+              //           });
+              //         },
+              //         couponKey: index.toString(), // 고유한 키 전달
+              //       );
+              //     },
+              //   ),
+              // ),
+            ],
+          ),
       ),
-    );
+      );
   }
 }
