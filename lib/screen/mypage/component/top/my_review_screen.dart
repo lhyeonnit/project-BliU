@@ -39,10 +39,23 @@ class MyReviewScreen extends StatelessWidget {
                   ),
                 ],
               ),
-
             ),
           ),
         ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            margin: EdgeInsets.only(top: 20, bottom: 15),
+            child: Text(
+              '작성한 리뷰 4',
+              style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+            ),
+          ),
+          Divider(height: 1,color: Color(0xFFEEEEEE),),
+        ],
       ),
     );
   }
