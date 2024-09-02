@@ -1,6 +1,5 @@
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/utils/responsive.dart';
-import 'package:BliU/widget/top_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -14,8 +13,7 @@ class ExhibitionScreen extends StatefulWidget {
   State<StatefulWidget> createState() => ExhibitionScreenState();
 }
 
-class ExhibitionScreenState extends State<ExhibitionScreen>
-    with TopWidgetDelegate {
+class ExhibitionScreenState extends State<ExhibitionScreen> {
   @override
   void initState() {
     super.initState();
