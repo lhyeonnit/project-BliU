@@ -1,4 +1,4 @@
-import 'package:BliU/repository/default_repository.dart';
+import 'package:BliU/api/default_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,7 +33,7 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
       'pg': pg.toString(),
     };
     try {
-      final response = repository.reqPost(
+      final response = await repository.reqPost(
           url: Constant.apiStoreBookMarkUrl, data: requestData);
 
       if (response == 200 && requestData['result'] == true) {

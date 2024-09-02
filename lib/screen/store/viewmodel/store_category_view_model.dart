@@ -1,9 +1,8 @@
+import 'package:BliU/api/default_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:BliU/data/dto/store_favorite_product_data.dart';
-import 'package:BliU/repository/store_repository.dart';
 
 import '../../../const/constant.dart';
-import '../../../repository/default_repository.dart';
 
 // 모델 클래스 정의 (데이터 상태를 관리하기 위한 DTO)
 class StoreCategoryModel {
@@ -65,7 +64,7 @@ class StoreCategoryViewModel extends StateNotifier<StoreCategoryModel?> {
       'sort': sort.toString(),
     };
     try {
-      final response = repository.reqPost(
+      final response = await repository.reqPost(
           url: Constant.apiStoreProductsUrl, data: requestData);
       if (response == 200) {
         if (requestData is List) {
