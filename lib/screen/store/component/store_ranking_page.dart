@@ -93,8 +93,10 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                         child: OutlinedButton(
                           onPressed: _showAgeGroupSelection,
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.white, // 배경 흰색
-                            side: const BorderSide(color: Color(0xFFDDDDDD)), // 테두리 회색
+                            backgroundColor: Colors.white,
+                            // 배경 흰색
+                            side: const BorderSide(color: Color(0xFFDDDDDD)),
+                            // 테두리 회색
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(19),
                             ),
@@ -110,7 +112,8 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     style: TextStyle(
-                                        fontSize: Responsive.getFont(context, 14),
+                                        fontSize:
+                                            Responsive.getFont(context, 14),
                                         color: Colors.black), // 글자색 검은색
                                   ),
                                 ),
@@ -129,8 +132,10 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                         child: OutlinedButton(
                           onPressed: _showStyleSelection,
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.white, // 배경 흰색
-                            side: const BorderSide(color: Color(0xFFDDDDDD)), // 테두리 회색
+                            backgroundColor: Colors.white,
+                            // 배경 흰색
+                            side: const BorderSide(color: Color(0xFFDDDDDD)),
+                            // 테두리 회색
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(19),
                             ),
@@ -165,7 +170,6 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                 return Padding(
                   padding: const EdgeInsets.only(left: 16.0),
                   child: Container(
-                    height: 184,
                     margin: const EdgeInsets.only(top: 30),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,8 +184,8 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const StoreDetailScreen(
-                                    // Pass the store data to the detail screen
-                                  ),
+                                      // Pass the store data to the detail screen
+                                      ),
                                 ),
                               );
                             },
@@ -194,60 +198,75 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                     child: Text(
                                       '${stores[storeIndex]['rank']}',
                                       style: TextStyle(
-                                          fontSize: Responsive.getFont(context, 24),
+                                          fontSize:
+                                              Responsive.getFont(context, 24),
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 40,
-                                        width: 40,
-                                        margin: const EdgeInsets.only(right: 10),
-                                        decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(20)), // 사진의 모서리 둥글게 설정
-                                          border: Border.all(
-                                            color: const Color(0xFFDDDDDD), // 테두리 색상 설정
-                                            width: 1.0, // 테두리 두께 설정
+                                Flexible(
+                                  flex: 1,
+                                  child: Container(
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          height: 40,
+                                          width: 40,
+                                          margin:
+                                              const EdgeInsets.only(right: 10),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(20)),
+                                            // 사진의 모서리 둥글게 설정
+                                            border: Border.all(
+                                              color: const Color(0xFFDDDDDD),
+                                              // 테두리 색상 설정
+                                              width: 1.0, // 테두리 두께 설정
+                                            ),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(20)),
+                                            // 사진의 모서리만 둥글게 설정
+                                            child: Image.asset(
+                                              'assets/images/home/exhi.png',
+                                              fit: BoxFit.contain,
+                                            ),
                                           ),
                                         ),
-                                        child: ClipRRect(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(20)), // 사진의 모서리만 둥글게 설정
-                                          child: Image.asset(
-                                            'assets/images/home/exhi.png',
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                        Container(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 stores[storeIndex]['name'],
                                                 style: TextStyle(
-                                                  fontSize: Responsive.getFont(context, 14),
+                                                  fontSize: Responsive.getFont(
+                                                      context, 14),
                                                 ),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                               Text(
-                                                stores[storeIndex]['description'],
+                                                stores[storeIndex]
+                                                    ['description'],
                                                 style: TextStyle(
-                                                    fontSize: Responsive.getFont(context, 13),
-                                                    color: const Color(0xFF7B7B7B)),
+                                                    fontSize:
+                                                        Responsive.getFont(
+                                                            context, 13),
+                                                    color: const Color(
+                                                        0xFF7B7B7B)),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ],
                                           ),
                                         ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                SizedBox(width: Responsive.getWidth(context, 75)),
                                 Container(
                                   margin: const EdgeInsets.only(top: 3),
                                   child: Column(
@@ -256,12 +275,14 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                         onTap: () {
                                           setState(() {
                                             isBookmarked[storeIndex] =
-                                            !isBookmarked[storeIndex];
+                                                !isBookmarked[storeIndex];
                                           });
                                         },
                                         child: SizedBox(
-                                          width: Responsive.getWidth(context, 14),
-                                          height: Responsive.getHeight(context, 17),
+                                          width:
+                                              Responsive.getWidth(context, 14),
+                                          height:
+                                              Responsive.getHeight(context, 17),
                                           child: SvgPicture.asset(
                                             'assets/images/store/book_mark.svg',
                                             color: isBookmarked[storeIndex]
@@ -271,12 +292,16 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(height: Responsive.getHeight(context, 2),),
+                                      SizedBox(
+                                        height:
+                                            Responsive.getHeight(context, 2),
+                                      ),
                                       Text(
                                         stores[storeIndex]['scrapCount']!,
                                         style: TextStyle(
                                           color: const Color(0xFFA4A4A4),
-                                          fontSize: Responsive.getFont(context, 12),
+                                          fontSize:
+                                              Responsive.getFont(context, 12),
                                         ),
                                       ),
                                     ],
@@ -295,7 +320,8 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const ProductDetailScreen(),
+                                builder: (context) =>
+                                    const ProductDetailScreen(),
                               ),
                             );
                           },
@@ -307,9 +333,11 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                               itemBuilder: (context, imageIndex) {
                                 return Container(
                                   width: 120,
+                                  height: 120,
                                   margin: const EdgeInsets.only(right: 5),
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(6), // 모서리 둥글게 설정
+                                    borderRadius: BorderRadius.circular(6),
+                                    // 모서리 둥글게 설정
                                     child: Image.asset(
                                       stores[storeIndex]['images'][imageIndex],
                                       fit: BoxFit.cover,
