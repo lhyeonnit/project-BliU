@@ -74,8 +74,7 @@ class StoreCategoryViewModel extends StateNotifier<StoreCategoryModel?> {
               .toList();
 
           state = state?.copyWith(productDetail: storeFavoriteProductList);
-        } else if (requestData is Map<String, dynamic> &&
-            requestData['result'] == true) {
+        } else if (requestData is Map<String, dynamic>) {
           // 응답이 Map<String, dynamic>인 경우 처리
           final Map<String, dynamic> storeFavoriteProductListJson = requestData;
 

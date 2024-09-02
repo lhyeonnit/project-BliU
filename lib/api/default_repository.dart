@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:BliU/api/dio_interceptor.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:dio/dio.dart';
@@ -12,12 +14,12 @@ class DefaultRepository {
       connectTimeout: const Duration(milliseconds: 10000),
       receiveTimeout: const Duration(milliseconds: 10000),
       sendTimeout: const Duration(milliseconds: 10000),
-      headers: {
-        'Authorization': 'Bearer bground_bliu_dmonter_20240729'
-      },
+      // headers: {},
     );
 
     _defaultDio = Dio(options);
+    //_defaultDio.options.contentType = Headers.formUrlEncodedContentType;
+    //_defaultDio.options.headers['Authorization'] = 'Bearer bground_bliu_dmonter_20240729'; // 실제 인증 토큰으로 교체
     _defaultDio.interceptors.add(DioInterceptor());
 
     _multiPartDio = Dio(options);
