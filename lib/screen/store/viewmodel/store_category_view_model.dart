@@ -1,8 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:BliU/data/dto/store_favorite_product_data.dart';
 import 'package:BliU/repository/store_repository.dart';
-import 'package:BliU/data/response_dto.dart';
 
+import '../../../const/constant.dart';
+import '../../../repository/default_repository.dart';
 
 // 모델 클래스 정의 (데이터 상태를 관리하기 위한 DTO)
 class StoreCategoryModel {
@@ -10,29 +11,24 @@ class StoreCategoryModel {
   final ProductListDTO? productListDTO;
   final List<ProductDTO>? productDetail;
 
-
   StoreCategoryModel({
     required this.storeFavoriteProductResponseDTO,
     required this.productListDTO,
     required this.productDetail,
-
   });
 
-  
   // copyWith 메서드를 통해 상태 복사 및 수정
   StoreCategoryModel copyWith({
     StoreFavoriteProductResponseDTO? storeFavoriteProductResponseDTO,
     ProductListDTO? productListDTO,
     List<ProductDTO>? productDetail,
     List<String>? selectedAgeGroups,
-
   }) {
     return StoreCategoryModel(
-      storeFavoriteProductResponseDTO:
-      storeFavoriteProductResponseDTO ?? this.storeFavoriteProductResponseDTO,
+      storeFavoriteProductResponseDTO: storeFavoriteProductResponseDTO ??
+          this.storeFavoriteProductResponseDTO,
       productListDTO: productListDTO ?? this.productListDTO,
       productDetail: productDetail ?? this.productDetail,
-
     );
   }
 }
@@ -40,6 +36,7 @@ class StoreCategoryModel {
 // ViewModel 정의
 class StoreCategoryViewModel extends StateNotifier<StoreCategoryModel?> {
   final Ref ref;
+  final repository = DefaultRepository();
 
   StoreCategoryViewModel(super.state, this.ref) {
     notifyInit(); // ViewModel 초기화 시 데이터를 가져옴
@@ -58,113 +55,84 @@ class StoreCategoryViewModel extends StateNotifier<StoreCategoryModel?> {
       storeFavoriteProductResponseDTO: null,
       productListDTO: null,
       productDetail: [],
-
     );
-
+    Map<String, dynamic> requestData = {
+      'mt_idx': mtIdx.toString(),
+      'pg': pg.toString(),
+      'search_txt': searchTxt,
+      'category': category,
+      'age': age,
+      'sort': sort.toString(),
+    };
     try {
-      // API 호출
-      final ResponseDTO responseDTO = await StoreRepository()
-          .fetchStoreProducts(
-        mtIdx,
-        pg,
-        searchTxt,
-        category,
-        age,
-        sort,
-      );
+      final response = repository.reqPost(
+          url: Constant.apiStoreProductsUrl, data: requestData);
+      if (response == 200) {
+        if (requestData is List) {
+          // 응답이 List 타입인 경우, List<ProductDTO>로 처리
+          List<ProductDTO> storeFavoriteProductList = (requestData as List)
+              .map((item) => ProductDTO.fromJson(item as Map<String, dynamic>))
+              .toList();
 
-      if (responseDTO.status == 200 && responseDTO.response != null) {
-        if (responseDTO.response is List<ProductDTO>) {
-          // 응답이 List<ProductDTO>인 경우 처리
-          List<ProductDTO> productList = responseDTO.response as List<
-              ProductDTO>;
-
-          state = state?.copyWith(
-            productDetail: productList,
-          );
-        } else if (responseDTO.response is Map<String, dynamic>) {
+          state = state?.copyWith(productDetail: storeFavoriteProductList);
+        } else if (requestData is Map<String, dynamic> &&
+            requestData['result'] == true) {
           // 응답이 Map<String, dynamic>인 경우 처리
-          StoreFavoriteProductResponseDTO storeFavoriteProductResponseDTO =
-          StoreFavoriteProductResponseDTO.fromJson(responseDTO.response);
-          ProductListDTO productListDTO = storeFavoriteProductResponseDTO.data;
+          final Map<String, dynamic> storeFavoriteProductListJson = requestData;
 
-          state = state?.copyWith(
-            storeFavoriteProductResponseDTO: storeFavoriteProductResponseDTO,
-            productDetail: productListDTO.list,
-          );
-        } else {
-          throw Exception(
-              'Unexpected response type: ${responseDTO.response.runtimeType}');
+          if (storeFavoriteProductListJson.containsKey('data') &&
+              storeFavoriteProductListJson['data'].containsKey('list')) {
+            final List<dynamic> listJson =
+                storeFavoriteProductListJson['data']['list'];
+            StoreFavoriteProductResponseDTO storeFavoriteProductResponseDTO =
+                StoreFavoriteProductResponseDTO.fromJson(requestData);
+            // ProductDTO 리스트로 변환
+            List<ProductDTO> storeFavoriteProductList = listJson.map((item) {
+              return ProductDTO.fromJson(item as Map<String, dynamic>);
+            }).toList();
+
+            state = state?.copyWith(
+                storeFavoriteProductResponseDTO:
+                    storeFavoriteProductResponseDTO,
+                productDetail: storeFavoriteProductList);
+          } else {
+            throw Exception('Failed to load products');
+          }
         }
-      } else {
-        throw Exception('Failed to load products');
       }
     } catch (e) {
       print("Error loading products: $e");
     }
   }
 
-    Future<void> loadMore({
-    required int mtIdx,
-    required int pg,
-    String searchTxt = '',
-    String category = 'all',
-    String age = 'all',
-    int sort = 2,
-  }) async {
-    try {
-      // 추가 데이터 로드
-      final ResponseDTO responseDTO = await StoreRepository().fetchStoreProducts(
-        mtIdx,
-        pg,
-        searchTxt,
-        category,
-        age,
-        sort,
-      );
-
-      if (responseDTO.status == 200 && responseDTO.response != null) {
-        ProductListDTO newProductListDTO = ProductListDTO.fromJson(responseDTO.response['data']);
-
-        // 상태 업데이트 (기존 데이터에 새 데이터 추가)
-        state = state?.copyWith(
-          productDetail: [...state!.productDetail!, ...newProductListDTO.list],
-        );
-      } else {
-        throw Exception('Failed to load more products');
-      }
-    } catch (e) {
-      print("Error loading more products: $e");
-    }
-  }
-
-  // // 연령대 선택 BottomSheet 호출 및 상태 업데이트
-  // void showAgeGroupSelection(BuildContext context) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     backgroundColor: Colors.white,
-  //     builder: (BuildContext context) {
-  //       return StoreAgeGroupSelection(
-  //         selectedAgeGroups: state?.selectedAgeGroups ?? [],
-  //         onSelectionChanged: (List<String> newSelection) {
-  //           state = state?.copyWith(selectedAgeGroups: newSelection);
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
-  //
-  // // 선택된 연령대 텍스트 반환
-  // String getSelectedAgeGroupsText() {
-  //   if (state?.selectedAgeGroups.isEmpty ?? true) {
-  //     return '연령';
-  //   } else {
-  //     return state?.selectedAgeGroups.join(', ') ?? '연령';
-  //   }
-  // }
+// // 연령대 선택 BottomSheet 호출 및 상태 업데이트
+// void showAgeGroupSelection(BuildContext context) {
+//   showModalBottomSheet(
+//     context: context,
+//     backgroundColor: Colors.white,
+//     builder: (BuildContext context) {
+//       return StoreAgeGroupSelection(
+//         selectedAgeGroups: state?.selectedAgeGroups ?? [],
+//         onSelectionChanged: (List<String> newSelection) {
+//           state = state?.copyWith(selectedAgeGroups: newSelection);
+//         },
+//       );
+//     },
+//   );
+// }
+//
+// // 선택된 연령대 텍스트 반환
+// String getSelectedAgeGroupsText() {
+//   if (state?.selectedAgeGroups.isEmpty ?? true) {
+//     return '연령';
+//   } else {
+//     return state?.selectedAgeGroups.join(', ') ?? '연령';
+//   }
+// }
 }
 
 // ViewModel Provider 정의
-final storeCategoryViewModelProvider = StateNotifierProvider<StoreCategoryViewModel, StoreCategoryModel?>((ref) {
+final storeCategoryViewModelProvider =
+    StateNotifierProvider<StoreCategoryViewModel, StoreCategoryModel?>((ref) {
   return StoreCategoryViewModel(null, ref);
 });
