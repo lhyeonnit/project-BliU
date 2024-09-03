@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../_component/coupon_receive_screen.dart';
+import '../../coupon_receive_screen.dart';
 
 class ProductInfoTitle extends StatelessWidget {
   const ProductInfoTitle({super.key});
