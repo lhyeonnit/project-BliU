@@ -14,8 +14,8 @@ import 'package:flutter_svg/svg.dart';
 
 import 'component/bottom/notice_screen.dart';
 
-class MyPage extends StatelessWidget {
-  const MyPage({super.key});
+class MyScreen extends StatelessWidget {
+  const MyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

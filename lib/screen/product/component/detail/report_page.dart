@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ReportScreen extends StatefulWidget {
-  const ReportScreen({super.key});
+class ReportPage extends StatefulWidget {
+  const ReportPage({super.key});
 
   @override
-  _ReportScreenState createState() => _ReportScreenState();
+  _ReportPageState createState() => _ReportPageState();
 }
 
-class _ReportScreenState extends State<ReportScreen> {
+class _ReportPageState extends State<ReportPage> {
   int? _selectedReason;
   final TextEditingController _controller = TextEditingController();
   bool _isReported = false;

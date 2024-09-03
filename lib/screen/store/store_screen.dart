@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 
 import '../../utils/responsive.dart';
 
-class StorePage extends StatefulWidget {
-  const StorePage({super.key});
+class StoreScreen extends StatefulWidget {
+  const StoreScreen({super.key});
 
   @override
-  _StorePageState createState() => _StorePageState();
+  _StoreScreenState createState() => _StoreScreenState();
 }
 
-class _StorePageState extends State<StorePage>
+class _StoreScreenState extends State<StoreScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 

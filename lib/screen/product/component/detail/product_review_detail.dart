@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'report_screen.dart';
+import 'report_page.dart';
 
 class ProductReviewDetail extends StatefulWidget {
   const ProductReviewDetail({super.key});
@@ -153,7 +153,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
                   // 신고 버튼 클릭시 동작
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ReportScreen()),
+                    MaterialPageRoute(builder: (context) => const ReportPage()),
                   );
                 },
                 child: const Text(

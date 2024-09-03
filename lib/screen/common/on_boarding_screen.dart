@@ -1,4 +1,4 @@
-import 'package:BliU/screen/main_page.dart';
+import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -103,7 +103,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const MainPage(),
+                                    builder: (context) => const MainScreen(),
                                   ),
                                 );
                               },

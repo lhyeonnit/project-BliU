@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../main_page.dart';
+import '../main_screen.dart';
 
 
 class JoinAddInfoScreen extends StatefulWidget {
@@ -206,7 +206,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const MainPage(),
+                        builder: (context) => const MainScreen(),
                       ),
                     );
                   }
