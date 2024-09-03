@@ -23,7 +23,7 @@ class StoreCategoryItem extends ConsumerWidget {
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 12.0,
-          childAspectRatio: 0.55,
+          childAspectRatio: 0.5,
         ),
         physics: const NeverScrollableScrollPhysics(),
         itemCount: model.productList!.length,
@@ -46,8 +46,8 @@ class StoreCategoryItem extends ConsumerWidget {
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
                       child: Image.network(
                         product.ptImg ?? "",
-                        fit: BoxFit.contain,
-                        height: Responsive.getHeight(context, 184),
+                        fit: BoxFit.cover,
+                        height: 184,
                         width: double.infinity,
                         errorBuilder: (context, error, stackTrace) =>
                             Image.asset('assets/images/home/exhi.png'),

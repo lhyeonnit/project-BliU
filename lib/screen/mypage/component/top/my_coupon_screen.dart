@@ -1,17 +1,11 @@
 import 'package:BliU/screen/mypage/component/top/my_coupon_card.dart';
-import 'package:BliU/screen/product/component/detail/coupon_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../utils/responsive.dart';
 
 
-class MyCouponScreen extends StatefulWidget {
-  const MyCouponScreen({super.key});
-
-  @override
-  State<MyCouponScreen> createState() => _MyCouponScreenState();
-}
 const List<Map<String, String>> couponData = [
   {
     "discount": "10%",
@@ -32,10 +26,58 @@ const List<Map<String, String>> couponData = [
     "discountDetails": "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
   },
 ];
+
+class MyCouponScreen extends StatefulWidget {
+  const MyCouponScreen({super.key});
+
+  @override
+  State<MyCouponScreen> createState() => _MyCouponScreenState();
+}
+
 class _MyCouponScreenState extends State<MyCouponScreen> {
   List<String> categories = ['사용가능', '완료/만료'];
-  List<bool> couponStatus = [false, false, false];
   int selectedCategoryIndex = 0;
+  // List<couponData> availableCoupons = [];
+  // List<couponData> issuedCoupons = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // _filterCoupons(); // 쿠폰 필터링 로직을 초기화 시점에서 호출
+  }
+
+  // Future<void> _filterCoupons() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //
+  //   setState(() {
+  //     availableCoupons = couponData.map((data) {
+  //       return CouponData(
+  //         discount: data["discount"]!,
+  //         title: data["title"]!,
+  //         expiryDate: data["expiryDate"]!,
+  //         discountDetails: data["discountDetails"]!,
+  //         couponKey: data["title"]!, // 제목을 키로 사용
+  //       );
+  //     }).where((coupon) {
+  //       bool? isDownloaded = prefs.getBool(coupon.couponKey);
+  //       return !(isDownloaded ?? false);
+  //     }).toList();
+  //
+  //     issuedCoupons = couponData.map((data) {
+  //       return CouponData(
+  //         discount: data["discount"]!,
+  //         title: data["title"]!,
+  //         expiryDate: data["expiryDate"]!,
+  //         discountDetails: data["discountDetails"]!,
+  //         couponKey: data["title"]!, // 제목을 키로 사용
+  //       );
+  //     }).where((coupon) {
+  //       bool? isDownloaded = prefs.getBool(coupon.couponKey);
+  //       return isDownloaded == true;
+  //     }).toList();
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,80 +120,85 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
         padding: const EdgeInsets.only(top: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 40,
-                padding: const EdgeInsets.symmetric(horizontal: 13.0),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    final bool isSelected = selectedCategoryIndex == index;
+          children: [
+            Container(
+              height: 40,
+              padding: const EdgeInsets.symmetric(horizontal: 13.0),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final bool isSelected = selectedCategoryIndex == index;
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                      child: FilterChip(
-                        label: Text(
-                          categories[index],
-                          style: TextStyle(
-                            color:
-                                isSelected ? Colors.pink : Colors.black, // 텍스트 색상
-                          ),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: FilterChip(
+                      label: Text(
+                        categories[index],
+                        style: TextStyle(
+                          color: isSelected ? Colors.pink : Colors.black, // 텍스트 색상
                         ),
-                        selected: isSelected,
-                        onSelected: (bool selected) {
-                          setState(() {
-                            selectedCategoryIndex = index;
-                          });
-                        },
-                        backgroundColor: Colors.white,
-                        selectedColor: Colors.white,
-                        shape: StadiumBorder(
-                          side: BorderSide(
-                            color: isSelected ? Colors.pink : Colors.grey,
-                            // 테두리 색상
-                            width: 1.0,
-                          ),
+                      ),
+                      selected: isSelected,
+                      onSelected: (bool selected) {
+                        setState(() {
+                          selectedCategoryIndex = index;
+                        });
+                      },
+                      backgroundColor: Colors.white,
+                      selectedColor: Colors.white,
+                      shape: StadiumBorder(
+                        side: BorderSide(
+                          color: isSelected ? Colors.pink : Colors.grey,
+                          // 테두리 색상
+                          width: 1.0,
                         ),
-                        showCheckmark: false, // 체크 표시 없애기
                       ),
-                    );
-                  },
-                ),
+                      showCheckmark: false, // 체크 표시 없애기
+                    ),
+                  );
+                },
               ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text('쿠폰 ${couponData.length}'),
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: couponData.length,
-                  itemBuilder: (context, index) {
-                    final coupon = couponData[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: MyCouponCard(
-                        discount: coupon["discount"]!,
-                        title: coupon["title"]!,
-                        expiryDate: coupon["expiryDate"]!,
-                        discountDetails: coupon["discountDetails"]!,
-                        isDownloaded: couponStatus[index], // 상태 전달
-                        onDownload: () {
-                          setState(() {
-                            couponStatus[index] = true; // 쿠폰 상태 업데이트
-                          });
-                        },
-                        couponKey: index.toString(), // 고유한 키 전달
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 20),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            //   child: Text(
+            //       '쿠폰 ${selectedCategoryIndex == 0 ? availableCoupons.length : issuedCoupons.length}'),
+            // ),
+            const SizedBox(height: 10),
+            // Expanded(
+            //   child: ListView.builder(
+            //     itemCount: selectedCategoryIndex == 0
+            //         ? availableCoupons.length
+            //         : issuedCoupons.length,
+            //     itemBuilder: (context, index) {
+            //       final coupon = selectedCategoryIndex == 0
+            //           ? availableCoupons[index]
+            //           : issuedCoupons[index];
+            //       return Padding(
+            //         padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            //         child: MyCouponCard(
+            //           discount: coupon.discount,
+            //           title: coupon.title,
+            //           expiryDate: coupon.expiryDate,
+            //           discountDetails: coupon.discountDetails,
+            //           isDownloaded: selectedCategoryIndex == 1, // 상태 전달
+            //           onDownload: () {
+            //             setState(() {
+            //               availableCoupons.removeAt(index);
+            //               _filterCoupons(); // 쿠폰 리스트 업데이트
+            //             });
+            //           },
+            //           couponKey: coupon.couponKey, // 고유한 키 전달
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
+          ],
+        ),
       ),
-      );
+    );
   }
 }

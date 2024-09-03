@@ -1,27 +1,28 @@
+import 'package:BliU/data/coupon_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyCouponCard extends StatefulWidget {
-
   final String discount;
   final String title;
   final String expiryDate;
   final String discountDetails;
-  final String couponKey; // 쿠폰을 구분하기 위한 키
+  final String couponKey;
   final bool isDownloaded;
   final VoidCallback onDownload;
 
-  const MyCouponCard({super.key,
+  const MyCouponCard({
+    Key? key,
     required this.discount,
     required this.title,
     required this.expiryDate,
     required this.discountDetails,
     required this.couponKey,
-    required this.isDownloaded,  // 이 부분 추가
+    required this.isDownloaded,
     required this.onDownload,
-  });
+  }) : super(key: key);
 
   @override
   _MyCouponCardState createState() => _MyCouponCardState();
@@ -33,13 +34,12 @@ class _MyCouponCardState extends State<MyCouponCard> {
   @override
   void initState() {
     super.initState();
-    _loadDownloadStatus(); // 쿠폰 발급 상태를 로드
+    _loadDownloadStatus();
   }
 
-  // 쿠폰 발급 상태를 로드하는 함수
   Future<void> _loadDownloadStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? downloaded = prefs.getBool(widget.couponKey); // 쿠폰 발급 상태 불러오기
+    bool? downloaded = prefs.getBool(widget.couponKey);
     if (downloaded != null && downloaded == true) {
       setState(() {
         isDownloaded = true;
@@ -47,38 +47,39 @@ class _MyCouponCardState extends State<MyCouponCard> {
     }
   }
 
-  // 쿠폰 발급 상태를 저장하는 함수
   Future<void> _saveDownloadStatus(bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(widget.couponKey, value); // 쿠폰 발급 상태 저장
+    await prefs.setBool(widget.couponKey, value);
   }
 
-  // 다운로드 클릭 이벤트 처리
   void _handleDownload() {
     setState(() {
       isDownloaded = true;
     });
-    _saveDownloadStatus(true); // 상태 저장
+    _saveDownloadStatus(true);
+    widget.onDownload(); // 발급 시 동작 추가
   }
 
   @override
   Widget build(BuildContext context) {
+    return isDownloaded && widget.isDownloaded
+        ? Container() // 발급 완료된 쿠폰은 사용 가능 목록에서 숨김
+        : buildCouponCard(context);
+  }
 
-    return Card(
-      color: Colors.white,
+  Widget buildCouponCard(BuildContext context) {
+    return Container(
       margin: const EdgeInsets.only(bottom: 15.0),
-      shape: RoundedRectangleBorder(
+      decoration: BoxDecoration(
+        border: Border.all(style: BorderStyle.solid, color: Color(0xFFDDDDDD)),
         borderRadius: BorderRadius.circular(12.0),
-        side: BorderSide(color: Color(0xFFDDDDDD),
-          style: BorderStyle.none
-        ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
-        child: IntrinsicHeight(
-          child: Row(
-            children: [
-              Expanded(
+      child: IntrinsicHeight(
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -89,7 +90,7 @@ class _MyCouponCardState extends State<MyCouponCard> {
                           style: TextStyle(
                             fontSize: Responsive.getFont(context, 16),
                             fontWeight: FontWeight.bold,
-                            color: isDownloaded ?  Color(0xFFA4A4A4) : Color(0xFFFF6192),
+                            color: isDownloaded ? Color(0xFFA4A4A4) : Color(0xFFFF6192),
                           ),
                         ),
                         Padding(
@@ -118,14 +119,20 @@ class _MyCouponCardState extends State<MyCouponCard> {
                     Text(
                       widget.discountDetails,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: Responsive.getFont(context, 12),
                         color: Color(0xFFA4A4A4),
                       ),
                     ),
                   ],
                 ),
               ),
-              Column(
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                border: Border(left: BorderSide(color: Color(0xFFDDDDDD))),
+              ),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
@@ -134,11 +141,10 @@ class _MyCouponCardState extends State<MyCouponCard> {
                       isDownloaded ? 'assets/images/store/ic_cu_down_end.svg' : 'assets/images/store/ic_cu_down.svg',
                     ),
                   ),
-                  // const SizedBox(height: 8),
                   SizedBox(
-                    height: 16, // 고정된 공간을 차지하도록 설정
+                    height: 16,
                     child: Text(
-                      isDownloaded ? "발급완료" : '발급받기', // 발급 완료일 때만 표시
+                      isDownloaded ? "발급완료" : '발급받기',
                       style: TextStyle(
                         fontSize: 12,
                         color: isDownloaded ? Colors.grey : Colors.black,
@@ -147,8 +153,8 @@ class _MyCouponCardState extends State<MyCouponCard> {
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
