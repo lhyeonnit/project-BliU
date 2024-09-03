@@ -1,4 +1,11 @@
 import 'package:BliU/const/constant.dart';
+import 'package:BliU/dto/banner_detail_response_dto.dart';
+import 'package:BliU/dto/banner_list_response_dto.dart';
+import 'package:BliU/dto/category_response_dto.dart';
+import 'package:BliU/dto/exhibition_detail_response_dto.dart';
+import 'package:BliU/dto/exhibition_list_response_dto.dart';
+import 'package:BliU/dto/product_list_response_dto.dart';
+import 'package:BliU/dto/push_response_dto.dart';
 import 'package:dio/dio.dart';
 
 //홈
@@ -11,6 +18,19 @@ class MainRepository {
       final response = await _dio.get(
         Constant.apiAuthChildInfoUrl,
       );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        BannerListResponseDTO bannerListResponseDTO = BannerListResponseDTO.fromJson(responseData);
+        if (bannerListResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -28,6 +48,19 @@ class MainRepository {
           'bt_idx': btIdx.toString(),
         },
       );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        BannerDetailResponseDTO bannerDetailResponseDTO = BannerDetailResponseDTO.fromJson(responseData);
+        if (bannerDetailResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -45,6 +78,19 @@ class MainRepository {
           'category_type': categoryType.toString(),
         },
       );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.fromJson(responseData);
+        if (categoryResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -62,6 +108,19 @@ class MainRepository {
           'bt_idx': btIdx.toString(),
         },
       );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        ExhibitionListResponseDTO exhibitionListResponseDTO = ExhibitionListResponseDTO.fromJson(responseData);
+        if (exhibitionListResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -83,6 +142,19 @@ class MainRepository {
           'pg': pg.toString(),
         },
       );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        ExhibitionDetailResponseDTO exhibitionDetailResponseDTO = ExhibitionDetailResponseDTO.fromJson(responseData);
+        if (exhibitionDetailResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -101,6 +173,7 @@ class MainRepository {
           'mt_idx': mtIdx.toString(),
         },
       );
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -122,6 +195,19 @@ class MainRepository {
           'age': age.toString(),
         },
       );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        ProductListResponseDTO productListResponseDTO = ProductListResponseDTO.fromJson(responseData);
+        if (productListResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -139,6 +225,19 @@ class MainRepository {
           'mt_idx': mtIdx.toString(),
         },
       );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        PushResponseDTO pushResponseDTO = PushResponseDTO.fromJson(responseData);
+        if (pushResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");

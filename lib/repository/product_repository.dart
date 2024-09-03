@@ -1,4 +1,12 @@
 import 'package:BliU/const/constant.dart';
+import 'package:BliU/dto/category_response_dto.dart';
+import 'package:BliU/dto/default_response_dto.dart';
+import 'package:BliU/dto/product_coupon_response_dto.dart';
+import 'package:BliU/dto/product_list_response_dto.dart';
+import 'package:BliU/dto/product_option_response_dto.dart';
+import 'package:BliU/dto/product_qna_list_response_dto.dart';
+import 'package:BliU/dto/qna_list_response_dto.dart';
+import 'package:BliU/dto/review_info_response_dto.dart';
 import 'package:dio/dio.dart';
 
 //상품
@@ -32,12 +40,26 @@ class ProductRepository {
           'pg': pg.toString(),
         }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        ProductListResponseDTO defaultResponseDto = ProductListResponseDTO.fromJson(responseData);
+        if (defaultResponseDto.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
       return null;
     }
   }
+  // TODO
   //상품상세
   Future<Response<dynamic>?> reqProductDetail({
     required int mtIdx,
@@ -53,6 +75,7 @@ class ProductRepository {
             'reload': reload,
           }
       );
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -70,6 +93,19 @@ class ProductRepository {
             'pt_idx': ptIdx.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        ProductOptionResponseDTO productOptionResponseDTO = ProductOptionResponseDTO.fromJson(responseData);
+        if (productOptionResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -89,6 +125,19 @@ class ProductRepository {
             'pt_idx': ptIdx.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        ProductCouponResponseDTO productOptionResponseDTO = ProductCouponResponseDTO.fromJson(responseData);
+        if (productOptionResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -108,6 +157,19 @@ class ProductRepository {
             'ct_codes': ctCodes,
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -127,6 +189,19 @@ class ProductRepository {
             'pt_idx': ptIdx.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -146,6 +221,19 @@ class ProductRepository {
             'pg': pg.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        ReviewInfoResponseDTO reviewInfoResponseDTO = ReviewInfoResponseDTO.fromJson(responseData);
+        if (reviewInfoResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -166,6 +254,7 @@ class ProductRepository {
             'rt_idx': rtIdx.toString(),
           }
       );
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -190,6 +279,7 @@ class ProductRepository {
             'rt_category_txt': rtCategoryTxt,
           }
       );
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -202,6 +292,19 @@ class ProductRepository {
       final response = await _dio.get(
           Constant.apiProductSingoCateUrl,
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.fromJson(responseData);
+        if (categoryResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -223,6 +326,19 @@ class ProductRepository {
             'pg': pg.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        ProductQnaListResponseDto productQnaListResponseDto = ProductQnaListResponseDto.fromJson(responseData);
+        if (productQnaListResponseDto.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");

@@ -1,19 +1,11 @@
 import 'package:BliU/const/constant.dart';
+import 'package:BliU/dto/cart_response_dto.dart';
+import 'package:BliU/dto/default_response_dto.dart';
 import 'package:dio/dio.dart';
 
 //장바구니
 class CartRepository {
   final Dio _dio = Dio();
-  // TODO
-  /*
-  *
-  {
-    "result": true,
-    "data": {
-      "count": 3
-    }
-  }
-  * */
   //장바구니 수
   Future<Response<dynamic>?> reqCartCount({
     required int mtIdx,
@@ -25,6 +17,28 @@ class CartRepository {
           'mt_idx': mtIdx.toString()
         },
       );
+      /*
+      *
+      {
+        "result": true,
+        "data": {
+          "count": 3
+        }
+      }
+      * */
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['result'] == true) {
+          //성공
+          int count = responseData['count'];
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -67,6 +81,19 @@ class CartRepository {
           'pg': pg.toString(),
         },
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        CartResponseDTO cartResponseDTO = CartResponseDTO.fromJson(responseData);
+        if (cartResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -86,6 +113,19 @@ class CartRepository {
           'ct_idx': ctIdx.toString(),
         },
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -107,6 +147,19 @@ class CartRepository {
           'ct_count': ctCount.toString(),
         },
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");

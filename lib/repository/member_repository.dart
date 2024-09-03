@@ -1,4 +1,7 @@
 import 'package:BliU/const/constant.dart';
+import 'package:BliU/dto/default_response_dto.dart';
+import 'package:BliU/dto/member_info_response_dto.dart';
+import 'package:BliU/dto/style_category_response_dto.dart';
 import 'package:dio/dio.dart';
 
 //회원관리
@@ -20,6 +23,18 @@ class MemberRepository {
           'auto_login': autoLogin,
         },
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        MemberInfoResponseDTO memberInfoResponseDTO = MemberInfoResponseDTO.fromJson(responseData);
+        if (memberInfoResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -37,6 +52,19 @@ class MemberRepository {
           'app_token': appToken,
         },
       );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        MemberInfoResponseDTO memberInfoResponseDTO = MemberInfoResponseDTO.fromJson(responseData);
+        if (memberInfoResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -70,6 +98,19 @@ class MemberRepository {
           'app_token': appToken,
         },
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -94,6 +135,20 @@ class MemberRepository {
           'login_type': loginType,
         },
       );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        MemberInfoResponseDTO defaultResponseDto = MemberInfoResponseDTO.fromJson(responseData);
+        if (defaultResponseDto.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -112,13 +167,26 @@ class MemberRepository {
           'id': id,
         },
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
       return null;
     }
   }
-
+  // TODO
   //휴대폰 인증번호 발송
   Future<Response<dynamic>?> reqAuthSendCode({
     required String id,
@@ -140,7 +208,7 @@ class MemberRepository {
       return null;
     }
   }
-
+  // TODO
   //휴대폰 안중번호 인증
   Future<Response<dynamic>?> reqAuthCheckCode({
     required String appToken,
@@ -166,14 +234,6 @@ class MemberRepository {
   }
   //아이디 찾기
   // TODO
-  /*
-   {
-    "result": true,
-    "data": {
-        "id": "test1"
-    }
-  }
-   * */
   Future<Response<dynamic>?> reqAuthFindId({
     required String name,
     required String phoneNum,
@@ -188,6 +248,28 @@ class MemberRepository {
           'phone_num_chk': phoneNumChk,
         },
       );
+
+      if (response.statusCode == 200) {
+        /*
+         {
+          "result": true,
+          "data": {
+              "id": "test1"
+          }
+        }
+         * */
+        Map<String, dynamic> responseData = response.data;
+
+        if (responseData['result'] == true) {
+          //성공
+          String id = responseData['data']['id'];// 아이디
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -240,13 +322,24 @@ class MemberRepository {
       return null;
     }
   }
-  // TODO
   //스타일 카테고리
   Future<Response<dynamic>?> reqAuthStyleCategory() async {
     try {
       final response = await _dio.get(
         Constant.apiAuthStyleCategoryUrl
       );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        StyleCategoryResponseDTO styleCategoryResponseDTO = StyleCategoryResponseDTO.fromJson(responseData);
+        if (styleCategoryResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -271,6 +364,19 @@ class MemberRepository {
           'style': style,
         },
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");

@@ -2,8 +2,8 @@ class MemberInfoData {
   final int? mtIdx;
   final String? mtId;
   final String? mtName;
-  final List<String>? MctStyle;
-  final int? Cart;
+  final List<String>? mctStyle;
+  final int? cart;
   final String? childCk;
   final int? myRevieCount;
   final int? myCouponCount;
@@ -12,8 +12,8 @@ class MemberInfoData {
     required this.mtIdx,
     required this.mtId,
     required this.mtName,
-    required this.MctStyle,
-    required this.Cart,
+    required this.mctStyle,
+    required this.cart,
     required this.childCk,
     required this.myRevieCount,
     required this.myCouponCount,
@@ -25,8 +25,8 @@ class MemberInfoData {
       mtIdx: json['mt_idx'],
       mtId: json['mt_id'],
       mtName: json['mt_name'],
-      MctStyle: json['mct_style'],
-      Cart: json['cart'],
+      mctStyle: json['mct_style'],
+      cart: json['cart'],
       childCk: json['child_ck'],
       myRevieCount: json['my_revie_count'],
       myCouponCount: json['my_coupon_count'],
@@ -39,8 +39,8 @@ class MemberInfoData {
       'mt_idx': mtIdx,
       'mt_id': mtId,
       'mt_name': mtName,
-      'mct_style': MctStyle,
-      'cart': Cart,
+      'mct_style': mctStyle,
+      'cart': cart,
       'child_ck': childCk,
       'my_revie_count': myRevieCount,
       'my_coupon_count': myCouponCount,

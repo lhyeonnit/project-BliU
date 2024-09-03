@@ -1,22 +1,22 @@
 import 'package:BliU/data/qna_data.dart';
 
-class QnaResponseDTO {
+class QnaDetailResponseDTO {
   final bool? result;
   final String? message;
-  final List<QnaData>? data;
+  final QnaData? data;
 
-  QnaResponseDTO({
+  QnaDetailResponseDTO({
     required this.result,
     required this.message,
     required this.data,
   });
 
   // JSON to Object
-  factory QnaResponseDTO.fromJson(Map<String, dynamic> json) {
-    return QnaResponseDTO(
+  factory QnaDetailResponseDTO.fromJson(Map<String, dynamic> json) {
+    return QnaDetailResponseDTO(
       result: json['result'],
       message: json['data']['message'],
-      data: (json['data'] as List<QnaData>),
+      data: (json['data'] as QnaData),
     );
   }
 
@@ -25,7 +25,7 @@ class QnaResponseDTO {
     return {
       'result': result,
       'message': message,
-      'data' : data?.map((it) => it.toJson()).toList(),
+      'data' : data
     };
   }
 }

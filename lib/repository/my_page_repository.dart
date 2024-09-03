@@ -1,4 +1,16 @@
 import 'package:BliU/const/constant.dart';
+import 'package:BliU/dto/category_response_dto.dart';
+import 'package:BliU/dto/default_response_dto.dart';
+import 'package:BliU/dto/event_detail_response_dto.dart';
+import 'package:BliU/dto/event_list_response_dto.dart';
+import 'package:BliU/dto/faq_category_response_dto.dart';
+import 'package:BliU/dto/faq_response_dto.dart';
+import 'package:BliU/dto/member_info_response_dto.dart';
+import 'package:BliU/dto/notice_detail_response_dto.dart';
+import 'package:BliU/dto/notice_list_response_dto.dart';
+import 'package:BliU/dto/order_response_dto.dart';
+import 'package:BliU/dto/qna_detail_response_dto.dart';
+import 'package:BliU/dto/qna_list_response_dto.dart';
 import 'package:dio/dio.dart';
 // 마이페이지
 class MyPageRepository {
@@ -17,6 +29,31 @@ class MyPageRepository {
             'password': password,
           }
       );
+
+      /*
+      *
+      * {
+          "result": true,
+          "data": {
+            "auth_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkeCI6MiwidXNlcl9pZCI6InRlc3QxIiwiaWF0IjoxNzI1MzQwNjcxfQ.FWVlG68M5dQ2mvicfRDPO9WzjaND9tNqeI9rqySm3Ng"
+          }
+        }
+      *
+      * **/
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['result'] == true) {
+          //성공
+
+          String authToken = responseData['data']['auth_token'];
+
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -34,6 +71,19 @@ class MyPageRepository {
             'mt_idx': mtIdx.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        MemberInfoResponseDTO memberInfoResponseDTO = MemberInfoResponseDTO.fromJson(responseData);
+        if (memberInfoResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -54,6 +104,19 @@ class MyPageRepository {
             'auth_token': authToken,
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -75,6 +138,19 @@ class MyPageRepository {
             'mt_gender': mtGender,
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -94,6 +170,19 @@ class MyPageRepository {
             'mt_name': mtName,
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -113,6 +202,19 @@ class MyPageRepository {
             'mt_hp': mtHp,
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -130,6 +232,19 @@ class MyPageRepository {
             'mt_idx': mtIdx.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -147,6 +262,19 @@ class MyPageRepository {
             'mt_idx': mtIdx.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        OrderResponseDTO orderResponseDTO = OrderResponseDTO.fromJson(responseData);
+        if (orderResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -181,6 +309,19 @@ class MyPageRepository {
       final response = await _dio.get(
           Constant.apiMyPageOrderCancelCategoryUrl,
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.fromJson(responseData);
+        if (categoryResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -242,6 +383,19 @@ class MyPageRepository {
             'ct_type': ctType.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.fromJson(responseData);
+        if (categoryResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -438,6 +592,19 @@ class MyPageRepository {
       final response = await _dio.post(
           Constant.apiMyPageFaqCategoryUrl,
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        FaqCategoryResponseDTO categoryResponseDTO = FaqCategoryResponseDTO.fromJson(responseData);
+        if (categoryResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -459,6 +626,19 @@ class MyPageRepository {
             'pg': pg.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        FaqResponseDTO faqResponseDTO = FaqResponseDTO.fromJson(responseData);
+        if (faqResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -476,6 +656,19 @@ class MyPageRepository {
             'pg': pg.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        NoticeListResponseDTO noticeListResponseDTO = NoticeListResponseDTO.fromJson(responseData);
+        if (noticeListResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -493,6 +686,19 @@ class MyPageRepository {
             'nt_idx': ntIdx.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        NoticeDetailResponseDTO noticeListResponseDTO = NoticeDetailResponseDTO.fromJson(responseData);
+        if (noticeListResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -510,6 +716,19 @@ class MyPageRepository {
             'pg': pg.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        EventListResponseDTO eventListResponseDTO = EventListResponseDTO.fromJson(responseData);
+        if (eventListResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -527,13 +746,25 @@ class MyPageRepository {
             'bt_idx': btIdx.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        EventDetailResponseDTO eventDetailResponseDTO = EventDetailResponseDTO.fromJson(responseData);
+        if (eventDetailResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
       return null;
     }
   }
-  // TODO
   //고객센터 정보
   Future<Response<dynamic>?> reqMyPageQna({
     required int btIdx,
@@ -545,6 +776,34 @@ class MyPageRepository {
             'bt_idx': btIdx.toString(),
           }
       );
+      /*
+      {
+          "result": true,
+          "explan": {
+              "st_customer_tel": "고객센터 전화번호",
+              "st_customer_email": "고객센터 이메일"
+          },
+          "data": [
+              {
+                  "st_customer_tel": "010-1234-5678",
+                  "st_customer_email": "text@text.com"
+              }
+          ]
+      }
+      * **/
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['result'] == true) {
+          //성공
+          String stCustomerTel = responseData['data'][0]['st_customer_tel'];
+          String stCustomerEmail = responseData['data'][0]['st_customer_email'];
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -566,6 +825,19 @@ class MyPageRepository {
             'pg': pg.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        QnaListResponseDTO qnaListResponseDTO = QnaListResponseDTO.fromJson(responseData);
+        if (qnaListResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -587,13 +859,25 @@ class MyPageRepository {
             'qna_type': qnaType.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        QnaDetailResponseDTO qnaDetailResponseDTO = QnaDetailResponseDTO.fromJson(responseData);
+        if (qnaDetailResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
       return null;
     }
   }
-  // TODO
   // 문의 삭제
   Future<Response<dynamic>?> reqMyPageQnaDel({
     required int mtIdx,
@@ -607,6 +891,19 @@ class MyPageRepository {
             'qt_idx': qtIdx.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -645,6 +942,19 @@ class MyPageRepository {
           Constant.apiMyPageQnaSellerUrl,
           data: formData
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -683,6 +993,19 @@ class MyPageRepository {
           Constant.apiMyPageQnaWriteUrl,
           data: formData
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -700,6 +1023,19 @@ class MyPageRepository {
             'mt_idx': mtIdx.toString(),
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['result'] == true) {
+          //성공
+          String mtPushing = responseData['mt_pushing'];
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -719,6 +1055,19 @@ class MyPageRepository {
             'mt_pushing': mtPushing,
           }
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -732,6 +1081,19 @@ class MyPageRepository {
       final response = await _dio.get(
           Constant.apiMyPageTermsUrl,
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['result'] == true) {
+          //성공
+          String terms = responseData['terms'];
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -745,6 +1107,19 @@ class MyPageRepository {
       final response = await _dio.get(
         Constant.apiMyPageTermsUrl,
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['result'] == true) {
+          //성공
+          String privacy = responseData['privacy'];
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");

@@ -1,22 +1,22 @@
-import 'package:BliU/data/popular_data.dart';
+import 'package:BliU/data/search_data.dart';
 
-class PopularResponseDTO {
+class SearchResponseDTO {
   final bool? result;
   final String? message;
-  final List<PopularData>? list;
+  final List<SearchData>? list;
 
-  PopularResponseDTO({
+  SearchResponseDTO({
     required this.result,
     required this.message,
     required this.list
   });
 
   // JSON to Object
-  factory PopularResponseDTO.fromJson(Map<String, dynamic> json) {
-    return PopularResponseDTO(
+  factory SearchResponseDTO.fromJson(Map<String, dynamic> json) {
+    return SearchResponseDTO(
       result: json['result'],
       message: json['data']['message'],
-      list: (json['data']['list'] as List<PopularData>),
+      list: (json['data']['list'] as List<SearchData>),
     );
   }
 

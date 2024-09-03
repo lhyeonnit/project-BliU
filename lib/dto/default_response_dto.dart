@@ -1,14 +1,14 @@
-class DefaultData {
+class DefaultResponseDTO {
   final bool result;
   final String? message;
 
-  DefaultData({
+  DefaultResponseDTO({
     required this.result,
     required this.message,
   });
 
-  factory DefaultData.fromJson(Map<String, dynamic> json) {
-    return DefaultData(
+  factory DefaultResponseDTO.fromJson(Map<String, dynamic> json) {
+    return DefaultResponseDTO(
       result: json['result'],
       message: json['data']['message'],
     );

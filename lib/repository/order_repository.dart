@@ -1,4 +1,5 @@
 import 'package:BliU/const/constant.dart';
+import 'package:BliU/dto/coupon_response_dto.dart';
 import 'package:dio/dio.dart';
 //결제
 class OrderRepository {
@@ -88,6 +89,19 @@ class OrderRepository {
           'all_price': allPrice,
         },
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        CouponResponseDTO couponResponseDTO = CouponResponseDTO.fromJson(responseData);
+        if (couponResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");

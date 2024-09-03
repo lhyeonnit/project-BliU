@@ -1,4 +1,6 @@
 import 'package:BliU/const/constant.dart';
+import 'package:BliU/dto/default_response_dto.dart';
+import 'package:BliU/dto/search_response_dto.dart';
 import 'package:dio/dio.dart';
 
 class SearchRepository {
@@ -10,6 +12,19 @@ class SearchRepository {
       final response = await _dio.get(
         Constant.apiSearchPopularListUrl,
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        SearchResponseDTO searchResponseDTO = SearchResponseDTO.fromJson(responseData);
+        if (searchResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -97,6 +112,15 @@ class SearchRepository {
           'mt_idx': mtIdx.toString(),
         },
       );
+
+      Map<String, dynamic> responseData = response.data;
+      SearchResponseDTO searchResponseDTO = SearchResponseDTO.fromJson(responseData);
+      if (searchResponseDTO.result == true) {
+        //성공
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
@@ -116,6 +140,19 @@ class SearchRepository {
           'slt_idx': sltIdx,
         },
       );
+
+      if (response.statusCode == 200 ) {
+        Map<String, dynamic> responseData = response.data;
+        DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+        if (defaultResponseDTO.result == true) {
+          //성공
+        } else {
+          //실패
+        }
+      } else {
+        //실패
+      }
+
       return response;
     } catch (e) {
       print("Error toggling store like: $e");
