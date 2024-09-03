@@ -1,30 +1,29 @@
+import 'package:BliU/screen/category/category_screen.dart';
+import 'package:BliU/screen/home/home_screen.dart';
+import 'package:BliU/screen/like/like_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'package:BliU/screen/category/category_page.dart';
-import 'package:BliU/screen/home/home_page.dart';
-import 'package:BliU/screen/like/like_page.dart';
-import 'package:BliU/screen/mypage/my_page.dart';
-import 'package:BliU/screen/store/store_page.dart';
-
+import 'package:BliU/screen/mypage/my_screen.dart';
+import 'package:BliU/screen/store/store_screen.dart';
 import '_component/custom_bottom_navigation_bar.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainScreenState extends State<MainScreen> {
   DateTime? _backButtonPressedTime;
   int _selectedIndex = 2;
 
   final List<Widget> _widgetOptions = <Widget>[
-    const StorePage(),
-    const LikePage(),
-    const HomePage(),
-    const CategoryPage(),
-    const MyPage(),
+    const StoreScreen(),
+    const LikeScreen(),
+    const HomeScreen(),
+    const CategoryScreen(),
+    const MyScreen(),
   ];
 
   void _onItemTapped(int index) {

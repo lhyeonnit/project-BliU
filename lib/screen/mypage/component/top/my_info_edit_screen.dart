@@ -1,5 +1,5 @@
 //내정보 수정
-import 'package:BliU/screen/mypage/my_page.dart';
+import 'package:BliU/screen/mypage/my_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -298,7 +298,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const MyPage(),
+                        builder: (context) => const MyScreen(),
                       ),
                     );
                   }

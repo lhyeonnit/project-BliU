@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../utils/responsive.dart';
-import '../../../product/component/detail/coupon_card.dart';
-import '../../../product/dummy/coupon_list.dart';
+
 
 class MyCouponScreen extends StatefulWidget {
   const MyCouponScreen({super.key});

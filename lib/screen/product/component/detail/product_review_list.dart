@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'product_review_detail.dart';
-import 'report_screen.dart';
+import 'report_page.dart';
 
 class ProductReview extends StatefulWidget {
   const ProductReview({super.key});
@@ -146,7 +146,7 @@ class _ProductReviewState extends State<ProductReview> {
                         // 신고 버튼 클릭시 동작
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const ReportScreen()),
+                          MaterialPageRoute(builder: (context) => const ReportPage()),
                         );
                       },
                       child: const Text(

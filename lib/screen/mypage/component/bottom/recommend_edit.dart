@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../common/component/date_bottom.dart';
-import '../../../common/dummy/favorite_styles.dart';
-import '../../my_page.dart';
+import '../../my_screen.dart';
 
 
 class RecommendEdit extends StatefulWidget {
@@ -12,7 +11,17 @@ class RecommendEdit extends StatefulWidget {
   @override
   State<RecommendEdit> createState() => _RecommendEditState();
 }
-
+List<String> favoriteStyles = [
+  '캐주얼 (Casual)',
+  '스포티 (Sporty)',
+  '포멀 / 클래식 (Formal/Classic)',
+  '베이직 (Basic)',
+  '프린세스 / 페어리 (Princess/Fairy)',
+  '힙스터 (Hipster)',
+  '럭셔리 (Luxury)',
+  '어반 스트릿 (Urban Street)',
+  '로맨틱 (Romantic)',
+];
 class _RecommendEditState extends State<RecommendEdit> {
 
     List<String> selectedStyles = [];
@@ -259,7 +268,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                     // 확인 버튼 동작
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const MyPage()),
+                      MaterialPageRoute(builder: (context) => const MyScreen()),
                     );
                   },
                   style: ElevatedButton.styleFrom(

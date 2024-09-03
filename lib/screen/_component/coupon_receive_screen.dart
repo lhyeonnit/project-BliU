@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../product/dummy/coupon_list.dart';
 import '../product/component/detail/coupon_card.dart';
 
 class CouponReceiveScreen extends StatefulWidget {
@@ -9,7 +8,26 @@ class CouponReceiveScreen extends StatefulWidget {
   @override
   _CouponReceiveScreenState createState() => _CouponReceiveScreenState();
 }
-
+const List<Map<String, String>> couponData = [
+  {
+    "discount": "10%",
+    "title": "키즈스타일 여름 특별 할인 쿠폰",
+    "expiryDate": "~ 24.05.05까지 사용 가능",
+    "discountDetails": "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
+  },
+  {
+    "discount": "30%",
+    "title": "꼬마옷장 첫 구매 30% 할인권",
+    "expiryDate": "~ 24.05.05까지 사용 가능",
+    "discountDetails": "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
+  },
+  {
+    "discount": "5%",
+    "title": "패션 키즈 VIP 할인 쿠폰",
+    "expiryDate": "~ 24.05.05까지 사용 가능",
+    "discountDetails": "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
+  },
+];
 class _CouponReceiveScreenState extends State<CouponReceiveScreen> {
   // 쿠폰 상태를 관리하는 리스트
   List<bool> couponStatus = [false, false, false];

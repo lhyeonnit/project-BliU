@@ -1,6 +1,6 @@
 //로그인
 import 'package:BliU/screen/join/join_agree_screen.dart';
-import 'package:BliU/screen/main_page.dart';
+import 'package:BliU/screen/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,7 +34,7 @@ class LoginScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const MainPage(),
+                  builder: (context) => const MainScreen(),
                 ),
               );
             },
