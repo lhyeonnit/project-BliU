@@ -36,26 +36,27 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
     try {
       final response = await repository.reqPost(
           url: Constant.apiStoreBookMarkUrl, data: requestData);
+      if (response != null) {
+        if (response.statusCode == 200) {
+          // 응답 데이터를 최상위 레벨에서 Map<String, dynamic>으로 가져옴
+          final Map<String, dynamic> bookmarkListJson = response.data;
 
-      if (response == 200) {
-        // 응답 데이터를 최상위 레벨에서 Map<String, dynamic>으로 가져옴
-        final Map<String, dynamic> bookmarkListJson = requestData;
+          // `data` -> `list` 경로를 통해 실제 리스트를 추출
+          final List<dynamic> listJson = bookmarkListJson['data']['list'];
 
-        // `data` -> `list` 경로를 통해 실제 리스트를 추출
-        final List<dynamic> listJson = bookmarkListJson['data']['list'];
+          // Mapping JSON to BookmarkStoreDTO objects
+          List<BookmarkData> bookmarkList = listJson.map((item) {
+            return BookmarkData.fromJson(item as Map<String, dynamic>);
+          }).toList();
 
-        // Mapping JSON to BookmarkStoreDTO objects
-        List<BookmarkData> bookmarkList = listJson.map((item) {
-          return BookmarkData.fromJson(item as Map<String, dynamic>);
-        }).toList();
-
-        state = StoreFavoriteModel(
-          bookmarkResponseDTO: BookmarkResponseDTO(
-              result: true, count: bookmarkList.length, list: bookmarkList),
-          bookmarkList: bookmarkList,
-        );
+          state = StoreFavoriteModel(
+            bookmarkResponseDTO: BookmarkResponseDTO(
+                result: true, count: bookmarkList.length, list: bookmarkList),
+            bookmarkList: bookmarkList,
+          );
+        } else {}
       } else {
-        print('Error: ');
+        state = null;
       }
     } catch (e) {
       // Catch and log any exceptions

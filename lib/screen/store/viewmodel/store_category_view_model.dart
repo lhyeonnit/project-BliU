@@ -1,30 +1,23 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/data/product_data.dart';
+import 'package:BliU/data/store_data.dart';
 import 'package:BliU/dto/store_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 모델 클래스 정의 (데이터 상태를 관리하기 위한 DTO)
 class StoreCategoryModel {
-  final StoreResponseDTO? storeResponseDTO;
-  final int? count;
   final List<ProductData>? productList;
 
   StoreCategoryModel({
-    required this.storeResponseDTO,
-    required this.count,
     required this.productList,
   });
 
   // copyWith 메서드를 통해 상태 복사 및 수정
   StoreCategoryModel copyWith({
-    StoreResponseDTO? storeResponseDTO,
-    int? count,
     List<ProductData>? productList,
   }) {
     return StoreCategoryModel(
-      storeResponseDTO: storeResponseDTO ?? this.storeResponseDTO,
-      count: this.count ?? 0,
       productList: this.productList ?? [],
     );
   }
@@ -49,8 +42,6 @@ class StoreCategoryViewModel extends StateNotifier<StoreCategoryModel?> {
 
     // 로딩 상태로 업데이트
     state = StoreCategoryModel(
-      storeResponseDTO: null,
-      count: null,
       productList: [],
     );
     Map<String, dynamic> requestData = {
@@ -66,40 +57,16 @@ class StoreCategoryViewModel extends StateNotifier<StoreCategoryModel?> {
           url: Constant.apiStoreProductsUrl, data: requestData);
       if (response != null) {
         if (response.statusCode == 200) {
+          final Map<String, dynamic> categoryListJson = response.data;
+          final List<dynamic> listJson = categoryListJson['data']['list'];
+          List<ProductData> productList = listJson.map((item) {
+            return ProductData.fromJson(item as Map<String, dynamic>);
+          }).toList();
 
-          if (requestData is List) {
-            // 응답이 List 타입인 경우, List<ProductDTO>로 처리
-            List<ProductData> productList = (requestData as List)
-                .map((item) => ProductData.fromJson(item as Map<String, dynamic>))
-                .toList();
-
-            state = state?.copyWith(productList: productList);
-          } else if (requestData is Map<String, dynamic>) {
-            // 응답이 Map<String, dynamic>인 경우 처리
-            // final Map<String, dynamic> storeFavoriteProductListJson = requestData;
-            //
-            // if (storeFavoriteProductListJson.containsKey('data') &&
-            //     storeFavoriteProductListJson['data'].containsKey('list')) {
-            //   final List<dynamic> listJson =
-            //   storeFavoriteProductListJson['data']['list'];
-            //   StoreFavoriteProductResponseDTO storeFavoriteProductResponseDTO =
-            //   StoreFavoriteProductResponseDTO.fromJson(requestData);
-            //   // ProductDTO 리스트로 변환
-            //   List<ProductDTO> storeFavoriteProductList = listJson.map((item) {
-            //     return ProductDTO.fromJson(item as Map<String, dynamic>);
-            //   }).toList();
-            //
-            //   state = state?.copyWith(
-            //       storeFavoriteProductResponseDTO:
-            //       storeFavoriteProductResponseDTO,
-            //       productDetail: storeFavoriteProductList);
-            // } else {
-            //   throw Exception('Failed to load products');
-            // }
-          }
+          state = StoreCategoryModel(productList: productList);
         }
       } else {
-
+        state = null;
       }
     } catch (e) {
       print("Error loading products: $e");
