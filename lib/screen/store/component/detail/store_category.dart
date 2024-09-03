@@ -125,7 +125,7 @@ class StoreCategory extends HookConsumerWidget {
         SizedBox(
           // 기본 세로 길이를 301로 설정하고, 상품이 더 있으면 301씩 추가
           height: (model?.productList?.length ?? 0) > 0
-              ? 331 * ((model!.productList!.length + 1) ~/ 2).toDouble()
+              ? 321 * ((model!.productList!.length + 1) ~/ 2).toDouble()
               : 0.0,
           child: TabBarView(
             controller: tabController,
