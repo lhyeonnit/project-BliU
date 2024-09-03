@@ -1,20 +1,18 @@
+import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/store/viewmodel/store_category_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:BliU/utils/responsive.dart';
-import 'package:BliU/data/dto/store_favorite_product_data.dart'; // ProductDTO 클래스가 있는 파일
 
 class StoreCategoryItem extends ConsumerWidget {
   const StoreCategoryItem({super.key});
-
-
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final model = ref.watch(storeCategoryViewModelProvider);
 
-    if (model == null || model.productDetail == null) {
+    if (model == null || model.productList == null) {
       return const Center(child: CircularProgressIndicator()); // 로딩 중일 때 처리
     }
 
@@ -28,14 +26,14 @@ class StoreCategoryItem extends ConsumerWidget {
             childAspectRatio: 0.55,
           ),
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: model.productDetail!.length,
+          itemCount: model.productList!.length,
           itemBuilder: (context, index) {
-            if (index >= model.productDetail!.length) {
+            if (index >= model.productList!.length) {
               return const Center(
                   child: CircularProgressIndicator()); // 추가 로딩 시 로딩 인디케이터
             }
 
-            final ProductDTO product = model.productDetail![index];
+            final ProductData product = model.productList![index];
 
             return GestureDetector(
               onTap: () {
@@ -49,7 +47,7 @@ class StoreCategoryItem extends ConsumerWidget {
                         ClipRRect(
                           borderRadius: const BorderRadius.all(Radius.circular(5)),
                           child: Image.network(
-                            product.ptImg,
+                            product.ptImg ?? "",
                             fit: BoxFit.contain,
                             height: Responsive.getHeight(context, 184),
                             width: double.infinity,
@@ -70,7 +68,7 @@ class StoreCategoryItem extends ConsumerWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      product.stName,
+                      product.stName ?? "",
                       style: TextStyle(
                         fontSize: Responsive.getFont(context, 12),
                         color: const Color(0xFF7B7B7B),
@@ -78,7 +76,7 @@ class StoreCategoryItem extends ConsumerWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      product.ptName,
+                      product.ptName ?? "",
                       style: TextStyle(
                         fontSize: Responsive.getFont(context, 14),
                       ),
@@ -127,7 +125,7 @@ class StoreCategoryItem extends ConsumerWidget {
                             color: Colors.grey,
                           ),
                         ),
-                        if (product.ptReviewCount > 0) ...[
+                        if ((product.ptReviewCount ?? 0) > 0) ...[
                           const SizedBox(width: 10),
                           SvgPicture.asset(
                             'assets/images/home/item_comment.svg',

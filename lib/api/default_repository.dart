@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:BliU/api/dio_interceptor.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:dio/dio.dart';

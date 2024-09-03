@@ -1,17 +1,18 @@
 import 'package:BliU/api/default_repository.dart';
+import 'package:BliU/const/constant.dart';
+import 'package:BliU/data/bookmark_data.dart';
+import 'package:BliU/dto/bookmark_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../const/constant.dart';
-import '../../../data/dto/store_bookmark_data.dart';
 
 class StoreFavoriteModel {
   BookmarkResponseDTO? bookmarkResponseDTO;
-  List<BookmarkStoreDTO>? bookmarkStoreDTO;
+  List<BookmarkData>? bookmarkList;
 
   StoreFavoriteModel({
     required this.bookmarkResponseDTO,
-    required this.bookmarkStoreDTO,
+    required this.bookmarkList,
   });
 }
 
@@ -44,14 +45,14 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
         final List<dynamic> listJson = bookmarkListJson['data']['list'];
 
         // Mapping JSON to BookmarkStoreDTO objects
-        List<BookmarkStoreDTO> bookmarkList = listJson.map((item) {
-          return BookmarkStoreDTO.fromJson(item as Map<String, dynamic>);
+        List<BookmarkData> bookmarkList = listJson.map((item) {
+          return BookmarkData.fromJson(item as Map<String, dynamic>);
         }).toList();
 
         state = StoreFavoriteModel(
           bookmarkResponseDTO: BookmarkResponseDTO(
-              result: true, count: bookmarkList.length, stores: bookmarkList),
-          bookmarkStoreDTO: bookmarkList,
+              result: true, count: bookmarkList.length, list: bookmarkList),
+          bookmarkList: bookmarkList,
         );
       } else {
         print('Error: ');

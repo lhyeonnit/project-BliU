@@ -1,9 +1,6 @@
 import 'package:BliU/const/constant.dart';
 import 'package:dio/dio.dart';
 
-import '../data/dto/store_bookmark_data.dart';
-import '../data/dto/store_favorite_product_data.dart'; // ResponseDTO에 맞게 경로 수정
-
 class StoreRepository {
   final Dio _dio = Dio();
 

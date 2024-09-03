@@ -116,7 +116,7 @@ class StoreCategory extends HookConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(left: 16.0),
           child: Text(
-            '상품 ${model?.productDetail?.length ?? 0}', // 상품 개수 텍스트
+            '상품 ${model?.productList?.length ?? 0}', // 상품 개수 텍스트
             style: TextStyle(
                 fontSize: Responsive.getFont(context, 14), color: Colors.black),
           ),
@@ -124,8 +124,8 @@ class StoreCategory extends HookConsumerWidget {
         const SizedBox(height: 20,),
         SizedBox(
           // 기본 세로 길이를 301로 설정하고, 상품이 더 있으면 301씩 추가
-          height: (model?.productDetail?.length ?? 0) > 0
-              ? 331 * ((model!.productDetail!.length + 1) ~/ 2).toDouble()
+          height: (model?.productList?.length ?? 0) > 0
+              ? 331 * ((model!.productList!.length + 1) ~/ 2).toDouble()
               : 0.0,
           child: TabBarView(
             controller: tabController,

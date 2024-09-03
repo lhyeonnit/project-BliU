@@ -14,7 +14,7 @@ class StoreFavoritePage extends ConsumerWidget {
     final model = ref.watch(storeFavoriteViewModelProvider);
     final storeFavoriteViewModel =
         ref.read(storeFavoriteViewModelProvider.notifier);
-    final storeFavoriteList = model?.bookmarkStoreDTO ?? [];
+    final storeFavoriteList = model?.bookmarkList ?? [];
     const int itemsPerPage = 5;
     final PageController pageController = PageController();
     ScrollController scrollController = ScrollController();
@@ -94,8 +94,8 @@ class StoreFavoritePage extends ConsumerWidget {
                                       ),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
-                                        child: store.stProfile.isNotEmpty
-                                            ? Image.network(store.stProfile,
+                                        child: (store.stProfile ?? "").isNotEmpty
+                                            ? Image.network(store.stProfile ?? "",
                                             fit: BoxFit.contain)
                                             : Image.asset(
                                             'assets/images/home/exhi.png'),
@@ -106,7 +106,7 @@ class StoreFavoritePage extends ConsumerWidget {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            store.stName,
+                                            store.stName ?? "",
                                             style: TextStyle(
                                                 fontSize: Responsive.getFont(context, 14)),
                                           ),
@@ -114,7 +114,7 @@ class StoreFavoritePage extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  store.styleTxt,
+                                                  store.styleTxt ?? "",
                                                   style: TextStyle(
                                                     fontSize: Responsive.getFont(context, 13),
                                                     color: const Color(0xFF7B7B7B),
@@ -126,7 +126,7 @@ class StoreFavoritePage extends ConsumerWidget {
                                               const SizedBox(width: 5), // 텍스트 간 여백을 추가
                                               Expanded(
                                                 child: Text(
-                                                  store.ageTxt,
+                                                  store.ageTxt ?? "",
                                                   style: TextStyle(
                                                     fontSize: Responsive.getFont(context, 13),
                                                     color: const Color(0xFF7B7B7B),
@@ -152,7 +152,7 @@ class StoreFavoritePage extends ConsumerWidget {
                                             },
                                             child: SvgPicture.asset(
                                               'assets/images/store/book_mark.svg',
-                                              color: store.stLike > 0
+                                              color: (store.stLike ?? 0) > 0
                                                   ? const Color(0xFFFF6192)
                                                   : Colors.grey,
                                               fit: BoxFit.contain,
