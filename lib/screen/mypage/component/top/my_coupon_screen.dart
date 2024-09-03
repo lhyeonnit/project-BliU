@@ -1,3 +1,5 @@
+import 'package:BliU/screen/mypage/component/top/my_coupon_card.dart';
+import 'package:BliU/screen/product/component/detail/coupon_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -10,7 +12,26 @@ class MyCouponScreen extends StatefulWidget {
   @override
   State<MyCouponScreen> createState() => _MyCouponScreenState();
 }
-
+const List<Map<String, String>> couponData = [
+  {
+    "discount": "10%",
+    "title": "키즈스타일 여름 특별 할인 쿠폰",
+    "expiryDate": "~ 24.05.05까지 사용 가능",
+    "discountDetails": "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
+  },
+  {
+    "discount": "30%",
+    "title": "꼬마옷장 첫 구매 30% 할인권",
+    "expiryDate": "~ 24.05.05까지 사용 가능",
+    "discountDetails": "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
+  },
+  {
+    "discount": "5%",
+    "title": "패션 키즈 VIP 할인 쿠폰",
+    "expiryDate": "~ 24.05.05까지 사용 가능",
+    "discountDetails": "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
+  },
+];
 class _MyCouponScreenState extends State<MyCouponScreen> {
   List<String> categories = ['사용가능', '완료/만료'];
   List<bool> couponStatus = [false, false, false];
@@ -111,7 +132,7 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                     final coupon = couponData[index];
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: CouponCard(
+                      child: MyCouponCard(
                         discount: coupon["discount"]!,
                         title: coupon["title"]!,
                         expiryDate: coupon["expiryDate"]!,
