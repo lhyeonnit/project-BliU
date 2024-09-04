@@ -28,6 +28,17 @@ class Utils {
     return myData;
   }
 
+  String? getMtIdx() {
+    final mtIdx = _prefs.getString('mt_idx'); // 저장된 데이터 로드
+    return mtIdx;
+  }
+
+  //토큰 가져오기
+  String? getToken() {
+    final token = _prefs.getString('token'); // 저장된 데이터 로드
+    return token;
+  }
+
   // 데이터 삭제하는 함수
   Future<void> deleteData(String key) async {
     await _prefs.remove(key);

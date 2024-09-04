@@ -16,7 +16,7 @@ class MemberInfoResponseDTO {
     return MemberInfoResponseDTO(
       result: json['result'],
       message: json['data']['message'],
-      data: (json['data'] as MemberInfoData),
+      data: MemberInfoData.fromJson(json['data']),
     );
   }
 
