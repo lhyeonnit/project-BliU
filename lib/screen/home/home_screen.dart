@@ -57,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   controller: _scrollController,
                   slivers: [
                     SliverAppBar(
+                      scrolledUnderElevation: 0,
                       pinned: true,
                       automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
                       backgroundColor:

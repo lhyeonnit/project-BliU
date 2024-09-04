@@ -49,6 +49,7 @@ class _CouponReceiveScreenState extends State<CouponReceiveScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text("쿠폰 받기", style: TextStyle(color: Colors.black)),
         leading: IconButton(

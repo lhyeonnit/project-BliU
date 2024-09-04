@@ -31,6 +31,7 @@ class _NoticeScreenState extends State<NoticeScreen> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text(
           '공지사항',
