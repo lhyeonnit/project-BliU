@@ -11,6 +11,7 @@ class StoreDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),

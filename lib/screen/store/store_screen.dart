@@ -32,6 +32,7 @@ class _StoreScreenState extends State<StoreScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
         title: const Text("스토어"),

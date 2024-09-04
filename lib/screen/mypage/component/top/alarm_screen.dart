@@ -33,6 +33,7 @@ class AlarmScreenState extends State<AlarmScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('알림'),
         titleTextStyle: TextStyle(

@@ -71,6 +71,7 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('쿠폰'),
         titleTextStyle: TextStyle(

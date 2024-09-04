@@ -10,6 +10,7 @@ class MyReviewScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('나의리뷰'),
         titleTextStyle: TextStyle(

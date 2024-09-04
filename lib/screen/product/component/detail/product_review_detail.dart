@@ -41,6 +41,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/product/ic_back.svg"),

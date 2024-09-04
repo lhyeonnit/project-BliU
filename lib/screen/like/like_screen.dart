@@ -64,6 +64,7 @@ class _LikeScreenState extends State<LikeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         title: const Text('좋아요'),
         backgroundColor: Colors.white,
       ),
