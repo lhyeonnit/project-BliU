@@ -101,7 +101,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
+                          builder: (context) => LoginScreen(),
                         ),
                       );
                     }

@@ -36,7 +36,35 @@ class LoginScreenViewModel extends StateNotifier<LoginScreenModel?> {
           return;
         }
       }
+      setState(
+          MemberInfoResponseDTO(
+              result: false,
+              message: "Network Or Data Error"
+          )
+      );
+    } catch(e) {
+      // Catch and log any exceptions
+      print('Error request Api: $e');
+      setState(
+          MemberInfoResponseDTO(
+              result: false,
+              message: e.toString()
+          )
+      );
+    }
+  }
 
+  Future<void> authSnsLogin(Map<String, dynamic> requestData) async {
+    final response = await repository.reqPost(url: Constant.apiAuthSnsLoginUrl, data: requestData);
+    try {
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseData = response.data;
+          MemberInfoResponseDTO memberInfoResponseDTO = MemberInfoResponseDTO.fromJson(responseData);
+          setState(memberInfoResponseDTO);
+          return;
+        }
+      }
       setState(
           MemberInfoResponseDTO(
               result: false,

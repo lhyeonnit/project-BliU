@@ -15,18 +15,23 @@ import 'find_id_screen.dart';
 import 'find_password_screen.dart';
 
 class LoginScreen extends ConsumerWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  LoginScreenViewModel? _loginScreenViewModel;
+  var _isAutoLogin = true;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginScreenViewModel = ref.read(loginViewModelProvider.notifier);
+    _loginScreenViewModel = ref.read(loginViewModelProvider.notifier);
     ref.listen(
       loginViewModelProvider,
       ((previous, next) {
         if (next?.memberInfoResponseDTO != null) {
           if (next?.memberInfoResponseDTO?.result == true) {
             print('로그인 성공 == ${next?.memberInfoResponseDTO?.data?.toJson()}');
-            // TODO
+            // TODO 로그인 후 처리
           } else {
             Utils.getInstance().showSnackBar(context, next?.memberInfoResponseDTO?.message ?? "");
           }
@@ -60,148 +65,152 @@ class LoginScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 20),
-            Center(
-              child: SvgPicture.asset("assets/images/home/bottom_home.svg", width: 90,),
-            ),
-            const SizedBox(height: 40),
-            const TextField(
-              decoration: InputDecoration(
-                labelText: '아이디 입력',
-                border: OutlineInputBorder(),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 20),
+              Center(
+                child: SvgPicture.asset("assets/images/home/bottom_home.svg", width: 90,),
               ),
-            ),
-            const SizedBox(height: 16),
-            const TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: '비밀번호 입력',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Checkbox(
-                  value: true,
-                  onChanged: (value) {
-                    // 자동로그인 체크박스 동작
-                  },
-                ),
-                const Text('자동로그인'),
-              ],
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // 로그인 버튼 동작
-                _login(loginScreenViewModel);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              child: const Text('로그인', style: TextStyle(color: Colors.white),),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    // 회원가입 버튼 동작
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const JoinAgreeScreen(),
-                      ),
-                    );
-                  },
-                  child: const Text('회원가입'),
-                ),
-                const VerticalDivider(color: Colors.black),
-                TextButton(
-                  onPressed: () {
-                    // 아이디찾기 버튼 동작
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const FindIdScreen(),
-                      ),
-                    );
-                  },
-                  child: const Text('아이디찾기'),
-                ),
-                const VerticalDivider(color: Colors.black),
-                TextButton(
-                  onPressed: () {
-                    // 비밀번호찾기 버튼 동작
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const FindPasswordScreen(),
-                      ),
-                    );
-                  },
-                  child: const Text('비밀번호찾기'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            const Center(
-              child: Text(
-                'SNS 로그인',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+              const SizedBox(height: 40),
+              TextField(
+                controller: _idController,
+                decoration: const InputDecoration(
+                  labelText: '아이디 입력',
+                  border: OutlineInputBorder(),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: SvgPicture.asset('assets/images/login/sns_k.svg'),
-                  iconSize: 50,
-                  onPressed: () {
-                    // 카카오톡 로그인 동작
-                  },
+              const SizedBox(height: 16),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: '비밀번호 입력',
+                  border: OutlineInputBorder(),
                 ),
-                IconButton(
-                  icon: SvgPicture.asset('assets/images/login/sns_n.svg'),
-                  iconSize: 50,
-                  onPressed: () {
-                    // 네이버 로그인 동작
-                  },
-                ),
-                IconButton(
-                  icon: SvgPicture.asset('assets/images/login/sns_a.svg'),
-                  iconSize: 50,
-                  onPressed: () {
-                    // 애플 로그인 동작
-                  },
-                ),
-              ],
-            ),
-            const Spacer(),
-            Center(
-              child: TextButton(
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Checkbox(
+                    value: true,
+                    onChanged: (value) {
+                      // 자동로그인 체크박스 동작
+                      _isAutoLogin = value ?? true;
+                    },
+                  ),
+                  const Text('자동로그인'),
+                ],
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
                 onPressed: () {
-                  // 비회원 배송조회 동작
+                  // 로그인 버튼 동작
+                  _login(context);
                 },
-                child: const Text('비회원 배송조회'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                child: const Text('로그인', style: TextStyle(color: Colors.white),),
               ),
-            ),
-            const SizedBox(height: 24),
-          ],
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      // 회원가입 버튼 동작
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const JoinAgreeScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text('회원가입'),
+                  ),
+                  const VerticalDivider(color: Colors.black),
+                  TextButton(
+                    onPressed: () {
+                      // 아이디찾기 버튼 동작
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FindIdScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text('아이디찾기'),
+                  ),
+                  const VerticalDivider(color: Colors.black),
+                  TextButton(
+                    onPressed: () {
+                      // 비밀번호찾기 버튼 동작
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FindPasswordScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text('비밀번호찾기'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              const Center(
+                child: Text(
+                  'SNS 로그인',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: SvgPicture.asset('assets/images/login/sns_k.svg'),
+                    iconSize: 50,
+                    onPressed: () {
+                      _kakaoLogin();
+                    },
+                  ),
+                  IconButton(
+                    icon: SvgPicture.asset('assets/images/login/sns_n.svg'),
+                    iconSize: 50,
+                    onPressed: () {
+                      _naverLogin();
+                    },
+                  ),
+                  IconButton(
+                    icon: SvgPicture.asset('assets/images/login/sns_a.svg'),
+                    iconSize: 50,
+                    onPressed: () {
+                      _appleLogin();
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Center(
+                child: TextButton(
+                  onPressed: () {
+                    // TODO 비회원 배송조회 동작
+                  },
+                  child: const Text('비회원 배송조회'),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
+      )
     );
   }
 
@@ -259,7 +268,7 @@ class LoginScreen extends ConsumerWidget {
         'login_type': '3'
       };
 
-      _snsLogin(data);
+      _loginScreenViewModel?.authSnsLogin(data);
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
     }
@@ -285,7 +294,7 @@ class LoginScreen extends ConsumerWidget {
           'login_type': '2'
         };
 
-        _snsLogin(data);
+        _loginScreenViewModel?.authSnsLogin(data);
       }
     } catch (error) {
       print(error);
@@ -314,22 +323,27 @@ class LoginScreen extends ConsumerWidget {
         'login_type': '4'
       };
 
-      _snsLogin(data);
+      _loginScreenViewModel?.authSnsLogin(data);
     }
   }
 
-  // TODO
-  void _login(LoginScreenViewModel model) {
+  void _login(BuildContext context) {
+    if (_idController.text.isEmpty) {
+      Utils.getInstance().showSnackBar(context, "아이디를 입력해 주세요");
+      return;
+    }
+
+    if (_passwordController.text.isEmpty) {
+      Utils.getInstance().showSnackBar(context, "비밇번호를 입력해 주세요");
+      return;
+    }
+
     Map<String, dynamic> data = {
-      'id': 'test1',
-      'pwd': 'test1234!',
-      'auto_login': 'Y'
+      'id': _idController.text,
+      'pwd': _passwordController.text,
+      'auto_login': _isAutoLogin,
     };
 
-    model.authLogin(data);
-  }
-  // TODO
-  void _snsLogin(Map<String, dynamic> data) {
-
+    _loginScreenViewModel?.authLogin(data);
   }
 }
