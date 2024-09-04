@@ -54,6 +54,7 @@ class _RecommendEditState extends State<RecommendEdit> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/login/ic_back.svg"),

@@ -7,6 +7,7 @@ import 'package:BliU/screen/mypage/component/top/my_info.dart';
 import 'package:BliU/screen/mypage/component/bottom/recommend_edit.dart';
 import 'package:BliU/screen/mypage/component/bottom/service_screen.dart';
 import 'package:BliU/screen/mypage/component/top/my_review_screen.dart';
+import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
 import 'package:BliU/screen/mypage/component/top/point_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -80,7 +81,12 @@ class MyScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildIconButton(
-                    '주문·배송', 'assets/images/my/mypage_ic01.svg', () {}, ''),
+                    '주문·배송', 'assets/images/my/mypage_ic01.svg', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const OrderListScreen()),
+                  );
+                }, ''),
                 _buildIconButton(
                     '나의리뷰', 'assets/images/my/mypage_ic02.svg', () {
                   Navigator.push(

@@ -60,6 +60,7 @@ class _FAQScreenState extends State<FAQScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/product/ic_back.svg"),

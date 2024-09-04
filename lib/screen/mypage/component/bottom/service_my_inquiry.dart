@@ -28,6 +28,7 @@ class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with Si
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text(
           '문의내역',

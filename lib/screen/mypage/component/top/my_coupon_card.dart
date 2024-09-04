@@ -1,4 +1,3 @@
-import 'package:BliU/data/coupon_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -62,16 +61,19 @@ class _MyCouponCardState extends State<MyCouponCard> {
 
   @override
   Widget build(BuildContext context) {
-    return isDownloaded && widget.isDownloaded
-        ? Container() // 발급 완료된 쿠폰은 사용 가능 목록에서 숨김
-        : buildCouponCard(context);
+    // "사용가능" 목록에서 이미 다운로드된 쿠폰은 숨기고, "완료/만료" 목록에서만 표시
+    if (isDownloaded && !widget.isDownloaded) {
+      return Container();
+    }
+
+    return buildCouponCard(context);
   }
 
   Widget buildCouponCard(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15.0),
       decoration: BoxDecoration(
-        border: Border.all(style: BorderStyle.solid, color: Color(0xFFDDDDDD)),
+        border: Border.all(style: BorderStyle.solid, color: const Color(0xFFDDDDDD)),
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: IntrinsicHeight(
@@ -90,29 +92,29 @@ class _MyCouponCardState extends State<MyCouponCard> {
                           style: TextStyle(
                             fontSize: Responsive.getFont(context, 16),
                             fontWeight: FontWeight.bold,
-                            color: isDownloaded ? Color(0xFFA4A4A4) : Color(0xFFFF6192),
+                            color: isDownloaded ? const Color(0xFFA4A4A4) : const Color(0xFFFF6192),
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 6),
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
                           child: Text(
                             widget.title,
                             style: TextStyle(
                               fontSize: Responsive.getFont(context, 16),
                               fontWeight: FontWeight.bold,
-                              color: isDownloaded ? Color(0xFFA4A4A4) : Colors.black,
+                              color: isDownloaded ? const Color(0xFFA4A4A4) : Colors.black,
                             ),
                           ),
                         ),
                       ],
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Text(
                         widget.expiryDate,
                         style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
-                          color: isDownloaded ? Color(0xFFA4A4A4) : Colors.black,
+                          color: isDownloaded ? const Color(0xFFA4A4A4) : Colors.black,
                         ),
                       ),
                     ),
@@ -120,7 +122,7 @@ class _MyCouponCardState extends State<MyCouponCard> {
                       widget.discountDetails,
                       style: TextStyle(
                         fontSize: Responsive.getFont(context, 12),
-                        color: Color(0xFFA4A4A4),
+                        color: const Color(0xFFA4A4A4),
                       ),
                     ),
                   ],
@@ -128,8 +130,8 @@ class _MyCouponCardState extends State<MyCouponCard> {
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: const BoxDecoration(
                 border: Border(left: BorderSide(color: Color(0xFFDDDDDD))),
               ),
               child: Column(
@@ -139,18 +141,22 @@ class _MyCouponCardState extends State<MyCouponCard> {
                     onTap: isDownloaded ? null : _handleDownload,
                     child: SvgPicture.asset(
                       isDownloaded ? 'assets/images/store/ic_cu_down_end.svg' : 'assets/images/store/ic_cu_down.svg',
+
                     ),
                   ),
-                  SizedBox(
-                    height: 16,
-                    child: Text(
-                      isDownloaded ? "발급완료" : '발급받기',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: isDownloaded ? Colors.grey : Colors.black,
-                      ),
-                    ),
-                  ),
+                  if (isDownloaded) // 다운로드된 경우에만 텍스트 표시
+                     Padding(
+                       padding: const EdgeInsets.only(top: 10.0),
+                       child: SizedBox(
+                        child: Text(
+                          '사용완료',
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 12),
+                            color: Colors.grey,
+                          ),
+                        ),
+                                           ),
+                     ),
                 ],
               ),
             ),

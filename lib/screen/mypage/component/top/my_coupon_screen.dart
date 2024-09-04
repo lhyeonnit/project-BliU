@@ -1,11 +1,10 @@
-import 'package:BliU/screen/mypage/component/top/my_coupon_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../utils/responsive.dart';
+import 'my_coupon_card.dart';
 
-
+// 쿠폰 데이터 정의
 const List<Map<String, String>> couponData = [
   {
     "discount": "10%",
@@ -37,52 +36,42 @@ class MyCouponScreen extends StatefulWidget {
 class _MyCouponScreenState extends State<MyCouponScreen> {
   List<String> categories = ['사용가능', '완료/만료'];
   int selectedCategoryIndex = 0;
-  // List<couponData> availableCoupons = [];
-  // List<couponData> issuedCoupons = [];
+  List<Map<String, String>> availableCoupons = [];
+  List<Map<String, String>> issuedCoupons = [];
 
   @override
   void initState() {
     super.initState();
-    // _filterCoupons(); // 쿠폰 필터링 로직을 초기화 시점에서 호출
+    _filterCoupons(); // 쿠폰 필터링 로직을 초기화 시점에서 호출
   }
 
-  // Future<void> _filterCoupons() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //
-  //   setState(() {
-  //     availableCoupons = couponData.map((data) {
-  //       return CouponData(
-  //         discount: data["discount"]!,
-  //         title: data["title"]!,
-  //         expiryDate: data["expiryDate"]!,
-  //         discountDetails: data["discountDetails"]!,
-  //         couponKey: data["title"]!, // 제목을 키로 사용
-  //       );
-  //     }).where((coupon) {
-  //       bool? isDownloaded = prefs.getBool(coupon.couponKey);
-  //       return !(isDownloaded ?? false);
-  //     }).toList();
-  //
-  //     issuedCoupons = couponData.map((data) {
-  //       return CouponData(
-  //         discount: data["discount"]!,
-  //         title: data["title"]!,
-  //         expiryDate: data["expiryDate"]!,
-  //         discountDetails: data["discountDetails"]!,
-  //         couponKey: data["title"]!, // 제목을 키로 사용
-  //       );
-  //     }).where((coupon) {
-  //       bool? isDownloaded = prefs.getBool(coupon.couponKey);
-  //       return isDownloaded == true;
-  //     }).toList();
-  //   });
-  // }
+  Future<void> _filterCoupons() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      availableCoupons = couponData.where((data) {
+        bool? isDownloaded = prefs.getBool(data["title"]!); // 쿠폰 제목을 키로 사용
+        return !(isDownloaded ?? false); // 다운로드되지 않은 쿠폰만 필터링
+      }).toList();
+
+      issuedCoupons = couponData.where((data) {
+        bool? isDownloaded = prefs.getBool(data["title"]!); // 쿠폰 제목을 키로 사용
+        return isDownloaded == true; // 다운로드된 쿠폰만 필터링
+      }).toList();
+    });
+  }
+
+  Future<void> _markCouponAsDownloaded(String couponKey) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(couponKey, true);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('쿠폰'),
         titleTextStyle: TextStyle(
@@ -161,41 +150,43 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            //   child: Text(
-            //       '쿠폰 ${selectedCategoryIndex == 0 ? availableCoupons.length : issuedCoupons.length}'),
-            // ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                '쿠폰 ${selectedCategoryIndex == 0 ? availableCoupons.length : issuedCoupons.length}',
+              ),
+            ),
             const SizedBox(height: 10),
-            // Expanded(
-            //   child: ListView.builder(
-            //     itemCount: selectedCategoryIndex == 0
-            //         ? availableCoupons.length
-            //         : issuedCoupons.length,
-            //     itemBuilder: (context, index) {
-            //       final coupon = selectedCategoryIndex == 0
-            //           ? availableCoupons[index]
-            //           : issuedCoupons[index];
-            //       return Padding(
-            //         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            //         child: MyCouponCard(
-            //           discount: coupon.discount,
-            //           title: coupon.title,
-            //           expiryDate: coupon.expiryDate,
-            //           discountDetails: coupon.discountDetails,
-            //           isDownloaded: selectedCategoryIndex == 1, // 상태 전달
-            //           onDownload: () {
-            //             setState(() {
-            //               availableCoupons.removeAt(index);
-            //               _filterCoupons(); // 쿠폰 리스트 업데이트
-            //             });
-            //           },
-            //           couponKey: coupon.couponKey, // 고유한 키 전달
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: selectedCategoryIndex == 0
+                    ? availableCoupons.length
+                    : issuedCoupons.length,
+                itemBuilder: (context, index) {
+                  final coupon = selectedCategoryIndex == 0
+                      ? availableCoupons[index]
+                      : issuedCoupons[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: MyCouponCard(
+                      discount: coupon["discount"]!,
+                      title: coupon["title"]!,
+                      expiryDate: coupon["expiryDate"]!,
+                      discountDetails: coupon["discountDetails"]!,
+                      isDownloaded: selectedCategoryIndex == 1 || issuedCoupons.contains(coupon), // 상태 전달
+                      onDownload: () {
+                        setState(() {
+                          _markCouponAsDownloaded(coupon["title"]!); // 다운로드 상태 저장
+                          availableCoupons.removeAt(index);
+                          _filterCoupons(); // 쿠폰 리스트 업데이트
+                        });
+                      },
+                      couponKey: coupon["title"]!, // 고유한 키 전달
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
