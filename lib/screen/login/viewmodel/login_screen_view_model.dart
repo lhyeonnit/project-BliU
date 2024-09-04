@@ -17,6 +17,14 @@ class LoginScreenViewModel extends StateNotifier<LoginScreenModel?> {
 
   LoginScreenViewModel(super.state, this.ref);
 
+  void setState(
+      MemberInfoResponseDTO? memberInfoResponseDTO,
+  ) {
+    state = LoginScreenModel(
+        memberInfoResponseDTO: memberInfoResponseDTO,
+    );
+  }
+
   Future<void> authLogin(Map<String, dynamic> requestData) async {
     final response = await repository.reqPost(url: Constant.apiAuthLoginUrl, data: requestData);
     try {
@@ -24,17 +32,29 @@ class LoginScreenViewModel extends StateNotifier<LoginScreenModel?> {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
           MemberInfoResponseDTO memberInfoResponseDTO = MemberInfoResponseDTO.fromJson(responseData);
-          state = LoginScreenModel(memberInfoResponseDTO: memberInfoResponseDTO);
+          setState(memberInfoResponseDTO);
           return;
         }
       }
-      state = null;
+      setState(
+          MemberInfoResponseDTO(
+              result: false,
+              message: "Network Or Data Error"
+          )
+      );
     } catch(e) {
       // Catch and log any exceptions
       print('Error request Api: $e');
-      state = null;
+      setState(
+          MemberInfoResponseDTO(
+              result: false,
+              message: e.toString()
+          )
+      );
     }
   }
+
+
 }
 
 // ViewModel Provider 정의

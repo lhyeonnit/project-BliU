@@ -2,6 +2,7 @@
 import 'package:BliU/screen/join/join_agree_screen.dart';
 import 'package:BliU/screen/login/viewmodel/login_screen_view_model.dart';
 import 'package:BliU/screen/main_screen.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,16 +23,11 @@ class LoginScreen extends ConsumerWidget {
     ref.listen(
       loginViewModelProvider,
       ((previous, next) {
-        print("previous === ${previous?.memberInfoResponseDTO?.result}");
-        print("next == ${next?.memberInfoResponseDTO?.result}");
-        if (next != null) {
-          print("next == ${next.memberInfoResponseDTO?.result}");
-          if (next.memberInfoResponseDTO?.result == true) {
-            print('로그인 성공 == ${next.memberInfoResponseDTO?.data?.toJson()}');
+        if (next?.memberInfoResponseDTO != null) {
+          if (next?.memberInfoResponseDTO?.result == true) {
+            print('로그인 성공 == ${next?.memberInfoResponseDTO?.data?.toJson()}');
           } else {
-            Utils.getInstance().then((utils) {
-              utils.showSnackBar(context, next.memberInfoResponseDTO?.message ?? "");
-            });
+            Utils.getInstance().showSnackBar(context, next?.memberInfoResponseDTO?.message ?? "");
           }
         }
       }),
@@ -254,11 +250,11 @@ class LoginScreen extends ConsumerWidget {
       //     '\n이메일: ${user.kakaoAccount?.email}'
       //     '\n폰번호: ${user.kakaoAccount?.phoneNumber}');
 
-      var utils = await Utils.getInstance();
+      var shared = await SharedPreferencesManager.getInstance();
       Map<String, dynamic> data = {
         'id': user.id.toString(),
         'name': user.kakaoAccount?.profile?.nickname ?? "",
-        'app_token': utils.getToken(),
+        'app_token': shared.getToken(),
         'login_type': '3'
       };
 
@@ -280,11 +276,11 @@ class LoginScreen extends ConsumerWidget {
         // print('email = ${result.account.email}');
         // print('mobile = ${result.account.mobile}');
 
-        var utils = await Utils.getInstance();
+        var shared = await SharedPreferencesManager.getInstance();
         Map<String, dynamic> data = {
           'id': result.account.id,
           'name': result.account.name,
-          'app_token': utils.getToken(),
+          'app_token': shared.getToken(),
           'login_type': '2'
         };
 
@@ -298,27 +294,27 @@ class LoginScreen extends ConsumerWidget {
   //애플 로그인
 
   Future<void> _appleLogin() async {
-    // AppleAuthProvider appleProvider = AppleAuthProvider();
-    // appleProvider = appleProvider.addScope('email');
-    // appleProvider = appleProvider.addScope('name');
-    // // the line below will start the Apple sign in flow for your platform
-    // final userCredential = await FirebaseAuth.instance.signInWithProvider(appleProvider);
-    // var user = userCredential.user;
-    // if (user != null) {
-    //   // print("user.uid == ${user.uid}");
-    //   // print("user.displayName == ${user.displayName}");
-    //   // print("user.email == ${user.email}");
-    //
-    //   var utils = await Utils.getInstance();
-    //   Map<String, dynamic> data = {
-    //     'id': user.uid,
-    //     'name': user.displayName,
-    //     'app_token': utils.getToken(),
-    //     'login_type': '4'
-    //   };
-    //
-    //   _snsLogin(data);
-    // }
+    AppleAuthProvider appleProvider = AppleAuthProvider();
+    appleProvider = appleProvider.addScope('email');
+    appleProvider = appleProvider.addScope('name');
+    // the line below will start the Apple sign in flow for your platform
+    final userCredential = await FirebaseAuth.instance.signInWithProvider(appleProvider);
+    var user = userCredential.user;
+    if (user != null) {
+      // print("user.uid == ${user.uid}");
+      // print("user.displayName == ${user.displayName}");
+      // print("user.email == ${user.email}");
+
+      var shared = await SharedPreferencesManager.getInstance();
+      Map<String, dynamic> data = {
+        'id': user.uid,
+        'name': user.displayName,
+        'app_token': shared.getToken(),
+        'login_type': '4'
+      };
+
+      _snsLogin(data);
+    }
   }
 
   // TODO
@@ -331,7 +327,7 @@ class LoginScreen extends ConsumerWidget {
 
     model.authLogin(data);
   }
-
+  // TODO
   void _snsLogin(Map<String, dynamic> data) {
 
   }

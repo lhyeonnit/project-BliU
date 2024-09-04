@@ -25,7 +25,7 @@ class MemberInfoData {
       mtIdx: json['mt_idx'],
       mtId: json['mt_id'],
       mtName: json['mt_name'],
-      mctStyle: List<String>.from(json['mct_style']),
+      mctStyle: List<String>.from(json['mct_style'] ?? []),
       cart: json['cart'],
       childCk: json['child_ck'],
       myRevieCount: json['my_revie_count'],
