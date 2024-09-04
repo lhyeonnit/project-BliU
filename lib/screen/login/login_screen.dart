@@ -26,6 +26,7 @@ class LoginScreen extends ConsumerWidget {
         if (next?.memberInfoResponseDTO != null) {
           if (next?.memberInfoResponseDTO?.result == true) {
             print('로그인 성공 == ${next?.memberInfoResponseDTO?.data?.toJson()}');
+            // TODO
           } else {
             Utils.getInstance().showSnackBar(context, next?.memberInfoResponseDTO?.message ?? "");
           }

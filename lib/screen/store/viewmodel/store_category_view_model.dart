@@ -1,26 +1,24 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/data/product_data.dart';
-import 'package:BliU/data/store_data.dart';
-import 'package:BliU/dto/store_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 모델 클래스 정의 (데이터 상태를 관리하기 위한 DTO)
 class StoreCategoryModel {
-  final List<ProductData>? productList;
+  List<ProductData>? productList;
 
   StoreCategoryModel({
     required this.productList,
   });
 
   // copyWith 메서드를 통해 상태 복사 및 수정
-  StoreCategoryModel copyWith({
-    List<ProductData>? productList,
-  }) {
-    return StoreCategoryModel(
-      productList: this.productList ?? [],
-    );
-  }
+  // StoreCategoryModel copyWith({
+  //   List<ProductData>? productList,
+  // }) {
+  //   return StoreCategoryModel(
+  //     productList: this.productList ?? [],
+  //   );
+  // }
 }
 
 // ViewModel 정의
@@ -63,13 +61,20 @@ class StoreCategoryViewModel extends StateNotifier<StoreCategoryModel?> {
             return ProductData.fromJson(item as Map<String, dynamic>);
           }).toList();
 
-          state = StoreCategoryModel(productList: productList);
+          var dataList = state?.productList ?? [];
+          if (productList.isNotEmpty) {
+            for (var e in productList) {
+              dataList.add(e);
+            }
+          }
+          state = StoreCategoryModel(productList: dataList);
         }
       } else {
-        state = null;
+        state = StoreCategoryModel(productList: state?.productList);
       }
     } catch (e) {
       print("Error loading products: $e");
+      state = StoreCategoryModel(productList: state?.productList);
     }
   }
 

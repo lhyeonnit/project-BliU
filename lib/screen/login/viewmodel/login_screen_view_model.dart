@@ -4,7 +4,7 @@ import 'package:BliU/dto/member_info_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginScreenModel {
-  MemberInfoResponseDTO? memberInfoResponseDTO;
+  final MemberInfoResponseDTO? memberInfoResponseDTO;
 
   LoginScreenModel({
     required this.memberInfoResponseDTO,
@@ -36,6 +36,7 @@ class LoginScreenViewModel extends StateNotifier<LoginScreenModel?> {
           return;
         }
       }
+
       setState(
           MemberInfoResponseDTO(
               result: false,
@@ -53,8 +54,6 @@ class LoginScreenViewModel extends StateNotifier<LoginScreenModel?> {
       );
     }
   }
-
-
 }
 
 // ViewModel Provider 정의
