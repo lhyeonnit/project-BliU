@@ -2,7 +2,7 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../utils/responsive.dart';
+import '../../../../../utils/responsive.dart';
 import 'order_item.dart';
 
 class OrderDetail extends StatefulWidget {

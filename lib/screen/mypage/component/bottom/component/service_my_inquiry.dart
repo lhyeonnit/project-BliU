@@ -1,5 +1,5 @@
-import 'package:BliU/screen/mypage/component/bottom/service_inquiry_one.dart';
-import 'package:BliU/screen/mypage/component/bottom/service_inquiry_product.dart';
+import 'package:BliU/screen/mypage/component/bottom/component/service_inquiry_one.dart';
+import 'package:BliU/screen/mypage/component/bottom/component/service_inquiry_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

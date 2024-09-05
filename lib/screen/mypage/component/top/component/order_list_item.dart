@@ -1,9 +1,10 @@
-import 'package:BliU/screen/mypage/component/top/order_detail.dart';
-import 'package:BliU/screen/mypage/component/top/order_item.dart';
-import 'package:BliU/screen/mypage/component/top/order_item_button.dart';
+import 'package:BliU/screen/mypage/component/top/component/order_detail.dart';
+
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'order_item.dart';
 
 class OrderListItem extends StatelessWidget {
   final String date;

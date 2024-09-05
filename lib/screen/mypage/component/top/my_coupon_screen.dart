@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../utils/responsive.dart';
-import 'my_coupon_card.dart';
+import 'component/my_coupon_card.dart';
 
 // 쿠폰 데이터 정의
 const List<Map<String, String>> couponData = [

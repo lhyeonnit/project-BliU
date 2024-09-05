@@ -1,9 +1,10 @@
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/component/top/order_list_item.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+import 'component/order_list_item.dart';
 
 class OrderListScreen extends StatefulWidget {
   const OrderListScreen({super.key});
