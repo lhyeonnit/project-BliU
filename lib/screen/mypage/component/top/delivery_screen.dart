@@ -109,11 +109,11 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('수령인',
+                              Text('운송장번호',
                                   style: TextStyle(
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black)),
-                              Text('김크루',
+                              Text('1254884512',
                                   style: TextStyle(
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black)),

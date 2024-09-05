@@ -1,3 +1,5 @@
+import 'package:BliU/screen/mypage/component/bottom/inquiry_service.dart';
+import 'package:BliU/screen/mypage/component/top/cancel_screen.dart';
 import 'package:BliU/screen/mypage/component/top/delivery_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -5,9 +7,17 @@ import '../../../../utils/responsive.dart';
 
 class OrderItemButton extends StatelessWidget {
   final String status;
+  final String date;
+  final String orderId;
+  final List<Map<String, dynamic>> orders;
+
   const OrderItemButton({
+    Key? key,
     required this.status,
-  });
+    required this.date,
+    required this.orderId,
+    required this.orders,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +26,14 @@ class OrderItemButton extends StatelessWidget {
         children: [
           Expanded(
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CancelScreen(date: date, orderId: orderId, orders: orders,),
+                  ),
+                );
+              },
               child: Text(
                 '취소하기',
                 style: TextStyle(
@@ -35,7 +52,14 @@ class OrderItemButton extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InquiryService(),
+                  ),
+                );
+              },
               child: Text(
                 '문의하기',
                 style: TextStyle(
@@ -103,7 +127,14 @@ class OrderItemButton extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InquiryService(),
+                  ),
+                );
+              },
               child: Text(
                 '문의하기',
                 style: TextStyle(
@@ -192,7 +223,14 @@ class OrderItemButton extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => InquiryService(),
+                      ),
+                    );
+                  },
                   child: Text(
                     '문의하기',
                     style: TextStyle(
@@ -262,7 +300,14 @@ class OrderItemButton extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InquiryService(),
+                  ),
+                );
+              },
               child: Text(
                 '문의하기',
                 style: TextStyle(

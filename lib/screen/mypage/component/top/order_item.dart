@@ -91,7 +91,7 @@ class OrderItem extends StatelessWidget {
           ),
         ),
         // 상태에 따라 버튼 표시
-        OrderItemButton(status: order['status']),
+        OrderItemButton(status: order['status'], date: order['date'], orderId: order['orderId'], orders: [order]),
       ],
     );
   }
