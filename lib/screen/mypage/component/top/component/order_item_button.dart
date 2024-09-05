@@ -1,6 +1,7 @@
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
 import 'package:BliU/screen/mypage/component/top/cancel_screen.dart';
 import 'package:BliU/screen/mypage/component/top/delivery_screen.dart';
+import 'package:BliU/screen/mypage/component/top/exchange_return_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../utils/responsive.dart';
@@ -82,7 +83,14 @@ class OrderItemButton extends StatelessWidget {
         children: [
           Expanded(
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ExchangeReturnScreen(date: date, orderId: orderId, orders: orders),
+                  ),
+                );
+              },
               child: Text(
                 '교환/반품 요청',
                 style: TextStyle(
@@ -178,7 +186,14 @@ class OrderItemButton extends StatelessWidget {
             children: [
               Expanded(
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ExchangeReturnScreen(date: date, orderId: orderId, orders: orders),
+                      ),
+                    );
+                  },
                   child: Text(
                     '교환/반품 요청',
                     style: TextStyle(
