@@ -1,4 +1,3 @@
-//배송현황
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,6 +13,40 @@ class DeliveryScreen extends StatefulWidget {
 
 class _DeliveryScreenState extends State<DeliveryScreen> {
   final ScrollController _scrollController = ScrollController();
+
+  // 배송 데이터 리스트
+  final List<Map<String, String>> deliveryData = [
+    {
+      'time': '2020-12-01 11:11:11',
+      'location': '서울 남대문',
+      'status': '배달완료',
+    },
+    {
+      'time': '2020-12-01 10:10:10',
+      'location': '서울 남대문',
+      'status': '배달출발',
+    },
+    {
+      'time': '2020-12-01 09:09:09',
+      'location': '남서울 터미널',
+      'status': '배달전',
+    },
+    {
+      'time': '2020-12-01 08:08:08',
+      'location': '대전 HUB',
+      'status': '간선상차',
+    },
+    {
+      'time': '2020-12-01 07:07:07',
+      'location': '서북직영',
+      'status': '집하처리',
+    },
+    {
+      'time': '2020-12-01 06:06:06',
+      'location': '고객',
+      'status': '인수자등록',
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -39,18 +72,6 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
           child: Container(
             color: const Color(0xFFF4F4F4), // 하단 구분선 색상
             height: 1.0, // 구분선의 두께 설정
-            child: Container(
-              height: 1.0, // 그림자 부분의 높이
-              decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0xFFF4F4F4),
-                    blurRadius: 6.0,
-                    spreadRadius: 1.0,
-                  ),
-                ],
-              ),
-            ),
           ),
         ),
       ),
@@ -126,6 +147,8 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                     width: double.infinity,
                     color: Color(0xFFF5F9F9),
                   ),
+
+                  // 테이블 헤더
                   Padding(
                     padding: const EdgeInsets.only(
                         right: 16.0, left: 16, bottom: 20),
@@ -153,6 +176,8 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                       ],
                     ),
                   ),
+
+                  // 데이터 리스트 표시 (배경색 반복)
                   Container(
                     decoration: BoxDecoration(
                       border: Border.symmetric(
@@ -161,32 +186,51 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                         ),
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '2020-12-01 11:11:11',
-                            style: TextStyle(
-                                fontSize: Responsive.getFont(context, 14),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: deliveryData.asMap().entries.map((entry) {
+                        int index = entry.key;
+                        Map<String, String> data = entry.value;
+                        Color rowColor = index % 2 == 1
+                            ? Colors.white // 짝수 행 색상
+                            : Color(0xFFF5F9F9); // 홀수 행 색상
+                    
+                        return Container(
+                          color: rowColor,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 15),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  data['time'] ?? '',
+                                  style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 14)),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 30),
+                                    child: Text(
+                                      data['location'] ?? '',
+                                      style: TextStyle(
+                                          fontSize: Responsive.getFont(context, 14)),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  data['status'] ?? '',
+                                  style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 14)),
+                                ),
+                              ],
                             ),
                           ),
-                          Text(
-                            '서울 남대문',
-                            style: TextStyle(
-                                fontSize: Responsive.getFont(context, 14),
-                            ),
-                          ),
-                          Text(
-                            '배달완료',
-                            style: TextStyle(
-                                fontSize: Responsive.getFont(context, 14),
-                            ),
-                          ),
-                        ],
-                      ),
+                        );
+                      }).toList(),
                     ),
                   ),
                 ],
