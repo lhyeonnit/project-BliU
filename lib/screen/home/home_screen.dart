@@ -155,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
-                           HomeBodyCategory(),
+                          HomeBodyCategory(),
                           const HomeBodyAi(),
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 30.0),
@@ -164,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: HomeBodyExhibition(),
                             ),
                           ),
-                          const HomeBodyBestSales(),
+                          const HomeBodyBestSales(), // TODO
                           const HomeFooter(),
                         ],
                       ),

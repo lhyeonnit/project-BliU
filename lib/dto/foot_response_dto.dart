@@ -8,15 +8,15 @@ class FootResponseDTO {
   FootResponseDTO({
     required this.result,
     required this.message,
-    required this.data
+    this.data
   });
 
   // JSON to Object
   factory FootResponseDTO.fromJson(Map<String, dynamic> json) {
     return FootResponseDTO(
       result: json['result'],
-      message: json['data']['message'],
-      data: (json['data'][0] as FootData),
+      message: (json['data'] is List ? null : json['data']['message']),
+      data: FootData.fromJson(json['data'][0]),
     );
   }
 

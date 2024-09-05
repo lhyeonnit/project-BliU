@@ -70,14 +70,12 @@ class _LikeScreenState extends State<LikeScreen> {
       ),
       body: Column(
         children: [
-          Container(
+          SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
-            height: 50.0,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                return Padding(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List<Widget>.generate(categories.length, (index){
+                return Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: GestureDetector(
                     onTap: () {
@@ -111,7 +109,7 @@ class _LikeScreenState extends State<LikeScreen> {
                     ),
                   ),
                 );
-              },
+              }),
             ),
           ),
           Padding(
@@ -161,25 +159,28 @@ class _LikeScreenState extends State<LikeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AspectRatio(
-            aspectRatio: 1.0,
-            child: Image.network(
-              item['image']!,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: Colors.grey[200],
-                  child: const Center(
-                    child: Text(
-                      'Image not available',
-                      style: TextStyle(color: Colors.grey),
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.center,
+              child: Image.network(
+                item['image']!,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: Colors.grey[200],
+                    child: const Center(
+                      child: Text(
+                        'Image not available',
+                        style: TextStyle(color: Colors.grey),
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              ),
+            )
           ),
-        Text(
+          Text(
               item['brand']!,
               style: const TextStyle(
                 color: Colors.grey,

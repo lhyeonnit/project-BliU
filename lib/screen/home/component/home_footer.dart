@@ -1,10 +1,36 @@
+import 'package:BliU/screen/home/viewmodel/home_footer_view_model.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeFooter extends StatelessWidget {
+class HomeFooter extends ConsumerWidget {
   const HomeFooter({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    String footInfo = '회사명 : #####  |  대표 : ###\n'
+        '사업자등록번호 ############\n'
+        '제 통신판매업신고번호 : ###############\n'
+        '주소 : ####################';
+
+    final model = ref.watch(footerViewModelProvider);
+
+    if (model?.footResponseDTO != null) {
+      if (model?.footResponseDTO?.result == true) {
+        print('푸터 성공 == ${model?.footResponseDTO?.data?.toJson()}');
+        var data = model?.footResponseDTO?.data;
+        if (data != null) {
+          footInfo = '회사명 : ${data.stCompanyName}  |  대표 : ${data.stCompanyBoss}\n'
+              '사업자등록번호 ${data.stCompanyNum1}\n'
+              '제 통신판매업신고번호 : ${data.stCompanyNum2}\n'
+              '주소 : ${data.stCompanyAdd}';
+          print("footInfo == ${footInfo}");
+        }
+      } else {
+        Utils.getInstance().showSnackBar(context, model?.footResponseDTO?.message ?? "");
+      }
+    }
+
     return Container(
       color: const Color(0xFFF7F7F7), // 배경 색상
       padding: const EdgeInsets.symmetric(vertical: 80.0, horizontal: 16.0),
@@ -55,13 +81,9 @@ class HomeFooter extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5.0),
-          const Text(
-            '회사명 : (주)비그라운드  |  대표 : 김예원\n'
-                '사업자등록번호 12-345-6789\n'
-                '제 통신판매업신고번호 : 제2024-서울강남-1234\n'
-                '주소 : 서울특별시 OO구 OO동 OOO',
+          Text(footInfo,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.grey,
               fontSize: 12.0,
               height: 1.5,
@@ -80,4 +102,12 @@ class HomeFooter extends StatelessWidget {
       ),
     );
   }
+
+  // Widget _buildCountDown(BuildContext context, WidgetRef ref) {
+  //   var test = ref.watch(footerViewModelProvider.)
+  //
+  //   return Text(
+  //     remaining.toString(),
+  //   );
+  // }
 }

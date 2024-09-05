@@ -1,4 +1,3 @@
-//로그인
 import 'package:BliU/screen/join/join_agree_screen.dart';
 import 'package:BliU/screen/login/viewmodel/login_screen_view_model.dart';
 import 'package:BliU/screen/main_screen.dart';
@@ -13,7 +12,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'find_id_screen.dart';
 import 'find_password_screen.dart';
-
+//로그인
 class LoginScreen extends ConsumerWidget {
   LoginScreen({super.key});
 

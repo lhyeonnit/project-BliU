@@ -31,15 +31,13 @@ class PaymentScreenState extends State<PaymentScreen> {
       customerKey: paymentData.customerKey,
     );
 
-    _paymentWidget
-        .renderPaymentMethods(
+    _paymentWidget.renderPaymentMethods(
         selector: 'methods',
         amount: Amount(value: paymentData.amount, currency: Currency.KRW, country: "KR"),
         options: RenderPaymentMethodsOptions(variantKey: "DEFAULT")
     );
 
-    _paymentWidget
-        .renderAgreement(selector: 'agreement');
+    _paymentWidget.renderAgreement(selector: 'agreement');
   }
 
   @override
@@ -83,10 +81,6 @@ class PaymentScreenState extends State<PaymentScreen> {
                               )
                           );
 
-                          // if (!context.mounted) {
-                          //   return;
-                          // }
-
                           if (paymentResult.success != null) {
                             // 결제 성공 처리
                             var resultData = <String, dynamic>{};
@@ -104,7 +98,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                           }
                         },
                         style: TextButton.styleFrom(
-                            backgroundColor: const Color(0xff7C001D),
+                            backgroundColor: Colors.black,
                             shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
                                     Radius.circular(100)

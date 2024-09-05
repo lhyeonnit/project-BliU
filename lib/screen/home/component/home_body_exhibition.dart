@@ -151,114 +151,127 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
               SizedBox(height: Responsive.getHeight(context, 15)),
               SizedBox(
                 width: Responsive.getWidth(context, 340),
-                height: 84,
                 child: Row(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ProductDetailScreen(),
-                          ),
-                        );
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5.0),
-                        child: Image.asset(
-                          'assets/images/home/exhi.png',
-                          width: Responsive.getWidth(context, 84),
-                          height: Responsive.getHeight(context, 84),
-                          fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: Responsive.getWidth(context, 10)),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ProductDetailScreen(),
-                          ),
-                        );
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5.0),
-                        child: Image.asset(
-                          'assets/images/home/exhi.png',
-                          width: Responsive.getWidth(context, 84),
-                          height: Responsive.getHeight(context, 84),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: Responsive.getWidth(context, 10)),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ProductDetailScreen(),
-                          ),
-                        );
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5.0),
-                        child: Image.asset(
-                          'assets/images/home/exhi.png',
-                          width: Responsive.getWidth(context, 84),
-                          height: Responsive.getHeight(context, 84),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: Responsive.getWidth(context, 10)),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero, // 여백 없앰
-                        minimumSize: Size.zero, // 최소 사이즈를 0으로 설정하여 여백 제거
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ExhibitionScreen(),
-                          ),
-                        );
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // 원형 컨테이너 안에 텍스트
-                          Container(
-                            width: Responsive.getWidth(context, 58),
-                            height: 60,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              '+35',
-                              style: TextStyle(
-                                fontSize: Responsive.getFont(context, 14),
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
+                    Expanded(
+                        child: Row(
+                          children: [
+                            Flexible(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const ProductDetailScreen(),
+                                    ),
+                                  );
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  child: Image.asset(
+                                    'assets/images/home/exhi.png',
+                                    height: Responsive.getHeight(context, 84),
+                                    fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 10), // 간격을 위한 SizedBox
-                          // '자세히보기' 텍스트
-                          Text(
-                            '자세히보기',
-                            style: TextStyle(
-                              fontSize: Responsive.getFont(context, 12),
-                              color: Colors.white,
+                            const SizedBox(width: 10),
+                            Flexible(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const ProductDetailScreen(),
+                                    ),
+                                  );
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  child: Image.asset(
+                                    'assets/images/home/exhi.png',
+                                    height: Responsive.getHeight(context, 84),
+                                    fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                  ),
+                                ),
+                              ),
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                            const SizedBox(width: 10),
+                            Flexible(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const ProductDetailScreen(),
+                                    ),
+                                  );
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  child: Image.asset(
+                                    'assets/images/home/exhi.png',
+                                    height: Responsive.getHeight(context, 84),
+                                    fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero, // 여백 없앰
+                          minimumSize: Size.zero, // 최소 사이즈를 0으로 설정하여 여백 제거
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ExhibitionScreen(),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // 원형 컨테이너 안에 텍스트
+                            Container(
+                              width: Responsive.getWidth(context, 58),
+                              height: 60,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                '+35',
+                                style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10), // 간격을 위한 SizedBox
+                            // '자세히보기' 텍스트
+                            Text(
+                              '자세히보기',
+                              style: TextStyle(
+                                fontSize: Responsive.getFont(context, 12),
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
