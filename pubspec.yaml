@@ -61,6 +61,10 @@ dependencies:
   sign_in_with_apple: ^6.1.2
   tosspayments_widget_sdk_flutter: ^2.0.4
 
+dependency_overrides:
+  webview_flutter: 4.8.0
+  webview_flutter_wkwebview: 3.14.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,4 +1,6 @@
 class Constant {
+  static const TOSS_CLIENT_KEY = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";//테스트
+
   static const DOMAIN = "https://bground.api.dmonster.kr/";
   static const API_URL = "${DOMAIN}api/";
   static const USER_URL = "${API_URL}user/";

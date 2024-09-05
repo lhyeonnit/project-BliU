@@ -1,6 +1,5 @@
+import 'package:BliU/screen/mypage/component/top/my_info_edit_check.dart';
 import 'package:flutter/material.dart';
-
-import 'my_info_edit_check.dart';
 
 class MyInfo extends StatelessWidget {
   const MyInfo({super.key});
@@ -42,7 +41,6 @@ class MyInfo extends StatelessWidget {
                   builder: (context) => const MyInfoEditCheck(),
                 ),
               );
-
             },
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(

@@ -1,6 +1,6 @@
 import 'dart:io';
-
-import 'package:BliU/data/PaymentData.dart';
+import 'package:BliU/const/constant.dart';
+import 'package:BliU/data/payment_data.dart';
 import 'package:flutter/material.dart';
 import 'package:tosspayments_widget_sdk_flutter/model/payment_info.dart';
 import 'package:tosspayments_widget_sdk_flutter/model/payment_widget_options.dart';
@@ -19,8 +19,8 @@ class PaymentScreen extends StatefulWidget {
 
 class PaymentScreenState extends State<PaymentScreen> {
   late PaymentWidget _paymentWidget;
-  PaymentMethodWidgetControl? _paymentMethodWidgetControl;
-  AgreementWidgetControl? _agreementWidgetControl;
+  //PaymentMethodWidgetControl? _paymentMethodWidgetControl;
+  //AgreementWidgetControl? _agreementWidgetControl;
 
   PaymentData get paymentData => widget.paymentData;
 
@@ -29,7 +29,7 @@ class PaymentScreenState extends State<PaymentScreen> {
     super.initState();
 
     _paymentWidget = PaymentWidget(
-      clientKey: "",//실사용
+      clientKey: Constant.TOSS_CLIENT_KEY,
       customerKey: paymentData.customerKey,
     );
 
@@ -38,15 +38,16 @@ class PaymentScreenState extends State<PaymentScreen> {
         selector: 'methods',
         amount: Amount(value: paymentData.amount, currency: Currency.KRW, country: "KR"),
         options: RenderPaymentMethodsOptions(variantKey: "DEFAULT")
-    ).then((control) {
-      _paymentMethodWidgetControl = control;
-    });
+    );
+    // .then((control) {
+    //   _paymentMethodWidgetControl = control;
+    // });
 
     _paymentWidget
-        .renderAgreement(selector: 'agreement')
-        .then((control) {
-      _agreementWidgetControl = control;
-    });
+        .renderAgreement(selector: 'agreement');
+        // .then((control) {
+        //   _agreementWidgetControl = control;
+        // });
   }
 
   @override
