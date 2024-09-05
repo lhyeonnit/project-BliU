@@ -1,8 +1,10 @@
-import 'package:BliU/screen/mypage/component/bottom/inquiry_service.dart';
-import 'package:BliU/screen/mypage/component/bottom/inquiry_store.dart';
-import 'package:BliU/screen/mypage/component/bottom/service_my_inquiry.dart';
+import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+import 'component/inquiry_store.dart';
+import 'component/service_my_inquiry.dart';
 
 class ServiceScreen extends StatelessWidget {
   const ServiceScreen({super.key});

@@ -2,7 +2,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../bottom/notice_detail.dart';
+import '../../bottom/component/notice_detail.dart';
 
 class AlarmEvent extends StatefulWidget {
   const AlarmEvent({super.key});

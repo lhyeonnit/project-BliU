@@ -1,9 +1,9 @@
-import 'package:BliU/screen/mypage/component/bottom/inquiry_service.dart';
+import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
 import 'package:BliU/screen/mypage/component/top/cancel_screen.dart';
 import 'package:BliU/screen/mypage/component/top/delivery_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../utils/responsive.dart';
+import '../../../../../utils/responsive.dart';
 
 class OrderItemButton extends StatelessWidget {
   final String status;

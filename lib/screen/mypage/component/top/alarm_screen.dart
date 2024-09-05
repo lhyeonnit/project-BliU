@@ -1,9 +1,10 @@
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/component/top/alarm_event.dart';
+import 'package:BliU/screen/mypage/component/top/component/alarm_event.dart';
 import 'package:BliU/utils/responsive.dart';
-import 'package:BliU/screen/mypage/component/top/alarm_notice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+import 'component/alarm_notice.dart';
 
 // 알림 화면
 class AlarmScreen extends StatefulWidget {

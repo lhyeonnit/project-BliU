@@ -3,7 +3,7 @@ import 'package:BliU/screen/mypage/component/bottom/faq_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/setting_screen.dart';
 import 'package:BliU/screen/mypage/component/top/alarm_screen.dart';
 import 'package:BliU/screen/mypage/component/top/my_coupon_screen.dart';
-import 'package:BliU/screen/mypage/component/top/my_info.dart';
+import 'package:BliU/screen/mypage/component/top/component/my_info.dart';
 import 'package:BliU/screen/mypage/component/bottom/recommend_edit.dart';
 import 'package:BliU/screen/mypage/component/bottom/service_screen.dart';
 import 'package:BliU/screen/mypage/component/top/my_review_screen.dart';

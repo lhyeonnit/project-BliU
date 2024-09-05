@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'event_list.dart';
-import 'notice_list.dart';
+import 'component/event_list.dart';
+import 'component/notice_list.dart';
 
 
 class NoticeScreen extends StatefulWidget {

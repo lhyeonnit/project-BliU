@@ -1,7 +1,7 @@
-import 'package:BliU/screen/mypage/component/top/order_item_button.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../utils/responsive.dart';
+import '../../../../../utils/responsive.dart';
+import 'order_item_button.dart';
 
 class OrderItem extends StatelessWidget {
   final  Map<String, dynamic> order;
