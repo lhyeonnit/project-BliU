@@ -1,3 +1,4 @@
+import 'package:BliU/screen/mypage/component/top/delivery_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../utils/responsive.dart';
@@ -76,7 +77,14 @@ class OrderItemButton extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DeliveryScreen(),
+                  ),
+                );
+              },
               child: Text(
                 '배송조회',
                 style: TextStyle(
@@ -158,7 +166,14 @@ class OrderItemButton extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DeliveryScreen(),
+                      ),
+                    );
+                  },
                   child: Text(
                     '배송조회',
                     style: TextStyle(
@@ -221,7 +236,14 @@ class OrderItemButton extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DeliveryScreen(),
+                  ),
+                );
+              },
               child: Text(
                 '배송조회',
                 style: TextStyle(
