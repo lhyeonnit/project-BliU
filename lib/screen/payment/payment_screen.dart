@@ -19,8 +19,6 @@ class PaymentScreen extends StatefulWidget {
 
 class PaymentScreenState extends State<PaymentScreen> {
   late PaymentWidget _paymentWidget;
-  //PaymentMethodWidgetControl? _paymentMethodWidgetControl;
-  //AgreementWidgetControl? _agreementWidgetControl;
 
   PaymentData get paymentData => widget.paymentData;
 
@@ -39,15 +37,9 @@ class PaymentScreenState extends State<PaymentScreen> {
         amount: Amount(value: paymentData.amount, currency: Currency.KRW, country: "KR"),
         options: RenderPaymentMethodsOptions(variantKey: "DEFAULT")
     );
-    // .then((control) {
-    //   _paymentMethodWidgetControl = control;
-    // });
 
     _paymentWidget
         .renderAgreement(selector: 'agreement');
-        // .then((control) {
-        //   _agreementWidgetControl = control;
-        // });
   }
 
   @override
@@ -64,7 +56,7 @@ class PaymentScreenState extends State<PaymentScreen> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, size: 25),
             onPressed: () {
-              Navigator.pop(context); // 뒤로가기 동작
+              Navigator.pop(context, null); // 뒤로가기 동작
             },
           ),
         ),
@@ -91,20 +83,24 @@ class PaymentScreenState extends State<PaymentScreen> {
                               )
                           );
 
+                          // if (!context.mounted) {
+                          //   return;
+                          // }
+
                           if (paymentResult.success != null) {
                             // 결제 성공 처리
                             var resultData = <String, dynamic>{};
-                            resultData["result"] = true;
-                            resultData["successData"] = paymentResult.success;
+                            resultData['result'] = true;
+                            resultData['successData'] = paymentResult.success;
 
-                            // TODO 완료로
+                            paymentResultData(resultData);
                           } else if (paymentResult.fail != null) {
                             // 결제 실패 처리
                             var resultData = <String, dynamic>{};
-                            resultData["result"] = false;
-                            resultData["errorMessage"] = paymentResult.fail?.errorMessage;
+                            resultData['result'] = false;
+                            resultData['errorMessage'] = paymentResult.fail?.errorMessage;
 
-                            // TODO 실패 메시지 띄우기
+                            paymentResultData(resultData);
                           }
                         },
                         style: TextButton.styleFrom(
@@ -128,5 +124,9 @@ class PaymentScreenState extends State<PaymentScreen> {
           ])
         )
     );
+  }
+
+  void paymentResultData(Map<String, dynamic> resultData) {
+    Navigator.pop(context, resultData);
   }
 }
