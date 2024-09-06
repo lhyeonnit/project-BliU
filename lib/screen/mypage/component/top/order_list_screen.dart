@@ -17,7 +17,27 @@ class _OrderListScreenState extends State<OrderListScreen> {
   List<String> categories = ['전체', '배송중', '배송완료', '취소/교환반품'];
   int selectedCategoryIndex = 0;
   final ScrollController _scrollController = ScrollController();
-
+  Map<String, dynamic> orderDetails =
+  {
+    'deliveryCost' : '0원',
+    'recipientName': '김크루',
+    'phoneNumber': '01012345678',
+    'address': {
+      'addressCode': '66666',
+      'addressAll': '서울특별시 강남구 테헤란로 114',
+      'addressDetail': '크루온니아파트 101동 777호',
+    },
+    'deliveryMemo': '배송메모입니다.',
+    'totalPrice': '160,500원',
+    'productPrice': '100,400원',
+    'deliveryFee': '2,500원',
+    'discountPrice': '(-)3,000원',
+    'couponName': '키즈스타일 여름 특별 할인 쿠폰',
+    'couponDiscount': '3,000원',
+    'paymentMethod': '신용카드',
+    'paymentAmount': '160,500원',
+    'discountPoint' : '(-)0원',
+  };
   // 더미 데이터 정의
   List<Map<String, dynamic>> orderData = [
     {
@@ -269,6 +289,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
                     String orderId = orders.first["orderId"]; // 해당 날짜의 첫 번째 주문의 주문번호 가져오기
 
                     return OrderListItem(
+                      orderDetails: orderDetails,
                       date: date, // 날짜를 전달
                       orderId: orderId, // 해당 날짜의 주문번호를 전달
                       orders: orders, // 같은 날짜에 해당하는 주문 목록을 전달
