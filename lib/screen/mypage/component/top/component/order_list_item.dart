@@ -10,12 +10,15 @@ class OrderListItem extends StatelessWidget {
   final String date;
   final String orderId;
   final List<Map<String, dynamic>> orders;
+  final Map<String, dynamic> orderDetails; // 모든 정보를 포함한 맵
+
 
   const OrderListItem({
     Key? key,
     required this.date,
     required this.orderId,
     required this.orders,
+    required this.orderDetails,
   }) : super(key: key);
 
   @override
@@ -67,7 +70,7 @@ class OrderListItem extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => OrderDetail(
-                          date: date, orderId: orderId, orders: orders),
+                          date: date, orderId: orderId, orders: orders, orderDetails: orderDetails,),
                     ),
                   );
                 },
@@ -94,7 +97,7 @@ class OrderListItem extends StatelessWidget {
           // 같은 날짜의 주문들을 묶어서 표시
           Column(
             children: orders.map((order) {
-              return OrderItem(order: order);
+              return OrderItem(order: order, orderDetails: orderDetails,);
             }).toList(),
           ),
         ],

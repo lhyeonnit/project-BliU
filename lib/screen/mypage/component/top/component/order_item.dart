@@ -5,9 +5,11 @@ import 'order_item_button.dart';
 
 class OrderItem extends StatelessWidget {
   final  Map<String, dynamic> order;
+  final Map<String, dynamic> orderDetails; // 모든 정보를 포함한 맵
 
   const OrderItem({
     required this.order,
+    required this.orderDetails,
   });
   @override
   Widget build(BuildContext context) {
@@ -91,7 +93,7 @@ class OrderItem extends StatelessWidget {
           ),
         ),
         // 상태에 따라 버튼 표시
-        OrderItemButton(status: order['status'], date: order['date'], orderId: order['orderId'], orders: [order]),
+        OrderItemButton(status: order['status'], date: order['date'], orderId: order['orderId'], orders: [order], orderDetails: orderDetails,),
       ],
     );
   }

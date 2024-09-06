@@ -11,6 +11,7 @@ class OrderItemButton extends StatelessWidget {
   final String date;
   final String orderId;
   final List<Map<String, dynamic>> orders;
+  final Map<String, dynamic> orderDetails; // 모든 정보를 포함한 맵
 
   const OrderItemButton({
     Key? key,
@@ -18,6 +19,7 @@ class OrderItemButton extends StatelessWidget {
     required this.date,
     required this.orderId,
     required this.orders,
+    required this.orderDetails,
   }) : super(key: key);
 
   @override
@@ -87,7 +89,7 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ExchangeReturnScreen(date: date, orderId: orderId, orders: orders),
+                    builder: (context) => ExchangeReturnScreen(date: date, orderId: orderId, orders: orders, orderDetails: orderDetails,),
                   ),
                 );
               },
@@ -190,7 +192,7 @@ class OrderItemButton extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ExchangeReturnScreen(date: date, orderId: orderId, orders: orders),
+                        builder: (context) => ExchangeReturnScreen(date: date, orderId: orderId, orders: orders, orderDetails: orderDetails,),
                       ),
                     );
                   },

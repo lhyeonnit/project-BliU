@@ -1,24 +1,30 @@
 //교환 반품
+import 'dart:io';
+
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/cancel_item.dart';
-import 'package:BliU/screen/mypage/component/top/component/exchange_item.dart';
-import 'package:BliU/screen/mypage/component/top/component/return_item.dart';
+import 'package:BliU/screen/mypage/component/top/component/exchange_detail_item.dart';
+import 'package:BliU/screen/mypage/component/top/component/return_detail_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../utils/responsive.dart';
+import 'exchange_return_detail_screen.dart';
 
 class ExchangeReturnScreen extends StatefulWidget {
   final String date;
   final String orderId;
   final List<Map<String, dynamic>> orders;
+  final Map<String, dynamic> orderDetails; // 모든 정보를 포함한 맵
+
 
   const ExchangeReturnScreen({
     Key? key,
     required this.date,
     required this.orderId,
     required this.orders,
+    required this.orderDetails,
   }) : super(key: key);
 
   @override
@@ -29,7 +35,9 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
   final ScrollController _scrollController = ScrollController();
   List<String> categories = ['교환', '반품/환불'];
   int selectedIndex = 0;
-
+  String reason = ''; // 요청사유
+  String details = ''; // 상세내용
+  List<File> images = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,7 +134,24 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
                   ),
                   child: GestureDetector(
                     onTap: () {
-                      // 확인 버튼 눌렀을 때 처리
+                      // 교환 또는 반품/환불에 따른 타이틀 설정
+                      String title = selectedIndex == 0 ? '교환' : '반품/환불';
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ExchangeReturnDetailScreen(
+                            reason: reason,  // 요청사유
+                            details: details,  // 상세내용
+                            images: images,  // 이미지 리스트
+                            title: title,  // 화면 타이틀
+                            date: widget.date,
+                            orderId: widget.orderId,
+                            orders: widget.orders,
+                            orderDetails: widget.orderDetails,  // 주문 세부 정보
+                          ),
+                        ),
+                      );
                     },
                     child: Center(
                       child: Text(
@@ -148,16 +173,29 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
   }
   Widget _buildSelectedPage() {
     if (selectedIndex == 0) {
-      // 교환 페이지
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical:20 ),
-        child: ExchangeItem(),
-      );
-    } else {
-      // 반품/환불 페이지
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
-        child: ReturnItem(),
+        child: ExchangeItem(
+          onDataCollected: (data) {
+            setState(() {
+              reason = data;
+              details = data;
+            });
+          },
+        ),
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: ReturnItem(
+          onDataCollected: (data) {
+            setState(() {
+              reason = data;
+              details = data;
+              images = data as List<File>;  // 수집된 데이터를 저장
+            });
+          },
+        ),
       );
     }
   }
