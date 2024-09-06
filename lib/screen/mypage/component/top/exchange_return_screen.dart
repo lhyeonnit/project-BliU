@@ -1,6 +1,8 @@
 //교환 반품
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/cancel_item.dart';
+import 'package:BliU/screen/mypage/component/top/component/exchange_item.dart';
+import 'package:BliU/screen/mypage/component/top/component/return_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -26,7 +28,7 @@ class ExchangeReturnScreen extends StatefulWidget {
 class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
   final ScrollController _scrollController = ScrollController();
   List<String> categories = ['교환', '반품/환불'];
-  int selectedCategoryIndex = 0;
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -69,43 +71,37 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
                     orderId: widget.orderId,
                     orders: widget.orders),
                 Container(
-                  height: 40,
-                  padding: const EdgeInsets.symmetric(horizontal: 13.0),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: categories.length,
-                    itemBuilder: (context, index) {
-                      final bool isSelected = selectedCategoryIndex == index;
-
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                        child: FilterChip(
-                          label: Text(
-                            categories[index],
-                            style: TextStyle(
-                              color: isSelected ? Colors.pink : Colors.black, // 텍스트 색상
-                            ),
-                          ),
-                          selected: isSelected,
-                          onSelected: (bool selected) {
-                            setState(() {
-                              selectedCategoryIndex = index;
-                            });
-                          },
-                          backgroundColor: Colors.white,
-                          selectedColor: Colors.white,
-                          shape: StadiumBorder(
-                            side: BorderSide(
-                              color: isSelected ? Colors.pink : Colors.grey, // 테두리 색상
-                              width: 1.0,
-                            ),
-                          ),
-                          showCheckmark: false, // 체크 표시 없애기
-                        ),
-                      );
-                    },
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // 교환 버튼
+                      _buildCustomButton(
+                        context,
+                        text: "교환",
+                        isSelected: selectedIndex == 0,
+                        onTap: () {
+                          setState(() {
+                            selectedIndex = 0;
+                          });
+                        },
+                      ),
+                      SizedBox(width: 8,),
+                      // 반품/환불 버튼
+                      _buildCustomButton(
+                        context,
+                        text: "반품/환불",
+                        isSelected: selectedIndex == 1,
+                        onTap: () {
+                          setState(() {
+                            selectedIndex = 1;
+                          });
+                        },
+                      ),
+                    ],
                   ),
                 ),
+                _buildSelectedPage(),
               ],
             ),
           ),
@@ -147,6 +143,54 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+  Widget _buildSelectedPage() {
+    if (selectedIndex == 0) {
+      // 교환 페이지
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical:20 ),
+        child: ExchangeItem(),
+      );
+    } else {
+      // 반품/환불 페이지
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: ReturnItem(),
+      );
+    }
+  }
+
+  Widget _buildCustomButton(BuildContext context,
+      {required String text,
+      required bool isSelected,
+      required VoidCallback onTap}) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          height: 44,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(
+              color: isSelected ? Color(0xFFFF6192) : Color(0xFFDDDDDD), // 테두리 색상
+              width: 1.0,
+            ),
+            color: Colors.white, // 배경색
+          ),
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: Responsive.getFont(context, 14),
+                color: isSelected ? Color(0xFFFF6192) : Colors.black,
+                // 선택 시 텍스트 색상 변경
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

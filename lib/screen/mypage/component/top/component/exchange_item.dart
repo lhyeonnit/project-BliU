@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../../utils/responsive.dart';
 
 class ExchangeItem extends StatefulWidget {
@@ -13,17 +15,22 @@ class ExchangeItem extends StatefulWidget {
 
 class _ExchangeItemState extends State<ExchangeItem> {
   OverlayEntry? _overlayEntry;
-  String _dropdownValue = '취소사유 선택';
+  String _dropdownValue = '사유 선택';
   String _detailedReason = '';
   final LayerLink _layerLink = LayerLink();
-  final List<String> _cancelReasons = [
-    '단순 변심',
-    '상품 정보 변경',
-    '배송 지연 예상',
-    '결제 실수',
-    '재주문 예정',
+  final List<String> _exchangeReasons = [
+    '색상 및 사이즈 변경',
+    '제품 불량',
+    '배송 중 손상',
+    '오배송',
     '기타',
   ];
+
+  // 이미지 리스트
+  List<File> _selectedImages = [];
+
+  // 교환 배송비 선택
+  String _shippingOption = '택배에 동봉 (6,000원)';
 
   // 드롭다운 생성.
   void _createOverlay() {
@@ -39,15 +46,38 @@ class _ExchangeItemState extends State<ExchangeItem> {
     _overlayEntry = null;
   }
 
+  // 이미지 선택 함수
+  Future<void> _pickImages() async {
+    final ImagePicker _picker = ImagePicker();
+    final List<XFile>? images = await _picker.pickMultiImage(
+      maxWidth: 400,
+      maxHeight: 400,
+      imageQuality: 80,
+    );
+    if (images != null) {
+      setState(() {
+        // 현재 선택된 이미지 개수에 따라 추가될 이미지를 제한
+        if (_selectedImages.length + images.length <= 3) {
+          _selectedImages.addAll(images.map((image) => File(image.path)).toList());
+        } else {
+          // 남은 자리에만 이미지를 추가
+          int remainingSlots = 3 - _selectedImages.length;
+          _selectedImages.addAll(images.take(remainingSlots).map((image) => File(image.path)).toList());
+        }
+      });
+    }
+  }
+
   @override
   void dispose() {
     _removeOverlay();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 80),
+      padding: EdgeInsets.only(bottom: 10),
       // 하단 버튼 공간 확보
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,15 +111,13 @@ class _ExchangeItemState extends State<ExchangeItem> {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             // 선택값.
                             Text(
                               _dropdownValue,
                               style: TextStyle(
-                                fontSize:
-                                Responsive.getFont(context, 14),
+                                fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black,
                               ),
                             ),
@@ -109,31 +137,26 @@ class _ExchangeItemState extends State<ExchangeItem> {
                     maxLines: 4,
                     maxLength: 500,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 15),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '세부 내용 입력',
                       hintStyle: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           color: Color(0xFF595959)),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(6)),
-                        borderSide:
-                        BorderSide(color: Color(0xFFE1E1E1)),
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(6)),
-                        borderSide:
-                        BorderSide(color: Color(0xFFE1E1E1)),
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                       ),
                       counter: Align(
                         alignment: Alignment.centerLeft, // 왼쪽 정렬
                         child: Text(
                           '${_detailedReason.length}/500',
                           style: TextStyle(
-                            fontSize:
-                            Responsive.getFont(context, 13),
+                            fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFF7B7B7B),
                           ),
                         ),
@@ -149,146 +172,207 @@ class _ExchangeItemState extends State<ExchangeItem> {
               ],
             ),
           ),
+          // 사진 선택 및 표시
           Container(
-            margin: EdgeInsets.symmetric(vertical: 20),
-            height: 10,
-            width: double.infinity,
-            color: Color(0xFFF5F9F9),
-          ),
-          // 환불 정보 및 환불 예정 금액
-          Container(
-            padding:
-            EdgeInsets.only(left: 16, right: 16, bottom: 20),
-            child: Text(
-              '환불정보',
-              style: TextStyle(
-                  fontSize: Responsive.getFont(context, 18),
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          // 배송지 정보 세부 내용
-          Container(
-            padding: EdgeInsets.only(top: 20),
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: Color(0xFFEEEEEE),
-                ),
-              ),
-            ),
+            margin: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  margin: EdgeInsets.only(bottom: 15),
-                  child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('포인트환급액',
-                          style: TextStyle(
-                              fontSize:
-                              Responsive.getFont(context, 14),
-                              color: Colors.black)),
-                      Text('1,042원',
-                          style: TextStyle(
-                              fontSize:
-                              Responsive.getFont(context, 14),
-                              color: Colors.black)),
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '사진',
+                      style: TextStyle(
+                          fontSize: Responsive.getFont(context, 13),
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal),
+                    ),
+                    Text(
+                      '최대3장',
+                      style: TextStyle(
+                          color: Color(0xFF7B7B7B),
+                          fontSize: Responsive.getFont(context, 13)),
+                    ),
+                  ],
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        child: Text('배송비차감액',
-                            style: TextStyle(
-                                fontSize:
-                                Responsive.getFont(context, 14),
-                                color: Colors.black)),
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.symmetric(vertical: 14),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(6),
                       ),
-                      Text('(-) 0원',
-                          style: TextStyle(
-                              fontSize:
-                              Responsive.getFont(context, 14),
-                              color: Colors.black)),
-                    ],
+                      border: Border.all(color: Color(0xFFDDDDDD))),
+                  child: GestureDetector(
+                    onTap: _pickImages, // 이미지 선택 함수 호출
+                    child: Center(
+                        child: Text(
+                      '첨부하기',
+                      style: TextStyle(
+                          fontSize: Responsive.getFont(context, 14),
+                          fontWeight: FontWeight.normal),
+                    )),
                   ),
                 ),
+                // 선택된 이미지 표시
+                if (_selectedImages.isNotEmpty)
+                  Container(
+                    height: 100,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _selectedImages.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(6),
+                            ),
+                            border: Border.all(
+                              color: Color(0xFFE7EAEF),
+                            ),
+                          ),
+                          child: Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(6),
+                                // 모서리를 둥글게 설정 (6)
+                                child: Image.file(
+                                  _selectedImages[index],
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Positioned(
+                                top: 8,
+                                right: 7,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedImages.removeAt(index);
+                                    });
+                                  },
+                                  child: SvgPicture.asset(
+                                      'assets/images/ic_del.svg'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 20),
-            height: 10,
-            width: double.infinity,
-            color: Color(0xFFF5F9F9),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            margin: EdgeInsets.only(bottom: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '환불예정금액',
-                  style: TextStyle(
-                      fontSize: Responsive.getFont(context, 18),
-                      fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '13,366원',
-                  style: TextStyle(
-                      fontSize: Responsive.getFont(context, 14),
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          // 배송지 정보 세부 내용
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: Color(0xFFEEEEEE),
-                ),
-              ),
-            ),
-            child: Column(
+          // 교환 배송비 선택
+          Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  margin: EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('환불방법',
+                      Text(
+                        '교환 배송비',
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 13),
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 4),
+                        child: Text(
+                          '*',
                           style: TextStyle(
-                              fontSize:
-                              Responsive.getFont(context, 14),
-                              color: Colors.black)),
-                      Text('카드승인취소',
-                          style: TextStyle(
-                              fontSize:
-                              Responsive.getFont(context, 14),
-                              color: Colors.black)),
+                            fontSize: Responsive.getFont(context, 13),
+                            color: Color(0xFFFF6192),
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                )
+                ),
+                Row(
+                  children: [
+                    Radio(
+                      value: '택배에 동봉 (6,000원)',
+                      groupValue: _shippingOption,
+                      onChanged: (value) {
+                        setState(() {
+                          _shippingOption = value.toString();
+                        });
+                      },
+                      activeColor: Color(0xFFFF6192),
+                      fillColor: MaterialStateProperty.resolveWith((states) {
+                        if (!states.contains(MaterialState.selected)) {
+                          return Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
+                        }
+                        return Color(0xFFFF6192); // 선택된 상태의 색상
+                      }),
+                    ),
+                    Expanded(
+                      child: Text(
+                        "택배에 동봉 (6,000원)",
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 14),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Radio(
+                      value: '판매자 계좌로 입금',
+                      groupValue: _shippingOption,
+                      onChanged: (value) {
+                        setState(() {
+                          _shippingOption = value.toString();
+                        });
+                      },
+                      activeColor: Color(0xFFFF6192),
+                      fillColor: MaterialStateProperty.resolveWith((states) {
+                        if (!states.contains(MaterialState.selected)) {
+                          return Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
+                        }
+                        return Color(0xFFFF6192); // 선택된 상태의 색상
+                      }),
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "판매자 계좌로 입금",
+                            style: TextStyle(
+                              fontSize: Responsive.getFont(context, 14),
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            "국민은행 123456789 홍길동",
+                            style: TextStyle(
+                              fontSize: Responsive.getFont(context, 14),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
-          ),
         ],
       ),
     );
   }
+
   OverlayEntry _customDropdown() {
     return OverlayEntry(
       maintainState: true,
@@ -309,21 +393,21 @@ class _ExchangeItemState extends State<ExchangeItem> {
                 physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 shrinkWrap: true,
-                itemCount: _cancelReasons.length,
+                itemCount: _exchangeReasons.length,
                 itemBuilder: (context, index) {
                   return CupertinoButton(
                     pressedOpacity: 1,
                     minSize: 0,
                     onPressed: () {
                       setState(() {
-                        _dropdownValue = _cancelReasons.elementAt(index);
+                        _dropdownValue = _exchangeReasons.elementAt(index);
                       });
                       _removeOverlay();
                     },
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        _cancelReasons.elementAt(index),
+                        _exchangeReasons.elementAt(index),
                         style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black,
@@ -340,4 +424,3 @@ class _ExchangeItemState extends State<ExchangeItem> {
     );
   }
 }
-
