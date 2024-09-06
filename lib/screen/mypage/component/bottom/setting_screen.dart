@@ -1,16 +1,26 @@
+import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
+import 'package:BliU/screen/mypage/viewmodel/setting_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
-class SettingScreen extends StatefulWidget {
+class SettingScreen extends ConsumerStatefulWidget {
   const SettingScreen({super.key});
 
   @override
   _SettingScreenState createState() => _SettingScreenState();
 }
 
-class _SettingScreenState extends State<SettingScreen> {
+class _SettingScreenState extends ConsumerState<SettingScreen> {
   bool _isSwitched = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    ref.read(settingModelProvider.notifier);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +71,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         inactiveColor: Colors.grey.shade300,
                         toggleColor: Colors.white,
                         onToggle: (val) {
+                          //print("val -- $val}");
                           setState(() {
                             _isSwitched = val;
                           });
@@ -72,19 +83,19 @@ class _SettingScreenState extends State<SettingScreen> {
                   _buildCustomTile(
                     '이용약관',
                         () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => InquiryStore()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const TermsDetail(type: 0)),
+                      );
                     },
                   ),
                   _buildCustomTile(
                     '개인정보처리방침',
                         () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => InquiryService()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const TermsDetail(type: 1)),
+                      );
                     },
                   ),
                 ],
