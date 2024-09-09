@@ -1,17 +1,19 @@
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
+import 'package:BliU/screen/mypage/viewmodel/service_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'component/inquiry_store.dart';
 import 'component/service_my_inquiry.dart';
 
-class ServiceScreen extends StatelessWidget {
+class ServiceScreen extends ConsumerWidget {
   const ServiceScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(serviceModelProvider.notifier).getService();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -37,12 +39,23 @@ class ServiceScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
-            _buildInfoRow('메일문의', 'email@email.com', Colors.black),
-            const SizedBox(height: 16),
-            _buildInfoRow('전화문의', '02-000-000', Colors.pink),
+            Consumer(
+              builder: (context, ref, widget) {
+                final model = ref.watch(serviceModelProvider);
+
+                return Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    _buildInfoRow('메일문의', model?.stCustomerEmail ?? 'email@email.com', Colors.black),
+                    const SizedBox(height: 16),
+                    _buildInfoRow('전화문의', model?.stCustomerTel ?? '02-000-000', Colors.pink),
+                  ],
+                );
+              }
+            ),
             const SizedBox(height: 10),
             _buildCustomTile(
+              context,
               '판매자 입점 문의',
               () {
                 Navigator.push(
@@ -52,6 +65,7 @@ class ServiceScreen extends StatelessWidget {
               },
             ),
             _buildCustomTile(
+              context,
               '고객센터 문의하기',
               () {
                 Navigator.push(
@@ -61,6 +75,7 @@ class ServiceScreen extends StatelessWidget {
               },
             ),
             _buildCustomTile(
+              context,
               '문의내역',
               () {
                 Navigator.push(
@@ -98,7 +113,7 @@ class ServiceScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCustomTile(String title, VoidCallback onTap) {
+  Widget _buildCustomTile(BuildContext context, String title, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -108,8 +123,8 @@ class ServiceScreen extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 16,
+              style: TextStyle(
+                fontSize: Responsive.getFont(context, 16),
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
