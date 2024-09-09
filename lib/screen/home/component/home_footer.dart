@@ -27,7 +27,10 @@ class HomeFooter extends ConsumerWidget {
           print("footInfo == ${footInfo}");
         }
       } else {
-        Utils.getInstance().showSnackBar(context, model?.footResponseDTO?.message ?? "");
+        Future.delayed(Duration.zero, () {
+          Utils.getInstance().showSnackBar(context, model?.footResponseDTO?.message ?? "");
+        });
+
       }
     }
 

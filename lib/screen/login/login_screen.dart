@@ -32,7 +32,9 @@ class LoginScreen extends ConsumerWidget {
             print('로그인 성공 == ${next?.memberInfoResponseDTO?.data?.toJson()}');
             // TODO 로그인 후 처리
           } else {
-            Utils.getInstance().showSnackBar(context, next?.memberInfoResponseDTO?.message ?? "");
+            Future.delayed(Duration.zero, () {
+              Utils.getInstance().showSnackBar(context, next?.memberInfoResponseDTO?.message ?? "");
+            });
           }
         }
       }),

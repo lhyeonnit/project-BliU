@@ -41,7 +41,7 @@ class NoticeListViewModel extends StateNotifier<NoticeListModel?> {
       state = state;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching notice list: $e');
+      print('Error fetching : $e');
       state = state;
     }
   }

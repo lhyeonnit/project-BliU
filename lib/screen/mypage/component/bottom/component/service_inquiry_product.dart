@@ -51,7 +51,7 @@ class _ServiceInquiryProductState extends ConsumerState<ServiceInquiryProduct> {
                       Divider(height: 1, color: Colors.grey[300]),
                   itemBuilder: (context, index) {
 
-                    var qnaData = list[index];
+                    final qnaData = list[index];
 
                     return ListTile(
                       contentPadding: const EdgeInsets.symmetric(vertical: 8),
@@ -82,13 +82,15 @@ class _ServiceInquiryProductState extends ConsumerState<ServiceInquiryProduct> {
                         )
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const InquiryProductDetail(),
-                          ),
-                        );
-
+                        int? qtIdx = qnaData.qtIdx;
+                        if (qtIdx != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => InquiryProductDetail(qtIdx: qtIdx,),
+                            ),
+                          );
+                        }
                       },
                     );
                   },
@@ -149,7 +151,7 @@ class _ServiceInquiryProductState extends ConsumerState<ServiceInquiryProduct> {
     SharedPreferencesManager.getInstance().then((pref) {
       Map<String, dynamic> requestData = {
         'mt_idx' : pref.getMtIdx(),
-        'qna_type' : '3',
+        'qna_type' : 3,
         'pg' : currentPage,
       };
       ref.read(serviceInquiryProductModelProvider.notifier).getList(requestData);

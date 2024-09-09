@@ -54,7 +54,9 @@ class TermsDetail extends ConsumerWidget {
                 if (model?.defaultResponseDTO?.result == true) {
                   content = model?.defaultResponseDTO?.message ?? "";
                 } else {
-                  Utils.getInstance().showSnackBar(context, model?.defaultResponseDTO?.message ?? "");
+                  Future.delayed(Duration.zero, () {
+                    Utils.getInstance().showSnackBar(context, model?.defaultResponseDTO?.message ?? "");
+                  });
                 }
               }
 

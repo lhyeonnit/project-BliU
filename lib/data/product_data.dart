@@ -13,6 +13,7 @@ class ProductData {
   final String? likeChk;
   final String? sellStatus;
   final String? sellStatusTxt;
+  final String? ptMainImg;
 
   ProductData({
     required this.stIdx,
@@ -29,6 +30,7 @@ class ProductData {
     required this.likeChk,
     required this.sellStatus,
     required this.sellStatusTxt,
+    required this.ptMainImg,
   });
 
   // Factory method to create a ProductDTO from JSON
@@ -48,6 +50,7 @@ class ProductData {
       likeChk: json['like_chk'],
       sellStatus: json['sell_status'],
       sellStatusTxt: json['sell_status_txt'],
+      ptMainImg: json['pt_main_img'],
     );
   }
 
@@ -68,6 +71,7 @@ class ProductData {
       'like_chk': likeChk,
       'sell_status': sellStatus,
       'sell_status_txt': sellStatusTxt,
+      'pt_main_img': ptMainImg,
     };
   }
 }

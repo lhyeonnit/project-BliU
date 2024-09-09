@@ -16,7 +16,7 @@ class QnaDetailResponseDTO {
     return QnaDetailResponseDTO(
       result: json['result'],
       message: json['data']['message'],
-      data: (json['data'] as QnaData),
+      data: QnaData.fromJson(json['data']),
     );
   }
 

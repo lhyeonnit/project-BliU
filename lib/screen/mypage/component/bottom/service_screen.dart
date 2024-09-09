@@ -1,4 +1,5 @@
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
+import 'package:BliU/utils/responsive.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,9 +17,13 @@ class ServiceScreen extends StatelessWidget {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        title: const Text(
+        title: Text(
           '고객센터',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: Responsive.getFont(context, 18),
+              fontWeight: FontWeight.bold
+          ),
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/login/ic_back.svg"),

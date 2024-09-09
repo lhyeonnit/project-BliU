@@ -37,7 +37,7 @@ class EventDetailViewModel extends StateNotifier<EventDetailModel?> {
       );
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching notice detail: $e');
+      print('Error fetching : $e');
       state = EventDetailModel(
           eventDetailResponseDTO: EventDetailResponseDTO(
               result: false,

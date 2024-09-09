@@ -44,7 +44,9 @@ class EventDetail extends ConsumerWidget {
           builder: (context, ref, widget){
             final model = ref.watch(eventDetailModelProvider);
             if (model?.eventDetailResponseDTO?.result == false) {
-              Utils.getInstance().showSnackBar(context, model?.eventDetailResponseDTO?.message ?? "");
+              Future.delayed(Duration.zero, () {
+                Utils.getInstance().showSnackBar(context, model?.eventDetailResponseDTO?.message ?? "");
+              });
             }
 
             final eventData = model?.eventDetailResponseDTO?.data;

@@ -37,7 +37,7 @@ class NoticeDetailViewModel extends StateNotifier<NoticeDetailModel?> {
       );
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching notice detail: $e');
+      print('Error fetching : $e');
       state = NoticeDetailModel(
           noticeDetailResponseDTO: NoticeDetailResponseDTO(
               result: false,

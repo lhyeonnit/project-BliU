@@ -80,12 +80,15 @@ class _ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
                           qnaData.qtTitle ?? "",
                           style: const TextStyle(color: Colors.black)),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const InquiryOneDetail(),
-                          ),
-                        );
+                        final qtIdx = qnaData.qtIdx;
+                        if (qtIdx != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => InquiryOneDetail(qtIdx: qtIdx,),
+                            ),
+                          );
+                        }
                       },
                     );
                   },
@@ -145,7 +148,7 @@ class _ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
     SharedPreferencesManager.getInstance().then((pref) {
       Map<String, dynamic> requestData = {
         'mt_idx' : pref.getMtIdx(),
-        'qna_type' : '1',
+        'qna_type' : 1,
         'pg' : currentPage,
       };
       ref.read(serviceInquiryOneModelProvider.notifier).getList(requestData);

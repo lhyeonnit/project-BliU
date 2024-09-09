@@ -45,7 +45,9 @@ class NoticeDetail extends ConsumerWidget {
           builder: (context, ref, widget){
             final model = ref.watch(noticeDetailModelProvider);
             if (model?.noticeDetailResponseDTO?.result == false) {
-              Utils.getInstance().showSnackBar(context, model?.noticeDetailResponseDTO?.message ?? "");
+              Future.delayed(Duration.zero, () {
+                Utils.getInstance().showSnackBar(context, model?.noticeDetailResponseDTO?.message ?? "");
+              });
             }
 
             final noticeData = model?.noticeDetailResponseDTO?.data;

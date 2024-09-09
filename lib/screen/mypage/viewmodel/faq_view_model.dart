@@ -33,7 +33,7 @@ class FaqViewModel extends StateNotifier<FaqModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching notice list: $e');
+      print('Error fetching : $e');
       return null;
     }
   }
@@ -61,7 +61,7 @@ class FaqViewModel extends StateNotifier<FaqModel?> {
       state = state;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching notice list: $e');
+      print('Error fetching : $e');
       state = state;
     }
   }
