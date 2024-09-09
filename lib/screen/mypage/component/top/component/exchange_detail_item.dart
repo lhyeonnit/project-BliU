@@ -7,9 +7,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../../utils/responsive.dart';
 
 class ExchangeItem extends StatefulWidget {
-  final Function(String) onDataCollected;
+  final Function(
+          String reason, String details, String shippingCost, List<File> images) onDataCollected;
 
-  const ExchangeItem({required this.onDataCollected, Key? key}) : super(key: key);
+  const ExchangeItem({required this.onDataCollected, Key? key})
+      : super(key: key);
+
   @override
   State<ExchangeItem> createState() => _ExchangeItemState();
 }
@@ -59,12 +62,16 @@ class _ExchangeItemState extends State<ExchangeItem> {
       setState(() {
         // 현재 선택된 이미지 개수에 따라 추가될 이미지를 제한
         if (_selectedImages.length + images.length <= 3) {
-          _selectedImages.addAll(images.map((image) => File(image.path)).toList());
+          _selectedImages
+              .addAll(images.map((image) => File(image.path)).toList());
           _updateCollectedData();
         } else {
           // 남은 자리에만 이미지를 추가
           int remainingSlots = 3 - _selectedImages.length;
-          _selectedImages.addAll(images.take(remainingSlots).map((image) => File(image.path)).toList());
+          _selectedImages.addAll(images
+              .take(remainingSlots)
+              .map((image) => File(image.path))
+              .toList());
         }
       });
     }
@@ -273,106 +280,135 @@ class _ExchangeItemState extends State<ExchangeItem> {
           ),
           // 교환 배송비 선택
           Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    children: [
-                      Text(
-                        '교환 배송비',
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Text(
+                      '교환 배송비',
+                      style: TextStyle(
+                        fontSize: Responsive.getFont(context, 13),
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4),
+                      child: Text(
+                        '*',
                         style: TextStyle(
                           fontSize: Responsive.getFont(context, 13),
-                          color: Colors.black,
+                          color: Color(0xFFFF6192),
                           fontWeight: FontWeight.normal,
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 4),
-                        child: Text(
-                          '*',
-                          style: TextStyle(
-                            fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFFFF6192),
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                children: [
+                  Radio(
+                    value: '택배에 동봉 (6,000원)',
+                    groupValue: _shippingOption,
+                    onChanged: (value) {
+                      setState(() {
+                        _shippingOption = value.toString();
+                        _updateCollectedData();
+                      });
+                    },
+                    activeColor: Color(0xFFFF6192),
+                    fillColor: MaterialStateProperty.resolveWith((states) {
+                      if (!states.contains(MaterialState.selected)) {
+                        return Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
+                      }
+                      return Color(0xFFFF6192); // 선택된 상태의 색상
+                    }),
                   ),
-                ),
-                Row(
-                  children: [
-                    Radio(
-                      value: '택배에 동봉 (6,000원)',
-                      groupValue: _shippingOption,
-                      onChanged: (value) {
-                        setState(() {
-                          _shippingOption = value.toString();
-                          _updateCollectedData();
-                        });
-                      },
-                      activeColor: Color(0xFFFF6192),
-                      fillColor: MaterialStateProperty.resolveWith((states) {
-                        if (!states.contains(MaterialState.selected)) {
-                          return Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
-                        }
-                        return Color(0xFFFF6192); // 선택된 상태의 색상
-                      }),
+                  Expanded(
+                    child: Text(
+                      "택배에 동봉 (6,000원)",
+                      style: TextStyle(
+                        fontSize: Responsive.getFont(context, 14),
+                      ),
                     ),
-                    Expanded(
-                      child: Text(
-                        "택배에 동봉 (6,000원)",
-                        style: TextStyle(
-                          fontSize: Responsive.getFont(context, 14),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Radio(
+                    value: '판매자 계좌로 입금',
+                    groupValue: _shippingOption,
+                    onChanged: (value) {
+                      setState(() {
+                        _shippingOption = value.toString();
+                        _updateCollectedData();
+                      });
+                    },
+                    activeColor: Color(0xFFFF6192),
+                    fillColor: MaterialStateProperty.resolveWith((states) {
+                      if (!states.contains(MaterialState.selected)) {
+                        return Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
+                      }
+                      return Color(0xFFFF6192); // 선택된 상태의 색상
+                    }),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "판매자 계좌로 입금",
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                          ),
                         ),
+                        SizedBox(height: 5),
+                        Text(
+                          "국민은행 123456789 홍길동",
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Radio(
+                    value: '해당 사항 없음',
+                    groupValue: _shippingOption,
+                    onChanged: (value) {
+                      setState(() {
+                        _shippingOption = value.toString();
+                        _updateCollectedData();
+                      });
+                    },
+                    activeColor: Color(0xFFFF6192),
+                    fillColor: MaterialStateProperty.resolveWith((states) {
+                      if (!states.contains(MaterialState.selected)) {
+                        return Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
+                      }
+                      return Color(0xFFFF6192); // 선택된 상태의 색상
+                    }),
+                  ),
+                  Expanded(
+                    child: Text(
+                      "해당 사항 없음",
+                      style: TextStyle(
+                        fontSize: Responsive.getFont(context, 14),
                       ),
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Radio(
-                      value: '판매자 계좌로 입금',
-                      groupValue: _shippingOption,
-                      onChanged: (value) {
-                        setState(() {
-                          _shippingOption = value.toString();
-                          _updateCollectedData();
-                        });
-                      },
-                      activeColor: Color(0xFFFF6192),
-                      fillColor: MaterialStateProperty.resolveWith((states) {
-                        if (!states.contains(MaterialState.selected)) {
-                          return Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
-                        }
-                        return Color(0xFFFF6192); // 선택된 상태의 색상
-                      }),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "판매자 계좌로 입금",
-                            style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            "국민은행 123456789 홍길동",
-                            style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -407,7 +443,6 @@ class _ExchangeItemState extends State<ExchangeItem> {
                       setState(() {
                         _dropdownValue = _exchangeReasons.elementAt(index);
                         _updateCollectedData();
-
                       });
                       _removeOverlay();
                     },
@@ -430,9 +465,12 @@ class _ExchangeItemState extends State<ExchangeItem> {
       ),
     );
   }
+
   void _updateCollectedData() {
-    // 데이터를 수집하고 콜백을 통해 전달
-    String collectedData = '$_dropdownValue,  $_detailedReason, $_shippingOption';
-    widget.onDataCollected(collectedData);
+    String reason = _dropdownValue;
+    String details = _detailedReason;
+    String shippingCost = _shippingOption;
+    List<File> images = _selectedImages; // 이미지를 리스트로 수집
+    widget.onDataCollected(reason, details, shippingCost, images);
   }
 }
