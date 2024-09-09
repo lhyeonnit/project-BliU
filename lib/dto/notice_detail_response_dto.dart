@@ -16,7 +16,7 @@ class NoticeDetailResponseDTO {
     return NoticeDetailResponseDTO(
       result: json['result'],
       message: json['data']['message'],
-      data: (json['data'] as NoticeData),
+      data: NoticeData.fromJson(json['data']),
     );
   }
 

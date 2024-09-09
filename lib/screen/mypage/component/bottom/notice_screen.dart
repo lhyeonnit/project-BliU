@@ -1,6 +1,6 @@
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'component/event_list.dart';
 import 'component/notice_list.dart';
 
@@ -33,9 +33,13 @@ class _NoticeScreenState extends State<NoticeScreen> with SingleTickerProviderSt
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        title: const Text(
+        title: Text(
           '공지사항',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: Responsive.getFont(context, 18),
+              fontWeight: FontWeight.bold
+          ),
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/login/ic_back.svg"),

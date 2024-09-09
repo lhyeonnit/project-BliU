@@ -1,37 +1,33 @@
 import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
 import 'package:BliU/screen/mypage/viewmodel/setting_view_model.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
-class SettingScreen extends ConsumerStatefulWidget {
+class SettingScreen extends ConsumerWidget {
   const SettingScreen({super.key});
 
   @override
-  _SettingScreenState createState() => _SettingScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    var data = {
+      'mt_idx': '2'
+    };
+    ref.read(settingModelProvider.notifier).getPushInfo(data);
 
-class _SettingScreenState extends ConsumerState<SettingScreen> {
-  bool _isSwitched = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    ref.read(settingModelProvider.notifier);
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        title: const Text(
+        title: Text(
           '설정',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: Responsive.getFont(context, 18),
+              fontWeight: FontWeight.bold
+          ),
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/login/ic_back.svg"),
@@ -48,36 +44,62 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
             Expanded(
               child: ListView(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        '알림',
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      FlutterSwitch(
-                        width: 55.0,
-                        height: 25.0,
-                        valueFontSize: 12.0,
-                        toggleSize: 18.0,
-                        value: _isSwitched,
-                        borderRadius: 30.0,
-                        padding: 4.0,
-                        showOnOff: false,
-                        activeColor: Colors.grey,
-                        inactiveColor: Colors.grey.shade300,
-                        toggleColor: Colors.white,
-                        onToggle: (val) {
-                          //print("val -- $val}");
-                          setState(() {
-                            _isSwitched = val;
-                          });
-                        },
-                      ),
-                    ],
+                  Consumer(
+                    builder: (context, ref, widget) {
+                      final resultModel = ref.watch(settingModelProvider);
+
+                      var isSwitched = false;
+                      if (resultModel?.mtPushing != null) {
+                        String mtPushing = resultModel?.mtPushing ?? "";
+                        if (mtPushing == "Y") {
+                          isSwitched = true;
+                        } else if (mtPushing == "N") {
+                          isSwitched = false;
+                        }
+                      }
+
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            '알림',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          FlutterSwitch(
+                            width: 55.0,
+                            height: 25.0,
+                            valueFontSize: 12.0,
+                            toggleSize: 18.0,
+                            value: isSwitched,
+                            borderRadius: 30.0,
+                            padding: 4.0,
+                            showOnOff: false,
+                            activeColor: Colors.grey,
+                            inactiveColor: Colors.grey.shade300,
+                            toggleColor: Colors.white,
+                            onToggle: (val) {
+                              String mtPushing = "";
+                              if (val) {
+                                mtPushing = "Y";
+                              } else {
+                                mtPushing = "N";
+                              }
+
+                              var data = {
+                                'mt_idx': '2',
+                                'mt_pushing': mtPushing
+                              };
+                              var model = ref.read(settingModelProvider);
+                              model?.mtPushing = mtPushing;
+                              ref.read(settingModelProvider.notifier).setPush(data);
+                            },
+                          ),
+                        ],
+                      );
+                    }
                   ),
                   const SizedBox(height: 10),
                   _buildCustomTile(

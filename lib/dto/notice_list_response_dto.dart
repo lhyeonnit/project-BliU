@@ -4,7 +4,7 @@ class NoticeListResponseDTO {
   final bool? result;
   final String? message;
   final int? count;
-  final List<NoticeData>? list;
+  List<NoticeData>? list;
 
   NoticeListResponseDTO({
     required this.result,
@@ -15,11 +15,15 @@ class NoticeListResponseDTO {
 
   // JSON to Object
   factory NoticeListResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<NoticeData>.from((json['data']['list'])?.map((item) {
+      return NoticeData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return NoticeListResponseDTO(
       result: json['result'],
       message: json['data']['message'],
       count: json['data']['count'],
-      list: (json['data']['list'] as List<NoticeData>),
+      list: list,
     );
   }
 

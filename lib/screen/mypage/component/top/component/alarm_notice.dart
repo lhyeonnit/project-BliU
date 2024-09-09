@@ -21,12 +21,13 @@ class _AlarmNoticeState extends State<AlarmNotice> {
         setState(() {
           _isPressed = true;
         });
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const NoticeDetail(),
-          ),
-        );
+        // TODO NoticeDetail
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const NoticeDetail(),
+        //   ),
+        // );
       },
       child: Container(
         color: _isPressed ? Colors.white : const Color(0xFFF5F9F9), // 눌린 상태에 따라 색상 변경
