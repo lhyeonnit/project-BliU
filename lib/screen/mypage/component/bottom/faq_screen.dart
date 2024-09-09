@@ -142,8 +142,8 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                       data: Theme.of(context).copyWith(dividerColor: Colors.transparent), // 선 제거
                       child: ExpansionTile(
                         tilePadding: EdgeInsets.zero,
-                        collapsedBackgroundColor: Colors.transparent, // 펼쳐지기 전 배경
-                        backgroundColor: Colors.transparent, // 펼쳐진 후 배경
+                        collapsedBackgroundColor: Colors.white, // 펼쳐지기 전 배경
+                        backgroundColor: Colors.white, // 펼쳐진 후 배경
                         title: Row(
                           children: [
                             Text(
