@@ -8,6 +8,8 @@ class CartItem extends StatefulWidget {
   final Function(int) onIncrementQuantity;
   final Function(int) onDecrementQuantity;
   final Function(int) onDelete;
+  final Function(int, bool) onToggleSelection; // 선택 상태 변경 콜백 추가
+  final bool isSelected; // 선택 상태를 부모로부터 전달받음
 
   const CartItem({
     super.key,
@@ -16,6 +18,8 @@ class CartItem extends StatefulWidget {
     required this.onIncrementQuantity,
     required this.onDecrementQuantity,
     required this.onDelete,
+    required this.onToggleSelection,
+    required this.isSelected,
   });
 
   @override
@@ -23,8 +27,6 @@ class CartItem extends StatefulWidget {
 }
 
 class _CartItemState extends State<CartItem> {
-  bool _isSelected = false; // 선택 여부 상태 관리
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -39,7 +41,7 @@ class _CartItemState extends State<CartItem> {
             GestureDetector(
               onTap: () {
                 setState(() {
-                  _isSelected = !_isSelected; // 체크박스 선택 상태 변경
+                  widget.onToggleSelection(widget.index, !widget.isSelected); // 부모로 선택 상태 전달
                 });
               },
               child: Container(
@@ -48,12 +50,17 @@ class _CartItemState extends State<CartItem> {
                 width: 22,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(6)),
-                  border: Border.all(color: _isSelected ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC)),
-                  color: _isSelected ? const Color(0xFFFF6191) : Colors.white,
+                  border: Border.all(
+                      color: widget.isSelected
+                          ? const Color(0xFFFF6191)
+                          : const Color(0xFFCCCCCC)),
+                  color: widget.isSelected
+                      ? const Color(0xFFFF6191)
+                      : Colors.white,
                 ),
                 child: SvgPicture.asset(
-                  'assets/images/check01_off.svg', // 올바른 경로
-                  color: _isSelected
+                  'assets/images/check01_off.svg', // 체크박스 아이콘 경로
+                  color: widget.isSelected
                       ? Colors.white
                       : const Color(0xFFCCCCCC), // 체크 여부에 따라 색상 변경
                   height: 10, // 아이콘의 높이
@@ -115,7 +122,8 @@ class _CartItemState extends State<CartItem> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () => widget.onDecrementQuantity(widget.index),
+                          onTap: () =>
+                              widget.onDecrementQuantity(widget.index),
                           child: const Icon(Icons.remove, size: 15),
                         ),
                         Text(
@@ -125,7 +133,8 @@ class _CartItemState extends State<CartItem> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => widget.onIncrementQuantity(widget.index),
+                          onTap: () =>
+                              widget.onIncrementQuantity(widget.index),
                           child: const Icon(Icons.add, size: 15),
                         ),
                       ],
@@ -134,7 +143,8 @@ class _CartItemState extends State<CartItem> {
                   const SizedBox(height: 10),
                   Text(
                     '${widget.item['price']}원', // widget.item 사용
-                    style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16.0, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

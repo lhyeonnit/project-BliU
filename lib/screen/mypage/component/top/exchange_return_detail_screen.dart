@@ -14,6 +14,9 @@ import 'delivery_screen.dart';
 class ExchangeReturnDetailScreen extends StatefulWidget {
   final String reason; // 요청사유
   final String details; // 상세내용
+  final String returnAccount;
+  final String returnBank;
+  final String shippingCost;
   final List<File> images;
   final String title;
   final String date;
@@ -25,6 +28,9 @@ class ExchangeReturnDetailScreen extends StatefulWidget {
       {required this.reason,
       required this.details,
       required this.images,
+      required this.returnAccount,
+      required this.returnBank,
+      required this.shippingCost,
       required this.title,
       required this.date,
       required this.orderId,
@@ -202,6 +208,35 @@ class _ExchangeReturnDetailScreenState
                                 fontSize: Responsive.getFont(context, 14)),
                           )),
                       _buildUploadedImages(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: widget.title == '교환'
+                            ? // 교환 페이지일 때 표시
+                        Text(
+                          '${widget.shippingCost}',
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                          ),
+                        )
+                            : // 반품/환불 페이지일 때 표시
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${widget.returnBank}',
+                              style: TextStyle(
+                                fontSize: Responsive.getFont(context, 14),
+                              ),
+                            ),
+                            Text(
+                              '${widget.returnAccount}',
+                              style: TextStyle(
+                                fontSize: Responsive.getFont(context, 14),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -219,7 +254,6 @@ class _ExchangeReturnDetailScreenState
   Widget _buildUploadedImages() {
     return widget.images.isNotEmpty
         ? Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
             height: 100,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,

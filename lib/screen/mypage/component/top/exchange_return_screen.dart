@@ -36,7 +36,10 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
   List<String> categories = ['교환', '반품/환불'];
   int selectedIndex = 0;
   String reason = ''; // 요청사유
+  String returnAccount = '';
+  String returnBank = '';
   String details = ''; // 상세내용
+  String shippingCost = '';
   List<File> images = [];
   @override
   Widget build(BuildContext context) {
@@ -143,7 +146,10 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
                           builder: (context) => ExchangeReturnDetailScreen(
                             reason: reason,  // 요청사유
                             details: details,  // 상세내용
-                            images: images,  // 이미지 리스트
+                            images: images, // 이미지 리스트
+                            returnAccount: returnAccount,
+                            returnBank: returnBank,
+                            shippingCost: shippingCost,
                             title: title,  // 화면 타이틀
                             date: widget.date,
                             orderId: widget.orderId,
@@ -176,10 +182,12 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: ExchangeItem(
-          onDataCollected: (data) {
+          onDataCollected: (String collectedReason, String collectedDetails, String collectedShippingCost, List<File> collectedImages) {
             setState(() {
-              reason = data;
-              details = data;
+              reason = collectedReason;
+              details = collectedDetails;
+              shippingCost = collectedShippingCost;
+              images = collectedImages;
             });
           },
         ),
@@ -188,11 +196,13 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: ReturnItem(
-          onDataCollected: (data) {
+          onDataCollected: (String collectedReason, String collectedDetails, String collectedReturnBank, String collectedReturnAccount, List<File> collectedImages) {
             setState(() {
-              reason = data;
-              details = data;
-              images = data as List<File>;  // 수집된 데이터를 저장
+              reason = collectedReason;
+              details = collectedDetails;
+              returnBank = collectedReturnBank;
+              returnAccount = collectedReturnAccount;
+              images = collectedImages;
             });
           },
         ),
