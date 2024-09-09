@@ -18,32 +18,62 @@ class _CartScreenState extends State<CartScreen> {
   final List<Map<String, dynamic>> _cartItems = [
     {
       'storeName': '타이니숲',
+      'storeLogo': 'assets/images/home/exhi.png',
       'productName': '타이니숲 에스더버니 12종 상하복/원피스/티셔츠',
       'price': 32800,
       'quantity': 1,
-      'item': '베이지 / 110 1개',
+      'item': '베이지 / 110',
       'storeId': 1,
       'shippingCost': 2500, // 스토어별 배송비
+      'isSelected': false, // 선택 상태 초기화
     },
     {
       'storeName': '타이니숲',
+      'storeLogo': 'assets/images/home/exhi.png',
       'productName': '타이니숲 에스더버니 12종 상하복/원피스/티셔츠',
       'price': 32800,
       'quantity': 1,
-      'item': '베이지 / 110 1개',
+      'item': '베이지 / 110',
       'storeId': 1,
       'shippingCost': 2500, // 스토어별 배송비
+      'isSelected': false, // 선택 상태 초기화
     },
     {
       'storeName': '다른 스토어',
+      'storeLogo': 'assets/images/home/exhi.png',
       'productName': '다른 스토어 상품 이름',
       'price': 20000,
       'quantity': 1,
-      'item': '블루 / M 1개',
+      'item': '블루 / M',
       'storeId': 2,
       'shippingCost': 3000, // 스토어별 배송비
+      'isSelected': false, // 선택 상태 초기화
     },
   ];
+
+  // 선택된 항목들의 총 상품 금액 계산
+  int _getSelectedTotalPrice() {
+    return _cartItems
+        .where((item) => item['isSelected'] == true)
+        .fold(0, (sum, item) => sum + (item['price'] as int) * (item['quantity'] as int));
+  }
+
+  // 선택된 항목들의 총 배송비 계산
+  int _getSelectedTotalShippingCost() {
+    Set<int> selectedStoreIds = {};
+    return _cartItems.where((item) => item['isSelected'] == true).fold(0, (sum, item) {
+      if (!selectedStoreIds.contains(item['storeId'])) {
+        selectedStoreIds.add(item['storeId']);
+        return sum + (item['shippingCost'] as int);
+      }
+      return sum;
+    });
+  }
+
+  // 선택된 항목들의 총 결제 금액 계산
+  int _getSelectedTotalPayment() {
+    return _getSelectedTotalPrice() + _getSelectedTotalShippingCost();
+  }
 
   int _getTotalPrice() {
     return _cartItems.fold(0, (sum, item) {
@@ -66,30 +96,9 @@ class _CartScreenState extends State<CartScreen> {
     return _getTotalPrice() + _getTotalShippingCost();
   }
 
-  void _incrementQuantity(int index) {
-    setState(() {
-      _cartItems[index]['quantity']++;
-    });
-  }
-
-  void _decrementQuantity(int index) {
-    setState(() {
-      if (_cartItems[index]['quantity'] > 1) {
-        _cartItems[index]['quantity']--;
-      }
-    });
-  }
-
-  void _deleteItem(int index) {
-    setState(() {
-      _cartItems.removeAt(index);
-    });
-  }
-
   final ScrollController _scrollController = ScrollController();
 
   bool _isAllSelected = false;
-  final int _totalItems = 3;
   int _selectedItemsCount = 0;
   void _toggleSelectAll() {
     setState(() {
@@ -128,10 +137,6 @@ class _CartScreenState extends State<CartScreen> {
       }
       storeGroupedItems[storeId]!.add(item);
     }
-
-    int totalPrice = _getTotalPrice();
-    int totalShippingCost = _getTotalShippingCost();
-    int totalPayment = _getTotalPayment();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -287,7 +292,7 @@ class _CartScreenState extends State<CartScreen> {
                                   child: ClipRRect(
                                     borderRadius: const BorderRadius.all(Radius.circular(20)), // 사진의 모서리만 둥글게 설정
                                     child: Image.asset(
-                                      'assets/images/home/exhi.png',
+                                      items.first['storeLogo'],
                                       fit: BoxFit.contain,
                                     ),
                                   ),
@@ -386,7 +391,7 @@ class _CartScreenState extends State<CartScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('총 상품 금액', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                              Text('$totalPrice원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                              Text('${_getSelectedTotalPrice()}원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                             ],
                           ),
                           const SizedBox(height: 8.0),
@@ -394,17 +399,19 @@ class _CartScreenState extends State<CartScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('총 배송비', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                              Text('$totalShippingCost원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                              Text('${_getSelectedTotalShippingCost()}원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                             ],
                           ),
-                          const SizedBox(height: 15.0),
-                          const Divider(thickness: 1, color: Color(0xFFEEEEEE)),
-                          const SizedBox(height: 20.0),
+
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15.0, bottom: 20),
+                            child: const Divider(thickness: 1, color: Color(0xFFEEEEEE)),
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('총 결제예상금액', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                              Text('$totalPayment원', style: TextStyle(fontSize: Responsive.getFont(context, 14), fontWeight: FontWeight.bold)),
+                              Text('${_getSelectedTotalPayment()}원', style: TextStyle(fontSize: Responsive.getFont(context, 14), fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ],
@@ -449,7 +456,7 @@ class _CartScreenState extends State<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('총 상품 금액: ', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                    Text('$totalPrice원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                    Text('${_getSelectedTotalPayment()}원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                   ],
                 ),
                 const SizedBox(height: 15.0),
@@ -457,25 +464,30 @@ class _CartScreenState extends State<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('총 배송비: ', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                    Text('$totalShippingCost원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                    Text('${_getSelectedTotalShippingCost()}원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                   ],
                 ),
                 const SizedBox(height: 20.0),
                 ElevatedButton(
-                  onPressed: () {
-                    PaymentData paymentData = _preparePaymentData(); // 결제 데이터 준비
+                  onPressed: _selectedItemsCount > 0
+                      ? () {
+                    PaymentData paymentData = _preparePaymentData();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PaymentScreen(paymentData: paymentData),
+                        builder: (context) => PaymentScreen(
+                          paymentData: paymentData,
+                          cartDetails: _cartItems,
+                        ),
                       ),
                     );
-                  },
+                  }
+                      : null, // 선택된 항목이 없으면 비활성화
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 48),
-                    backgroundColor: Colors.black,
+                    backgroundColor: _selectedItemsCount > 0 ? Colors.black : Color(0xFFDDDDDD), // 선택된 항목이 없으면 회색
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.0), // 모서리를 둥글게 설정
+                      borderRadius: BorderRadius.circular(6.0),
                     ),
                   ),
                   child: Text(

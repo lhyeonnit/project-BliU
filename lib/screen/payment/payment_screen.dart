@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/data/payment_data.dart';
+import 'package:BliU/screen/payment/component/payment_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tosspayments_widget_sdk_flutter/model/payment_info.dart';
@@ -15,8 +16,10 @@ import '../_component/move_top_button.dart';
 //결제하기
 class PaymentScreen extends StatefulWidget {
   final PaymentData paymentData;
+  final List<Map<String, dynamic>> cartDetails;
 
-  const PaymentScreen({required this.paymentData, super.key});
+  const PaymentScreen(
+      {required this.paymentData, required this.cartDetails, super.key});
 
   @override
   State<PaymentScreen> createState() => PaymentScreenState();
@@ -48,6 +51,14 @@ class PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Map<int, List<Map<String, dynamic>>> storeGroupedItems = {};
+    for (var item in widget.cartDetails) {
+      int storeId = item['storeId'];
+      if (!storeGroupedItems.containsKey(storeId)) {
+        storeGroupedItems[storeId] = [];
+      }
+      storeGroupedItems[storeId]!.add(item);
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -90,6 +101,71 @@ class PaymentScreenState extends State<PaymentScreen> {
           children: [
             ListView(
               children: [
+                // 장바구니 항목들
+                ...storeGroupedItems.entries.map((entry) {
+                  int storeId = entry.key;
+                  List<Map<String, dynamic>> items = entry.value;
+
+                  // 마지막 스토어인지 확인
+                  bool isLastStore =
+                      storeGroupedItems.entries.last.key == storeId;
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 스토어명
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                        height: 40,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                                border: Border.all(
+                                  color: const Color(0xFFDDDDDD),
+                                  width: 1.0,
+                                ),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                                child: Image.asset(
+                                  items.first['storeLogo'],
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: Responsive.getWidth(context, 10)),
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              child: Text(
+                                items.first['storeName'],
+                                style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 14),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // 각 스토어의 선택된 상품들만 전달
+                      Column(
+                        children: items
+                            .where((item) => item['isSelected'] == true) // 선택된 항목만 필터링
+                            .map((item) {
+                          return PaymentItem(
+                            item: item, // 선택된 항목을 하나씩 전달
+                          );
+                        }).toList(),
+                      ),
+                      if (!isLastStore)
+                        const Divider(thickness: 1, color: Color(0xFFEEEEEE)),
+                    ],
+                  );
+                }).toList(),
                 PaymentMethodWidget(
                   paymentWidget: _paymentWidget,
                   selector: 'methods',
@@ -108,8 +184,8 @@ class PaymentScreenState extends State<PaymentScreen> {
                   Container(
                     width: double.infinity,
                     height: Responsive.getHeight(context, 48),
-                    margin:
-                    EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                    margin: EdgeInsets.only(
+                        right: 16.0, left: 16, top: 8, bottom: 9),
                     decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.all(
@@ -118,31 +194,32 @@ class PaymentScreenState extends State<PaymentScreen> {
                     ),
                     child: GestureDetector(
                       onTap: () async {
-                          final paymentResult = await _paymentWidget.requestPayment(
-                              paymentInfo: PaymentInfo(
-                                orderId: paymentData.orderId,
-                                orderName: paymentData.orderName,
-                                taxFreeAmount: paymentData.taxFreeAmount,
-                                customerName: paymentData.customerName,
-                                appScheme: Platform.isIOS ? 'bliuApp://' : null,
-                              ));
+                        final paymentResult =
+                            await _paymentWidget.requestPayment(
+                                paymentInfo: PaymentInfo(
+                          orderId: paymentData.orderId,
+                          orderName: paymentData.orderName,
+                          taxFreeAmount: paymentData.taxFreeAmount,
+                          customerName: paymentData.customerName,
+                          appScheme: Platform.isIOS ? 'bliuApp://' : null,
+                        ));
 
-                          if (paymentResult.success != null) {
-                            // 결제 성공 처리
-                            var resultData = <String, dynamic>{};
-                            resultData['result'] = true;
-                            resultData['successData'] = paymentResult.success;
+                        if (paymentResult.success != null) {
+                          // 결제 성공 처리
+                          var resultData = <String, dynamic>{};
+                          resultData['result'] = true;
+                          resultData['successData'] = paymentResult.success;
 
-                            paymentResultData(resultData);
-                          } else if (paymentResult.fail != null) {
-                            // 결제 실패 처리
-                            var resultData = <String, dynamic>{};
-                            resultData['result'] = false;
-                            resultData['errorMessage'] =
-                                paymentResult.fail?.errorMessage;
+                          paymentResultData(resultData);
+                        } else if (paymentResult.fail != null) {
+                          // 결제 실패 처리
+                          var resultData = <String, dynamic>{};
+                          resultData['result'] = false;
+                          resultData['errorMessage'] =
+                              paymentResult.fail?.errorMessage;
 
-                            paymentResultData(resultData);
-                          }
+                          paymentResultData(resultData);
+                        }
                       },
                       child: Center(
                         child: Text(
