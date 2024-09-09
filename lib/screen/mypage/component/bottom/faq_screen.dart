@@ -1,58 +1,34 @@
+import 'package:BliU/data/faq_category_data.dart';
+import 'package:BliU/data/faq_data.dart';
+import 'package:BliU/screen/mypage/viewmodel/faq_view_model.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class FAQScreen extends StatefulWidget {
+class FAQScreen extends ConsumerStatefulWidget {
   const FAQScreen({super.key});
 
   @override
   _FAQScreenState createState() => _FAQScreenState();
 }
 
-class _FAQScreenState extends State<FAQScreen> {
-  List<String> categories = ['전체', '배송', '주문/결제', '취소환불', '반품/교환'];
+class _FAQScreenState extends ConsumerState<FAQScreen> {
+  List<FaqCategoryData> faqCategories = [FaqCategoryData(fcIdx: -1, cftName: "전체")];
+  List<FaqData> faqDataList = [];
+
+  int pg = 0;
 
   int selectedCategoryIndex = 0;
-
-  List<Map<String, String>> faqData = [
-    {
-      'category': '배송',
-      'question': '주문 후 배송은 얼마나 걸리나요?',
-      'answer':
-          '평균 배송일은 영업일 기준 3~5일 정도 소요됩니다.\n(단, 주문제작, 프리오더, 액세서리 등 경우 평균보다 더 걸릴 수 있습니다)\n배송 지연이 오래 지속되는 경우 고객센터로 문의 부탁드립니다.\n\n고객센터 운영시간: 평일 10:00 ~ 17:00 / 점심시간 12:30 ~ 13:30\n전화: 1600-7346',
-    },
-    {
-      'category': '주문/결제',
-      'question': '주문을 확인하고 싶어요',
-      'answer':
-          '주문 확인은 마이페이지 내 주문내역에서 가능합니다.\n자세한 주문 내역을 확인하시려면 해당 주문을 선택해주세요.',
-    },
-    // 추가 FAQ 데이터 삽입 가능
-  ];
-
   String searchQuery = "";
 
-  List<Map<String, String>> getFilteredFAQData() {
-    List<Map<String, String>> filteredFAQ;
+  @override
+  void initState() {
+    super.initState();
 
-    if (selectedCategoryIndex == 0) {
-      filteredFAQ = faqData;
-    } else {
-      filteredFAQ = faqData
-          .where((faq) => faq['category'] == categories[selectedCategoryIndex])
-          .toList();
-    }
-
-    if (searchQuery.isNotEmpty) {
-      filteredFAQ = filteredFAQ
-          .where((faq) =>
-              faq['question']!
-                  .toLowerCase()
-                  .contains(searchQuery.toLowerCase()) ||
-              faq['answer']!.toLowerCase().contains(searchQuery.toLowerCase()))
-          .toList();
-    }
-
-    return filteredFAQ;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
   }
 
   @override
@@ -68,9 +44,13 @@ class _FAQScreenState extends State<FAQScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
+        title: Text(
           'FAQ',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: Responsive.getFont(context, 18),
+              fontWeight: FontWeight.bold
+          ),
         ),
       ),
       body: Column(
@@ -82,6 +62,7 @@ class _FAQScreenState extends State<FAQScreen> {
               onChanged: (value) {
                 setState(() {
                   searchQuery = value;
+                  _getList(true);
                 });
               },
               decoration: InputDecoration(
@@ -99,15 +80,16 @@ class _FAQScreenState extends State<FAQScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 13.0),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: categories.length,
+              itemCount: faqCategories.length,
               itemBuilder: (context, index) {
                 final bool isSelected = selectedCategoryIndex == index;
+                final faqCategoryData = faqCategories[index];
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 3.0),
                   child: FilterChip(
                     label: Text(
-                      categories[index],
+                      faqCategoryData.cftName ?? "",
                       style: TextStyle(
                         color: isSelected ? Colors.pink : Colors.black, // 텍스트 색상
                       ),
@@ -116,6 +98,7 @@ class _FAQScreenState extends State<FAQScreen> {
                     onSelected: (bool selected) {
                       setState(() {
                         selectedCategoryIndex = index;
+                        _getList(true);
                       });
                     },
                     backgroundColor: Colors.white,
@@ -139,74 +122,127 @@ class _FAQScreenState extends State<FAQScreen> {
             height: 10,
           ),
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              itemCount: getFilteredFAQData().length,
-              itemBuilder: (context, index) {
-                final faq = getFilteredFAQData()[index];
-                return Theme(
-                    data: Theme.of(context).copyWith(dividerColor: Colors.transparent), // 선 제거
-                    child: ExpansionTile(
-                      tilePadding: EdgeInsets.zero,
-                      collapsedBackgroundColor: Colors.transparent, // 펼쳐지기 전 배경
-                      backgroundColor: Colors.transparent, // 펼쳐진 후 배경
-                      title: Row(
-                        children: [
-                          Text(
-                            faq['category']!,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          Expanded(
-                            child: Text(
-                              faq['question']!,
+            child: Consumer(
+              builder: (context, ref, widget) {
+                final model = ref.watch(faqModelProvider);
+                faqDataList = model?.faqResponseDTO?.list ?? [];
+
+                return ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  itemCount: faqDataList.length,
+                  itemBuilder: (context, index) {
+                    final faq = faqDataList[index];
+                    String cateName = "";
+                    for(var cate in faqCategories) {
+                      if (cate.fcIdx == faq.cftIdx) {
+                        cateName = cate.cftName ?? "";
+                      }
+                    }
+                    return Theme(
+                      data: Theme.of(context).copyWith(dividerColor: Colors.transparent), // 선 제거
+                      child: ExpansionTile(
+                        tilePadding: EdgeInsets.zero,
+                        collapsedBackgroundColor: Colors.transparent, // 펼쳐지기 전 배경
+                        backgroundColor: Colors.transparent, // 펼쳐진 후 배경
+                        title: Row(
+                          children: [
+                            Text(
+                              cateName,
                               style: const TextStyle(
+                                fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
-                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(width: 5),
+                            Expanded(
+                              child: Text(
+                                faq.ftSubject ?? "",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    faq.ftSubject ?? "",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    faq.ftContent ?? "",
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
                       ),
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  faq['question']!,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  faq['answer']!,
-                                  style: const TextStyle(fontSize: 14),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-              },
+                    );
+                  },
+                );
+              }
             ),
           ),
         ],
       ),
     );
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getCategory();
+  }
+
+  void _getCategory() {
+    ref.read(faqModelProvider.notifier).getCategory().then((list) {
+      if (list != null) {
+        for (var data in list) {
+          faqCategories.add(data);
+        }
+
+        setState(() {
+          _getList(true);
+        });
+      }
+    });
+  }
+
+  // TODO 페이징
+  void _getList(bool isNew) {
+    if (isNew) {
+      ref.read(faqModelProvider)?.faqResponseDTO?.list?.clear();
+      pg = 0;
+    }
+
+    var faqCategory = "all";
+    if (selectedCategoryIndex > 0) {
+      faqCategory = faqCategories[selectedCategoryIndex].fcIdx.toString();
+    }
+
+    Map<String, dynamic> requestData = {
+      'search_txt' : searchQuery,
+      'faq_category' : faqCategory,
+      'pg' : pg
+    };
+
+    ref.read(faqModelProvider.notifier).getList(requestData);
   }
 }

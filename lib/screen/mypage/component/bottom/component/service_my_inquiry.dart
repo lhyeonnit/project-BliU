@@ -1,5 +1,6 @@
 import 'package:BliU/screen/mypage/component/bottom/component/service_inquiry_one.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/service_inquiry_product.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -30,9 +31,13 @@ class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with Si
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        title: const Text(
+        title: Text(
           '문의내역',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: Responsive.getFont(context, 18),
+              fontWeight: FontWeight.bold
+          ),
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/login/ic_back.svg"),

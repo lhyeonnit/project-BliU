@@ -16,7 +16,7 @@ class EventDetailResponseDTO {
     return EventDetailResponseDTO(
       result: json['result'],
       message: json['data']['message'],
-      data: (json['data'] as EventData),
+      data: EventData.fromJson(json['data']),
     );
   }
 

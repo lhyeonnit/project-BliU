@@ -27,8 +27,10 @@ class SharedPreferencesManager {
   }
 
   String? getMtIdx() {
-    final mtIdx = _prefs.getString('mt_idx'); // 저장된 데이터 로드
-    return mtIdx;
+    // TODO 일단 고정
+    return "2";
+    // final mtIdx = _prefs.getString('mt_idx'); // 저장된 데이터 로드
+    // return mtIdx;
   }
 
   //토큰 가져오기

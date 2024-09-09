@@ -4,22 +4,26 @@ class FaqResponseDTO {
   final bool? result;
   final String? message;
   final int? count;
-  final List<FaqData>? list;
+  List<FaqData>? list;
 
   FaqResponseDTO({
     required this.result,
     required this.message,
     required this.count,
-    required this.list
+    this.list
   });
 
   // JSON to Object
   factory FaqResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<FaqData>.from((json['data']['list'])?.map((item) {
+      return FaqData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return FaqResponseDTO(
       result: json['result'],
       message: json['data']['message'],
       count: json['data']['count'],
-      list: (json['data']['list'] as List<FaqData>),
+      list: list,
     );
   }
 

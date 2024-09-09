@@ -61,16 +61,16 @@ class NoticeDetail extends ConsumerWidget {
                     children: [
                       Text(
                         ntTitle,
-                        style: const TextStyle(
-                          fontSize: 20,
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 20),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         ntWdate,
-                        style: const TextStyle(
-                          fontSize: 14,
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 14),
                           color: Colors.grey,
                         ),
                       ),
@@ -81,7 +81,10 @@ class NoticeDetail extends ConsumerWidget {
                 const SizedBox(height: 24),
                 Text(
                   ntContent,
-                  style: const TextStyle(fontSize: 16, height: 1.5),
+                  style: TextStyle(
+                    fontSize: Responsive.getFont(context, 16),
+                    height: 1.5
+                  ),
                 ),
               ],
             );

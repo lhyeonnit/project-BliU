@@ -4,7 +4,7 @@ class QnaListResponseDTO {
   final bool? result;
   final String? message;
   final int? count;
-  final List<QnaData>? list;
+  List<QnaData>? list;
 
   QnaListResponseDTO({
     required this.result,
@@ -15,11 +15,14 @@ class QnaListResponseDTO {
 
   // JSON to Object
   factory QnaListResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<QnaData>.from((json['data']['list'])?.map((item) {
+      return QnaData.fromJson(item as Map<String, dynamic>);
+    }).toList());
     return QnaListResponseDTO(
       result: json['result'],
       message: json['data']['message'],
       count: json['data']['count'],
-      list: (json['data']['list'] as List<QnaData>),
+      list: list,
     );
   }
 

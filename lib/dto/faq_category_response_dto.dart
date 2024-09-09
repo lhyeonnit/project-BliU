@@ -13,10 +13,14 @@ class FaqCategoryResponseDTO {
 
   // JSON to Object
   factory FaqCategoryResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<FaqCategoryData>.from((json['data']['list'])?.map((item) {
+      return FaqCategoryData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return FaqCategoryResponseDTO(
       result: json['result'],
       message: json['data']['message'],
-      list: (json['data']['list'] as List<FaqCategoryData>),
+      list: list,
     );
   }
 

@@ -4,7 +4,7 @@ class EventListResponseDTO {
   final bool? result;
   final String? message;
   final int? count;
-  final List<EventData>? list;
+  List<EventData>? list;
 
   EventListResponseDTO({
     required this.result,
@@ -15,11 +15,15 @@ class EventListResponseDTO {
 
   // JSON to Object
   factory EventListResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<EventData>.from((json['data']['list'])?.map((item) {
+      return EventData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return EventListResponseDTO(
       result: json['result'],
       message: json['data']['message'],
       count: json['data']['count'],
-      list: (json['data']['list'] as List<EventData>),
+      list: list,
     );
   }
 

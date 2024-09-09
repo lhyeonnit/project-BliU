@@ -19,7 +19,7 @@ class NoticeList extends ConsumerWidget {
         builder: (context, ref, widget) {
           final model = ref.watch(noticeListModelProvider);
 
-          List<NoticeData> noticeList = model?.noticeListResponseDTO?.list ?? [];
+          final List<NoticeData> noticeList = model?.noticeListResponseDTO?.list ?? [];
 
           return ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
