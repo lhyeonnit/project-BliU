@@ -60,6 +60,8 @@ class _PaymentDiscountState extends State<PaymentDiscount> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
             children: [
               Text('포인트 사용',
                   style: TextStyle(

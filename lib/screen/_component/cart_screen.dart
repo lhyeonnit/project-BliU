@@ -471,12 +471,10 @@ class _CartScreenState extends State<CartScreen> {
                 ElevatedButton(
                   onPressed: _selectedItemsCount > 0
                       ? () {
-                    PaymentData paymentData = _preparePaymentData();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => PaymentScreen(
-                          paymentData: paymentData,
                           cartDetails: _cartItems,
                         ),
                       ),
