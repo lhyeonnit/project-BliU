@@ -27,8 +27,13 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class PaymentScreenState extends State<PaymentScreen> {
-  late PaymentWidget _paymentWidget;
-  final ScrollController _scrollController = ScrollController();
+  double selectedDiscountRate = 0.0;
+
+  void onCouponSelected(double discountRate) {
+    setState(() {
+      selectedDiscountRate = discountRate;
+    });
+  }  final ScrollController _scrollController = ScrollController();
   late bool isUseAddress = false;
   String? savedRecipientName; // 저장된 수령인 이름
   String? savedRecipientPhone; // 저장된 전화번호
@@ -278,7 +283,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                 ),
                 CustomExpansionTile(
                   title: '할인적용',
-                  content: PaymentDiscount(),
+                  content: PaymentDiscount(onCouponSelected: onCouponSelected,),
                 ),
                 Container(
                   height: 10,
@@ -291,7 +296,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                     cartDetails: widget.cartDetails
                         .where((item) =>
                     item['isSelected'] == true) // 선택된 항목만 전달
-                        .toList(),
+                        .toList(),discountRate: selectedDiscountRate,
                   ),
                 ),
               ],
