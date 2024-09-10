@@ -70,7 +70,7 @@ class ServiceScreen extends ConsumerWidget {
               () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const InquiryService()),
+                  MaterialPageRoute(builder: (context) => const InquiryService(qnaType: '1',)),
                 );
               },
             ),

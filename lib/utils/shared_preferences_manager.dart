@@ -33,6 +33,10 @@ class SharedPreferencesManager {
     // return mtIdx;
   }
 
+  void setToken(String value) {
+    saveData('token', value);
+  }
+
   //토큰 가져오기
   String? getToken() {
     final token = _prefs.getString('token'); // 저장된 데이터 로드

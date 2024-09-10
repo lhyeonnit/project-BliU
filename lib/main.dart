@@ -4,13 +4,14 @@ import 'package:BliU/data/fcm_data.dart';
 import 'package:BliU/screen/common/on_boarding_screen.dart';
 import 'package:BliU/utils/navigation_service.dart';
 import 'package:BliU/utils/permission_manager.dart';
-import 'package:BliU/utils/utils.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 String? _fcmToken;
 FcmData? _fcmData;
@@ -33,13 +34,13 @@ void backgroundHandler(NotificationResponse details) {
 }
 
 Future<void> fireBaseInitializeApp() async {
-  // TODO
+  // TODO IOS 작업필요
   await Firebase.initializeApp(
     options: FirebaseOptions(
-        apiKey: Platform.isAndroid ? '' : '',//aos: current_key, ios : API_KEY
-        appId: Platform.isAndroid ? '' : '',//aos: mobilesdk_app_id, ios: GOOGLE_APP_ID
-        messagingSenderId: '',
-        projectId: ''
+        apiKey: Platform.isAndroid ? 'AIzaSyDUoU4gKtbtj2g_-fHWN-MOhgUR36JjipY' : '',//aos: current_key, ios : API_KEY
+        appId: Platform.isAndroid ? '1:225006378443:android:6edf8cf9a844f6a1c22a4e' : '',//aos: mobilesdk_app_id, ios: GOOGLE_APP_ID
+        messagingSenderId: '225006378443',
+        projectId: 'bliu-f0068'
     ),
   );
 }
@@ -136,10 +137,9 @@ void _handleData(FcmData fcmData) {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // TODO 카카오 키 넣기
-  // KakaoSdk.init(
-  //     nativeAppKey: ''
-  // );
+  KakaoSdk.init(
+      nativeAppKey: '525bbbd40b4de98d500d446c14f28bd4'
+  );
 
   // 세로 모드 고정
   await SystemChrome.setPreferredOrientations([
@@ -147,28 +147,31 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  // TODO 구글 계정 받을시 주석 해제
-  // await fireBaseInitializeApp();
-  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  // initializeNotification();
-  //
-  // if (Platform.isIOS) {
-  //   var token = await FirebaseMessaging.instance.getAPNSToken();
-  //   if (token == null) {
-  //     await Future.delayed(const Duration(seconds: 2), () async {
-  //       token = await FirebaseMessaging.instance.getAPNSToken();
-  //       if (token != null) {
-  //         _fcmToken = await FirebaseMessaging.instance.getToken();
-  //       }
-  //     });
-  //   } else {
-  //     _fcmToken = await FirebaseMessaging.instance.getToken();
-  //   }
-  // } else {
-  //   _fcmToken = await FirebaseMessaging.instance.getToken();
-  // }
+  await fireBaseInitializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  initializeNotification();
 
-  await Utils.getInstance();
+  if (Platform.isIOS) {
+    var token = await FirebaseMessaging.instance.getAPNSToken();
+    if (token == null) {
+      await Future.delayed(const Duration(seconds: 2), () async {
+        token = await FirebaseMessaging.instance.getAPNSToken();
+        if (token != null) {
+          _fcmToken = await FirebaseMessaging.instance.getToken();
+        }
+      });
+    } else {
+      _fcmToken = await FirebaseMessaging.instance.getToken();
+    }
+  } else {
+    _fcmToken = await FirebaseMessaging.instance.getToken();
+  }
+
+  SharedPreferencesManager.getInstance().then((pref) {
+    print("fcmToken ====> $_fcmToken");
+    pref.setToken(_fcmToken ?? "");
+  });
+
   await PermissionManager().requestPermission();
 
   runApp(const ProviderScope(child: MyApp()));

@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 class InquiryStore extends ConsumerStatefulWidget {
+
   const InquiryStore({super.key});
 
   @override
@@ -247,18 +248,25 @@ class _InquiryStoreState extends ConsumerState<InquiryStore> {
       return;
     }
     // TODO 비회원 처리 필요
-    final List<MultipartFile> files = _fileList.map((img) => MultipartFile.fromFileSync(img.path, contentType: DioMediaType("image", "jpg"))).toList();
+    final List<MultipartFile> files = _fileList.map((img) => MultipartFile.fromFileSync(img.path)).toList();
     SharedPreferencesManager.getInstance().then((pref) {
       final mtIdx = pref.getMtIdx();
+      String qnaType = '2';// 1 회원인 경우 2 비회원인 경우
+      String mtHp = '';// TODO 비회원 경우 입력
+      if (mtIdx != null) {
+        if (mtIdx.isNotEmpty) {
+          qnaType = '1';
+        }
+      }
 
       final formData = FormData.fromMap({
-        'qna_type' : '1',
+        'qna_type' : qnaType,
         'mt_idx' : mtIdx,
+        'mt_hp' : mtHp,
         'qt_title' : title,
         'qt_content' : content,
         'seller_imgs' : files,
       });
-      // TODO 502 확인 필요
       ref.read(inquiryWriteModelProvider.notifier).qnaSeller(formData).then((resultData) {
         if (resultData != null) {
           Utils.getInstance().showSnackBar(context, resultData.message.toString());

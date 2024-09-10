@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "225006378443",
+    "project_id": "bliu-f0068",
+    "storage_bucket": "bliu-f0068.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225006378443:android:6edf8cf9a844f6a1c22a4e",
+        "android_client_info": {
+          "package_name": "com.dmonster.BliU"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUoU4gKtbtj2g_-fHWN-MOhgUR36JjipY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

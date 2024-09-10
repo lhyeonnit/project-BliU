@@ -10,14 +10,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 class InquiryService extends ConsumerStatefulWidget {
-  const InquiryService({super.key});
+  final String? qnaType;// 1 1:1문의 3 상품
+  final String? ptIdx;
+  const InquiryService({super.key, required this.qnaType, this.ptIdx});
 
   @override
   _InquiryServiceState createState() => _InquiryServiceState();
 }
-// TODO 상품IDX 받아서 처리 작업 필요
-// TODO 일반 고객 센터 인지분기 처리 필요
+
 class _InquiryServiceState extends ConsumerState<InquiryService> {
+  String? get qnaType => widget.qnaType;
+  String? get ptIdx => widget.ptIdx;
+
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
@@ -27,6 +31,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -248,19 +253,29 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
       Utils.getInstance().showSnackBar(context, "문의 내용은 10자 이상 입력해 주세요.");
       return;
     }
-    // TODO 비회원 처리 필요
     final List<MultipartFile> files = _fileList.map((img) => MultipartFile.fromFileSync(img.path, contentType: DioMediaType("image", "jpg"))).toList();
 
     SharedPreferencesManager.getInstance().then((pref) {
       final mtIdx = pref.getMtIdx();
+      String type = '2';// 1 회원 2비회원
+      String tempMtHp = '';// TODO 답변 받은 전화번호[비회원시에만 전달해주세요.]
+      if (mtIdx != null) {
+        if (mtIdx.isNotEmpty) {
+          type = '1';
+        }
+      }
+      String tempMtId = pref.getToken().toString();// 앱 토큰
 
       final formData = FormData.fromMap({
-        'qna_type' : '1',
+        'qna_type' : qnaType,
+        'type': type,
         'mt_idx' : mtIdx,
-        'pt_idx' : 1,// TODO 상품 IDX 처리 필요
+        'temp_mt_id' : tempMtId,
+        'pt_idx' : ptIdx,
         'qt_title' : title,
         'qt_content' : content,
-        'seller_imgs' : files,
+        'qna_img' : files,
+        'temp_mt_hp' : tempMtHp,
       });
 
       ref.read(inquiryWriteModelProvider.notifier).qnaWrite(formData).then((resultData) {

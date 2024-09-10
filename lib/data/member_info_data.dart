@@ -21,11 +21,17 @@ class MemberInfoData {
 
   // JSON to Object
   factory MemberInfoData.fromJson(Map<String, dynamic> json) {
+    List<String> mctStyle = [];
+    try {
+      mctStyle = List<String>.from(json['mct_style'] ?? []);
+    } catch (e) {
+      print('memberInfoData.fromJson E - ${e.toString()}');
+    }
     return MemberInfoData(
       mtIdx: json['mt_idx'],
       mtId: json['mt_id'],
       mtName: json['mt_name'],
-      mctStyle: List<String>.from(json['mct_style'] ?? []),
+      mctStyle: mctStyle,
       cart: json['cart'],
       childCk: json['child_ck'],
       myRevieCount: json['my_revie_count'],

@@ -120,12 +120,14 @@ class _ExchangeReturnDetailScreenState
                       Expanded(
                         child: TextButton(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => InquiryService(),
-                              ),
-                            );
+                            // TODO 전달할 param확인
+
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => InquiryService(),
+                            //   ),
+                            // );
                           },
                           child: Text(
                             '문의하기',
