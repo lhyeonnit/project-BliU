@@ -2,6 +2,8 @@ import 'package:BliU/screen/product/product_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../utils/responsive.dart';
+
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
 
@@ -36,9 +38,34 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('카테고리'),
+        titleTextStyle: TextStyle(
+          fontSize: Responsive.getFont(context, 18),
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          child: Container(
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
+            height: 1.0, // 구분선의 두께 설정
+            child: Container(
+              height: 1.0, // 그림자 부분의 높이
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFFF4F4F4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
       body: Row(
         children: [
