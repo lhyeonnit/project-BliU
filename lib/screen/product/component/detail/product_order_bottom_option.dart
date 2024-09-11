@@ -92,9 +92,7 @@ class _ProductOrderBottomOptionContentState extends State<ProductOrderBottomOpti
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 50.0),
-          child: Column(
+        Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -104,20 +102,18 @@ class _ProductOrderBottomOptionContentState extends State<ProductOrderBottomOpti
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Color(0xFDDDDDD),
+                    color: Color(0xFFDDDDDD),
                     borderRadius: BorderRadius.all(Radius.circular(3)),
                   ),
                 ),
               ),
               // 스크롤 가능한 영역 시작
-              Container(
-                height: 300,
-                child: SingleChildScrollView(
+             SingleChildScrollView(
                   controller: _scrollController,
                   child: Column(
                       children: [
                         Container(
-                          margin: const EdgeInsets.only(top: 10.5, bottom: 4.5),
+                          margin: const EdgeInsets.only(top: 10, bottom: 16),
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Column(
                             children: [
@@ -130,113 +126,120 @@ class _ProductOrderBottomOptionContentState extends State<ProductOrderBottomOpti
                                     selectedColor = color;
                                   });
                                 },
-                                isEnabled: true,
+                                isEnabled: true, // 색상은 항상 활성화
                               ),
-                              _buildExpansionTile(
-                                title: selectedSize != null ? '사이즈 / $selectedSize' : '사이즈',
-                                options: sizes,
-                                onSelected: (size) {
-                                  setState(() {
-                                    selectedSize = size;
-                                  });
-                                },
-                                isEnabled: selectedColor != null, // 색상이 선택되면 사이즈 활성화
-                              ),
-                              _buildExpansionTile(
-                                title: selectedOther != null
-                                    ? '추가상품 / $selectedOther'
-                                    : '추가상품',
-                                options: others,
-                                onSelected: (other) {
-                                  setState(() {
-                                    selectedOther = other;
-                                  });
-                                },
-                                isEnabled: selectedColor != null, // 색상이 선택되면 사이즈 활성화
-                              ),
+
+                              // 색상이 선택된 경우에만 사이즈 선택 가능
+                              if (selectedColor != null)
+                                _buildExpansionTile(
+                                  title: selectedSize != null ? '사이즈 / $selectedSize' : '사이즈',
+                                  options: sizes,
+                                  onSelected: (size) {
+                                    setState(() {
+                                      selectedSize = size;
+                                    });
+                                  },
+                                  isEnabled: true, // 사이즈는 색상 선택 후 활성화
+                                ),
+
+                              // 색상이 선택된 경우에만 추가상품 선택 가능
+                              if (selectedColor != null)
+                                _buildExpansionTile(
+                                  title: selectedOther != null ? '추가상품 / $selectedOther' : '추가상품',
+                                  options: others,
+                                  onSelected: (other) {
+                                    setState(() {
+                                      selectedOther = other;
+                                    });
+                                  },
+                                  isEnabled: true, // 추가상품은 색상 선택 후 활성화
+                                ),
                               if (selectedColor != null && selectedSize != null)
-                                Column(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.symmetric(vertical: 15),
-                                      padding: EdgeInsets.all(20),
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFFF5F9F9),
-                                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(bottom: 12),
-                                            child: Row(
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 50),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.symmetric(vertical: 15),
+                                        padding: EdgeInsets.all(20),
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFFF5F9F9),
+                                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(bottom: 12),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    '베이지/110',
+                                                    style: TextStyle(
+                                                      fontSize: Responsive.getFont(context, 14),
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {},
+                                                    child: SvgPicture.asset('assets/images/ic_del.svg'),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
-                                                Text(
-                                                  '베이지/110',
-                                                  style: TextStyle(
-                                                    fontSize: Responsive.getFont(context, 14),
+                                                Container(
+                                                  width: Responsive.getWidth(context, 96),
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: 6,
+                                                    horizontal: 8,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.all(Radius.circular(22)),
+                                                    border: Border.all(color: Color(0xFFE3E3E3)),
+                                                  ),
+                                                  child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      GestureDetector(
+                                                        child: Icon(CupertinoIcons.minus, size: 20),
+                                                        onTap: () {},
+                                                      ),
+                                                      Container(
+                                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                                                        child: Text(
+                                                          '1',
+                                                          style: TextStyle(
+                                                            fontSize: Responsive.getFont(context, 14),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      GestureDetector(
+                                                        onTap: () {},
+                                                        child: Icon(Icons.add, size: 20),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                                GestureDetector(
-                                                  onTap: () {},
-                                                  child: SvgPicture.asset('assets/images/ic_del.svg'),
+                                                Text(
+                                                  '9,900원',
+                                                  style: TextStyle(
+                                                    fontSize: Responsive.getFont(context, 14),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                width: Responsive.getWidth(context, 96),
-                                                padding: EdgeInsets.symmetric(
-                                                  vertical: 6,
-                                                  horizontal: 8,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.all(Radius.circular(22)),
-                                                  border: Border.all(color: Color(0xFFE3E3E3)),
-                                                ),
-                                                child: Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                    GestureDetector(
-                                                      child: Icon(CupertinoIcons.minus, size: 20),
-                                                      onTap: () {},
-                                                    ),
-                                                    Container(
-                                                      margin: EdgeInsets.symmetric(horizontal: 5),
-                                                      child: Text(
-                                                        '1',
-                                                        style: TextStyle(
-                                                          fontSize: Responsive.getFont(context, 14),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {},
-                                                      child: Icon(Icons.add, size: 20),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Text(
-                                                '9,900원',
-                                                style: TextStyle(
-                                                  fontSize: Responsive.getFont(context, 14),
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    _buildPriceSummary(context),
-                                  ],
+                                      _buildPriceSummary(context),
+                                    ],
+                                  ),
                                 ),
                             ],
                           ),
@@ -244,10 +247,8 @@ class _ProductOrderBottomOptionContentState extends State<ProductOrderBottomOpti
                       ],
                     ),
                   ),
-              ),
             ],
           ),
-        ),
         if (selectedColor != null && selectedSize != null)
           Positioned(
             bottom: 0,
