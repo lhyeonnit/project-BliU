@@ -118,12 +118,11 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
               child: ElevatedButton(
                 onPressed: _allAgreed
                     ? () {
-                  // 다음 버튼 눌렀을 때 동작
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const JoinFormScreen(),
-                    ),
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const JoinFormScreen(),
+                      ),
                   );
                 }
                     : null,

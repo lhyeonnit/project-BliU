@@ -357,17 +357,12 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                     final resultDTO = await ref.read(joinFormModelProvider.notifier).join(requestData);
                     if (resultDTO.result == true) {
                       if (!context.mounted) return;
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const JoinCompleteScreen(),
                         ),
                       );
-
-                      // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                      //   builder: (context) => const JoinCompleteScreen(),
-                      // ), (route) => false);
-
                     } else {
                       if (!context.mounted) return;
                       Utils.getInstance().showSnackBar(context, resultDTO.message.toString());

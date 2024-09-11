@@ -55,12 +55,7 @@ class JoinCompleteScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   // 로그인 화면으로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginScreen(),
-                    ),
-                  );
+                  Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
