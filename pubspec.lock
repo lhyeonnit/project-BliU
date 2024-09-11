@@ -310,14 +310,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_daum_postcode:
-    dependency: "direct main"
-    description:
-      name: flutter_daum_postcode
-      sha256: "22bba41703b8e840b728946d0df41911173f7af97379a26938dea903ccbc99b4"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.3"
   flutter_hooks:
     dependency: "direct main"
     description:

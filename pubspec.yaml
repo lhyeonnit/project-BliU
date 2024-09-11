@@ -60,7 +60,6 @@ dependencies:
   kakao_flutter_sdk: ^1.9.5
   sign_in_with_apple: ^6.1.2
   tosspayments_widget_sdk_flutter: ^2.0.4
-  flutter_daum_postcode: ^0.0.3
 
 dependency_overrides:
   webview_flutter: 4.8.0

@@ -3,9 +3,9 @@ import '../../../utils/responsive.dart';
 
 class PaymentMoney extends StatelessWidget {
   final List<Map<String, dynamic>> cartDetails;
+  final double discountRate; // 할인율 추가
 
-  const PaymentMoney({super.key, required this.cartDetails});
-
+  const PaymentMoney({super.key, required this.cartDetails, this.discountRate = 0.0});
   @override
   Widget build(BuildContext context) {
     // 선택된 항목들만 필터링하여 계산
@@ -25,9 +25,9 @@ class PaymentMoney extends StatelessWidget {
       return sum;
     });
     ; // 예시 배송비
-    final discount = 0; // 예시 할인금액
+    final couponDiscount = (totalAmount * discountRate).toInt();
     final pointsDiscount = 0; // 포인트 할인
-    final total = totalAmount + shippingCost - discount - pointsDiscount;
+    final total = totalAmount + shippingCost - couponDiscount - pointsDiscount;
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 20),
@@ -40,8 +40,11 @@ class PaymentMoney extends StatelessWidget {
               child: _buildInfoRow('배송비', '${shippingCost}원', context)),
           Container(
               margin: EdgeInsets.only(bottom: 15),
-              child: _buildInfoRow('할인금액', '${discount}원', context)),
-          _buildInfoRow('포인트할인', '${pointsDiscount}원', context),
+              child: _buildInfoRow( '할인금액',
+                  '${couponDiscount != 0 ? '- ${couponDiscount}원' : '${couponDiscount}원'}', // 0이 아니면 '-' 추가
+                  context)),
+          _buildInfoRow('포인트할인', '${pointsDiscount != 0 ? '- ${pointsDiscount}원' : '${pointsDiscount}원'}', // 0이 아니면 '-' 추가
+              context),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: const Divider(

@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../utils/responsive.dart';
+
 class LikeScreen extends StatefulWidget {
   const LikeScreen({super.key});
 
@@ -64,9 +66,34 @@ class _LikeScreenState extends State<LikeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
         scrolledUnderElevation: 0,
         title: const Text('좋아요'),
-        backgroundColor: Colors.white,
+        titleTextStyle: TextStyle(
+          fontSize: Responsive.getFont(context, 18),
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          child: Container(
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
+            height: 1.0, // 구분선의 두께 설정
+            child: Container(
+              height: 1.0, // 그림자 부분의 높이
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFFF4F4F4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
       body: Column(
         children: [

@@ -1,14 +1,20 @@
+import 'package:BliU/screen/payment/component/payment_coupon.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PaymentDiscount extends StatefulWidget {
-  const PaymentDiscount({super.key});
+  final Function(double discountRate) onCouponSelected; // 선택된 쿠폰 할인율을 전달할 콜백
+
+  const PaymentDiscount({Key? key, required this.onCouponSelected}) : super(key: key);
 
   @override
   State<PaymentDiscount> createState() => _PaymentDiscountState();
 }
 
 class _PaymentDiscountState extends State<PaymentDiscount> {
+  double discountRate = 0.0;
+  String couponText = "0원 할인 적용";
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,7 +32,7 @@ class _PaymentDiscountState extends State<PaymentDiscount> {
                     fontWeight: FontWeight.normal),
               ),
               Text(
-                '보유 쿠폰 2장',
+                '보유 쿠폰 3장',
                 style: TextStyle(
                     fontSize: Responsive.getFont(context, 13),
                     color: Color(0xFF7B7B7B)),
@@ -34,7 +40,19 @@ class _PaymentDiscountState extends State<PaymentDiscount> {
             ],
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () async {
+              final selectedCoupon = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PaymentCoupon()),
+              );
+              if (selectedCoupon != null) {
+                setState(() {
+                  discountRate = selectedCoupon['rate']; // 선택된 할인율 적용
+                  couponText = "${(discountRate * 100).toInt()}% 할인 적용";
+                });
+                widget.onCouponSelected(discountRate); // 부모로 할인율 전달
+              }
+            },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
               margin: EdgeInsets.only(top: 10, bottom: 20),
@@ -44,15 +62,12 @@ class _PaymentDiscountState extends State<PaymentDiscount> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('0원 할인 적용',
+                  Text(couponText,
                       style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           fontWeight: FontWeight.normal)),
-                  Text(
-                    '>',
-                    style: TextStyle(
-                        fontSize: Responsive.getFont(context, 13),
-                        color: Color(0xFF7B7B7B)),
+                  SvgPicture.asset(
+                    'assets/images/ic_link.svg',
                   ),
                 ],
               ),
@@ -60,8 +75,6 @@ class _PaymentDiscountState extends State<PaymentDiscount> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
             children: [
               Text('포인트 사용',
                   style: TextStyle(
@@ -88,6 +101,8 @@ class _PaymentDiscountState extends State<PaymentDiscount> {
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         border: Border.all(color: Color(0xFFDDDDDD))),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
                       children: [
                         Expanded(
                           child: TextField(

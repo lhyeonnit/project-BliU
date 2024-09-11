@@ -5,6 +5,7 @@ import 'package:BliU/screen/payment/component/payment_address_info.dart';
 import 'package:BliU/screen/payment/component/payment_discount.dart';
 import 'package:BliU/screen/payment/component/payment_money.dart';
 import 'package:BliU/screen/payment/component/payment_order_item.dart';
+import 'package:BliU/screen/payment/payment_complete_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tosspayments_widget_sdk_flutter/model/payment_info.dart';
@@ -19,15 +20,21 @@ import '../_component/move_top_button.dart';
 class PaymentScreen extends StatefulWidget {
   final List<Map<String, dynamic>> cartDetails;
 
-  const PaymentScreen(
-      {required this.cartDetails, super.key});
+  const PaymentScreen({required this.cartDetails, super.key});
 
   @override
   State<PaymentScreen> createState() => PaymentScreenState();
 }
 
 class PaymentScreenState extends State<PaymentScreen> {
-  late PaymentWidget _paymentWidget;
+  double selectedDiscountRate = 0.0;
+
+  void onCouponSelected(double discountRate) {
+    setState(() {
+      selectedDiscountRate = discountRate;
+    });
+  }
+
   final ScrollController _scrollController = ScrollController();
   late bool isUseAddress = false;
   String? savedRecipientName; // 저장된 수령인 이름
@@ -37,8 +44,8 @@ class PaymentScreenState extends State<PaymentScreen> {
   String? savedMemo; // 저장된 메모
 
   // 배송지 정보 저장 함수
-  void _saveAddress(String name, String phone, String road, String detail,
-      String memo) {
+  void _saveAddress(
+      String name, String phone, String road, String detail, String memo) {
     setState(() {
       savedRecipientName = name;
       savedRecipientPhone = phone;
@@ -48,7 +55,6 @@ class PaymentScreenState extends State<PaymentScreen> {
     });
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -56,15 +62,6 @@ class PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Map<int, List<Map<String, dynamic>>> storeGroupedItems = {};
-    for (var item in widget.cartDetails) {
-      int storeId = item['storeId'];
-      if (!storeGroupedItems.containsKey(storeId)) {
-        storeGroupedItems[storeId] = [];
-      }
-      storeGroupedItems[storeId]!.add(item);
-    }
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -73,7 +70,7 @@ class PaymentScreenState extends State<PaymentScreen> {
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/exhibition/ic_back.svg"),
           onPressed: () {
-            Navigator.pop(context); // 뒤로가기 동작
+            _showCancelDialog(context);
           },
         ),
         title: const Text("결제하기"),
@@ -110,77 +107,7 @@ class PaymentScreenState extends State<PaymentScreen> {
               children: [
                 CustomExpansionTile(
                   title: '주문상품',
-                  content: Column(
-                    children: [
-                      ...storeGroupedItems.entries.map((entry) {
-                        int storeId = entry.key;
-                        List<Map<String, dynamic>> items = entry.value;
-
-                        bool isLastStore =
-                            storeGroupedItems.entries.last.key == storeId;
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // 스토어명
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 16, left: 16, bottom: 10, top: 20),
-                              height: 40,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    height: 40,
-                                    width: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(20)),
-                                      border: Border.all(
-                                        color: const Color(0xFFDDDDDD),
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(20)),
-                                      child: Image.asset(
-                                        items.first['storeLogo'],
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 10),
-                                    child: Text(
-                                      items.first['storeName'],
-                                      style: TextStyle(
-                                        fontSize: Responsive.getFont(
-                                            context, 14),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Column(
-                              children: items
-                                  .where((item) => item['isSelected'] == true)
-                                  .map((item) {
-                                return PaymentOrderItem(
-                                  item: item,
-                                );
-                              }).toList(),
-                            ),
-                            if (!isLastStore)
-                              const Divider(
-                                  thickness: 1, color: Color(0xFFEEEEEE)),
-                          ],
-                        );
-                      }).toList(),
-                    ],
-                  ),
+                  content: PaymentOrderItem(cartDetails: widget.cartDetails,),
                 ),
                 Container(
                   height: 10,
@@ -278,7 +205,9 @@ class PaymentScreenState extends State<PaymentScreen> {
                 ),
                 CustomExpansionTile(
                   title: '할인적용',
-                  content: PaymentDiscount(),
+                  content: PaymentDiscount(
+                    onCouponSelected: onCouponSelected,
+                  ),
                 ),
                 Container(
                   height: 10,
@@ -289,9 +218,10 @@ class PaymentScreenState extends State<PaymentScreen> {
                   title: '결제 금액',
                   content: PaymentMoney(
                     cartDetails: widget.cartDetails
-                        .where((item) =>
-                    item['isSelected'] == true) // 선택된 항목만 전달
+                        .where(
+                            (item) => item['isSelected'] == true) // 선택된 항목만 전달
                         .toList(),
+                    discountRate: selectedDiscountRate,
                   ),
                 ),
               ],
@@ -308,7 +238,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                   width: double.infinity,
                   height: Responsive.getHeight(context, 48),
                   margin:
-                  EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                      EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.all(
@@ -316,7 +246,11 @@ class PaymentScreenState extends State<PaymentScreen> {
                     ),
                   ),
                   child: GestureDetector(
-                    onTap: () async {
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PaymentCompleteScreen(cartDetails: widget.cartDetails,)),
+                      );
                     },
                     child: Center(
                       child: Text(
@@ -334,6 +268,85 @@ class PaymentScreenState extends State<PaymentScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showCancelDialog(BuildContext context) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      // 다른 영역을 클릭해도 닫힘
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black.withOpacity(0.5),
+      // 배경을 어둡게
+      transitionDuration: const Duration(milliseconds: 100),
+      // 애니메이션 시간
+      pageBuilder: (BuildContext buildContext, Animation animation,
+          Animation secondaryAnimation) {
+        return Align(
+          alignment: Alignment.topCenter, // 화면 상단 중앙에 배치
+          child: Material(
+            color: Colors.transparent, // 배경을 투명하게
+            child: Container(
+              margin: const EdgeInsets.only(top: 50), // 상단에서의 간격
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+              decoration: BoxDecoration(
+                color: Color(0xCC000000), // 알림창 배경색
+                borderRadius: BorderRadius.circular(22), // 둥근 모서리
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, // 가로로 배치
+                mainAxisSize: MainAxisSize.min, // 알림창 크기를 내용에 맞춤
+                children: [
+                  Text(
+                    '주문을 취소하시겠습니까?',
+                    style: TextStyle(
+                      fontSize: Responsive.getFont(context, 14),
+                      color: Colors.white,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 60),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop(); // 팝업 닫기
+                          },
+                          child: Text(
+                            "취소",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: Responsive.getFont(context, 14),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 15),
+                            child: Text(
+                              "확인",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: Responsive.getFont(context, 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
