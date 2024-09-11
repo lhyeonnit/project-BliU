@@ -1,6 +1,7 @@
 import 'package:BliU/screen/join/join_agree_screen.dart';
 import 'package:BliU/screen/login/viewmodel/login_screen_view_model.dart';
 import 'package:BliU/screen/main_screen.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -163,12 +164,12 @@ class LoginScreen extends ConsumerWidget {
                 ],
               ),
               const SizedBox(height: 24),
-              const Center(
+              Center(
                 child: Text(
                   'SNS 로그인',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: Responsive.getFont(context, 16),
                   ),
                 ),
               ),

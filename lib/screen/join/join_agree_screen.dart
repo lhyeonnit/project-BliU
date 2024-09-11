@@ -1,4 +1,5 @@
 //회원가입 약관 동의
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -51,10 +52,10 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               '회원가입 약관동의',
               style: TextStyle(
-                fontSize: 24.0,
+                fontSize: Responsive.getFont(context, 24),
                 fontWeight: FontWeight.bold,
               ),
             ),

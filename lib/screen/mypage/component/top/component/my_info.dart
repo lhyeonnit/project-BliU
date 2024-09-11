@@ -1,4 +1,5 @@
 import 'package:BliU/data/member_info_data.dart';
+import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/screen/mypage/component/top/component/my_info_edit_check.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -40,10 +41,17 @@ class MyInfo extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => const MyInfoEditCheck(),
+              //   ),
+              // );
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const MyInfoEditCheck(),
+                  builder: (context) => LoginScreen(),
                 ),
               );
             },

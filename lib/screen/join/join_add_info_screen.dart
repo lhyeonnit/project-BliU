@@ -1,10 +1,8 @@
-//회원가입 추가정보 입력
+import 'package:BliU/screen/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../main_screen.dart';
-
-
+//회원가입 추가정보 입력
 class JoinAddInfoScreen extends StatefulWidget {
   const JoinAddInfoScreen({super.key});
 
