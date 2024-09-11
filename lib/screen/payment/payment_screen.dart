@@ -107,7 +107,9 @@ class PaymentScreenState extends State<PaymentScreen> {
               children: [
                 CustomExpansionTile(
                   title: '주문상품',
-                  content: PaymentOrderItem(cartDetails: widget.cartDetails,),
+                  content: PaymentOrderItem(
+                    cartDetails: widget.cartDetails,
+                  ),
                 ),
                 Container(
                   height: 10,
@@ -249,7 +251,15 @@ class PaymentScreenState extends State<PaymentScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => PaymentCompleteScreen(cartDetails: widget.cartDetails,)),
+                        MaterialPageRoute(
+                            builder: (context) => PaymentCompleteScreen(
+                                  cartDetails: widget.cartDetails,
+                                  savedAddressDetail: savedAddressDetail,
+                                  savedAddressRoad: savedAddressRoad,
+                                  savedMemo: savedMemo,
+                                  savedRecipientName: savedRecipientName,
+                                  savedRecipientPhone: savedRecipientPhone,
+                                )),
                       );
                     },
                     child: Center(
