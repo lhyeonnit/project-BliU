@@ -61,17 +61,17 @@ class SettingScreen extends ConsumerWidget {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             '알림',
                             style: TextStyle(
-                                fontSize: 16,
+                                fontSize: Responsive.getFont(context, 16),
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
                           ),
                           FlutterSwitch(
                             width: 55.0,
                             height: 25.0,
-                            valueFontSize: 12.0,
+                            valueFontSize: Responsive.getFont(context, 12),
                             toggleSize: 18.0,
                             value: isSwitched,
                             borderRadius: 30.0,
@@ -103,7 +103,7 @@ class SettingScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 10),
                   _buildCustomTile(
-                    '이용약관',
+                    context, '이용약관',
                         () {
                       Navigator.push(
                         context,
@@ -112,7 +112,7 @@ class SettingScreen extends ConsumerWidget {
                     },
                   ),
                   _buildCustomTile(
-                    '개인정보처리방침',
+                    context, '개인정보처리방침',
                         () {
                       Navigator.push(
                         context,
@@ -129,7 +129,7 @@ class SettingScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildCustomTile(String title, VoidCallback onTap) {
+  Widget _buildCustomTile(BuildContext context, String title, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -139,8 +139,8 @@ class SettingScreen extends ConsumerWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 16,
+              style: TextStyle(
+                fontSize: Responsive.getFont(context, 16),
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),

@@ -1,9 +1,11 @@
+import 'package:BliU/data/member_info_data.dart';
+import 'package:BliU/screen/mypage/component/top/component/my_info_edit_check.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
-import 'my_info_edit_check.dart';
-
 class MyInfo extends StatelessWidget {
-  const MyInfo({super.key});
+  final MemberInfoData? memberInfoData;
+  const MyInfo({super.key, required this.memberInfoData});
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +20,21 @@ class MyInfo extends StatelessWidget {
             backgroundColor: Colors.pinkAccent,
           ),
           const SizedBox(width: 10),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '김아름님 안녕하세요',
+                  '${memberInfoData?.mtName ?? ""}님 안녕하세요',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: Responsive.getFont(context, 18),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 4),
-                Text('id1234'),
+                const SizedBox(height: 4),
+                Text(
+                    memberInfoData?.mtId ?? ""
+                ),
               ],
             ),
           ),
@@ -54,7 +58,6 @@ class MyInfo extends StatelessWidget {
           ),
         ],
       ),
-
     );
   }
 }

@@ -46,9 +46,9 @@ class ServiceScreen extends ConsumerWidget {
                 return Column(
                   children: [
                     const SizedBox(height: 20),
-                    _buildInfoRow('메일문의', model?.stCustomerEmail ?? 'email@email.com', Colors.black),
+                    _buildInfoRow(context, '메일문의', model?.stCustomerEmail ?? 'email@email.com', Colors.black),
                     const SizedBox(height: 16),
-                    _buildInfoRow('전화문의', model?.stCustomerTel ?? '02-000-000', Colors.pink),
+                    _buildInfoRow(context,'전화문의', model?.stCustomerTel ?? '02-000-000', Colors.pink),
                   ],
                 );
               }
@@ -90,14 +90,14 @@ class ServiceScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildInfoRow(String title, String content, Color contentColor) {
+  Widget _buildInfoRow(BuildContext context, String title, String content, Color contentColor) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 16,
+          style: TextStyle(
+            fontSize: Responsive.getFont(context, 16),
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
@@ -105,7 +105,7 @@ class ServiceScreen extends ConsumerWidget {
         Text(
           content,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: Responsive.getFont(context, 16),
             color: contentColor,
           ),
         ),

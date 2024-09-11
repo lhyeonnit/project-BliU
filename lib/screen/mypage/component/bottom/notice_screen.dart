@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'component/event_list.dart';
 import 'component/notice_list.dart';
 
-
 class NoticeScreen extends StatefulWidget {
   const NoticeScreen({super.key});
 

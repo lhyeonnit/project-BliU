@@ -148,17 +148,17 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                           children: [
                             Text(
                               cateName,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                fontSize: Responsive.getFont(context, 16),
                               ),
                             ),
                             const SizedBox(width: 5),
                             Expanded(
                               child: Text(
                                 faq.ftSubject ?? "",
-                                style: const TextStyle(
-                                  fontSize: 16,
+                                style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 16),
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -180,15 +180,17 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                                 children: [
                                   Text(
                                     faq.ftSubject ?? "",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16,
+                                      fontSize: Responsive.getFont(context, 16),
                                     ),
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
                                     faq.ftContent ?? "",
-                                    style: const TextStyle(fontSize: 14),
+                                    style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 14)
+                                    ),
                                   ),
                                 ],
                               ),

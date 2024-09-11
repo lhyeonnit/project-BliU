@@ -1,6 +1,7 @@
 import 'package:BliU/data/notice_data.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/notice_detail.dart';
 import 'package:BliU/screen/mypage/viewmodel/notice_list_view_model.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,7 +34,10 @@ class NoticeList extends ConsumerWidget {
                 contentPadding: const EdgeInsets.symmetric(vertical: 8),
                 title: Text(
                   noticeData.ntTitle ?? "",
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    fontSize: Responsive.getFont(context, 18),
+                    fontWeight: FontWeight.w600
+                  ),
                 ),
                 subtitle: Text(noticeData.ntWdate ?? "", style: const TextStyle(color: Colors.grey)),
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),

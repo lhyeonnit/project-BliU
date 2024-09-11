@@ -1,9 +1,9 @@
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../common/component/date_bottom.dart';
 import '../../my_screen.dart';
-
 
 class RecommendEdit extends StatefulWidget {
   const RecommendEdit({super.key});
@@ -74,9 +74,12 @@ class _RecommendEditState extends State<RecommendEdit> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 출생년도 선택
-                const Text(
+                Text(
                   '자녀의 출생년도',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: Responsive.getFont(context, 16),
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
                 const SizedBox(height: 8),
                 GestureDetector(
@@ -92,14 +95,19 @@ class _RecommendEditState extends State<RecommendEdit> {
                     ),
                     child: Column(
                       children: [
-                        const Text(
+                        Text(
                           '출생년도',
-                          style: TextStyle(fontSize: 16, color: Colors.black),
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 16),
+                            color: Colors.black
+                          ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           selectedDate,
-                          style: const TextStyle(fontSize: 14, color: Colors.pink),
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14), color: Colors.pink
+                          ),
                         ),
                       ],
                     ),
@@ -107,9 +115,12 @@ class _RecommendEditState extends State<RecommendEdit> {
                 ),
                 const SizedBox(height: 16),
                 // 성별 선택
-                const Text(
+                Text(
                   '자녀의 성별',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: Responsive.getFont(context, 16),
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -224,9 +235,12 @@ class _RecommendEditState extends State<RecommendEdit> {
                 ),
 
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   '선호 스타일',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: Responsive.getFont(context, 16),
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Wrap(
