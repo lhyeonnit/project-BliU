@@ -41,19 +41,19 @@ class MyInfo extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const MyInfoEditCheck(),
-              //   ),
-              // );
-
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => LoginScreen(),
+                  builder: (context) => const MyInfoEditCheck(),
                 ),
               );
+
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => LoginScreen(),
+              //   ),
+              // );
             },
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(

@@ -363,6 +363,11 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                           builder: (context) => const JoinCompleteScreen(),
                         ),
                       );
+
+                      // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                      //   builder: (context) => const JoinCompleteScreen(),
+                      // ), (route) => false);
+
                     } else {
                       if (!context.mounted) return;
                       Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
