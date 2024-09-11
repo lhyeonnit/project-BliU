@@ -7,6 +7,7 @@ class MemberInfoData {
   final String? childCk;
   final int? myRevieCount;
   final int? myCouponCount;
+  final int? myPoint;
 
   MemberInfoData({
     required this.mtIdx,
@@ -17,6 +18,7 @@ class MemberInfoData {
     required this.childCk,
     required this.myRevieCount,
     required this.myCouponCount,
+    required this.myPoint,
   });
 
   // JSON to Object
@@ -36,6 +38,7 @@ class MemberInfoData {
       childCk: json['child_ck'],
       myRevieCount: json['my_revie_count'],
       myCouponCount: json['my_coupon_count'],
+      myPoint: json['my_point'],
     );
   }
 
@@ -50,6 +53,7 @@ class MemberInfoData {
       'child_ck': childCk,
       'my_revie_count': myRevieCount,
       'my_coupon_count': myCouponCount,
+      'my_point': myPoint,
     };
   }
 }
