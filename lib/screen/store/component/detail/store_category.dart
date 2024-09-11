@@ -133,7 +133,7 @@ class StoreCategory extends HookConsumerWidget {
               categories.length,
                   (index) {
                 // 상품 리스트
-                return const StoreCategoryItem();
+                return StoreCategoryItem();
               },
             ),
           ),

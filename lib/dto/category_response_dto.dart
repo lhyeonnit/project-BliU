@@ -8,7 +8,7 @@ class CategoryResponseDTO {
   CategoryResponseDTO({
     required this.result,
     required this.message,
-    required this.list
+    this.list
   });
 
   // JSON to Object
