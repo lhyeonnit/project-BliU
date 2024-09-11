@@ -1,4 +1,5 @@
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
 import 'package:BliU/screen/payment/component/payment_order_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,9 +7,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/responsive.dart';
 
 class PaymentCompleteScreen extends StatefulWidget {
+  final String? savedRecipientName; // 저장된 수령인 이름
+  final String? savedRecipientPhone; // 저장된 전화번호
+  final String? savedAddressRoad; // 저장된 도로명 주소
+  final String? savedAddressDetail; // 저장된 상세주소
+  final String? savedMemo; // 저장된 메모
   final List<Map<String, dynamic>> cartDetails;
 
-  const PaymentCompleteScreen({super.key, required this.cartDetails});
+  const PaymentCompleteScreen({
+    super.key,
+    required this.cartDetails,
+    required this.savedRecipientName,
+    required this.savedRecipientPhone,
+    required this.savedAddressRoad,
+    required this.savedAddressDetail,
+    required this.savedMemo,
+  });
 
   @override
   State<PaymentCompleteScreen> createState() => _PaymentCompleteScreenState();
@@ -33,9 +47,16 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
           color: Colors.black,
         ),
         actions: [
-          Container(
-              margin: EdgeInsets.only(right: 16),
-              child: SvgPicture.asset('assets/images/product/ic_close.svg')),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            },
+            child: Container(
+                margin: EdgeInsets.only(right: 16),
+                child: SvgPicture.asset('assets/images/product/ic_close.svg')),
+          ),
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
@@ -88,6 +109,14 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                           children: [
                             Expanded(
                               child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            OrderListScreen()),
+                                  );
+                                },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 14),
                                   margin: EdgeInsets.only(right: 4),
@@ -108,6 +137,11 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                             ),
                             Expanded(
                               child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 14),
                                   margin: EdgeInsets.only(left: 4),
@@ -293,26 +327,86 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(child: Text('받는사람')),
                             Expanded(
+                                flex: 6,
+                                child: Text(
+                                  '받는사람',
+                                  style: TextStyle(
+                                      fontSize:
+                                          Responsive.getFont(context, 14)),
+                                )),
+                            Expanded(
+                              flex: 4,
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Text('김이름'),
-                                  Text('01012345678'),
+                                  Text(
+                                    '${widget.savedRecipientName}',
+                                    style: TextStyle(
+                                        fontSize:
+                                            Responsive.getFont(context, 14),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Container(
+                                      margin: EdgeInsets.only(left: 4),
+                                      child: Text(
+                                        '${widget.savedRecipientPhone}',
+                                        style: TextStyle(
+                                          fontSize:
+                                              Responsive.getFont(context, 14),
+                                        ),
+                                      )),
                                 ],
                               ),
                             ),
                           ],
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(vertical: 15),
-                          child: _buildPaymentCompleteRow(
-                              '주소', 'productPrice', context),
+                          margin: EdgeInsets.only(top: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                  flex: 5,
+                                  child: Text(
+                                    '배송지 주소',
+                                    style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 14),
+                                    ),
+                                  )),
+                              Expanded(
+                                flex: 5,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      '${widget.savedAddressRoad}',
+                                      style: TextStyle(
+                                        fontSize:
+                                            Responsive.getFont(context, 14),
+                                      ),
+                                    ),
+                                    Text(
+                                      '${widget.savedAddressDetail}',
+                                      style: TextStyle(
+                                        fontSize:
+                                            Responsive.getFont(context, 14),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        Container(
+                        // 예시에서 productPrice를 배송메모로 가정하겠습니다.
+                        if (widget.savedMemo != null && widget.savedMemo!.isNotEmpty)
+                          Container(
                             padding: EdgeInsets.only(top: 15),
                             child: _buildPaymentCompleteRow(
-                                '배송메모', 'productPrice', context)),
+                                '배송메모', '${widget.savedMemo}', context),
+                          ),
                       ],
                     ),
                   ),
