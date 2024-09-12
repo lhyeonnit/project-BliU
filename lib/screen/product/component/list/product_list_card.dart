@@ -1,3 +1,4 @@
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import '../../product_detail_screen.dart';
 
@@ -18,7 +19,7 @@ class _ProductListCardState extends State<ProductListCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductDetailScreen(ptIdx: 3,), // TODO 실제 ProductDetailScreen 클래스를 사용해야 합니다.
+            builder: (context) => ProductDetailScreen(ptIdx: 4,), // TODO 실제 ProductDetailScreen 클래스를 사용해야 합니다.
           ),
         );
       },
@@ -59,32 +60,35 @@ class _ProductListCardState extends State<ProductListCard> {
                 ),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     '꿈꾸는데이지',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    style: TextStyle(
+                      fontSize: Responsive.getFont(context, 12),
+                      color: Colors.grey
+                    ),
                   ),
-                  SizedBox(height: 4), // 텍스트와 텍스트 사이에 간격 추가
+                  const SizedBox(height: 4), // 텍스트와 텍스트 사이에 간격 추가
                   Text(
                     '꿈꾸는 데이지 안나 토션 레이스 베스트',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: Responsive.getFont(context, 14),
                       fontWeight: FontWeight.bold,
                     ),
                     maxLines: 1, // 한 줄만 표시
                     overflow: TextOverflow.ellipsis, // 길면 생략부호 처리
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
                       Text(
                         '15%',
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: Responsive.getFont(context, 14),
                           color: Colors.red,
                         ),
                       ),
@@ -92,14 +96,14 @@ class _ProductListCardState extends State<ProductListCard> {
                       Text(
                         '32,800원',
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: Responsive.getFont(context, 14),
                           fontWeight: FontWeight.bold,
                         ),
                         maxLines: 1, // 한 줄만 표시
                       ),
                     ],
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
                       Icon(
@@ -107,25 +111,28 @@ class _ProductListCardState extends State<ProductListCard> {
                         size: 14,
                         color: Colors.grey,
                       ),
-                      SizedBox(width: 4),
+                      const SizedBox(width: 4),
                       Text(
                         '13,000',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
                         ),
                         maxLines: 1, // 한 줄만 표시
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Icon(
                         Icons.people,
                         size: 14,
                         color: Colors.grey,
                       ),
-                      SizedBox(width: 4),
+                      const SizedBox(width: 4),
                       Text(
                         '49',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 12),
+                          color: Colors.grey
+                        ),
                         maxLines: 1, // 한 줄만 표시
                       ),
                     ],

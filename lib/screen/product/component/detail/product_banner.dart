@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ProductBanner extends StatefulWidget {
-  const ProductBanner({super.key});
+  final List<String> imgArr;
+  const ProductBanner({super.key, required this.imgArr});
 
   @override
   _ProductBannerState createState() => _ProductBannerState();
@@ -10,14 +11,7 @@ class ProductBanner extends StatefulWidget {
 class _ProductBannerState extends State<ProductBanner> {
   PageController? _pageController;
   int _currentPage = 0;
-  final List<String> _images = [
-    'assets/images/home/exhi.png',
-    'assets/images/home/exhi.png',
-    'assets/images/home/exhi.png',
-    'assets/images/home/exhi.png',
-    'assets/images/home/exhi.png',
-    // 이미지 경로를 여기에 추가합니다.
-  ];
+  late List<String> _imgArr = [];
 
   @override
   void initState() {
@@ -33,6 +27,8 @@ class _ProductBannerState extends State<ProductBanner> {
 
   @override
   Widget build(BuildContext context) {
+    _imgArr = widget.imgArr;
+
     double screenWidth = MediaQuery.of(context).size.width;
 
     return SizedBox(
@@ -42,7 +38,7 @@ class _ProductBannerState extends State<ProductBanner> {
         children: [
           PageView.builder(
             controller: _pageController,
-            itemCount: _images.length,
+            itemCount: _imgArr.length,
             onPageChanged: (int page) {
               setState(() {
                 _currentPage = page;
@@ -50,8 +46,8 @@ class _ProductBannerState extends State<ProductBanner> {
             },
             itemBuilder: (context, index) {
               return ClipRRect(
-                child: Image.asset(
-                  _images[index],
+                child: Image.network(
+                  _imgArr[index],
                   fit: BoxFit.cover, // 이미지가 컨테이너를 꽉 채우도록 설정
                   width: double.infinity,
                   height: double.infinity,
@@ -69,7 +65,7 @@ class _ProductBannerState extends State<ProductBanner> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                '${_currentPage + 1}/${_images.length}',
+                '${_currentPage + 1}/${_imgArr.length}',
                 style: const TextStyle(color: Colors.white),
               ),
             ),

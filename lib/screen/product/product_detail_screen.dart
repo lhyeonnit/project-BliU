@@ -47,7 +47,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         if (model != null) {
           if (model.productDetailResponseDto?.result != true) {
             Future.delayed(Duration.zero, () {
-              Utils.getInstance().showSnackBar(context, model?.productDetailResponseDto?.message ?? "");
+              Utils.getInstance().showSnackBar(context, model.productDetailResponseDto?.message ?? "");
             });
             Navigator.pop(context);
             return const Scaffold();
@@ -58,6 +58,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         final sameList = model?.productDetailResponseDto?.sameList ?? [];
         final product = model?.productDetailResponseDto?.product;
         final info = model?.productDetailResponseDto?.info;
+        final reviewInfo = model?.reviewInfoResponseDTO?.reviewInfo;
+
+        print("product?.imgArr ${product?.imgArr?.length}");
 
         return Scaffold(
           backgroundColor: Colors.white,
@@ -126,7 +129,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       SliverToBoxAdapter(
                         child: Column(
                           children: [
-                            ProductBanner(),
+                            ProductBanner(imgArr: product?.imgArr ?? [],),
                             ProductInfoTitle(storeData: store, productData: product,),
                           ],
                         ),
@@ -138,8 +141,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       TabBar(
                         labelColor: Colors.black,
                         tabs: [
-                          Tab(text: '상세정보'),
-                          Tab(text: '리뷰(10)'),
+                          const Tab(text: '상세정보'),
+                          Tab(text: '리뷰(${reviewInfo?.reviewCount ?? 0})'),
                         ],
                       ),
                       Expanded(
@@ -149,15 +152,15 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             SingleChildScrollView(
                               child: Column(
                                 children: [
-                                  ProductInfoContent(),
-                                  ProductAi(),
+                                  ProductInfoContent(content: product?.ptContent ?? "",),
+                                  ProductAi(productList: sameList,),
                                   ProductInfoBeforeOrder(infoData: info,),
-                                  ProductInquiry(),
+                                  ProductInquiry(),// TODO 상품 문의
                                 ],
                               ),
                             ),
                             // 두 번째 탭: 리뷰만 표시
-                            ProductReview(),
+                            ProductReview(),// TODO 리뷰수
                           ],
                         ),
                       ),
@@ -235,6 +238,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   void _afterBuild(BuildContext context) {
     _getDetail();
+    _getReviewList();
   }
 
   void _getDetail() async {
@@ -247,5 +251,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     };
     
     ref.read(productDetailModelProvider.notifier).getDetail(requestData);
+  }
+
+  void _getReviewList() {
+
   }
 }
