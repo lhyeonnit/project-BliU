@@ -1,3 +1,4 @@
+import 'package:BliU/screen/mypage/component/top/component/my_review_detail.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +8,32 @@ class MyReviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, String>> orderData = [
+      {
+        "name": "[꼬마별빛] [균일특가+무배] 꼬마별빛 에스더버니 12종 10,900원 균일가 상하",
+        "store": "우아동금손",
+        "size": "베이지 / 110",
+        "image": "assets/images/home/exhi.png"
+      },
+      {
+        "name": "[꼬마별빛] [균일특가+무배] 꼬마별빛 에스더버니 12종 10,900원 균일가 상하",
+        "store": "우아동금손",
+        "size": "베이지 / 110",
+        "image": "assets/images/home/exhi.png"
+      },
+      {
+        "name": "[꼬마별빛] [균일특가+무배] 꼬마별빛 에스더버니 12종 10,900원 균일가 상하",
+        "store": "우아동금손",
+        "size": "베이지 / 110",
+        "image": "assets/images/home/exhi.png"
+      },
+      {
+        "name": "[꼬마별빛] [균일특가+무배] 꼬마별빛 에스더버니 12종 10,900원 균일가 상하",
+        "store": "우아동금손",
+        "size": "베이지 / 110",
+        "image": "assets/images/home/exhi.png"
+      },
+    ];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -55,7 +82,83 @@ class MyReviewScreen extends StatelessWidget {
               style: TextStyle(fontSize: Responsive.getFont(context, 14)),
             ),
           ),
-          Divider(height: 1,color: Color(0xFFEEEEEE),),
+          Container(
+            margin: EdgeInsets.only(bottom: 10),
+            child: Divider(
+              height: 1,
+              color: Color(0xFFEEEEEE),
+            ),
+          ),
+          ListView.builder(
+            itemCount: orderData.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              final order = orderData[index]; // 각 아이템 접근
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MyReviewDetail(),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 상품 이미지
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6.0),
+                          child: Image.asset(
+                            order['image']!,
+                            width: 90,
+                            height: 90,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      // 상품 정보 텍스트
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              order['store']!,
+                              style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 12),
+                                  color: Color(0xFF7B7B7B)),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 4),
+                              child: Text(
+                                order['name']!,
+                                style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 14),
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
+                            ),
+                            Text(
+                              order['size']!,
+                              style: TextStyle(
+                                fontSize: Responsive.getFont(context, 13),
+                                color: Color(0xFF7B7B7B),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
