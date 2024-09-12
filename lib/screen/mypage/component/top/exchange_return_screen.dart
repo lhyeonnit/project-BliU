@@ -128,7 +128,7 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
                   width: double.infinity,
                   height: Responsive.getHeight(context, 48),
                   margin:
-                      EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                      EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.all(
