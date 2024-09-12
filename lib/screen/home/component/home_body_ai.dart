@@ -38,10 +38,11 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
+                      // TODO 이동 수정
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProductDetailScreen(),
+                          builder: (context) => const ProductDetailScreen(ptIdx: 3),
                         ),
                       );
                     },

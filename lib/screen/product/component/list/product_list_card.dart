@@ -18,7 +18,7 @@ class _ProductListCardState extends State<ProductListCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const ProductDetailScreen(), // 실제 ProductDetailScreen 클래스를 사용해야 합니다.
+            builder: (context) => ProductDetailScreen(ptIdx: 3,), // TODO 실제 ProductDetailScreen 클래스를 사용해야 합니다.
           ),
         );
       },

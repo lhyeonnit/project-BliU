@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Utils {
@@ -28,5 +29,10 @@ class Utils {
         duration: const Duration(seconds: 3),
       ),
     );
+  }
+
+  String priceString(int price) {
+    var formatter = NumberFormat('###,###,###,###');
+    return formatter.format(price);
   }
 }
