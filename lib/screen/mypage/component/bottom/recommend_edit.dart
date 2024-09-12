@@ -47,7 +47,6 @@ class _RecommendEditState extends State<RecommendEdit> {
       selectedGender = gender;
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +80,7 @@ class _RecommendEditState extends State<RecommendEdit> {
             controller: _scrollController,
             children: [
               Container(
-                margin: EdgeInsets.only(top: 40, bottom: 50),
+                margin: EdgeInsets.only(top: 40, bottom: 80),
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,8 +110,165 @@ class _RecommendEditState extends State<RecommendEdit> {
                     ),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '자녀의 성별',
+                            style: TextStyle(
+                                fontSize: Responsive.getFont(context, 15),
+                                fontWeight: FontWeight.w600),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    margin: EdgeInsets.only(right: 5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(6)),
+                                      border:
+                                          Border.all(color: Color(0xFFDDDDDD)),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: 70,
+                                          width: 70,
+                                          margin: EdgeInsets.only(bottom: 8),
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(40),
+                                            color: Color(0xFFF5F9F9),
+                                          ),
+                                          child: Image.asset(
+                                              'assets/images/gender_select_boy.png'),
+                                        ),
+                                        Text(
+                                          'Boy',
+                                          style: TextStyle(
+                                              fontSize: Responsive.getFont(
+                                                  context, 14)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    margin: EdgeInsets.only(left: 5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(6)),
+                                      border:
+                                          Border.all(color: Color(0xFFDDDDDD)),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: 70,
+                                          width: 70,
+                                          margin: EdgeInsets.only(bottom: 8),
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(40),
+                                            color: Color(0xFFF5F9F9),
+                                          ),
+                                          child: Image.asset(
+                                              'assets/images/gender_select_girl.png'),
+                                        ),
+                                        Text(
+                                          'Girl',
+                                          style: TextStyle(
+                                              fontSize: Responsive.getFont(
+                                                  context, 14)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Container(),
+                    Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(bottom: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '선호 스타일',
+                                  style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 15),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Text(
+                                  '* 다중선택가능',
+                                  style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 13),
+                                      color: Color(0xFFFF6192)),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Wrap(
+                            spacing: 4.0,
+                            runSpacing: 10.0,
+                            children: favoriteStyles.map((style) {
+                              // 선택 여부 확인
+                              bool isSelected = selectedStyles.contains(style);
+
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (isSelected) {
+                                      selectedStyles.remove(style);
+                                    } else {
+                                      selectedStyles.add(style);
+                                    }
+                                  });
+                                },
+                                child: Chip(
+                                  label: Text(
+                                    style,
+                                    style: TextStyle(
+                                      color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                  shape: StadiumBorder(
+                                    side: BorderSide(
+                                      color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                    ),
+                                  ),
+                                  backgroundColor: Colors.white,
+                                ),
+                              );
+                            }).toList(),
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -154,235 +310,6 @@ class _RecommendEditState extends State<RecommendEdit> {
           ),
         ],
       ),
-      // SingleChildScrollView(
-      //     child: Padding(
-      //       padding: const EdgeInsets.all(16.0),
-      //       child: Column(
-      //         crossAxisAlignment: CrossAxisAlignment.start,
-      //         children: [
-      //           // 출생년도 선택
-      //           Text(
-      //             '자녀의 출생년도',
-      //             style: TextStyle(
-      //               fontSize: Responsive.getFont(context, 16),
-      //               fontWeight: FontWeight.bold
-      //             ),
-      //           ),
-      //           const SizedBox(height: 8),
-      //           GestureDetector(
-      //             onTap: () {
-      //               _showDateBottomSheet(context); // 출생년도 선택 모달 표시
-      //             },
-      //             child: Container(
-      //               width: double.infinity,
-      //               padding: const EdgeInsets.symmetric(vertical: 20),
-      //               decoration: BoxDecoration(
-      //                 border: Border.all(color: Colors.grey),
-      //                 borderRadius: BorderRadius.circular(8),
-      //               ),
-      //               child: Column(
-      //                 children: [
-      //                   Text(
-      //                     '출생년도',
-      //                     style: TextStyle(
-      //                       fontSize: Responsive.getFont(context, 16),
-      //                       color: Colors.black
-      //                     ),
-      //                   ),
-      //                   const SizedBox(height: 8),
-      //                   Text(
-      //                     selectedDate,
-      //                     style: TextStyle(
-      //                       fontSize: Responsive.getFont(context, 14), color: Colors.pink
-      //                     ),
-      //                   ),
-      //                 ],
-      //               ),
-      //             ),
-      //           ),
-      //           const SizedBox(height: 16),
-      //           // 성별 선택
-      //           Text(
-      //             '자녀의 성별',
-      //             style: TextStyle(
-      //               fontSize: Responsive.getFont(context, 16),
-      //               fontWeight: FontWeight.bold
-      //             ),
-      //           ),
-      //           const SizedBox(height: 8),
-      //           Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //             children: [
-      //               Expanded(
-      //                 child: GestureDetector(
-      //                   onTap: () {
-      //                     _selectGender('Boy');
-      //                   },
-      //                   child: Container(
-      //                     padding: const EdgeInsets.all(8),
-      //                     margin: const EdgeInsets.symmetric(horizontal: 4.0),
-      //                     // 박스 사이에 약간의 여백을 추가
-      //                     decoration: BoxDecoration(
-      //                       border: Border.all(
-      //                         color: selectedGender == 'Boy'
-      //                             ? Colors.pink
-      //                             : Colors.grey,
-      //                         width: 2,
-      //                       ),
-      //                       borderRadius: BorderRadius.circular(10),
-      //                     ),
-      //                     child: Column(
-      //                       children: [
-      //                         CircleAvatar(
-      //                           backgroundImage: const AssetImage(
-      //                               'assets/images/gender_select_boy.png'),
-      //                           backgroundColor: Colors.white,
-      //                           radius: 40,
-      //                           foregroundColor: Colors.black,
-      //                           child: Opacity(
-      //                             opacity: selectedGender == 'Boy' ? 1.0 : 0.3,
-      //                             child: Image.asset(
-      //                               'assets/images/gender_select_boy.png',
-      //                               color: selectedGender == 'Boy'
-      //                                   ? null
-      //                                   : Colors.grey,
-      //                               colorBlendMode: selectedGender == 'Boy'
-      //                                   ? BlendMode.dst
-      //                                   : BlendMode.saturation,
-      //                             ),
-      //                           ),
-      //                         ),
-      //                         const SizedBox(height: 8),
-      //                         Text(
-      //                           'Boy',
-      //                           style: TextStyle(
-      //                             color: selectedGender == 'Boy'
-      //                                 ? Colors.pink
-      //                                 : Colors.black,
-      //                           ),
-      //                         ),
-      //                       ],
-      //                     ),
-      //                   ),
-      //                 ),
-      //               ),
-      //               Expanded(
-      //                 child: GestureDetector(
-      //                   onTap: () {
-      //                     _selectGender('Girl');
-      //                   },
-      //                   child: Container(
-      //                     padding: const EdgeInsets.all(8),
-      //                     margin: const EdgeInsets.symmetric(horizontal: 4.0),
-      //                     // 박스 사이에 약간의 여백을 추가
-      //                     decoration: BoxDecoration(
-      //                       border: Border.all(
-      //                         color: selectedGender == 'Girl'
-      //                             ? Colors.pink
-      //                             : Colors.grey,
-      //                         width: 2,
-      //                       ),
-      //                       borderRadius: BorderRadius.circular(10),
-      //                     ),
-      //                     child: Column(
-      //                       children: [
-      //                         CircleAvatar(
-      //                           backgroundImage: const AssetImage(
-      //                               'assets/images/gender_select_girl.png'),
-      //                           backgroundColor: Colors.white,
-      //                           radius: 40,
-      //                           child: Opacity(
-      //                             opacity: selectedGender == 'Girl' ? 1.0 : 0.3,
-      //                             child: Image.asset(
-      //                               'assets/images/gender_select_girl.png',
-      //                               color: selectedGender == 'Girl'
-      //                                   ? null
-      //                                   : Colors.grey,
-      //                               colorBlendMode: selectedGender == 'Girl'
-      //                                   ? BlendMode.dst
-      //                                   : BlendMode.saturation,
-      //                             ),
-      //                           ),
-      //                         ),
-      //                         const SizedBox(height: 8),
-      //                         Text(
-      //                           'Girl',
-      //                           style: TextStyle(
-      //                             color: selectedGender == 'Girl'
-      //                                 ? Colors.pink
-      //                                 : Colors.black,
-      //                           ),
-      //                         ),
-      //                       ],
-      //                     ),
-      //                   ),
-      //                 ),
-      //               ),
-      //             ],
-      //           ),
-      //
-      //           const SizedBox(height: 16),
-      //           Text(
-      //             '선호 스타일',
-      //             style: TextStyle(
-      //               fontSize: Responsive.getFont(context, 16),
-      //               fontWeight: FontWeight.bold
-      //             ),
-      //           ),
-      //           const SizedBox(height: 8),
-      //           Wrap(
-      //             spacing: 8.0,
-      //             runSpacing: 8.0,
-      //             children: favoriteStyles.map((style) {
-      //               bool isSelected = selectedStyles.contains(style);
-      //               return ChoiceChip(
-      //                 label: Text(style),
-      //                 labelStyle: TextStyle(
-      //                   color: isSelected ? Colors.pink : Colors.black,
-      //                   fontWeight:
-      //                   isSelected ? FontWeight.bold : FontWeight.normal,
-      //                 ),
-      //                 shape: StadiumBorder(
-      //                   side: BorderSide(
-      //                     color: isSelected ? Colors.pink : Colors.grey,
-      //                     width: 1,
-      //                   ),
-      //                 ),
-      //                 backgroundColor: Colors.white,
-      //                 selectedColor: Colors.white,
-      //                 selected: isSelected,
-      //                 avatar: null,
-      //                 onSelected: (selected) {
-      //                   setState(() {
-      //                     if (selected) {
-      //                       selectedStyles.add(style);
-      //                     } else {
-      //                       selectedStyles.remove(style);
-      //                     }
-      //                   });
-      //                 },
-      //               );
-      //             }).toList(),
-      //           ),
-      //           const SizedBox(height: 16),
-      //           ElevatedButton(
-      //             onPressed: () {
-      //               // 확인 버튼 동작
-      //               Navigator.push(
-      //                 context,
-      //                 MaterialPageRoute(builder: (context) => const MyScreen()),
-      //               );
-      //             },
-      //             style: ElevatedButton.styleFrom(
-      //               minimumSize: const Size(double.infinity, 48),
-      //               backgroundColor: Colors.grey, // 버튼 배경색
-      //             ),
-      //             child: const Text('확인'),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
     );
   }
 
@@ -475,13 +402,14 @@ class _RecommendEditState extends State<RecommendEdit> {
                           diameterRatio: 5.0,
                           itemExtent: 50,
                           selectionOverlay: Container(
-                            margin: EdgeInsets.only(left: 17,right: 15),
+                            margin: EdgeInsets.only(left: 17, right: 15),
                             decoration: BoxDecoration(
-                              border: Border.symmetric(horizontal: BorderSide(color: Color(0xFFDDDDDD))),
+                              border: Border.symmetric(
+                                  horizontal:
+                                      BorderSide(color: Color(0xFFDDDDDD))),
                             ),
                           ),
                           squeeze: 0.9,
-
                           scrollController: FixedExtentScrollController(
                               initialItem: selectedYear - 1900),
                           onSelectedItemChanged: (int index) {
@@ -496,8 +424,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                                 child: Text(
                                   '${1900 + index}년', // 년도로 표시
                                   style: TextStyle(
-                                      fontSize:
-                                      Responsive.getFont(context, 16),
+                                      fontSize: Responsive.getFont(context, 16),
                                       fontWeight: FontWeight.w600),
                                 ),
                               );
@@ -514,7 +441,9 @@ class _RecommendEditState extends State<RecommendEdit> {
                           selectionOverlay: Container(
                             margin: EdgeInsets.symmetric(horizontal: 15),
                             decoration: BoxDecoration(
-                              border: Border.symmetric(horizontal: BorderSide(color: Color(0xFFDDDDDD))),
+                              border: Border.symmetric(
+                                  horizontal:
+                                      BorderSide(color: Color(0xFFDDDDDD))),
                             ),
                           ),
                           diameterRatio: 5.0,
@@ -531,8 +460,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                               child: Text(
                                 '${index + 1}월', // 월로 표시
                                 style: TextStyle(
-                                    fontSize:
-                                    Responsive.getFont(context, 16),
+                                    fontSize: Responsive.getFont(context, 16),
                                     fontWeight: FontWeight.w600),
                               ),
                             );
@@ -544,14 +472,15 @@ class _RecommendEditState extends State<RecommendEdit> {
                           backgroundColor: Colors.white,
                           itemExtent: 50,
                           selectionOverlay: Container(
-                            margin: EdgeInsets.only(left: 15,right: 17),
+                            margin: EdgeInsets.only(left: 15, right: 17),
                             decoration: BoxDecoration(
-                              border: Border.symmetric(horizontal: BorderSide(color: Color(0xFFDDDDDD))),
+                              border: Border.symmetric(
+                                  horizontal:
+                                      BorderSide(color: Color(0xFFDDDDDD))),
                             ),
                           ),
                           diameterRatio: 5.0,
                           squeeze: 0.9,
-
                           scrollController: FixedExtentScrollController(
                               initialItem: selectedDay - 1),
                           onSelectedItemChanged: (int index) {
@@ -560,15 +489,13 @@ class _RecommendEditState extends State<RecommendEdit> {
                             });
                           },
                           children: List<Widget>.generate(31, (int index) {
-                            return
-                                Center(
-                                  child: Text(
-                                    '${index + 1}일', // 일로 표시
-                                    style: TextStyle(
-                                        fontSize:
-                                            Responsive.getFont(context, 16),
-                                        fontWeight: FontWeight.w600),
-                                  ),
+                            return Center(
+                              child: Text(
+                                '${index + 1}일', // 일로 표시
+                                style: TextStyle(
+                                    fontSize: Responsive.getFont(context, 16),
+                                    fontWeight: FontWeight.w600),
+                              ),
                             );
                           }),
                         ),
