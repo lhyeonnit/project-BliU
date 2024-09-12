@@ -155,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
-                          HomeBodyCategory(),
+                          const HomeBodyCategory(),
                           const HomeBodyAi(),
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 30.0),

@@ -1,17 +1,16 @@
-
+import 'package:BliU/data/category_data.dart';
+import 'package:BliU/screen/_component/cart_screen.dart';
+import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import '../_component/cart_screen.dart';
-import '../_component/search_screen.dart';
 import 'component/list/product_filter_bottom.dart';
 import 'component/list/product_list_card.dart';
 import 'component/list/product_category_bottom.dart';
 import 'component/list/product_sort_bottom.dart';
 
-
 class ProductListScreen extends StatefulWidget {
-  const ProductListScreen({super.key});
+  final CategoryData selectedCategory;
+  const ProductListScreen({super.key, required this.selectedCategory});
 
   @override
   _ProductListScreenState createState() => _ProductListScreenState();
@@ -42,7 +41,7 @@ List<FilterOption> styleOptions = [
 class _ProductListScreenState extends State<ProductListScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  String _selectedCategory = '아우터';
+  CategoryData? _selectedCategory;
   String sortOption = '최신순';
   String sortOptionSelected = '';
 
@@ -52,6 +51,7 @@ class _ProductListScreenState extends State<ProductListScreen>
   @override
   void initState() {
     super.initState();
+    _selectedCategory = widget.selectedCategory;
     _tabController = TabController(length: 5, vsync: this);
   }
 
@@ -113,7 +113,7 @@ class _ProductListScreenState extends State<ProductListScreen>
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                _selectedCategory,
+                _selectedCategory?.ctName ?? "",
                 style: const TextStyle(color: Colors.black),
               ),
               const Icon(Icons.expand_more, color: Colors.black),
@@ -164,92 +164,95 @@ class _ProductListScreenState extends State<ProductListScreen>
             ],
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(50.0), // TabBar 높이 조정
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.1), // 그림자 색상 조정
-                      spreadRadius: 1, // 그림자가 확산되는 반경
-                      blurRadius: 5, // 그림자 블러 처리
-                      offset: const Offset(0, 3), // 그림자가 생기는 위치
-                    ),
-                  ],
-                ),
-                child: Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: Colors.grey[300], // 구분선 색상 조정
-                ),
-              ),
-              TabBar(
-                controller: _tabController,
-                labelColor: Colors.black,
-                unselectedLabelColor: Colors.grey,
-                indicatorColor: Colors.black,
-                tabAlignment: TabAlignment.start,
-                tabs: const [
-                  Tab(text: '전체'),
-                  Tab(text: '자켓'),
-                  Tab(text: '가디건/베스트'),
-                  Tab(text: '코트'),
-                  Tab(text: '후드집업'),
-                ],
-              ),
-            ],
-          ),
-        ),
       ),
-      body: Column(children: [
-        // Filter buttons and product count
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: _openSortBottomSheet, // 정렬 옵션 선택 창 열기
-                child: Row(
+      body: Column(
+        children: [
+          // TODO 뷰 오류사항 확인필요
+          // SizedBox(
+          //   height: 50,
+          //   child: Column(
+          //     children: [
+          //       Container(
+          //         decoration: BoxDecoration(
+          //           boxShadow: [
+          //             BoxShadow(
+          //               color: Colors.grey.withOpacity(0.1), // 그림자 색상 조정
+          //               spreadRadius: 1, // 그림자가 확산되는 반경
+          //               blurRadius: 5, // 그림자 블러 처리
+          //               offset: const Offset(0, 3), // 그림자가 생기는 위치
+          //             ),
+          //           ],
+          //         ),
+          //         child: Divider(
+          //           height: 1,
+          //           thickness: 1,
+          //           color: Colors.grey[300], // 구분선 색상 조정
+          //         ),
+          //       ),
+          //       TabBar(
+          //         controller: _tabController,
+          //         labelColor: Colors.black,
+          //         unselectedLabelColor: Colors.grey,
+          //         indicatorColor: Colors.black,
+          //         tabAlignment: TabAlignment.start,
+          //         tabs: const [
+          //           Tab(text: '전체'),
+          //           Tab(text: '자켓'),
+          //           Tab(text: '가디건/베스트'),
+          //           Tab(text: '코트'),
+          //           Tab(text: '후드집업'),
+          //         ],
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // Filter buttons and product count
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: _openSortBottomSheet, // 정렬 옵션 선택 창 열기
+                  child: Row(
+                    children: [
+                      const Icon(Icons.swap_vert, size: 20),
+                      const SizedBox(width: 4),
+                      Text(
+                        sortOptionSelected.isNotEmpty
+                            ? sortOptionSelected
+                            : '최신순', // 선택된 정렬 옵션 표시
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
                   children: [
-                    const Icon(Icons.swap_vert, size: 20),
-                    const SizedBox(width: 4),
-                    Text(
-                      sortOptionSelected.isNotEmpty
-                          ? sortOptionSelected
-                          : '최신순', // 선택된 정렬 옵션 표시
-                      style: const TextStyle(fontSize: 16),
-                    ),
+                    _buildFilterButton(context, '연령'),
+                    const SizedBox(width: 8), // 간격 추가
+                    _buildFilterButton(context, '스타일'),
+                    const SizedBox(width: 8), // 간격 추가
+                    _buildFilterButton(context, '가격'),
                   ],
                 ),
-              ),
-              Row(
-                children: [
-                  _buildFilterButton(context, '연령'),
-                  const SizedBox(width: 8), // 간격 추가
-                  _buildFilterButton(context, '스타일'),
-                  const SizedBox(width: 8), // 간격 추가
-                  _buildFilterButton(context, '가격'),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              _buildProductGrid(10), // 전체 상품 수로 설정
-              _buildProductGrid(10), // 자켓 상품 수로 설정
-              _buildProductGrid(10), // 가디건/베스트 상품 수로 설정
-              _buildProductGrid(10), // 코트 상품 수로 설정
-              _buildProductGrid(10), // 후드집업 상품 수로 설정
-            ],
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _buildProductGrid(10), // 전체 상품 수로 설정
+                _buildProductGrid(10), // 자켓 상품 수로 설정
+                _buildProductGrid(10), // 가디건/베스트 상품 수로 설정
+                _buildProductGrid(10), // 코트 상품 수로 설정
+                _buildProductGrid(10), // 후드집업 상품 수로 설정
+              ],
+            ),
           ),
-        ),
-      ]),
+        ]
+      ),
     );
   }
 

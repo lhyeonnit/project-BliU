@@ -15,12 +15,19 @@ class CategoryData {
 
   // JSON to Object
   factory CategoryData.fromJson(Map<String, dynamic> json) {
+    List<CategoryData> list = [];
+    if (json['sub_list'] != null) {
+      list = List<CategoryData>.from((json['sub_list'])?.map((item) {
+        return CategoryData.fromJson(item as Map<String, dynamic>);
+      }).toList());
+    }
+
     return CategoryData(
       ctIdx: json['ct_idx'],
       cstIdx: json['cst_idx'],
       img: json['img'],
       ctName: json['ct_name'],
-      subList: (json['subList'] as List<CategoryData>)
+      subList: list
     );
   }
 

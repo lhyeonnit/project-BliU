@@ -1,7 +1,7 @@
+import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../product/product_detail_screen.dart';
 
 class HomeBodyAi extends StatefulWidget {
   const HomeBodyAi({super.key});
@@ -29,9 +29,10 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
             ),
           ),
           Container(
-              height: Responsive.getHeight(context, 277),
+              height: Responsive.getHeight(context, 300),
               margin: const EdgeInsets.symmetric(vertical: 20),
               child: ListView.builder(
+                shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemCount: isFavoriteList.length, // 리스트의 길이를 사용
                 itemBuilder: (context, index) {

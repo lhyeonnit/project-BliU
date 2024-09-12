@@ -1,7 +1,8 @@
+import 'package:BliU/data/category_data.dart';
 import 'package:flutter/material.dart';
 
 class ProductCategoryBottom extends StatelessWidget {
-  final Function(String) onCategorySelected;  // Callback to handle category selection
+  final Function(CategoryData) onCategorySelected;  // Callback to handle category selection
 
   const ProductCategoryBottom({
     super.key,
@@ -10,6 +11,7 @@ class ProductCategoryBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO 변경 필요
     return Container(
       padding: const EdgeInsets.all(16.0),
       height: 500,
@@ -19,35 +21,35 @@ class ProductCategoryBottom extends StatelessWidget {
           const Divider(),
           ListTile(
             title: const Text('아우터'),
-            onTap: () => onCategorySelected('아우터'),
+            //onTap: () => onCategorySelected('아우터'),
           ),
           ListTile(
             title: const Text('상의'),
-            onTap: () => onCategorySelected('상의'),
+            //onTap: () => onCategorySelected('상의'),
           ),
           ListTile(
             title: const Text('하의'),
-            onTap: () => onCategorySelected('하의'),
+            //onTap: () => onCategorySelected('하의'),
           ),
           ListTile(
             title: const Text('슈즈'),
-            onTap: () => onCategorySelected('슈즈'),
+            //onTap: () => onCategorySelected('슈즈'),
           ),
           ListTile(
             title: const Text('세트/한벌옷'),
-            onTap: () => onCategorySelected('세트/한벌옷'),
+            //onTap: () => onCategorySelected('세트/한벌옷'),
           ),
           ListTile(
             title: const Text('언더웨어/홈웨어'),
-            onTap: () => onCategorySelected('언더웨어/홈웨어'),
+            //onTap: () => onCategorySelected('언더웨어/홈웨어'),
           ),
           ListTile(
             title: const Text('액세사리'),
-            onTap: () => onCategorySelected('액세사리'),
+            //onTap: () => onCategorySelected('액세사리'),
           ),
           ListTile(
             title: const Text('베이비잡화'),
-            onTap: () => onCategorySelected('베이비잡화'),
+            //onTap: () => onCategorySelected('베이비잡화'),
           ),
         ],
       ),
