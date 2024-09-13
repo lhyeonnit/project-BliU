@@ -1,39 +1,19 @@
 import 'package:BliU/screen/mypage/component/top/component/my_review_detail.dart';
+import 'package:BliU/screen/mypage/component/top/review_write_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MyReviewScreen extends StatelessWidget {
-  const MyReviewScreen({super.key});
+  final Review? review;
 
+
+  const MyReviewScreen({
+    super.key,
+    this.review,
+  });
   @override
   Widget build(BuildContext context) {
-    List<Map<String, String>> orderData = [
-      {
-        "name": "[꼬마별빛] [균일특가+무배] 꼬마별빛 에스더버니 12종 10,900원 균일가 상하",
-        "store": "우아동금손",
-        "size": "베이지 / 110",
-        "image": "assets/images/home/exhi.png"
-      },
-      {
-        "name": "[꼬마별빛] [균일특가+무배] 꼬마별빛 에스더버니 12종 10,900원 균일가 상하",
-        "store": "우아동금손",
-        "size": "베이지 / 110",
-        "image": "assets/images/home/exhi.png"
-      },
-      {
-        "name": "[꼬마별빛] [균일특가+무배] 꼬마별빛 에스더버니 12종 10,900원 균일가 상하",
-        "store": "우아동금손",
-        "size": "베이지 / 110",
-        "image": "assets/images/home/exhi.png"
-      },
-      {
-        "name": "[꼬마별빛] [균일특가+무배] 꼬마별빛 에스더버니 12종 10,900원 균일가 상하",
-        "store": "우아동금손",
-        "size": "베이지 / 110",
-        "image": "assets/images/home/exhi.png"
-      },
-    ];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -89,75 +69,89 @@ class MyReviewScreen extends StatelessWidget {
               color: Color(0xFFEEEEEE),
             ),
           ),
-          ListView.builder(
-            itemCount: orderData.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              final order = orderData[index]; // 각 아이템 접근
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyReviewDetail(),
-                    ),
-                  );
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 상품 이미지
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6.0),
-                          child: Image.asset(
-                            order['image']!,
-                            width: 90,
-                            height: 90,
-                            fit: BoxFit.cover,
+          review != null
+              ? Expanded(
+            child: ListView.builder(
+              itemCount: 4, // 리뷰 개수에 맞춰 설정
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyReviewDetail(review: review!,),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 상품 이미지
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(6.0),
+                            child: Image.asset(
+                              review!.image,
+                              width: 90,
+                              height: 90,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      ),
-                      // 상품 정보 텍스트
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              order['store']!,
-                              style: TextStyle(
-                                  fontSize: Responsive.getFont(context, 12),
-                                  color: Color(0xFF7B7B7B)),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 4),
-                              child: Text(
-                                order['name']!,
+                        // 상품 정보 텍스트
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                review!.store,
                                 style: TextStyle(
-                                  fontSize: Responsive.getFont(context, 14),
+                                    fontSize: Responsive.getFont(context, 12),
+                                    color: Color(0xFF7B7B7B)),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 4),
+                                child: Text(
+                                  review!.name,
+                                  style: TextStyle(
+                                    fontSize: Responsive.getFont(context, 14),
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
                               ),
-                            ),
-                            Text(
-                              order['size']!,
-                              style: TextStyle(
-                                fontSize: Responsive.getFont(context, 13),
-                                color: Color(0xFF7B7B7B),
+                              Text(
+                                review!.size,
+                                style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 13),
+                                  color: Color(0xFF7B7B7B),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                );
+              },
+            ),
+          )
+              : Expanded(
+            child: Center(
+              child: Text(
+                "작성하신 리뷰가 없습니다.",
+                style: TextStyle(
+                  fontSize: Responsive.getFont(context, 16),
+                  color: Colors.grey,
                 ),
-              );
-            },
+              ),
+            ),
           ),
         ],
       ),
