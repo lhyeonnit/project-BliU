@@ -62,6 +62,7 @@ dependencies:
   tosspayments_widget_sdk_flutter: ^2.0.4
   flutter_daum_postcode: ^0.0.3
   focus_detector_v2: ^3.1.0+1
+  flutter_rating_bar: ^4.0.1
   intl: ^0.19.0
 
 
