@@ -65,7 +65,12 @@ class CategoryScreen extends ConsumerWidget {
                     return ListTile(
                       title: Text(categoryData.ctName ?? ""),
                       onTap: () {
-                        // 왼쪽 상위 카테고리 클릭 시 동작할 코드 (필요한 경우 추가)
+                        // TODO 왼쪽 상위 카테고리 클릭 시 동작할 코드
+
+
+
+
+
                       },
                     );
                   },
@@ -76,7 +81,6 @@ class CategoryScreen extends ConsumerWidget {
                 child: ListView(
                   children: categories.map((category) {
                     final subCategories = category.subList ?? [];
-                    print("test11 ===> ${subCategories.length}");
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

@@ -1,3 +1,5 @@
+import 'package:BliU/data/delivery_data.dart';
+
 class ProductData {
   final int? stIdx;
   final String? stName;
@@ -10,10 +12,13 @@ class ProductData {
   final int? ptLike;
   final int? ptReview;
   final int? ptReviewCount;
-  final String? likeChk;
+  String? likeChk;
   final String? sellStatus;
   final String? sellStatusTxt;
   final String? ptMainImg;
+  final DeliveryData? deliveryInfo;
+  final String? ptContent;
+  final List<String>? imgArr;
 
   ProductData({
     required this.stIdx,
@@ -31,10 +36,22 @@ class ProductData {
     required this.sellStatus,
     required this.sellStatusTxt,
     required this.ptMainImg,
+    required this.deliveryInfo,
+    required this.ptContent,
+    required this.imgArr,
   });
 
   // Factory method to create a ProductDTO from JSON
   factory ProductData.fromJson(Map<String, dynamic> json) {
+    DeliveryData? deliveryInfo;
+    if (json['delivery_info'] != null) {
+      deliveryInfo = DeliveryData.fromJson(json['delivery_info']);
+    }
+    List<String>? imgArr;
+    if (json['img_arr'] != null) {
+      imgArr = List<String>.from(json['img_arr']);
+    }
+
     return ProductData(
       stIdx: json['st_idx'],
       stName: json['st_name'],
@@ -51,6 +68,9 @@ class ProductData {
       sellStatus: json['sell_status'],
       sellStatusTxt: json['sell_status_txt'],
       ptMainImg: json['pt_main_img'],
+      deliveryInfo: deliveryInfo,
+      ptContent: json['pt_content'],
+      imgArr: imgArr,
     );
   }
 
@@ -72,6 +92,9 @@ class ProductData {
       'sell_status': sellStatus,
       'sell_status_txt': sellStatusTxt,
       'pt_main_img': ptMainImg,
+      'delivery_info': deliveryInfo,
+      'pt_content': ptContent,
+      'img_arr': imgArr,
     };
   }
 }

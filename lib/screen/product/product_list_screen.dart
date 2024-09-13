@@ -2,13 +2,14 @@ import 'package:BliU/data/category_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'component/list/product_filter_bottom.dart';
 import 'component/list/product_list_card.dart';
 import 'component/list/product_category_bottom.dart';
 import 'component/list/product_sort_bottom.dart';
 
-class ProductListScreen extends StatefulWidget {
+class ProductListScreen extends ConsumerStatefulWidget {
   final CategoryData selectedCategory;
   const ProductListScreen({super.key, required this.selectedCategory});
 
@@ -38,7 +39,10 @@ List<FilterOption> styleOptions = [
   FilterOption(label: '로맨틱'),
 ];
 
-class _ProductListScreenState extends State<ProductListScreen>
+// TODO 상위 카테고리일시 하위카테고리까지 리스트업
+// TODO 하위 카테고리일시 확인 필요
+
+class _ProductListScreenState extends ConsumerState<ProductListScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   CategoryData? _selectedCategory;
@@ -96,6 +100,8 @@ class _ProductListScreenState extends State<ProductListScreen>
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -243,11 +249,11 @@ class _ProductListScreenState extends State<ProductListScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                _buildProductGrid(10), // 전체 상품 수로 설정
-                _buildProductGrid(10), // 자켓 상품 수로 설정
-                _buildProductGrid(10), // 가디건/베스트 상품 수로 설정
-                _buildProductGrid(10), // 코트 상품 수로 설정
-                _buildProductGrid(10), // 후드집업 상품 수로 설정
+                _buildProductGrid(), // 전체 상품 수로 설정
+                _buildProductGrid(), // 자켓 상품 수로 설정
+                _buildProductGrid(), // 가디건/베스트 상품 수로 설정
+                _buildProductGrid(), // 코트 상품 수로 설정
+                _buildProductGrid(), // 후드집업 상품 수로 설정
               ],
             ),
           ),
@@ -321,8 +327,7 @@ class _ProductListScreenState extends State<ProductListScreen>
     );
   }
 
-
-  Widget _buildProductGrid(int productCount) {
+  Widget _buildProductGrid() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -330,7 +335,7 @@ class _ProductListScreenState extends State<ProductListScreen>
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           // Padding for consistency
           child: Text(
-            '상품 $productCount', // 상품 수 표시
+            '상품 10', // 상품 수 표시
             style: const TextStyle(fontSize: 14, color: Colors.black),
           ),
         ),
@@ -343,7 +348,7 @@ class _ProductListScreenState extends State<ProductListScreen>
               mainAxisSpacing: 8.0,
               childAspectRatio: 0.6, // 아이템의 가로세로 비율
             ),
-            itemCount: productCount, // 실제 상품 수로 변경
+            itemCount: 10, // 실제 상품 수로 변경
             itemBuilder: (context, index) {
               return const ProductListCard();
             },

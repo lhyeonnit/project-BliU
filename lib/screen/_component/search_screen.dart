@@ -354,6 +354,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
+
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -381,6 +382,39 @@ class _SearchScreenState extends State<SearchScreen> {
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600)),
+
+                ),
+                const SizedBox(height: 40.0),
+                Text(
+                  '이런 아이템은 어떠세요?',
+                  style: TextStyle(
+                      fontSize: Responsive.getFont(context, 18),
+                      fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: SizedBox(
+                    height: Responsive.getHeight(context, 253),
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 10, // 리스트의 길이를 사용
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            // TODO 이동 수정
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ProductDetailScreen(ptIdx: 3),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 160,
+                            padding: const EdgeInsets.only(right: 12),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+
                             ),
                             Text(
                               _popularSearches[index],

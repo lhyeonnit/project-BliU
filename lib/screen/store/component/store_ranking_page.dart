@@ -330,11 +330,12 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                         GestureDetector(
                           onTap: () {
                             // Navigate to store_detail page when item is tapped
+                            // TODO 이동 수정
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const ProductDetailScreen(),
+                                    const ProductDetailScreen(ptIdx: 3),
                               ),
                             );
                           },
