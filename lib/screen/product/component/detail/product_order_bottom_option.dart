@@ -1,3 +1,7 @@
+import 'package:BliU/screen/_component/cart_screen.dart';
+import 'package:BliU/screen/payment/payment_screen.dart';
+import 'package:BliU/screen/product/component/detail/product_bottom_option_addition.dart';
+import 'package:BliU/screen/product/component/detail/product_bottom_option_detail.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +47,10 @@ class ProductOrderBottomOptionContent extends StatefulWidget {
 }
 
 class _ProductOrderBottomOptionContentState extends State<ProductOrderBottomOptionContent> {
+  bool _isExpanded = false;
+
   final ScrollController _scrollController = ScrollController();
+  List<Map<String, String>> selectedOptions = [];
 
   // 상태 변수
   bool isColorSelected = false;
@@ -87,7 +94,29 @@ class _ProductOrderBottomOptionContentState extends State<ProductOrderBottomOpti
       additionalProductPrice = isOtherSelected ? 5000 : 0;
     });
   }
+  // 선택한 색상, 사이즈 값을 저장한 후 초기화
+  void saveSelection() {
+    if (selectedColor != null && selectedSize != null) {
+      setState(() {
+        selectedOptions.add({
+          'color': selectedColor!,
+          'size': selectedSize!,
+        });
 
+        // 선택한 값 리셋
+        selectedColor = null;
+        selectedSize = null;
+        isColorSelected = false;
+        isSizeSelected = false;
+      });
+    }
+  }
+  // 선택한 옵션 삭제 로직
+  void removeOption(int index) {
+    setState(() {
+      selectedOptions.removeAt(index);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -108,145 +137,81 @@ class _ProductOrderBottomOptionContentState extends State<ProductOrderBottomOpti
                 ),
               ),
               // 스크롤 가능한 영역 시작
-             SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 10, bottom: 16),
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Column(
-                            children: [
-                              // 색상 선택
-                              _buildExpansionTile(
-                                title: selectedColor != null ? '색상 / $selectedColor' : '색상',
-                                options: colors,
-                                onSelected: (color) {
-                                  setState(() {
-                                    selectedColor = color;
-                                  });
-                                },
-                                isEnabled: true, // 색상은 항상 활성화
-                              ),
-
-                              // 색상이 선택된 경우에만 사이즈 선택 가능
-                              if (selectedColor != null)
+             Container(
+               height: 378.5,
+               child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 10, bottom: 16),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Column(
+                              children: [
+                                // 색상 선택
                                 _buildExpansionTile(
-                                  title: selectedSize != null ? '사이즈 / $selectedSize' : '사이즈',
-                                  options: sizes,
-                                  onSelected: (size) {
+                                  title: selectedColor != null ? '$selectedColor' : '색상',
+                                  options: colors,
+                                  onSelected: (color) {
                                     setState(() {
-                                      selectedSize = size;
+                                      selectedColor = color;
+                                      saveSelection;
                                     });
                                   },
-                                  isEnabled: true, // 사이즈는 색상 선택 후 활성화
+                                  isEnabled: true, // 색상은 항상 활성화
                                 ),
 
-                              // 색상이 선택된 경우에만 추가상품 선택 가능
-                              if (selectedColor != null)
-                                _buildExpansionTile(
-                                  title: selectedOther != null ? '추가상품 / $selectedOther' : '추가상품',
-                                  options: others,
-                                  onSelected: (other) {
-                                    setState(() {
-                                      selectedOther = other;
-                                    });
-                                  },
-                                  isEnabled: true, // 추가상품은 색상 선택 후 활성화
-                                ),
-                              if (selectedColor != null && selectedSize != null)
-                                Container(
-                                  margin: EdgeInsets.only(bottom: 50),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.symmetric(vertical: 15),
-                                        padding: EdgeInsets.all(20),
-                                        decoration: BoxDecoration(
-                                          color: Color(0xFFF5F9F9),
-                                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.only(bottom: 12),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    '베이지/110',
-                                                    style: TextStyle(
-                                                      fontSize: Responsive.getFont(context, 14),
-                                                    ),
-                                                  ),
-                                                  GestureDetector(
-                                                    onTap: () {},
-                                                    child: SvgPicture.asset('assets/images/ic_del.svg'),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                // 색상이 선택된 경우에만 사이즈 선택 가능
+                                if (selectedColor != null)
+                                  _buildExpansionTile(
+                                    title: selectedSize != null ? '$selectedSize' : '사이즈',
+                                    options: sizes,
+                                    onSelected: (size) {
+                                      setState(() {
+                                        selectedSize = size;
+                                        saveSelection;
+                                      });
+                                    },
+                                    isEnabled: true, // 사이즈는 색상 선택 후 활성화
+                                  ),
+
+                                // 색상이 선택된 경우에만 추가상품 선택 가능
+                                if (selectedColor != null)
+                                  _buildExpansionTile(
+                                    title: selectedOther != null ? '$selectedOther' : '추가상품',
+                                    options: others,
+                                    onSelected: (other) {
+                                      setState(() {
+                                        selectedOther = other;
+                                      });
+                                    },
+                                    isEnabled: true, // 추가상품은 색상 선택 후 활성화
+                                  ),
+                                if (selectedColor != null && selectedSize != null)
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 50),
+                                    child: Column(
+                                      children: [
+                                        ProductBottomOptionDetail(onRemove: () => removeOption),
+                                        if (selectedOther != null)
+                                          Container(
+                                            child: Column(
                                               children: [
-                                                Container(
-                                                  width: Responsive.getWidth(context, 96),
-                                                  padding: EdgeInsets.symmetric(
-                                                    vertical: 6,
-                                                    horizontal: 8,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius: BorderRadius.all(Radius.circular(22)),
-                                                    border: Border.all(color: Color(0xFFE3E3E3)),
-                                                  ),
-                                                  child: Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      GestureDetector(
-                                                        child: Icon(CupertinoIcons.minus, size: 20),
-                                                        onTap: () {},
-                                                      ),
-                                                      Container(
-                                                        margin: EdgeInsets.symmetric(horizontal: 5),
-                                                        child: Text(
-                                                          '1',
-                                                          style: TextStyle(
-                                                            fontSize: Responsive.getFont(context, 14),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: () {},
-                                                        child: Icon(Icons.add, size: 20),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Text(
-                                                  '9,900원',
-                                                  style: TextStyle(
-                                                    fontSize: Responsive.getFont(context, 14),
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
+                                                ProductBottomOptionAddition(),
                                               ],
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                      _buildPriceSummary(context),
-                                    ],
+                                          ),
+                                        _buildPriceSummary(context),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
+             ),
             ],
           ),
         if (selectedColor != null && selectedSize != null)
@@ -258,10 +223,8 @@ class _ProductOrderBottomOptionContentState extends State<ProductOrderBottomOpti
           ),
       ],
     );
-
   }
 
-  // 색상, 사이즈, 추가상품 옵션 박스
   Widget _buildExpansionTile({
     required String title,
     required List<String> options,
@@ -282,6 +245,12 @@ class _ProductOrderBottomOptionContentState extends State<ProductOrderBottomOpti
             title,
             style: TextStyle(fontSize: Responsive.getFont(context, 14)),
           ),
+          initiallyExpanded: _isExpanded,
+          onExpansionChanged: (expanded) {
+            setState(() {
+              _isExpanded = expanded;
+            });
+          },
           children: options.map((option) {
             return ListTile(
               title: Text(
@@ -290,8 +259,11 @@ class _ProductOrderBottomOptionContentState extends State<ProductOrderBottomOpti
               ),
               onTap: isEnabled
                   ? () {
-                      onSelected(option);
-                    }
+                onSelected(option);
+                setState(() {
+                  _isExpanded = false; // 선택하면 닫힘
+                });
+              }
                   : null,
             );
           }).toList(),
@@ -347,7 +319,14 @@ class _ProductOrderBottomOptionContentState extends State<ProductOrderBottomOpti
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CartScreen(),
+                  ),
+                );
+              },
               child: Container(
                 margin: const EdgeInsets.only(right: 4),
                 height: Responsive.getHeight(context, 48),
@@ -373,7 +352,14 @@ class _ProductOrderBottomOptionContentState extends State<ProductOrderBottomOpti
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => const PaymentScreen(cartDetails: cartDetails),
+                //   ),
+                // );
+              },
               child: Container(
                 margin: const EdgeInsets.only(left: 4),
                 height: Responsive.getHeight(context, 48),
