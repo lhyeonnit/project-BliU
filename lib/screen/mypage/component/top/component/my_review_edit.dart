@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:BliU/screen/mypage/component/top/review_write_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -20,7 +21,12 @@ class MyReviewEdit extends StatefulWidget {
 }
 
 class _MyReviewEditState extends State<MyReviewEdit> {
+  bool _isRTLMode = false;
+  bool _isVertical = false;
+
+  IconData? _selectedIcon;
   late TextEditingController _reviewController;
+  late double _rating;
   List<File> _selectedImages = [];
   final ImagePicker _picker = ImagePicker();
   final ScrollController _scrollController = ScrollController();
@@ -61,6 +67,7 @@ class _MyReviewEditState extends State<MyReviewEdit> {
         image: widget.review.image,
         reviewText: _reviewController.text,
         images: _currentImages + _selectedImages, // 기존 이미지와 새 이미지 결합
+        rating: _rating,
       );
 
       // pop을 통해 업데이트된 리뷰 데이터를 전달
@@ -127,38 +134,21 @@ class _MyReviewEditState extends State<MyReviewEdit> {
                                 fontSize: Responsive.getFont(context, 16),
                                 fontWeight: FontWeight.bold),
                           ),
-                          Container(
-                            width: 250,
-                            margin: EdgeInsets.symmetric(vertical: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/images/product/ic_rv_on.svg',
-                                  width: 50,
-                                  height: 50,
-                                ),
-                                SvgPicture.asset(
-                                  'assets/images/product/ic_rv_on.svg',
-                                  width: 50,
-                                  height: 50,
-                                ),
-                                SvgPicture.asset(
-                                  'assets/images/product/ic_rv_on.svg',
-                                  width: 50,
-                                  height: 50,
-                                ),
-                                SvgPicture.asset(
-                                  'assets/images/product/ic_rv_on.svg',
-                                  width: 50,
-                                  height: 50,
-                                ),
-                                SvgPicture.asset(
-                                  'assets/images/product/ic_rv_on.svg',
-                                  width: 50,
-                                  height: 50,
-                                ),
-                              ],
+                          Directionality(
+                            textDirection: _isRTLMode
+                                ? TextDirection.rtl
+                                : TextDirection.ltr,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Container(
+                                      width: 250,
+                                      margin: EdgeInsets.symmetric(vertical: 20),
+                                      child: _ratingBar(1)),
+                                ],
+                              ),
                             ),
                           ),
                           TextField(
@@ -316,6 +306,28 @@ class _MyReviewEditState extends State<MyReviewEdit> {
           ),
         ],
       ),
+    );
+  }
+  Widget _ratingBar(int mode) {
+    return RatingBar.builder(
+      glow: false,
+      initialRating: widget.review.rating,
+      minRating: 1,
+      direction: _isVertical ? Axis.vertical : Axis.horizontal,
+      allowHalfRating: true,
+      unratedColor: Color(0xFFEEEEEE),
+      itemCount: 5,
+      itemSize: 50.0,
+      itemBuilder: (context, _) => Icon(
+        _selectedIcon ?? Icons.star,
+        color: Color(0xFFFF6191),
+      ),
+      onRatingUpdate: (rating) {
+        setState(() {
+          _rating = rating;
+        });
+      },
+      updateOnDrag: true,
     );
   }
 }

@@ -46,6 +46,27 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
       });
     }
   }
+
+  Widget _ratingStars(double rating) {
+    int fullStars = rating.floor(); // 꽉 찬 별의 개수
+    bool hasHalfStar = (rating - fullStars) >= 0.5; // 반 개짜리 별이 있는지 확인
+    int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0); // 빈 별의 개수
+
+    return Row(
+      children: [
+        // 꽉 찬 별을 표시
+        for (int i = 0; i < fullStars; i++)
+          Icon(Icons.star, color: Color(0xFFFF6191), size: 16,),
+
+        if (hasHalfStar)
+          _buildHalfStar(rating),
+
+        // 빈 별을 표시
+        for (int i = 0; i < emptyStars; i++)
+          Icon(Icons.star, color: Color(0xFFEEEEEE), size: 16,),
+      ],
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,15 +188,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset('assets/images/product/ic_rv_on.svg'),
-                        SvgPicture.asset('assets/images/product/ic_rv_on.svg'),
-                        SvgPicture.asset('assets/images/product/ic_rv_on.svg'),
-                        SvgPicture.asset('assets/images/product/ic_rv_on.svg'),
-                        SvgPicture.asset('assets/images/product/ic_rv_off.svg'),
-                      ],
-                    ),
+                    child: _ratingStars(_currentReview.rating),
                   ),
                   Text(
                     _currentReview.reviewText,
@@ -210,3 +223,35 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
     );
   }
 }
+Widget _buildHalfStar(double rating) {
+  return Stack(
+    children: [
+      Icon(
+        Icons.star,
+        color: Color(0xFFEEEEEE), // 빈 별 색상
+        size: 16,
+      ),
+      ClipRect(
+        clipper: HalfClipper(),
+        child: Icon(
+          Icons.star,
+          color: Color(0xFFFF6191), // 채워진 별 색상
+          size: 16,
+        ),
+      ),
+    ],
+  );
+}
+
+class HalfClipper extends CustomClipper<Rect> {
+  @override
+  Rect getClip(Size size) {
+    return Rect.fromLTRB(0, 0, size.width / 2, size.height); // 별의 절반을 잘라냄
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Rect> oldClipper) {
+    return false;
+  }
+}
+
