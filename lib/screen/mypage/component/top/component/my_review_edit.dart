@@ -1,20 +1,18 @@
 import 'dart:io';
 
+import 'package:BliU/screen/mypage/component/top/review_write_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MyReviewEdit extends StatefulWidget {
-  // final int rating;
-  final String reviewText;
-  final List<String> images;
+  final Review review;
 
   const MyReviewEdit({
     super.key,
-    // required this.rating,
-    required this.reviewText,
-    required this.images,
+    required this.review,
+
   });
 
   @override
@@ -22,30 +20,27 @@ class MyReviewEdit extends StatefulWidget {
 }
 
 class _MyReviewEditState extends State<MyReviewEdit> {
+  late TextEditingController _reviewController;
   List<File> _selectedImages = [];
   final ImagePicker _picker = ImagePicker();
   final ScrollController _scrollController = ScrollController();
-  List<String> _currentImages = [];
+  List<File> _currentImages = [];
   Future<void> _pickImages() async {
-
     final List<XFile>? images = await _picker.pickMultiImage(
       maxWidth: 400,
       maxHeight: 400,
       imageQuality: 80,
     );
+
     if (images != null) {
       setState(() {
-        // 현재 선택된 이미지 개수에 따라 추가될 이미지를 제한
-        if (_selectedImages.length + images.length <= 4) {
-          _selectedImages
-              .addAll(images.map((image) => File(image.path)).toList());
+        // 현재 선택된 이미지와 새로 추가된 이미지의 개수를 합쳐 4개 이하로 제한
+        int totalImagesCount = _currentImages.length + _selectedImages.length;
+        if (totalImagesCount + images.length <= 4) {
+          _selectedImages.addAll(images.map((image) => File(image.path)).toList());
         } else {
-          // 남은 자리에만 이미지를 추가
-          int remainingSlots = 4 - _selectedImages.length;
-          _selectedImages.addAll(images
-              .take(remainingSlots)
-              .map((image) => File(image.path))
-              .toList());
+          int remainingSlots = 4 - totalImagesCount;
+          _selectedImages.addAll(images.take(remainingSlots).map((image) => File(image.path)).toList());
         }
       });
     }
@@ -53,7 +48,28 @@ class _MyReviewEditState extends State<MyReviewEdit> {
   @override
   void initState() {
     super.initState();
-    _currentImages = widget.images; // 기존 이미지를 추가
+    _currentImages = widget.review.images; // 기존 이미지를 추가
+    _reviewController = TextEditingController(text: widget.review.reviewText);
+  }
+  void _submitReview() {
+    if (_reviewController.text.length >= 10) {
+      // 리뷰 데이터 업데이트
+      Review updatedReview = Review(
+        store: widget.review.store,
+        name: widget.review.name,
+        size: widget.review.size,
+        image: widget.review.image,
+        reviewText: _reviewController.text,
+        images: _currentImages + _selectedImages, // 기존 이미지와 새 이미지 결합
+      );
+
+      // pop을 통해 업데이트된 리뷰 데이터를 전달
+      Navigator.pop(context, updatedReview);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('리뷰는 최소 10자 이상이어야 합니다.')),
+      );
+    }
   }
 
   @override
@@ -63,7 +79,7 @@ class _MyReviewEditState extends State<MyReviewEdit> {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        title: const Text('리뷰쓰기'),
+        title: const Text('리뷰수정'),
         titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
@@ -146,12 +162,13 @@ class _MyReviewEditState extends State<MyReviewEdit> {
                             ),
                           ),
                           TextField(
+                            controller: _reviewController,
                             style: TextStyle(fontSize: Responsive.getFont(context, 14)),
-                            maxLines: 9,
+                            maxLines: 10,
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                              hintText: widget.reviewText,
+                              hintText: '최소 10자 이상 입력해주세요. \n구매하신 상품에 대한 솔직한 리뷰를 남겨주세요. :)',
                               hintStyle: TextStyle(
                                   fontSize: Responsive.getFont(context, 14),
                                   color: Color(0xFF595959)),
@@ -175,7 +192,7 @@ class _MyReviewEditState extends State<MyReviewEdit> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('이미지', style: TextStyle(fontSize: Responsive.getFont(context, 13)),),
-                                Text('${_selectedImages.length}/4', style: TextStyle(fontSize: Responsive.getFont(context, 13), color: Color(0xFF7B7B7B)),),
+                                Text('${_selectedImages.length+_currentImages.length}/4', style: TextStyle(fontSize: Responsive.getFont(context, 13), color: Color(0xFF7B7B7B)),),
                               ],
                             ),
                           ),
@@ -210,26 +227,29 @@ class _MyReviewEditState extends State<MyReviewEdit> {
                                 child: ListView.builder(
                                   controller: _scrollController,
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: _selectedImages.length,
+                                  itemCount: _currentImages.length + _selectedImages.length,  // 기존 + 새 이미지 개수
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
+                                    // 기존 이미지와 새 이미지를 구분해서 보여줍니다.
+                                    File image;
+                                    if (index < _currentImages.length) {
+                                      image = _currentImages[index];  // 기존 이미지
+                                    } else {
+                                      image = _selectedImages[index - _currentImages.length];  // 새로 추가된 이미지
+                                    }
+
                                     return Container(
                                       margin: EdgeInsets.only(right: 10),
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(6),
-                                        ),
-                                        border: Border.all(
-                                          color: Color(0xFFE7EAEF),
-                                        ),
+                                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                                        border: Border.all(color: Color(0xFFE7EAEF)),
                                       ),
                                       child: Stack(
                                         children: [
                                           ClipRRect(
                                             borderRadius: BorderRadius.circular(6),
-                                            // 모서리를 둥글게 설정 (6)
                                             child: Image.file(
-                                              _selectedImages[index],
+                                              image,
                                               width: 100,
                                               height: 100,
                                               fit: BoxFit.cover,
@@ -241,11 +261,15 @@ class _MyReviewEditState extends State<MyReviewEdit> {
                                             child: GestureDetector(
                                               onTap: () {
                                                 setState(() {
-                                                  _selectedImages.removeAt(index);
+                                                  // 삭제 시, 기존 이미지와 새 이미지 리스트에서 각각 제거
+                                                  if (index < _currentImages.length) {
+                                                    _currentImages.removeAt(index);
+                                                  } else {
+                                                    _selectedImages.removeAt(index - _currentImages.length);
+                                                  }
                                                 });
                                               },
-                                              child: SvgPicture.asset(
-                                                  'assets/images/ic_del.svg'),
+                                              child: SvgPicture.asset('assets/images/ic_del.svg'),
                                             ),
                                           ),
                                         ],
@@ -277,7 +301,7 @@ class _MyReviewEditState extends State<MyReviewEdit> {
                 ),
               ),
               child: GestureDetector(
-                onTap: () {},
+                onTap: _submitReview,
                 child: Center(
                   child: Text(
                     '등록',

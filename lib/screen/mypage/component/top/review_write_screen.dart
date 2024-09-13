@@ -1,21 +1,46 @@
 import 'dart:io';
 
+import 'package:BliU/screen/mypage/component/top/my_review_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ReviewWriteScreen extends StatefulWidget {
-  const ReviewWriteScreen({super.key});
+  final List<Map<String, dynamic>> orders;
+
+
+  const ReviewWriteScreen({
+    super.key,
+    required this.orders,
+  });
 
   @override
   State<ReviewWriteScreen> createState() => _ReviewWriteScreenState();
+}
+class Review {
+  final String store;    // 스토어 이름
+  final String name;  // 상품 이름
+  final String size;
+  final String image;
+  final String reviewText;   // 리뷰 텍스트
+  final List<File> images;   // 이미지 파일 리스트
+
+  Review({
+    required this.store,
+    required this.name,
+    required this.size,
+    required this.image,
+    required this.reviewText,
+    required this.images,
+  });
 }
 
 class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
   List<File> _selectedImages = [];
   final ImagePicker _picker = ImagePicker();
   final ScrollController _scrollController = ScrollController();
+  String _reviewText = '';
 
   Future<void> _pickImages() async {
 
@@ -41,9 +66,42 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
       });
     }
   }
+  void _submitReview(int orderIndex) {
+    if (_reviewText.length >= 10) {
+      // orders에서 필요한 정보를 꺼내서 사용
+      Map<String, dynamic> selectedOrder = widget.orders[orderIndex];
+      String store = selectedOrder['items'][0]['store'] ?? "";
+      String name = selectedOrder['items'][0]['name'] ?? "";
+      String size = selectedOrder['items'][0]['size'] ?? "";
+      String image = selectedOrder['items'][0]['image'] ?? "";
+      Review review = Review(
+        store: store,
+        name: name,
+        size: size,
+        image: image,
+        reviewText: _reviewText,
+        images: _selectedImages,
+      );
+
+      // 리뷰 데이터를 전달하며 MyReviewScreen으로 이동
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MyReviewScreen(review: review,),
+        ),
+      );
+    } else {
+      // 리뷰가 너무 짧을 때 사용자에게 알림
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('리뷰는 최소 10자 이상이어야 합니다.')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -82,167 +140,172 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
       ),
       body: Stack(
         children: [
-          Column(
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16),
-                padding: EdgeInsets.only(top: 30),
-                child: Column(
-                  children: [
-                    Text(
-                      '상품은 어떠셨나요?',
-                      style: TextStyle(
-                          fontSize: Responsive.getFont(context, 16),
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Container(
-                      width: 250,
-                      margin: EdgeInsets.symmetric(vertical: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SvgPicture.asset(
-                            'assets/images/product/ic_rv_on.svg',
-                            width: 50,
-                            height: 50,
-                          ),
-                          SvgPicture.asset(
-                            'assets/images/product/ic_rv_on.svg',
-                            width: 50,
-                            height: 50,
-                          ),
-                          SvgPicture.asset(
-                            'assets/images/product/ic_rv_on.svg',
-                            width: 50,
-                            height: 50,
-                          ),
-                          SvgPicture.asset(
-                            'assets/images/product/ic_rv_on.svg',
-                            width: 50,
-                            height: 50,
-                          ),
-                          SvgPicture.asset(
-                            'assets/images/product/ic_rv_on.svg',
-                            width: 50,
-                            height: 50,
-                          ),
-                        ],
+          ListView(
+            controller: _scrollController,
+            children: [Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.only(top: 30),
+                  child: Column(
+                    children: [
+                      Text(
+                        '상품은 어떠셨나요?',
+                        style: TextStyle(
+                            fontSize: Responsive.getFont(context, 16),
+                            fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    TextField(
-                      style: TextStyle(fontSize: Responsive.getFont(context, 14)),
-                      maxLines: 9,
-                      decoration: InputDecoration(
-                        contentPadding:
-                        EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                        hintText: '최소 10자 이상 입력해주세요. \n구매하신 상품에 대한 솔직한 리뷰를 남겨주세요. :)',
-                        hintStyle: TextStyle(
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Color(0xFF595959)),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                        });
-                      },
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 10, top: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('이미지', style: TextStyle(fontSize: Responsive.getFont(context, 13)),),
-                          Text('${_selectedImages.length}/4', style: TextStyle(fontSize: Responsive.getFont(context, 13), color: Color(0xFF7B7B7B)),),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 16),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: _pickImages,
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        margin: EdgeInsets.only(right: 10),
-                        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(6)),border: Border.all(color: Color(0xFFE7EAEF))),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      Container(
+                        width: 250,
+                        margin: EdgeInsets.symmetric(vertical: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SvgPicture.asset('assets/images/my/btn_add_img.svg'),
-                            Text('사진선택', style: TextStyle(color: Color(0xFF707070), fontSize: Responsive.getFont(context, 14)),)
+                            SvgPicture.asset(
+                              'assets/images/product/ic_rv_on.svg',
+                              width: 50,
+                              height: 50,
+                            ),
+                            SvgPicture.asset(
+                              'assets/images/product/ic_rv_on.svg',
+                              width: 50,
+                              height: 50,
+                            ),
+                            SvgPicture.asset(
+                              'assets/images/product/ic_rv_on.svg',
+                              width: 50,
+                              height: 50,
+                            ),
+                            SvgPicture.asset(
+                              'assets/images/product/ic_rv_on.svg',
+                              width: 50,
+                              height: 50,
+                            ),
+                            SvgPicture.asset(
+                              'assets/images/product/ic_rv_on.svg',
+                              width: 50,
+                              height: 50,
+                            ),
                           ],
                         ),
                       ),
-                    ),
-                    if (_selectedImages.isNotEmpty)
-                      Expanded(
+                      TextField(
+                        style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+                        maxLines: 9,
+                        decoration: InputDecoration(
+                          contentPadding:
+                          EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                          hintText: '최소 10자 이상 입력해주세요. \n구매하신 상품에 대한 솔직한 리뷰를 남겨주세요. :)',
+                          hintStyle: TextStyle(
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Color(0xFF595959)),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            _reviewText = value;
+                          });
+                        },
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10, top: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('이미지', style: TextStyle(fontSize: Responsive.getFont(context, 13)),),
+                            Text('${_selectedImages.length}/4', style: TextStyle(fontSize: Responsive.getFont(context, 13), color: Color(0xFF7B7B7B)),),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 16),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: _pickImages,
                         child: Container(
+                          width: 100,
                           height: 100,
-                          child: ListView.builder(
-                            controller: _scrollController,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: _selectedImages.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: EdgeInsets.only(right: 10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(6),
-                                  ),
-                                  border: Border.all(
-                                    color: Color(0xFFE7EAEF),
-                                  ),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(6),
-                                      // 모서리를 둥글게 설정 (6)
-                                      child: Image.file(
-                                        _selectedImages[index],
-                                        width: 100,
-                                        height: 100,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: 8,
-                                      right: 7,
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _selectedImages.removeAt(index);
-                                          });
-                                        },
-                                        child: SvgPicture.asset(
-                                            'assets/images/ic_del.svg'),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
+                          margin: EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(6)),border: Border.all(color: Color(0xFFE7EAEF))),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset('assets/images/my/btn_add_img.svg'),
+                              Text('사진선택', style: TextStyle(color: Color(0xFF707070), fontSize: Responsive.getFont(context, 14)),)
+                            ],
                           ),
                         ),
                       ),
-                  ],
+                      if (_selectedImages.isNotEmpty)
+                        Expanded(
+                          child: Container(
+                            height: 100,
+                            child: ListView.builder(
+                              controller: _scrollController,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _selectedImages.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: EdgeInsets.only(right: 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(6),
+                                    ),
+                                    border: Border.all(
+                                      color: Color(0xFFE7EAEF),
+                                    ),
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(6),
+                                        // 모서리를 둥글게 설정 (6)
+                                        child: Image.file(
+                                          _selectedImages[index],
+                                          width: 100,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 8,
+                                        right: 7,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedImages.removeAt(index);
+                                            });
+                                          },
+                                          child: SvgPicture.asset(
+                                              'assets/images/ic_del.svg'),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
+    ],
           ),
           Positioned(
             bottom: 0,
@@ -259,7 +322,7 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
                 ),
               ),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () => _submitReview(0),
                 child: Center(
                   child: Text(
                     '등록',

@@ -1,23 +1,30 @@
 import 'package:BliU/screen/mypage/component/top/component/my_review_edit.dart';
+import 'package:BliU/screen/mypage/component/top/review_write_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MyReviewDetail extends StatefulWidget {
-  const MyReviewDetail({super.key});
+  final Review review;
 
+  const MyReviewDetail({
+    super.key,
+    required this.review,
+
+  });
   @override
   _MyReviewDetailState createState() => _MyReviewDetailState();
 }
 
 class _MyReviewDetailState extends State<MyReviewDetail> {
+  late Review _currentReview;
   PageController? _pageController;
   int _currentPage = 0;
   final ScrollController _scrollController = ScrollController();
-  String reviewContent = '저희 아이를 위해 밀크마일 여름 티셔츠를 구매했는데 정말 만족스럽습니다! 옷감이 부드럽고 통기성이 좋아서 아이가 하루 종일 입고 다녀도 편안해해요. 디자인도 아주 귀엽고 색감이 예뻐서 어디에나 잘 어울립니다. 세탁 후에도 색이 바래지 않고, 형태도 그대로 유지되네요. 사이즈도 정확하게 맞아서 아이에게 딱 맞아요. \n\n가격 대비 품질이 매우 훌륭하고, 배송도 빠르게 이루어졌습니다. 특히 할인 쿠폰 덕분에 더 저렴하게 구매할 수 있어서 기분이 좋네요. 앞으로도 이 쇼핑몰에서 자주 구매할 것 같아요. 부모님들께 강력히 추천합니다!';
   @override
   void initState() {
     super.initState();
+    _currentReview = widget.review;
     _pageController = PageController();
   }
 
@@ -26,15 +33,19 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
     _pageController?.dispose();
     super.dispose();
   }
+  Future<void> _editReview() async {
+    final updatedReview = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyReviewEdit(review: _currentReview)),
+    );
 
-  final List<String> _images = [
-    'assets/images/home/exhi.png',
-    'assets/images/home/exhi.png',
-    'assets/images/home/exhi.png',
-    'assets/images/home/exhi.png',
-    // 이미지 경로를 여기에 추가합니다.
-  ];
-
+    if (updatedReview != null) {
+      // 수정된 리뷰를 반영
+      setState(() {
+        _currentReview = updatedReview;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,15 +96,15 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                   height: Responsive.getHeight(context, 412),
                   child: PageView.builder(
                     controller: _pageController,
-                    itemCount: _images.length,
+                    itemCount: _currentReview.images.length,
                     onPageChanged: (int page) {
                       setState(() {
                         _currentPage = page;
                       });
                     },
                     itemBuilder: (context, index) {
-                      return Image.asset(
-                        _images[index],
+                      return Image.file(
+                        _currentReview.images[index],
                         fit: BoxFit.cover,
                       );
                     },
@@ -119,7 +130,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                               color: Colors.white),
                         ),
                         Text(
-                          '/${_images.length}',
+                          '/${_currentReview.images.length}',
                           style: TextStyle(
                               fontSize: Responsive.getFont(context, 13),
                               color: Color(0x80FFFFFF)),
@@ -167,21 +178,11 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                     ),
                   ),
                   Text(
-                    reviewContent,
+                    _currentReview.reviewText,
                     style: TextStyle(fontSize: Responsive.getFont(context, 14)),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      // 신고 버튼 클릭시 동작
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyReviewEdit(
-                          // rating: 4, // 별점 (예시)
-                          reviewText: reviewContent, // 리뷰 내용
-                          images: _images, // 이미지 리스트
-                        ),),
-                      );
-                    },
+                    onTap:  _editReview,
                     child: Container(
                       margin: EdgeInsets.only(top: 30),
                       height: 48,
