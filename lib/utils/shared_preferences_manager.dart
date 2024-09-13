@@ -26,6 +26,13 @@ class SharedPreferencesManager {
     return myData;
   }
 
+  String? getMtId() {
+    // TODO 일단 고정
+    return "test1";
+    // final mtId = _prefs.getString('mt_id'); // 저장된 데이터 로드
+    // return mtId;
+  }
+
   String? getMtIdx() {
     // TODO 일단 고정
     return "2";

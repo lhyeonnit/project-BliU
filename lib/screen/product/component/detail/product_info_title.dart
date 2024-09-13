@@ -177,11 +177,10 @@ class ProductInfoTitle extends StatelessWidget {
                     const SizedBox(width: 35),
                     TextButton(
                       onPressed: () {
-                        // TODO 쿠폰 다운로드 관련
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const CouponReceiveScreen(),
+                            builder: (context) => CouponReceiveScreen(ptIdx: productData?.ptIdx,),
                           ),
                         );
                       },

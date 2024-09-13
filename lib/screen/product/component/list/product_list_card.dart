@@ -1,6 +1,6 @@
+import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
-import '../../product_detail_screen.dart';
 
 class ProductListCard extends StatefulWidget {
   const ProductListCard({super.key});

@@ -5,7 +5,7 @@ class ReviewInfoResponseDTO {
   final bool? result;
   final String? message;
   final ReviewInfoData? reviewInfo;
-  final List<ReviewData>? list;
+  List<ReviewData>? list;
 
   ReviewInfoResponseDTO({
     required this.result,

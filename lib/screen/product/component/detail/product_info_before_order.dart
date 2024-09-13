@@ -31,22 +31,14 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 padding: const EdgeInsets.all(16.0),
-                child: Padding(
+                child: Container(
+                  width: double.infinity,
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
                     infoData?.delivery ?? "",
                     style: const TextStyle(color: Colors.black54),
                   ),
                 ),
-                // child: const Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     _InfoRow(label: '택배사', value: 'CJ대한통운'),
-                //     _InfoRow(label: '배송비', value: '기본 배송비 0000원 / 50,000 이상 무료'),
-                //     _InfoRow(label: '추가 배송비', value: '도서산간 추가배송비 3000, 제주 추가배송비 3000'),
-                //     _InfoRow(label: '배송 기간', value: '평균 2-5일 이내 발송 (영업일 기준)'),
-                //   ],
-                // ),
               ),
             ),
           ],
@@ -64,6 +56,7 @@ class ProductInfoBeforeOrder extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Container(
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(8.0),

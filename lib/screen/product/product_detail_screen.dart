@@ -60,8 +60,6 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         final info = model?.productDetailResponseDto?.info;
         final reviewInfo = model?.reviewInfoResponseDTO?.reviewInfo;
 
-        print("product?.imgArr ${product?.imgArr?.length}");
-
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
@@ -155,12 +153,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                   ProductInfoContent(content: product?.ptContent ?? "",),
                                   ProductAi(productList: sameList,),
                                   ProductInfoBeforeOrder(infoData: info,),
-                                  ProductInquiry(),// TODO 상품 문의
+                                  ProductInquiry(ptIdx: ptIdx,),
                                 ],
                               ),
                             ),
                             // 두 번째 탭: 리뷰만 표시
-                            ProductReview(),// TODO 리뷰수
+                            ProductReview(ptIdx: ptIdx),// TODO 리뷰수
                           ],
                         ),
                       ),
@@ -177,7 +175,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     MoveTopButton(scrollController: _scrollController),
                     Container(
                       padding:
-                      EdgeInsets.only(top: 9, bottom: 8, left: 10, right: 10),
+                      const EdgeInsets.only(top: 9, bottom: 8, left: 10, right: 10),
                       color: Colors.white,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -186,11 +184,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             flex: 2,
                             child: GestureDetector(
                               child: Container(
-                                margin: EdgeInsets.only(right: 9),
+                                margin: const EdgeInsets.only(right: 9),
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(6)),
-                                    border: Border.all(color: Color(0xFFDDDDDD))),
+                                    const BorderRadius.all(Radius.circular(6)),
+                                    border: Border.all(color: const Color(0xFFDDDDDD))),
                                 child: SvgPicture.asset(
                                     'assets/images/product/like_lg_off.svg'),
                               ),
@@ -200,12 +198,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             flex: 8,
                             child: GestureDetector(
                               onTap: () {
-                                ProductOrderBottomOption.showBottomSheet(context);
+                                ProductOrderBottomOption.showBottomSheet(context);// TODO 구매처리
                               },
                               child: Container(
                                 width: double.infinity,
                                 height: Responsive.getHeight(context, 48),
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: Colors.black,
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(6),

@@ -1,5 +1,5 @@
 class ReviewInfoData {
-  final int? starAvg;
+  final double? starAvg;
   final int? reviewCount;
 
   ReviewInfoData({

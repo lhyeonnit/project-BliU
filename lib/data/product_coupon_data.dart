@@ -6,7 +6,7 @@ class ProductCouponData {
   final int? ctMinPrice;
   final int? ctMaxPrice;
   final String? ctDate;
-  final String? down;
+  String? down;
 
   ProductCouponData({
     required this.ctName,
