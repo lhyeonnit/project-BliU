@@ -84,7 +84,8 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   _filterSuggestions(String query) {
-    List<Map<String, String>> filteredSuggestions = _allSuggestions.where((item) {
+    List<Map<String, String>> filteredSuggestions =
+        _allSuggestions.where((item) {
       return item["name"]!.toLowerCase().contains(query.toLowerCase()) ||
           item["type"]!.toLowerCase().contains(query.toLowerCase());
     }).toList();
@@ -102,7 +103,8 @@ class _SearchScreenState extends State<SearchScreen> {
     query = query.toLowerCase();
 
     // 검색어와 일치하는 텍스트 부분을 강조
-    while ((indexOfHighlight = text.toLowerCase().indexOf(query, start)) != -1) {
+    while (
+        (indexOfHighlight = text.toLowerCase().indexOf(query, start)) != -1) {
       if (indexOfHighlight > start) {
         spans.add(TextSpan(
           text: text.substring(start, indexOfHighlight),
@@ -186,7 +188,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           controller: _searchController,
                           decoration: InputDecoration(
                             contentPadding:
-                            const EdgeInsets.only(left: 16, bottom: 8),
+                                const EdgeInsets.only(left: 16, bottom: 8),
                             labelStyle: TextStyle(
                               fontSize: Responsive.getFont(context, 14),
                             ),
@@ -197,18 +199,18 @@ class _SearchScreenState extends State<SearchScreen> {
                             border: InputBorder.none,
                             suffixIcon: _searchController.text.isNotEmpty
                                 ? GestureDetector(
-                              onTap: () {
-                                _searchController.clear();
-                                setState(() {});
-                              },
-                              child: SvgPicture.asset(
-                                'assets/images/ic_word_del.svg',
-                                fit: BoxFit.contain,
-                              ),
-                            )
+                                    onTap: () {
+                                      _searchController.clear();
+                                      setState(() {});
+                                    },
+                                    child: SvgPicture.asset(
+                                      'assets/images/ic_word_del.svg',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  )
                                 : null,
                             suffixIconConstraints:
-                            BoxConstraints.tight(const Size(24, 24)),
+                                BoxConstraints.tight(const Size(24, 24)),
                           ),
                           onChanged: (value) {
                             _filterSuggestions(value);
@@ -354,7 +356,6 @@ class _SearchScreenState extends State<SearchScreen> {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
-
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -382,39 +383,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600)),
-
-                ),
-                const SizedBox(height: 40.0),
-                Text(
-                  '이런 아이템은 어떠세요?',
-                  style: TextStyle(
-                      fontSize: Responsive.getFont(context, 18),
-                      fontWeight: FontWeight.bold),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  child: SizedBox(
-                    height: Responsive.getHeight(context, 253),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 10, // 리스트의 길이를 사용
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            // TODO 이동 수정
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ProductDetailScreen(ptIdx: 3),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: 160,
-                            padding: const EdgeInsets.only(right: 12),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-
                             ),
                             Text(
                               _popularSearches[index],
@@ -441,36 +409,36 @@ class _SearchScreenState extends State<SearchScreen> {
                 itemCount: _suggestions.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                      leading: Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(22)),
-                            border: Border.all(color: Color(0xFFDDDDDD)),
-                          ),
-                          child: ClipOval(
-                              child: Image.asset(
-                            _suggestions[index]["logo"]!,
-                            fit: BoxFit.cover,
-                          ))),
-                      title: Container(
+                    leading: Container(
                         margin: EdgeInsets.only(bottom: 10),
-                        child: _buildHighlightedText(
-                            _suggestions[index]["name"]!, _searchController.text),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          _searchController.text = _suggestions[index]["name"]!;
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const StoreDetailScreen(),
-                            ),
-                          );
-                        });
-                      },
-                    );
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(22)),
+                          border: Border.all(color: Color(0xFFDDDDDD)),
+                        ),
+                        child: ClipOval(
+                            child: Image.asset(
+                          _suggestions[index]["logo"]!,
+                          fit: BoxFit.cover,
+                        ))),
+                    title: Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: _buildHighlightedText(
+                          _suggestions[index]["name"]!, _searchController.text),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        _searchController.text = _suggestions[index]["name"]!;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const StoreDetailScreen(),
+                          ),
+                        );
+                      });
+                    },
+                  );
                 },
               ),
             ),

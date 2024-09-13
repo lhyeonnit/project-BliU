@@ -181,7 +181,7 @@ class _SearchHasResultState extends State<SearchHasResult> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProductDetailScreen(),
+                              builder: (context) => const ProductDetailScreen(ptIdx: 1,),
                             ),
                           );
                         },

@@ -38,7 +38,7 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                        const ProductDetailScreen(),
+                        const ProductDetailScreen(ptIdx: 1,),
                       ),
                     );
                   },
