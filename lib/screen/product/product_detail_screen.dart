@@ -198,7 +198,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             flex: 8,
                             child: GestureDetector(
                               onTap: () {
-                                ProductOrderBottomOption.showBottomSheet(context);// TODO 구매처리
+                                if (product != null) {
+                                  ProductOrderBottomOption.showBottomSheet(context, product);
+                                }
                               },
                               child: Container(
                                 width: double.infinity,

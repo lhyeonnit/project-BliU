@@ -3,6 +3,7 @@ import 'package:BliU/screen/product/component/detail/coupon_card.dart';
 import 'package:BliU/screen/product/viewmodel/coupon_receive_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,7 +23,9 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
   void initState() {
     super.initState();
     ptIdx = widget.ptIdx ?? 0;
-    _getList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
   }
 
   @override
@@ -76,20 +79,29 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
                       final model = ref.watch(couponReceiveModelProvider);
                       List<ProductCouponData> list = model?.productCouponResponseDTO?.list ?? [];
                       // TODO 전체다운 받아지는지 확인
-                      setState(() {
-                        //isAllDownload = true;
-                      });
-
+                      // setState(() {
+                      //   //isAllDownload = true;
+                      // });
 
                       return ListView.builder(
                         itemCount: list.length,
                         itemBuilder: (context, index) {
                           final productCouponData = list[index];
-                          return CouponCard(// TODO 해당뷰 확인 필요
-                            discount: productCouponData.couponDiscount ?? "0",
-                            title: productCouponData.ctName ?? "",
-                            expiryDate: productCouponData.ctDate ?? "",
-                            discountDetails: (productCouponData.ctMaxPrice ?? 0).toString(),
+
+                          final couponDiscount = productCouponData.couponDiscount ?? "0";
+                          final ctName = productCouponData.ctName ?? "";
+                          final ctDate = "${productCouponData.ctDate ?? ""}까지 사용가능";
+                          
+                          String detailMessage = "구매금액 ${Utils.getInstance().priceString(productCouponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
+                          if (productCouponData.ctMaxPrice != null) {
+                            detailMessage = "최대 ${Utils.getInstance().priceString(productCouponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
+                          }
+
+                          return CouponCard(
+                            discount: couponDiscount,
+                            title: ctName,
+                            expiryDate: ctDate,
+                            discountDetails: detailMessage,
                             isDownloaded: productCouponData.down == "Y" ? true : false,
                             // 상태 전달
                             onDownload: () {
@@ -143,6 +155,10 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
         ],
       ),
     );
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getList();
   }
 
   void _getList() async {

@@ -16,7 +16,7 @@ class ProductOptionResponseDTO {
     return ProductOptionResponseDTO(
       result: json['result'],
       message: json['data']['message'],
-      data: (json['data'] as ProductOptionData),
+      data: ProductOptionData.fromJson(json['data']),
     );
   }
 

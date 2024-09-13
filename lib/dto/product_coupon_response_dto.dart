@@ -15,11 +15,15 @@ class ProductCouponResponseDTO {
 
   // JSON to Object
   factory ProductCouponResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<ProductCouponData>.from((json['data']['list'])?.map((item) {
+      return ProductCouponData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return ProductCouponResponseDTO(
       result: json['result'],
       message: json['data']['message'],
       downAbleCount: json['downAbleCount'],
-      list: (json['data']['list'] as List<ProductCouponData>),
+      list: list,
     );
   }
 

@@ -11,7 +11,7 @@ class ProductOptionTypeData {
   factory ProductOptionTypeData.fromJson(Map<String, dynamic> json) {
     return ProductOptionTypeData(
       title: json['title'],
-      children: (json['children'] as List<String>),
+      children: List<String>.from(json['children']),
     );
   }
 
