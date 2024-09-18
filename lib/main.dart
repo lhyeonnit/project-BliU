@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:BliU/data/fcm_data.dart';
 import 'package:BliU/screen/common/on_boarding_screen.dart';
+import 'package:BliU/screen/join/join_add_info_screen.dart';
 import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/utils/navigation_service.dart';
 import 'package:BliU/utils/permission_manager.dart';
@@ -189,7 +190,7 @@ class MyApp extends StatelessWidget {
       ),
       navigatorKey: NavigationService.navigatorKey,
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(), // OnBoardingScreen을 초기 화면으로 설정
+      home: JoinAddInfoScreen(), // OnBoardingScreen을 초기 화면으로 설정
     );
   }
 }
