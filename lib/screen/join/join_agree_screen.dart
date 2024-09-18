@@ -1,4 +1,5 @@
 //회원가입 약관 동의
+import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -71,25 +72,60 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                         color: Color(0xFF7B7B7B)),
                   ),
                 ),
-                _buildAgreementOption(
-                  title: '서비스 약관 동의',
-                  value: _serviceAgreement,
-                  onChanged: (value) {
-                    setState(() {
-                      _serviceAgreement = value!;
-                      _checkAllAgreed();
-                    });
-                  },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildAgreementOption(
+                      title: '서비스 약관 동의',
+                      value: _serviceAgreement,
+                      onChanged: (value) {
+                        setState(() {
+                          _serviceAgreement = value!;
+                          _checkAllAgreed();
+                        });
+                      },
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const TermsDetail(type: 0),
+                          ),
+                        );
+                      },
+                      child: SvgPicture.asset('assets/images/ic_link.svg', color: Colors.black,),
+                    ),
+                  ],
                 ),
-                _buildAgreementOption(
-                  title: '개인정보 처리 방침',
-                  value: _privacyPolicy,
-                  onChanged: (value) {
-                    setState(() {
-                      _privacyPolicy = value!;
-                      _checkAllAgreed();
-                    });
-                  },
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 24),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildAgreementOption(
+                        title: '개인정보 처리 방침',
+                        value: _privacyPolicy,
+                        onChanged: (value) {
+                          setState(() {
+                            _privacyPolicy = value!;
+                            _checkAllAgreed();
+                          });
+                        },
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const TermsDetail(type: 1),
+                            ),
+                          );
+                        },
+                        child: SvgPicture.asset('assets/images/ic_link.svg', color: Colors.black,),
+                      ),
+                    ],
+                  ),
                 ),
                 _buildAgreementOption(
                   title: '만 14세 이상입니다.',
@@ -178,9 +214,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
     required bool value,
     required Function(bool?) onChanged,
   }) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 24),
-      child: Row(
+    return Row(
         children: [
           GestureDetector(
             onTap: () {
@@ -218,8 +252,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
             ),
           ),
         ],
-      ),
-    );
+      );
   }
 
   Widget _buildAllAgreement({
@@ -228,6 +261,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
     required Function(bool?) onChanged,
   }) {
     return Container(
+      margin: EdgeInsets.symmetric(vertical: 24),
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
