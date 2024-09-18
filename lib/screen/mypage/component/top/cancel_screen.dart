@@ -160,6 +160,8 @@ class _CancelScreenState extends State<CancelScreen> {
                             Padding(
                               padding: EdgeInsets.only(top: 10.0),
                               child: TextField(
+                                style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 14),),
                                 maxLines: 4,
                                 maxLength: 500,
                                 decoration: InputDecoration(

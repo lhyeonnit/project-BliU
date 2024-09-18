@@ -1,4 +1,5 @@
 //회원가입 약관 동의
+import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -38,6 +39,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
@@ -47,97 +49,162 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '회원가입 약관동의',
-              style: TextStyle(
-                fontSize: Responsive.getFont(context, 24),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 3),
-            const Text(
-              '회원가입을 위해 약관에 동의해 주세요!',
-              style: TextStyle(color: Colors.grey),
-            ),
-            const SizedBox(height: 10),
-            _buildAgreementOption(
-              title: '서비스 약관 동의',
-              value: _serviceAgreement,
-              onChanged: (value) {
-                setState(() {
-                  _serviceAgreement = value!;
-                  _checkAllAgreed();
-                });
-              },
-            ),
-            _buildAgreementOption(
-              title: '개인정보 처리 방침',
-              value: _privacyPolicy,
-              onChanged: (value) {
-                setState(() {
-                  _privacyPolicy = value!;
-                  _checkAllAgreed();
-                });
-              },
-            ),
-            _buildAgreementOption(
-              title: '만 14세 이상입니다.',
-              value: _ageConfirmation,
-              onChanged: (value) {
-                setState(() {
-                  _ageConfirmation = value!;
-                  _checkAllAgreed();
-                });
-              },
-            ),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                border: Border.all(color: Colors.grey),
-              ),
-              child: CheckboxListTile(
-                value: _allAgreed,
-                onChanged: _updateAllAgreed,
-                title: const Text('전체 동의합니다.'),
-                controlAffinity: ListTileControlAffinity.leading,
-                contentPadding: EdgeInsets.zero,
-                activeColor: Colors.pinkAccent,
-              ),
-            ),
-            const Spacer(),
-            Divider(thickness: 1.5, color: Colors.grey[300]),
-            SizedBox(
-              width: double.infinity, // 버튼을 화면의 너비만큼 길게 설정
-              child: ElevatedButton(
-                onPressed: _allAgreed
-                    ? () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const JoinFormScreen(),
+      body: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '회원가입 약관동의',
+                  style: TextStyle(
+                    fontSize: Responsive.getFont(context, 20),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 8, bottom: 30),
+                  child: Text(
+                    '회원가입을 위해 약관에 동의해 주세요!',
+                    style: TextStyle(
+                        fontSize: Responsive.getFont(context, 14),
+                        color: Color(0xFF7B7B7B)),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildAgreementOption(
+                      title: '서비스 약관 동의',
+                      value: _serviceAgreement,
+                      onChanged: (value) {
+                        setState(() {
+                          _serviceAgreement = value!;
+                          _checkAllAgreed();
+                        });
+                      },
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const TermsDetail(type: 0),
+                          ),
+                        );
+                      },
+                      child: SvgPicture.asset('assets/images/ic_link.svg', color: Colors.black,),
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 24),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildAgreementOption(
+                        title: '개인정보 처리 방침',
+                        value: _privacyPolicy,
+                        onChanged: (value) {
+                          setState(() {
+                            _privacyPolicy = value!;
+                            _checkAllAgreed();
+                          });
+                        },
                       ),
-                  );
-                }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _allAgreed ? Colors.black : Colors.grey[300],
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const TermsDetail(type: 1),
+                            ),
+                          );
+                        },
+                        child: SvgPicture.asset('assets/images/ic_link.svg', color: Colors.black,),
+                      ),
+                    ],
+                  ),
                 ),
-                child: const Text(
-                  '다음',
-                  style: TextStyle(color: Colors.white),
+                _buildAgreementOption(
+                  title: '만 14세 이상입니다.',
+                  value: _ageConfirmation,
+                  onChanged: (value) {
+                    setState(() {
+                      _ageConfirmation = value!;
+                      _checkAllAgreed();
+                    });
+                  },
                 ),
-              ),
+                _buildAllAgreement(
+                  title: '전체 동의합니다.',
+                  value: _allAgreed,
+                  onChanged: _updateAllAgreed,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Column(
+              children: [
+                Container(
+                  height: 1,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: Color(0x0D000000),
+                      ),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x0D000000),
+                        blurRadius: 6.0,
+                        spreadRadius: 1.0,
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: _allAgreed
+                      ? () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const JoinFormScreen(),
+                            ),
+                          );
+                        }
+                      : null,
+                  child: Container(
+                    width: double.infinity,
+                    height: Responsive.getHeight(context, 48),
+                    margin: EdgeInsets.only(
+                        right: 16.0, left: 16, top: 8, bottom: 9),
+                    decoration: BoxDecoration(
+                      color: _allAgreed ? Colors.black : Color(0xFFDDDDDD),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(6),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '다음',
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 14),
+                          color: _allAgreed ?  Colors.white : Color(0xFF7B7B7B),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -147,18 +214,98 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
     required bool value,
     required Function(bool?) onChanged,
   }) {
-    return Column(
-      children: [
-        CheckboxListTile(
-          value: value,
-          onChanged: onChanged,
-          title: Text(title),
-          controlAffinity: ListTileControlAffinity.leading,
-          contentPadding: EdgeInsets.zero,
-          activeColor: Colors.pinkAccent,
-          secondary: const Icon(Icons.arrow_forward_ios),
-        ),
-      ],
+    return Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                value = !value;
+                onChanged(value);
+              });
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 10),
+              padding: const EdgeInsets.all(6),
+              height: 22,
+              width: 22,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(6)),
+                border: Border.all(
+                  color:
+                      value ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                ),
+                color: value ? const Color(0xFFFF6191) : Colors.white,
+              ),
+              child: SvgPicture.asset(
+                'assets/images/check01_off.svg', // 체크박스 아이콘
+                color: value ? Colors.white : const Color(0xFFCCCCCC),
+                height: 10,
+                width: 10,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: Responsive.getFont(context, 14),
+            ),
+          ),
+        ],
+      );
+  }
+
+  Widget _buildAllAgreement({
+    required String title,
+    required bool value,
+    required Function(bool?) onChanged,
+  }) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 24),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: Color(0xFFDDDDDD)),
+      ),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                value = !value;
+                onChanged(value);
+              });
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 10),
+              padding: const EdgeInsets.all(6),
+              height: 22,
+              width: 22,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(6)),
+                border: Border.all(
+                  color:
+                      value ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                ),
+                color: value ? const Color(0xFFFF6191) : Colors.white,
+              ),
+              child: SvgPicture.asset(
+                'assets/images/check01_off.svg', // 체크박스 아이콘
+                color: value ? Colors.white : const Color(0xFFCCCCCC),
+                height: 10,
+                width: 10,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: Responsive.getFont(context, 16),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

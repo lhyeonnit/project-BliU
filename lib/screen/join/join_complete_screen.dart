@@ -15,60 +15,86 @@ class JoinCompleteScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-          leading: IconButton(
-            icon: SvgPicture.asset("assets/images/login/ic_back.svg"),
-            onPressed: () {
-              Navigator.pop(context); // 뒤로가기 동작
-            },
+        leading: IconButton(
+          icon: SvgPicture.asset("assets/images/login/ic_back.svg"),
+          onPressed: () {
+            Navigator.pop(context); // 뒤로가기 동작
+          },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // 중앙에 이미지 추가
-            const CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage('assets/images/join_complete_image.png'), // 이미지 경로 설정
-            ),
-            const SizedBox(height: 24.0),
-            Text(
-              '회원가입이 완료되었습니다.',
-              style: TextStyle(
-                fontSize: Responsive.getFont(context, 20),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8.0),
-            Text(
-              '블리유의 회원이 되신 걸 환영합니다!',
-              style: TextStyle(
-                fontSize: Responsive.getFont(context, 16),
-                color: Colors.grey,
-              ),
-            ),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // 로그인 화면으로 이동
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+      body: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            margin: EdgeInsets.only(top: 155),
+            child: Column(
+              children: [
+                // 중앙에 이미지 추가
+                 Container(
+                   width: 90,
+                   height: 90,
+                   decoration: BoxDecoration(
+                     color: Color(0xFFFFE4DF),
+                     shape: BoxShape.circle,
+                   ),
+                   child: ClipOval(
+                     clipBehavior: Clip.antiAlias,
+                    child: Image.asset(
+                        'assets/images/my/gender_select_boy.png', fit: BoxFit.cover,),
+                                   ),
+                 ),
+                Container(
+                  margin: EdgeInsets.only(top: 25, bottom: 10),
+                  child: Text(
+                    '회원가입이 완료되었습니다.',
+                    style: TextStyle(
+                      fontSize: Responsive.getFont(context, 18),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-                child: const Text(
-                  '로그인',
-                  style: TextStyle(color: Colors.white),
+                Text(
+                  '블리유의 회원이 되신 걸 환영합니다!',
+                  style: TextStyle(
+                    fontSize: Responsive.getFont(context, 14),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: () {
+                // 로그인 화면으로 이동
+                Navigator.pop(context);
+              },
+              child: Container(
+                width: double.infinity,
+                height: Responsive.getHeight(context, 48),
+                margin: EdgeInsets.only(
+                    right: 16.0, left: 16, top: 8, bottom: 9),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(6),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    '로그인',
+                    style: TextStyle(
+                      fontSize: Responsive.getFont(context, 14),
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
