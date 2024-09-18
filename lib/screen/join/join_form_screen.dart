@@ -183,7 +183,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                     _buildCheckField(
                         '비밀번호', _confirmPasswordController, '비밀번호 재입력',
                         obscureText: true),
-                    _buildTextField('이름', _nameController, '이름 입력'),
+                    _buildTextField('이름', _nameController, '이름 입력', keyboardType: TextInputType.name),
                     Row(
                       children: [
                         Expanded(

@@ -1,5 +1,7 @@
 //새 비밀번호 설정
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'login_screen.dart';
 
@@ -14,7 +16,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-  TextEditingController();
+      TextEditingController();
 
   bool _isPasswordValid = true;
   bool _isConfirmPasswordValid = true;
@@ -35,116 +37,190 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                '새 비밀번호 입력',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 3),
-              const Text(
-                '안전한 비밀번호는 8자 이상, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.',
-                style: TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(height: 16),
-              _buildPasswordField('새 비밀번호 *', _passwordController,
-                  '8~20자의 영문 대/소문자, 숫자, 특수문자로 입력'),
-              if (!_isPasswordValid)
-                const Padding(
-                  padding: EdgeInsets.only(top: 8.0),
-                  child: Text(
-                    '비밀번호를 입력해주세요.',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-              const SizedBox(height: 16),
-              _buildPasswordField('비밀번호 재입력 *',
-                  _confirmPasswordController, '비밀번호 재입력'),
-              if (!_isConfirmPasswordValid)
-                const Padding(
-                  padding: EdgeInsets.only(top: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '비밀번호를 다시 입력해주세요.',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      Text(
-                        '비밀번호가 일치하지 않습니다.',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ],
-                  ),
-                ),
-              const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    _validatePassword();
-                    if (_formKey.currentState!.validate() &&
-                        _isPasswordValid &&
-                        _isConfirmPasswordValid) {
-                      // 비밀번호 변경 로직 추가
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  ),
-                  child: const Text(
-                    '확인',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ],
-          ),
+        leading: IconButton(
+          icon: SvgPicture.asset("assets/images/login/ic_back.svg"),
+          onPressed: () {
+            Navigator.pop(context); // 뒤로가기 동작
+          },
         ),
+      ),
+      body: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 40, bottom: 80, right: 16, left: 16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '새 비밀번호 입력',
+                    style: TextStyle(
+                      fontSize: Responsive.getFont(context, 20),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 8, bottom: 10),
+                    child: Text(
+                      '안전한 비밀번호는 8자 이상, 영문 대소문자, 숫자, \n특수문자를 포함하여야 합니다.',
+                      style: TextStyle(
+                          fontSize: Responsive.getFont(context, 14),
+                          color: Color(0xFF7B7B7B)),
+                    ),
+                  ),
+                  _buildPasswordField('새 비밀번호', _passwordController,
+                      '8~20자의 영문 대/소문자, 숫자, 특수문자로 입력'),
+                  Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      '8~20자의 영문 대/소문자, 숫자, 특수문자를 사용하세요.',
+                      style: TextStyle(
+                          fontSize: Responsive.getFont(context, 12)),
+                    ),
+                  ),
+                  if (!_isPasswordValid)
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        '비밀번호를 입력해주세요.',
+                        style: TextStyle(
+                            color: Color(0xFFF23728),
+                            fontSize: Responsive.getFont(context, 12)),
+                      ),
+                    ),
+                  _buildPasswordField(
+                      '비밀번호 재입력', _confirmPasswordController, '비밀번호 재입력'),
+                  if (!_isConfirmPasswordValid)
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '비밀번호를 다시 입력해주세요.',
+                            style: TextStyle(
+                                color: Color(0xFFF23728),
+                                fontSize: Responsive.getFont(context, 12)),
+                          ),
+                          Text(
+                            '비밀번호가 일치하지 않습니다.',
+                            style: TextStyle(
+                                color: Color(0xFFF23728),
+                                fontSize: Responsive.getFont(context, 12)),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap:
+                  () {
+                _validatePassword();
+                if (_formKey.currentState!.validate() &&
+                    _isPasswordValid &&
+                    _isConfirmPasswordValid) {
+                  // 비밀번호 변경 로직 추가
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginScreen(),
+                    ),
+                  );
+                }
+              },
+              child: Container(
+                width: double.infinity,
+                height: Responsive.getHeight(context, 48),
+                margin:
+                EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                decoration: BoxDecoration(
+                  color: _isConfirmPasswordValid ? Colors.black : Color(0xFFDDDDDD),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(6),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    '확인',
+                    style: TextStyle(
+                      fontSize: Responsive.getFont(context, 14),
+                      color:
+                      _isConfirmPasswordValid ? Colors.white : Color(0xFF7B7B7B),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildPasswordField(
       String label, TextEditingController controller, String hintText) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          controller: controller,
-          obscureText: true,
-          onChanged: (text) {
-            _validatePassword();
-          },
-          decoration: InputDecoration(
-            hintText: hintText,
-            border: const OutlineInputBorder(),
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // if (label.isNotEmpty)
+          Container(
+            margin: EdgeInsets.only(bottom: 10),
+            child: Row(
+              children: [
+                Text(label,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: Responsive.getFont(context, 13))),
+                Container(
+                    margin: EdgeInsets.only(left: 4),
+                    child: Text('*',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: Responsive.getFont(context, 13),
+                            color: Color(0xFFFF6192)))),
+              ],
+            ),
           ),
-        ),
-      ],
+          if (label.isNotEmpty)
+            TextField(
+              style: TextStyle(
+                fontSize: Responsive.getFont(context, 14),
+              ),
+              controller: controller,
+              obscureText: true,
+              onChanged: (text) {
+                _validatePassword();
+              },
+              decoration: InputDecoration(
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                hintText: hintText,
+                hintStyle: TextStyle(
+                    fontSize: Responsive.getFont(context, 14),
+                    color: Color(0xFF595959)),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

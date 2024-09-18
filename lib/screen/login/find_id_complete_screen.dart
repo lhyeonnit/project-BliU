@@ -1,4 +1,4 @@
-
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -24,99 +24,120 @@ class FindIdCompleteScreen extends StatelessWidget {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 50),
-            CircleAvatar(
-              radius: 40,
-              backgroundColor: Colors.grey[200],
-              child: const Icon(Icons.check, color: Colors.black, size: 40),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              '회원님의 아이디는',
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const Text.rich(
-              TextSpan(
-                text: 'ID_1234', // 실제 찾은 아이디를 여기에 넣습니다.
-                style: TextStyle(
-                  color: Colors.pinkAccent,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
+      body: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            margin: EdgeInsets.only(top: 155),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 90,
+                  height: 90,
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF5F9F9),
+                    shape: BoxShape.circle,
+                  ),
+                  child: SvgPicture.asset('assets/images/check01_off.svg', color: Colors.black,),
                 ),
-                children: [
-                  TextSpan(
-                    text: '입니다.',
+                Container(
+                  margin: EdgeInsets.only(top: 25, bottom: 10),
+                  child: Text(
+                    '회원님의 아이디는 ID_1234입니다.',
                     style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.0,
+                      fontSize: Responsive.getFont(context, 18),
                       fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                  '아이디 찾기가 완료되었습니다. 로그인해 주세요',
+                  style: TextStyle(
+                    fontSize: Responsive.getFont(context, 14),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              width: double.infinity,
+              height: Responsive.getHeight(context, 48),
+              margin: EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FindPasswordScreen(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(6),
+                          ),
+                          border: Border.all(color: Color(0xFFDDDDDD)),
+                        ),
+                        margin: EdgeInsets.only(right: 4),
+                        child: Center(
+                          child: Text(
+                            '비밀번호 찾기',
+                            style: TextStyle(
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap:() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(6),
+                          ),
+                        ),
+                        margin: EdgeInsets.only(left: 4),
+                        child: Center(
+                          child: Text(
+                            '로그인',
+                            style: TextStyle(
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 8),
-            const Text(
-              '아이디 찾기가 완료되었습니다. 로그인해 주세요.',
-              style: TextStyle(color: Colors.grey),
-              textAlign: TextAlign.center,
-            ),
-            const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {
-                      // 비밀번호 찾기 페이지로 이동하는 로직을 여기에 추가합니다.
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const FindPasswordScreen(),
-                        ),
-                      );
-                    },
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    ),
-                    child: const Text('비밀번호 찾기'),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // 로그인 페이지로 이동하는 로직을 여기에 추가합니다.
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      backgroundColor: Colors.black,
-                    ),
-                    child: const Text(
-                      '로그인',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
