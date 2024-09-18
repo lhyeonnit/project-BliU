@@ -96,7 +96,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                             color: Color(0xFF7B7B7B)),
                       ),
                     ),
-                    _buildTextField('이름', _nameController, '이름 입력'),
+                    _buildTextField('이름', _nameController, '이름 입력', keyboardType: TextInputType.name),
                     Row(
                       children: [
                         Expanded(
