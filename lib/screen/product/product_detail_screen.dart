@@ -103,7 +103,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         shape: BoxShape.circle,
                       ),
                       child: Text(
-                        '2',
+                        '2',// TODO 장바구니 수
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: Responsive.getFont(context, 12),

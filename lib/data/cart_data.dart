@@ -19,13 +19,20 @@ class CartData {
 
   // JSON to Object
   factory CartData.fromJson(Map<String, dynamic> json) {
+    List<CartItemData> list = [];
+    if (json['product_list'] != null) {
+      list = List<CartItemData>.from((json['product_list'])?.map((item) {
+        return CartItemData.fromJson(item as Map<String, dynamic>);
+      }).toList());
+    }
+
     return CartData(
       stIdx: json['st_idx'],
       stName: json['st_name'],
       stProfile: json['st_profile'],
       stProductPrice: json['st_product_price'],
       stDeliveryPrice: json['st_delivery_price'],
-      productList: (json['product_list'] as List<CartItemData>),
+      productList: list,
     );
   }
 

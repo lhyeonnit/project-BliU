@@ -3,6 +3,7 @@ class ProductOptionTypeDetailData {
   final String? option;
   final int? potPrice;
   final int? potJaego;
+  int count = 1;
 
   ProductOptionTypeDetailData({
     required this.idx,

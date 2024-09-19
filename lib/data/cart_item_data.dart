@@ -7,6 +7,7 @@ class CartItemData {
   final String? sellStatusTxt;
   final int? ptPrice;
   final String? ptOption;
+  bool isSelected = false;
 
   CartItemData({
     required this.ctIdx,

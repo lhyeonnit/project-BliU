@@ -1,6 +1,7 @@
 class ProductOptionTypeData {
   final String? title;
   final List<String>? children;
+  String selectedValue = "";
 
   ProductOptionTypeData({
     required this.title,

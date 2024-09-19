@@ -1,119 +1,102 @@
+import 'package:BliU/data/cart_data.dart';
+import 'package:BliU/data/cart_item_data.dart';
+import 'package:BliU/data/payment_data.dart';
+import 'package:BliU/dto/cart_response_dto.dart';
+import 'package:BliU/screen/_component/cart_item.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/_component/viewmodel/cart_view_model.dart';
 import 'package:BliU/screen/payment/payment_screen.dart';
+import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../data/payment_data.dart';
-import '../../utils/responsive.dart';
-import 'cart_item.dart';
-
-class CartScreen extends StatefulWidget {
+class CartScreen extends ConsumerStatefulWidget {
   const CartScreen({super.key});
 
   @override
   _CartScreenState createState() => _CartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
-  final List<Map<String, dynamic>> _cartItems = [
-    {
-      'storeName': '타이니숲',
-      'storeLogo': 'assets/images/home/exhi.png',
-      'productName': '타이니숲 에스더버니 12종 상하복/원피스/티셔츠',
-      'price': 32800,
-      'quantity': 1,
-      'item': '베이지 / 110',
-      'storeId': 1,
-      'shippingCost': 2500, // 스토어별 배송비
-      'isSelected': false, // 선택 상태 초기화
-    },
-    {
-      'storeName': '타이니숲',
-      'storeLogo': 'assets/images/home/exhi.png',
-      'productName': '타이니숲 에스더버니 12종 상하복/원피스/티셔츠',
-      'price': 32800,
-      'quantity': 1,
-      'item': '베이지 / 110',
-      'storeId': 1,
-      'shippingCost': 2500, // 스토어별 배송비
-      'isSelected': false, // 선택 상태 초기화
-    },
-    {
-      'storeName': '다른 스토어',
-      'storeLogo': 'assets/images/home/exhi.png',
-      'productName': '다른 스토어 상품 이름',
-      'price': 20000,
-      'quantity': 1,
-      'item': '블루 / M',
-      'storeId': 2,
-      'shippingCost': 3000, // 스토어별 배송비
-      'isSelected': false, // 선택 상태 초기화
-    },
-  ];
+class _CartScreenState extends ConsumerState<CartScreen> {
+  List<CartData> _cartItems = [];
+  int totalCount = 0;
 
-  // 선택된 항목들의 총 상품 금액 계산
-  int _getSelectedTotalPrice() {
-    return _cartItems
-        .where((item) => item['isSelected'] == true)
-        .fold(0, (sum, item) => sum + (item['price'] as int) * (item['quantity'] as int));
-  }
-
-  // 선택된 항목들의 총 배송비 계산
-  int _getSelectedTotalShippingCost() {
-    Set<int> selectedStoreIds = {};
-    return _cartItems.where((item) => item['isSelected'] == true).fold(0, (sum, item) {
-      if (!selectedStoreIds.contains(item['storeId'])) {
-        selectedStoreIds.add(item['storeId']);
-        return sum + (item['shippingCost'] as int);
-      }
-      return sum;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
     });
   }
 
-  // 선택된 항목들의 총 결제 금액 계산
-  int _getSelectedTotalPayment() {
-    return _getSelectedTotalPrice() + _getSelectedTotalShippingCost();
+  void _afterBuild(BuildContext context) {
+    _getList();
   }
 
-  int _getTotalPrice() {
-    return _cartItems.fold(0, (sum, item) {
-      return sum + (item['price'] as int) * (item['quantity'] as int);
-    });
-  }
+  void _getList() async {
+    // TODO 회원 비회원 구분 필요
+    // TODO 페이징 필요
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    Map<String, dynamic> requestData = {
+      'type' : 1,
+      'mt_idx' : mtIdx,
+      'temp_mt_id' : '',// 앱토큰 비회원
+      'pg' : 1,
+    };
 
-  int _getTotalShippingCost() {
-    Set<int> storeIds = {};
-    return _cartItems.fold(0, (sum, item) {
-      if (!storeIds.contains(item['storeId'])) {
-        storeIds.add(item['storeId']);
-        return sum + (item['shippingCost'] as int);
-      }
-      return sum;
-    });
-  }
+    final cartResponseDTO = await ref.read(cartModelProvider.notifier).getList(requestData);
+    if (cartResponseDTO != null) {
+      setState(() {
+        _cartItems = cartResponseDTO.list ?? [];
+        totalCount = 0;
+        for (var item in _cartItems) {
+          totalCount += item.productList?.length ?? 0;
+        }
 
-  int _getTotalPayment() {
-    return _getTotalPrice() + _getTotalShippingCost();
+        if (_isAllSelected) {
+          for(var item in _cartItems) {
+            for (var product in (item.productList ?? [] as List<CartItemData>)) {
+              product.isSelected = true;
+            }
+          }
+        }
+      });
+    }
   }
 
   final ScrollController _scrollController = ScrollController();
 
   bool _isAllSelected = false;
   int _selectedItemsCount = 0;
+
   void _toggleSelectAll() {
     setState(() {
+
       _isAllSelected = !_isAllSelected;
-      _selectedItemsCount = _isAllSelected ? _cartItems.length : 0;
+      _selectedItemsCount = _isAllSelected ? totalCount : 0;
 
       // 모든 아이템의 선택 상태 업데이트
       for (var item in _cartItems) {
-        item['isSelected'] = _isAllSelected;
+        for (var product in item.productList ?? [] as List<CartItemData>) {
+          product.isSelected = _isAllSelected;
+        }
       }
     });
   }
-  void _toggleSelection(int index, bool isSelected) {
+
+  void _toggleSelection(int ctIdx, bool isSelected) {
     setState(() {
-      _cartItems[index]['isSelected'] = isSelected;
+      for (var item in _cartItems) {
+        for (var product in item.productList ?? [] as List<CartItemData>) {
+          if (product.ctIdx == ctIdx) {
+            product.isSelected = isSelected;
+          }
+        }
+      }
 
       // 선택된 항목 수 업데이트
       if (isSelected) {
@@ -123,20 +106,12 @@ class _CartScreenState extends State<CartScreen> {
       }
 
       // 전체 선택 상태 동기화
-      _isAllSelected = _selectedItemsCount == _cartItems.length;
+      _isAllSelected = _selectedItemsCount == totalCount;
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    // 스토어별로 묶기
-    Map<int, List<Map<String, dynamic>>> storeGroupedItems = {};
-    for (var item in _cartItems) {
-      int storeId = item['storeId'];
-      if (!storeGroupedItems.containsKey(storeId)) {
-        storeGroupedItems[storeId] = [];
-      }
-      storeGroupedItems[storeId]!.add(item);
-    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -229,7 +204,7 @@ class _CartScreenState extends State<CartScreen> {
                                 width: 10,
                               ),
                               Text(
-                                '전체선택($_selectedItemsCount/${_cartItems.length})',
+                                '전체선택($_selectedItemsCount/$totalCount)',
                                 style: TextStyle(fontSize: Responsive.getFont(context, 14)),
                               ),
                             ],
@@ -237,9 +212,10 @@ class _CartScreenState extends State<CartScreen> {
                           TextButton.icon(
                             onPressed: () {
                               setState(() {
-                                _cartItems.removeWhere((item) => item['isSelected'] == true);
-                                _selectedItemsCount = 0;
-                                _isAllSelected = false;
+                                // TODO 전체 삭제
+                                // _cartItems.removeWhere((item) => item['isSelected'] == true);
+                                // _selectedItemsCount = 0;
+                                // _isAllSelected = false;
                               });
                             },
                             icon: SvgPicture.asset('assets/images/ic_delet.svg'),
@@ -252,22 +228,8 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    // 장바구니 항목들
-                    ...storeGroupedItems.entries.map((entry) {
-                      int storeId = entry.key;
-                      List<Map<String, dynamic>> items = entry.value;
-
-                      // 각 스토어의 배송비 계산
-                      int shippingCost = items.isNotEmpty ? items.first['shippingCost'] : 0;
-
-                      // 각 스토어의 총 상품 금액 계산
-                      int totalPrice = items.fold(0, (sum, item) => sum + (item['price'] as int) * (item['quantity'] as int));
-
-                      // 총 결제 금액 (총 상품 금액 + 배송비)
-                      int totalPayment = totalPrice + shippingCost;
-
-                      // 마지막 스토어인지 확인
-                      bool isLastStore = storeGroupedItems.entries.last.key == storeId;
+                    ..._cartItems.map((cartItem) {
+                      final productList = cartItem.productList ?? [];
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -291,8 +253,8 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                   child: ClipRRect(
                                     borderRadius: const BorderRadius.all(Radius.circular(20)), // 사진의 모서리만 둥글게 설정
-                                    child: Image.asset(
-                                      items.first['storeLogo'],
+                                    child: Image.network(
+                                      cartItem.stProfile ?? "",
                                       fit: BoxFit.contain,
                                     ),
                                   ),
@@ -301,7 +263,7 @@ class _CartScreenState extends State<CartScreen> {
                                 Container(
                                   padding: const EdgeInsets.symmetric(vertical: 12),
                                   child: Text(
-                                    items.first['storeName'],
+                                    cartItem.stName ?? "",
                                     style: TextStyle(fontSize: Responsive.getFont(context, 14)),
                                   ),
                                 ),
@@ -310,29 +272,31 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                           // 각 스토어의 상품들
                           Column(
-                            children: items.asMap().entries.map((entry) {
-                              int index = _cartItems.indexOf(entry.value);
-                              Map<String, dynamic> item = entry.value;
-
+                            children: productList.map((product) {
                               return CartItem(
-                                item: item,
-                                index: index,
-                                isSelected: item['isSelected'],
+                                item: product,
+                                isSelected: product.isSelected,
                                 onIncrementQuantity: (index) {
                                   setState(() {
-                                    _cartItems[index]['quantity']++;
+                                    final cartCount = (product.ptCount ?? 0) + 1;
+                                    if ((product.ctIdx ?? 0) > 0) {
+                                      _cartUpdate(product.ctIdx ?? 0, cartCount);
+                                    }
                                   });
                                 },
                                 onDecrementQuantity: (index) {
                                   setState(() {
-                                    if (_cartItems[index]['quantity'] > 1) {
-                                      _cartItems[index]['quantity']--;
+                                    final cartCount = (product.ptCount ?? 0) - 1;
+                                    if ((product.ctIdx ?? 0) > 0 && cartCount > 0) {
+                                      _cartUpdate(product.ctIdx ?? 0, cartCount);
                                     }
                                   });
                                 },
                                 onDelete: (index) {
                                   setState(() {
-                                    _cartItems.removeAt(index);
+                                    if ((product.ctIdx ?? 0) > 0) {
+                                      _cartDel(product.ctIdx ?? 0);
+                                    }
                                   });
                                 },
                                 onToggleSelection: _toggleSelection, // 개별 선택 상태 변경 함수 전달
@@ -353,7 +317,7 @@ class _CartScreenState extends State<CartScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  '배송비 $shippingCost원',
+                                  '배송비 ${Utils.getInstance().priceString(cartItem.stDeliveryPrice ?? 0)} 원',
                                   style: TextStyle(
                                     fontSize: Responsive.getFont(context, 13),
                                     color: const Color(0xFF7B7B7B),
@@ -366,7 +330,7 @@ class _CartScreenState extends State<CartScreen> {
                                 ),
                                 SizedBox(width: Responsive.getWidth(context, 10)),
                                 Text(
-                                  '$totalPayment원',
+                                  '${Utils.getInstance().priceString(cartItem.stProductPrice ?? 0)}원',
                                   style: TextStyle(
                                     fontSize: Responsive.getFont(context, 14),
                                     fontWeight: FontWeight.bold,
@@ -376,8 +340,8 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           ),
                           const SizedBox(height: 20.0),
-                          if (!isLastStore)
-                            const Divider(thickness: 1, color: Color(0xFFEEEEEE)),
+                          // if (!isLastStore)
+                          //   const Divider(thickness: 1, color: Color(0xFFEEEEEE)),
                         ],
                       );
                     }),
@@ -391,7 +355,7 @@ class _CartScreenState extends State<CartScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('총 상품 금액', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                              Text('${_getSelectedTotalPrice()}원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                              Text('0 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                             ],
                           ),
                           const SizedBox(height: 8.0),
@@ -399,19 +363,18 @@ class _CartScreenState extends State<CartScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('총 배송비', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                              Text('${_getSelectedTotalShippingCost()}원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                              Text('0 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                             ],
                           ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15.0, bottom: 20),
-                            child: const Divider(thickness: 1, color: Color(0xFFEEEEEE)),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 15.0, bottom: 20),
+                            child: Divider(thickness: 1, color: Color(0xFFEEEEEE)),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('총 결제예상금액', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                              Text('${_getSelectedTotalPayment()}원', style: TextStyle(fontSize: Responsive.getFont(context, 14), fontWeight: FontWeight.bold)),
+                              Text('0 원', style: TextStyle(fontSize: Responsive.getFont(context, 14), fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ],
@@ -456,7 +419,7 @@ class _CartScreenState extends State<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('총 상품 금액: ', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                    Text('${_getSelectedTotalPayment()}원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                    Text('0원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                   ],
                 ),
                 const SizedBox(height: 15.0),
@@ -464,21 +427,21 @@ class _CartScreenState extends State<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('총 배송비: ', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                    Text('${_getSelectedTotalShippingCost()}원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                    Text('0원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                   ],
                 ),
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: _selectedItemsCount > 0
                       ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PaymentScreen(
-                          cartDetails: _cartItems,
-                        ),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => PaymentScreen(
+                    //       cartDetails: _cartItems,
+                    //     ),
+                    //   ),
+                    // );
                   }
                       : null, // 선택된 항목이 없으면 비활성화
                   style: ElevatedButton.styleFrom(
@@ -503,31 +466,84 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
+  // 수량 조정
+  void _cartUpdate(int ctIdx, int ctCount) async {
+    // TODO 회원 비회원 구분
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
 
-  PaymentData _preparePaymentData() {
-    // 총 결제 금액
-    int totalAmount = _getTotalPayment();
+    Map<String, dynamic> requestData = {
+      'type': 1,
+      'mt_idx': mtIdx,
+      'temp_mt_id': '',
+      'ct_idx': ctIdx,
+      'ct_count' : ctCount
+    };
 
-    // 세금 제외 금액 설정 (현재는 0으로 설정)
-    int taxFreeAmount = 0;
-
-    // 주문 이름 생성 (상품 이름을 연결)
-    String orderName = _cartItems.map((item) => item['productName']).join(", ");
-
-    // 고유 주문 ID 생성
-    String orderId = "ORDER_${DateTime.now().millisecondsSinceEpoch}";
-
-    // 고객 정보 설정 (여기서는 고정값 사용)
-    String customerKey = "unique_customer_key";
-    String customerName = "고객 이름";
-
-    return PaymentData(
-      customerKey: customerKey,
-      orderId: orderId,
-      amount: totalAmount,
-      taxFreeAmount: taxFreeAmount,
-      orderName: orderName,
-      customerName: customerName,
-    );
+    final defaultResponseDTO = await ref.read(cartModelProvider.notifier).cartUpdate(requestData);
+    if (defaultResponseDTO != null) {
+      if (defaultResponseDTO.result == true) {
+        //_getList();
+      } else {
+        if (!context.mounted) return;
+        Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+      }
+    }
   }
+  //장바구니 삭제
+  void _cartDel(int ctIdx) async {
+    // TODO 회원 비회원 구분
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    Map<String, dynamic> requestData = {
+      'type': 1,
+      'mt_idx': mtIdx,
+      'temp_mt_id': '',
+      'ct_idx': ctIdx,
+    };
+
+    final defaultResponseDTO = await ref.read(cartModelProvider.notifier).cartDel(requestData);
+    if (defaultResponseDTO != null) {
+      if (defaultResponseDTO.result == true) {
+        _getList();
+      }
+
+      if (!context.mounted) return;
+      Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+    }
+  }
+
+
+
+
+
+
+
+  // PaymentData _preparePaymentData() {
+  //   // 총 결제 금액
+  //   int totalAmount = _getTotalPayment();
+  //
+  //   // 세금 제외 금액 설정 (현재는 0으로 설정)
+  //   int taxFreeAmount = 0;
+  //
+  //   // 주문 이름 생성 (상품 이름을 연결)
+  //   String orderName = _cartItems.map((item) => item['productName']).join(", ");
+  //
+  //   // 고유 주문 ID 생성
+  //   String orderId = "ORDER_${DateTime.now().millisecondsSinceEpoch}";
+  //
+  //   // 고객 정보 설정 (여기서는 고정값 사용)
+  //   String customerKey = "unique_customer_key";
+  //   String customerName = "고객 이름";
+  //
+  //   return PaymentData(
+  //     customerKey: customerKey,
+  //     orderId: orderId,
+  //     amount: totalAmount,
+  //     taxFreeAmount: taxFreeAmount,
+  //     orderName: orderName,
+  //     customerName: customerName,
+  //   );
+  // }
 }

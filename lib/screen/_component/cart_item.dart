@@ -1,10 +1,11 @@
+import 'package:BliU/data/cart_item_data.dart';
+import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../utils/responsive.dart';
 
 class CartItem extends StatefulWidget {
-  final Map<String, dynamic> item; // 장바구니 항목 데이터
-  final int index;
+  final CartItemData item; // 장바구니 항목 데이터
   final Function(int) onIncrementQuantity;
   final Function(int) onDecrementQuantity;
   final Function(int) onDelete;
@@ -14,7 +15,6 @@ class CartItem extends StatefulWidget {
   const CartItem({
     super.key,
     required this.item,
-    required this.index,
     required this.onIncrementQuantity,
     required this.onDecrementQuantity,
     required this.onDelete,
@@ -41,7 +41,7 @@ class _CartItemState extends State<CartItem> {
             GestureDetector(
               onTap: () {
                 setState(() {
-                  widget.onToggleSelection(widget.index, !widget.isSelected); // 부모로 선택 상태 전달
+                  widget.onToggleSelection(widget.item.ctIdx ?? 0, !widget.isSelected); // 부모로 선택 상태 전달
                 });
               },
               child: Container(
@@ -89,7 +89,7 @@ class _CartItemState extends State<CartItem> {
                   SizedBox(
                     width: Responsive.getWidth(context, 204),
                     child: Text(
-                      widget.item['productName'], // widget.item 사용
+                      widget.item.ptTitle ?? "", // widget.item 사용
                       style: TextStyle(
                         fontSize: Responsive.getFont(context, 14),
                         color: Colors.black,
@@ -100,7 +100,7 @@ class _CartItemState extends State<CartItem> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    widget.item['item'], // widget.item 사용
+                    widget.item.ptOption ?? "", // widget.item 사용
                     style: TextStyle(
                       fontSize: Responsive.getFont(context, 13),
                       color: const Color(0xFF7B7B7B),
@@ -123,18 +123,18 @@ class _CartItemState extends State<CartItem> {
                       children: [
                         GestureDetector(
                           onTap: () =>
-                              widget.onDecrementQuantity(widget.index),
+                              widget.onDecrementQuantity(widget.item.ctIdx ?? 0),
                           child: const Icon(Icons.remove, size: 15),
                         ),
                         Text(
-                          widget.item['quantity'].toString(), // widget.item 사용
+                          widget.item.ptCount.toString(), // widget.item 사용
                           style: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
                           ),
                         ),
                         GestureDetector(
                           onTap: () =>
-                              widget.onIncrementQuantity(widget.index),
+                              widget.onIncrementQuantity(widget.item.ctIdx ?? 0),
                           child: const Icon(Icons.add, size: 15),
                         ),
                       ],
@@ -142,7 +142,7 @@ class _CartItemState extends State<CartItem> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    '${widget.item['price']}원', // widget.item 사용
+                    '${Utils.getInstance().priceString(widget.item.ptPrice ?? 0)}원', // widget.item 사용
                     style: const TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.bold),
                   ),
@@ -151,7 +151,7 @@ class _CartItemState extends State<CartItem> {
             ),
             SizedBox(width: Responsive.getWidth(context, 10)),
             GestureDetector(
-              onTap: () => widget.onDelete(widget.index),
+              onTap: () => widget.onDelete(widget.item.ctIdx ?? 0),
               child: SvgPicture.asset('assets/images/ic_del.svg'),
             ),
           ],

@@ -13,10 +13,14 @@ class CartResponseDTO {
 
   // JSON to Object
   factory CartResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<CartData>.from((json['data']['list'])?.map((item) {
+      return CartData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return CartResponseDTO(
       result: json['result'],
       message: json['data']['message'],
-      list: (json['data']['list'] as List<CartData>),
+      list: list,
     );
   }
 

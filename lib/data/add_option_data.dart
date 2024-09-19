@@ -2,6 +2,7 @@ class AddOptionData {
   final int? idx;
   final String? option;
   final int? patPrice;
+  int count = 1;
 
   AddOptionData({
     required this.idx,
