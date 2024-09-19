@@ -1,24 +1,30 @@
 import 'package:BliU/screen/category/viewmodel/category_view_model.dart';
+import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/screen/product/product_list_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CategoryScreen extends ConsumerWidget {
+class CategoryScreen extends ConsumerStatefulWidget {
   const CategoryScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    Map<String, dynamic> requestData = {
-      'category_type' : '2'
-    };
-    ref.read(categoryModelProvider.notifier).getCategory(requestData);
+  ConsumerState<CategoryScreen> createState() => _CategoryScreenState();
+}
 
+class _CategoryScreenState extends ConsumerState<CategoryScreen> {
+  int _selectedCategoryIndex = 0; // 선택된 카테고리의 인덱스
+
+  @override
+  Widget build(BuildContext context) {
+    Map<String, dynamic> requestData = {'category_type': '2'};
+    ref.read(categoryModelProvider.notifier).getCategory(requestData);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
+        automaticallyImplyLeading: false,
+        // 기본 뒤로가기 버튼을 숨김
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('카테고리'),
@@ -46,6 +52,21 @@ class CategoryScreen extends ConsumerWidget {
             ),
           ),
         ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainScreen(),
+                  ),
+              );
+            },
+            child: Container(
+                margin: EdgeInsets.only(right: 16),
+                child: SvgPicture.asset('assets/images/product/ic_close.svg')),
+          ),
+        ],
       ),
       body: Consumer(
         builder: (context, ref, widget) {
@@ -55,22 +76,31 @@ class CategoryScreen extends ConsumerWidget {
           return Row(
             children: [
               // 왼쪽 상위 카테고리 목록
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.3,
+              Container(
+                width: 130,
+                color: Color(0xFFF5F9F9),
                 child: ListView.builder(
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
                     final categoryData = categories[index];
-
+                    final bool isSelectCategory = _selectedCategoryIndex == index;
                     return ListTile(
-                      title: Text(categoryData.ctName ?? ""),
+                      selectedColor: Colors.black,
+                      selectedTileColor: Colors.white,
+                      tileColor:
+                          isSelectCategory ? Colors.white : Color(0xFFF5F9F9),
+                      selected: isSelectCategory,
+                      title: Text(
+                        categoryData.ctName ?? "",
+                        style: TextStyle(
+                            fontSize: Responsive.getFont(context, 15),
+                            fontWeight: FontWeight.w600),
+                      ),
                       onTap: () {
                         // TODO 왼쪽 상위 카테고리 클릭 시 동작할 코드
-
-
-
-
-
+                        setState(() {
+                          _selectedCategoryIndex = index;
+                        });
                       },
                     );
                   },
@@ -78,53 +108,94 @@ class CategoryScreen extends ConsumerWidget {
               ),
               // 오른쪽 모든 상위 + 하위 카테고리 목록을 나열
               Expanded(
-                child: ListView(
-                  children: categories.map((category) {
-                    final subCategories = category.subList ?? [];
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // 상위 카테고리 제목과 이미지
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            children: [
-                              SvgPicture.network(
-                                category.img ?? "",
-                                width: 40,
-                                height: 40,
+                child: Container(
+                  margin: EdgeInsets.only(top: 21),
+                  child: ListView(
+                    children: categories.map((category) {
+                      final subCategories = category.subList ?? [];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 상위 카테고리 제목과 이미지
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20,right: 15),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductListScreen(
+                                      selectedCategory: category,
+                                      subList: subCategories,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    flex: 8,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 40,
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(color: Color(0xFFEFEFEF),)
+                                          ),
+                                          child: SvgPicture.network(
+                                            category.img ?? "",
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.symmetric(horizontal: 10),
+                                          child: Text(
+                                            category.ctName ?? "",
+                                            style:  TextStyle(
+                                              fontSize: Responsive.getFont(context, 18),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  Expanded(
+                                    flex: 2,
+                                    child: SvgPicture.asset('assets/images/category/그룹 37778.svg')
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 10),
-                              Text(
-                                category.ctName ?? "",
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                        // 하위 카테고리 목록
-                        ...subCategories
-                            .map((subCategory) => ListTile(
-                            title: Text(subCategory.ctName ?? ""),
-                            trailing: const Icon(Icons.arrow_forward_ios),
-                            onTap: () {
-                            // 하위 카테고리 선택 시 처리
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProductListScreen(selectedCategory: subCategory,),
-                              ),
-                            );
-                            },
-                          )
-                        ),
-                        const Divider(), // 상위 카테고리 구분을 위한 구분선
-                      ],
-                    );
-                  }).toList(),
+                          // 하위 카테고리 목록
+                          ...subCategories.map((subCategory) => ListTile(
+                            minTileHeight: 0.1,
+                                title: Text(subCategory.ctName ?? "", style: TextStyle(fontSize: Responsive.getFont(context, 14),),),
+                                trailing: SvgPicture.asset('assets/images/ic_link.svg'),
+                                onTap: () {
+                                  // 하위 카테고리 선택 시 처리
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductListScreen(
+                                        selectedCategory: category,
+                                        subList: subCategories,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )),
+                          Container(
+                              margin: EdgeInsets.symmetric(vertical: 30,horizontal: 15),
+                              child: const Divider(color: Color(0xFFEEEEEE,)),), // 상위 카테고리 구분을 위한 구분선
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
             ],

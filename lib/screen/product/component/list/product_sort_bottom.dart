@@ -1,5 +1,6 @@
 // product_sort_bottom.dart
 
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class ProductSortBottom extends StatelessWidget {
@@ -15,47 +16,49 @@ class ProductSortBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
-      height: 320,
+      height: 270,
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ListTile(
-            title: const Text('최신순'),
-            onTap: () {
-              onSortOptionSelected('최신순');
-              Navigator.pop(context);
-            },
+          Center(
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 17, top: 15),
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Color(0xFFDDDDDD),
+                borderRadius: BorderRadius.circular(3),
+              ),
+            ),
           ),
-          ListTile(
-            title: const Text('인기순'),
-            onTap: () {
-              onSortOptionSelected('인기순');
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('추천순'),
-            onTap: () {
-              onSortOptionSelected('추천순');
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('가격 낮은순'),
-            onTap: () {
-              onSortOptionSelected('가격 낮은순');
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('가격 높은순'),
-            onTap: () {
-              onSortOptionSelected('가격 높은순');
-              Navigator.pop(context);
-            },
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(top: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _sortText('최신순', context),
+                  _sortText('인기순', context),
+                  _sortText('추천순', context),
+                  _sortText('가격 낮은 순', context),
+                  _sortText('가격 높은 순', context),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
+  }
+  Widget _sortText(String title, BuildContext context) {
+
+    return Container(
+        margin: EdgeInsets.only(bottom: 24),
+        child: Text(title, style: TextStyle(fontSize: Responsive.getFont(context, 16)),));
   }
 }
