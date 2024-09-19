@@ -37,7 +37,7 @@ class _HomeBodyBestSalesCategoryState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 50.0,
+          height: 38.0,
           child: TabBar(
             controller: _tabController,
             isScrollable: true,

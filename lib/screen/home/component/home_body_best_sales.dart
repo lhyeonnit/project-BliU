@@ -1,5 +1,9 @@
+import 'package:BliU/screen/product/product_detail_screen.dart';
+import 'package:BliU/screen/store/component/store_age_group_selection.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomeBodyBestSales extends StatefulWidget {
   const HomeBodyBestSales({super.key});
@@ -9,6 +13,34 @@ class HomeBodyBestSales extends StatefulWidget {
 }
 
 class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
+  List<String> selectedAgeGroups = [];
+  List<bool> isFavoriteList = List<bool>.generate(10, (index) => false);
+
+  void _showAgeGroupSelection() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) {
+        return StoreAgeGroupSelection(
+          selectedAgeGroups: selectedAgeGroups,
+          onSelectionChanged: (List<String> newSelection) {
+            setState(() {
+              selectedAgeGroups = newSelection;
+            });
+          },
+        );
+      },
+    );
+  }
+
+  String getSelectedAgeGroupsText() {
+    if (selectedAgeGroups.isEmpty) {
+      return '연령';
+    } else {
+      return selectedAgeGroups.join(', ');
+    }
+  }
+
   final List<String> categories = [
     '전체',
     '아우터',
@@ -74,11 +106,11 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 31),
+            margin: const EdgeInsets.only(top: 20),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: List<Widget>.generate(categories.length, (index){
+                children: List<Widget>.generate(categories.length, (index) {
                   return Container(
                     padding: const EdgeInsets.only(right: 4.0),
                     child: GestureDetector(
@@ -95,7 +127,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 30.0),
+            margin: const EdgeInsets.only(top: 20.0),
             padding: const EdgeInsets.only(right: 16.0),
             child: Row(
               children: [
@@ -104,30 +136,33 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                     onTap: () {
                       // TODO 정렬
                     },
-                    child: Row (
-                      children: [
-                        Image.asset(
-                          "assets/images/exhibition/exhibition_img.png",
-                          width: 18,
-                          height: 18,
-                          fit: BoxFit.contain,
-                          alignment: Alignment.topCenter,
-                        ),
-                        Text(
-                          '최신순',
-                          style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.black
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            "assets/images/product/ic_filter02.svg",
+                            width: 18,
+                            height: 18,
+                            fit: BoxFit.contain,
+                            alignment: Alignment.topCenter,
                           ),
-                        ),
-                      ],
+                          Container(
+                            margin: EdgeInsets.only(left: 5, bottom: 2),
+                            child: Text(
+                              '최신순',
+                              style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    // TODO 검색 카테고리
-                  },
+                  onTap: _showAgeGroupSelection,
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(20, 11, 20, 11),
                     decoration: BoxDecoration(
@@ -141,15 +176,17 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                     ),
                     child: Row(
                       children: [
-                        Text(
-                          '연령',
-                          style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.black
+                        Container(
+                          margin: EdgeInsets.only(right: 5),
+                          child: Text(
+                            '연령',
+                            style: TextStyle(
+                                fontSize: Responsive.getFont(context, 14),
+                                color: Colors.black),
                           ),
                         ),
-                        Image.asset(
-                          "assets/images/exhibition/exhibition_img.png",
+                        SvgPicture.asset(
+                          "assets/images/product/filter_select.svg",
                           width: 14,
                           height: 14,
                           fit: BoxFit.contain,
@@ -163,19 +200,19 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.fromLTRB(0, 0, 16, 20),
+            margin: EdgeInsets.only(right: 16, bottom: 29),
             child: GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                childAspectRatio: 0.7,
+                crossAxisSpacing: 12.0,
+                mainAxisSpacing: 30.0,
+                childAspectRatio: 0.55,
               ),
               itemCount: items.length,
               itemBuilder: (context, index) {
-                return buildItemCard(items[index]);
+                return buildItemCard(items[index], index);
               },
             ),
           ),
@@ -192,7 +229,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
       borderColor = const Color(0xFFFF6192);
       textColor = const Color(0xFFFF6192);
     }
-    
+
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 11, 20, 11),
       decoration: BoxDecoration(
@@ -207,85 +244,164 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
       child: Text(
         categories[index],
         style: TextStyle(
-          fontSize: Responsive.getFont(context, 14),
-          color: textColor
-        ),
+            fontSize: Responsive.getFont(context, 14), color: textColor),
       ),
     );
   }
 
-  Widget buildItemCard(Map<String, String> item) {
-    return SizedBox(
-      height: 300,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-              flex: 1,
-              child: Container(
-                alignment: Alignment.center,
-                child: Image.network(
-                  item['image']!,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.grey[200],
-                      child: const Center(
-                        child: Text(
-                          'Image not available',
-                          style: TextStyle(color: Colors.grey),
+  Widget buildItemCard(Map<String, String> item, int index) {
+    return GestureDetector(
+      onTap: () {
+        // TODO 이동 수정
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+            const ProductDetailScreen(ptIdx: 3),
+          ),
+        );
+      },
+      child: Container(
+        width: 184,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius:
+                  const BorderRadius.all(Radius.circular(5)),
+                  child: Image.asset(
+                    'assets/images/home/exhi.png',
+                    height: 184,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isFavoriteList[index] =
+                        !isFavoriteList[index]; // 좋아요 상태 토글
+                      });
+                    },
+                    child: SvgPicture.asset(
+                      isFavoriteList[index]
+                          ? 'assets/images/home/like_btn_fill.svg'
+                          : 'assets/images/home/like_btn.svg',
+                      color: isFavoriteList[index]
+                          ? const Color(0xFFFF6191)
+                          : null,
+                      // 좋아요 상태에 따라 내부 색상 변경
+                      height: Responsive.getHeight(context, 34),
+                      width: Responsive.getWidth(context, 34),
+                      // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 12, bottom: 4),
+                  child: Text(
+                    item['brand']!,
+                    style: TextStyle(
+                        fontSize: Responsive.getFont(context, 12),
+                        color: Colors.grey),
+                  ),
+                ),
+                Text(
+                  item['name']!,
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 12, bottom: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        item['discount']!,
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 14),
+                          color: const Color(0xFFFF6192),
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    );
-                  },
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 2),
+                        child: Text(
+                          item['price']!,
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              )
-          ),
-          Text(
-            item['brand']!,
-            style: const TextStyle(
-              color: Colors.grey,
-              fontSize: 12.0,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/images/home/item_like.svg',
+                      width: Responsive.getWidth(context, 13),
+                      height: Responsive.getHeight(context, 11),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 2, bottom: 2),
+                      child: Text(
+                        item['likes']!,
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 12),
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/images/home/item_comment.svg',
+                            width: Responsive.getWidth(context, 13),
+                            height: Responsive.getHeight(context, 12),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 2, bottom: 2),
+
+                            child: Text(
+                              item['comments']!,
+                              style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 12),
+                                  color: Colors.grey),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
+              ],
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis, // 길이가 길면 생략
-          ),
-          Text(
-            item['name']!,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14.0,
-            ),
-            overflow: TextOverflow.ellipsis, // 길이가 길면 생략
-          ),
-          Text(
-            '${item['discount']} ${item['price']}',
-            style: const TextStyle(
-              color: Colors.pink,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Row(
-            children: [
-              const Icon(
-                Icons.favorite,
-                color: Colors.grey,
-                size: 16.0,
-              ),
-              const SizedBox(width: 4.0),
-              Text(item['likes']!),
-              const SizedBox(width: 16.0),
-              const Icon(
-                Icons.chat_bubble,
-                color: Colors.grey,
-                size: 16.0,
-              ),
-              const SizedBox(width: 4.0),
-              Text(item['comments']!),
-            ],
-          ),
-        ],
-      )
+          ],
+        ),
+      ),
     );
   }
 }

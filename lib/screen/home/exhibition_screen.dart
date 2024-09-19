@@ -1,4 +1,6 @@
 import 'package:BliU/screen/_component/cart_screen.dart';
+import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,6 +16,46 @@ class ExhibitionScreen extends StatefulWidget {
 }
 
 class ExhibitionScreenState extends State<ExhibitionScreen> {
+  final ScrollController _scrollController = ScrollController();
+  List<bool> isFavoriteList = List<bool>.generate(10, (index) => false);
+  final List<Map<String, String>> items = [
+    {
+      'image': 'http://example.com/item1.png',
+      'name': '꿈꾸는데이지 안나 토션 레이스 베스트',
+      'brand': '꿈꾸는데이지',
+      'price': '32,800원',
+      'discount': '15%',
+      'likes': '13,000',
+      'comments': '49'
+    },
+    {
+      'image': 'http://example.com/item2.png',
+      'name': '레인보우꿈 안나 토션 레이스 베스트',
+      'brand': '레인보우꿈',
+      'price': '32,800원',
+      'discount': '15%',
+      'likes': '13,000',
+      'comments': '49'
+    },
+    {
+      'image': 'http://example.com/item3.png',
+      'name': '기글옷장 안나 토션 레이스 베스트',
+      'brand': '기글옷장',
+      'price': '32,800원',
+      'discount': '15%',
+      'likes': '13,000',
+      'comments': '49'
+    },
+    {
+      'image': 'http://example.com/item4.png',
+      'name': '스파클나라 안나 토션 레이스 베스트',
+      'brand': '스파클나라',
+      'price': '32,800원',
+      'discount': '15%',
+      'likes': '13,000',
+      'comments': '49'
+    },
+  ];
   @override
   void initState() {
     super.initState();
@@ -24,6 +66,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/exhibition/ic_back.svg"),
@@ -53,7 +96,6 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                   ),
                 ],
               ),
-
             ),
           ),
         ),
@@ -110,57 +152,217 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            controller: _scrollController,
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 620,
+                  width: Responsive.getWidth(context, 412),
+                  child: Image.asset(
+                    "assets/images/exhibition/exhibition_img.png",
+                    width: Responsive.getWidth(context, 412),
+                    height: 620,
+                    fit: BoxFit.contain,
+                    alignment: Alignment.topCenter,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    '우리 아이를 위한 포근한 선택',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: Responsive.getFont(context, 20)),
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    '집에서도 스타일리시하게!\n우리 아이를 위한 홈웨어 컬렉션.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: Responsive.getFont(context, 14),
+                        color: const Color(0xFF7B7B7B)),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical:30, horizontal: 16),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12.0,
+                      mainAxisSpacing: 30.0,
+                      childAspectRatio: 0.55,
+                    ),
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      return buildItemCard(items[index], index);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          MoveTopButton(scrollController: _scrollController)
+        ],
+      ),
+    );
+  }
+  Widget buildItemCard(Map<String, String> item, int index) {
+    return GestureDetector(
+      onTap: () {
+        // TODO 이동 수정
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+            const ProductDetailScreen(ptIdx: 3),
+          ),
+        );
+      },
+      child: Container(
+        width: 184,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 620,
-              width: Responsive.getWidth(context, 412),
-              child: Image.asset(
-                "assets/images/exhibition/exhibition_img.png",
-                width: Responsive.getWidth(context, 412),
-                height: 620,
-                fit: BoxFit.contain,
-                alignment: Alignment.topCenter,
-              ),
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius:
+                  const BorderRadius.all(Radius.circular(5)),
+                  child: Image.asset(
+                    'assets/images/home/exhi.png',
+                    height: 184,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isFavoriteList[index] =
+                        !isFavoriteList[index]; // 좋아요 상태 토글
+                      });
+                    },
+                    child: SvgPicture.asset(
+                      isFavoriteList[index]
+                          ? 'assets/images/home/like_btn_fill.svg'
+                          : 'assets/images/home/like_btn.svg',
+                      color: isFavoriteList[index]
+                          ? const Color(0xFFFF6191)
+                          : null,
+                      // 좋아요 상태에 따라 내부 색상 변경
+                      height: Responsive.getHeight(context, 34),
+                      width: Responsive.getWidth(context, 34),
+                      // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: Responsive.getHeight(context, 10)),
-              child: Text(
-                '우리 아이를 위한 포근한 선택',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: Responsive.getFont(context, 20)),
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 12, bottom: 4),
+                  child: Text(
+                    item['brand']!,
+                    style: TextStyle(
+                        fontSize: Responsive.getFont(context, 12),
+                        color: Colors.grey),
+                  ),
+                ),
+                Text(
+                  item['name']!,
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 12, bottom: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        item['discount']!,
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 14),
+                          color: const Color(0xFFFF6192),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 2),
+                        child: Text(
+                          item['price']!,
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/images/home/item_like.svg',
+                      width: Responsive.getWidth(context, 13),
+                      height: Responsive.getHeight(context, 11),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 2, bottom: 2),
+                      child: Text(
+                        item['likes']!,
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 12),
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/images/home/item_comment.svg',
+                            width: Responsive.getWidth(context, 13),
+                            height: Responsive.getHeight(context, 12),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 2, bottom: 2),
+
+                            child: Text(
+                              item['comments']!,
+                              style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 12),
+                                  color: Colors.grey),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
+              ],
             ),
-            Container(
-              child: Text(
-                '집에서도 스타일리시하게!\n우리 아이를 위한 홈웨어 컬렉션.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: Responsive.getFont(context, 14),
-                    color: const Color(0xFF7B7B7B)),
-              ),
-            ),
-            // Container(
-            //   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-            //   child: GridView.builder(
-            //     shrinkWrap: true,
-            //     // 리스트 자식 높이 크기의 합 만큼으로 영역 고정
-            //     physics: const NeverScrollableScrollPhysics(),
-            //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            //         crossAxisCount: 2,
-            //         crossAxisSpacing: 8.0,
-            //         mainAxisSpacing: 8.0,
-            //         childAspectRatio: 0.6),
-            //     itemCount: 10,
-            //     itemBuilder: (BuildContext context, int index) {
-            //       return StoreCategoryItem(index: index,);
-            //     },
-            //   ),
-            // )
           ],
         ),
       ),

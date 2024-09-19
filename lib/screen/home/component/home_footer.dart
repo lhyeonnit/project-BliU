@@ -1,7 +1,9 @@
 import 'package:BliU/screen/home/viewmodel/home_footer_view_model.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeFooter extends ConsumerWidget {
   const HomeFooter({super.key});
@@ -35,70 +37,78 @@ class HomeFooter extends ConsumerWidget {
     }
 
     return Container(
-      color: const Color(0xFFF7F7F7), // 배경 색상
-      padding: const EdgeInsets.symmetric(vertical: 80.0, horizontal: 16.0),
+      color: const Color(0xFFF5F9F9), // 배경 색상
+      padding: const EdgeInsets.only(top: 40, bottom: 102.5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextButton(
-                onPressed: () {},
-                child: const Text(
+              GestureDetector(
+                onTap: () {},
+                child: Text(
                   '공지사항',
-                  style: TextStyle(color: Colors.black, fontSize: 14.0),
+                  style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 13)),
                 ),
               ),
-              const Text(
-                ' | ',
-                style: TextStyle(color: Colors.grey, fontSize: 14.0),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  '이용약관',
-                  style: TextStyle(color: Colors.black, fontSize: 14.0),
+
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  border: Border.symmetric(vertical: BorderSide(color: Color(0xFFDDDDDD)))
+                ),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Text(
+                    '이용약관',
+                    style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 13)),
+                  ),
                 ),
               ),
-              const Text(
-                ' | ',
-                style: TextStyle(color: Colors.grey, fontSize: 14.0),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text(
+
+              GestureDetector(
+                onTap: () {},
+                child: Text(
                   '개인정보처리방침',
-                  style: TextStyle(color: Colors.black, fontSize: 14.0),
+                  style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 13)),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10.0),
-          const Text(
-            '사업자 정보',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 14.0,
-              fontWeight: FontWeight.bold,
+          GestureDetector(
+            onTap: () {
+              //  TODO 사업자 정보
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '사업자 정보',
+                    style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 13)),
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: SvgPicture.asset('assets/images/home/ft_collapse.svg',color: Color(0xFF7B7B7B)),
+                  ),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 5.0),
           Text(footInfo,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.grey,
-              fontSize: 12.0,
-              height: 1.5,
+            style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 12)),
             ),
-          ),
-          const SizedBox(height: 10.0),
-          const Text(
-            'Copyright © 2024 블리유. All rights reserved.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 12.0,
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            child: Text(
+              'Copyright © 2024 블리유. All rights reserved.',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 12),
+              ),
             ),
           ),
         ],
