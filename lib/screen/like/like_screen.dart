@@ -1,14 +1,19 @@
-
+import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/product/component/list/product_list_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../utils/responsive.dart';
 
-class LikeScreen extends StatefulWidget {
+class LikeScreen extends ConsumerStatefulWidget {
   const LikeScreen({super.key});
 
   @override
   _LikeScreenState createState() => _LikeScreenState();
 }
+
+final ScrollController _scrollController = ScrollController();
+
 final List<String> categories = [
   '전체',
   '아우터',
@@ -58,8 +63,22 @@ final List<Map<String, String>> items = [
   },
 ];
 
-class _LikeScreenState extends State<LikeScreen> {
+class _LikeScreenState extends ConsumerState<LikeScreen>
+    with SingleTickerProviderStateMixin {
   String selectedCategory = '전체';
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: categories.length, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +86,8 @@ class _LikeScreenState extends State<LikeScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
+        automaticallyImplyLeading: false,
+        // 기본 뒤로가기 버튼을 숨김
         scrolledUnderElevation: 0,
         title: const Text('좋아요'),
         titleTextStyle: TextStyle(
@@ -95,163 +115,92 @@ class _LikeScreenState extends State<LikeScreen> {
           ),
         ),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: List<Widget>.generate(categories.length, (index){
-                return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedCategory = categories[index];
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          categories[index],
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: selectedCategory == categories[index]
-                                ? Colors.black
-                                : Colors.grey,
-                            fontWeight: selectedCategory == categories[index]
-                                ? FontWeight.bold
-                                : FontWeight.normal,
+          NestedScrollView(
+            controller: _scrollController,
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 60.0,
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: TabBar(
+                          controller: _tabController,
+                          labelStyle: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.w600,
                           ),
+                          overlayColor: WidgetStateColor.transparent,
+                          indicatorColor: Colors.black,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          labelColor: Colors.black,
+                          unselectedLabelColor: const Color(0xFF7B7B7B),
+                          isScrollable: true,
+                          indicatorWeight: 2.0,
+                          tabAlignment: TabAlignment.start,
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          tabs: categories.map((category) {
+                            return Tab(text: category);
+                          }).toList(),
                         ),
-                        if (selectedCategory == categories[index])
-                          Container(
-                            margin: const EdgeInsets.only(top: 4.0),
-                            height: 2.0,
-                            width: 20.0,
-                            color: Colors.black,
-                          ),
-                      ],
-                    ),
-                  ),
-                );
-              }),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  '상품 128,123',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.filter_list),
-                  onPressed: () {
-                    // 정렬방식 선택하는 액션 추가
-                  },
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                childAspectRatio: 0.7,
+                      ),
+                    ],
+                  ), // 상단 고정된 컨텐츠
+                )
+              ];
+            },
+            body: TabBarView(
+              controller: _tabController,
+              children: List.generate(
+                categories.length,
+                (index) {
+                  // 상품 리스트
+                  return _buildProductGrid();
+                },
               ),
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                return buildItemCard(items[index]);
-              },
             ),
           ),
+          MoveTopButton(scrollController: _scrollController),
         ],
       ),
     );
   }
 
-  Widget buildItemCard(Map<String, String> item) {
-    return SizedBox(
-      height: 300,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              alignment: Alignment.center,
-              child: Image.network(
-                item['image']!,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: Colors.grey[200],
-                    child: const Center(
-                      child: Text(
-                        'Image not available',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            )
+  Widget _buildProductGrid() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Text(
+            '상품 ${items.length}', // 상품 수 표시
+            style: const TextStyle(fontSize: 14, color: Colors.black),
           ),
-          Text(
-              item['brand']!,
-              style: const TextStyle(
-                color: Colors.grey,
-                fontSize: 12.0,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis, // 길이가 길면 생략
+        ),
+        Expanded(
+          child: GridView.builder(
+            padding: const EdgeInsets.only(right: 16.0, left: 16, bottom: 20),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.55,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 30,
             ),
-          Text(
-            item['name']!,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14.0,
-            ),
-            overflow: TextOverflow.ellipsis, // 길이가 길면 생략
+            itemCount: items.length, // 실제 상품 수로 변경
+            itemBuilder: (context, index) {
+              return ProductListCard(
+                item: items[index],
+                index: index,
+              );
+            },
           ),
-          Text(
-            '${item['discount']} ${item['price']}',
-            style: const TextStyle(
-              color: Colors.pink,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Row(
-            children: [
-              const Icon(
-                Icons.favorite,
-                color: Colors.grey,
-                size: 16.0,
-              ),
-              const SizedBox(width: 4.0),
-              Text(item['likes']!),
-              const SizedBox(width: 16.0),
-              const Icon(
-                Icons.chat_bubble,
-                color: Colors.grey,
-                size: 16.0,
-              ),
-              const SizedBox(width: 4.0),
-              Text(item['comments']!),
-            ],
-          ),
-        ],
-      )
+        ),
+      ],
     );
   }
 }
