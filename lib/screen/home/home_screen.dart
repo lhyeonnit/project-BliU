@@ -1,6 +1,7 @@
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
+import 'package:BliU/screen/_component/smart_lens_screen.dart';
 import 'package:BliU/screen/home/component/home_body_ai.dart';
 import 'package:BliU/screen/home/component/home_body_best_sales.dart';
 import 'package:BliU/screen/home/component/home_body_category.dart';
@@ -104,7 +105,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: Responsive.getHeight(context, 30),
                                   width: Responsive.getWidth(context, 30),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const SmartLensScreen(),
+                                    ),
+                                  );
+                                },
                               ),
                               Stack(
                                 children: [

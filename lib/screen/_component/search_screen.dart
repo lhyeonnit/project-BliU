@@ -2,6 +2,7 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_has_result.dart';
 import 'package:BliU/screen/_component/search_no_result.dart';
 import 'package:BliU/screen/_component/search_recommend_item.dart';
+import 'package:BliU/screen/_component/smart_lens_screen.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/store_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -260,12 +261,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 margin: EdgeInsets.only(right: 16),
                 child: SvgPicture.asset("assets/images/product/ic_smart.svg")),
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const SearchScreen(),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SmartLensScreen(),
+                ),
+              );
             },
           ),
         ],
@@ -278,6 +279,12 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (_searchHistory.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.only(top: 40.0),
+                    child: Text('검색기록이 없습니다.',
+                        style: TextStyle(color: Colors.grey, fontSize: 14)),
+                  ),
                 if (_searchHistory.isNotEmpty) ...[
                   Container(
                     margin: const EdgeInsets.only(top: 40.0, bottom: 15),
@@ -334,8 +341,11 @@ class _SearchScreenState extends State<SearchScreen> {
                               ),
                             ),
                             backgroundColor: Colors.white,
-                            deleteIcon: const Icon(Icons.close,
-                                color: Color(0xFFACACAC)),
+                            deleteIcon: Container(
+                              margin: EdgeInsets.only(top: 2, right: 5),
+                              child: SvgPicture.asset('assets/images/product/filter_del.svg',
+                                  color: Color(0xFFACACAC)),
+                            ),
                             onDeleted: () {
                               setState(() {
                                 _searchHistory.remove(search); // 삭제 기능

@@ -46,7 +46,7 @@
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>앱에서 이미지 업로드등을 하기위해서 사진 라이브러리 사용 권한이 필요합니다.</string>
+		<string>앱에서 이미지 업로드를 위해 사진 라이브러리 사용 권한이 필요합니다.</string>
 		<key>NSCameraUsageDescription</key>
 		<string>This app required NSCameraUsageDescription permission</string>
 		<key>NSMicrophoneUsageDescription</key>
