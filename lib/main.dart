@@ -191,7 +191,7 @@ class MyApp extends StatelessWidget {
       ),
       navigatorKey: NavigationService.navigatorKey,
       debugShowCheckedModeBanner: false,
-      home: NewPasswordScreen(), // OnBoardingScreen을 초기 화면으로 설정
+      home: const OnBoardingScreen(), // OnBoardingScreen을 초기 화면으로 설정
     );
   }
 }

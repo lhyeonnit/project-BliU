@@ -63,9 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       backgroundColor:
                       _isScrolled ? Colors.white : Colors.transparent,
                       expandedHeight: 625,
-                      title: Padding(
-                        padding: EdgeInsets.only(
-                            left: Responsive.getWidth(context, 16)), // 왼쪽 여백 추가
+                      title: Container(
                         child: SvgPicture.asset(
                           'assets/images/home/bottom_home.svg', // SVG 파일 경로
                           color: _isScrolled ? Colors.black : Colors.white,
@@ -77,9 +75,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         background: HomeHeader(),
                       ),
                       actions: [
-                        Padding(
+                        Container(
                           padding: EdgeInsets.only(
-                              right: Responsive.getWidth(context, 16)), // 왼쪽 여백 추가
+                              right: Responsive.getWidth(context, 8)), // 왼쪽 여백 추가
                           child: Row(
                             children: [
                               IconButton(

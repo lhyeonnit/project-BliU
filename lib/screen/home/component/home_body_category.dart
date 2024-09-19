@@ -1,6 +1,7 @@
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/screen/home/viewmodel/home_body_category_view_model.dart';
 import 'package:BliU/screen/product/product_list_screen.dart';
+import 'package:BliU/screen/store/store_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +18,7 @@ class HomeBodyCategory extends ConsumerWidget {
     ref.read(homeBodyCategoryModelProvider.notifier).getCategory(requestData);
 
     return Padding(
-      padding: EdgeInsets.only(top: Responsive.getHeight(context, 30.0)),
+      padding: EdgeInsets.only(top: 30, bottom: 25),
       child: Container(
         height: Responsive.getHeight(context, 115.0),
         padding: const EdgeInsets.only(left: 16),
@@ -43,9 +44,14 @@ class HomeBodyCategory extends ConsumerWidget {
                 final category = list[index];
 
                 return InkWell(
+                  overlayColor: WidgetStateColor.transparent,
                   onTap: () {
                     if (index == 0) {
-                      // TODO 스토어로 이동
+                      // TODO store 이동시 바텀 사라짐
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => StoreScreen()),
+                      );
                     } else {
                       Navigator.push(
                         context,
@@ -59,8 +65,8 @@ class HomeBodyCategory extends ConsumerWidget {
                       children: [
                         index == 0
                             ? Container(
-                          width: Responsive.getWidth(context, 70.0),
-                          height: Responsive.getHeight(context, 70.0),
+                          width: 70,
+                          height: 70,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
@@ -93,11 +99,9 @@ class HomeBodyCategory extends ConsumerWidget {
                             fit: BoxFit.contain,
                           ),
                         ),
-                        const SizedBox(height: 10),
                         Container(
                           alignment: Alignment.topCenter,
-                          width: Responsive.getWidth(context, 70.0),
-                          height: Responsive.getHeight(context, 35.0),
+                          margin: EdgeInsets.only(top: 15),
                           child: Text(
                             category.ctName ?? "스토어",
                             textAlign: TextAlign.center,
