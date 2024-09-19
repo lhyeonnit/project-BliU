@@ -1,6 +1,7 @@
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,16 +12,60 @@ import 'component/list/product_sort_bottom.dart';
 
 class ProductListScreen extends ConsumerStatefulWidget {
   final CategoryData selectedCategory;
-  const ProductListScreen({super.key, required this.selectedCategory});
+  final List<CategoryData>? subList;
+
+  const ProductListScreen(
+      {super.key, required this.selectedCategory, this.subList});
 
   @override
   _ProductListScreenState createState() => _ProductListScreenState();
 }
+
+final List<Map<String, String>> items = [
+  {
+    'image': 'http://example.com/item1.png',
+    'name': '꿈꾸는데이지 안나 토션 레이스 베스트',
+    'brand': '꿈꾸는데이지',
+    'price': '32,800원',
+    'discount': '15%',
+    'likes': '13,000',
+    'comments': '49'
+  },
+  {
+    'image': 'http://example.com/item2.png',
+    'name': '레인보우꿈 안나 토션 레이스 베스트',
+    'brand': '레인보우꿈',
+    'price': '32,800원',
+    'discount': '15%',
+    'likes': '13,000',
+    'comments': '49'
+  },
+  {
+    'image': 'http://example.com/item3.png',
+    'name': '기글옷장 안나 토션 레이스 베스트',
+    'brand': '기글옷장',
+    'price': '32,800원',
+    'discount': '15%',
+    'likes': '13,000',
+    'comments': '49'
+  },
+  {
+    'image': 'http://example.com/item4.png',
+    'name': '스파클나라 안나 토션 레이스 베스트',
+    'brand': '스파클나라',
+    'price': '32,800원',
+    'discount': '15%',
+    'likes': '13,000',
+    'comments': '49'
+  },
+];
+
 class FilterOption {
   final String label;
 
   FilterOption({required this.label});
 }
+
 List<FilterOption> ageOptions = [
   FilterOption(label: '베이비(0-24개월)'),
   FilterOption(label: '키즈(3-8세)'),
@@ -46,6 +91,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   CategoryData? _selectedCategory;
+  List<CategoryData>? _subList;
   String sortOption = '최신순';
   String sortOptionSelected = '';
 
@@ -56,6 +102,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
   void initState() {
     super.initState();
     _selectedCategory = widget.selectedCategory;
+    _subList = widget.subList;
     _tabController = TabController(length: 5, vsync: this);
   }
 
@@ -91,7 +138,6 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
             setState(() {
               _selectedCategory = category;
             });
-            Navigator.pop(context); // Close the bottom sheet
           },
         );
       },
@@ -100,8 +146,6 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -118,146 +162,168 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                _selectedCategory?.ctName ?? "",
-                style: const TextStyle(color: Colors.black),
+              Container(
+                margin: EdgeInsets.only(right: 8),
+                child: Text(
+                  _selectedCategory?.ctName ?? "",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 18)),
+                ),
               ),
-              const Icon(Icons.expand_more, color: Colors.black),
+              SvgPicture.asset('assets/images/product/ic_select.svg',
+                  color: Colors.black),
             ],
           ),
         ),
         centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          child: Container(
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
+            height: 1.0, // 구분선의 두께 설정
+            child: Container(
+              height: 1.0, // 그림자 부분의 높이
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFFF4F4F4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
         actions: [
-          IconButton(
-            icon: SvgPicture.asset("assets/images/product/ic_top_sch.svg"),
-            color: Colors.black,
-            onPressed: () {
+          GestureDetector(
+            child: SvgPicture.asset("assets/images/product/ic_top_sch.svg"),
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const SearchScreen()),
               );
             },
           ),
-          Stack(
-            children: [
-              IconButton(
-                icon: SvgPicture.asset("assets/images/product/ic_cart.svg"),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const CartScreen()),
-                  );
-                },
-              ),
-              Positioned(
-                right: 4,
-                top: 20,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                    color: Colors.pinkAccent,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Text(
-                    '2',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            child: Stack(
+              children: [
+                GestureDetector(
+                  child: SvgPicture.asset("assets/images/product/ic_cart.svg"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CartScreen()),
+                    );
+                  },
+                ),
+                Positioned(
+                  right: 0,
+                  top: 12,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.pinkAccent,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Text(
+                      '2',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // TODO 뷰 오류사항 확인필요
-          // SizedBox(
-          //   height: 50,
-          //   child: Column(
-          //     children: [
-          //       Container(
-          //         decoration: BoxDecoration(
-          //           boxShadow: [
-          //             BoxShadow(
-          //               color: Colors.grey.withOpacity(0.1), // 그림자 색상 조정
-          //               spreadRadius: 1, // 그림자가 확산되는 반경
-          //               blurRadius: 5, // 그림자 블러 처리
-          //               offset: const Offset(0, 3), // 그림자가 생기는 위치
-          //             ),
-          //           ],
-          //         ),
-          //         child: Divider(
-          //           height: 1,
-          //           thickness: 1,
-          //           color: Colors.grey[300], // 구분선 색상 조정
-          //         ),
-          //       ),
-          //       TabBar(
-          //         controller: _tabController,
-          //         labelColor: Colors.black,
-          //         unselectedLabelColor: Colors.grey,
-          //         indicatorColor: Colors.black,
-          //         tabAlignment: TabAlignment.start,
-          //         tabs: const [
-          //           Tab(text: '전체'),
-          //           Tab(text: '자켓'),
-          //           Tab(text: '가디건/베스트'),
-          //           Tab(text: '코트'),
-          //           Tab(text: '후드집업'),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // Filter buttons and product count
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: _openSortBottomSheet, // 정렬 옵션 선택 창 열기
-                  child: Row(
-                    children: [
-                      const Icon(Icons.swap_vert, size: 20),
-                      const SizedBox(width: 4),
-                      Text(
-                        sortOptionSelected.isNotEmpty
-                            ? sortOptionSelected
-                            : '최신순', // 선택된 정렬 옵션 표시
-                        style: const TextStyle(fontSize: 16),
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 60.0,
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: TabBar(
+                      controller: _tabController,
+                      labelStyle: TextStyle(
+                        fontSize: Responsive.getFont(context, 14),
+                        fontWeight: FontWeight.w600,
                       ),
-                    ],
+                      overlayColor: WidgetStateColor.transparent,
+                      indicatorColor: Colors.black,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      labelColor: Colors.black,
+                      unselectedLabelColor: const Color(0xFF7B7B7B),
+                      isScrollable: true,
+                      indicatorWeight: 2.0,
+                      tabAlignment: TabAlignment.start,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      tabs: widget.subList!.map((subCategory) {
+                        return Tab(text: subCategory.ctName);
+                      }).toList(),
+                    ),
                   ),
-                ),
-                Row(
-                  children: [
-                    _buildFilterButton(context, '연령'),
-                    const SizedBox(width: 8), // 간격 추가
-                    _buildFilterButton(context, '스타일'),
-                    const SizedBox(width: 8), // 간격 추가
-                    _buildFilterButton(context, '가격'),
-                  ],
-                ),
-              ],
-            ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16.0),
+                    padding: EdgeInsets.only(top: 15, bottom: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: _openSortBottomSheet, // 정렬 옵션 선택 창 열기
+                          child: Row(
+                            children: [
+                              SvgPicture.asset('assets/images/product/ic_filter02.svg'),
+                              Container(
+                                margin: EdgeInsets.only(left: 5),
+                                child: Text(
+                                  sortOptionSelected.isNotEmpty
+                                      ? sortOptionSelected
+                                      : '최신순', // 선택된 정렬 옵션 표시
+                                  style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            _buildFilterButton(context, '연령'),
+                            Container(
+                                margin: EdgeInsets.symmetric(horizontal: 4),
+                                child: _buildFilterButton(context, '스타일')),
+                            _buildFilterButton(context, '가격'),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ), // 상단 고정된 컨텐츠
+            )
+          ];
+        },
+        body: TabBarView(
+          controller: _tabController,
+          children: List.generate(
+            widget.subList!.length,
+            (index) {
+              // 상품 리스트
+              return _buildProductGrid();
+            },
           ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildProductGrid(), // 전체 상품 수로 설정
-                _buildProductGrid(), // 자켓 상품 수로 설정
-                _buildProductGrid(), // 가디건/베스트 상품 수로 설정
-                _buildProductGrid(), // 코트 상품 수로 설정
-                _buildProductGrid(), // 후드집업 상품 수로 설정
-              ],
-            ),
-          ),
-        ]
+        ),
       ),
     );
   }
@@ -266,12 +332,12 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
+          borderRadius: BorderRadius.circular(19.0),
         ),
-        side: const BorderSide(
-          color: Colors.grey,
+        side: BorderSide(
+          color: Color(0xFFDDDDDD),
         ),
-        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+        padding: EdgeInsets.only(top: 11.0, bottom: 11,left: 20.0, right: 17),
       ),
       onPressed: () {
         ProductFilterBottom.show(
@@ -308,20 +374,19 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
             setState(() {
               // 선택된 필터 옵션을 적용하고, 필요에 따라 데이터를 다시 로드하거나 UI를 업데이트합니다.
             });
-            Navigator.pop(context); // 필터 적용 후 모달을 닫습니다.
           },
         );
       },
       child: Row(
         children: [
-          Text(
-            label,
-            style: const TextStyle(color: Colors.black),
+          Container(
+            margin: EdgeInsets.only(right: 5),
+            child: Text(
+              label,
+              style: TextStyle(color: Colors.black, fontSize: Responsive.getFont(context, 14)),
+            ),
           ),
-          const Icon(
-            Icons.arrow_drop_down,
-            color: Colors.black,
-          ),
+          SvgPicture.asset('assets/images/product/filter_select.svg'),
         ],
       ),
     );
@@ -331,26 +396,29 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          // Padding for consistency
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: EdgeInsets.only(bottom: 20),
           child: Text(
-            '상품 10', // 상품 수 표시
+            '상품 ${items.length}', // 상품 수 표시
             style: const TextStyle(fontSize: 14, color: Colors.black),
           ),
         ),
         Expanded(
           child: GridView.builder(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, // 두 개의 열
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
-              childAspectRatio: 0.6, // 아이템의 가로세로 비율
+              crossAxisCount: 2,
+              childAspectRatio: 0.55,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 30,
             ),
-            itemCount: 10, // 실제 상품 수로 변경
+            itemCount: items.length, // 실제 상품 수로 변경
             itemBuilder: (context, index) {
-              return const ProductListCard();
+              return ProductListCard(
+                item: items[index],
+                index: index,
+              );
             },
           ),
         ),

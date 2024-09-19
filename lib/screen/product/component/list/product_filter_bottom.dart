@@ -25,22 +25,25 @@ class ProductFilterBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(20),
-                ),
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 17, top: 15),
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Color(0xFFDDDDDD),
+                borderRadius: BorderRadius.circular(3),
               ),
             ),
-            const SizedBox(height: 16),
+          ),
             const Text(
               '연령',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -114,8 +117,7 @@ class ProductFilterBottom extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 
   static void show(

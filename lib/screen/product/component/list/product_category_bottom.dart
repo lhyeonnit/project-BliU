@@ -1,8 +1,12 @@
 import 'package:BliU/data/category_data.dart';
+import 'package:BliU/screen/category/viewmodel/category_view_model.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProductCategoryBottom extends StatelessWidget {
-  final Function(CategoryData) onCategorySelected;  // Callback to handle category selection
+class ProductCategoryBottom extends StatefulWidget {
+  final Function(CategoryData)
+      onCategorySelected; // Callback to handle category selection
 
   const ProductCategoryBottom({
     super.key,
@@ -10,49 +14,58 @@ class ProductCategoryBottom extends StatelessWidget {
   });
 
   @override
+  _ProductCategoryBottomState createState() => _ProductCategoryBottomState();
+}
+
+class _ProductCategoryBottomState extends State<ProductCategoryBottom> {
+  @override
   Widget build(BuildContext context) {
     // TODO 변경 필요
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      height: 500,
-      child: ListView(
-        children: [
-          const Text('카테고리', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          const Divider(),
-          ListTile(
-            title: const Text('아우터'),
-            //onTap: () => onCategorySelected('아우터'),
+    return Consumer(
+      builder: (context, ref, widget) {
+        final model = ref.watch(categoryModelProvider);
+        final categories = model?.categoryResponseDTO?.list ?? [];
+
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
           ),
-          ListTile(
-            title: const Text('상의'),
-            //onTap: () => onCategorySelected('상의'),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 17, top: 15),
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFDDDDDD),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      final categoryData = categories[index];
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 24),
+                        child: Text(
+                          categoryData.ctName ?? "",
+                          style: TextStyle(
+                              fontSize: Responsive.getFont(context, 16),
+                              fontWeight: FontWeight.w600),
+                        ),
+                      );
+                    }),
+              ),
+            ],
           ),
-          ListTile(
-            title: const Text('하의'),
-            //onTap: () => onCategorySelected('하의'),
-          ),
-          ListTile(
-            title: const Text('슈즈'),
-            //onTap: () => onCategorySelected('슈즈'),
-          ),
-          ListTile(
-            title: const Text('세트/한벌옷'),
-            //onTap: () => onCategorySelected('세트/한벌옷'),
-          ),
-          ListTile(
-            title: const Text('언더웨어/홈웨어'),
-            //onTap: () => onCategorySelected('언더웨어/홈웨어'),
-          ),
-          ListTile(
-            title: const Text('액세사리'),
-            //onTap: () => onCategorySelected('액세사리'),
-          ),
-          ListTile(
-            title: const Text('베이비잡화'),
-            //onTap: () => onCategorySelected('베이비잡화'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
