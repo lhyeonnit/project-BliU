@@ -103,9 +103,11 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                               value: index,
                               groupValue: selectedCouponIndex,
                               onChanged: (int? value) {
-                                setState(() {
-                                  selectedCouponIndex = value;
-                                });
+                                if (coupon.couponUsealbe == "Y") {
+                                  setState(() {
+                                    selectedCouponIndex = value;
+                                  });
+                                }
                               },
                               activeColor: const Color(0xFFFF6192),
                               fillColor: MaterialStateProperty.resolveWith((states) {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:BliU/data/cart_data.dart';
 import 'package:BliU/data/cart_item_data.dart';
 import 'package:BliU/screen/_component/cart_item.dart';
@@ -431,21 +433,14 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 ),
                 const SizedBox(height: 20.0),
                 ElevatedButton(
-                  onPressed: _selectedItemsCount > 0
-                      ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PaymentScreen(
-                          cartDetails: _cartItems,
-                        ),
-                      ),
-                    );
-                  }
-                      : null, // 선택된 항목이 없으면 비활성화
+                  onPressed: () {
+                    if (_selectedItemsCount > 0) {
+                      _goOrder();
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 48),
-                    backgroundColor: _selectedItemsCount > 0 ? Colors.black : Color(0xFFDDDDDD), // 선택된 항목이 없으면 회색
+                    backgroundColor: _selectedItemsCount > 0 ? Colors.black : const Color(0xFFDDDDDD), // 선택된 항목이 없으면 회색
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.0),
                     ),
@@ -465,6 +460,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       ),
     );
   }
+
   int _getTotalProductPrice() {
     // 선택된 기준으로 가격 가져오기
     int totalProductPrice = 0;
@@ -529,6 +525,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       }
     }
   }
+
   //장바구니 삭제
   void _cartDel(int ctIdx) async {
     // TODO 회원 비회원 구분
@@ -550,6 +547,53 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
       if (!context.mounted) return;
       Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+    }
+  }
+
+  void _goOrder() async {
+    // TODO 회원 비회원 구분
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    List<Map<String, dynamic>> cartArr = [];
+    for(var cartItem in _cartItems) {
+      Map<String, dynamic> cartMap = {
+        'st_idx' : cartItem.stIdx,
+      };
+      List<int> ctIdxs = [];
+      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+        if (product.isSelected) {
+          ctIdxs.add(product.ctIdx ?? 0);
+        }
+      }
+
+      if (ctIdxs.isNotEmpty) {
+        cartMap['ct_idxs'] = ctIdxs;
+        cartArr.add(cartMap);
+      }
+    }
+
+    Map<String, dynamic> requestData = {
+      'type' : 1,
+      'ot_idx' : '',
+      'mt_idx' : mtIdx,
+      'temp_mt_id' : '',
+      'cart_arr' : json.encode(cartArr),
+    };
+
+    final payOrderDetailDTO = await ref.read(cartModelProvider.notifier).orderDetail(requestData);
+    if (payOrderDetailDTO != null) {
+
+
+      // TODO
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => PaymentScreen(
+      //       cartDetails: _cartItems,
+      //     ),
+      //   ),
+      // );
     }
   }
 }

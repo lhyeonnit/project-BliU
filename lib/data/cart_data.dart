@@ -6,6 +6,8 @@ class CartData {
   final String? stProfile;
   final int? stProductPrice;
   final int? stDeliveryPrice;
+  final int? storeAllPrice;
+  final int? storeDeliveryPrice;
   final List<CartItemData>? productList;
 
   CartData({
@@ -14,6 +16,8 @@ class CartData {
     required this.stProfile,
     required this.stProductPrice,
     required this.stDeliveryPrice,
+    required this.storeAllPrice,
+    required this.storeDeliveryPrice,
     required this.productList,
   });
 
@@ -32,6 +36,8 @@ class CartData {
       stProfile: json['st_profile'],
       stProductPrice: json['st_product_price'],
       stDeliveryPrice: json['st_delivery_price'],
+      storeAllPrice: json['store_all_price'],
+      storeDeliveryPrice: json['store_delivery_price'],
       productList: list,
     );
   }
@@ -44,6 +50,8 @@ class CartData {
       'st_profile': stProfile,
       'st_product_price': stProductPrice,
       'st_delivery_price': stDeliveryPrice,
+      'store_all_price': storeAllPrice,
+      'store_delivery_price': storeDeliveryPrice,
       'product_list': productList?.map((it) => it.toJson()).toList(),
     };
   }
