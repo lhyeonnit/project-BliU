@@ -10,62 +10,72 @@ class MyInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CircleAvatar(
-            radius: 40,
-            backgroundImage: AssetImage(
-                'assets/images/my/gender_select_boy.png'),
-            backgroundColor: Colors.pinkAccent,
+           ClipOval(
+            child: Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color(0xFFFFE4DF),
+              ),
+              child: Image.asset(
+                  'assets/images/my/gender_select_boy.png'),
+            )
           ),
-          const SizedBox(width: 10),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${memberInfoData?.mtName ?? ""}님 안녕하세요',
-                  style: TextStyle(
-                    fontSize: Responsive.getFont(context, 18),
-                    fontWeight: FontWeight.bold,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.only(top: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${memberInfoData?.mtName ?? ""}님 안녕하세요',
+                    style: TextStyle(
+                      fontSize: Responsive.getFont(context, 18),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                    memberInfoData?.mtId ?? ""
-                ),
-              ],
+                  Text(
+                      memberInfoData?.mtId ?? "",
+                    style: TextStyle(
+                    fontSize: Responsive.getFont(context, 14),
+                    color: Color(0xFF7B7B7B),
+                  ),
+                  ),
+                ],
+              ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const MyInfoEditCheck(),
-              //   ),
-              // );
-
+          GestureDetector(
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => LoginScreen(),
+                  builder: (context) => const MyInfoEditCheck(),
                 ),
               );
+
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => LoginScreen(),
+              //   ),
+              // );
             },
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: const BorderSide(color: Colors.grey),
-              ),
-              backgroundColor: Colors.white,
-            ),
-            child: const Text('내정보수정',style: TextStyle(color: Colors.black),),
+            child: Container(
+              margin: EdgeInsets.only(top: 20),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(color: Color(0xFFDDDDDD)),
+                ),
+                child: Text('내정보수정',style: TextStyle(color: Colors.black, fontSize: Responsive.getFont(context, 12)),)),
           ),
         ],
-      ),
-    );
+      );
   }
 }
