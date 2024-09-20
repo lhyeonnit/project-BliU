@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:BliU/screen/mypage/component/top/component/my_review_detail.dart';
 import 'package:BliU/screen/mypage/component/top/my_review_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -100,7 +101,7 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MyReviewScreen(
+          builder: (context) => MyReviewDetail(
             review: review,
           ),
         ),

@@ -7,11 +7,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 class MyReviewScreen extends StatelessWidget {
   final Review? review;
 
-
   const MyReviewScreen({
     super.key,
     this.review,
   });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +58,7 @@ class MyReviewScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16),
             margin: EdgeInsets.only(top: 20, bottom: 15),
             child: Text(
-              '작성한 리뷰 4',
+              '작성한 리뷰 0',
               style: TextStyle(fontSize: Responsive.getFont(context, 14)),
             ),
           ),
@@ -72,7 +72,7 @@ class MyReviewScreen extends StatelessWidget {
           review != null
               ? Expanded(
             child: ListView.builder(
-              itemCount: 4, // 리뷰 개수에 맞춰 설정
+              itemCount: 1, // 리뷰 개수에 맞춰 설정
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return GestureDetector(

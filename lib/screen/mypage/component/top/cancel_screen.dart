@@ -61,6 +61,7 @@ class _CancelScreenState extends State<CancelScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -222,22 +223,25 @@ class _CancelScreenState extends State<CancelScreen> {
                 MoveTopButton(scrollController: _scrollController),
                 Container(
                   width: double.infinity,
-                  height: Responsive.getHeight(context, 48),
-                  margin: EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.all(Radius.circular(6),),
-                  ),
+                  color: Colors.white,
                   child: GestureDetector(
                     onTap: () {
                       // 확인 버튼 눌렀을 때 처리
                     },
-                    child: Center(
-                      child: Text(
-                        '확인',
-                        style: TextStyle(
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Colors.white,
+                    child: Container(
+                      height: Responsive.getHeight(context, 48),
+                      margin: EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.all(Radius.circular(6),),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '확인',
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
