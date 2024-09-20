@@ -44,6 +44,7 @@ class LoginScreen extends ConsumerWidget {
     );
 
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
