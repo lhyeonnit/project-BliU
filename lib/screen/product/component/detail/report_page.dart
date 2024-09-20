@@ -1,3 +1,4 @@
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -32,35 +33,55 @@ class _ReportPageState extends State<ReportPage> {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false, // Removes default leading widget (back button)
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              '신고하기',
-              style: TextStyle(color: Colors.black),
-            ),
-            IconButton(
-              icon: SvgPicture.asset("assets/images/product/ic_close.svg"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
+        automaticallyImplyLeading: false,
+        title: const Text("신고하기"),
+        titleTextStyle: TextStyle(
+          fontSize: Responsive.getFont(context, 18),
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
         ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          child: Container(
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
+            height: 1.0, // 구분선의 두께 설정
+            child: Container(
+              height: 1.0, // 그림자 부분의 높이
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFFF4F4F4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+                margin: EdgeInsets.only(right: 16),
+                child: SvgPicture.asset('assets/images/product/ic_close.svg')),
+          ),
+        ],
       ),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
+           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  '신고의 부적합한 사용자/글을 지속적으로 신고하는 경우 제재 조치가 취해질 수 있으니 유의해 주세요',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-                const SizedBox(height: 16),
+                 Container(
+                   margin: EdgeInsets.symmetric(horizontal: 16,vertical: 30),
+                   child: Text(
+                    '신고의 부적합한 사용자/글을 지속적으로 신고하는 경우 제재 조치가 취해질 수 있으니 유의해 주세요',
+                    style: TextStyle(fontSize: Responsive.getFont(context, 14), color: Color(0xFF7B7B7B)),
+                                   ),
+                 ),
                 Expanded(
                   child: ListView(
                     children: [
@@ -104,7 +125,6 @@ class _ReportPageState extends State<ReportPage> {
                 ),
               ],
             ),
-          ),
           if (_isReported)
             Positioned(
               top: 20,

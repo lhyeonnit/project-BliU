@@ -3,6 +3,7 @@ import 'package:BliU/screen/product/viewmodel/product_review_list_view_model.dar
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'product_review_detail.dart';
 import 'report_page.dart';
 
@@ -27,7 +28,46 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
     ptIdx = widget.ptIdx ?? 0;
     _getList(true);
   }
+  Widget _ratingTotalStars(double rating) {
+    int fullStars = rating.floor(); // 꽉 찬 별의 개수
+    bool hasHalfStar = (rating - fullStars) >= 0.5; // 반 개짜리 별이 있는지 확인
+    int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0); // 빈 별의 개수
 
+    return Row(
+      children: [
+        // 꽉 찬 별을 표시
+        for (int i = 0; i < fullStars; i++)
+          Icon(Icons.star, color: Color(0xFFFF6191), size: 26,),
+
+        if (hasHalfStar)
+          _buildHalfTotalStar(rating),
+
+        // 빈 별을 표시
+        for (int i = 0; i < emptyStars; i++)
+          Icon(Icons.star, color: Color(0xFFEEEEEE), size: 26,),
+      ],
+    );
+  }
+  Widget _ratingStars(double rating) {
+    int fullStars = rating.floor(); // 꽉 찬 별의 개수
+    bool hasHalfStar = (rating - fullStars) >= 0.5; // 반 개짜리 별이 있는지 확인
+    int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0); // 빈 별의 개수
+
+    return Row(
+      children: [
+        // 꽉 찬 별을 표시
+        for (int i = 0; i < fullStars; i++)
+          Icon(Icons.star, color: Color(0xFFFF6191), size: 16),
+
+        if (hasHalfStar)
+          _buildHalfStar(rating),
+
+        // 빈 별을 표시
+        for (int i = 0; i < emptyStars; i++)
+          Icon(Icons.star, color: Color(0xFFEEEEEE), size: 16,),
+      ],
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -40,14 +80,15 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
         return ListView(
           children: [
             // 평점과 총 리뷰 수 섹션
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              margin: EdgeInsets.only(top: 30),
               child: Row(
                 children: [
                   Text(
                     '$starAvg',
                     style: TextStyle(
-                      fontSize: Responsive.getFont(context, 32),
+                      fontSize: Responsive.getFont(context, 20),
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -57,9 +98,9 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                     child: Text(
                       '/5.0',
                       style: TextStyle(
-                        fontSize: Responsive.getFont(context, 24),
+                        fontSize: Responsive.getFont(context, 20),
                         fontWeight: FontWeight.bold,
-                        color: Colors.grey,
+                        color: Color(0xFFA4A4A4),
                       ),
                     ),
                   ),
@@ -67,27 +108,23 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                   Text(
                     '$reviewCount명의 리뷰',
                     style: TextStyle(
-                      fontSize: Responsive.getFont(context, 16),
-                      color: Colors.grey
+                      fontSize: Responsive.getFont(context, 14),
                     ),
                   ),
                 ],
               ),
             ),
-            const Padding(
-              // TODO 별점 작업
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  Icon(Icons.star, color: Colors.pink, size: 24),
-                  Icon(Icons.star, color: Colors.pink, size: 24),
-                  Icon(Icons.star, color: Colors.pink, size: 24),
-                  Icon(Icons.star, color: Colors.pink, size: 24),
-                  Icon(Icons.star_half, color: Colors.pink, size: 24),
-                ],
+             // TODO 실제 별점 값 넣기
+             Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                child: _ratingTotalStars(4.5),
               ),
+            Container(
+              margin: EdgeInsets.only(top: 10, bottom: 20),
+              height: 10,
+              width: double.infinity,
+              color: Color(0xFFF5F9F9),
             ),
-            const SizedBox(height: 40),
 
             // 리뷰 리스트
             ...List.generate(list.length, (index) {
@@ -133,20 +170,10 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 4),
-                        const Row(
-                          children: [
-                            Row(
-                              // TODO 별점 작업 필요
-                              children: [
-                                Icon(Icons.star, color: Colors.pink, size: 16),
-                                Icon(Icons.star, color: Colors.pink, size: 16),
-                                Icon(Icons.star, color: Colors.pink, size: 16),
-                                Icon(Icons.star, color: Colors.pink, size: 16),
-                                Icon(Icons.star_half, color: Colors.pink, size: 16),
-                              ],
-                            ),
-                          ],
+                        // TODO 실제 별점 값 넣기
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                          child: _ratingStars(4.5),
                         ),
                         const SizedBox(height: 8),
                         // 리뷰 텍스트 두 줄로 제한하고 넘칠 경우 생략 부호 표시
@@ -210,7 +237,7 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back_ios),
+                    icon: SvgPicture.asset('assets/images/product/pager_prev.svg'),
                     onPressed: currentPage > 1
                         ? () {
                       setState(() {
@@ -219,14 +246,30 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                     }
                         : null,
                   ),
-                  Text(
-                    '${currentPage.toString().padLeft(2, '0')} / $totalPages',
-                    style: TextStyle(
-                      fontSize: Responsive.getFont(context, 16)
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: [
+                        Text(
+                          '${currentPage.toString().padLeft(2, '0')}',
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 16),
+                              fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          ' / $totalPages',
+                          style: TextStyle(
+                              fontSize: Responsive.getFont(context, 16),
+                              color: Color(0xFFCCCCCC),
+                              fontWeight: FontWeight.w600
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.arrow_forward_ios),
+                    icon: SvgPicture.asset('assets/images/product/pager_next.svg'),
                     onPressed: currentPage < totalPages
                         ? () {
                       setState(() {
@@ -252,5 +295,54 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
     };
 
     ref.read(productReviewListModelProvider.notifier).getList(requestData);
+  }
+}
+Widget _buildHalfTotalStar(double rating) {
+  return Stack(
+    children: [
+      Icon(
+        Icons.star,
+        color: Color(0xFFEEEEEE), // 빈 별 색상
+        size: 26,
+      ),
+      ClipRect(
+        clipper: HalfClipper(),
+        child: Icon(
+          Icons.star,
+          color: Color(0xFFFF6191), // 채워진 별 색상
+          size: 26,
+        ),
+      ),
+    ],
+  );
+}Widget _buildHalfStar(double rating) {
+  return Stack(
+    children: [
+      Icon(
+        Icons.star,
+        color: Color(0xFFEEEEEE), // 빈 별 색상
+        size: 16,
+      ),
+      ClipRect(
+        clipper: HalfClipper(),
+        child: Icon(
+          Icons.star,
+          color: Color(0xFFFF6191), // 채워진 별 색상
+          size: 16,
+        ),
+      ),
+    ],
+  );
+}
+
+class HalfClipper extends CustomClipper<Rect> {
+  @override
+  Rect getClip(Size size) {
+    return Rect.fromLTRB(0, 0, size.width / 2, size.height); // 별의 절반을 잘라냄
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Rect> oldClipper) {
+    return false;
   }
 }

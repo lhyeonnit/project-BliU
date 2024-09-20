@@ -137,7 +137,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   body: Column(
                     children: [
                       TabBar(
+                        overlayColor: WidgetStateColor.transparent,
+                        indicatorColor: Colors.black,
+                        indicatorSize: TabBarIndicatorSize.tab, // 인디케이터가 각 탭의 길이에 맞게 조정됨
                         labelColor: Colors.black,
+                        unselectedLabelColor: const Color(0xFF7B7B7B),
                         tabs: [
                           const Tab(text: '상세정보'),
                           Tab(text: '리뷰(${reviewInfo?.reviewCount ?? 0})'),
@@ -175,15 +179,15 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     MoveTopButton(scrollController: _scrollController),
                     Container(
                       padding:
-                      const EdgeInsets.only(top: 9, bottom: 8, left: 10, right: 10),
+                      const EdgeInsets.only(top: 9, bottom: 8, left: 11, right: 10),
                       color: Colors.white,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            flex: 2,
-                            child: GestureDetector(
+                          GestureDetector(
                               child: Container(
+                                height: 48,
+                                width: 48,
                                 margin: const EdgeInsets.only(right: 9),
                                 decoration: BoxDecoration(
                                     borderRadius:
@@ -193,35 +197,32 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                     'assets/images/product/like_lg_off.svg'),
                               ),
                             ),
-                          ),
                           Expanded(
-                            flex: 8,
                             child: GestureDetector(
-                              onTap: () {
-                                if (product != null) {
-                                  ProductOrderBottomOption.showBottomSheet(context, product);
-                                }
-                              },
-                              child: Container(
-                                width: double.infinity,
-                                height: Responsive.getHeight(context, 48),
-                                decoration: const BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(6),
+                                onTap: () {
+                                  if (product != null) {
+                                    ProductOrderBottomOption.showBottomSheet(context, product);
+                                  }
+                                },
+                                child: Container(
+                                  height: 48,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(6),
+                                    ),
                                   ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '구매하기',
-                                    style: TextStyle(
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: Colors.white,
+                                  child: Center(
+                                    child: Text(
+                                      '구매하기',
+                                      style: TextStyle(
+                                        fontSize: Responsive.getFont(context, 14),
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
                           ),
                         ],
                       ),
