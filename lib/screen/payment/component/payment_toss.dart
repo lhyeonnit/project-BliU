@@ -83,10 +83,6 @@ class PaymentTossState extends State<PaymentToss> {
                                 )
                             );
 
-                            // if (!context.mounted) {
-                            //   return;
-                            // }
-
                             if (paymentResult.success != null) {
                               // 결제 성공 처리
                               var resultData = <String, dynamic>{};

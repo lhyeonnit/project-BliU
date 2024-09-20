@@ -1,10 +1,13 @@
 import 'package:BliU/data/cart_data.dart';
+import 'package:BliU/data/cart_item_data.dart';
 import 'package:BliU/data/coupon_data.dart';
+import 'package:BliU/data/payment_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/payment/component/payment_address_info.dart';
 import 'package:BliU/screen/payment/component/payment_discount.dart';
 import 'package:BliU/screen/payment/component/payment_money.dart';
 import 'package:BliU/screen/payment/component/payment_order_item.dart';
+import 'package:BliU/screen/payment/component/payment_toss.dart';
 import 'package:BliU/screen/payment/payment_complete_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +23,13 @@ class PaymentScreen extends ConsumerStatefulWidget {
 }
 
 class PaymentScreenState extends ConsumerState<PaymentScreen> {
+  int totalPrice = 0;
   CouponData? selectedCouponData;
   int discountPoint = 0;
+
+  void onResultTotalPrice(int totalPrice) {
+    this.totalPrice = totalPrice;
+  }
 
   void onCouponSelected(CouponData couponData) {
     setState(() {
@@ -52,14 +60,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       savedAddressRoad = road;
       savedAddressDetail = detail;
       savedMemo = memo;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _afterBuild(context);
     });
   }
 
@@ -224,6 +224,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 CustomExpansionTile(
                   title: '결제 금액',
                   content: PaymentMoney(
+                    onResultTotalPrice: onResultTotalPrice,
                     cartDetails: widget.cartDetails,
                     discountCouponData: selectedCouponData,
                     discountPoint: discountPoint,
@@ -251,21 +252,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                   ),
                   child: GestureDetector(
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => PaymentCompleteScreen(
-                      //             cartDetails: widget.cartDetails,
-                      //             savedAddressDetail: savedAddressDetail,
-                      //             savedAddressRoad: savedAddressRoad,
-                      //             savedMemo: savedMemo,
-                      //             savedRecipientName: savedRecipientName,
-                      //             savedRecipientPhone: savedRecipientPhone,
-                      //           )),
-                      // );
-
-                      // TODO 결제모듈 연결
-
+                      _payment();
                     },
                     child: Center(
                       child: Text(
@@ -284,10 +271,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
         ],
       ),
     );
-  }
-
-  void _afterBuild(BuildContext context) {
-    // TODO 필요한 api 요청
   }
 
   void _showCancelDialog(BuildContext context) {
@@ -367,6 +350,72 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
         );
       },
     );
+  }
+
+  void _payment() async {
+    /***
+     *
+     * 결제 상세 -> 결제 요청(이전에 쿠폰 사용 포인트 사용 요청) -> 결제 모듈에서 결제 완료후 -> 결제 검증 -> 결제 완료
+     *
+     */
+
+
+
+    // 총 결제 금액
+    int totalAmount = totalPrice;
+    // 세금 제외 금액 설정 (현재는 0으로 설정)
+    int taxFreeAmount = 0;
+    // 주문 이름 생성 (상품 이름을 연결)
+    String orderName = "";
+    int itemCount = 0;
+    for (var cart in widget.cartDetails) {
+      for(var item in cart.productList ?? [] as List<CartItemData>) {
+        if (item.isSelected && orderName.isEmpty) {
+          orderName = item.ptTitle ?? "";
+          itemCount += 1;
+        }
+      }
+    }
+    if (itemCount > 0) {
+      orderName = "$orderName 외 ${itemCount - 1}";
+    }
+
+    // 고유 주문 ID 생성
+    String orderId = "ORDER_${DateTime.now().millisecondsSinceEpoch}";
+
+    // TODO 고객 정보 설정 (여기서는 고정값 사용) 고객정보 가져오기 필요
+    String customerKey = "unique_customer_key";
+    String customerName = "고객 이름";
+
+    final paymentData = PaymentData(
+      customerKey: customerKey,
+      orderId: orderId,
+      amount: totalAmount,
+      taxFreeAmount: taxFreeAmount,
+      orderName: orderName,
+      customerName: customerName,
+    );
+
+    final paymentResult = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PaymentToss(paymentData: paymentData,)),
+    );
+
+    if (paymentResult != null) {
+      // TODO 결제 결과값 전달?
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PaymentCompleteScreen(
+              cartDetails: widget.cartDetails,
+              savedAddressDetail: savedAddressDetail,
+              savedAddressRoad: savedAddressRoad,
+              savedMemo: savedMemo,
+              savedRecipientName: savedRecipientName,
+              savedRecipientPhone: savedRecipientPhone,
+            )),
+      );
+    }
   }
 }
 

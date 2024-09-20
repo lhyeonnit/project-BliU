@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
-
-import '../../../utils/responsive.dart';
 
 class PaymentAddressInfo extends StatefulWidget {
   final Function(String, String, String, String, String) onSave;
@@ -38,8 +36,8 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 20),
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          margin: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -48,7 +46,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                 child: Row(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(right: 4),
+                      margin: const EdgeInsets.only(right: 4),
                       child: Text(
                         '수령인',
                         style: TextStyle(
@@ -59,7 +57,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                     Text(
                       '*',
                       style: TextStyle(
-                        color: Color(0xFFFF6192),
+                        color: const Color(0xFFFF6192),
                         fontSize: Responsive.getFont(context, 13),
                       ),
                     ),
@@ -72,17 +70,17 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                   child: TextField(
                     maxLines: 1,
                     decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '수령인',
                       hintStyle: TextStyle(
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Color(0xFF595959)),
-                      enabledBorder: OutlineInputBorder(
+                        fontSize: Responsive.getFont(context, 14),
+                        color: const Color(0xFF595959)
+                      ),
+                      enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                       ),
@@ -101,8 +99,8 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
           ),
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -111,7 +109,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                 child: Row(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(right: 4),
+                      margin: const EdgeInsets.only(right: 4),
                       child: Text(
                         '휴대폰',
                         style: TextStyle(
@@ -122,7 +120,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                     Text(
                       '*',
                       style: TextStyle(
-                        color: Color(0xFFFF6192),
+                        color: const Color(0xFFFF6192),
                         fontSize: Responsive.getFont(context, 13),
                       ),
                     ),
@@ -135,17 +133,17 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                   child: TextField(
                     maxLines: 1,
                     decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '‘-’ 없이 번호만 입력',
                       hintStyle: TextStyle(
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Color(0xFF595959)),
-                      enabledBorder: OutlineInputBorder(
+                        fontSize: Responsive.getFont(context, 14),
+                        color: const Color(0xFF595959)
+                      ),
+                      enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                       ),
@@ -164,7 +162,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
           ),
         ),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
@@ -175,7 +173,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                 child: Row(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(right: 4),
+                      margin: const EdgeInsets.only(right: 4),
                       child: Text(
                         '주소',
                         style: TextStyle(
@@ -186,7 +184,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                     Text(
                       '*',
                       style: TextStyle(
-                        color: Color(0xFFFF6192),
+                        color: const Color(0xFFFF6192),
                         fontSize: Responsive.getFont(context, 13),
                       ),
                     ),
@@ -205,19 +203,22 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                           child: TextField(
                             maxLines: 1,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 14, horizontal: 15),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 14,
+                                horizontal: 15
+                              ),
                               hintText: '',
                               hintStyle: TextStyle(
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: Color(0xFF595959)),
-                              enabledBorder: OutlineInputBorder(
+                                fontSize: Responsive.getFont(context, 14),
+                                color: const Color(0xFF595959)
+                              ),
+                              enabledBorder: const OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(6)),
                                 borderSide:
                                     BorderSide(color: Color(0xFFE1E1E1)),
                               ),
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder: const OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(6)),
                                 borderSide:
@@ -241,6 +242,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                           flex: 3,
                           child: GestureDetector(
                             onTap: () async {
+                              // TODO 주소 검색 작업 필요
                               // 주소 검색 API 호출
                               // final result = await Navigator.push(
                               //   context,
@@ -289,17 +291,19 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                       child: TextField(
                         maxLines: 1,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 15),
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 14,
+                            horizontal: 15
+                          ),
                           hintText: '상세주소 입력',
                           hintStyle: TextStyle(
                               fontSize: Responsive.getFont(context, 14),
-                              color: Color(0xFF595959)),
-                          enabledBorder: OutlineInputBorder(
+                              color: const Color(0xFF595959)),
+                          enabledBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(6)),
                             borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                           ),
-                          focusedBorder: OutlineInputBorder(
+                          focusedBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(6)),
                             borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                           ),
@@ -320,22 +324,22 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
           ),
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 20),
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          margin: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
             maxLines: 4,
             decoration: InputDecoration(
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+              contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
               hintText: '배송 메모 입력',
               hintStyle: TextStyle(
-                  fontSize: Responsive.getFont(context, 14),
-                  color: Color(0xFF595959)),
-              enabledBorder: OutlineInputBorder(
+                fontSize: Responsive.getFont(context, 14),
+                color: const Color(0xFF595959)
+              ),
+              enabledBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6)),
                 borderSide: BorderSide(color: Color(0xFFE1E1E1)),
               ),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6)),
                 borderSide: BorderSide(color: Color(0xFFE1E1E1)),
               ),

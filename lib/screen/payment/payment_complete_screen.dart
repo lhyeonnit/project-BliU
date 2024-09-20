@@ -54,7 +54,7 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
               Navigator.of(context).pop();
             },
             child: Container(
-                margin: EdgeInsets.only(right: 16),
+                margin: const EdgeInsets.only(right: 16),
                 child: SvgPicture.asset('assets/images/product/ic_close.svg')),
           ),
         ],
@@ -87,7 +87,7 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+                    margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
                     child: Column(
                       children: [
                         Center(
@@ -113,18 +113,16 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            OrderListScreen()),
+                                      builder: (context) => OrderListScreen()),
                                   );
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 14),
-                                  margin: EdgeInsets.only(right: 4),
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  margin: const EdgeInsets.only(right: 4),
                                   decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(6)),
+                                      borderRadius: const BorderRadius.all(Radius.circular(6)),
                                       border:
-                                          Border.all(color: Color(0xFFDDDDDD))),
+                                          Border.all(color: const Color(0xFFDDDDDD))),
                                   child: Center(
                                       child: Text(
                                     '주문상세보기',
@@ -143,9 +141,9 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                                   Navigator.of(context).pop();
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 14),
-                                  margin: EdgeInsets.only(left: 4),
-                                  decoration: BoxDecoration(
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  margin: const EdgeInsets.only(left: 4),
+                                  decoration: const BoxDecoration(
                                     color: Colors.black,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(6)),
@@ -169,15 +167,15 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                   Container(
                     height: 10,
                     width: double.infinity,
-                    color: Color(0xFFF5F9F9),
+                    color: const Color(0xFFF5F9F9),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(right: 4),
+                          margin: const EdgeInsets.only(right: 4),
                           child: Text(
                             '주문번호',
                             style: TextStyle(
@@ -197,10 +195,10 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                   Container(
                     height: 10,
                     width: double.infinity,
-                    color: Color(0xFFF5F9F9),
+                    color: const Color(0xFFF5F9F9),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -225,7 +223,7 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                                     fontWeight: FontWeight.bold),
                               ),
                               Container(
-                                margin: EdgeInsets.only(left: 4),
+                                margin: const EdgeInsets.only(left: 4),
                                 child: Text(
                                   '네이버페이',
                                   style: TextStyle(
@@ -240,8 +238,8 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    decoration: const BoxDecoration(
                       border: Border(
                         top: BorderSide(
                           color: Color(0xFFEEEEEE),
@@ -254,14 +252,14 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                         _buildPaymentCompleteRow(
                             '총 상품 금액', 'productPrice', context),
                         Container(
-                            margin: EdgeInsets.symmetric(vertical: 15),
+                            margin: const EdgeInsets.symmetric(vertical: 15),
                             child: _buildPaymentCompleteRow(
                                 '총 배송비', 'productPrice', context)),
-                        Divider(
+                        const Divider(
                           color: Color(0xFFEEEEEE),
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 15),
+                          margin: const EdgeInsets.symmetric(vertical: 15),
                           child: Column(
                             children: [
                               _buildPaymentCompleteRow(
@@ -269,7 +267,7 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
                                 child: Container(
-                                  margin: EdgeInsets.only(left: 10, top: 10),
+                                  margin: const EdgeInsets.only(left: 10, top: 10),
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -280,12 +278,12 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                                           style: TextStyle(
                                               fontSize: Responsive.getFont(
                                                   context, 14),
-                                              color: Color(0xFFA4A4A4))),
+                                              color: const Color(0xFFA4A4A4))),
                                       Text('productPrice',
                                           style: TextStyle(
                                               fontSize: Responsive.getFont(
                                                   context, 14),
-                                              color: Color(0xFFA4A4A4))),
+                                              color: const Color(0xFFA4A4A4))),
                                     ],
                                   ),
                                 ),
@@ -301,10 +299,10 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                   Container(
                     height: 10,
                     width: double.infinity,
-                    color: Color(0xFFF5F9F9),
+                    color: const Color(0xFFF5F9F9),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                     child: Text(
                       '배송지 정보',
                       style: TextStyle(
@@ -313,8 +311,8 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    decoration: const BoxDecoration(
                       border: Border(
                         top: BorderSide(
                           color: Color(0xFFEEEEEE),
@@ -348,7 +346,7 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Container(
-                                      margin: EdgeInsets.only(left: 4),
+                                      margin: const EdgeInsets.only(left: 4),
                                       child: Text(
                                         '${widget.savedRecipientPhone}',
                                         style: TextStyle(
@@ -362,7 +360,7 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                           ],
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 15),
+                          margin: const EdgeInsets.only(top: 15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -403,7 +401,7 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                         // 예시에서 productPrice를 배송메모로 가정하겠습니다.
                         if (widget.savedMemo != null && widget.savedMemo!.isNotEmpty)
                           Container(
-                            padding: EdgeInsets.only(top: 15),
+                            padding: const EdgeInsets.only(top: 15),
                             child: _buildPaymentCompleteRow(
                                 '배송메모', '${widget.savedMemo}', context),
                           ),
@@ -413,7 +411,7 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                   Container(
                     height: 10,
                     width: double.infinity,
-                    color: Color(0xFFF5F9F9),
+                    color: const Color(0xFFF5F9F9),
                   ),
                   Theme(
                     data: Theme.of(context)
@@ -433,7 +431,7 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                       backgroundColor: Colors.white,
                       children: [
                         Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(
                               top: BorderSide(
                                 color: Color(0xFFEEEEEE),

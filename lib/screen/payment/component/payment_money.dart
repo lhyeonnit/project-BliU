@@ -6,11 +6,12 @@ import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class PaymentMoney extends StatelessWidget {
+  final Function(int point) onResultTotalPrice;
   final List<CartData> cartDetails;
   final CouponData? discountCouponData;
   final int? discountPoint;
 
-  const PaymentMoney({super.key, required this.cartDetails, this.discountCouponData, this.discountPoint});
+  const PaymentMoney({super.key, required this.onResultTotalPrice, required this.cartDetails, this.discountCouponData, this.discountPoint});
   @override
   Widget build(BuildContext context) {
     // 선택된 항목들만 필터링하여 계산
@@ -34,6 +35,8 @@ class PaymentMoney extends StatelessWidget {
     }
     final pointsDiscount = discountPoint ?? 0; // 포인트 할인
     final total = totalAmount + shippingCost - couponDiscount - pointsDiscount;
+
+    onResultTotalPrice(total);
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 20),
