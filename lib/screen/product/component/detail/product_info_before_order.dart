@@ -24,10 +24,11 @@ class ProductInfoBeforeOrder extends StatelessWidget {
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent), // 선 제거
 
           child: ExpansionTile(
-            title: const Text('배송안내',style: TextStyle(fontWeight: FontWeight.bold),),
+            title:  Text('배송안내',style: TextStyle(fontWeight: FontWeight.bold, fontSize: Responsive.getFont(context, 14)),),
             children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                margin: EdgeInsets.only(top: 10),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
@@ -52,13 +53,14 @@ class ProductInfoBeforeOrder extends StatelessWidget {
         Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent), // 선 제거
           child: ExpansionTile(
-            title: const Text(
+            title: Text(
               '교환/반품 안내',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: Responsive.getFont(context, 14)),
             ),
             children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                margin: EdgeInsets.only(top: 10),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(

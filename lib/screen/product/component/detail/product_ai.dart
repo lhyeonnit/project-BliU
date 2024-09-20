@@ -2,6 +2,7 @@ import 'package:BliU/data/product_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ProductAi extends StatefulWidget {
   final List<ProductData> productList;
@@ -21,19 +22,22 @@ class _ProductAiState extends State<ProductAi> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          margin: EdgeInsets.only(top: 40),
           child: Text(
             '연관 상품',
             style: TextStyle(
-              fontSize: Responsive.getFont(context, 18),
+              fontSize: Responsive.getFont(context, 20),
               fontWeight: FontWeight.bold
             ),
           ),
         ),
-        SizedBox(
-          height: 280, // 높이를 설정하여 이미지 카드들이 가로로 스크롤되도록 함
+        Container(
+          height: Responsive.getHeight(context, 280),
+          margin: const EdgeInsets.only(top: 20),
           child: ListView.builder(
+            shrinkWrap: true,
             scrollDirection: Axis.horizontal, // 가로 스크롤 가능하도록 설정
             itemCount: productList.length, // 임의의 연관 상품 갯수
             itemBuilder: (context, index) {
@@ -41,7 +45,7 @@ class _ProductAiState extends State<ProductAi> {
 
               return Padding(
                 padding: const EdgeInsets.only(left: 16.0),
-                child: SizedBox(
+                child: Container(
                   width: 160, // 가로 너비를 160으로 고정
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,8 +62,8 @@ class _ProductAiState extends State<ProductAi> {
                             ),
                           ),
                           Positioned(
-                            top: 5,
-                            right: 5,
+                            top: 0,
+                            right: 0,
                             child: GestureDetector(
                               onTap: () {
                                 //TODO 좋아요 액션
@@ -69,104 +73,117 @@ class _ProductAiState extends State<ProductAi> {
                                 //   productList[index].likeChk = "Y";
                                 // }
                               },
-                              child: Icon(
+                              child: SvgPicture.asset(
                                 productList[index].likeChk == "Y"
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
+                                    ? 'assets/images/home/like_btn_fill.svg'
+                                    : 'assets/images/home/like_btn.svg',
                                 color: productList[index].likeChk == "Y"
-                                    ? Colors.pink
-                                    : Colors.white,
-                                size: 24,
+                                    ? const Color(0xFFFF6191)
+                                    : null,
+                                // 좋아요 상태에 따라 내부 색상 변경
+                                height: Responsive.getHeight(context, 34),
+                                width: Responsive.getWidth(context, 34),
+                                // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
                               ),
                             ),
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Column(
+                      Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              productData.stName ?? "",
-                              style: TextStyle(
-                                fontSize: Responsive.getFont(context, 12),
-                                color: Colors.grey
+                            Container(
+                              margin: EdgeInsets.only(top: 12, bottom: 4),
+                              child: Text(
+                                productData.stName ?? "",
+                                style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 12),
+                                  color: Color(0xFF7B7B7B),
+                                ),
                               ),
                             ),
-                            const SizedBox(height: 4), // 텍스트와 텍스트 사이에 간격 추가
                             Text(
                               productData.ptName ?? "",
                               style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
-                                fontWeight: FontWeight.bold,
                               ),
-                              maxLines: 1, // 한 줄만 표시
+                              maxLines: 2, // 한 줄만 표시
                               overflow: TextOverflow.ellipsis, // 길면 생략부호 처리
                             ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                (productData.ptDiscountPer ?? 0) > 0 ?
-                                Row(
-                                  children: [
-                                    Text(
-                                      '${productData.ptDiscountPer ?? 0}%',
+                            Container(
+                              margin: EdgeInsets.only(top: 12, bottom: 10),
+                              child: Row(
+
+                                children: [
+                                  (productData.ptDiscountPer ?? 0) > 0 ?
+                                  Row(
+                                    children: [
+                                      Text(
+                                        '${productData.ptDiscountPer ?? 0}%',
+                                        style: TextStyle(
+                                          fontSize: Responsive.getFont(context, 14),
+                                          color: const Color(0xFFFF6192),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]
+                                  ) : Container(),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 2),
+                                    child: Text(
+                                      '${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원',
                                       style: TextStyle(
                                         fontSize: Responsive.getFont(context, 14),
-                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
                                       ),
+                                      maxLines: 1, // 한 줄만 표시
                                     ),
-                                    const SizedBox(width: 4),
-                                  ]
-                                ) : Container(),
-                                Text(
-                                  '${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원',
-                                  style: TextStyle(
-                                    fontSize: Responsive.getFont(context, 14),
-                                    fontWeight: FontWeight.bold,
                                   ),
-                                  maxLines: 1, // 한 줄만 표시
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                            const SizedBox(height: 4),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                const Icon(
-                                  Icons.favorite_outline,
-                                  size: 14,
-                                  color: Colors.grey,
+                                SvgPicture.asset(
+                                  'assets/images/home/item_like.svg',
+                                  color: Color(0xFFA4A4A4),
+                                  width: Responsive.getWidth(context, 13),
+                                  height: Responsive.getHeight(context, 11),
                                 ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  Utils.getInstance().priceString(productData.ptLike ?? 0),
-                                  style: TextStyle(
-                                    fontSize: Responsive.getFont(context, 12),
-                                    color: Colors.grey,
+                                Container(
+                                  margin: EdgeInsets.only(left: 2, bottom: 2),
+                                  child: Text(
+                                    Utils.getInstance().priceString(productData.ptLike ?? 0),
+                                    style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 12),
+                                      color: Color(0xFFA4A4A4),
+                                    ),
+                                    maxLines: 1, // 한 줄만 표시
                                   ),
-                                  maxLines: 1, // 한 줄만 표시
                                 ),
-                                const SizedBox(width: 10), // 고정된 공간을 추가하여 아이콘과 텍스트 간격 유지
-                                const Icon(
-                                  Icons.people,
-                                  size: 14,
-                                  color: Colors.grey,
+                                SizedBox(width: 10,),
+                                SvgPicture.asset(
+                                  'assets/images/home/item_comment.svg',
+                                  color: Color(0xFFA4A4A4),
+                                  width: Responsive.getWidth(context, 13),
+                                  height: Responsive.getHeight(context, 12),
                                 ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  Utils.getInstance().priceString(productData.ptReview ?? 0),
-                                  style: TextStyle(
-                                    fontSize: Responsive.getFont(context, 12),
-                                    color: Colors.grey
+                                Container(
+                                  margin: EdgeInsets.only(left: 2, bottom: 2),
+                                  child: Text(
+                                    Utils.getInstance().priceString(productData.ptReview ?? 0),
+                                    style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 12),
+                                      color: Color(0xFFA4A4A4),
+                                    ),
+                                    maxLines: 1, // 한 줄만 표시
                                   ),
-                                  maxLines: 1, // 한 줄만 표시
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ),
                     ],
                   ),
                 ),

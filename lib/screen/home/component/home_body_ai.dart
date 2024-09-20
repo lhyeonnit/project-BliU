@@ -103,13 +103,14 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                 '꿈꾸는데이지',
                                 style: TextStyle(
                                     fontSize: Responsive.getFont(context, 12),
-                                    color: Colors.grey),
+                                  color: Color(0xFF7B7B7B),
+                                ),
                               ),
                             ),
                             Text(
                               '꿈꾸는 데이지 안나 토션 레이스 베스트',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: Responsive.getFont(context, 14),
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -146,6 +147,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                               children: [
                                 SvgPicture.asset(
                                   'assets/images/home/item_like.svg',
+                                  color: Color(0xFFA4A4A4),
                                   width: Responsive.getWidth(context, 13),
                                   height: Responsive.getHeight(context, 11),
                                 ),
@@ -155,7 +157,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                     '13,000',
                                     style: TextStyle(
                                       fontSize: Responsive.getFont(context, 12),
-                                      color: Colors.grey,
+                                      color: Color(0xFFA4A4A4),
                                     ),
                                   ),
                                 ),
@@ -170,12 +172,12 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                       ),
                                       Container(
                                         margin: EdgeInsets.only(left: 2, bottom: 2),
-
                                         child: Text(
                                           '49',
                                           style: TextStyle(
                                               fontSize: Responsive.getFont(context, 12),
-                                              color: Colors.grey),
+                                            color: Color(0xFFA4A4A4),
+                                          ),
                                         ),
                                       ),
                                     ],

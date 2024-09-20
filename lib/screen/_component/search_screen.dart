@@ -279,12 +279,6 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (_searchHistory.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.only(top: 40.0),
-                    child: Text('검색기록이 없습니다.',
-                        style: TextStyle(color: Colors.grey, fontSize: 14)),
-                  ),
                 if (_searchHistory.isNotEmpty) ...[
                   Container(
                     margin: const EdgeInsets.only(top: 40.0, bottom: 15),
@@ -359,7 +353,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ],
                 if (_suggestions.isEmpty) ...[
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 40),
+                    margin: EdgeInsets.only(bottom: 20, top: 40),
                     child: Text(
                       '인기 검색어',
                       style:
@@ -424,7 +418,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         width: 50,
                         height: 50,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(22)),
+                          shape: BoxShape.circle,
                           border: Border.all(color: Color(0xFFDDDDDD)),
                         ),
                         child: ClipOval(
