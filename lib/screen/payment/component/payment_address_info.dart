@@ -1,3 +1,5 @@
+import 'package:BliU/data/daum_post_data.dart';
+import 'package:BliU/screen/payment/component/webview_with_daum_post_webivew.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +31,8 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
   late String _addressRoad = widget.initialRoadAddress;
   late String _addressDetail = widget.initialDetailAddress;
   late String _deliveryMemo = widget.initialMemo;
+
+  final TextEditingController _roadAddressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -201,67 +205,52 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                         Expanded(
                           flex: 7,
                           child: TextField(
+                            controller: _roadAddressController,
+                            enabled: false,
                             maxLines: 1,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
                                 vertical: 14,
                                 horizontal: 15
                               ),
-                              hintText: '',
+                              hintText: '주소를 검색해 주세요.',
                               hintStyle: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                                 color: const Color(0xFF595959)
                               ),
-                              enabledBorder: const OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(6)),
+                                BorderRadius.all(Radius.circular(6)),
                                 borderSide:
-                                    BorderSide(color: Color(0xFFE1E1E1)),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(6)),
-                                borderSide:
-                                    BorderSide(color: Color(0xFFE1E1E1)),
+                                BorderSide(color: Color(0xFFE1E1E1)),
                               ),
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                _addressRoad = value;
-                                widget.onSave(
-                                    _receiveName,
-                                    _receiveTel,
-                                    _addressRoad,
-                                    _addressDetail,
-                                    _deliveryMemo);
-                              });
-                            },
                           ),
                         ),
                         Expanded(
                           flex: 3,
                           child: GestureDetector(
                             onTap: () async {
-                              // TODO 주소 검색 작업 필요
                               // 주소 검색 API 호출
-                              // final result = await Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) =>
-                              //         DaumPostcodeWebView(), // 주소 검색 창으로 이동
-                              //   ),
-                              // );
-                              // if (result != null) {
-                              //   setState(() {
-                              //     _addressRoad = result; // 검색된 주소로 도로명 주소 업데이트
-                              //     widget.onSave(
-                              //         _receiveName,
-                              //         _receiveTel,
-                              //         _addressRoad,
-                              //         _addressDetail,
-                              //         _deliveryMemo);
-                              //   });
-                              // }
+                              DaumPostData? result = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const WebviewWithDaumPostWebview(), // 주소 검색 창으로 이동
+                                ),
+                              );
+
+                              if (result != null) {
+                                setState(() {
+                                  _roadAddressController.text = result.roadAddress;
+                                  _addressRoad = result.roadAddress; // 검색된 주소로 도로명 주소 업데이트
+                                  widget.onSave(
+                                      _receiveName,
+                                      _receiveTel,
+                                      _addressRoad,
+                                      _addressDetail,
+                                      _deliveryMemo);
+                                });
+                              }
                             },
                             child: Container(
                               margin: const EdgeInsets.only(left: 8),

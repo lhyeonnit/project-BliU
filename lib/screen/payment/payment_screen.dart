@@ -359,6 +359,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
      *
      */
 
+    // TODO 필수입력란 확인 필요
 
 
     // 총 결제 금액
