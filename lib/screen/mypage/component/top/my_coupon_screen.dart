@@ -125,7 +125,7 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                       label: Text(
                         categories[index],
                         style: TextStyle(
-                          color: isSelected ? Colors.pink : Colors.black, // 텍스트 색상
+                          color: isSelected ? Color(0xFFFF6192) : Colors.black, // 텍스트 색상
                         ),
                       ),
                       selected: isSelected,
@@ -138,7 +138,7 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                       selectedColor: Colors.white,
                       shape: StadiumBorder(
                         side: BorderSide(
-                          color: isSelected ? Colors.pink : Colors.grey,
+                          color: isSelected ? Color(0xFFFF6192) : Color(0xFFDDDDDD),
                           // 테두리 색상
                           width: 1.0,
                         ),
@@ -157,8 +157,8 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            Expanded(
-              child: ListView.builder(
+             ListView.builder(
+               shrinkWrap: true,
                 itemCount: selectedCategoryIndex == 0
                     ? availableCoupons.length
                     : issuedCoupons.length,
@@ -186,7 +186,7 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                   );
                 },
               ),
-            ),
+
           ],
         ),
       ),

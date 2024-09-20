@@ -152,7 +152,7 @@ class _PointScreenState extends State<PointScreen> {
                             style: TextStyle(
                               fontSize: Responsive.getFont(context, 14),
                               color: isSelected
-                                  ? Colors.pink
+                                  ? Color(0xFFFF6192)
                                   : Colors.black, // 텍스트 색상
                             ),
                           ),
@@ -166,7 +166,9 @@ class _PointScreenState extends State<PointScreen> {
                           selectedColor: Colors.white,
                           shape: StadiumBorder(
                             side: BorderSide(
-                              color: isSelected ? Colors.pink : Colors.grey,
+                              color: isSelected
+                                  ? Color(0xFFFF6192)
+                                  : Color(0xFFDDDDDD),
                               // 테두리 색상
                               width: 1.0,
                             ),
@@ -178,21 +180,32 @@ class _PointScreenState extends State<PointScreen> {
                   ),
                 ),
                 const Divider(thickness: 10, color: Color(0xFFF5F9F9)),
-                Expanded(
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: pointData.length,
-                    itemBuilder: (context, index) {
-                      // 데이터를 사용하여 아이템 생성
-                      final pointItem = pointData[index];
-                      return _buildPointItem(
-                        pointItem['type']!,
-                        pointItem['point']!,
-                        pointItem['description']!,
-                        pointItem['date']!,
-                      );
-                    },
-                  ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  controller: _scrollController,
+                  itemCount: pointData.length,
+                  itemBuilder: (context, index) {
+                    // 데이터를 사용하여 아이템 생성
+                    final pointItem = pointData[index];
+                    return Column(
+                      children: [
+                        _buildPointItem(
+                          pointItem['type']!,
+                          pointItem['point']!,
+                          pointItem['description']!,
+                          pointItem['date']!,
+                        ),
+                        if (index != pointData.length - 1)
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 16),
+                            child: Divider(
+                              thickness: 1, // 구분선 두께
+                              color: Color(0xFFEEEEEE), // 구분선 색상
+                            ),
+                          ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
@@ -205,39 +218,49 @@ class _PointScreenState extends State<PointScreen> {
 
   Widget _buildPointItem(
       String type, String point, String description, String date) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Column(
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             type,
             style: TextStyle(
-              color: type == '적립' ? const Color(0xFFFF6192) : const Color(0xFF7B7B7B),
+              color: type == '적립'
+                  ? const Color(0xFFFF6192)
+                  :  Colors.black,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                point,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  point,
+                  style: TextStyle(
+                    fontSize: Responsive.getFont(context, 15),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Text(
-                date,
-                style: const TextStyle(color: Color(0xFF7B7B7B)),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Text(
-            description,
-            style: const TextStyle(color: Color(0xFF7B7B7B)),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 8),
+                  child: Text(
+                    description,
+                    style: TextStyle(
+                        color: Color(0xFF7B7B7B),
+                        fontSize: Responsive.getFont(context, 14)),
+                  ),
+                ),
+                Text(
+                  date,
+                  style: TextStyle(
+                      color: Color(0xFF7B7B7B),
+                      fontSize: Responsive.getFont(context, 14)),
+                ),
+              ],
+            ),
           ),
         ],
       ),

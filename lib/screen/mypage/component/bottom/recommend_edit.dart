@@ -215,23 +215,26 @@ class _RecommendEditState extends State<RecommendEdit> {
                 MoveTopButton(scrollController: _scrollController),
                 Container(
                   width: double.infinity,
-                  height: Responsive.getHeight(context, 48),
-                  margin:
-                      EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(6),
-                    ),
-                  ),
+                  color: Colors.white,
                   child: GestureDetector(
                     onTap: () {},
-                    child: Center(
-                      child: Text(
-                        '확인',
-                        style: TextStyle(
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Colors.white,
+                    child: Container(
+                      height: Responsive.getHeight(context, 48),
+                      margin:
+                      EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(6),
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '확인',
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -273,11 +276,14 @@ class _RecommendEditState extends State<RecommendEdit> {
                   borderRadius: BorderRadius.circular(40),
                   color: Color(0xFFF5F9F9),
                 ),
-                child: Image.asset(
-                  imgPath,
-                  // colorBlendMode: isSelected ? BlendMode.luminosity : BlendMode.clear,
-                  // TODO 사진 흑백으로 변경 필요
-                  color: isSelected ? null : Color(0x10000000),
+                child: ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    Color(0xFFF5F9F9),
+                    isSelected ? BlendMode.dst : BlendMode.color, // 흑백 필터 적용
+                  ),
+                  child: Image.asset(
+                    imgPath,
+                  ),
                 ),
               ),
               Text(

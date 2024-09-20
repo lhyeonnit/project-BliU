@@ -126,15 +126,7 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
                 MoveTopButton(scrollController: _scrollController),
                 Container(
                   width: double.infinity,
-                  height: Responsive.getHeight(context, 48),
-                  margin:
-                      EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(6),
-                    ),
-                  ),
+                  color: Colors.white,
                   child: GestureDetector(
                     onTap: () {
                       // 교환 또는 반품/환불에 따른 타이틀 설정
@@ -159,12 +151,23 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
                         ),
                       );
                     },
-                    child: Center(
-                      child: Text(
-                        '확인',
-                        style: TextStyle(
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Colors.white,
+                    child: Container(
+                      height: Responsive.getHeight(context, 48),
+                      margin:
+                      EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(6),
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '확인',
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
