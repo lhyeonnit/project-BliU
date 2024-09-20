@@ -181,6 +181,7 @@ class MyScreen extends ConsumerWidget {
                 MaterialPageRoute(builder: (context) => const RecommendEdit()),
               );
             }),
+            SizedBox(height: 10,),
             _buildSection(context, '고객서비스'),
             _buildSectionItem(context, 'FAQ', () {
               Navigator.push(
@@ -269,13 +270,14 @@ class MyScreen extends ConsumerWidget {
   }
 
   Widget _buildSection(BuildContext context, String title) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      margin: EdgeInsets.only(bottom: 20),
       child: Text(
         title,
         style: TextStyle(
-          fontSize: Responsive.getFont(context, 16),
-          color: Colors.grey,
+          fontSize: Responsive.getFont(context, 14),
+          color: Color(0xFFA4A4A4),
         ),
       ),
     );
@@ -283,9 +285,11 @@ class MyScreen extends ConsumerWidget {
 
   Widget _buildSectionItem(BuildContext context, String title, VoidCallback onPressed) {
     return InkWell(
+      overlayColor: WidgetStateColor.transparent ,
       onTap: onPressed,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        margin: EdgeInsets.only(bottom: 20),
         // 최소한의 간격으로 조절 가능
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -293,7 +297,7 @@ class MyScreen extends ConsumerWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: Responsive.getFont(context, 16),
+                fontSize: Responsive.getFont(context, 15),
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
               ),
