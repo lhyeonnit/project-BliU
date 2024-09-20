@@ -40,13 +40,8 @@ class _RecommendEditState extends State<RecommendEdit> {
   int selectedDay = DateTime.now().day;
 
   List<String> selectedStyles = [];
-  String selectedGender = '';
+  String? _selectedGender;
 
-  void _selectGender(String gender) {
-    setState(() {
-      selectedGender = gender;
-    });
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,82 +119,15 @@ class _RecommendEditState extends State<RecommendEdit> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Expanded(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 15),
-                                    margin: EdgeInsets.only(right: 5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(6)),
-                                      border:
-                                          Border.all(color: Color(0xFFDDDDDD)),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: 70,
-                                          width: 70,
-                                          margin: EdgeInsets.only(bottom: 8),
-                                          clipBehavior: Clip.antiAlias,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(40),
-                                            color: Color(0xFFF5F9F9),
-                                          ),
-                                          child: Image.asset(
-                                              'assets/images/gender_select_boy.png'),
-                                        ),
-                                        Text(
-                                          'Boy',
-                                          style: TextStyle(
-                                              fontSize: Responsive.getFont(
-                                                  context, 14)),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                _genderSelect(
+                                    'assets/images/gender_select_boy.png',
+                                    'Boy'),
+                                SizedBox(
+                                  width: 10,
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 15),
-                                    margin: EdgeInsets.only(left: 5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(6)),
-                                      border:
-                                          Border.all(color: Color(0xFFDDDDDD)),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: 70,
-                                          width: 70,
-                                          margin: EdgeInsets.only(bottom: 8),
-                                          clipBehavior: Clip.antiAlias,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(40),
-                                            color: Color(0xFFF5F9F9),
-                                          ),
-                                          child: Image.asset(
-                                              'assets/images/gender_select_girl.png'),
-                                        ),
-                                        Text(
-                                          'Girl',
-                                          style: TextStyle(
-                                              fontSize: Responsive.getFont(
-                                                  context, 14)),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                _genderSelect(
+                                    'assets/images/gender_select_girl.png',
+                                    'Girl'),
                               ],
                             ),
                           ),
@@ -251,14 +179,18 @@ class _RecommendEditState extends State<RecommendEdit> {
                                   label: Text(
                                     style,
                                     style: TextStyle(
-                                      color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                                      color: isSelected
+                                          ? const Color(0xFFFF6192)
+                                          : Colors.black,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
                                   shape: StadiumBorder(
                                     side: BorderSide(
-                                      color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                      color: isSelected
+                                          ? const Color(0xFFFF6192)
+                                          : const Color(0xFFDDDDDD),
                                     ),
                                   ),
                                   backgroundColor: Colors.white,
@@ -309,6 +241,52 @@ class _RecommendEditState extends State<RecommendEdit> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _genderSelect(String imgPath, String gender) {
+    bool isSelected = _selectedGender == gender;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _selectedGender = gender;
+          });
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 15),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(6)),
+            border: Border.all(color: isSelected ? Color(0xFFFF6192) : Color(0xFFDDDDDD)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 70,
+                width: 70,
+                margin: EdgeInsets.only(bottom: 8),
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  color: Color(0xFFF5F9F9),
+                ),
+                child: Image.asset(
+                  imgPath,
+                  // colorBlendMode: isSelected ? BlendMode.luminosity : BlendMode.clear,
+                  // TODO 사진 흑백으로 변경 필요
+                  color: isSelected ? null : Color(0x10000000),
+                ),
+              ),
+              Text(
+                gender,
+                style: TextStyle(fontSize: Responsive.getFont(context, 14), color: isSelected ? Color(0xFFFF6192) : Colors.black),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
