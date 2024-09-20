@@ -1,34 +1,38 @@
 import 'package:BliU/data/cart_data.dart';
+import 'package:BliU/data/cart_item_data.dart';
+import 'package:BliU/data/coupon_data.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class PaymentMoney extends StatelessWidget {
   final List<CartData> cartDetails;
-  final double discountRate; // 할인율 추가
+  final CouponData? discountCouponData;
+  final int? discountPoint;
 
-  const PaymentMoney({super.key, required this.cartDetails, this.discountRate = 0.0});
+  const PaymentMoney({super.key, required this.cartDetails, this.discountCouponData, this.discountPoint});
   @override
   Widget build(BuildContext context) {
     // 선택된 항목들만 필터링하여 계산
-    final Set<int> selectedStoreIds = {};
-    final totalAmount = 0;
-    final shippingCost = 0;
-    // final totalAmount = cartDetails.fold(
-    //     0,
-    //     (sum, item) =>
-    //         sum + (item['price'] as int) * (item['quantity'] as int));
-    // final shippingCost = cartDetails
-    //     .where((item) => item['isSelected'] == true)
-    //     .fold(0, (sum, item) {
-    //   if (!selectedStoreIds.contains(item['storeId'])) {
-    //     selectedStoreIds.add(item['storeId']);
-    //     return sum + (item['shippingCost'] as int);
-    //   }
-    //   return sum;
-    // });
-    ; // 예시 배송비
-    final couponDiscount = (totalAmount * discountRate).toInt();
-    final pointsDiscount = 0; // 포인트 할인
+
+    final totalAmount = _getTotalProductPrice();
+    final shippingCost = _getTotalDeliveryPrice();
+
+    int couponDiscount = 0;
+    if (discountCouponData != null) {
+      String couponDiscountStr = discountCouponData!.couponDiscount ?? "";
+      int couponDiscountValue = discountCouponData!.couponPrice ?? 0;
+      if (couponDiscountStr.contains("%")) {
+        //할인율
+        if (couponDiscountValue > 0) {
+          double couponDiscountDouble = (couponDiscountValue / 100);
+          couponDiscount = (totalAmount * couponDiscountDouble).toInt();
+        }
+      } else {
+        couponDiscount = couponDiscountValue;
+      }
+    }
+    final pointsDiscount = discountPoint ?? 0; // 포인트 할인
     final total = totalAmount + shippingCost - couponDiscount - pointsDiscount;
 
     return Container(
@@ -36,19 +40,19 @@ class PaymentMoney extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildInfoRow('상품 금액', '${totalAmount}원', context),
+          _buildInfoRow('상품 금액', '${Utils.getInstance().priceString(totalAmount)}원', context),
           Container(
-              margin: EdgeInsets.symmetric(vertical: 15),
-              child: _buildInfoRow('배송비', '${shippingCost}원', context)),
+              margin: const EdgeInsets.symmetric(vertical: 15),
+              child: _buildInfoRow('배송비', '${Utils.getInstance().priceString(shippingCost)}원', context)),
           Container(
-              margin: EdgeInsets.only(bottom: 15),
+              margin: const EdgeInsets.only(bottom: 15),
               child: _buildInfoRow( '할인금액',
-                  '${couponDiscount != 0 ? '- ${couponDiscount}원' : '${couponDiscount}원'}', // 0이 아니면 '-' 추가
+                  couponDiscount != 0 ? '- ${Utils.getInstance().priceString(couponDiscount)}원' : '${Utils.getInstance().priceString(couponDiscount)}원', // 0이 아니면 '-' 추가
                   context)),
-          _buildInfoRow('포인트할인', '${pointsDiscount != 0 ? '- ${pointsDiscount}원' : '${pointsDiscount}원'}', // 0이 아니면 '-' 추가
+          _buildInfoRow('포인트할인', pointsDiscount != 0 ? '- ${Utils.getInstance().priceString(pointsDiscount)}원' : '${Utils.getInstance().priceString(pointsDiscount)}원', // 0이 아니면 '-' 추가
               context),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: const Divider(
               color: Color(0xFFEEEEEE),
             ),
@@ -66,7 +70,7 @@ class PaymentMoney extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${total}원',
+                  '${Utils.getInstance().priceString(total)}원',
                   style: TextStyle(
                     fontSize: Responsive.getFont(context, 14),
                     color: Colors.black,
@@ -104,5 +108,41 @@ class PaymentMoney extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  int _getTotalProductPrice() {
+    // 선택된 기준으로 가격 가져오기
+    int totalProductPrice = 0;
+    for(var cartItem in cartDetails) {
+      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+        if (product.isSelected) {
+          totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
+        }
+      }
+    }
+    return totalProductPrice;
+  }
+
+  int _getTotalDeliveryPrice() {
+    int totalDeliveryPrice = 0;
+    for(var cartItem in cartDetails) {
+      bool isAllCheck = true;
+      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+        if (!product.isSelected) {
+          isAllCheck = false;
+        }
+      }
+      if (isAllCheck) {
+        totalDeliveryPrice += cartItem.stDeliveryPrice ?? 0;
+      } else {
+        for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+          if (product.isSelected) {
+            totalDeliveryPrice += product.ctDeliveryDefaultPrice ?? 0;
+          }
+        }
+      }
+
+    }
+    return totalDeliveryPrice;
   }
 }

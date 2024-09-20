@@ -1,20 +1,40 @@
+import 'dart:convert';
+import 'package:BliU/data/cart_data.dart';
+import 'package:BliU/data/cart_item_data.dart';
+import 'package:BliU/data/coupon_data.dart';
 import 'package:BliU/screen/payment/component/payment_coupon.dart';
+import 'package:BliU/screen/payment/viewmodel/payment_discount_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class PaymentDiscount extends StatefulWidget {
-  final Function(double discountRate) onCouponSelected; // 선택된 쿠폰 할인율을 전달할 콜백
-
-  const PaymentDiscount({Key? key, required this.onCouponSelected}) : super(key: key);
+class PaymentDiscount extends ConsumerStatefulWidget {
+  final Function(CouponData couponData) onCouponSelected; // 선택된 쿠폰 할인율을 전달할 콜백
+  final Function(int point) onPointChanged;
+  final List<CartData> cartDetails;
+  const PaymentDiscount({super.key, required this.onCouponSelected, required this.onPointChanged, required this.cartDetails,});
 
   @override
-  State<PaymentDiscount> createState() => _PaymentDiscountState();
+  _PaymentDiscountState createState() => _PaymentDiscountState();
 }
 
-class _PaymentDiscountState extends State<PaymentDiscount> {
-  double discountRate = 0.0;
-  String couponText = "0원 할인 적용";
+class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
+  final TextEditingController _pointController = TextEditingController();
+  String _couponText = "0원 할인 적용";
+  List<CouponData> _couponList = [];
+  int _point = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -32,37 +52,38 @@ class _PaymentDiscountState extends State<PaymentDiscount> {
                     fontWeight: FontWeight.normal),
               ),
               Text(
-                '보유 쿠폰 3장',
+                '보유 쿠폰 ${_couponList.length}장',
                 style: TextStyle(
                     fontSize: Responsive.getFont(context, 13),
-                    color: Color(0xFF7B7B7B)),
+                    color: const Color(0xFF7B7B7B)),
               ),
             ],
           ),
           GestureDetector(
             onTap: () async {
-              final selectedCoupon = await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PaymentCoupon()),
-              );
-              if (selectedCoupon != null) {
-                setState(() {
-                  discountRate = selectedCoupon['rate']; // 선택된 할인율 적용
-                  couponText = "${(discountRate * 100).toInt()}% 할인 적용";
-                });
-                widget.onCouponSelected(discountRate); // 부모로 할인율 전달
+              if (_couponList.isNotEmpty) {
+                CouponData? selectedCoupon = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PaymentCoupon(couponList: _couponList,)),
+                );
+                if (selectedCoupon != null) {
+                  setState(() {
+                    _couponText = "${selectedCoupon.couponDiscount} 할인 적용";
+                  });
+                  widget.onCouponSelected(selectedCoupon); // 부모로 할인율 전달
+                }
               }
             },
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-              margin: EdgeInsets.only(top: 10, bottom: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+              margin: const EdgeInsets.only(top: 10, bottom: 20),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                  border: Border.all(color: Color(0xFFDDDDDD))),
+                  borderRadius: const BorderRadius.all(Radius.circular(6)),
+                  border: Border.all(color: const Color(0xFFDDDDDD))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(couponText,
+                  Text(_couponText,
                       style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           fontWeight: FontWeight.normal)),
@@ -81,10 +102,10 @@ class _PaymentDiscountState extends State<PaymentDiscount> {
                       fontSize: Responsive.getFont(context, 13),
                       fontWeight: FontWeight.normal)),
               Text(
-                '보유 포인트 0P',
+                '보유 포인트 ${Utils.getInstance().priceString(_point)}P',
                 style: TextStyle(
                     fontSize: Responsive.getFont(context, 13),
-                    color: Color(0xFF7B7B7B)),
+                    color: const Color(0xFF7B7B7B)),
               ),
             ],
           ),
@@ -96,30 +117,35 @@ class _PaymentDiscountState extends State<PaymentDiscount> {
                 Expanded(
                   flex: 7,
                   child: Container(
-                    margin: EdgeInsets.only(right: 8),
+                    margin: const EdgeInsets.only(right: 8),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                        border: Border.all(color: Color(0xFFDDDDDD))),
+                        borderRadius: const BorderRadius.all(Radius.circular(6)),
+                        border: Border.all(color: const Color(0xFFDDDDDD))),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
                         Expanded(
                           child: TextField(
+                            controller: _pointController,
                             keyboardType: TextInputType.number, // 숫자 입력만 가능하게 설정
                             decoration: InputDecoration(
                               border: InputBorder.none, // 테두리 제거
                               hintText: '0',
                               hintStyle: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
-                                color: Color(0xFF707070),
+                                color: const Color(0xFF707070),
                               ),
                             ),
                             textAlign: TextAlign.right, // 텍스트를 오른쪽 정렬
+                            onChanged: (text) {
+                              print("change text === $text");
+                              _pointCheck(text);
+                            },
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.only(right: 15, left: 10),
+                          padding: const EdgeInsets.only(right: 15, left: 10),
                           child: Text('P',
                               style: TextStyle(
                                   fontSize: Responsive.getFont(context, 14),
@@ -132,16 +158,24 @@ class _PaymentDiscountState extends State<PaymentDiscount> {
                 Expanded(
                   flex: 3,
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 14),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                        border: Border.all(color: Color(0xFFDDDDDD))),
-                    child: Center(
-                      child: Text(
-                        '전액사용',
-                        style: TextStyle(
-                            fontSize: Responsive.getFont(context, 14),
-                            fontWeight: FontWeight.normal),
+                        borderRadius: const BorderRadius.all(Radius.circular(6)),
+                        border: Border.all(color: const Color(0xFFDDDDDD))),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (_point > 0) {
+                          _pointController.text = _point.toString();
+                          _pointCheck(_point.toString());
+                        }
+                      },
+                      child: Center(
+                        child: Text(
+                          '전액사용',
+                          style: TextStyle(
+                              fontSize: Responsive.getFont(context, 14),
+                              fontWeight: FontWeight.normal),
+                        ),
                       ),
                     ),
                   ),
@@ -152,5 +186,81 @@ class _PaymentDiscountState extends State<PaymentDiscount> {
         ],
       ),
     );
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getMy();
+    _getOrderCoupon();
+  }
+
+  void _getMy() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    Map<String, dynamic> requestData = {
+      'mt_idx' : pref.getMtIdx(),
+    };
+
+    final memberInfoResponseDTO = await ref.read(paymentDiscountViewModelProvider.notifier).getMy(requestData);
+    setState(() {
+      _point = memberInfoResponseDTO?.data?.myPoint ?? 0;
+    });
+  }
+
+  void _getOrderCoupon() async {
+    final pref = await SharedPreferencesManager.getInstance();
+
+    List<Map<String, dynamic>> storeArr = [];
+    for(var cartItem in widget.cartDetails) {
+
+      Map<String, dynamic> storeMap = {
+        'st_idx' : cartItem.stIdx,
+      };
+      int productPrice = 0;
+      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+        if (product.isSelected) {
+          productPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
+        }
+      }
+
+      if (productPrice > 0) {
+        storeMap['store_all_price'] = productPrice;
+        storeArr.add(storeMap);
+      }
+    }
+
+    Map<String, dynamic> requestData = {
+      'mt_idx' : pref.getMtIdx(),
+      'store_arr' : json.encode(storeArr),
+      'all_price' : _getTotalProductPrice(),
+    };
+
+    final couponResponseDTO = await ref.read(paymentDiscountViewModelProvider.notifier).getOrderCoupon(requestData);
+    _couponList = couponResponseDTO?.list ?? [];
+  }
+
+  int _getTotalProductPrice() {
+    // 선택된 기준으로 가격 가져오기
+    int totalProductPrice = 0;
+    for(var cartItem in widget.cartDetails) {
+      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+        if (product.isSelected) {
+          totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
+        }
+      }
+    }
+    return totalProductPrice;
+  }
+
+  void _pointCheck(String point) {
+    if (point.isNotEmpty) {
+      int pointValue = int.parse(point);
+      int totalProductPrice = _getTotalProductPrice();
+      if (pointValue > totalProductPrice) {
+        pointValue = totalProductPrice;
+      }
+      _pointController.text = pointValue.toString();
+      widget.onPointChanged(pointValue);
+    } else {
+      widget.onPointChanged(0);
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:BliU/data/cart_data.dart';
+import 'package:BliU/data/coupon_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/payment/component/payment_address_info.dart';
 import 'package:BliU/screen/payment/component/payment_discount.dart';
@@ -7,23 +8,30 @@ import 'package:BliU/screen/payment/component/payment_order_item.dart';
 import 'package:BliU/screen/payment/payment_complete_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class PaymentScreen extends StatefulWidget {
+class PaymentScreen extends ConsumerStatefulWidget {
   final List<CartData> cartDetails;
-
   const PaymentScreen({required this.cartDetails, super.key});
 
   @override
-  State<PaymentScreen> createState() => PaymentScreenState();
+  PaymentScreenState createState() => PaymentScreenState();
 }
 
-class PaymentScreenState extends State<PaymentScreen> {
-  double selectedDiscountRate = 0.0;
+class PaymentScreenState extends ConsumerState<PaymentScreen> {
+  CouponData? selectedCouponData;
+  int discountPoint = 0;
 
-  void onCouponSelected(double discountRate) {
+  void onCouponSelected(CouponData couponData) {
     setState(() {
-      selectedDiscountRate = discountRate;
+      selectedCouponData = couponData;
+    });
+  }
+
+  void onPointChanged(int point) {
+    setState(() {
+      discountPoint = point;
     });
   }
 
@@ -50,6 +58,9 @@ class PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
   }
 
   @override
@@ -106,14 +117,14 @@ class PaymentScreenState extends State<PaymentScreen> {
                 Container(
                   height: 10,
                   width: double.infinity,
-                  color: Color(0xFFF5F9F9),
+                  color: const Color(0xFFF5F9F9),
                 ),
                 Theme(
                   data: Theme.of(context)
                       .copyWith(dividerColor: Colors.transparent),
                   child: ExpansionTile(
                     title: Container(
-                      padding: EdgeInsets.symmetric(vertical: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -173,7 +184,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                     ),
                     children: [
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           border: Border(
                             top: BorderSide(
                               color: Color(0xFFEEEEEE),
@@ -195,24 +206,27 @@ class PaymentScreenState extends State<PaymentScreen> {
                 Container(
                   height: 10,
                   width: double.infinity,
-                  color: Color(0xFFF5F9F9),
+                  color: const Color(0xFFF5F9F9),
                 ),
                 CustomExpansionTile(
                   title: '할인적용',
                   content: PaymentDiscount(
                     onCouponSelected: onCouponSelected,
+                    onPointChanged: onPointChanged,
+                    cartDetails: widget.cartDetails,
                   ),
                 ),
                 Container(
                   height: 10,
                   width: double.infinity,
-                  color: Color(0xFFF5F9F9),
+                  color: const Color(0xFFF5F9F9),
                 ),
                 CustomExpansionTile(
                   title: '결제 금액',
                   content: PaymentMoney(
                     cartDetails: widget.cartDetails,
-                    discountRate: selectedDiscountRate,
+                    discountCouponData: selectedCouponData,
+                    discountPoint: discountPoint,
                   ),
                 ),
               ],
@@ -228,9 +242,8 @@ class PaymentScreenState extends State<PaymentScreen> {
                 Container(
                   width: double.infinity,
                   height: Responsive.getHeight(context, 48),
-                  margin:
-                      EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
-                  decoration: BoxDecoration(
+                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                  decoration: const BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.all(
                       Radius.circular(6),
@@ -238,18 +251,21 @@ class PaymentScreenState extends State<PaymentScreen> {
                   ),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PaymentCompleteScreen(
-                                  cartDetails: widget.cartDetails,
-                                  savedAddressDetail: savedAddressDetail,
-                                  savedAddressRoad: savedAddressRoad,
-                                  savedMemo: savedMemo,
-                                  savedRecipientName: savedRecipientName,
-                                  savedRecipientPhone: savedRecipientPhone,
-                                )),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => PaymentCompleteScreen(
+                      //             cartDetails: widget.cartDetails,
+                      //             savedAddressDetail: savedAddressDetail,
+                      //             savedAddressRoad: savedAddressRoad,
+                      //             savedMemo: savedMemo,
+                      //             savedRecipientName: savedRecipientName,
+                      //             savedRecipientPhone: savedRecipientPhone,
+                      //           )),
+                      // );
+
+                      // TODO 결제모듈 연결
+
                     },
                     child: Center(
                       child: Text(
@@ -268,6 +284,10 @@ class PaymentScreenState extends State<PaymentScreen> {
         ],
       ),
     );
+  }
+
+  void _afterBuild(BuildContext context) {
+    // TODO 필요한 api 요청
   }
 
   void _showCancelDialog(BuildContext context) {
@@ -290,7 +310,7 @@ class PaymentScreenState extends State<PaymentScreen> {
               margin: const EdgeInsets.only(top: 50), // 상단에서의 간격
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
               decoration: BoxDecoration(
-                color: Color(0xCC000000), // 알림창 배경색
+                color: const Color(0xCC000000), // 알림창 배경색
                 borderRadius: BorderRadius.circular(22), // 둥근 모서리
               ),
               child: Row(
@@ -305,7 +325,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 60),
+                    margin: const EdgeInsets.only(left: 60),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -327,7 +347,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                             Navigator.of(context).pop();
                           },
                           child: Container(
-                            margin: EdgeInsets.only(left: 15),
+                            margin: const EdgeInsets.only(left: 15),
                             child: Text(
                               "확인",
                               style: TextStyle(
@@ -380,7 +400,7 @@ class CustomExpansionTile extends StatelessWidget {
         backgroundColor: Colors.white,
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               border: Border(
                 top: BorderSide(
                   color: Color(0xFFEEEEEE),

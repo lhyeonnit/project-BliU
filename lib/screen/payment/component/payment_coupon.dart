@@ -1,41 +1,16 @@
+import 'package:BliU/data/coupon_data.dart';
+import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../utils/responsive.dart';
-
 class PaymentCoupon extends StatefulWidget {
-  const PaymentCoupon({super.key});
+  final List<CouponData> couponList;
+  const PaymentCoupon({super.key, required this.couponList});
 
   @override
   State<PaymentCoupon> createState() => _PaymentCouponState();
 }
-
-const List<Map<String, dynamic>> couponData = [
-  {
-    "discount": "10%",
-    "rate": 0.1,
-    "title": "키즈스타일 여름 특별 할인 쿠폰",
-    "expiryDate": "~ 24.05.05까지 사용 가능",
-    "discountDetails":
-        "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
-  },
-  {
-    "discount": "30%",
-    "rate": 0.3,
-    "title": "꼬마옷장 첫 구매 30% 할인권",
-    "expiryDate": "~ 24.05.05까지 사용 가능",
-    "discountDetails":
-        "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
-  },
-  {
-    "discount": "5%",
-    "rate": 0.05,
-    "title": "패션 키즈 VIP 할인 쿠폰",
-    "expiryDate": "~ 24.05.05까지 사용 가능",
-    "discountDetails":
-        "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
-  },
-];
 
 class _PaymentCouponState extends State<PaymentCoupon> {
   int? selectedCouponIndex; // 선택된 쿠폰의 인덱스 저장
@@ -86,7 +61,7 @@ class _PaymentCouponState extends State<PaymentCoupon> {
           Container(
             margin: const EdgeInsets.only(left: 16, top: 20),
             child: Text(
-              '보유 쿠폰 ${couponData.length}장',
+              '보유 쿠폰 ${widget.couponList.length}장',
               style: TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: Responsive.getFont(context, 14),
@@ -103,13 +78,18 @@ class _PaymentCouponState extends State<PaymentCoupon> {
           // 쿠폰 리스트
           Expanded(
             child: ListView.builder(
-              itemCount: couponData.length,
+              itemCount: widget.couponList.length,
               itemBuilder: (context, index) {
-                final coupon = couponData[index];
+                final coupon = widget.couponList[index];
 
-                // 마지막 쿠폰 비활성화
-                final bool isLastCoupon = index == couponData.length - 1;
-                final bool isSelected = selectedCouponIndex == index;
+                final couponDiscount = coupon.couponDiscount ?? "0";
+                final couponName = coupon.couponName ?? "";
+                final couponEnd = "~ ${coupon.couponEnd ?? ""}까지 사용가능";
+
+                String detailMessage = "구매금액 ${Utils.getInstance().priceString(coupon.couponMinPrice ?? 0)}원 이상인경우 사용 가능";
+                if (coupon.couponMaxPrice != null) {
+                  detailMessage = "최대 ${Utils.getInstance().priceString(coupon.couponMaxPrice ?? 0)} 할인 가능\n$detailMessage";
+                }
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,13 +98,11 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.symmetric(vertical: 6),
+                            margin: const EdgeInsets.symmetric(vertical: 6),
                             child: Radio<int>(
                               value: index,
                               groupValue: selectedCouponIndex,
-                              onChanged: isLastCoupon
-                                  ? null // 마지막 쿠폰 비활성화
-                                  : (int? value) {
+                              onChanged: (int? value) {
                                 setState(() {
                                   selectedCouponIndex = value;
                                 });
@@ -139,14 +117,14 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(vertical: 20),
+                            margin: const EdgeInsets.symmetric(vertical: 20),
                             child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       children: [
                                         Text(
-                                          '${coupon["discount"]}',
+                                          couponDiscount,
                                           style: TextStyle(
                                             fontSize: Responsive.getFont(context, 16),
                                             color: const Color(0xFFFF6192),
@@ -156,7 +134,7 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                                         Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 6),
                                           child: Text(
-                                            '${coupon["title"]}',
+                                            couponName,
                                             style: TextStyle(
                                               fontSize: Responsive.getFont(context, 16),
                                               fontWeight: FontWeight.bold,
@@ -168,14 +146,14 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                                     Container(
                                       padding: const EdgeInsets.symmetric(vertical: 10),
                                       child: Text(
-                                        coupon["expiryDate"]!,
+                                        couponEnd,
                                         style: TextStyle(
                                           fontSize: Responsive.getFont(context, 14),
                                         ),
                                       ),
                                     ),
                                     Text(
-                                      coupon["discountDetails"]!,
+                                      detailMessage,
                                       style: TextStyle(
                                         fontSize: Responsive.getFont(context, 12),
                                         color: const Color(0xFFA4A4A4),
@@ -187,8 +165,10 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                         ],
                       ),
                     // 쿠폰 사이의 선
-                    if (!isLastCoupon)
-                      Container(margin: EdgeInsets.symmetric(horizontal: 16),child: const Divider(thickness: 1, color: Color(0xFFEEEEEE))),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      child: const Divider(thickness: 1, color: Color(0xFFEEEEEE))
+                    ),
                   ],
                 );
               },
@@ -213,7 +193,7 @@ class _PaymentCouponState extends State<PaymentCoupon> {
               onTap: () {
                 if (selectedCouponIndex != null) {
                   // 선택된 쿠폰 데이터를 반환
-                  Navigator.pop(context, couponData[selectedCouponIndex!]);
+                  Navigator.pop(context, widget.couponList[selectedCouponIndex!]);
                 }
               },
               child: Center(

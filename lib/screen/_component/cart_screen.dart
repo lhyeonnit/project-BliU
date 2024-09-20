@@ -107,8 +107,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
       // 전체 선택 상태 동기화
       _isAllSelected = _selectedItemsCount == totalCount;
-
-      //TODO 금액 관련 변경
     });
   }
 
@@ -342,8 +340,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                             ),
                           ),
                           const SizedBox(height: 20.0),
-                          // if (!isLastStore)
-                          //   const Divider(thickness: 1, color: Color(0xFFEEEEEE)),
+                          //const Divider(thickness: 1, color: Color(0xFFEEEEEE)),
                         ],
                       );
                     }),
@@ -555,37 +552,4 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     }
   }
-
-
-
-
-
-
-
-  // PaymentData _preparePaymentData() {
-  //   // 총 결제 금액
-  //   int totalAmount = _getTotalPayment();
-  //
-  //   // 세금 제외 금액 설정 (현재는 0으로 설정)
-  //   int taxFreeAmount = 0;
-  //
-  //   // 주문 이름 생성 (상품 이름을 연결)
-  //   String orderName = _cartItems.map((item) => item['productName']).join(", ");
-  //
-  //   // 고유 주문 ID 생성
-  //   String orderId = "ORDER_${DateTime.now().millisecondsSinceEpoch}";
-  //
-  //   // 고객 정보 설정 (여기서는 고정값 사용)
-  //   String customerKey = "unique_customer_key";
-  //   String customerName = "고객 이름";
-  //
-  //   return PaymentData(
-  //     customerKey: customerKey,
-  //     orderId: orderId,
-  //     amount: totalAmount,
-  //     taxFreeAmount: taxFreeAmount,
-  //     orderName: orderName,
-  //     customerName: customerName,
-  //   );
-  // }
 }
