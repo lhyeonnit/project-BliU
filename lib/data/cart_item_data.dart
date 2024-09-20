@@ -7,6 +7,7 @@ class CartItemData {
   final String? sellStatusTxt;
   final int? ptPrice;
   final String? ptOption;
+  final int? ctDeliveryDefaultPrice;
   bool isSelected = false;
 
   CartItemData({
@@ -18,6 +19,7 @@ class CartItemData {
     required this.sellStatusTxt,
     required this.ptPrice,
     required this.ptOption,
+    required this.ctDeliveryDefaultPrice,
   });
 
   // JSON to Object
@@ -31,6 +33,7 @@ class CartItemData {
       sellStatusTxt: json['sell_status_txt'],
       ptPrice: json['pt_price'],
       ptOption: json['pt_option'],
+      ctDeliveryDefaultPrice: json['ct_delivery_default_price'],
     );
   }
 
@@ -45,6 +48,7 @@ class CartItemData {
       'sell_status_txt': sellStatusTxt,
       'pt_price': ptPrice,
       'pt_option': ptOption,
+      'ct_delivery_default_price': ctDeliveryDefaultPrice,
     };
   }
 }

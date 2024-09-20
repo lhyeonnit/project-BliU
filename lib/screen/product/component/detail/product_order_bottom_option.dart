@@ -91,7 +91,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                   scrollDirection: Axis.vertical,
                   itemCount: _ptOption.length, // 리스트의 길이를 사용
                   itemBuilder: (context, index) {
-
+                    //print("test ${_ptOption[index]}");
                     return _buildExpansionTile(
                       title: _ptOption[index].title ?? "",
                       options: _ptOption[index].children ?? [],
@@ -105,6 +105,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                   },
                 ),
               ),
+              _ptAddArr.isNotEmpty ?
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Theme(
@@ -156,7 +157,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                     ),
                   ),
                 ),
-              ),
+              ) : const SizedBox(),
               //옵션
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -456,15 +457,15 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
     int optionProductPrice = 0;
     int additionalProductPrice = 0;
     for (int i = 0; i < _addPtOptionArr.length; i++) {
-      optionProductPrice += (_addPtOptionArr[i].potPrice ?? 0 * _addPtOptionArr[i].count);
+      optionProductPrice += (_addPtOptionArr[i].potPrice ?? 0 * _addPtOptionArr[i].count) + (productPrice * _addPtOptionArr[i].count);
     }
     for (int i = 0; i < _addPtAddArr.length; i++) {
       additionalProductPrice += (_addPtAddArr[i].patPrice ?? 0);
     }
-    int totalPrice =  productPrice + optionProductPrice + additionalProductPrice;
+    int totalPrice =  optionProductPrice + additionalProductPrice;
     String deliveryPriceStr = "";
     if (totalPrice < (_productData.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0)) {
-      deliveryPriceStr = "${Utils.getInstance().priceString((_productData?.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0))}원";
+      deliveryPriceStr = "${Utils.getInstance().priceString((_productData.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0))}원";
     } else {
       if ((_productData.deliveryInfo?.deliveryPrice ?? 0) == 0) {
         deliveryPriceStr = "무료";

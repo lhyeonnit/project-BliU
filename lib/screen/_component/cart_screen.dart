@@ -1,7 +1,5 @@
 import 'package:BliU/data/cart_data.dart';
 import 'package:BliU/data/cart_item_data.dart';
-import 'package:BliU/data/payment_data.dart';
-import 'package:BliU/dto/cart_response_dto.dart';
 import 'package:BliU/screen/_component/cart_item.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/viewmodel/cart_view_model.dart';
@@ -85,6 +83,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           product.isSelected = _isAllSelected;
         }
       }
+
+      //금액 관련 변경
     });
   }
 
@@ -107,6 +107,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
       // 전체 선택 상태 동기화
       _isAllSelected = _selectedItemsCount == totalCount;
+
+      //TODO 금액 관련 변경
     });
   }
 
@@ -317,7 +319,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  '배송비 ${Utils.getInstance().priceString(cartItem.stDeliveryPrice ?? 0)} 원',
+                                  '배송비 ${(cartItem.stDeliveryPrice ?? 0) == 0 ? "무료" : "${Utils.getInstance().priceString(cartItem.stDeliveryPrice ?? 0)}원"}',
                                   style: TextStyle(
                                     fontSize: Responsive.getFont(context, 13),
                                     color: const Color(0xFF7B7B7B),
@@ -355,7 +357,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('총 상품 금액', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                              Text('0 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                              Text('${_getTotalProductPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                             ],
                           ),
                           const SizedBox(height: 8.0),
@@ -363,7 +365,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('총 배송비', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                              Text('0 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                              Text('${_getTotalDeliveryPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                             ],
                           ),
                           const Padding(
@@ -374,7 +376,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('총 결제예상금액', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                              Text('0 원', style: TextStyle(fontSize: Responsive.getFont(context, 14), fontWeight: FontWeight.bold)),
+                              Text('${_getTotalPaymentPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14), fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ],
@@ -419,7 +421,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('총 상품 금액: ', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                    Text('0원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                    Text('${_getTotalProductPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                   ],
                 ),
                 const SizedBox(height: 15.0),
@@ -427,21 +429,21 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('총 배송비: ', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                    Text('0원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                    Text('${_getTotalDeliveryPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                   ],
                 ),
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: _selectedItemsCount > 0
                       ? () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => PaymentScreen(
-                    //       cartDetails: _cartItems,
-                    //     ),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PaymentScreen(
+                          cartDetails: _cartItems,
+                        ),
+                      ),
+                    );
                   }
                       : null, // 선택된 항목이 없으면 비활성화
                   style: ElevatedButton.styleFrom(
@@ -466,6 +468,46 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       ),
     );
   }
+  int _getTotalProductPrice() {
+    // 선택된 기준으로 가격 가져오기
+    int totalProductPrice = 0;
+    for(var cartItem in _cartItems) {
+      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+        if (product.isSelected) {
+          totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
+        }
+      }
+    }
+    return totalProductPrice;
+  }
+
+  int _getTotalDeliveryPrice() {
+    int totalDeliveryPrice = 0;
+    for(var cartItem in _cartItems) {
+      bool isAllCheck = true;
+      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+        if (!product.isSelected) {
+          isAllCheck = false;
+        }
+      }
+      if (isAllCheck) {
+        totalDeliveryPrice += cartItem.stDeliveryPrice ?? 0;
+      } else {
+        for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+          if (product.isSelected) {
+            totalDeliveryPrice += product.ctDeliveryDefaultPrice ?? 0;
+          }
+        }
+      }
+
+    }
+    return totalDeliveryPrice;
+  }
+
+  int _getTotalPaymentPrice() {
+    return _getTotalProductPrice() + _getTotalDeliveryPrice();
+  }
+
   // 수량 조정
   void _cartUpdate(int ctIdx, int ctCount) async {
     // TODO 회원 비회원 구분
@@ -483,7 +525,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     final defaultResponseDTO = await ref.read(cartModelProvider.notifier).cartUpdate(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
-        //_getList();
+        _getList();
       } else {
         if (!context.mounted) return;
         Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");

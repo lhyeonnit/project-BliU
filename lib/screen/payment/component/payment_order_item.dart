@@ -1,8 +1,9 @@
+import 'package:BliU/data/cart_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class PaymentOrderItem extends StatefulWidget {
-  final List<Map<String, dynamic>> cartDetails;
+  final List<CartData> cartDetails;
 
   const PaymentOrderItem({
     super.key,
@@ -14,27 +15,26 @@ class PaymentOrderItem extends StatefulWidget {
 }
 
 class _PaymentOrderItemState extends State<PaymentOrderItem> {
-  List<Map<String, dynamic>> selectedItems = [];
+  List<CartData> selectedItems = [];
 
   @override
   void initState() {
     super.initState();
     // 선택된 아이템들을 저장
-    selectedItems = widget.cartDetails.where((item) => item['isSelected']).toList();
+    selectedItems = widget.cartDetails;
   }
-
 
   @override
   Widget build(BuildContext context) {
     Map<int, List<Map<String, dynamic>>> storeGroupedItems = {};
 
-    for (var item in selectedItems) {
-      int storeId = item['storeId'];
-      if (!storeGroupedItems.containsKey(storeId)) {
-        storeGroupedItems[storeId] = [];
-      }
-      storeGroupedItems[storeId]!.add(item);
-    }
+    // for (var item in selectedItems) {
+    //   int storeId = item['storeId'];
+    //   if (!storeGroupedItems.containsKey(storeId)) {
+    //     storeGroupedItems[storeId] = [];
+    //   }
+    //   storeGroupedItems[storeId]!.add(item);
+    // }
 
     return Column(
       children: [

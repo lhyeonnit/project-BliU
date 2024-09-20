@@ -1,8 +1,9 @@
+import 'package:BliU/data/cart_data.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
-import '../../../utils/responsive.dart';
 
 class PaymentMoney extends StatelessWidget {
-  final List<Map<String, dynamic>> cartDetails;
+  final List<CartData> cartDetails;
   final double discountRate; // 할인율 추가
 
   const PaymentMoney({super.key, required this.cartDetails, this.discountRate = 0.0});
@@ -10,20 +11,21 @@ class PaymentMoney extends StatelessWidget {
   Widget build(BuildContext context) {
     // 선택된 항목들만 필터링하여 계산
     final Set<int> selectedStoreIds = {};
-
-    final totalAmount = cartDetails.fold(
-        0,
-        (sum, item) =>
-            sum + (item['price'] as int) * (item['quantity'] as int));
-    final shippingCost = cartDetails
-        .where((item) => item['isSelected'] == true)
-        .fold(0, (sum, item) {
-      if (!selectedStoreIds.contains(item['storeId'])) {
-        selectedStoreIds.add(item['storeId']);
-        return sum + (item['shippingCost'] as int);
-      }
-      return sum;
-    });
+    final totalAmount = 0;
+    final shippingCost = 0;
+    // final totalAmount = cartDetails.fold(
+    //     0,
+    //     (sum, item) =>
+    //         sum + (item['price'] as int) * (item['quantity'] as int));
+    // final shippingCost = cartDetails
+    //     .where((item) => item['isSelected'] == true)
+    //     .fold(0, (sum, item) {
+    //   if (!selectedStoreIds.contains(item['storeId'])) {
+    //     selectedStoreIds.add(item['storeId']);
+    //     return sum + (item['shippingCost'] as int);
+    //   }
+    //   return sum;
+    // });
     ; // 예시 배송비
     final couponDiscount = (totalAmount * discountRate).toInt();
     final pointsDiscount = 0; // 포인트 할인

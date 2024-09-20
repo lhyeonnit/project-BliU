@@ -1,10 +1,10 @@
+import 'package:BliU/data/cart_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
 import 'package:BliU/screen/payment/component/payment_order_item.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import '../../utils/responsive.dart';
 
 class PaymentCompleteScreen extends StatefulWidget {
   final String? savedRecipientName; // 저장된 수령인 이름
@@ -12,7 +12,7 @@ class PaymentCompleteScreen extends StatefulWidget {
   final String? savedAddressRoad; // 저장된 도로명 주소
   final String? savedAddressDetail; // 저장된 상세주소
   final String? savedMemo; // 저장된 메모
-  final List<Map<String, dynamic>> cartDetails;
+  final List<CartData> cartDetails;
 
   const PaymentCompleteScreen({
     super.key,

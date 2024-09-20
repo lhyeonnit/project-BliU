@@ -1,24 +1,16 @@
-import 'dart:io';
-import 'package:BliU/const/constant.dart';
-import 'package:BliU/data/payment_data.dart';
+import 'package:BliU/data/cart_data.dart';
+import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/payment/component/payment_address_info.dart';
 import 'package:BliU/screen/payment/component/payment_discount.dart';
 import 'package:BliU/screen/payment/component/payment_money.dart';
 import 'package:BliU/screen/payment/component/payment_order_item.dart';
 import 'package:BliU/screen/payment/payment_complete_screen.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:tosspayments_widget_sdk_flutter/model/payment_info.dart';
-import 'package:tosspayments_widget_sdk_flutter/model/payment_widget_options.dart';
-import 'package:tosspayments_widget_sdk_flutter/payment_widget.dart';
-import 'package:tosspayments_widget_sdk_flutter/widgets/agreement.dart';
-import 'package:tosspayments_widget_sdk_flutter/widgets/payment_method.dart';
-
-import '../../utils/responsive.dart';
-import '../_component/move_top_button.dart';
 
 class PaymentScreen extends StatefulWidget {
-  final List<Map<String, dynamic>> cartDetails;
+  final List<CartData> cartDetails;
 
   const PaymentScreen({required this.cartDetails, super.key});
 
@@ -219,10 +211,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                 CustomExpansionTile(
                   title: '결제 금액',
                   content: PaymentMoney(
-                    cartDetails: widget.cartDetails
-                        .where(
-                            (item) => item['isSelected'] == true) // 선택된 항목만 전달
-                        .toList(),
+                    cartDetails: widget.cartDetails,
                     discountRate: selectedDiscountRate,
                   ),
                 ),
