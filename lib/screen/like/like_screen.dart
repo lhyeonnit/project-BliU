@@ -137,6 +137,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
                           overlayColor: WidgetStateColor.transparent,
                           indicatorColor: Colors.black,
                           indicatorSize: TabBarIndicatorSize.tab,
+                          dividerColor: Color(0xFFDDDDDD),
                           labelColor: Colors.black,
                           unselectedLabelColor: const Color(0xFF7B7B7B),
                           isScrollable: true,

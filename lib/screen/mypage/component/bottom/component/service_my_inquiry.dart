@@ -50,6 +50,7 @@ class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with Si
           indicatorColor: Colors.black,
           labelColor: Colors.black,
           unselectedLabelColor: Colors.grey,
+          dividerColor: Color(0xFFDDDDDD),
           tabs: const [
             Tab(text: '상품 문의내역'),
             Tab(text: '1:1 문의내역'),

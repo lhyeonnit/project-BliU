@@ -45,6 +45,7 @@ class StoreCategory extends HookConsumerWidget {
             indicatorColor: Colors.black,
             indicatorSize: TabBarIndicatorSize.tab,
             labelColor: Colors.black,
+            dividerColor: Color(0xFFDDDDDD),
             unselectedLabelColor: const Color(0xFF7B7B7B),
             isScrollable: true,
             indicatorWeight: 2.0,

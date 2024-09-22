@@ -261,6 +261,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                       ),
                       overlayColor: WidgetStateColor.transparent,
                       indicatorColor: Colors.black,
+                      dividerColor: Color(0xFFDDDDDD),
                       indicatorSize: TabBarIndicatorSize.tab,
                       labelColor: Colors.black,
                       unselectedLabelColor: const Color(0xFF7B7B7B),
