@@ -33,7 +33,8 @@ class MyScreen extends ConsumerWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
+          automaticallyImplyLeading: false,
+          // 기본 뒤로가기 버튼을 숨김
           title: const Text('마이페이지'),
           titleTextStyle: TextStyle(
             fontSize: Responsive.getFont(context, 18),
@@ -77,7 +78,8 @@ class MyScreen extends ConsumerWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const CartScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const CartScreen()),
                     );
                   },
                 ),
@@ -106,68 +108,77 @@ class MyScreen extends ConsumerWidget {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Consumer(
-              builder: (context, ref, widget) {
-                // TODO 비회원 또는 비로그인 처리???
-                final model = ref.watch(myModelProvider);
+            Consumer(builder: (context, ref, widget) {
+              // TODO 비회원 또는 비로그인 처리???
+              final model = ref.watch(myModelProvider);
 
-                int myRevieCount = 0;
-                int myCouponCount = 0;
-                int myPoint = 0;
-                if (model != null) {
-                  if (model.memberInfoResponseDTO?.result == true) {
-                    myRevieCount = model.memberInfoResponseDTO?.data?.myRevieCount ?? 0;
-                    myCouponCount = model.memberInfoResponseDTO?.data?.myCouponCount ?? 0;
-                    myPoint = model.memberInfoResponseDTO?.data?.myPoint ?? 0;
-                  }
+              int myRevieCount = 0;
+              int myCouponCount = 0;
+              int myPoint = 0;
+              if (model != null) {
+                if (model.memberInfoResponseDTO?.result == true) {
+                  myRevieCount =
+                      model.memberInfoResponseDTO?.data?.myRevieCount ?? 0;
+                  myCouponCount =
+                      model.memberInfoResponseDTO?.data?.myCouponCount ?? 0;
+                  myPoint = model.memberInfoResponseDTO?.data?.myPoint ?? 0;
                 }
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                        margin: EdgeInsets.symmetric(vertical: 20,horizontal: 16),
-                        child: MyInfo(memberInfoData: model?.memberInfoResponseDTO?.data,)),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _buildIconButton(
-                            context, '주문·배송', 'assets/images/my/mypage_ic01.svg', () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const OrderListScreen()),
-                            );
-                          }, ''),
-                          _buildIconButton(
-                            context, '나의리뷰', 'assets/images/my/mypage_ic02.svg', () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const MyReviewScreen()),
-                            );
-                          }, '$myRevieCount'),
-                          _buildIconButton(
-                            context, '쿠폰함', 'assets/images/my/mypage_ic03_1.svg', () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const MyCouponScreen()),
-                            );
-                          }, '$myCouponCount'),
-                          _buildIconButton(
-                            context, '포인트', 'assets/images/my/mypage_ic04.svg', () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const PointScreen()),
-                            );
-                          }, '$myPoint'),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
               }
-            ),
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      margin:
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                      child: MyInfo(
+                        memberInfoData: model?.memberInfoResponseDTO?.data,
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _buildIconButton(context, '주문·배송',
+                            'assets/images/my/mypage_ic01.svg', () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const OrderListScreen()),
+                          );
+                        }, ''),
+                        _buildIconButton(
+                            context, '나의리뷰', 'assets/images/my/mypage_ic02.svg',
+                            () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MyReviewScreen()),
+                          );
+                        }, '$myRevieCount'),
+                        _buildIconButton(context, '쿠폰함',
+                            'assets/images/my/mypage_ic03_1.svg', () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MyCouponScreen()),
+                          );
+                        }, '$myCouponCount'),
+                        _buildIconButton(
+                            context, '포인트', 'assets/images/my/mypage_ic04.svg',
+                            () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const PointScreen()),
+                          );
+                        }, '$myPoint'),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            }),
             Container(
               margin: EdgeInsets.only(top: 20, bottom: 30),
               width: double.infinity,
@@ -181,7 +192,9 @@ class MyScreen extends ConsumerWidget {
                 MaterialPageRoute(builder: (context) => const RecommendEdit()),
               );
             }),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             _buildSection(context, '고객서비스'),
             _buildSectionItem(context, 'FAQ', () {
               Navigator.push(
@@ -207,19 +220,20 @@ class MyScreen extends ConsumerWidget {
                 MaterialPageRoute(builder: (context) => const SettingScreen()),
               );
             }),
-            Padding(
-              padding: const EdgeInsets.only(left: 4.0),
-              child: TextButton(
+            GestureDetector(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     '로그아웃',
                     style: TextStyle(
-                      fontSize: Responsive.getFont(context, 16),
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500
-                    ),
+                        fontSize: Responsive.getFont(context, 16),
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400),
                   ),
-                  onPressed: () {}),
-            ),
+                ),
+                onTap: () {
+                  // TODO 로그아웃 동작
+                }),
           ],
         ),
       ),
@@ -233,7 +247,7 @@ class MyScreen extends ConsumerWidget {
       if (mtIdx != null) {
         if (mtIdx.isNotEmpty) {
           Map<String, dynamic> requestData = {
-            'mt_idx' : mtIdx,
+            'mt_idx': mtIdx,
           };
           ref.read(myModelProvider.notifier).getMy(requestData);
         }
@@ -241,10 +255,10 @@ class MyScreen extends ConsumerWidget {
     });
   }
 
-  void viewWillDisappear() { }
+  void viewWillDisappear() {}
 
-  Widget _buildIconButton(
-      BuildContext context, String label, String icon, VoidCallback onPressed, String num) {
+  Widget _buildIconButton(BuildContext context, String label, String icon,
+      VoidCallback onPressed, String num) {
     return Column(
       children: [
         IconButton(
@@ -283,9 +297,10 @@ class MyScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSectionItem(BuildContext context, String title, VoidCallback onPressed) {
+  Widget _buildSectionItem(
+      BuildContext context, String title, VoidCallback onPressed) {
     return InkWell(
-      overlayColor: WidgetStateColor.transparent ,
+      overlayColor: WidgetStateColor.transparent,
       onTap: onPressed,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -299,13 +314,12 @@ class MyScreen extends ConsumerWidget {
               style: TextStyle(
                 fontSize: Responsive.getFont(context, 15),
                 color: Colors.black,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w400,
               ),
             ),
-            const Icon(
-              Icons.arrow_forward_ios,
+            SvgPicture.asset(
+              'assets/images/ic_link.svg',
               color: Colors.black,
-              size: 16,
             ),
           ],
         ),
