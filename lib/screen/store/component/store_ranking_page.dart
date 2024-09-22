@@ -53,7 +53,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
     );
   }
 
-  String getSelectedAgeGroupsText() {
+  String getSelectedAgeGroupText() {
     if (selectedAgeGroup.isEmpty) {
       return '연령';
     } else {
@@ -78,7 +78,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
     );
   }
 
-  String getSelectedStylesText() {
+  String getSelectedStyleText() {
     if (selectedStyle.isEmpty) {
       return '스타일';
     } else {
@@ -99,69 +99,72 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
               if (index == 0) {
                 // 첫 번째 항목은 버튼들로 사용
                 return Container(
-                  margin: const EdgeInsets.only(left: 16.0, top: 20),
+                  margin: const EdgeInsets.only(
+                      left: 16.0, top: 20, right: 16, bottom: 15),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // 연령 버튼
-                      Flexible(
-                        child: GestureDetector(
-                          onTap: _showAgeGroupSelection,
-                          child: Container(
-                            padding: EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(22),
-                              border: Border.all(color: Color(0xFFDDDDDD)),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 5),
-                                  child: Text(
-                                    '연령', // 선택된 연령대 표시
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        fontSize: Responsive.getFont(context, 14),
-                                        color: Colors.black),
-                                  ),
+                      GestureDetector(
+                        onTap: _showAgeGroupSelection,
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              left: 20, right: 17, top: 11, bottom: 11),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(22),
+                            border: Border.all(color: Color(0xFFDDDDDD)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(right: 5),
+                                child: Text(
+                                  getSelectedAgeGroupText(), // 선택된 연령대 표시
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: Colors.black),
                                 ),
-                                SvgPicture.asset(
-                                    'assets/images/product/filter_select.svg'),
-                              ],
-                            ),
+                              ),
+                              SvgPicture.asset(
+                                  'assets/images/product/filter_select.svg'),
+                            ],
                           ),
                         ),
                       ),
                       const SizedBox(width: 4.0),
                       // 스타일 버튼
-                      Flexible(
-                        child: GestureDetector(
-                          onTap: _showStyleSelection,
-                          child: Container(
-                            padding: EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(22),
-                              border: Border.all(color: Color(0xFFDDDDDD)),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 5),
-                                  child: Text(
-                                    '스타일', // 선택된 연령대 표시
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        fontSize: Responsive.getFont(context, 14),
-                                        color: Colors.black),
-                                  ),
+                      GestureDetector(
+                        onTap: _showStyleSelection,
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              left: 20, right: 17, top: 11, bottom: 11),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(22),
+                            border: Border.all(color: Color(0xFFDDDDDD)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                constraints: BoxConstraints(
+                                  minWidth: 0, // 최소 너비를 0으로 설정 (자유롭게 확장)
+                                  maxWidth: 93, // 최대 너비를 93으로 설정
                                 ),
-                                SvgPicture.asset(
-                                    'assets/images/product/filter_select.svg'),
-                              ],
-                            ),
+                                margin: EdgeInsets.only(right: 5),
+                                child: Text(
+                                  getSelectedStyleText(), // 선택된 연령대 표시
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: Colors.black),
+                                ),
+                              ),
+                              SvgPicture.asset(
+                                  'assets/images/product/filter_select.svg'),
+                            ],
                           ),
                         ),
                       ),
@@ -172,7 +175,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                 // 나머지 항목들은 상점 랭킹
                 final storeIndex = index - 1; // store 리스트의 인덱스는 0부터 시작해야 함
                 return Container(
-                  margin: const EdgeInsets.only(top: 30),
+                  margin: const EdgeInsets.symmetric(vertical: 15),
                   padding: const EdgeInsets.only(left: 16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,7 +271,8 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                               ),
                               Container(
                                 width: 30,
-                                margin: const EdgeInsets.only(top: 3, right: 16),
+                                margin:
+                                    const EdgeInsets.only(top: 3, right: 16),
                                 child: Column(
                                   children: [
                                     GestureDetector(

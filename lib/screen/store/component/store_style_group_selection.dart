@@ -24,10 +24,13 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
     super.initState();
     _tempSelectedStyle = widget.selectedStyle;
   }
+
   void _toggleSelection(String style) {
     setState(() {
-      if (_tempSelectedStyle.contains(style)) {
-        _tempSelectedStyle = ""; // 선택 초기화
+      if (_tempSelectedStyle == style) {
+        _tempSelectedStyle = "";
+      } else {
+        _tempSelectedStyle = style;
       }
     });
   }
@@ -92,7 +95,7 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
                     child: SvgPicture.asset('assets/images/store/ic_release.svg'),
                     onTap: () {
                       setState(() {
-                        _tempSelectedStyle == "";
+                        _tempSelectedStyle = "";
                       });
                     },
                   ),

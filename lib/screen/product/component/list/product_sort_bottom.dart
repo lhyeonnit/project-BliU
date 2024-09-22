@@ -3,7 +3,7 @@
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
-class ProductSortBottom extends StatelessWidget {
+class ProductSortBottom extends StatefulWidget {
   final String sortOption;
   final ValueChanged<String> onSortOptionSelected;
 
@@ -14,9 +14,32 @@ class ProductSortBottom extends StatelessWidget {
   });
 
   @override
+  _ProductSortBottomState createState() => _ProductSortBottomState();
+}
+
+class _ProductSortBottomState extends State<ProductSortBottom> {
+  late String _tempSelectedSortGroup;
+
+  @override
+  void initState() {
+    super.initState();
+    _tempSelectedSortGroup = widget.sortOption;
+  }
+
+  void _toggleSelection(String sortOption) {
+    setState(() {
+      if (_tempSelectedSortGroup == sortOption) {
+        _tempSelectedSortGroup = sortOption;
+      } else {
+        _tempSelectedSortGroup = sortOption;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      height: 270,
+      height: 300,
       padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -42,11 +65,11 @@ class ProductSortBottom extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _sortText('최신순', context),
-                  _sortText('인기순', context),
-                  _sortText('추천순', context),
-                  _sortText('가격 낮은 순', context),
-                  _sortText('가격 높은 순', context),
+                  _sortText('최신순'),
+                  _sortText('인기순'),
+                  _sortText('추천순'),
+                  _sortText('가격 낮은 순'),
+                  _sortText('가격 높은 순'),
                 ],
               ),
             ),
@@ -55,10 +78,23 @@ class ProductSortBottom extends StatelessWidget {
       ),
     );
   }
-  Widget _sortText(String title, BuildContext context) {
 
-    return Container(
-        margin: EdgeInsets.only(bottom: 24),
-        child: Text(title, style: TextStyle(fontSize: Responsive.getFont(context, 16)),));
+  Widget _sortText(String sortOption) {
+    final isSelected = _tempSelectedSortGroup.contains(sortOption);
+    return GestureDetector(
+      onTap: () {
+        _toggleSelection(sortOption);
+        widget.onSortOptionSelected(_tempSelectedSortGroup);
+        Navigator.pop(context);
+      },
+      child: Container(
+          margin: EdgeInsets.only(bottom: 24),
+          child: Text(
+            sortOption,
+            style: TextStyle(fontSize: Responsive.getFont(context, 16),
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal
+            ),
+          )),
+    );
   }
 }

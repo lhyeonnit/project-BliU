@@ -95,9 +95,6 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
   String sortOption = '최신순';
   String sortOptionSelected = '';
 
-  List<String> selectedAgeOption = [];
-  List<String> selectedStyleOption = [];
-
   @override
   void initState() {
     super.initState();
@@ -112,6 +109,33 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
     super.dispose();
   }
 
+  String selectedAgeGroup = '';
+  List<String> selectedStyles = [];
+  RangeValues selectedRangeValues = const RangeValues(0, 100000);
+
+  String getSelectedAgeGroupText() {
+    if (selectedAgeGroup.isEmpty) {
+      return '연령';
+    } else {
+      return selectedAgeGroup;
+    }
+  }
+
+  String getSelectedStyleText() {
+    if (selectedStyles.isEmpty) {
+      return '스타일';
+    } else {
+      return selectedStyles.join(', ');
+    }
+  }
+  String getSelectedRangeValues() {
+    // 초기 값인지 확인하여 '가격'이라는 기본값 반환
+    if (selectedRangeValues == const RangeValues(0, 100000)) {
+      return '가격';
+    } else {
+      return '${selectedRangeValues.start.toInt()}원 ~ ${selectedRangeValues.end.toInt()}원';
+    }
+  }
   void _openSortBottomSheet() {
     showModalBottomSheet(
       context: context,
@@ -137,6 +161,37 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
           onCategorySelected: (category) {
             setState(() {
               _selectedCategory = category;
+            });
+          },
+        );
+      },
+    );
+  }
+
+  void _openFilterBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      constraints: BoxConstraints(maxHeight: 700, minHeight: 400),
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) {
+        return ProductFilterBottom(
+          selectedStyleOption: selectedStyles,
+          selectedAgeOption: selectedAgeGroup,
+          selectedRangeValuesOption: selectedRangeValues!,
+          onAgeOptionSelected: (String newSelectedAge) {
+            setState(() {
+              selectedAgeGroup = newSelectedAge;
+            });
+          },
+          onStyleOptionSelected: (List<String> newSelectedStyle) {
+            setState(() {
+              selectedStyles = newSelectedStyle;
+            });
+          },
+          onRangeValuesSelected: (RangeValues newSelectedRangeValues) {
+            setState(() {
+              selectedRangeValues = newSelectedRangeValues;
             });
           },
         );
@@ -275,8 +330,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 16.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 16.0),
                     padding: EdgeInsets.only(top: 15, bottom: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -285,14 +339,17 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                           onTap: _openSortBottomSheet, // 정렬 옵션 선택 창 열기
                           child: Row(
                             children: [
-                              SvgPicture.asset('assets/images/product/ic_filter02.svg'),
+                              SvgPicture.asset(
+                                  'assets/images/product/ic_filter02.svg'),
                               Container(
                                 margin: EdgeInsets.only(left: 5),
                                 child: Text(
                                   sortOptionSelected.isNotEmpty
                                       ? sortOptionSelected
                                       : '최신순', // 선택된 정렬 옵션 표시
-                                  style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+                                  style: TextStyle(
+                                      fontSize:
+                                          Responsive.getFont(context, 14)),
                                 ),
                               ),
                             ],
@@ -300,11 +357,11 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                         ),
                         Row(
                           children: [
-                            _buildFilterButton(context, '연령'),
+                            _buildFilterButton(getSelectedAgeGroupText()),
                             Container(
                                 margin: EdgeInsets.symmetric(horizontal: 4),
-                                child: _buildFilterButton(context, '스타일')),
-                            _buildFilterButton(context, '가격'),
+                                child: _buildFilterButton(getSelectedStyleText())),
+                            _buildFilterButton(getSelectedRangeValues()),
                           ],
                         ),
                       ],
@@ -329,62 +386,30 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
     );
   }
 
-  Widget _buildFilterButton(BuildContext context, String label) {
+  Widget _buildFilterButton(String label) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(19.0),
+          borderRadius: BorderRadius.circular(22.0),
         ),
         side: BorderSide(
           color: Color(0xFFDDDDDD),
         ),
-        padding: EdgeInsets.only(top: 11.0, bottom: 11,left: 20.0, right: 17),
+        padding: EdgeInsets.only(top: 11.0, bottom: 11, left: 20.0, right: 17),
       ),
-      onPressed: () {
-        ProductFilterBottom.show(
-          context,
-          ageOptions: ageOptions.map((option) => option.label).toList(),
-          styleOptions: styleOptions.map((option) => option.label).toList(),
-          selectedAgeOption: selectedAgeOption,
-          selectedStyleOption: selectedStyleOption,
-          onAgeOptionSelected: (String selectedAge) {
-            setState(() {
-              if (selectedAgeOption.contains(selectedAge)) {
-                selectedAgeOption.remove(selectedAge); // 이미 선택된 경우 제거
-              } else {
-                selectedAgeOption.add(selectedAge); // 새로 선택된 경우 추가
-              }
-            });
-          },
-          onStyleOptionSelected: (String selectedStyle) {
-            setState(() {
-              if (selectedStyleOption.contains(selectedStyle)) {
-                selectedStyleOption.remove(selectedStyle); // 이미 선택된 경우 제거
-              } else {
-                selectedStyleOption.add(selectedStyle); // 새로 선택된 경우 추가
-              }
-            });
-          },
-          onResetFilters: () {
-            setState(() {
-              selectedAgeOption.clear(); // 선택된 연령 필터 초기화
-              selectedStyleOption.clear(); // 선택된 스타일 필터 초기화
-            });
-          },
-          onApplyFilters: () {
-            setState(() {
-              // 선택된 필터 옵션을 적용하고, 필요에 따라 데이터를 다시 로드하거나 UI를 업데이트합니다.
-            });
-          },
-        );
-      },
+      onPressed: _openFilterBottomSheet,
       child: Row(
         children: [
           Container(
+            width: 35,
             margin: EdgeInsets.only(right: 5),
             child: Text(
               label,
-              style: TextStyle(color: Colors.black, fontSize: Responsive.getFont(context, 14)),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: Responsive.getFont(context, 14)),
             ),
           ),
           SvgPicture.asset('assets/images/product/filter_select.svg'),
@@ -392,38 +417,38 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
       ),
     );
   }
+}
 
-  Widget _buildProductGrid() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16.0),
-          padding: EdgeInsets.only(bottom: 20),
-          child: Text(
-            '상품 ${items.length}', // 상품 수 표시
-            style: const TextStyle(fontSize: 14, color: Colors.black),
-          ),
+Widget _buildProductGrid() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: EdgeInsets.only(bottom: 20),
+        child: Text(
+          '상품 ${items.length}', // 상품 수 표시
+          style: const TextStyle(fontSize: 14, color: Colors.black),
         ),
-        Expanded(
-          child: GridView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.55,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 30,
-            ),
-            itemCount: items.length, // 실제 상품 수로 변경
-            itemBuilder: (context, index) {
-              return ProductListCard(
-                item: items[index],
-                index: index,
-              );
-            },
+      ),
+      Expanded(
+        child: GridView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.55,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 30,
           ),
+          itemCount: items.length, // 실제 상품 수로 변경
+          itemBuilder: (context, index) {
+            return ProductListCard(
+              item: items[index],
+              index: index,
+            );
+          },
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }
