@@ -37,43 +37,44 @@ class NoticeList extends ConsumerWidget {
               itemBuilder: (context, index) {
                 final noticeData = noticeList[index];
                 return Column(
-                    children: [
-                      ListTile(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                        title: Text(
-                          noticeData.ntTitle ?? "",
-                          style: TextStyle(
-                              fontSize: Responsive.getFont(context, 15),
-                              fontWeight: FontWeight.w600),
-                        ),
-                        subtitle: Text(noticeData.ntWdate ?? "",
-                            style: TextStyle(
-                                color: Color(0xFF7B7B7B),
-                                fontSize: Responsive.getFont(context, 14))),
-                        trailing: SvgPicture.asset('assets/images/ic_link.svg'),
-                        onTap: () {
-                          // 공지사항 상세 페이지로 이동
-                          final ntIdx = noticeData.ntIdx;
-                          if (ntIdx != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => NoticeDetail(
-                                  ntIdx: ntIdx,
-                                ),
-                              ),
-                            );
-                          }
-                        },
+                  children: [
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      title: Text(
+                        noticeData.ntTitle ?? "",
+                        style: TextStyle(
+                            fontSize: Responsive.getFont(context, 15),
+                            fontWeight: FontWeight.w600),
                       ),
-                      Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          child: Divider(
-                            thickness: 1,
-                            color: Color(0xFFEEEEEE),
-                          ))
-                    ],
-                  );
+                      subtitle: Text(noticeData.ntWdate ?? "",
+                          style: TextStyle(
+                              color: Color(0xFF7B7B7B),
+                              fontSize: Responsive.getFont(context, 14))),
+                      trailing: SvgPicture.asset('assets/images/ic_link.svg'),
+                      onTap: () {
+                        // 공지사항 상세 페이지로 이동
+                        final ntIdx = noticeData.ntIdx;
+                        if (ntIdx != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NoticeDetail(
+                                ntIdx: ntIdx,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      child: Divider(
+                        thickness: 1,
+                        color: Color(0xFFEEEEEE),
+                      ),
+                    )
+                  ],
+                );
               },
             );
           }),
