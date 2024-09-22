@@ -139,6 +139,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       TabBar(
                         overlayColor: WidgetStateColor.transparent,
                         indicatorColor: Colors.black,
+                        dividerColor: Color(0xFFDDDDDD),
                         indicatorSize: TabBarIndicatorSize.tab, // 인디케이터가 각 탭의 길이에 맞게 조정됨
                         labelColor: Colors.black,
                         unselectedLabelColor: const Color(0xFF7B7B7B),

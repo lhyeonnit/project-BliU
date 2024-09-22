@@ -21,22 +21,40 @@ class SettingScreen extends ConsumerWidget {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        title: Text(
-          '설정',
-          style: TextStyle(
-              color: Colors.black,
-              fontSize: Responsive.getFont(context, 18),
-              fontWeight: FontWeight.bold
-          ),
+        title: const Text('설정'),
+        titleTextStyle: TextStyle(
+          fontSize: Responsive.getFont(context, 18),
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
         ),
         leading: IconButton(
-          icon: SvgPicture.asset("assets/images/login/ic_back.svg"),
+          icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
           onPressed: () {
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          child: Container(
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
+            height: 1.0, // 구분선의 두께 설정
+            child: Container(
+              height: 1.0, // 그림자 부분의 높이
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFFF4F4F4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
-      body: Padding(
+      body: Container(
+        margin: EdgeInsets.only(top: 26),
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,50 +76,52 @@ class SettingScreen extends ConsumerWidget {
                         }
                       }
 
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '알림',
-                            style: TextStyle(
-                                fontSize: Responsive.getFont(context, 16),
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          FlutterSwitch(
-                            width: 55.0,
-                            height: 25.0,
-                            valueFontSize: Responsive.getFont(context, 12),
-                            toggleSize: 18.0,
-                            value: isSwitched,
-                            borderRadius: 30.0,
-                            padding: 4.0,
-                            showOnOff: false,
-                            activeColor: Colors.grey,
-                            inactiveColor: Colors.grey.shade300,
-                            toggleColor: Colors.white,
-                            onToggle: (val) {
-                              String mtPushing = "";
-                              if (val) {
-                                mtPushing = "Y";
-                              } else {
-                                mtPushing = "N";
-                              }
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '알림',
+                              style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 15),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            FlutterSwitch(
+                              width: 55.0,
+                              height: 25.0,
+                              valueFontSize: Responsive.getFont(context, 12),
+                              toggleSize: 18.0,
+                              value: isSwitched,
+                              borderRadius: 30.0,
+                              padding: 4.0,
+                              showOnOff: false,
+                              activeColor: Colors.grey,
+                              inactiveColor: Colors.grey.shade300,
+                              toggleColor: Colors.white,
+                              onToggle: (val) {
+                                String mtPushing = "";
+                                if (val) {
+                                  mtPushing = "Y";
+                                } else {
+                                  mtPushing = "N";
+                                }
 
-                              var data = {
-                                'mt_idx': '2',
-                                'mt_pushing': mtPushing
-                              };
-                              var model = ref.read(settingModelProvider);
-                              model?.mtPushing = mtPushing;
-                              ref.read(settingModelProvider.notifier).setPush(data);
-                            },
-                          ),
-                        ],
+                                var data = {
+                                  'mt_idx': '2',
+                                  'mt_pushing': mtPushing
+                                };
+                                var model = ref.read(settingModelProvider);
+                                model?.mtPushing = mtPushing;
+                                ref.read(settingModelProvider.notifier).setPush(data);
+                              },
+                            ),
+                          ],
+                        ),
                       );
                     }
                   ),
-                  const SizedBox(height: 10),
                   _buildCustomTile(
                     context, '이용약관',
                         () {
@@ -140,16 +160,11 @@ class SettingScreen extends ConsumerWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: Responsive.getFont(context, 16),
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: Responsive.getFont(context, 15),
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500),
             ),
-            const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.black,
-              size: 15,
-            ),
+            SvgPicture.asset('assets/images/ic_link.svg', color: Colors.black,),
           ],
         ),
       ),

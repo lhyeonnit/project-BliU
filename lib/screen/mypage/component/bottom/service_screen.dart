@@ -19,45 +19,66 @@ class ServiceScreen extends ConsumerWidget {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        title: Text(
-          '고객센터',
-          style: TextStyle(
-              color: Colors.black,
-              fontSize: Responsive.getFont(context, 18),
-              fontWeight: FontWeight.bold
-          ),
+        title: const Text('고객센터'),
+        titleTextStyle: TextStyle(
+          fontSize: Responsive.getFont(context, 18),
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
         ),
         leading: IconButton(
-          icon: SvgPicture.asset("assets/images/login/ic_back.svg"),
+          icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
           onPressed: () {
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          child: Container(
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
+            height: 1.0, // 구분선의 두께 설정
+            child: Container(
+              height: 1.0, // 그림자 부분의 높이
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFFF4F4F4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
-      body: Padding(
+      body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        margin: EdgeInsets.only(top: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Consumer(
-              builder: (context, ref, widget) {
-                final model = ref.watch(serviceModelProvider);
+                builder: (context, ref, widget) {
+                  final model = ref.watch(serviceModelProvider);
 
-                return Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    _buildInfoRow(context, '메일문의', model?.stCustomerEmail ?? 'email@email.com', Colors.black),
-                    const SizedBox(height: 16),
-                    _buildInfoRow(context,'전화문의', model?.stCustomerTel ?? '02-000-000', Colors.pink),
-                  ],
-                );
-              }
+                  return Column(
+                    children: [
+                      _buildInfoRow(context, '메일문의',
+                          model?.stCustomerEmail ?? 'email@email.com',
+                          Colors.black, false),
+                      Container(
+                          margin: EdgeInsets.only(top: 20, bottom: 10),
+                          child: _buildInfoRow(context, '전화문의',
+                              model?.stCustomerTel ?? '02-000-000',
+                              Color(0xFFFF6192), true)),
+                    ],
+                  );
+                }
             ),
-            const SizedBox(height: 10),
             _buildCustomTile(
               context,
               '판매자 입점 문의',
-              () {
+                  () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const InquiryStore()),
@@ -67,20 +88,22 @@ class ServiceScreen extends ConsumerWidget {
             _buildCustomTile(
               context,
               '고객센터 문의하기',
-              () {
+                  () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const InquiryService(qnaType: '1',)),
+                  MaterialPageRoute(builder: (context) => const InquiryService(
+                    qnaType: '1',)),
                 );
               },
             ),
             _buildCustomTile(
               context,
               '문의내역',
-              () {
+                  () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ServiceMyInquiryScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const ServiceMyInquiryScreen()),
                 );
               },
             ),
@@ -90,30 +113,35 @@ class ServiceScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildInfoRow(BuildContext context, String title, String content, Color contentColor) {
+  Widget _buildInfoRow(BuildContext context, String title, String content,
+      Color contentColor, bool underline) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
           style: TextStyle(
-            fontSize: Responsive.getFont(context, 16),
+            fontSize: Responsive.getFont(context, 15),
             color: Colors.black,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
           ),
         ),
         Text(
           content,
           style: TextStyle(
-            fontSize: Responsive.getFont(context, 16),
+            fontSize: Responsive.getFont(context, 14),
+            fontWeight: FontWeight.w400,
             color: contentColor,
+            decoration: underline ? TextDecoration.underline : TextDecoration.none,
+              decorationColor: underline ? Color(0xFFFF6192) : null,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildCustomTile(BuildContext context, String title, VoidCallback onTap) {
+  Widget _buildCustomTile(BuildContext context, String title,
+      VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -126,14 +154,10 @@ class ServiceScreen extends ConsumerWidget {
               style: TextStyle(
                 fontSize: Responsive.getFont(context, 16),
                 color: Colors.black,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.black,
-              size: 15,
-            ),
+            SvgPicture.asset('assets/images/ic_link.svg', color: Colors.black,),
           ],
         ),
       ),
