@@ -72,59 +72,74 @@ class _ReportPageState extends State<ReportPage> {
       ),
       body: Stack(
         children: [
-           Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                 Container(
-                   margin: EdgeInsets.symmetric(horizontal: 16,vertical: 30),
-                   child: Text(
-                    '신고의 부적합한 사용자/글을 지속적으로 신고하는 경우 제재 조치가 취해질 수 있으니 유의해 주세요',
-                    style: TextStyle(fontSize: Responsive.getFont(context, 14), color: Color(0xFF7B7B7B)),
-                                   ),
-                 ),
-                Expanded(
-                  child: ListView(
-                    children: [
-                      _buildRadioOption(0, '거짓 정보 및 허위 사실'),
-                      _buildRadioOption(1, '비속어 및 욕설'),
-                      _buildRadioOption(2, '부적절한 사진 및 영상'),
-                      _buildRadioOption(3, '개인정보 유출'),
-                      _buildRadioOption(4, '광고 및 홍보'),
-                      _buildRadioOption(5, '스팸 리뷰'),
-                      _buildRadioOption(6, '타인 비방'),
-                      _buildRadioOption(7, '리뷰의 무관성'),
-                      _buildRadioOption(8, '기타'),
-                      const SizedBox(height: 16),
-                      TextField(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+                child: Text(
+                  '신고의 부적합한 사용자/글을 지속적으로 신고하는 경우 제재 조치가 취해질 수 있으니 유의해 주세요',
+                  style: TextStyle(
+                      fontSize: Responsive.getFont(context, 14),
+                      color: Color(0xFF7B7B7B)),
+                ),
+              ),
+              Expanded(
+                child: ListView(
+                  children: [
+                    _buildRadioOption(0, '거짓 정보 및 허위 사실'),
+                    _buildRadioOption(1, '비속어 및 욕설'),
+                    _buildRadioOption(2, '부적절한 사진 및 영상'),
+                    _buildRadioOption(3, '개인정보 유출'),
+                    _buildRadioOption(4, '광고 및 홍보'),
+                    _buildRadioOption(5, '스팸 리뷰'),
+                    _buildRadioOption(6, '타인 비방'),
+                    _buildRadioOption(7, '리뷰의 무관성'),
+                    _buildRadioOption(8, '기타'),
+                    Container(
+                      margin: EdgeInsets.only(top: 10.0, bottom: 20, right: 16, left: 16),
+                      child: TextField(
                         controller: _controller,
-                        maxLines: 5,
+                        maxLines: 4,
                         decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 15),
                           hintText: '직접 입력해주세요',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                          hintStyle: TextStyle(
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Color(0xFF595959)),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: _submitReport,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: _submitReport,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Text('신고하기', style: TextStyle(color: Colors.white)),
                   ),
+                  child:
+                      const Text('신고하기', style: TextStyle(color: Colors.white)),
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
           if (_isReported)
             Positioned(
               top: 20,
@@ -133,7 +148,8 @@ class _ReportPageState extends State<ReportPage> {
               child: Center(
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16),
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(20),
@@ -151,16 +167,29 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget _buildRadioOption(int value, String label) {
-    return RadioListTile<int>(
-      activeColor: Colors.pink,
-      value: value,
-      groupValue: _selectedReason,
-      onChanged: (int? newValue) {
-        setState(() {
-          _selectedReason = newValue;
-        });
-      },
-      title: Text(label),
+    return Row(
+      children: [
+        Radio<int>(
+          activeColor: Color(0xFFFF6192),
+          fillColor: MaterialStateProperty.resolveWith((states) {
+            if (!states.contains(MaterialState.selected)) {
+              return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
+            }
+            return const Color(0xFFFF6192); // 선택된 상태의 색상
+          }),
+          value: value,
+          groupValue: _selectedReason,
+          onChanged: (int? newValue) {
+            setState(() {
+              _selectedReason = newValue;
+            });
+          },
+        ),
+        Text(
+          label,
+          style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+        ),
+      ],
     );
   }
 }

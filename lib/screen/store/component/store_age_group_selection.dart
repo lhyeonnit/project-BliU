@@ -27,8 +27,10 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
 
   void _toggleSelection(String ageGroup) {
     setState(() {
-      if (_tempSelectedAgeGroup.contains(ageGroup)) {
-        _tempSelectedAgeGroup = ""; // 선택 초기화
+      if (_tempSelectedAgeGroup == ageGroup) {
+        _tempSelectedAgeGroup = "";
+      } else {
+        _tempSelectedAgeGroup = ageGroup;
       }
     });
   }

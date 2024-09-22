@@ -33,7 +33,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
     );
   }
 
-  String getSelectedAgeGroupsText() {
+  String getSelectedAgeGroupText() {
     if (selectedAgeGroup.isEmpty) {
       return '연령';
     } else {
@@ -93,7 +93,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.only(left: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,52 +126,22 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
               ),
             ),
           ),
-          Container(
-            margin: const EdgeInsets.only(top: 20.0),
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      // TODO 정렬
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/product/ic_filter02.svg",
-                            width: 18,
-                            height: 18,
-                            fit: BoxFit.contain,
-                            alignment: Alignment.topCenter,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 5, bottom: 2),
-                            child: Text(
-                              '최신순',
-                              style: TextStyle(
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: Colors.black),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 20.0),
+                padding: const EdgeInsets.only(right: 16.0),
+                child: GestureDetector(
                   onTap: _showAgeGroupSelection,
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(20, 11, 20, 11),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(200),
+                      borderRadius: BorderRadius.circular(22),
                       border: Border.all(
                         color: const Color(0xFFDDDDDD), // 테두리 색상
-                        width: 1.0,
                       ),
                     ),
                     child: Row(
@@ -179,7 +149,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                         Container(
                           margin: EdgeInsets.only(right: 5),
                           child: Text(
-                            '연령',
+                            getSelectedAgeGroupText(),
                             style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black),
@@ -196,8 +166,8 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           Container(
             margin: EdgeInsets.only(right: 16, bottom: 29),
@@ -256,8 +226,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-            const ProductDetailScreen(ptIdx: 3),
+            builder: (context) => const ProductDetailScreen(ptIdx: 3),
           ),
         );
       },
@@ -272,8 +241,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius:
-                  const BorderRadius.all(Radius.circular(5)),
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: Image.asset(
                     'assets/images/home/exhi.png',
                     height: 184,
@@ -288,7 +256,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                     onTap: () {
                       setState(() {
                         isFavoriteList[index] =
-                        !isFavoriteList[index]; // 좋아요 상태 토글
+                            !isFavoriteList[index]; // 좋아요 상태 토글
                       });
                     },
                     child: SvgPicture.asset(
@@ -383,7 +351,6 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                           ),
                           Container(
                             margin: EdgeInsets.only(left: 2, bottom: 2),
-
                             child: Text(
                               item['comments']!,
                               style: TextStyle(
@@ -394,7 +361,6 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ],

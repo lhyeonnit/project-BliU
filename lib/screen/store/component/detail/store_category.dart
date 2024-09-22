@@ -1,4 +1,5 @@
 import 'package:BliU/screen/store/component/detail/store_category_item.dart';
+import 'package:BliU/screen/store/component/detail/store_group_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -56,64 +57,7 @@ class StoreCategory extends HookConsumerWidget {
             }).toList(),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {}, // 정렬 순서 변경 로직
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/home/ic_filter02.svg',
-                        height: 18,
-                        width: 18,
-                      ),
-                      const SizedBox(width: 5.0),
-                      Text(
-                        '최신순', // 정렬 순서 텍스트
-                        style: TextStyle(
-                            fontSize: Responsive.getFont(context, 14)),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Flexible(
-                child: GestureDetector(
-                  onTap: () {}, // 연령대 필터 선택
-                  child: Container(
-                    padding: EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(22),
-                      border: Border.all(color: Color(0xFFDDDDDD)),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 5),
-                          child: Text(
-                              '연령', // 선택된 연령대 표시
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: TextStyle(
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: Colors.black),
-                            ),
-                        ),
-                        SvgPicture.asset(
-                            'assets/images/product/filter_select.svg'),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        StoreGroupSelection(),
         Padding(
           padding: const EdgeInsets.only(left: 16.0),
           child: Text(
