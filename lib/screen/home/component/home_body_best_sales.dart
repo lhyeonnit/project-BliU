@@ -13,7 +13,7 @@ class HomeBodyBestSales extends StatefulWidget {
 }
 
 class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
-  List<String> selectedAgeGroups = [];
+  String selectedAgeGroup = '';
   List<bool> isFavoriteList = List<bool>.generate(10, (index) => false);
 
   void _showAgeGroupSelection() {
@@ -22,10 +22,10 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
         return StoreAgeGroupSelection(
-          selectedAgeGroups: selectedAgeGroups,
-          onSelectionChanged: (List<String> newSelection) {
+          selectedAgeGroup: selectedAgeGroup,
+          onSelectionChanged: (String newSelection) {
             setState(() {
-              selectedAgeGroups = newSelection;
+              selectedAgeGroup = newSelection;
             });
           },
         );
@@ -34,10 +34,10 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
   }
 
   String getSelectedAgeGroupsText() {
-    if (selectedAgeGroups.isEmpty) {
+    if (selectedAgeGroup.isEmpty) {
       return '연령';
     } else {
-      return selectedAgeGroups.join(', ');
+      return selectedAgeGroup;
     }
   }
 

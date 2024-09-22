@@ -82,32 +82,32 @@ class StoreCategory extends HookConsumerWidget {
                 ),
               ),
               Flexible(
-                child: OutlinedButton(
-                  onPressed: () {}, // 연령대 필터 선택
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    side: const BorderSide(color: Color(0xFFDDDDDD)),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(19),
+                child: GestureDetector(
+                  onTap: () {}, // 연령대 필터 선택
+                  child: Container(
+                    padding: EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(22),
+                      border: Border.all(color: Color(0xFFDDDDDD)),
                     ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          '연령', // 선택된 연령대 표시
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.black),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 5),
+                          child: Text(
+                              '연령', // 선택된 연령대 표시
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black),
+                            ),
                         ),
-                      ),
-                      const SizedBox(width: 5.0),
-                      SvgPicture.asset(
-                          'assets/images/product/filter_select.svg'),
-                    ],
+                        SvgPicture.asset(
+                            'assets/images/product/filter_select.svg'),
+                      ],
+                    ),
                   ),
                 ),
               ),
