@@ -1,12 +1,13 @@
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class StyleSelectionSheet extends StatefulWidget {
-  final List<String> selectedStyles;
-  final ValueChanged<List<String>> onSelectionChanged;
+  final String selectedStyle;
+  final ValueChanged<String> onSelectionChanged;
 
   const StyleSelectionSheet({
-    required this.selectedStyles,
+    required this.selectedStyle,
     required this.onSelectionChanged,
     super.key,
   });
@@ -16,57 +17,51 @@ class StyleSelectionSheet extends StatefulWidget {
 }
 
 class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
-  late List<String> _tempSelectedStyles;
+  late String _tempSelectedStyle;
 
   @override
   void initState() {
     super.initState();
-    _tempSelectedStyles = List.from(widget.selectedStyles);
+    _tempSelectedStyle = widget.selectedStyle;
   }
-
   void _toggleSelection(String style) {
     setState(() {
-      if (_tempSelectedStyles.contains(style)) {
-        _tempSelectedStyles.remove(style);
-      } else {
-        _tempSelectedStyles.add(style);
+      if (_tempSelectedStyle.contains(style)) {
+        _tempSelectedStyle = ""; // 선택 초기화
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: Responsive.getWidth(context, 412),
-      padding:  const EdgeInsets.symmetric(vertical: 16.0),
-      child: Column(
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Center(
             child: Container(
+              margin: EdgeInsets.only(top: 15, bottom: 17),
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: Color(0xFFDDDDDD),
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
           ),
-          const SizedBox(height: 16.0),
           Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               '스타일',
               style: TextStyle(fontSize: Responsive.getFont(context, 18), fontWeight: FontWeight.bold),
             ),
           ),
-          const SizedBox(height: 16.0),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.only(bottom: 10),
             child: Wrap(
-              spacing: 8.0,
-              runSpacing: 8.0,
+              spacing: 4.0,
               children: [
                 _buildStyleChip('캐주얼 (Casual)'),
                 _buildStyleChip('스포티 (Sporty)'),
@@ -80,51 +75,58 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
               ],
             ),
           ),
-          SizedBox(height: Responsive.getHeight(context, 20)),
-          Padding(
-            padding:  EdgeInsets.symmetric(horizontal: Responsive.getWidth(context, 9)),
+          Container(
+            padding: EdgeInsets.only(left: 11, right: 10, top: 9,bottom: 8),
+            decoration: BoxDecoration(
+                border: Border(top: BorderSide(color: Color(0xD000000),))
+            ),
             child: Row(
               children: [
                 Container(
-                  width: Responsive.getWidth(context, 48),
-                  height: Responsive.getHeight(context, 48),
+                  width: 48,
+                  height: 48,
                   decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(6)),
                       border: Border.all(color: const Color(0xFFDDDDDD))),
                   child: GestureDetector(
-                    child: const Icon(Icons.refresh),
+                    child: SvgPicture.asset('assets/images/store/ic_release.svg'),
                     onTap: () {
                       setState(() {
-                        _tempSelectedStyles.clear();
+                        _tempSelectedStyle == "";
                       });
                     },
                   ),
                 ),
-                SizedBox(
-                  width: Responsive.getWidth(context, 9),
-                ),
-                Container(
-                  decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6)),color: Colors.black),
-                  width: Responsive.getWidth(context, 336),
-                  height: Responsive.getHeight(context, 48),
-                  child: GestureDetector(
-                    child:  const Center(child: Text('선택완료',style: TextStyle(color: Colors.white),)),
-                    onTap: () {
-                      widget.onSelectionChanged(_tempSelectedStyles);
-                      Navigator.pop(context);
-                    },
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(left: 9),
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        color: Colors.black),
+                    width: double.infinity,
+                    height: 48,
+                    child: GestureDetector(
+                      child: const Center(
+                          child: Text(
+                            '선택완료',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                      onTap: () {
+                        widget.onSelectionChanged(_tempSelectedStyle);
+                        Navigator.pop(context);
+                      },
+                    ),
                   ),
                 ),
               ],
             ),
           ),
         ],
-      ),
-    );
+      );
   }
 
   Widget _buildStyleChip(String style) {
-    final isSelected = _tempSelectedStyles.contains(style);
+    final isSelected = _tempSelectedStyle.contains(style);
     return GestureDetector(
       onTap: () => _toggleSelection(style),
       child: Chip(
