@@ -14,6 +14,8 @@ class _ReportPageState extends State<ReportPage> {
   final TextEditingController _controller = TextEditingController();
   bool _isReported = false;
 
+  bool get _isOtherSelected => _selectedReason == 8;
+
   void _submitReport() {
     setState(() {
       _isReported = true;
@@ -22,6 +24,7 @@ class _ReportPageState extends State<ReportPage> {
     Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         _isReported = false;
+        Navigator.pop(context);
       });
     });
   }
@@ -29,6 +32,7 @@ class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -72,21 +76,26 @@ class _ReportPageState extends State<ReportPage> {
       ),
       body: Stack(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          ListView(
+            controller: ScrollController(),
             children: [
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-                child: Text(
-                  '신고의 부적합한 사용자/글을 지속적으로 신고하는 경우 제재 조치가 취해질 수 있으니 유의해 주세요',
-                  style: TextStyle(
-                      fontSize: Responsive.getFont(context, 14),
-                      color: Color(0xFF7B7B7B)),
-                ),
-              ),
-              Expanded(
-                child: ListView(
+                margin: EdgeInsets.only(bottom: 80),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 16,
+                      ),
+                      padding: EdgeInsets.only(top: 30, bottom: 20),
+                      child: Text(
+                        '신고의 부적합한 사용자/글을 지속적으로 신고하는 경우 제재 조치가 취해질 수 있으니 유의해 주세요',
+                        style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Color(0xFF7B7B7B)),
+                      ),
+                    ),
                     _buildRadioOption(0, '거짓 정보 및 허위 사실'),
                     _buildRadioOption(1, '비속어 및 욕설'),
                     _buildRadioOption(2, '부적절한 사진 및 영상'),
@@ -96,71 +105,91 @@ class _ReportPageState extends State<ReportPage> {
                     _buildRadioOption(6, '타인 비방'),
                     _buildRadioOption(7, '리뷰의 무관성'),
                     _buildRadioOption(8, '기타'),
-                    Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 20, right: 16, left: 16),
-                      child: TextField(
-                        controller: _controller,
-                        maxLines: 4,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 15),
-                          hintText: '직접 입력해주세요',
-                          hintStyle: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Color(0xFF595959)),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(6)),
-                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                    if (_isOtherSelected)
+                      Container(
+                        margin: EdgeInsets.only(
+                            top: 10.0, bottom: 300, right: 16, left: 16),
+                        child: TextField(
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(6)),
-                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                          controller: _controller,
+                          maxLines: 4,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 14, horizontal: 15),
+                            hintText: '직접 입력해주세요',
+                            hintStyle: TextStyle(
+                                fontSize: Responsive.getFont(context, 14),
+                                color: Color(0xFF595959)),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                            ),
                           ),
                         ),
                       ),
-                    )
                   ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: _submitReport,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child:
-                      const Text('신고하기', style: TextStyle(color: Colors.white)),
                 ),
               ),
             ],
           ),
           if (_isReported)
             Positioned(
-              top: 20,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Text(
-                    "신고하기가 완료되었습니다!",
-                    style: TextStyle(color: Colors.white),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xCC000000), // 알림창 배경색
+                      borderRadius: BorderRadius.circular(22), // 둥근 모서리
+                    ),
+                    child: const Text(
+                      "신고하기가 완료되었습니다!",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ),
             ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: _submitReport,
+              child: Container(
+                width: double.infinity,
+                height: Responsive.getHeight(context, 48),
+                margin:
+                    EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(6),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    '확인',
+                    style: TextStyle(
+                      fontSize: Responsive.getFont(context, 14),
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -177,6 +206,7 @@ class _ReportPageState extends State<ReportPage> {
             }
             return const Color(0xFFFF6192); // 선택된 상태의 색상
           }),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           value: value,
           groupValue: _selectedReason,
           onChanged: (int? newValue) {
