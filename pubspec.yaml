@@ -104,6 +104,7 @@ flutter:
     - assets/images/product/
     - assets/images/store/
     - assets/images/my/
+    - assets/images/non/
     - assets/html/daum_postcode.html
   #   - images/a_dot_ham.jpeg
 
