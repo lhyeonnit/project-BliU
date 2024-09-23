@@ -270,7 +270,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                 ),
                               ),
                               Container(
-                                width: 30,
+                                width: 50,
                                 margin:
                                     const EdgeInsets.only(top: 3, right: 16),
                                 child: Column(
@@ -286,6 +286,7 @@ class _StoreRakingPageState extends State<StoreRakingPage> {
                                         width: Responsive.getWidth(context, 14),
                                         height:
                                             Responsive.getHeight(context, 17),
+                                        margin: EdgeInsets.only(bottom: 3),
                                         child: SvgPicture.asset(
                                           'assets/images/store/book_mark.svg',
                                           color: isBookmarked[storeIndex]

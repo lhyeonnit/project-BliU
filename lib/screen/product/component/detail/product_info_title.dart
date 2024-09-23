@@ -1,41 +1,66 @@
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/store_data.dart';
 import 'package:BliU/screen/product/coupon_receive_screen.dart';
+import 'package:BliU/screen/store/store_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class ProductInfoTitle extends StatelessWidget {
+class ProductInfoTitle extends StatefulWidget {
   final StoreData? storeData;
   final ProductData? productData;
-  const ProductInfoTitle({super.key, required this.storeData, required this.productData});
+
+  const ProductInfoTitle(
+      {super.key, required this.storeData, required this.productData});
+
+  @override
+  _ProductInfoTitleState createState() => _ProductInfoTitleState();
+}
+
+class _ProductInfoTitleState extends State<ProductInfoTitle> {
+  bool _isDeliveryInfoVisible = false;
+
+  void _toggleDeliveryInfo() {
+    setState(() {
+      _isDeliveryInfoVisible = !_isDeliveryInfoVisible;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
-      padding: const EdgeInsets.all(10.0),
+      margin: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: EdgeInsets.only(top: 20, bottom: 40),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // 로고 버튼
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle, // 이미지를 동그랗게 만들기
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      storeData?.stProfile ?? "",
-                    ),
-                    fit: BoxFit.cover
-                  )
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const StoreDetailScreen()),
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.only(top: 9, right: 10),
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFFDDDDDD)),
+                      shape: BoxShape.circle, // 이미지를 동그랗게 만들기
+                      image: DecorationImage(
+                          image: NetworkImage(
+                            widget.storeData?.stProfile ?? "",
+                          ),
+                          fit: BoxFit.cover)),
                 ),
               ),
-              const SizedBox(width: 8),
               // 나머지 텍스트와 공유 버튼을 포함한 컬럼
               Expanded(
                 child: Column(
@@ -45,73 +70,85 @@ class ProductInfoTitle extends StatelessWidget {
                     Row(
                       children: [
                         // 브랜드명 및 화살표 버튼
-                        TextButton(
-                          onPressed: () {
+                        GestureDetector(
+                          onTap: () {
                             // 브랜드명 버튼 동작
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const StoreDetailScreen()),
+                            );
                           },
                           child: Row(
                             children: [
                               Text(
-                                storeData?.stName ?? "", // 브랜드명
+                                widget.storeData?.stName ?? "", // 브랜드명
                                 style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: Responsive.getFont(context, 16)
-                                ),
+                                    color: Color(0xFF7B7B7B),
+                                    fontSize: Responsive.getFont(context, 13)),
                               ),
-                              const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black),
+                              Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 5),
+                                  child: SvgPicture.asset(
+                                      'assets/images/product/ic_more_arrow.svg')),
                             ],
                           ),
                         ),
                         const Spacer(), // 공간을 채워서 오른쪽 정렬
                         // 공유 버튼
-                        IconButton(
-                          icon: const Icon(Icons.share, color: Colors.black),
-                          onPressed: () {
-                            // 공유 버튼 동작
+                        GestureDetector(
+                          child: SvgPicture.asset(
+                              'assets/images/product/ic_share.svg'),
+                          onTap: () {
+                            // TODO 공유 버튼 동작
                           },
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8), // 첫 번째 줄과 제목 사이 간격
                     // 상품 제목
-                    Text(
-                      productData?.ptName ?? "",
-                      style: TextStyle(
-                        fontSize: Responsive.getFont(context, 14),
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      margin: EdgeInsets.only(top: 8, bottom: 12),
+                      child: Text(
+                        widget.productData?.ptName ?? "",
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 16),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 8), // 제목과 가격 정보 사이 간격
                     // 가격 정보
                     Row(
                       children: [
-                        (productData?.ptDiscountPer ?? 0) > 0
+                        (widget.productData?.ptDiscountPer ?? 0) > 0
                             ? Row(
-                          children: [
-                            Text(
-                              "${productData?.ptDiscountPer ?? 0}%", // 할인률
-                              style: TextStyle(
-                                fontSize: Responsive.getFont(context, 16),
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                children: [
+                                  Text(
+                                    "${widget.productData?.ptDiscountPer ?? 0}%", // 할인률
+                                    style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 18),
+                                      color: Color(0xFFFF6192),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : const SizedBox(),
+                        Container(
+                          margin: EdgeInsets.only(left: 8, right: 5),
+                          child: Text(
+                            '${Utils.getInstance().priceString(widget.productData?.ptPrice ?? 0)}원', // 할인된 가격
+                            style: TextStyle(
+                              fontSize: Responsive.getFont(context, 18),
+                              fontWeight: FontWeight.bold,
                             ),
-                            const SizedBox(width: 8)
-                          ],
-                        ): const SizedBox(),
-                        Text(
-                          '${Utils.getInstance().priceString(productData?.ptPrice ?? 0)}원', // 할인된 가격
-                          style: TextStyle(
-                            fontSize: Responsive.getFont(context, 16),
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(width: 8), // 할인 가격과 원래 가격 사이 간격
                         Text(
-                          '${Utils.getInstance().priceString(productData?.ptSellingPrice ?? 0)}원', // 원래 가격
+                          '${Utils.getInstance().priceString(widget.productData?.ptSellingPrice ?? 0)}원', // 원래 가격
                           style: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
-                            color: Colors.grey,
+                            color: Color(0xFFABABAB),
                             decoration: TextDecoration.lineThrough, // 취소선
                           ),
                         ),
@@ -122,86 +159,154 @@ class ProductInfoTitle extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 15), // 로고 및 텍스트와 구분선 사이 간격
           // 구분선
-          Divider(
-            height: 1,
-            thickness: 1,
-            color: Colors.grey[300],
-            indent: 5,
-            // 왼쪽 여백
-            endIndent: 5, // 오른쪽 여백
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 30),
+            decoration: BoxDecoration(
+              border: Border.all(color: Color(0xFFEEEEEE), width: 1),
+            ),
           ),
-          const SizedBox(height: 15), // 구분선과 배송비 정보 사이 간격
           // 배송비 정보
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Text(
-                      '배송비', // 배송비 텍스트
-                      style: TextStyle(
-                        fontSize: Responsive.getFont(context, 14),
-                        color: Colors.black
-                      ),
-                    ),
-                    const SizedBox(width: 40),
-                    Expanded(
-                      child: Text(
-                        '${Utils.getInstance().priceString(productData?.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0)}원 (${Utils.getInstance().priceString(productData?.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0)}원 이상 ${(productData?.deliveryInfo?.deliveryPrice ?? 0) == 0 ? '무료배송)' : '${Utils.getInstance().priceString((productData?.deliveryInfo?.deliveryPrice ?? 0))}원)'}', // 배송비 정보
-                        style: TextStyle(
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Colors.black
-                        ),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      color: Colors.black
-                    ),
-                    // 화살표 아이콘
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      '쿠폰',
-                      style: TextStyle(
-                        fontSize: Responsive.getFont(context, 14),
-                        color: Colors.black
-                      ),
-                    ),
-                    const SizedBox(width: 35),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CouponReceiveScreen(ptIdx: productData?.ptIdx,),
+                GestureDetector(
+                  onTap: _toggleDeliveryInfo,
+                  child:  Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 30),
+                        child: Text(
+                          '배송비', // 배송비 텍스트
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Color(0xFF7B7B7B),
                           ),
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(5),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 8),
-                          child: Text(
-                            '쿠폰 다운로드',
-                            style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.black
+                      ),
+                      Expanded(
+                        child: Row(
+                            children: [
+                              Text(
+                                '${Utils.getInstance().priceString(widget.productData?.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0)}원 (${Utils.getInstance().priceString(widget.productData?.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0)}원 이상 ${(widget.productData?.deliveryInfo?.deliveryPrice ?? 0) == 0 ? '무료배송)' : '${Utils.getInstance().priceString((widget.productData?.deliveryInfo?.deliveryPrice ?? 0))}원)'}', // 배송비 정보
+                                style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 5),
+                                  child: SvgPicture.asset(
+                                    'assets/images/product/ic_more_arrow.svg',
+                                    color: Color(0xFF7B7B7B),
+                                  )),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+
+                ),
+                // TODO 배송비 정보
+                Visibility(
+                  visible: _isDeliveryInfoVisible,
+                  child: Container(
+                    padding: EdgeInsets.all(12),
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFFDDDDDD)),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '택배사: CJ대한통운',
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 12),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          '배송비: 기본 배송비 0000원 / 50,000원 이상 무료',
+                          style: TextStyle(
+                              fontSize: Responsive.getFont(context, 10)),
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '도서산간 추가배송비: 3000원',
+                              style: TextStyle(
+                                  fontSize:
+                                  Responsive.getFont(context, 10)),
+                            ),
+                            Text(
+                              '제주 추가배송비: 3000원',
+                              style: TextStyle(
+                                  fontSize:
+                                  Responsive.getFont(context, 10)),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          '배송 기간: 평균 2-5일 이내 발송 (영업일 기준), 재고현황에 따라 배송이 다소 지연될 수 있습니다.',
+                          style: TextStyle(
+                              fontSize: Responsive.getFont(context, 10)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 8),
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 40),
+                        child: Text(
+                          '쿠폰',
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Color(0xFF7B7B7B),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CouponReceiveScreen(
+                                ptIdx: widget.productData?.ptIdx,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Color(0xFFDDDDDD)),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 8),
+                            child: Text(
+                              '쿠폰 다운로드',
+                              style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),

@@ -1,3 +1,4 @@
+import 'package:BliU/screen/_non/non_mypage/non_my_screen.dart';
 import 'package:BliU/screen/category/category_screen.dart';
 import 'package:BliU/screen/home/home_screen.dart';
 import 'package:BliU/screen/like/like_screen.dart';

@@ -1,4 +1,5 @@
 import 'package:BliU/data/product_data.dart';
+import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/viewmodel/store_category_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,6 +37,13 @@ class StoreCategoryItem extends ConsumerWidget {
         return GestureDetector(
           onTap: () {
             // 상품 클릭 시 상세 화면 이동 처리
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                const ProductDetailScreen(ptIdx: 3),
+              ),
+            );
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,12 +102,14 @@ class StoreCategoryItem extends ConsumerWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(width: 2),
-                  Text(
-                    '${product.ptPrice}원',
-                    style: TextStyle(
-                      fontSize: Responsive.getFont(context, 14),
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    margin: EdgeInsets.only(left: 3),
+                    child: Text(
+                      '${product.ptPrice}원',
+                      style: TextStyle(
+                        fontSize: Responsive.getFont(context, 14),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],

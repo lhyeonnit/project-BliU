@@ -1,3 +1,4 @@
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class ProductBanner extends StatefulWidget {
@@ -56,17 +57,31 @@ class _ProductBannerState extends State<ProductBanner> {
             },
           ),
           Positioned(
-            bottom: 10,
-            right: 10,
+            bottom: 15,
+            right: 16,
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              padding:
+              const EdgeInsets.symmetric(vertical: 4, horizontal: 15),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(20),
+                color: Color(0x45000000),
+                borderRadius: BorderRadius.all(Radius.circular(22)),
               ),
-              child: Text(
-                '${_currentPage + 1}/${_imgArr.length}',
-                style: const TextStyle(color: Colors.white),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${_currentPage + 1}',
+                    style: TextStyle(
+                        fontSize: Responsive.getFont(context, 13),
+                        color: Colors.white),
+                  ),
+                  Text(
+                    '/${_imgArr.length}',
+                    style: TextStyle(
+                        fontSize: Responsive.getFont(context, 13),
+                        color: Color(0x80FFFFFF)),
+                  ),
+                ],
               ),
             ),
           ),
