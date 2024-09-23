@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 
 class PaymentMoney extends StatelessWidget {
   final Function(int point) onResultTotalPrice;
-  final List<CartData> cartDetails;
+  final List<CartData> cartList;
   final CouponData? discountCouponData;
   final int? discountPoint;
 
-  const PaymentMoney({super.key, required this.onResultTotalPrice, required this.cartDetails, this.discountCouponData, this.discountPoint});
+  const PaymentMoney({super.key, required this.onResultTotalPrice, required this.cartList, this.discountCouponData, this.discountPoint});
   @override
   Widget build(BuildContext context) {
     // 선택된 항목들만 필터링하여 계산
@@ -116,11 +116,12 @@ class PaymentMoney extends StatelessWidget {
   int _getTotalProductPrice() {
     // 선택된 기준으로 가격 가져오기
     int totalProductPrice = 0;
-    for(var cartItem in cartDetails) {
+    for(var cartItem in cartList) {
       for(var product in cartItem.productList ?? [] as List<CartItemData>) {
-        if (product.isSelected) {
-          totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
-        }
+        // if (product.isSelected) {
+        //   totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
+        // }
+        totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
       }
     }
     return totalProductPrice;
@@ -128,23 +129,24 @@ class PaymentMoney extends StatelessWidget {
 
   int _getTotalDeliveryPrice() {
     int totalDeliveryPrice = 0;
-    for(var cartItem in cartDetails) {
-      bool isAllCheck = true;
-      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
-        if (!product.isSelected) {
-          isAllCheck = false;
-        }
-      }
-      if (isAllCheck) {
-        totalDeliveryPrice += cartItem.stDeliveryPrice ?? 0;
-      } else {
-        for(var product in cartItem.productList ?? [] as List<CartItemData>) {
-          if (product.isSelected) {
-            totalDeliveryPrice += product.ctDeliveryDefaultPrice ?? 0;
-          }
-        }
-      }
-
+    for(var cartItem in cartList) {
+      //bool isAllCheck = true;
+      // for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+      //   if (!product.isSelected) {
+      //     isAllCheck = false;
+      //   }
+      // }
+      // if (isAllCheck) {
+      //   totalDeliveryPrice += cartItem.stDeliveryPrice ?? 0;
+      // } else {
+      //   for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+      //     // if (product.isSelected) {
+      //     //   totalDeliveryPrice += product.ctDeliveryDefaultPrice ?? 0;
+      //     // }
+      //     totalDeliveryPrice += product.ctDeliveryDefaultPrice ?? 0;
+      //   }
+      // }
+      totalDeliveryPrice += cartItem.stDeliveryPrice ?? 0;
     }
     return totalDeliveryPrice;
   }

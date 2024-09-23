@@ -14,8 +14,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 class PaymentDiscount extends ConsumerStatefulWidget {
   final Function(CouponData couponData) onCouponSelected; // 선택된 쿠폰 할인율을 전달할 콜백
   final Function(int point) onPointChanged;
-  final List<CartData> cartDetails;
-  const PaymentDiscount({super.key, required this.onCouponSelected, required this.onPointChanged, required this.cartDetails,});
+  final List<CartData> cartList;
+  const PaymentDiscount({super.key, required this.onCouponSelected, required this.onPointChanged, required this.cartList,});
 
   @override
   _PaymentDiscountState createState() => _PaymentDiscountState();
@@ -209,16 +209,17 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
     final pref = await SharedPreferencesManager.getInstance();
 
     List<Map<String, dynamic>> storeArr = [];
-    for(var cartItem in widget.cartDetails) {
+    for(var cartItem in widget.cartList) {
 
       Map<String, dynamic> storeMap = {
         'st_idx' : cartItem.stIdx,
       };
       int productPrice = 0;
       for(var product in cartItem.productList ?? [] as List<CartItemData>) {
-        if (product.isSelected) {
-          productPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
-        }
+        // if (product.isSelected) {
+        //   productPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
+        // }
+        productPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
       }
 
       if (productPrice > 0) {
@@ -240,11 +241,12 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
   int _getTotalProductPrice() {
     // 선택된 기준으로 가격 가져오기
     int totalProductPrice = 0;
-    for(var cartItem in widget.cartDetails) {
+    for(var cartItem in widget.cartList) {
       for(var product in cartItem.productList ?? [] as List<CartItemData>) {
-        if (product.isSelected) {
-          totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
-        }
+        // if (product.isSelected) {
+        //   totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
+        // }
+        totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
       }
     }
     return totalProductPrice;

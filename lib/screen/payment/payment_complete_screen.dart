@@ -1,22 +1,24 @@
-import 'package:BliU/data/cart_data.dart';
+import 'package:BliU/data/pay_order_result_detail_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
 import 'package:BliU/screen/payment/component/payment_order_item.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class PaymentCompleteScreen extends StatefulWidget {
+class PaymentCompleteScreen extends ConsumerStatefulWidget {
+  final PayOrderResultDetailData? payOrderResultDetailData;
   final String? savedRecipientName; // 저장된 수령인 이름
   final String? savedRecipientPhone; // 저장된 전화번호
   final String? savedAddressRoad; // 저장된 도로명 주소
   final String? savedAddressDetail; // 저장된 상세주소
   final String? savedMemo; // 저장된 메모
-  final List<CartData> cartDetails;
 
   const PaymentCompleteScreen({
     super.key,
-    required this.cartDetails,
+    required this.payOrderResultDetailData,
     required this.savedRecipientName,
     required this.savedRecipientPhone,
     required this.savedAddressRoad,
@@ -25,12 +27,21 @@ class PaymentCompleteScreen extends StatefulWidget {
   });
 
   @override
-  State<PaymentCompleteScreen> createState() => _PaymentCompleteScreenState();
+  _PaymentCompleteScreenState createState() => _PaymentCompleteScreenState();
 }
 
 final ScrollController _scrollController = ScrollController();
 
-class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
+class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
+  late PayOrderResultDetailData? payOrderResultDetailData;
+
+  @override
+  void initState() {
+    super.initState();
+
+    payOrderResultDetailData = widget.payOrderResultDetailData;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -184,7 +195,7 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                           ),
                         ),
                         Text(
-                          '1231234512312',
+                          payOrderResultDetailData?.otCode ?? "",
                           style: TextStyle(
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.bold),
@@ -217,7 +228,7 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                '160,500원',
+                                '${Utils.getInstance().priceString(payOrderResultDetailData?.otSprice ?? 0)}원',
                                 style: TextStyle(
                                     fontSize: Responsive.getFont(context, 14),
                                     fontWeight: FontWeight.bold),
@@ -225,7 +236,7 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                               Container(
                                 margin: const EdgeInsets.only(left: 4),
                                 child: Text(
-                                  '네이버페이',
+                                  '네이버페이',//TODO 졀제수단 들고 오기
                                   style: TextStyle(
                                     fontSize: Responsive.getFont(context, 14),
                                   ),
@@ -250,11 +261,11 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildPaymentCompleteRow(
-                            '총 상품 금액', 'productPrice', context),
+                            '총 상품 금액', '${Utils.getInstance().priceString(payOrderResultDetailData?.otPrice ?? 0)}원', context),
                         Container(
                             margin: const EdgeInsets.symmetric(vertical: 15),
                             child: _buildPaymentCompleteRow(
-                                '총 배송비', 'productPrice', context)),
+                                '총 배송비', '${Utils.getInstance().priceString(payOrderResultDetailData?.allDeliveryPrice ?? 0)}원', context)),
                         const Divider(
                           color: Color(0xFFEEEEEE),
                         ),
@@ -263,36 +274,37 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                           child: Column(
                             children: [
                               _buildPaymentCompleteRow(
-                                  '할인금액', 'productPrice', context),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10.0),
-                                child: Container(
-                                  margin: const EdgeInsets.only(left: 10, top: 10),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text('ㄴproductPrice',
-                                          style: TextStyle(
-                                              fontSize: Responsive.getFont(
-                                                  context, 14),
-                                              color: const Color(0xFFA4A4A4))),
-                                      Text('productPrice',
-                                          style: TextStyle(
-                                              fontSize: Responsive.getFont(
-                                                  context, 14),
-                                              color: const Color(0xFFA4A4A4))),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                  '할인금액', '${Utils.getInstance().priceString(payOrderResultDetailData?.otUseCoupon ?? 0)}원', context),
+                              // TODO 할인 쿠폰 사용처 확인
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 10.0),
+                              //   child: Container(
+                              //     margin: const EdgeInsets.only(left: 10, top: 10),
+                              //     child: Row(
+                              //       crossAxisAlignment:
+                              //           CrossAxisAlignment.start,
+                              //       mainAxisAlignment:
+                              //           MainAxisAlignment.spaceBetween,
+                              //       children: [
+                              //         Text('ㄴproductPrice',
+                              //             style: TextStyle(
+                              //                 fontSize: Responsive.getFont(
+                              //                     context, 14),
+                              //                 color: const Color(0xFFA4A4A4))),
+                              //         Text('productPrice',
+                              //             style: TextStyle(
+                              //                 fontSize: Responsive.getFont(
+                              //                     context, 14),
+                              //                 color: const Color(0xFFA4A4A4))),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
                         _buildPaymentCompleteRow(
-                            '포인트할인', 'productPrice', context),
+                            '포인트할인', '${payOrderResultDetailData?.otUsePoint ?? 0}원', context),
                       ],
                     ),
                   ),
@@ -438,8 +450,7 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen> {
                               ),
                             ),
                           ),
-                          child:
-                              PaymentOrderItem(cartDetails: widget.cartDetails),
+                          child: PaymentOrderItem(cartList: payOrderResultDetailData?.product ?? []),
                         ),
                       ],
                     ),

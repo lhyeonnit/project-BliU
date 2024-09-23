@@ -4,11 +4,11 @@ import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class PaymentOrderItem extends StatefulWidget {
-  final List<CartData> cartDetails;
+  final List<CartData> cartList;
 
   const PaymentOrderItem({
     super.key,
-    required this.cartDetails,
+    required this.cartList,
   });
 
   @override
@@ -22,7 +22,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
   void initState() {
     super.initState();
     // 선택된 아이템들을 저장
-    selectedItems = widget.cartDetails;
+    selectedItems = widget.cartList;
   }
 
   @override
@@ -31,6 +31,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
       children: [
         ...selectedItems.map((item) {
           final productList = item.productList ?? [];
+          print("test11 ====> ${productList.length}");
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,9 +79,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
               ),
 
               // 각 상품 정보
-              ...productList
-                  .where((item) => item.isSelected == true)
-                  .map((item) {
+              ...productList.map((item) {
                 return Container(
                   margin: const EdgeInsets.only(bottom: 20),
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),

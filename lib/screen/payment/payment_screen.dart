@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'package:BliU/data/cart_data.dart';
 import 'package:BliU/data/cart_item_data.dart';
 import 'package:BliU/data/coupon_data.dart';
+import 'package:BliU/data/pay_order_detail_data.dart';
 import 'package:BliU/data/payment_data.dart';
+import 'package:BliU/dto/pay_order_result_detail_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/payment/component/payment_address_info.dart';
 import 'package:BliU/screen/payment/component/payment_discount.dart';
@@ -9,14 +12,20 @@ import 'package:BliU/screen/payment/component/payment_money.dart';
 import 'package:BliU/screen/payment/component/payment_order_item.dart';
 import 'package:BliU/screen/payment/component/payment_toss.dart';
 import 'package:BliU/screen/payment/payment_complete_screen.dart';
+import 'package:BliU/screen/payment/viewmodel/payment_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tosspayments_widget_sdk_flutter/model/tosspayments_result.dart';
 
 class PaymentScreen extends ConsumerStatefulWidget {
-  final List<CartData> cartDetails;
-  const PaymentScreen({required this.cartDetails, super.key});
+  final PayOrderDetailData payOrderDetailData;
+  const PaymentScreen({
+    required this.payOrderDetailData,
+    super.key
+  });
 
   @override
   PaymentScreenState createState() => PaymentScreenState();
@@ -47,16 +56,18 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   late bool isUseAddress = false;
   String? savedRecipientName; // 저장된 수령인 이름
   String? savedRecipientPhone; // 저장된 전화번호
+  String? savedZip; // 저장된 전화번호
   String? savedAddressRoad; // 저장된 도로명 주소
   String? savedAddressDetail; // 저장된 상세주소
   String? savedMemo; // 저장된 메모
 
   // 배송지 정보 저장 함수
   void _saveAddress(
-      String name, String phone, String road, String detail, String memo) {
+      String name, String phone, String zip, String road, String detail, String memo) {
     setState(() {
       savedRecipientName = name;
       savedRecipientPhone = phone;
+      savedZip  = zip;
       savedAddressRoad = road;
       savedAddressDetail = detail;
       savedMemo = memo;
@@ -111,7 +122,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 CustomExpansionTile(
                   title: '주문상품',
                   content: PaymentOrderItem(
-                    cartDetails: widget.cartDetails,
+                    cartList: widget.payOrderDetailData.list ?? [],
                   ),
                 ),
                 Container(
@@ -195,6 +206,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                           onSave: _saveAddress,
                           initialName: savedRecipientName ?? '',
                           initialPhone: savedRecipientPhone ?? '',
+                          initialZip: savedZip ?? '',
                           initialRoadAddress: savedAddressRoad ?? '',
                           initialDetailAddress: savedAddressDetail ?? '',
                           initialMemo: savedMemo ?? '',
@@ -213,7 +225,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                   content: PaymentDiscount(
                     onCouponSelected: onCouponSelected,
                     onPointChanged: onPointChanged,
-                    cartDetails: widget.cartDetails,
+                    cartList: widget.payOrderDetailData.list ?? [],
                   ),
                 ),
                 Container(
@@ -225,7 +237,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                   title: '결제 금액',
                   content: PaymentMoney(
                     onResultTotalPrice: onResultTotalPrice,
-                    cartDetails: widget.cartDetails,
+                    cartList: widget.payOrderDetailData.list ?? [],
                     discountCouponData: selectedCouponData,
                     discountPoint: discountPoint,
                   ),
@@ -360,62 +372,162 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
      */
 
     // TODO 필수입력란 확인 필요
+    List<CartData> cartList = widget.payOrderDetailData.list ?? [];
 
+    // TODO 포인트, 쿠폰 사용 API작업 필요
 
-    // 총 결제 금액
-    int totalAmount = totalPrice;
-    // 세금 제외 금액 설정 (현재는 0으로 설정)
-    int taxFreeAmount = 0;
-    // 주문 이름 생성 (상품 이름을 연결)
-    String orderName = "";
-    int itemCount = 0;
-    for (var cart in widget.cartDetails) {
-      for(var item in cart.productList ?? [] as List<CartItemData>) {
-        if (item.isSelected && orderName.isEmpty) {
-          orderName = item.ptTitle ?? "";
-          itemCount += 1;
+    // 주문 고유 번호를 취득위해서 다시조회
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    List<Map<String, dynamic>> cartArr = [];
+
+    for(var cartItem in cartList) {
+      Map<String, dynamic> cartMap = {
+        'st_idx' : cartItem.stIdx,
+      };
+      List<int> ctIdxs = [];
+      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+        ctIdxs.add(product.ctIdx ?? 0);
+      }
+
+      if (ctIdxs.isNotEmpty) {
+        cartMap['ct_idxs'] = ctIdxs;
+        cartArr.add(cartMap);
+      }
+    }
+
+    Map<String, dynamic> requestData = {
+      'type' : 1,
+      'ot_idx' : widget.payOrderDetailData.otIdx,
+      'mt_idx' : mtIdx,
+      'temp_mt_id' : '',
+      'cart_arr' : json.encode(cartArr),
+    };
+
+    final payOrderDetailDTO = await ref.read(paymentViewModelProvider.notifier).orderDetail(requestData);
+    if (payOrderDetailDTO != null) {
+      final payOrderDetailData = payOrderDetailDTO.data;
+
+      if (payOrderDetailData != null) {
+        // 총 결제 금액
+        int totalAmount = totalPrice;
+        // 세금 제외 금액 설정 (현재는 0으로 설정)
+        int taxFreeAmount = 0;
+        // 주문 이름 생성 (상품 이름을 연결)
+        String orderName = "";
+        int itemCount = 0;
+        for (var cart in cartList) {
+          for(var item in cart.productList ?? [] as List<CartItemData>) {
+            if (orderName.isEmpty) {
+              orderName = item.ptTitle ?? "";
+              itemCount += 1;
+            }
+          }
+        }
+        if (itemCount > 0) {
+          orderName = "$orderName 외 ${itemCount - 1}";
+        }
+
+        // TODO 고객 정보 설정 (여기서는 고정값 사용) 고객정보 가져오기 필요
+        String customerKey = "unique_customer_key";
+        String customerName = "고객 이름";
+
+        final paymentData = PaymentData(
+          customerKey: customerKey,
+          orderId: payOrderDetailData.otCode ?? "",
+          amount: totalAmount,
+          taxFreeAmount: taxFreeAmount,
+          orderName: orderName,
+          customerName: customerName,
+        );
+
+        final Map<String, dynamic>? paymentResult = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PaymentToss(paymentData: paymentData,)),
+        );
+
+        if (paymentResult != null) {
+          // if (paymentResult['result'] == true) {
+          //   final Success success = paymentResult["successData"];
+          //
+          //   _paymentComplete(paymentData, success);
+          // } else {
+          //   Utils.getInstance().showSnackBar(context, paymentResult["errorMessage"]);
+          // }
+          // TODO 일단 무조건 통과하게 변경
+          _paymentComplete(payOrderDetailData, null);
         }
       }
     }
-    if (itemCount > 0) {
-      orderName = "$orderName 외 ${itemCount - 1}";
+  }
+
+  void _paymentComplete(PayOrderDetailData payOrderDetailData, Success? success) async {
+    // TODO 결제 결과값 전달?
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    List<CartData> cartList = widget.payOrderDetailData.list ?? [];
+
+    String mtSaveAdd = "N";
+    if (isUseAddress) {
+      mtSaveAdd = "Y";
     }
 
-    // 고유 주문 ID 생성
-    String orderId = "ORDER_${DateTime.now().millisecondsSinceEpoch}";
+    Map<String, dynamic> requestData1 = {
+      'type' : 1,
+      'ot_code' : payOrderDetailData.otCode,
+      'mt_idx' : mtIdx,
+      'temp_mt_id' : '',
+      'mt_rname' : savedRecipientName,
+      'mt_rhp' : savedRecipientPhone,
+      'mt_zip' : savedZip,
+      'mt_add1' : savedAddressRoad,
+      'mt_add2' : savedAddressDetail,
+      'mt_save_add' : mtSaveAdd,
+      'memo' : savedMemo,
+    };
 
-    // TODO 고객 정보 설정 (여기서는 고정값 사용) 고객정보 가져오기 필요
-    String customerKey = "unique_customer_key";
-    String customerName = "고객 이름";
+    print("requestData == $requestData1");
+    final Map<String, dynamic>? response = await ref.read(paymentViewModelProvider.notifier).reqOrder(requestData1);
+    if (response != null) {
+      /*
+      *
+      "result": true,
+      "data": {
+          "ot_code": "240923G7FPKC",
+          "ot_sprice": 32520
+      }
+      * **/
+      // TODO 결제 검증 -> 결제 완료 API 순서로 진행
+      // 결제검증 결과값 ex)  return res.status(200).json({'result': true, 'data':{'message': '결제 완료.'}});
 
-    final paymentData = PaymentData(
-      customerKey: customerKey,
-      orderId: orderId,
-      amount: totalAmount,
-      taxFreeAmount: taxFreeAmount,
-      orderName: orderName,
-      customerName: customerName,
-    );
 
-    final paymentResult = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => PaymentToss(paymentData: paymentData,)),
-    );
+      Map<String, dynamic> requestData2 = {
+        'type' : 1,
+        'ot_code' : payOrderDetailData.otCode,
+        'mt_idx' : mtIdx,
+        'temp_mt_id' : '',
+      };
+      final PayOrderResultDetailDTO? payOrderResult = await ref.read(paymentViewModelProvider.notifier).orderEnd(requestData2);
 
-    if (paymentResult != null) {
-      // TODO 결제 결과값 전달?
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => PaymentCompleteScreen(
-              cartDetails: widget.cartDetails,
-              savedAddressDetail: savedAddressDetail,
-              savedAddressRoad: savedAddressRoad,
-              savedMemo: savedMemo,
-              savedRecipientName: savedRecipientName,
-              savedRecipientPhone: savedRecipientPhone,
-            )),
-      );
+      if(payOrderResult != null) {
+        if (payOrderResult.result == true) {
+          final payOrderResultDetailData = payOrderResult.data;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PaymentCompleteScreen(
+                  payOrderResultDetailData: payOrderResultDetailData,
+                  savedAddressDetail: savedAddressDetail,
+                  savedAddressRoad: savedAddressRoad,
+                  savedMemo: savedMemo,
+                  savedRecipientName: savedRecipientName,
+                  savedRecipientPhone: savedRecipientPhone,
+                )),
+          );
+        }
+      }
     }
   }
 }

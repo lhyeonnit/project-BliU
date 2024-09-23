@@ -583,17 +583,18 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
     final payOrderDetailDTO = await ref.read(cartModelProvider.notifier).orderDetail(requestData);
     if (payOrderDetailDTO != null) {
+      final payOrderDetailData = payOrderDetailDTO.data;
 
-
-      // TODO
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => PaymentScreen(
-      //       cartDetails: _cartItems,
-      //     ),
-      //   ),
-      // );
+      if (payOrderDetailData != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentScreen(
+              payOrderDetailData: payOrderDetailData,
+            ),
+          ),
+        );
+      }
     }
   }
 }

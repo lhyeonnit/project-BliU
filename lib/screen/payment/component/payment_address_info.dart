@@ -4,9 +4,10 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class PaymentAddressInfo extends StatefulWidget {
-  final Function(String, String, String, String, String) onSave;
+  final Function(String, String, String, String, String, String) onSave;
   final String initialName;
   final String initialPhone;
+  final String initialZip;
   final String initialRoadAddress;
   final String initialDetailAddress;
   final String initialMemo;
@@ -16,6 +17,7 @@ class PaymentAddressInfo extends StatefulWidget {
     required this.onSave,
     required this.initialName,
     required this.initialPhone,
+    required this.initialZip,
     required this.initialRoadAddress,
     required this.initialDetailAddress,
     required this.initialMemo,
@@ -28,6 +30,7 @@ class PaymentAddressInfo extends StatefulWidget {
 class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
   late String _receiveName = widget.initialName;
   late String _receiveTel = widget.initialPhone;
+  late String _receiveZip = widget.initialZip;
   late String _addressRoad = widget.initialRoadAddress;
   late String _addressDetail = widget.initialDetailAddress;
   late String _deliveryMemo = widget.initialMemo;
@@ -92,7 +95,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                     onChanged: (value) {
                       setState(() {
                         _receiveName = value;
-                        widget.onSave(_receiveName, _receiveTel, _addressRoad,
+                        widget.onSave(_receiveName, _receiveTel, _receiveZip, _addressRoad,
                             _addressDetail, _deliveryMemo);
                       });
                     },
@@ -155,7 +158,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                     onChanged: (value) {
                       setState(() {
                         _receiveTel = value;
-                        widget.onSave(_receiveName, _receiveTel, _addressRoad,
+                        widget.onSave(_receiveName, _receiveTel, _receiveZip, _addressRoad,
                             _addressDetail, _deliveryMemo);
                       });
                     },
@@ -242,10 +245,12 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                               if (result != null) {
                                 setState(() {
                                   _roadAddressController.text = result.roadAddress;
+                                  _receiveZip = result.zonecode;
                                   _addressRoad = result.roadAddress; // 검색된 주소로 도로명 주소 업데이트
                                   widget.onSave(
                                       _receiveName,
                                       _receiveTel,
+                                      _receiveZip,
                                       _addressRoad,
                                       _addressDetail,
                                       _deliveryMemo);
@@ -300,7 +305,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                         onChanged: (value) {
                           setState(() {
                             _addressDetail = value;
-                            widget.onSave(_receiveName, _receiveTel,
+                            widget.onSave(_receiveName, _receiveTel, _receiveZip,
                                 _addressRoad, _addressDetail, _deliveryMemo);
                           });
                         },
@@ -336,7 +341,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
             onChanged: (value) {
               setState(() {
                 _deliveryMemo = value;
-                widget.onSave(_receiveName, _receiveTel, _addressRoad,
+                widget.onSave(_receiveName, _receiveTel, _receiveZip, _addressRoad,
                     _addressDetail, _deliveryMemo);
               });
             },

@@ -7,6 +7,7 @@ class CouponData {
   final int? couponMinPrice;
   final int? couponMaxPrice;
   final String? couponEnd;
+  final String? couponUse;
 
   CouponData({
     required this.couponUsealbe,
@@ -17,6 +18,7 @@ class CouponData {
     required this.couponMinPrice,
     required this.couponMaxPrice,
     required this.couponEnd,
+    required this.couponUse,
   });
 
   // JSON to Object
@@ -30,6 +32,7 @@ class CouponData {
       couponMinPrice: json['coupon_min_price'],
       couponMaxPrice: json['coupon_max_price'],
       couponEnd: json['coupon_end'],
+      couponUse: json['coupon_use'],
     );
   }
 
@@ -44,6 +47,7 @@ class CouponData {
       'coupon_min_price': couponMinPrice,
       'coupon_max_price': couponMaxPrice,
       'coupon_end': couponEnd,
+      'coupon_use': couponUse,
     };
   }
 }
