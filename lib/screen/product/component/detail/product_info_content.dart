@@ -44,9 +44,9 @@ class _ProductInfoContentState extends State<ProductInfoContent> with TickerProv
               },
               child: Container(
                 margin: const EdgeInsets.only(top: 10.0),
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                padding: const EdgeInsets.symmetric(vertical: 14.0),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black12),
+                  border: Border.all(color: Color(0xFFDDDDDD)),
                   borderRadius: BorderRadius.circular(8.0),
                   color: Colors.white,
                 ),
@@ -54,8 +54,8 @@ class _ProductInfoContentState extends State<ProductInfoContent> with TickerProv
                 child: Text(
                   isExpanded ? "상품 정보 접기" : "상품 정보 펼쳐보기",
                   style: TextStyle(
-                    fontSize: Responsive.getFont(context, 16),
-                    color: Colors.black
+                    fontSize: Responsive.getFont(context, 14),
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ),

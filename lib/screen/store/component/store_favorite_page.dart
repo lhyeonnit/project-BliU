@@ -1,4 +1,5 @@
 import 'package:BliU/screen/store/component/detail/store_category.dart';
+import 'package:BliU/screen/store/store_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +16,8 @@ class StoreFavoritePage extends ConsumerWidget {
     final storeFavoriteViewModel =
         ref.read(storeFavoriteViewModelProvider.notifier);
     final storeFavoriteList = model?.bookmarkList ?? [];
+    List<bool> isBookmarked = List<bool>.generate(10, (index) => false);
+
     const int itemsPerPage = 5;
     final PageController pageController = PageController();
     ScrollController scrollController = ScrollController();
@@ -43,15 +46,15 @@ class StoreFavoritePage extends ConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 20),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.only(top: 20,bottom: 17),
+
                     child: Text(
                       '즐겨찾기 $totalItem',
                       style: TextStyle(fontSize: Responsive.getFont(context, 14)),
                     ),
                   ),
-                  const SizedBox(height: 15),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 16),
                     height: totalItem <= 5 ? (totalItem * 60.0) : 305, // 아이템 수에 따라 높이 조정
@@ -79,6 +82,14 @@ class StoreFavoritePage extends ConsumerWidget {
                             return GestureDetector(
                               onTap: () {
                                 // 상점 상세 화면으로 이동 (필요 시 구현)
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const StoreDetailScreen(
+                                      // Pass the store data to the detail screen
+                                    ),
+                                  ),
+                                );
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(bottom: 15),

@@ -152,14 +152,17 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         child: TabBarView(
                           children: [
                             // 첫 번째 탭: 상세정보에 모든 정보 포함
-                            SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  ProductInfoContent(content: product?.ptContent ?? "",),
-                                  ProductAi(productList: sameList,),
-                                  ProductInfoBeforeOrder(infoData: info,),
-                                  ProductInquiry(ptIdx: ptIdx,),
-                                ],
+                            Container(
+                              margin: EdgeInsets.only(bottom: 50),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    ProductInfoContent(content: product?.ptContent ?? "",),
+                                    ProductAi(productList: sameList,),
+                                    ProductInfoBeforeOrder(infoData: info,),
+                                    ProductInquiry(ptIdx: ptIdx,),
+                                  ],
+                                ),
                               ),
                             ),
                             // 두 번째 탭: 리뷰만 표시

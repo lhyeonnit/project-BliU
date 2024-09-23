@@ -4,82 +4,112 @@ import 'package:flutter/material.dart';
 
 class ProductInfoBeforeOrder extends StatelessWidget {
   final InfoData? infoData;
+
   const ProductInfoBeforeOrder({super.key, required this.infoData});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // 상단 배너
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Image.asset(
-            'assets/images/product/check_before@2x.png',
-            height: 80,
-          ),
-        ),
-        // 배송 안내 섹션
-        Theme(
-          data: Theme.of(context).copyWith(dividerColor: Colors.transparent), // 선 제거
-
-          child: ExpansionTile(
-            title:  Text('배송안내',style: TextStyle(fontWeight: FontWeight.bold, fontSize: Responsive.getFont(context, 14)),),
+    return Container(
+      margin: EdgeInsets.only(top: 40,),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 상단 배너
+          Stack(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                margin: EdgeInsets.only(top: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  padding: const EdgeInsets.all(16.0),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text(
-                      infoData?.delivery ?? "",
-                      style: const TextStyle(color: Colors.black54),
-                    ),
+                margin: EdgeInsets.only(left: 16),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(9),
+                  child: Image.asset(
+                    'assets/images/product/check_before@2x.png',
+                    height: 80,
                   ),
                 ),
               ),
+              Positioned(
+                  right: 50,
+                  top: 11,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('구매 전 필수 확인', style: TextStyle(fontSize: Responsive.getFont(context, 16), fontWeight: FontWeight.bold),),
+                      Text('만족스러운 쇼핑을 위해 구매 전에 꼼꼼히 \n살펴보세요.', style: TextStyle(fontSize: Responsive.getFont(context, 12), color: Color(0xFF6A5B54)),),
+                    ],
+                  )),
             ],
           ),
-        ),
+          // 배송 안내 섹션
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            child: Theme(
+              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              // 선 제거
 
-        // 교환/반품 안내 섹션
-        Theme(
-          data: Theme.of(context).copyWith(dividerColor: Colors.transparent), // 선 제거
-          child: ExpansionTile(
-            title: Text(
-              '교환/반품 안내',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: Responsive.getFont(context, 14)),
+              child: ExpansionTile(
+                title: Text(
+                  '배송안내',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 14)),
+                ),
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF5F9F9),
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                      padding: const EdgeInsets.all(16.0),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          infoData?.delivery ?? "",
+                          style: const TextStyle(color: Colors.black54),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                margin: EdgeInsets.only(top: 10),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    infoData?.returnVal ?? "",
-                    style: TextStyle(
-                      fontSize: Responsive.getFont(context, 14)
+          ),
+
+          // 교환/반품 안내 섹션
+         Theme(
+              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              // 선 제거
+              child: ExpansionTile(
+                title: Text(
+                  '교환/반품 안내',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 14)),
+                ),
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF5F9F9),
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        infoData?.returnVal ?? "",
+                        style:
+                            TextStyle(fontSize: Responsive.getFont(context, 14)),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        )
-      ],
+            ),
+        ],
+      ),
     );
   }
 }

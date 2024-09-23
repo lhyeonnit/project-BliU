@@ -4,6 +4,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ProductInquiry extends ConsumerStatefulWidget {
   final int? ptIdx;
@@ -30,12 +31,19 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 20, top: 10),
+          height: 10,
+          decoration: BoxDecoration(
+            color: Color(0xFFF5F9F9),
+          ),
+        ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
             '상품문의',
             style: TextStyle(
-              fontSize: Responsive.getFont(context, 24),
+              fontSize: Responsive.getFont(context, 20),
               fontWeight: FontWeight.bold
             ),
           ),
@@ -94,38 +102,58 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                   },
                 ),
                 // TODO 페이징 처리 필요
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
-                        onPressed: currentPage > 1
-                            ? () {
-                          setState(() {
-                            currentPage--;
-                          });
-                        }
-                            : null,
-                      ),
-                      Text(
-                        '${currentPage.toString().padLeft(2, '0')} / $totalPages',
-                        style: TextStyle(
-                          fontSize: Responsive.getFont(context, 16)
+                Container(
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: SvgPicture.asset(
+                              'assets/images/product/pager_prev.svg'),
+                          onPressed: currentPage > 1
+                              ? () {
+                            setState(() {
+                              currentPage--;
+                            });
+                          }
+                              : null,
                         ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.arrow_forward_ios),
-                        onPressed: currentPage < totalPages
-                            ? () {
-                          setState(() {
-                            currentPage++;
-                          });
-                        }
-                            : null,
-                      ),
-                    ],
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              Text(
+                                '${currentPage.toString().padLeft(2, '0')}',
+                                style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 16),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Text(
+                                ' / $totalPages',
+                                style: TextStyle(
+                                    fontSize: Responsive.getFont(context, 16),
+                                    color: Color(0xFFCCCCCC),
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          icon: SvgPicture.asset(
+                              'assets/images/product/pager_next.svg'),
+                          onPressed: currentPage < totalPages
+                              ? () {
+                            setState(() {
+                              currentPage++;
+                            });
+                          }
+                              : null,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
