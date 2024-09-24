@@ -113,12 +113,12 @@ class NonOrderItemButton extends StatelessWidget {
           Expanded(
             child: TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DeliveryScreen(),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => DeliveryScreen(),
+                //   ),
+                // );
               },
               child: Text(
                 '배송조회',
@@ -218,12 +218,12 @@ class NonOrderItemButton extends StatelessWidget {
               Expanded(
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DeliveryScreen(),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => DeliveryScreen(),
+                    //   ),
+                    // );
                   },
                   child: Text(
                     '배송조회',
@@ -278,12 +278,12 @@ class NonOrderItemButton extends StatelessWidget {
           Expanded(
             child: TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DeliveryScreen(),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => DeliveryScreen(),
+                //   ),
+                // );
               },
               child: Text(
                 '배송조회',

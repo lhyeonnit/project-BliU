@@ -1,52 +1,33 @@
+import 'package:BliU/data/order_delivery_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/mypage/viewmodel/delivery_view_model.dart';
+import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../utils/responsive.dart';
-
-class DeliveryScreen extends StatefulWidget {
-  const DeliveryScreen({super.key});
+class DeliveryScreen extends ConsumerStatefulWidget {
+  //final String odtCode = "P240901071854KOF8";
+  final String odtCode;
+  const DeliveryScreen({super.key, required this.odtCode});
 
   @override
-  State<DeliveryScreen> createState() => _DeliveryScreenState();
+  _DeliveryScreenState createState() => _DeliveryScreenState();
 }
 
-class _DeliveryScreenState extends State<DeliveryScreen> {
+class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
   final ScrollController _scrollController = ScrollController();
+  OrderDeliveryData? orderDeliveryData;
 
-  // 배송 데이터 리스트
-  final List<Map<String, String>> deliveryData = [
-    {
-      'time': '2020-12-01 11:11:11',
-      'location': '서울 남대문',
-      'status': '배달완료',
-    },
-    {
-      'time': '2020-12-01 10:10:10',
-      'location': '서울 남대문',
-      'status': '배달출발',
-    },
-    {
-      'time': '2020-12-01 09:09:09',
-      'location': '남서울 터미널',
-      'status': '배달전',
-    },
-    {
-      'time': '2020-12-01 08:08:08',
-      'location': '대전 HUB',
-      'status': '간선상차',
-    },
-    {
-      'time': '2020-12-01 07:07:07',
-      'location': '서북직영',
-      'status': '집하처리',
-    },
-    {
-      'time': '2020-12-01 06:06:06',
-      'location': '고객',
-      'status': '인수자등록',
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +65,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                     child: Text(
                       '스마트택배 배송현황',
                       style: TextStyle(
@@ -93,8 +74,8 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    decoration: const BoxDecoration(
                       border: Border(
                         top: BorderSide(
                           color: Color(0xFFEEEEEE),
@@ -105,7 +86,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -113,7 +94,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                   style: TextStyle(
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black)),
-                              Text('1254884512',
+                              Text(orderDeliveryData?.ctDeliveryNumber ?? "",
                                   style: TextStyle(
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black)),
@@ -121,8 +102,8 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 15),
-                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          margin: const EdgeInsets.only(top: 15),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -130,7 +111,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                   style: TextStyle(
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black)),
-                              Text('CJ대한통운',
+                              Text(orderDeliveryData?.ctDeliveryCom ?? "",
                                   style: TextStyle(
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black,
@@ -142,10 +123,10 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 20),
+                    margin: const EdgeInsets.only(bottom: 20),
                     height: 10,
                     width: double.infinity,
-                    color: Color(0xFFF5F9F9),
+                    color: const Color(0xFFF5F9F9),
                   ),
 
                   // 테이블 헤더
@@ -179,7 +160,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
 
                   // 데이터 리스트 표시 (배경색 반복)
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       border: Border.symmetric(
                         horizontal: BorderSide(
                           color: Color(0xFFEEEEEE),
@@ -188,12 +169,11 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: deliveryData.asMap().entries.map((entry) {
-                        int index = entry.key;
-                        Map<String, String> data = entry.value;
+                      children: (orderDeliveryData?.delivery ?? []).map((item) {
+                        int index = (orderDeliveryData?.delivery ?? []).indexOf(item);
                         Color rowColor = index % 2 == 1
                             ? Colors.white // 짝수 행 색상
-                            : Color(0xFFF5F9F9); // 홀수 행 색상
+                            : const Color(0xFFF5F9F9); // 홀수 행 색상
                     
                         return Container(
                           color: rowColor,
@@ -206,23 +186,23 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  data['time'] ?? '',
+                                  item.time ?? '',
                                   style: TextStyle(
                                       fontSize: Responsive.getFont(context, 14)),
                                 ),
                                 Expanded(
                                   flex: 1,
                                   child: Container(
-                                    margin: EdgeInsets.only(left: 30),
+                                    margin: const EdgeInsets.only(left: 30),
                                     child: Text(
-                                      data['location'] ?? '',
+                                      item.where ?? '',
                                       style: TextStyle(
                                           fontSize: Responsive.getFont(context, 14)),
                                     ),
                                   ),
                                 ),
                                 Text(
-                                  data['status'] ?? '',
+                                  item.kind ?? '',
                                   style: TextStyle(
                                       fontSize: Responsive.getFont(context, 14)),
                                 ),
@@ -241,5 +221,35 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
         ],
       ),
     );
+  }
+
+  void _afterBuild(BuildContext context) {
+    orderDelivery();
+  }
+
+  void orderDelivery() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    // TODO 회원 비회원 처리
+
+    Map<String, dynamic> requestData = {
+      'type' : 1,
+      'mt_idx' : mtIdx,
+      'temp_mt_id' : '',
+      'odt_code' : widget.odtCode,
+    };
+
+    final orderDeliveryResponseDTO = await ref.read(deliveryViewModelProvider.notifier).getList(requestData);
+    if (orderDeliveryResponseDTO != null) {
+      if (orderDeliveryResponseDTO.result == true) {
+        setState(() {
+          orderDeliveryData = orderDeliveryResponseDTO.data;
+        });
+      } else {
+        if(!context.mounted) return;
+        Utils.getInstance().showSnackBar(context, orderDeliveryResponseDTO.message ?? "");
+      }
+    }
   }
 }

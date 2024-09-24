@@ -14,7 +14,11 @@ class OrderItemButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (orderDetailData.ctStatusTxt == "상품준비중") {
+    // TODO 테스트용
+    String ctStatusTxt = orderDetailData.ctStatusTxt ?? "";
+    ctStatusTxt = "배송중";
+
+    if (ctStatusTxt == "상품준비중") {
       return Row(
         children: [
           Expanded(
@@ -73,7 +77,7 @@ class OrderItemButton extends StatelessWidget {
           ),
         ],
       );
-    } else if (orderDetailData.ctStatusTxt == "배송중") {
+    } else if (ctStatusTxt == "배송중") {
       return Row(
         children: [
           Expanded(
@@ -109,7 +113,7 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DeliveryScreen(),
+                    builder: (context) => DeliveryScreen(odtCode: orderDetailData.otCode ?? "",),
                   ),
                 );
               },
@@ -134,12 +138,12 @@ class OrderItemButton extends StatelessWidget {
               onPressed: () {
                 // TODO 전달할 param확인
 
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => InquiryService(),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InquiryService(qnaType: '3', ptIdx: orderDetailData.ptIdx,),
+                  ),
+                );
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
@@ -158,7 +162,7 @@ class OrderItemButton extends StatelessWidget {
           ),
         ],
       );
-    } else if (orderDetailData.ctStatusTxt == "배송완료") {
+    } else if (ctStatusTxt == "배송완료") {
       return Column(
         children: [
           Container(
@@ -176,7 +180,7 @@ class OrderItemButton extends StatelessWidget {
               child: Text(
                 '구매확정',
                 style: TextStyle(
-                  color: Color(0xFFFF6192),
+                  color: const Color(0xFFFF6192),
                   fontSize: Responsive.getFont(context, 14),
                 ),
               ),
@@ -217,7 +221,7 @@ class OrderItemButton extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DeliveryScreen(),
+                        builder: (context) => DeliveryScreen(odtCode: orderDetailData.otCode ?? ""),
                       ),
                     );
                   },
@@ -240,14 +244,12 @@ class OrderItemButton extends StatelessWidget {
               Expanded(
                 child: TextButton(
                   onPressed: () {
-                    // TODO 전달할 param확인
-
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => InquiryService(),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => InquiryService(qnaType: '3', ptIdx: orderDetailData.ptIdx,),
+                      ),
+                    );
                   },
                   style: TextButton.styleFrom(
                     side: const BorderSide(color: Color(0xFFDDDDDD)),
@@ -268,7 +270,7 @@ class OrderItemButton extends StatelessWidget {
           ),
         ],
       );
-    } else if (orderDetailData.ctStatusTxt == "구매확정") {
+    } else if (ctStatusTxt == "구매확정") {
       return Row(
         children: [
           Expanded(
@@ -304,7 +306,7 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DeliveryScreen(),
+                    builder: (context) => DeliveryScreen(odtCode: orderDetailData.otCode ?? ""),
                   ),
                 );
               },
@@ -327,14 +329,12 @@ class OrderItemButton extends StatelessWidget {
           Expanded(
             child: TextButton(
               onPressed: () {
-                // TODO 전달할 param확인
-
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => InquiryService(),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InquiryService(qnaType: '3', ptIdx: orderDetailData.ptIdx,),
+                  ),
+                );
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),

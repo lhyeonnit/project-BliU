@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 
 class InquiryService extends ConsumerStatefulWidget {
   final String? qnaType; // 1 1:1문의 3 상품
-  final String? ptIdx;
+  final int? ptIdx;
 
   const InquiryService({super.key, required this.qnaType, this.ptIdx});
 
@@ -22,7 +22,7 @@ class InquiryService extends ConsumerStatefulWidget {
 class _InquiryServiceState extends ConsumerState<InquiryService> {
   String? get qnaType => widget.qnaType;
 
-  String? get ptIdx => widget.ptIdx;
+  int? get ptIdx => widget.ptIdx;
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
@@ -75,7 +75,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            margin: EdgeInsets.only(top: 40),
+            margin: const EdgeInsets.only(top: 40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -86,10 +86,9 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                 _buildContentTextField(
                     _contentController, '문의 내용을 최소 10자 이상 입력해주세요.'),
 
-
                 // 이미지 선택 영역
                 Container(
-                  margin: EdgeInsets.only(bottom: 10),
+                  margin: const EdgeInsets.only(bottom: 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
@@ -105,7 +104,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                         '$_imageCnt/4',
                         style: TextStyle(
                             fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFF7B7B7B)),
+                            color: const Color(0xFF7B7B7B)),
                       ),
                     ],
                   ),
@@ -124,12 +123,11 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                         child: Container(
                           width: 100,
                           height: 100,
-                          margin: EdgeInsets.only(right: 10),
+                          margin: const EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(6)),
-                              border: Border.all(color: Color(0xFFE7EAEF))),
+                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                              border: Border.all(color: const Color(0xFFE7EAEF))),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +137,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                               Text(
                                 '사진선택',
                                 style: TextStyle(
-                                    color: Color(0xFF707070),
+                                    color: const Color(0xFF707070),
                                     fontSize: Responsive.getFont(context, 14)),
                               )
                             ],
@@ -165,8 +163,8 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
             child: Container(
               width: double.infinity,
               height: Responsive.getHeight(context, 48),
-              margin: EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-              decoration: BoxDecoration(
+              margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+              decoration: const BoxDecoration(
                 color: Colors.black,
                 borderRadius: BorderRadius.all(
                   Radius.circular(6),
@@ -209,11 +207,11 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
       height: 100,
       margin: const EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(
+        borderRadius: const BorderRadius.all(
           Radius.circular(6),
         ),
         border: Border.all(
-          color: Color(0xFFE7EAEF),
+          color: const Color(0xFFE7EAEF),
         ),
       ),
       child: Stack(
@@ -326,16 +324,16 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
         fontSize: Responsive.getFont(context, 14),
       ),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         hintText: hintText,
         hintStyle: TextStyle(
             fontSize: Responsive.getFont(context, 14),
-            color: Color(0xFF595959)),
-        enabledBorder: OutlineInputBorder(
+            color: const Color(0xFF595959)),
+        enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(6)),
           borderSide: BorderSide(color: Color(0xFFE1E1E1)),
         ),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(6)),
           borderSide: BorderSide(color: Color(0xFFE1E1E1)),
         ),
@@ -346,21 +344,21 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
   Widget _buildContentTextField(
       TextEditingController controller, String hintText) {
     return Container(
-      margin: EdgeInsets.only(top: 10.0, bottom: 20),
+      margin: const EdgeInsets.only(top: 10.0, bottom: 20),
       child: TextField(
         controller: controller,
         maxLines: 7,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
           hintText: hintText,
           hintStyle: TextStyle(
               fontSize: Responsive.getFont(context, 14),
-              color: Color(0xFF595959)),
-          enabledBorder: OutlineInputBorder(
+              color: const Color(0xFF595959)),
+          enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(6)),
             borderSide: BorderSide(color: Color(0xFFE1E1E1)),
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(6)),
             borderSide: BorderSide(color: Color(0xFFE1E1E1)),
           ),

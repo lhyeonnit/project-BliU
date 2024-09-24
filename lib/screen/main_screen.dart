@@ -1,9 +1,7 @@
-import 'package:BliU/screen/_non/non_mypage/non_my_screen.dart';
 import 'package:BliU/screen/category/category_screen.dart';
 import 'package:BliU/screen/home/home_screen.dart';
 import 'package:BliU/screen/like/like_screen.dart';
 import 'package:flutter/material.dart';
-
 import 'package:BliU/screen/mypage/my_screen.dart';
 import 'package:BliU/screen/store/store_screen.dart';
 import '_component/custom_bottom_navigation_bar.dart';
@@ -24,7 +22,7 @@ class _MainScreenState extends State<MainScreen> {
     const LikeScreen(),
     const HomeScreen(),
     const CategoryScreen(),
-    const NonMyScreen(),
+    const MyScreen(),
   ];
 
   void _onItemTapped(int index) {

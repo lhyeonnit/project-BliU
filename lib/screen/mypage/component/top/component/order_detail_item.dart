@@ -1,5 +1,6 @@
 import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetailItem extends StatelessWidget {
@@ -8,6 +9,30 @@ class OrderDetailItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget widget = const SizedBox();
+    if ((orderDetailInfoData?.order?.otCouponInfo?.ctName ?? "").isNotEmpty) {
+      widget = Padding(
+        padding: const EdgeInsets.only(left: 10.0),
+        child: Container(
+          margin: const EdgeInsets.only(left: 10, top: 10, right: 16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('ㄴ${orderDetailInfoData?.order?.otCouponInfo?.ctName ?? ""}',
+                  style: TextStyle(
+                      fontSize: Responsive.getFont(context, 14),
+                      color: const Color(0xFFA4A4A4))),
+              Text("${orderDetailInfoData?.order?.otCouponInfo?.ctPrice ?? ""}",
+                  style: TextStyle(
+                      fontSize: Responsive.getFont(context, 14),
+                      color: const Color(0xFFA4A4A4))),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -74,7 +99,7 @@ class OrderDetailItem extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                '160,500원',
+                '${Utils.getInstance().priceString(_getBillingPrice())}원',
                 style: TextStyle(
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.bold),
@@ -82,100 +107,80 @@ class OrderDetailItem extends StatelessWidget {
             ],
           ),
         ),
-        // 배송지 정보 세부 내용
-        // Container(
-        //   padding: const EdgeInsets.symmetric(vertical: 20),
-        //   decoration: const BoxDecoration(
-        //     border: Border(
-        //       top: BorderSide(
-        //         color: Color(0xFFEEEEEE),
-        //       ),
-        //     ),
-        //   ),
-        //   child: Column(
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     children: [
-        //       _buildInfoRow('총 상품 금액', orderDetails['productPrice'], context),
-        //       Container(
-        //         margin: const EdgeInsets.only(top: 15),
-        //           child: _buildInfoRow('총 배송비', orderDetails['deliveryFee'], context)),
-        //       Container(
-        //         margin: EdgeInsets.symmetric(vertical: 15),
-        //         child: Column(
-        //           children: [
-        //             _buildInfoRow(
-        //                 '할인금액', orderDetails['discountPrice'], context),
-        //             Padding(
-        //               padding: const EdgeInsets.only(left: 10.0),
-        //               child: Container(
-        //                 margin: EdgeInsets.only(left: 10, top: 10, right: 16),
-        //                 child: Row(
-        //                   crossAxisAlignment: CrossAxisAlignment.start,
-        //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                   children: [
-        //                     Text('ㄴ${orderDetails['couponName']}',
-        //                         style: TextStyle(
-        //                             fontSize: Responsive.getFont(context, 14),
-        //                             color: Color(0xFFA4A4A4))),
-        //                     Text("${orderDetails['couponDiscount']}",
-        //                         style: TextStyle(
-        //                             fontSize: Responsive.getFont(context, 14),
-        //                             color: Color(0xFFA4A4A4))),
-        //                   ],
-        //                 ),
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //       _buildInfoRow(
-        //           '포인트할인', '${orderDetails['discountPoint']}', context),
-        //       Container(
-        //         margin: EdgeInsets.only(top: 20),
-        //         height: 10,
-        //         width: double.infinity,
-        //         color: Color(0xFFF5F9F9),
-        //       ),
-        //       Container(
-        //         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-        //         child: Text(
-        //           '결제 수단',
-        //           style: TextStyle(
-        //               fontSize: Responsive.getFont(context, 18),
-        //               fontWeight: FontWeight.bold),
-        //         ),
-        //       ),
-        //       // 배송지 정보 세부 내용
-        //       Container(
-        //         padding: EdgeInsets.symmetric(vertical: 20),
-        //         decoration: BoxDecoration(
-        //           border: Border(
-        //             top: BorderSide(
-        //               color: Color(0xFFEEEEEE),
-        //             ),
-        //           ),
-        //         ),
-        //         child: Padding(
-        //           padding:
-        //               const EdgeInsets.only(right: 16.0, left: 16, bottom: 30),
-        //           child: Row(
-        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //             children: [
-        //               Text('신용카드',
-        //                   style: TextStyle(
-        //                       fontSize: Responsive.getFont(context, 14),
-        //                       color: Colors.black)),
-        //               Text('160,500원',
-        //                   style: TextStyle(
-        //                       fontSize: Responsive.getFont(context, 14),
-        //                       color: Colors.black)),
-        //             ],
-        //           ),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
+        //배송지 정보 세부 내용
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Color(0xFFEEEEEE),
+              ),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildInfoRow('총 상품 금액', "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otSprice ?? 0)}원", context),
+              Container(
+                margin: const EdgeInsets.only(top: 15),
+                  child: _buildInfoRow('총 배송비', "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원", context)),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 15),
+                child: Column(
+                  children: [
+                    _buildInfoRow('할인금액', "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUseCoupon ?? 0)}원", context),
+                    widget,
+                  ],
+                ),
+              ),
+              _buildInfoRow(
+                  '포인트할인', '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUsePoint ?? 0)}원', context),
+              Container(
+                margin: const EdgeInsets.only(top: 20),
+                height: 10,
+                width: double.infinity,
+                color: const Color(0xFFF5F9F9),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                child: Text(
+                  '결제 수단',
+                  style: TextStyle(
+                      fontSize: Responsive.getFont(context, 18),
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              // 배송지 정보 세부 내용
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: Color(0xFFEEEEEE),
+                    ),
+                  ),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(right: 16.0, left: 16, bottom: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(orderDetailInfoData?.order?.otPayType ?? "",
+                          style: TextStyle(
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.black)),
+                      Text('${Utils.getInstance().priceString(_getBillingPrice())}원',
+                          style: TextStyle(
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.black)),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -183,7 +188,7 @@ class OrderDetailItem extends StatelessWidget {
   // 공통적인 Row 빌더 함수
   Widget _buildInfoRow(String title, String value, BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -246,5 +251,15 @@ class OrderDetailItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  int _getBillingPrice() {
+    int result = (orderDetailInfoData?.order?.otSprice ?? 0) +
+        (orderDetailInfoData?.order?.otDeliveryCharge ?? 0) +
+        (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0);
+
+    // 할인금액 및 포인트 적용
+    result = result - (orderDetailInfoData?.order?.otUsePoint ?? 0) - (orderDetailInfoData?.order?.otUseCoupon ?? 0);
+    return result;
   }
 }

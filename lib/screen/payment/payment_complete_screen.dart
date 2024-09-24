@@ -467,26 +467,24 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
 
   Widget _buildPaymentCompleteRow(
       String title, String value, BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: Responsive.getFont(context, 14),
-              color: Colors.black,
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: Responsive.getFont(context, 14),
+            color: Colors.black,
           ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: Responsive.getFont(context, 14),
-              color: Colors.black,
-            ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: Responsive.getFont(context, 14),
+            color: Colors.black,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

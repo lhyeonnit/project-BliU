@@ -58,7 +58,6 @@ class OrderListItem extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      // TODO 변경 필요
                       builder: (context) => OrderDetail(orderData: orderData,),
                     ),
                   );

@@ -94,25 +94,25 @@ class _NonExchangeReturnDetailPageState
                       Expanded(
                         child: TextButton(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DeliveryScreen(),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => DeliveryScreen(),
+                            //   ),
+                            // );
                           },
+                          style: TextButton.styleFrom(
+                            side: const BorderSide(color: Color(0xFFDDDDDD)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6)),
+                            backgroundColor: Colors.white,
+                          ),
                           child: Text(
                             '배송조회',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: Responsive.getFont(context, 14),
                             ),
-                          ),
-                          style: TextButton.styleFrom(
-                            side: const BorderSide(color: Color(0xFFDDDDDD)),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6)),
-                            backgroundColor: Colors.white,
                           ),
                         ),
                       ),
