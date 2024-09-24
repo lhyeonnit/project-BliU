@@ -118,7 +118,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                         children: [
                           // 상위 카테고리 제목과 이미지
                           Padding(
-                            padding: const EdgeInsets.only(left: 20,right: 15),
+                            padding: const EdgeInsets.only(left: 20,right: 15,bottom: 10),
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
