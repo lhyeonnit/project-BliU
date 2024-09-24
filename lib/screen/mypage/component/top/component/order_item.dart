@@ -1,25 +1,23 @@
+import 'package:BliU/data/order_detail_data.dart';
+import 'package:BliU/screen/mypage/component/top/component/order_item_button.dart';
+import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../utils/responsive.dart';
-import 'order_item_button.dart';
-
 class OrderItem extends StatelessWidget {
-  final  Map<String, dynamic> order;
-  final Map<String, dynamic> orderDetails; // 모든 정보를 포함한 맵
+  final OrderDetailData orderDetailData;
 
-  const OrderItem({
-    required this.order,
-    required this.orderDetails,
-  });
+  const OrderItem({super.key, required this.orderDetailData,});
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 15),
+          margin: const EdgeInsets.only(top: 15),
           child: Text(
-            '${order['status']}',
+            orderDetailData.ctStatusTxt ?? "",
             style: TextStyle(
               fontWeight: FontWeight.w600,
               color: Colors.black,
@@ -29,7 +27,7 @@ class OrderItem extends StatelessWidget {
         ),
         // 상품 정보
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 15.0),
+          padding: const EdgeInsets.symmetric(vertical: 15.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -38,9 +36,8 @@ class OrderItem extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 20.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(6.0),
-                  child: Image.asset(
-                    order['items'][0]['image'] ??
-                        'assets/images/product/default.png',
+                  child: Image.network(
+                    orderDetailData.ptImg ?? "",
                     width: 90,
                     height: 90,
                     fit: BoxFit.cover,
@@ -53,15 +50,16 @@ class OrderItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      order['items'][0]['store'] ?? "",
+                      // order['items'][0]['store'] ?? "",
+                      orderDetailData.stName ?? "",
                       style: TextStyle(
                           fontSize: Responsive.getFont(context, 12),
-                          color: Color(0xFF7B7B7B)),
+                          color: const Color(0xFF7B7B7B)),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 4, bottom: 10),
+                      padding: const EdgeInsets.only(top: 4, bottom: 10),
                       child: Text(
-                        order['items'][0]['name'] ?? "",
+                        orderDetailData.ptName ?? "",
                         style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                         ),
@@ -70,16 +68,16 @@ class OrderItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      order['items'][0]['size'] ?? "",
+                      "${orderDetailData.ctOptValue} ${orderDetailData.ctOptQty}개",
                       style: TextStyle(
                         fontSize: Responsive.getFont(context, 13),
-                        color: Color(0xFF7B7B7B),
+                        color: const Color(0xFF7B7B7B),
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 15),
+                      padding: const EdgeInsets.only(top: 15),
                       child: Text(
-                        '${order['price']}원',
+                        "${Utils.getInstance().priceString(orderDetailData.ptPrice ?? 0)}원",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: Responsive.getFont(context, 14),
@@ -93,7 +91,7 @@ class OrderItem extends StatelessWidget {
           ),
         ),
         // 상태에 따라 버튼 표시
-        OrderItemButton(status: order['status'], date: order['date'], orderId: order['orderId'], orders: [order], orderDetails: orderDetails,),
+        OrderItemButton(orderDetailData: orderDetailData,),
       ],
     );
   }

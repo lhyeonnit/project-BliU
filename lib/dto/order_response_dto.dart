@@ -4,7 +4,7 @@ class OrderResponseDTO {
   final bool? result;
   final String? message;
   final int? count;
-  final List<OrderData>? list;
+  List<OrderData>? list;
 
   OrderResponseDTO({
     required this.result,
@@ -15,11 +15,15 @@ class OrderResponseDTO {
 
   // JSON to Object
   factory OrderResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<OrderData>.from((json['data']['list'])?.map((item) {
+      return OrderData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return OrderResponseDTO(
       result: json['result'],
       message: json['data']['message'],
       count: json['data']['count'],
-      list: (json['data']['list'] as List<OrderData>),
+      list: list,
     );
   }
 

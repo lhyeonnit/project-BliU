@@ -243,7 +243,8 @@ class _NonExchangeReturnDetailPageState
                   ),
                 ),
                 ExchangeReturnInfo(),
-                OrderDetailItem(orderDetails: widget.orderDetails),
+                // TODO OrderDetailItem
+                //OrderDetailItem(orderDetails: widget.orderDetails),
               ],
             ),
           ),

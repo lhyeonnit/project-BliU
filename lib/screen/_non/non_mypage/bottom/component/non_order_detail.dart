@@ -133,7 +133,8 @@ class _NonOrderDetailState extends State<NonOrderDetail> {
                     ],
                   ),
                 ),
-                OrderDetailItem(orderDetails: widget.orderDetails,),
+                // TODO OrderDetailItem
+                //OrderDetailItem(orderDetails: widget.orderDetails,),
               ],
             ),
           ),

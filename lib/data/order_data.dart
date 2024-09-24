@@ -11,9 +11,13 @@ class OrderData {
 
   // JSON to Object
   factory OrderData.fromJson(Map<String, dynamic> json) {
+    final list = List<OrderDetailData>.from((json['detail_list'])?.map((item) {
+      return OrderDetailData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return OrderData(
       ctWdate: json['ct_wdate'],
-      detailList: (json['detail_list'] as List<OrderDetailData>),
+      detailList: list,
     );
   }
 

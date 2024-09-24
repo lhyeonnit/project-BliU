@@ -4,6 +4,8 @@ class OrderDetailData {
   final String? ctStatusTxt;
   final String? otCode;
   final String? odtCode;
+  final String? stName;
+  final int? ptIdx;
   final String? ptName;
   final String? ctOptName;
   final String? ctOptValue;
@@ -17,6 +19,8 @@ class OrderDetailData {
     required this.ctStatusTxt,
     required this.otCode,
     required this.odtCode,
+    required this.stName,
+    required this.ptIdx,
     required this.ptName,
     required this.ctOptName,
     required this.ctOptValue,
@@ -33,6 +37,8 @@ class OrderDetailData {
       ctStatusTxt: json['ct_status_txt'],
       otCode: json['ot_code'],
       odtCode: json['odt_code'],
+      stName: json['st_name'],
+      ptIdx: json['pt_idx'],
       ptName: json['pt_name'],
       ctOptName: json['ct_opt_name'],
       ctOptValue: json['ct_opt_value'],
@@ -50,6 +56,8 @@ class OrderDetailData {
       'ct_status_txt': ctStatusTxt,
       'ot_code': otCode,
       'odt_code': odtCode,
+      'st_name': stName,
+      'pt_idx': ptIdx,
       'pt_name': ptName,
       'ct_opt_name': ctOptName,
       'ct_opt_value': ctOptValue,

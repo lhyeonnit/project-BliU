@@ -66,13 +66,15 @@ class NonOrderListItem extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => OrderDetail(
-                          date: date, orderId: orderId, orders: orders, orderDetails: orderDetails,),
-                    ),
-                  );
+                  // TODO OrderDetail
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => OrderDetail(
+                  //         date: date, orderId: orderId, orders: orders, orderDetails: orderDetails,),
+                  //   ),
+                  // );
+
                 },
                 child: Row(
                   children: [

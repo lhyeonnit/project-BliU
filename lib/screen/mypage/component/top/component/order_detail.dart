@@ -1,32 +1,39 @@
+import 'package:BliU/data/order_data.dart';
+import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_detail_item.dart';
+import 'package:BliU/screen/mypage/component/top/component/order_item.dart';
+import 'package:BliU/screen/mypage/viewmodel/order_detail_view_model.dart';
+import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../../utils/responsive.dart';
-import 'order_item.dart';
+class OrderDetail extends ConsumerStatefulWidget {
+  final OrderData orderData;
 
-class OrderDetail extends StatefulWidget {
-  final String date;
-  final String orderId;
-  final List<Map<String, dynamic>> orders;
-  final Map<String, dynamic> orderDetails; // 모든 정보를 포함한 맵
-
-  const OrderDetail({
-    Key? key,
-    required this.date,
-    required this.orderId,
-    required this.orders,
-    required this.orderDetails,
-  }) : super(key: key);
+  const OrderDetail({super.key, required this.orderData,});
 
   @override
-  State<OrderDetail> createState() => _OrderDetailState();
+  _OrderDetailState createState() => _OrderDetailState();
 }
 
 final ScrollController _scrollController = ScrollController();
 
-class _OrderDetailState extends State<OrderDetail> {
+class _OrderDetailState extends ConsumerState<OrderDetail> {
+  OrderDetailInfoData? orderDetailInfoData;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,23 +82,25 @@ class _OrderDetailState extends State<OrderDetail> {
               children: [
                 // 주문 날짜 및 ID
                 Container(
-                  padding: EdgeInsets.only(left: 16, top: 20),
+                  padding: const EdgeInsets.only(left: 16, top: 20),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       Text(
-                        '${widget.date}',
+                        widget.orderData.ctWdate ?? "",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                          fontSize: Responsive.getFont(context, 16),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
-                          '${widget.orderId}',
+                          orderDetailInfoData?.product?[0].otCode ?? "",
                           style: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
-                            color: Color(0xFF7B7B7B),
+                            color: const Color(0xFF7B7B7B),
                           ),
                         ),
                       ),
@@ -100,19 +109,19 @@ class _OrderDetailState extends State<OrderDetail> {
                 ),
                 // 주문 아이템 리스트
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
-                    children: widget.orders.map((order) {
-                      return OrderItem(order: order, orderDetails: widget.orderDetails,);
+                    children: (orderDetailInfoData?.product ?? []).map((order) {
+                      return OrderItem(orderDetailData: order,);
                     }).toList(),
                   ),
                 ),
                 // 배송비 정보
                 Container(
-                  margin: EdgeInsets.only(top: 20),
+                  margin: const EdgeInsets.only(top: 20),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       top: BorderSide(
                         color: Color(0xFFEEEEEE),
@@ -122,18 +131,24 @@ class _OrderDetailState extends State<OrderDetail> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('배송비',
-                          style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.black)),
-                      Text('${widget.orderDetails['deliveryCost']}',
-                          style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.black)),
+                      Text(
+                        '배송비',
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 14),
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원",
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 14),
+                          color: Colors.black
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                OrderDetailItem(orderDetails: widget.orderDetails,),
+                OrderDetailItem(orderDetailInfoData: orderDetailInfoData),
               ],
             ),
           ),
@@ -141,5 +156,35 @@ class _OrderDetailState extends State<OrderDetail> {
         ],
       ),
     );
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getOrderDetail();
+  }
+
+  void _getOrderDetail() async {
+    // TODO 회원 비회원 처리 필요
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    Map<String, dynamic> requestData = {
+      'type' : 1,
+      'mt_idx' : mtIdx,
+      'temp_mt_id' : '',
+      'ot_code' : widget.orderData.detailList?[0].otCode,
+    };
+
+    final orderDetailInfoResponseDTO = await ref.read(orderDetailViewModelProvider.notifier).getOrderDetail(requestData);
+    if (orderDetailInfoResponseDTO != null) {
+      if (orderDetailInfoResponseDTO.result == true) {
+        setState(() {
+          orderDetailInfoData = orderDetailInfoResponseDTO.data;
+        });
+      } else {
+        if (!context.mounted) return;
+        Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
+      }
+    }
   }
 }

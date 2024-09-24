@@ -1,25 +1,14 @@
+import 'package:BliU/data/order_data.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_detail.dart';
-
+import 'package:BliU/screen/mypage/component/top/component/order_item.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'order_item.dart';
-
 class OrderListItem extends StatelessWidget {
-  final String date;
-  final String orderId;
-  final List<Map<String, dynamic>> orders;
-  final Map<String, dynamic> orderDetails; // 모든 정보를 포함한 맵
+  final OrderData orderData;
 
-
-  const OrderListItem({
-    Key? key,
-    required this.date,
-    required this.orderId,
-    required this.orders,
-    required this.orderDetails,
-  }) : super(key: key);
+  const OrderListItem({super.key, required this.orderData,});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +33,7 @@ class OrderListItem extends StatelessWidget {
                   textBaseline: TextBaseline.alphabetic,
                   children: [
                     Text(
-                      date,
+                      orderData.ctWdate ?? "",
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -54,10 +43,10 @@ class OrderListItem extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Text(
-                        orderId,
+                        orderData.detailList?[0].otCode ?? "",
                         style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
-                          color: Color(0xFF7B7B7B),
+                          color: const Color(0xFF7B7B7B),
                         ),
                       ),
                     ),
@@ -69,8 +58,8 @@ class OrderListItem extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => OrderDetail(
-                          date: date, orderId: orderId, orders: orders, orderDetails: orderDetails,),
+                      // TODO 변경 필요
+                      builder: (context) => OrderDetail(orderData: orderData,),
                     ),
                   );
                 },
@@ -96,8 +85,8 @@ class OrderListItem extends StatelessWidget {
           ),
           // 같은 날짜의 주문들을 묶어서 표시
           Column(
-            children: orders.map((order) {
-              return OrderItem(order: order, orderDetails: orderDetails,);
+            children: (orderData.detailList ?? []).map((orderDetailData) {
+              return OrderItem(orderDetailData: orderDetailData,);
             }).toList(),
           ),
         ],
