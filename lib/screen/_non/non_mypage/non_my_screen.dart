@@ -1,5 +1,5 @@
 import 'package:BliU/screen/_component/cart_screen.dart';
-import 'package:BliU/screen/_non/non_mypage/bottom/non_delivery_page.dart';
+import 'package:BliU/screen/_non/non_mypage/bottom/non_order_page.dart';
 import 'package:BliU/screen/_non/non_mypage/bottom/non_faq_page.dart';
 import 'package:BliU/screen/_non/non_mypage/bottom/non_notice_page.dart';
 import 'package:BliU/screen/_non/non_mypage/bottom/non_service_page.dart';
@@ -100,7 +100,7 @@ class NonMyScreen extends StatelessWidget {
           ),
 
           Container(
-            margin: EdgeInsets.only(top: 20, bottom: 30),
+            margin: EdgeInsets.only(bottom: 30),
             width: double.infinity,
             color: const Color(0xFFF5F9F9), // 색상 적용
             height: 10,
@@ -109,7 +109,7 @@ class NonMyScreen extends StatelessWidget {
           _buildSectionItem(context, '비회원 주문조회', () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const NonDeliveryPage()),
+              MaterialPageRoute(builder: (context) => const NonOrderPage()),
             );
           }),
           SizedBox(
@@ -176,7 +176,7 @@ class NonMyScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: Responsive.getFont(context, 15),
                 color: Colors.black,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w500,
               ),
             ),
             SvgPicture.asset(

@@ -24,7 +24,7 @@ class _MainScreenState extends State<MainScreen> {
     const LikeScreen(),
     const HomeScreen(),
     const CategoryScreen(),
-    const MyScreen(),
+    const NonMyScreen(),
   ];
 
   void _onItemTapped(int index) {

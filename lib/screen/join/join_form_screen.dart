@@ -544,7 +544,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                  borderSide: BorderSide(color: Colors.black),
                 ),
                 suffixIcon: suffixIcon,
               ),
@@ -587,7 +587,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                  borderSide: BorderSide(color: Colors.black),
                 ),
                 suffixIcon: suffixIcon,
               ),
