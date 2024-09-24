@@ -114,7 +114,8 @@ class _ProductOrderBottomOptionContentState
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,
-                        itemCount: _ptOption.length, // 리스트의 길이를 사용
+                        itemCount: _ptOption.length,
+                        // 리스트의 길이를 사용
                         itemBuilder: (context, index) {
                           //print("test ${_ptOption[index]}");
                           return _buildExpansionTile(
@@ -126,7 +127,6 @@ class _ProductOrderBottomOptionContentState
                               _selectOptionCheck();
                               _isOptionSelected = true;
                             },
-                            isEnabled: true, // 사이즈는 색상 선택 후 활성화
                           );
                         },
                       ),
@@ -345,7 +345,8 @@ class _ProductOrderBottomOptionContentState
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: _addPtAddArr.length, // 리스트의 길이를 사용
+                        itemCount: _addPtAddArr.length,
+                        // 리스트의 길이를 사용
                         itemBuilder: (context, index) {
                           return Column(
                             children: [
@@ -468,7 +469,7 @@ class _ProductOrderBottomOptionContentState
                         },
                       ),
                     ),
-                    if (_isOptionSelected )
+                    if (_isOptionSelected)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         margin: const EdgeInsets.only(bottom: 50, top: 15),
@@ -517,7 +518,6 @@ class _ProductOrderBottomOptionContentState
     required String title,
     required List<String> options,
     required Function(String) onSelected,
-    required bool isEnabled,
   }) {
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
@@ -542,22 +542,24 @@ class _ProductOrderBottomOptionContentState
               _isExpanded = expanded; // 타일이 열리고 닫힐 때 상태 변경
             });
           },
-          children: options.map((option) {
-            return ListTile(
-              title: Text(
-                option,
-                style: TextStyle(fontSize: Responsive.getFont(context, 14)),
-              ),
-              onTap: isEnabled
-                  ? () {
-                      onSelected(option); // 항목이 선택되면 콜백 실행
-                      setState(() {
-                        _isExpanded = false; // 선택 시 타일을 닫음
-                      });
-                    }
-                  : null,
-            );
-          }).toList(),
+          children: options.map(
+            (option) {
+              return ListTile(
+                title: Text(
+                  option,
+                  style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+                ),
+                onTap: () {
+                  onSelected(option); // 항목이 선택되면 콜백 실행
+                  setState(
+                    () {
+                      _isExpanded = false; // 선택 시 타일을 닫음
+                    },
+                  );
+                },
+              );
+            },
+          ).toList(),
         ),
       ),
     );
@@ -795,19 +797,23 @@ class _ProductOrderBottomOptionContentState
                       width: 90,
                       height: 90,
                       decoration: BoxDecoration(
-                        color: Color(0xFFF5F9F9),
-                        shape: BoxShape.circle
-                      ),
+                          color: Color(0xFFF5F9F9), shape: BoxShape.circle),
                     ),
                     Container(
-                        margin: EdgeInsets.symmetric(vertical: 30),
-                        child: Text('장바구니에 상품을 담았습니다.', style: TextStyle(fontSize: Responsive.getFont(context, 18), fontWeight: FontWeight.bold),),
+                      margin: EdgeInsets.symmetric(vertical: 30),
+                      child: Text(
+                        '장바구니에 상품을 담았습니다.',
+                        style: TextStyle(
+                            fontSize: Responsive.getFont(context, 18),
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const CartScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => const CartScreen()),
                         );
                       },
                       child: Container(
@@ -856,7 +862,6 @@ class _ProductOrderBottomOptionContentState
                         ),
                       ),
                     ),
-
                   ],
                 ),
               ),
