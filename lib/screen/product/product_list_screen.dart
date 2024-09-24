@@ -262,22 +262,27 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
             },
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
+            margin: EdgeInsets.only(right:6),
             child: Stack(
               children: [
-                GestureDetector(
-                  child: SvgPicture.asset("assets/images/product/ic_cart.svg"),
-                  onTap: () {
+                IconButton(
+                  icon: SvgPicture.asset(
+                    "assets/images/product/ic_cart.svg",
+                    height: Responsive.getHeight(context, 30),
+                    width: Responsive.getWidth(context, 30),
+                  ),
+                  onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const CartScreen()),
+                        builder: (context) => const CartScreen(),
+                      ),
                     );
                   },
                 ),
                 Positioned(
-                  right: 0,
-                  top: 12,
+                  right: 4,
+                  top: 20,
                   child: Container(
                     padding: const EdgeInsets.all(4),
                     decoration: const BoxDecoration(
