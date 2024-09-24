@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../../utils/responsive.dart';
-import 'exchange_return_info.dart';
+import 'non_exchange_return_info.dart';
 
-class ReturnItem extends StatefulWidget {
+class NonReturnDetailItem extends StatefulWidget {
   final Function(String reason, String detail, String returnAccount, String returnBank, List<File> images) onDataCollected;
 
-  const ReturnItem({required this.onDataCollected, Key? key}) : super(key: key);
+  const NonReturnDetailItem({required this.onDataCollected, Key? key}) : super(key: key);
 
   @override
-  State<ReturnItem> createState() => _ReturnItemState();
+  State<NonReturnDetailItem> createState() => _NonReturnDetailItemState();
 }
 
-class _ReturnItemState extends State<ReturnItem> {
+class _NonReturnDetailItemState extends State<NonReturnDetailItem> {
   OverlayEntry? _overlayEntryReason; // 취소 사유 드롭다운
   OverlayEntry? _overlayEntryBank;   // 은행명 드롭다운
   String _dropdownValue = '사유 선택';
@@ -421,7 +421,7 @@ class _ReturnItemState extends State<ReturnItem> {
                     ),
                   ),
 
-                ExchangeReturnInfo(),
+                NonExchangeReturnInfo(),
               ],
             ),
           ),

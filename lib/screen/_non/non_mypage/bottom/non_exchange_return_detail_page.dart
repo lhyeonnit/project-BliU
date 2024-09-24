@@ -11,7 +11,7 @@ import '../../../../utils/responsive.dart';
 import '../../../mypage/component/bottom/component/inquiry_service.dart';
 import '../../../mypage/component/top/delivery_screen.dart';
 
-class ExchangeReturnDetailScreen extends StatefulWidget {
+class NonExchangeReturnDetailPage extends StatefulWidget {
   final String reason; // 요청사유
   final String details; // 상세내용
   final String returnAccount;
@@ -24,7 +24,7 @@ class ExchangeReturnDetailScreen extends StatefulWidget {
   final List<Map<String, dynamic>> orders;
   final Map<String, dynamic> orderDetails; // 모든 정보를 포함한 맵
 
-  const ExchangeReturnDetailScreen(
+  const NonExchangeReturnDetailPage(
       {required this.reason,
       required this.details,
       required this.images,
@@ -40,12 +40,12 @@ class ExchangeReturnDetailScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<ExchangeReturnDetailScreen> createState() =>
-      _ExchangeReturnDetailScreenState();
+  State<NonExchangeReturnDetailPage> createState() =>
+      _NonExchangeReturnDetailPageState();
 }
 
-class _ExchangeReturnDetailScreenState
-    extends State<ExchangeReturnDetailScreen> {
+class _NonExchangeReturnDetailPageState
+    extends State<NonExchangeReturnDetailPage> {
   final ScrollController _scrollController = ScrollController();
 
   @override

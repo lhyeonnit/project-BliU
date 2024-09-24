@@ -311,7 +311,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                  borderSide: BorderSide(color: Colors.black),
                 ),
                 suffixIcon: suffixIcon,
               ),
@@ -354,7 +354,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                  borderSide: BorderSide(color: Colors.black),
                 ),
                 suffixIcon: suffixIcon,
               ),

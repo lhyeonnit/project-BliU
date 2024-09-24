@@ -85,11 +85,11 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                       ),
                       enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
-                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                        borderSide: BorderSide(color: Colors.black),
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
-                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                        borderSide: BorderSide(color: Colors.black),
                       ),
                     ),
                     onChanged: (value) {
@@ -148,11 +148,11 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                       ),
                       enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
-                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                        borderSide: BorderSide(color: Colors.black),
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
-                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                        borderSide: BorderSide(color: Colors.black),
                       ),
                     ),
                     onChanged: (value) {
@@ -295,11 +295,11 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                               color: const Color(0xFF595959)),
                           enabledBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(6)),
-                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                            borderSide: BorderSide(color: Colors.black),
                           ),
                           focusedBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(6)),
-                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                            borderSide: BorderSide(color: Colors.black),
                           ),
                         ),
                         onChanged: (value) {

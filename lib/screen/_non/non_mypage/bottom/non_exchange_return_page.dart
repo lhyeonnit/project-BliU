@@ -5,21 +5,21 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/cancel_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/exchange_detail_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/return_detail_item.dart';
-import 'package:BliU/screen/mypage/component/top/exchange_return_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../utils/responsive.dart';
+import '../../../_non/non_mypage/bottom/non_exchange_return_detail_page.dart';
 
-class ExchangeReturnScreen extends StatefulWidget {
+class NonExchangeReturnPage extends StatefulWidget {
   final String date;
   final String orderId;
   final List<Map<String, dynamic>> orders;
   final Map<String, dynamic> orderDetails; // 모든 정보를 포함한 맵
 
 
-  const ExchangeReturnScreen({
+  const NonExchangeReturnPage({
     Key? key,
     required this.date,
     required this.orderId,
@@ -28,10 +28,10 @@ class ExchangeReturnScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ExchangeReturnScreen> createState() => _ExchangeReturnScreenState();
+  State<NonExchangeReturnPage> createState() => _NonExchangeReturnPageState();
 }
 
-class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
+class _NonExchangeReturnPageState extends State<NonExchangeReturnPage> {
   final ScrollController _scrollController = ScrollController();
   List<String> categories = ['교환', '반품/환불'];
   int selectedIndex = 0;
@@ -135,7 +135,7 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ExchangeReturnDetailScreen(
+                          builder: (context) => NonExchangeReturnDetailPage(
                             reason: reason,  // 요청사유
                             details: details,  // 상세내용
                             images: images, // 이미지 리스트

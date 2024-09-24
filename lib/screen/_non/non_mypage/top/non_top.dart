@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:BliU/screen/login/login_screen.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -55,15 +57,73 @@ class _NonTopState extends State<NonTop> {
     return Column(
       children: [
         Row(
-          children: [],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFFFFE4DF), // 첫 번째 색상
+                          Color(0xFFFFDFEE), // 두 번째 색상
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                    ),
+                    child: ClipOval(child: Image.asset('assets/images/non/gender_select_boy.png')),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                            margin: EdgeInsets.only(bottom: 4),
+                            child: Text('블리유', style: TextStyle(fontSize: Responsive.getFont(context, 18), fontWeight: FontWeight.bold),)),
+                        Text('회원이 되어 주세요!', style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 12)),),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginScreen()
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 11,horizontal: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(22),
+                  border: Border.all(color: Color(0xFFFF6192)),
+                ),
+                child: Text('로그인', style: TextStyle(color: Color(0xFFFF6192), fontSize: Responsive.getFont(context, 14)),),
+              ),
+            ),
+          ],
         ),
         Container(
-          height: 420,
+          height: 80,
+          margin: EdgeInsets.symmetric(vertical: 20),
           child: PageView.builder(
             controller: _pageController,
             itemCount: _totalPages,
             itemBuilder: (context, index) {
-              return Image.asset(banners[index]);
+              return ClipRRect(
+                  borderRadius: BorderRadius.circular(9),
+                  child: Image.asset(banners[index]));
             },
           ),
         ),
@@ -75,7 +135,7 @@ class _NonTopState extends State<NonTop> {
               dotWidth: 6.0,
               dotHeight: 6.0,
               activeDotColor: Colors.black,
-              dotColor: Colors.grey,
+              dotColor: Color(0xFFDDDDDD),
             ),
           ),
         ),

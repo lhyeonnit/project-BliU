@@ -29,6 +29,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
   int _imageCnt = 0;
   List<Widget> _addImagesWidget = [];
@@ -157,7 +158,8 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
                     ],
                   ),
                 ),
-
+                _buildTextField('답변받을 연락처', _phoneController, '휴대폰 번호 입력',
+                    keyboardType: TextInputType.phone),
               ],
             ),
           ),
@@ -368,6 +370,63 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
             borderSide: BorderSide(color: Color(0xFFE1E1E1)),
           ),
         ),
+      ),
+    );
+  }
+  Widget _buildTextField(String label, TextEditingController controller,
+      String hintText,
+      {bool obscureText = false,
+        TextInputType keyboardType = TextInputType.text,}) {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // if (label.isNotEmpty)
+          Container(
+            margin: EdgeInsets.only(bottom: 10),
+            child: Row(
+              children: [
+                Text(label,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: Responsive.getFont(context, 13))),
+                Container(
+                    margin: EdgeInsets.only(left: 4),
+                    child: Text('*',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: Responsive.getFont(context, 13),
+                            color: Color(0xFFFF6192)))),
+              ],
+            ),
+          ),
+          if (label.isNotEmpty)
+            TextField(
+              style: TextStyle(
+                fontSize: Responsive.getFont(context, 14),
+              ),
+              controller: controller,
+              obscureText: obscureText,
+              keyboardType: keyboardType,
+              decoration: InputDecoration(
+                contentPadding:
+                EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                hintText: hintText,
+                hintStyle: TextStyle(
+                    fontSize: Responsive.getFont(context, 14),
+                    color: Color(0xFF595959)),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
