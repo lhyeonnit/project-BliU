@@ -85,7 +85,7 @@ class OrderListItem extends StatelessWidget {
           // 같은 날짜의 주문들을 묶어서 표시
           Column(
             children: (orderData.detailList ?? []).map((orderDetailData) {
-              return OrderItem(orderDetailData: orderDetailData,);
+              return OrderItem(orderData: orderData, orderDetailData: orderDetailData,);
             }).toList(),
           ),
         ],

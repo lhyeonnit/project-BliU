@@ -1,3 +1,4 @@
+import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_item_button.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -5,9 +6,10 @@ import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class OrderItem extends StatelessWidget {
+  final OrderData orderData;
   final OrderDetailData orderDetailData;
 
-  const OrderItem({super.key, required this.orderDetailData,});
+  const OrderItem({super.key, required this.orderData, required this.orderDetailData,});
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +93,7 @@ class OrderItem extends StatelessWidget {
           ),
         ),
         // 상태에 따라 버튼 표시
-        OrderItemButton(orderDetailData: orderDetailData,),
+        OrderItemButton(orderData: orderData, orderDetailData: orderDetailData,),
       ],
     );
   }

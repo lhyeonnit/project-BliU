@@ -99,7 +99,8 @@ class _NonCancelPageState extends State<NonCancelPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 주문 날짜 및 ID
-                CancelItem(date: widget.date, orderId: widget.orderId, orders: widget.orders),
+                // TODO
+                //CancelItem(date: widget.date, orderId: widget.orderId, orders: widget.orders),
                 // 취소사유 선택
                 Padding(
                   padding: EdgeInsets.only(bottom: 80),

@@ -1,23 +1,18 @@
+import 'package:BliU/data/order_data.dart';
+import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/cancel_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/exchange_return_info.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../utils/responsive.dart';
-
 class CancelScreen extends StatefulWidget {
-  final String date;
-  final String orderId;
-  final List<Map<String, dynamic>> orders;
+  final OrderData orderData;
+  final OrderDetailData orderDetailData;
 
-  const CancelScreen({
-    Key? key,
-    required this.date,
-    required this.orderId,
-    required this.orders,
-  }) : super(key: key);
+  const CancelScreen({super.key, required this.orderData, required this.orderDetailData,});
 
   @override
   State<CancelScreen> createState() => _CancelScreenState();
@@ -42,7 +37,7 @@ class _CancelScreenState extends State<CancelScreen> {
   void _createOverlay() {
     if (_overlayEntry == null) {
       _overlayEntry = _customDropdown();
-      Overlay.of(context)?.insert(_overlayEntry!);
+      Overlay.of(context).insert(_overlayEntry!);
     }
   }
 
@@ -99,17 +94,17 @@ class _CancelScreenState extends State<CancelScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 주문 날짜 및 ID
-                CancelItem(date: widget.date, orderId: widget.orderId, orders: widget.orders),
+                CancelItem(orderData: widget.orderData, orderDetailData: widget.orderDetailData,),
                 // 취소사유 선택
                 Padding(
-                  padding: EdgeInsets.only(bottom: 80),
+                  padding: const EdgeInsets.only(bottom: 80),
                   // 하단 버튼 공간 확보
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // 취소사유 선택
                       Padding(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 16.0,
                         ),
                         child: Column(
@@ -131,7 +126,7 @@ class _CancelScreenState extends State<CancelScreen> {
                                         horizontal: 15, vertical: 14),
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: Color(0xFFE1E1E1),
+                                        color: const Color(0xFFE1E1E1),
                                       ),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
@@ -159,26 +154,26 @@ class _CancelScreenState extends State<CancelScreen> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(top: 10.0),
+                              padding: const EdgeInsets.only(top: 10.0),
                               child: TextField(
                                 style: TextStyle(
                                   fontSize: Responsive.getFont(context, 14),),
                                 maxLines: 4,
                                 maxLength: 500,
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
+                                  contentPadding: const EdgeInsets.symmetric(
                                       vertical: 14, horizontal: 15),
                                   hintText: '세부 내용 입력',
                                   hintStyle: TextStyle(
                                       fontSize: Responsive.getFont(context, 14),
-                                      color: Color(0xFF595959)),
-                                  enabledBorder: OutlineInputBorder(
+                                      color: const Color(0xFF595959)),
+                                  enabledBorder: const OutlineInputBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(6)),
                                     borderSide:
                                         BorderSide(color: Color(0xFFE1E1E1)),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(6)),
                                     borderSide:
@@ -191,7 +186,7 @@ class _CancelScreenState extends State<CancelScreen> {
                                       style: TextStyle(
                                         fontSize:
                                             Responsive.getFont(context, 13),
-                                        color: Color(0xFF7B7B7B),
+                                        color: const Color(0xFF7B7B7B),
                                       ),
                                     ),
                                   ),
@@ -230,8 +225,8 @@ class _CancelScreenState extends State<CancelScreen> {
                     },
                     child: Container(
                       height: Responsive.getHeight(context, 48),
-                      margin: EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
-                      decoration: BoxDecoration(
+                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                      decoration: const BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.all(Radius.circular(6),),
                       ),
@@ -263,12 +258,12 @@ class _CancelScreenState extends State<CancelScreen> {
         child: CompositedTransformFollower(
           link: _layerLink,
           showWhenUnlinked: false,
-          offset: Offset(0, 50), // 드롭다운이 열리는 위치 설정
+          offset: const Offset(0, 50), // 드롭다운이 열리는 위치 설정
           child: Material(
             color: Colors.white,
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFE1E1E1)),
+                border: Border.all(color: const Color(0xFFE1E1E1)),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: ListView.builder(

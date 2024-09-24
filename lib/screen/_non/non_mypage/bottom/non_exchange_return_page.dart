@@ -77,10 +77,10 @@ class _NonExchangeReturnPageState extends State<NonExchangeReturnPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 주문 날짜 및 ID
-                CancelItem(
-                    date: widget.date,
-                    orderId: widget.orderId,
-                    orders: widget.orders),
+                // CancelItem(
+                //     date: widget.date,
+                //     orderId: widget.orderId,
+                //     orders: widget.orders),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 16),
                   child: Row(

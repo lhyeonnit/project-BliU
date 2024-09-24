@@ -10,7 +10,7 @@ import 'exchange_return_info.dart';
 class ReturnItem extends StatefulWidget {
   final Function(String reason, String detail, String returnAccount, String returnBank, List<File> images) onDataCollected;
 
-  const ReturnItem({required this.onDataCollected, Key? key}) : super(key: key);
+  const ReturnItem({required this.onDataCollected, super.key});
 
   @override
   State<ReturnItem> createState() => _ReturnItemState();
@@ -82,6 +82,7 @@ class _ReturnItemState extends State<ReturnItem> {
     _overlayEntryBank?.remove();
     _overlayEntryBank = null;
   }
+
   Future<void> _pickImages() async {
     final ImagePicker _picker = ImagePicker();
     final List<XFile>? images = await _picker.pickMultiImage(
@@ -118,14 +119,14 @@ class _ReturnItemState extends State<ReturnItem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10),
       // 하단 버튼 공간 확보
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 취소사유 선택
           Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
             ),
             child: Column(
@@ -146,7 +147,7 @@ class _ReturnItemState extends State<ReturnItem> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 14),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Color(0xFFE1E1E1)),
+                          border: Border.all(color: const Color(0xFFE1E1E1)),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Row(
@@ -167,29 +168,28 @@ class _ReturnItemState extends State<ReturnItem> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 8, bottom: 10),
+                  margin: const EdgeInsets.only(top: 8, bottom: 10),
                   child: Text(
                     '! 판매자 귀책이 아닐 시 반품 비용이 발생할 수 있습니다.',
                     style: TextStyle(fontSize: Responsive.getFont(context, 12)),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 10.0),
+                  padding: const EdgeInsets.only(top: 10.0),
                   child: TextField(
                     maxLines: 4,
                     maxLength: 500,
                     decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '세부 내용 입력',
                       hintStyle: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
-                          color: Color(0xFF595959)),
-                      enabledBorder: OutlineInputBorder(
+                          color: const Color(0xFF595959)),
+                      enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         borderSide: BorderSide(color: Colors.black),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         borderSide: BorderSide(color: Colors.black),
                       ),
@@ -199,7 +199,7 @@ class _ReturnItemState extends State<ReturnItem> {
                           '${_detailedReason.length}/500',
                           style: TextStyle(
                             fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFF7B7B7B),
+                            color: const Color(0xFF7B7B7B),
                           ),
                         ),
                       ),
@@ -216,7 +216,7 @@ class _ReturnItemState extends State<ReturnItem> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: Row(
               children: [
                 Text(
@@ -228,12 +228,12 @@ class _ReturnItemState extends State<ReturnItem> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 4),
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
                   child: Text(
                     '*',
                     style: TextStyle(
                       fontSize: Responsive.getFont(context, 13),
-                      color: Color(0xFFFF6192),
+                      color: const Color(0xFFFF6192),
                       fontWeight: FontWeight.normal,
                     ),
                   ),
@@ -242,47 +242,45 @@ class _ReturnItemState extends State<ReturnItem> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
                 Container(
-                  margin: EdgeInsets.only(right: 8),
+                  margin: const EdgeInsets.only(right: 8),
                   child: Expanded(
                     flex: 3,
-                    child: Container(
-                      child: GestureDetector(
-                        onTap: () {
-                          if (_overlayEntryBank == null) {
-                            _createOverlayBank();
-                          } else {
-                            _removeOverlayBank();
-                          }
-                        },
-                        child: Center(
-                          child: CompositedTransformTarget(
-                            link: _layerLinkBank, // 은행명 LayerLink
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 14),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Color(0xFFE1E1E1)),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    _dropdownAccount,
-                                    style: TextStyle(
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: Colors.black,
-                                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (_overlayEntryBank == null) {
+                          _createOverlayBank();
+                        } else {
+                          _removeOverlayBank();
+                        }
+                      },
+                      child: Center(
+                        child: CompositedTransformTarget(
+                          link: _layerLinkBank, // 은행명 LayerLink
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 14),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: const Color(0xFFE1E1E1)),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  _dropdownAccount,
+                                  style: TextStyle(
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: Colors.black,
                                   ),
-                                  SvgPicture.asset(
-                                      'assets/images/product/ic_select.svg'),
-                                ],
-                              ),
+                                ),
+                                SvgPicture.asset(
+                                    'assets/images/product/ic_select.svg'),
+                              ],
                             ),
                           ),
                         ),
@@ -292,32 +290,29 @@ class _ReturnItemState extends State<ReturnItem> {
                 ),
                 Expanded(
                   flex: 7,
-                  child: Container(
-                    child: TextField(
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                        hintText: '환불받을 은행계좌',
-                        hintStyle: TextStyle(
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Color(0xFF595959)),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
+                  child: TextField(
+                    maxLines: 1,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                      hintText: '환불받을 은행계좌',
+                      hintStyle: TextStyle(
+                          fontSize: Responsive.getFont(context, 14),
+                          color: const Color(0xFF595959)),
+                      enabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        borderSide: BorderSide(color: Colors.black),
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          _returnAccount = value;
-                          _updateCollectedData();
-                        });
-                      },
+                      focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        _returnAccount = value;
+                        _updateCollectedData();
+                      });
+                    },
                   ),
                 ),
               ],
@@ -325,12 +320,12 @@ class _ReturnItemState extends State<ReturnItem> {
           ),
           // 사진 선택 및 표시
           Container(
-            margin: EdgeInsets.symmetric(vertical: 20),
+            margin: const EdgeInsets.symmetric(vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -344,21 +339,21 @@ class _ReturnItemState extends State<ReturnItem> {
                       Text(
                         '최대3장',
                         style: TextStyle(
-                            color: Color(0xFF7B7B7B),
+                            color: const Color(0xFF7B7B7B),
                             fontSize: Responsive.getFont(context, 13)),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                  padding: EdgeInsets.symmetric(vertical: 14),
+                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(6),
                       ),
-                      border: Border.all(color: Color(0xFFDDDDDD))),
+                      border: Border.all(color: const Color(0xFFDDDDDD))),
                   child: GestureDetector(
                     onTap: _pickImages, // 이미지 선택 함수 호출
                     child: Center(
@@ -374,19 +369,19 @@ class _ReturnItemState extends State<ReturnItem> {
                 if (_selectedImages.isNotEmpty)
                   Container(
                     height: 100,
-                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: _selectedImages.length,
                       itemBuilder: (context, index) {
                         return Container(
-                          margin: EdgeInsets.only(right: 10),
+                          margin: const EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
+                            borderRadius: const BorderRadius.all(
                               Radius.circular(6),
                             ),
                             border: Border.all(
-                              color: Color(0xFFE7EAEF),
+                              color: const Color(0xFFE7EAEF),
                             ),
                           ),
                           child: Stack(
@@ -439,12 +434,12 @@ class _ReturnItemState extends State<ReturnItem> {
         child: CompositedTransformFollower(
           link: link,
           showWhenUnlinked: false,
-          offset: Offset(0, 50),
+          offset: const Offset(0, 50),
           child: Material(
             color: Colors.white,
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFE1E1E1)),
+                border: Border.all(color: const Color(0xFFE1E1E1)),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: ListView.builder(

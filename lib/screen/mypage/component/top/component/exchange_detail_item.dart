@@ -7,11 +7,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../../utils/responsive.dart';
 
 class ExchangeItem extends StatefulWidget {
-  final Function(
-          String reason, String details, String shippingCost, List<File> images) onDataCollected;
+  final Function(String reason, String details, String shippingCost, List<File> images) onDataCollected;
 
-  const ExchangeItem({required this.onDataCollected, Key? key})
-      : super(key: key);
+  const ExchangeItem({required this.onDataCollected, super.key});
 
   @override
   State<ExchangeItem> createState() => _ExchangeItemState();
@@ -40,7 +38,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
   void _createOverlay() {
     if (_overlayEntry == null) {
       _overlayEntry = _customDropdown();
-      Overlay.of(context)?.insert(_overlayEntry!);
+      Overlay.of(context).insert(_overlayEntry!);
     }
   }
 
@@ -86,14 +84,14 @@ class _ExchangeItemState extends State<ExchangeItem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10),
       // 하단 버튼 공간 확보
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 취소사유 선택
           Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
             ),
             child: Column(
@@ -115,7 +113,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                             horizontal: 15, vertical: 14),
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Color(0xFFE1E1E1),
+                            color: const Color(0xFFE1E1E1),
                           ),
                           borderRadius: BorderRadius.circular(6),
                         ),
@@ -141,22 +139,21 @@ class _ExchangeItemState extends State<ExchangeItem> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 10.0),
+                  padding: const EdgeInsets.only(top: 10.0),
                   child: TextField(
                     maxLines: 4,
                     maxLength: 500,
                     decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '세부 내용 입력',
                       hintStyle: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
-                          color: Color(0xFF595959)),
-                      enabledBorder: OutlineInputBorder(
+                          color: const Color(0xFF595959)),
+                      enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         borderSide: BorderSide(color: Colors.black),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         borderSide: BorderSide(color: Colors.black),
                       ),
@@ -166,7 +163,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                           '${_detailedReason.length}/500',
                           style: TextStyle(
                             fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFF7B7B7B),
+                            color: const Color(0xFF7B7B7B),
                           ),
                         ),
                       ),
@@ -184,7 +181,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
           ),
           // 사진 선택 및 표시
           Container(
-            margin: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -201,20 +198,20 @@ class _ExchangeItemState extends State<ExchangeItem> {
                     Text(
                       '최대3장',
                       style: TextStyle(
-                          color: Color(0xFF7B7B7B),
+                          color: const Color(0xFF7B7B7B),
                           fontSize: Responsive.getFont(context, 13)),
                     ),
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  padding: EdgeInsets.symmetric(vertical: 14),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(6),
                       ),
-                      border: Border.all(color: Color(0xFFDDDDDD))),
+                      border: Border.all(color: const Color(0xFFDDDDDD))),
                   child: GestureDetector(
                     onTap: _pickImages, // 이미지 선택 함수 호출
                     child: Center(
@@ -228,20 +225,20 @@ class _ExchangeItemState extends State<ExchangeItem> {
                 ),
                 // 선택된 이미지 표시
                 if (_selectedImages.isNotEmpty)
-                  Container(
+                  SizedBox(
                     height: 100,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: _selectedImages.length,
                       itemBuilder: (context, index) {
                         return Container(
-                          margin: EdgeInsets.only(right: 10),
+                          margin: const EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
+                            borderRadius: const BorderRadius.all(
                               Radius.circular(6),
                             ),
                             border: Border.all(
-                              color: Color(0xFFE7EAEF),
+                              color: const Color(0xFFE7EAEF),
                             ),
                           ),
                           child: Stack(
@@ -283,7 +280,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 16),
+                margin: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
                     Text(
@@ -295,12 +292,12 @@ class _ExchangeItemState extends State<ExchangeItem> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: 4),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
                       child: Text(
                         '*',
                         style: TextStyle(
                           fontSize: Responsive.getFont(context, 13),
-                          color: Color(0xFFFF6192),
+                          color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.normal,
                         ),
                       ),
@@ -319,12 +316,12 @@ class _ExchangeItemState extends State<ExchangeItem> {
                         _updateCollectedData();
                       });
                     },
-                    activeColor: Color(0xFFFF6192),
+                    activeColor: const Color(0xFFFF6192),
                     fillColor: MaterialStateProperty.resolveWith((states) {
                       if (!states.contains(MaterialState.selected)) {
-                        return Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
+                        return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
                       }
-                      return Color(0xFFFF6192); // 선택된 상태의 색상
+                      return const Color(0xFFFF6192); // 선택된 상태의 색상
                     }),
                   ),
                   Expanded(
@@ -348,12 +345,12 @@ class _ExchangeItemState extends State<ExchangeItem> {
                         _updateCollectedData();
                       });
                     },
-                    activeColor: Color(0xFFFF6192),
+                    activeColor: const Color(0xFFFF6192),
                     fillColor: MaterialStateProperty.resolveWith((states) {
                       if (!states.contains(MaterialState.selected)) {
-                        return Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
+                        return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
                       }
-                      return Color(0xFFFF6192); // 선택된 상태의 색상
+                      return const Color(0xFFFF6192); // 선택된 상태의 색상
                     }),
                   ),
                   Expanded(
@@ -366,7 +363,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                             fontSize: Responsive.getFont(context, 14),
                           ),
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Text(
                           "국민은행 123456789 홍길동",
                           style: TextStyle(
@@ -389,12 +386,12 @@ class _ExchangeItemState extends State<ExchangeItem> {
                         _updateCollectedData();
                       });
                     },
-                    activeColor: Color(0xFFFF6192),
+                    activeColor: const Color(0xFFFF6192),
                     fillColor: MaterialStateProperty.resolveWith((states) {
                       if (!states.contains(MaterialState.selected)) {
-                        return Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
+                        return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
                       }
-                      return Color(0xFFFF6192); // 선택된 상태의 색상
+                      return const Color(0xFFFF6192); // 선택된 상태의 색상
                     }),
                   ),
                   Expanded(
@@ -422,12 +419,12 @@ class _ExchangeItemState extends State<ExchangeItem> {
         child: CompositedTransformFollower(
           link: _layerLink,
           showWhenUnlinked: false,
-          offset: Offset(0, 50), // 드롭다운이 열리는 위치 설정
+          offset: const Offset(0, 50), // 드롭다운이 열리는 위치 설정
           child: Material(
             color: Colors.white,
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFE1E1E1)),
+                border: Border.all(color: const Color(0xFFE1E1E1)),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: ListView.builder(

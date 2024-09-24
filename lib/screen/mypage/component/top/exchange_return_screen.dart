@@ -1,31 +1,21 @@
-//교환 반품
 import 'dart:io';
-
+import 'package:BliU/data/order_data.dart';
+import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/cancel_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/exchange_detail_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/return_detail_item.dart';
 import 'package:BliU/screen/mypage/component/top/exchange_return_detail_screen.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../../../../utils/responsive.dart';
-
+//교환 반품
 class ExchangeReturnScreen extends StatefulWidget {
-  final String date;
-  final String orderId;
-  final List<Map<String, dynamic>> orders;
-  final Map<String, dynamic> orderDetails; // 모든 정보를 포함한 맵
+  final OrderData orderData;
+  final OrderDetailData orderDetailData;
 
-
-  const ExchangeReturnScreen({
-    Key? key,
-    required this.date,
-    required this.orderId,
-    required this.orders,
-    required this.orderDetails,
-  }) : super(key: key);
+  const ExchangeReturnScreen({super.key, required this.orderData, required this.orderDetailData});
 
   @override
   State<ExchangeReturnScreen> createState() => _ExchangeReturnScreenState();
@@ -33,6 +23,7 @@ class ExchangeReturnScreen extends StatefulWidget {
 
 class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
   final ScrollController _scrollController = ScrollController();
+
   List<String> categories = ['교환', '반품/환불'];
   int selectedIndex = 0;
   String reason = ''; // 요청사유
@@ -41,6 +32,7 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
   String details = ''; // 상세내용
   String shippingCost = '';
   List<File> images = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,12 +69,9 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 주문 날짜 및 ID
-                CancelItem(
-                    date: widget.date,
-                    orderId: widget.orderId,
-                    orders: widget.orders),
+                CancelItem(orderData: widget.orderData, orderDetailData: widget.orderDetailData,),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -97,7 +86,7 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
                           });
                         },
                       ),
-                      SizedBox(width: 8,),
+                      const SizedBox(width: 8,),
                       // 반품/환불 버튼
                       _buildCustomButton(
                         context,
@@ -132,30 +121,29 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
                       // 교환 또는 반품/환불에 따른 타이틀 설정
                       String title = selectedIndex == 0 ? '교환' : '반품/환불';
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ExchangeReturnDetailScreen(
-                            reason: reason,  // 요청사유
-                            details: details,  // 상세내용
-                            images: images, // 이미지 리스트
-                            returnAccount: returnAccount,
-                            returnBank: returnBank,
-                            shippingCost: shippingCost,
-                            title: title,  // 화면 타이틀
-                            date: widget.date,
-                            orderId: widget.orderId,
-                            orders: widget.orders,
-                            orderDetails: widget.orderDetails,  // 주문 세부 정보
-                          ),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => ExchangeReturnDetailScreen(
+                      //       reason: reason,  // 요청사유
+                      //       details: details,  // 상세내용
+                      //       images: images, // 이미지 리스트
+                      //       returnAccount: returnAccount,
+                      //       returnBank: returnBank,
+                      //       shippingCost: shippingCost,
+                      //       title: title,  // 화면 타이틀
+                      //       date: widget.date,
+                      //       orderId: widget.orderId,
+                      //       orders: widget.orders,
+                      //       orderDetails: widget.orderDetails,  // 주문 세부 정보
+                      //     ),
+                      //   ),
+                      // );
                     },
                     child: Container(
                       height: Responsive.getHeight(context, 48),
-                      margin:
-                      EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                      decoration: BoxDecoration(
+                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                      decoration: const BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.all(
                           Radius.circular(6),
@@ -225,7 +213,7 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
             border: Border.all(
-              color: isSelected ? Color(0xFFFF6192) : Color(0xFFDDDDDD), // 테두리 색상
+              color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD), // 테두리 색상
               width: 1.0,
             ),
             color: Colors.white, // 배경색
@@ -235,7 +223,7 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
               text,
               style: TextStyle(
                 fontSize: Responsive.getFont(context, 14),
-                color: isSelected ? Color(0xFFFF6192) : Colors.black,
+                color: isSelected ? const Color(0xFFFF6192) : Colors.black,
                 // 선택 시 텍스트 색상 변경
                 fontWeight: FontWeight.normal,
               ),

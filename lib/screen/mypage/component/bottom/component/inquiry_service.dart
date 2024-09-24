@@ -20,10 +20,6 @@ class InquiryService extends ConsumerStatefulWidget {
 }
 
 class _InquiryServiceState extends ConsumerState<InquiryService> {
-  String? get qnaType => widget.qnaType;
-
-  int? get ptIdx => widget.ptIdx;
-
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
@@ -289,21 +285,18 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
       String tempMtId = pref.getToken().toString(); // 앱 토큰
 
       final formData = FormData.fromMap({
-        'qna_type': qnaType,
+        'qna_type': widget.qnaType,
         'type': type,
         'mt_idx': mtIdx,
         'temp_mt_id': tempMtId,
-        'pt_idx': ptIdx,
+        'pt_idx': widget.ptIdx,
         'qt_title': title,
         'qt_content': content,
         'qna_img': files,
         'temp_mt_hp': tempMtHp,
       });
-
-      ref
-          .read(inquiryWriteModelProvider.notifier)
-          .qnaWrite(formData)
-          .then((resultData) {
+      
+      ref.read(inquiryWriteModelProvider.notifier).qnaWrite(formData).then((resultData) {
         if (resultData != null) {
           Utils.getInstance()
               .showSnackBar(context, resultData.message.toString());

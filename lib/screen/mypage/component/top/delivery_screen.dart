@@ -9,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 class DeliveryScreen extends ConsumerStatefulWidget {
-  //final String odtCode = "P240901071854KOF8";
   final String odtCode;
   const DeliveryScreen({super.key, required this.odtCode});
 
