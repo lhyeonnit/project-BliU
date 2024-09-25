@@ -77,31 +77,6 @@ class StoreCategoryViewModel extends StateNotifier<StoreCategoryModel?> {
       state = StoreCategoryModel(productList: state?.productList);
     }
   }
-
-// // 연령대 선택 BottomSheet 호출 및 상태 업데이트
-// void showAgeGroupSelection(BuildContext context) {
-//   showModalBottomSheet(
-//     context: context,
-//     backgroundColor: Colors.white,
-//     builder: (BuildContext context) {
-//       return StoreAgeGroupSelection(
-//         selectedAgeGroups: state?.selectedAgeGroups ?? [],
-//         onSelectionChanged: (List<String> newSelection) {
-//           state = state?.copyWith(selectedAgeGroups: newSelection);
-//         },
-//       );
-//     },
-//   );
-// }
-//
-// // 선택된 연령대 텍스트 반환
-// String getSelectedAgeGroupsText() {
-//   if (state?.selectedAgeGroups.isEmpty ?? true) {
-//     return '연령';
-//   } else {
-//     return state?.selectedAgeGroups.join(', ') ?? '연령';
-//   }
-// }
 }
 
 // ViewModel Provider 정의

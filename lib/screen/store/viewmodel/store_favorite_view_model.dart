@@ -3,16 +3,14 @@ import 'package:BliU/const/constant.dart';
 import 'package:BliU/data/bookmark_data.dart';
 import 'package:BliU/dto/bookmark_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class StoreFavoriteModel {
   BookmarkResponseDTO? bookmarkResponseDTO;
-  List<BookmarkData>? bookmarkList;
 
   StoreFavoriteModel({
     required this.bookmarkResponseDTO,
-    required this.bookmarkList,
   });
 }
 
@@ -20,111 +18,76 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  StoreFavoriteViewModel(super.state, this.ref) {
-    _loadSearchHistory();
-    notifyInit(); // ViewModel 초기화 시 데이터를 가져옴
-  }
+  StoreFavoriteViewModel(super.state, this.ref);
 
-  Future<void> notifyInit() async {
-    int mtIdx = 2;
-    int pg = 1;
-
-    Map<String, dynamic> requestData = {
-      'mt_idx': mtIdx.toString(),
-      'pg': pg.toString(),
-    };
+  /// 북마크 목록 초기화 및 가져오기
+  Future<void> getBookmark(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(
-          url: Constant.apiStoreBookMarkUrl, data: requestData);
+        url: Constant.apiStoreBookMarkUrl,
+        data: requestData,
+      );
       if (response != null) {
         if (response.statusCode == 200) {
-          // 응답 데이터를 최상위 레벨에서 Map<String, dynamic>으로 가져옴
-          final Map<String, dynamic> bookmarkListJson = response.data;
+          Map<String, dynamic> responseData = response.data;
+          BookmarkResponseDTO bookmarkResponseDTO =
+              BookmarkResponseDTO.fromJson(responseData);
 
-          // `data` -> `list` 경로를 통해 실제 리스트를 추출
-          final List<dynamic> listJson = bookmarkListJson['data']['list'];
+          List<BookmarkData> list = bookmarkResponseDTO.list ?? [];
 
-          // Mapping JSON to BookmarkStoreDTO objects
-          List<BookmarkData> bookmarkList = listJson.map((item) {
-            return BookmarkData.fromJson(item as Map<String, dynamic>);
-          }).toList();
+          bookmarkResponseDTO.list = list;
 
-          state = StoreFavoriteModel(
-            bookmarkResponseDTO: BookmarkResponseDTO(
-                result: true, count: bookmarkList.length, list: bookmarkList),
-            bookmarkList: bookmarkList,
-          );
-        } else {}
-      } else {
-        state = null;
+          state = StoreFavoriteModel(bookmarkResponseDTO: bookmarkResponseDTO);
+          return;
+        }
       }
+      state = state;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching bookmark list: $e');
-      state = null;
+      print('Error fetching : $e');
+      state = state;
     }
   }
 
-  List<String> searchHistory = [];
-  TextEditingController searchController = TextEditingController();
+  /// 북마크 상태를 토글하는 메서드
+  Future<void> toggleLike(Map<String, dynamic> requestData) async {
+    try {
+      final response = await repository.reqPost(
+        url: Constant.apiStoreLikeUrl,
+        data: requestData,
+      );
 
-  // 검색 기록 불러오기
-  Future<void> _loadSearchHistory() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    searchHistory = prefs.getStringList('searchHistory') ?? [];
+      if (response != null && response.statusCode == 200) {
+        bool result = response.data['result'];
+        int stIdx = requestData['st_idx'];
+
+        if (result) {
+          // 북마크 리스트에서 stIdx를 찾아 상태 반전
+          List<BookmarkData>? updatedList = state?.bookmarkResponseDTO?.list?.map((store) {
+            if (store.stIdx == stIdx) {
+              store.stLike = store.stLike == 1 ? 0 : 1; // 북마크 상태 반전
+            }
+            return store;
+          }).toList();
+
+          // 상태 업데이트
+          state = StoreFavoriteModel(
+            bookmarkResponseDTO: BookmarkResponseDTO(
+              result: state?.bookmarkResponseDTO?.result ?? false,
+              count: updatedList?.length ?? 0,
+              list: updatedList,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      print('Error toggling like: $e');
+    }
   }
-
-  // 검색 기록 저장하기
-  Future<void> saveSearch(String search) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    searchHistory.add(search);
-    await prefs.setStringList('searchHistory', searchHistory);
-  }
-
-// 북마크 추가/제거 처리
-// Future<void> toggleBookmark(BookmarkStoreDTO store) async {
-//   try {
-//     // Toggle bookmark like/unlike
-//     final isBookmarked = store.stLike > 0;
-//     final newLikeCount = isBookmarked ? store.stLike - 1 : store.stLike + 1;
-//
-//     // Call repository to toggle the bookmark on the server
-//     final response = await StoreRepository().toggleStoreLike(mtIdx: 2, stIdx: store.stIdx);
-//
-//     if (response.status == 200) {
-//       // If toggle was successful, update the local state
-//       if (state != null && state!.bookmarkStoreDTO != null) {
-//         List<BookmarkStoreDTO> updatedStores = state!.bookmarkStoreDTO!.map((s) {
-//           if (s.stIdx == store.stIdx) {
-//             return BookmarkStoreDTO(
-//               stIdx: s.stIdx,
-//               stName: s.stName,
-//               stProfile: s.stProfile,
-//               styleTxt: s.styleTxt,
-//               ageTxt: s.ageTxt,
-//               stLike: newLikeCount,
-//             );
-//           }
-//           return s;
-//         }).toList();
-//
-//         // Update the state with the modified list
-//         state = StoreFavoriteModel(
-//           bookmarkResponseDTO: state!.bookmarkResponseDTO,
-//           bookmarkStoreDTO: updatedStores,
-//         );
-//       }
-//     } else {
-//       print('Failed to toggle like: ${response.errorMessage}');
-//     }
-//   } catch (e) {
-//     print('Error toggling like: $e');
-//   }
-// }
 }
 
 // ViewModel Provider 정의
 final storeFavoriteViewModelProvider =
-    StateNotifierProvider<StoreFavoriteViewModel, StoreFavoriteModel?>((ref) {
-  return StoreFavoriteViewModel(null, ref);
+    StateNotifierProvider<StoreFavoriteViewModel, StoreFavoriteModel?>((req) {
+  return StoreFavoriteViewModel(null, req);
 });
