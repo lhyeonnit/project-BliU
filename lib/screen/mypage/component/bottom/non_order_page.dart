@@ -1,4 +1,3 @@
-import 'package:BliU/screen/_non/non_mypage/bottom/component/non_order_list_page.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -102,12 +101,12 @@ class _NonOrderPageState extends State<NonOrderPage> {
             child: GestureDetector(
               // TODO 비회원 구매 조회 로직 추가
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => NonOrderListPage()
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => NonOrderListPage()
+                //   ),
+                // );
               },
               child: Container(
                 width: double.infinity,
