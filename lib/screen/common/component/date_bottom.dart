@@ -22,7 +22,7 @@ class DateBottom extends StatelessWidget {
             children: [
               const Text(
                 '출생년도',
-                style: TextStyle( fontFamily: 'Pretendard',fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               IconButton(
                 icon: const Icon(Icons.close),

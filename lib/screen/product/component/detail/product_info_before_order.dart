@@ -33,8 +33,8 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('구매 전 필수 확인', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 16), fontWeight: FontWeight.bold),),
-                      Text('만족스러운 쇼핑을 위해 구매 전에 꼼꼼히 \n살펴보세요.', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 12), color: Color(0xFF6A5B54)),),
+                      Text('구매 전 필수 확인', style: TextStyle(fontSize: Responsive.getFont(context, 16), fontWeight: FontWeight.bold),),
+                      Text('만족스러운 쇼핑을 위해 구매 전에 꼼꼼히 \n살펴보세요.', style: TextStyle(fontSize: Responsive.getFont(context, 12), color: Color(0xFF6A5B54)),),
                     ],
                   )),
             ],
@@ -49,7 +49,7 @@ class ProductInfoBeforeOrder extends StatelessWidget {
               child: ExpansionTile(
                 title: Text(
                   '배송안내',
-                  style: TextStyle( fontFamily: 'Pretendard',
+                  style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: Responsive.getFont(context, 14)),
                 ),
@@ -67,7 +67,7 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                           infoData?.delivery ?? "",
-                          style: const TextStyle( fontFamily: 'Pretendard',color: Colors.black54),
+                          style: const TextStyle(color: Colors.black54),
                         ),
                       ),
                     ),
@@ -84,7 +84,7 @@ class ProductInfoBeforeOrder extends StatelessWidget {
               child: ExpansionTile(
                 title: Text(
                   '교환/반품 안내',
-                  style: TextStyle( fontFamily: 'Pretendard',
+                  style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: Responsive.getFont(context, 14)),
                 ),
@@ -101,7 +101,7 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                       child: Text(
                         infoData?.returnVal ?? "",
                         style:
-                            TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
+                            TextStyle(fontSize: Responsive.getFont(context, 14)),
                       ),
                     ),
                   ),
@@ -129,13 +129,13 @@ class ProductInfoBeforeOrder extends StatelessWidget {
 //         children: [
 //           Text(
 //             label,
-//             style: const TextStyle( fontFamily: 'Pretendard',fontWeight: FontWeight.bold),
+//             style: const TextStyle(fontWeight: FontWeight.bold),
 //           ),
 //           const SizedBox(width: 8),
 //           Expanded(
 //             child: Text(
 //               value,
-//               style: const TextStyle( fontFamily: 'Pretendard',color: Colors.black54),
+//               style: const TextStyle(color: Colors.black54),
 //             ),
 //           ),
 //         ],

@@ -8,9 +8,9 @@ class DefaultRepository {
   DefaultRepository() {
     BaseOptions options = BaseOptions(
       baseUrl: Constant.USER_URL,
-      connectTimeout: const Duration(milliseconds: 10000),
-      receiveTimeout: const Duration(milliseconds: 10000),
-      sendTimeout: const Duration(milliseconds: 10000),
+      connectTimeout: const Duration(milliseconds: 30000),
+      receiveTimeout: const Duration(milliseconds: 30000),
+      sendTimeout: const Duration(milliseconds: 30000),
       headers: {
         'Authorization': 'Bearer bground_bliu_dmonter_20240729'
       },

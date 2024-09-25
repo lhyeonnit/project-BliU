@@ -23,7 +23,7 @@ class ServiceScreen extends ConsumerWidget {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('고객센터'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -143,7 +143,7 @@ class ServiceScreen extends ConsumerWidget {
       children: [
         Text(
           title,
-          style: TextStyle( fontFamily: 'Pretendard',
+          style: TextStyle(
             fontSize: Responsive.getFont(context, 15),
             color: Colors.black,
             fontWeight: FontWeight.w500,
@@ -151,7 +151,7 @@ class ServiceScreen extends ConsumerWidget {
         ),
         Text(
           content,
-          style: TextStyle( fontFamily: 'Pretendard',
+          style: TextStyle(
             fontSize: Responsive.getFont(context, 14),
             fontWeight: FontWeight.w400,
             color: contentColor,
@@ -174,7 +174,7 @@ class ServiceScreen extends ConsumerWidget {
           children: [
             Text(
               title,
-              style: TextStyle( fontFamily: 'Pretendard',
+              style: TextStyle(
                 fontSize: Responsive.getFont(context, 16),
                 color: Colors.black,
                 fontWeight: FontWeight.w500,

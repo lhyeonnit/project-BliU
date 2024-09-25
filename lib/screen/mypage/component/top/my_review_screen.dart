@@ -20,7 +20,7 @@ class MyReviewScreen extends StatelessWidget {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('나의리뷰'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -59,7 +59,7 @@ class MyReviewScreen extends StatelessWidget {
             margin: EdgeInsets.only(top: 20, bottom: 15),
             child: Text(
               '작성한 리뷰 0',
-              style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
+              style: TextStyle(fontSize: Responsive.getFont(context, 14)),
             ),
           ),
           Container(
@@ -110,7 +110,7 @@ class MyReviewScreen extends StatelessWidget {
                             children: [
                               Text(
                                 review!.store,
-                                style: TextStyle( fontFamily: 'Pretendard',
+                                style: TextStyle(
                                     fontSize: Responsive.getFont(context, 12),
                                     color: Color(0xFF7B7B7B)),
                               ),
@@ -118,7 +118,7 @@ class MyReviewScreen extends StatelessWidget {
                                 padding: EdgeInsets.only(top: 4),
                                 child: Text(
                                   review!.name,
-                                  style: TextStyle( fontFamily: 'Pretendard',
+                                  style: TextStyle(
                                     fontSize: Responsive.getFont(context, 14),
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -127,7 +127,7 @@ class MyReviewScreen extends StatelessWidget {
                               ),
                               Text(
                                 review!.size,
-                                style: TextStyle( fontFamily: 'Pretendard',
+                                style: TextStyle(
                                   fontSize: Responsive.getFont(context, 13),
                                   color: Color(0xFF7B7B7B),
                                 ),
@@ -146,7 +146,7 @@ class MyReviewScreen extends StatelessWidget {
             child: Center(
               child: Text(
                 "작성하신 리뷰가 없습니다.",
-                style: TextStyle( fontFamily: 'Pretendard',
+                style: TextStyle(
                   fontSize: Responsive.getFont(context, 16),
                   color: Colors.grey,
                 ),

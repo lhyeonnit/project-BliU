@@ -109,12 +109,12 @@ class _SearchScreenState extends State<SearchScreen> {
       if (indexOfHighlight > start) {
         spans.add(TextSpan(
           text: text.substring(start, indexOfHighlight),
-          style: TextStyle( fontFamily: 'Pretendard',color: Colors.black),
+          style: TextStyle(color: Colors.black),
         ));
       }
       spans.add(TextSpan(
         text: text.substring(indexOfHighlight, indexOfHighlight + query.length),
-        style: TextStyle( fontFamily: 'Pretendard',color: Color(0xFFFF6192)),
+        style: TextStyle(color: Color(0xFFFF6192)),
       ));
       start = indexOfHighlight + query.length;
     }
@@ -122,14 +122,14 @@ class _SearchScreenState extends State<SearchScreen> {
     if (start < text.length) {
       spans.add(TextSpan(
         text: text.substring(start),
-        style: TextStyle( fontFamily: 'Pretendard',color: Colors.black),
+        style: TextStyle(color: Colors.black),
       ));
     }
 
     return RichText(
       text: TextSpan(
         children: spans,
-        style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
+        style: TextStyle(fontSize: Responsive.getFont(context, 14)),
       ),
     );
   }
@@ -184,18 +184,18 @@ class _SearchScreenState extends State<SearchScreen> {
                     children: [
                       Expanded(
                         child: TextField(
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                               decorationThickness: 0,
                               fontSize: Responsive.getFont(context, 14)),
                           controller: _searchController,
                           decoration: InputDecoration(
                             contentPadding:
                                 const EdgeInsets.only(left: 16, bottom: 8),
-                            labelStyle: TextStyle( fontFamily: 'Pretendard',
+                            labelStyle: TextStyle(
                               fontSize: Responsive.getFont(context, 14),
                             ),
                             hintText: '검색어를 입력해 주세요',
-                            hintStyle: TextStyle( fontFamily: 'Pretendard',
+                            hintStyle: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Color(0xFF595959)),
                             border: InputBorder.none,
@@ -290,7 +290,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       children: [
                         Text(
                           '최근 검색어',
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         GestureDetector(
@@ -301,7 +301,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               Container(
                                 margin: EdgeInsets.only(left: 5),
                                 child: Text('전체삭제',
-                                    style: TextStyle( fontFamily: 'Pretendard',fontSize: 14)),
+                                    style: TextStyle(fontSize: 14)),
                               ),
                             ],
                           ),
@@ -325,7 +325,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           child: Chip(
                             label: Text(
                               search,
-                              style: TextStyle( fontFamily: 'Pretendard',
+                              style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                               ),
                             ),
@@ -358,7 +358,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: Text(
                       '인기 검색어',
                       style:
-                          TextStyle( fontFamily: 'Pretendard',fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                   GridView.builder(
@@ -385,13 +385,13 @@ class _SearchScreenState extends State<SearchScreen> {
                             Container(
                               width: 25,
                               child: Text('${index + 1}',
-                                  style: TextStyle( fontFamily: 'Pretendard',
+                                  style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600)),
                             ),
                             Text(
                               _popularSearches[index],
-                              style: TextStyle( fontFamily: 'Pretendard',fontSize: 15),
+                              style: TextStyle(fontSize: 15),
                             ),
                           ],
                         ),

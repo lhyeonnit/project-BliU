@@ -32,7 +32,7 @@ class _ProductBottomOptionAdditionState extends State<ProductBottomOptionAdditio
                   children: [
                     Text(
                       '팔찌',
-                      style: TextStyle( fontFamily: 'Pretendard',
+                      style: TextStyle(
                         fontSize: Responsive.getFont(context, 14),
                       ),
                     ),
@@ -69,7 +69,7 @@ class _ProductBottomOptionAdditionState extends State<ProductBottomOptionAdditio
                           margin: EdgeInsets.symmetric(horizontal: 5),
                           child: Text(
                             '1',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                               fontSize: Responsive.getFont(context, 14),
                             ),
                           ),
@@ -83,7 +83,7 @@ class _ProductBottomOptionAdditionState extends State<ProductBottomOptionAdditio
                   ),
                   Text(
                     '9,900원',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       fontSize: Responsive.getFont(context, 14),
                       fontWeight: FontWeight.bold,
                     ),

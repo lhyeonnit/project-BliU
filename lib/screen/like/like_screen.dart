@@ -90,7 +90,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
         // 기본 뒤로가기 버튼을 숨김
         scrolledUnderElevation: 0,
         title: const Text('좋아요'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -130,7 +130,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: TabBar(
                           controller: _tabController,
-                          labelStyle: TextStyle( fontFamily: 'Pretendard',
+                          labelStyle: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.w600,
                           ),
@@ -180,7 +180,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
           padding: EdgeInsets.symmetric(vertical: 20),
           child: Text(
             '상품 ${items.length}', // 상품 수 표시
-            style: const TextStyle( fontFamily: 'Pretendard',fontSize: 14, color: Colors.black),
+            style: const TextStyle(fontSize: 14, color: Colors.black),
           ),
         ),
         Expanded(

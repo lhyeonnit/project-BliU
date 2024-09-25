@@ -1,11 +1,10 @@
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import '../_component/search_screen.dart';
 
 //기획전
 class ExhibitionScreen extends StatefulWidget {
@@ -75,7 +74,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
           },
         ),
         title: const Text("우리 아이를 위한 포근한 선택"),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -140,7 +139,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                   ),
                   child: Text(
                     '2',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: Responsive.getFont(context, 9),
                     ),
@@ -174,7 +173,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                   margin: EdgeInsets.only(bottom: 10),
                   child: Text(
                     '우리 아이를 위한 포근한 선택',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 20)),
                   ),
@@ -183,7 +182,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                   child: Text(
                     '집에서도 스타일리시하게!\n우리 아이를 위한 홈웨어 컬렉션.',
                     textAlign: TextAlign.center,
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                         fontSize: Responsive.getFont(context, 14),
                         color: const Color(0xFF7B7B7B)),
                   ),
@@ -278,14 +277,14 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                   margin: EdgeInsets.only(top: 12, bottom: 4),
                   child: Text(
                     item['brand']!,
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                         fontSize: Responsive.getFont(context, 12),
                         color: Colors.grey),
                   ),
                 ),
                 Text(
                   item['name']!,
-                  style: TextStyle( fontFamily: 'Pretendard',
+                  style: TextStyle(
                     fontSize: 14,
                   ),
                   maxLines: 2,
@@ -299,7 +298,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                     children: [
                       Text(
                         item['discount']!,
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
@@ -309,7 +308,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                         margin: EdgeInsets.symmetric(horizontal: 2),
                         child: Text(
                           item['price']!,
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
                           ),
@@ -330,7 +329,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                       margin: EdgeInsets.only(left: 2, bottom: 2),
                       child: Text(
                         item['likes']!,
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
                         ),
@@ -350,7 +349,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
 
                             child: Text(
                               item['comments']!,
-                              style: TextStyle( fontFamily: 'Pretendard',
+                              style: TextStyle(
                                   fontSize: Responsive.getFont(context, 12),
                                   color: Colors.grey),
                             ),

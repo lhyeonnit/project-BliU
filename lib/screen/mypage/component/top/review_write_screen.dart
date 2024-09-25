@@ -130,7 +130,7 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('리뷰쓰기'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -175,7 +175,7 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
                       children: [
                         Text(
                           '상품은 어떠셨나요?',
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                               fontSize: Responsive.getFont(context, 16),
                               fontWeight: FontWeight.bold),
                         ),
@@ -197,7 +197,7 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
                           ),
                         ),
                         TextField(
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                               fontSize: Responsive.getFont(context, 14)),
                           maxLines: 9,
                           decoration: InputDecoration(
@@ -205,7 +205,7 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
                                 vertical: 14, horizontal: 15),
                             hintText:
                                 '최소 10자 이상 입력해주세요. \n구매하신 상품에 대한 솔직한 리뷰를 남겨주세요. :)',
-                            hintStyle: TextStyle( fontFamily: 'Pretendard',
+                            hintStyle: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Color(0xFF595959)),
                             enabledBorder: OutlineInputBorder(
@@ -232,12 +232,12 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
                             children: [
                               Text(
                                 '이미지',
-                                style: TextStyle( fontFamily: 'Pretendard',
+                                style: TextStyle(
                                     fontSize: Responsive.getFont(context, 13)),
                               ),
                               Text(
                                 '${_selectedImages.length}/4',
-                                style: TextStyle( fontFamily: 'Pretendard',
+                                style: TextStyle(
                                     fontSize: Responsive.getFont(context, 13),
                                     color: Color(0xFF7B7B7B)),
                               ),
@@ -270,7 +270,7 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
                                     'assets/images/my/btn_add_img.svg'),
                                 Text(
                                   '사진선택',
-                                  style: TextStyle( fontFamily: 'Pretendard',
+                                  style: TextStyle(
                                       color: Color(0xFF707070),
                                       fontSize:
                                           Responsive.getFont(context, 14)),
@@ -358,7 +358,7 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
                 child: Center(
                   child: Text(
                     '등록',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),

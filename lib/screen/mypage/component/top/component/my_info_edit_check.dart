@@ -15,7 +15,7 @@ class MyInfoEditCheck extends StatelessWidget {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: Text('내정보수정'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -55,7 +55,7 @@ class MyInfoEditCheck extends StatelessWidget {
             children: [
               Text(
                 '내 정보 수정',
-                style: TextStyle( fontFamily: 'Pretendard',
+                style: TextStyle(
                   fontSize: Responsive.getFont(context, 20),
                   fontWeight: FontWeight.bold,
                 ),
@@ -64,7 +64,7 @@ class MyInfoEditCheck extends StatelessWidget {
                 margin: EdgeInsets.only(top: 8, bottom: 30),
                 child: Text(
                   '본인 확인을 위해 한 번 더 비밀번호를 \n입력해주세요',
-                  style: TextStyle( fontFamily: 'Pretendard',
+                  style: TextStyle(
                       color: Color(0xFF7B7B7B),
                       fontSize: Responsive.getFont(context, 14)),
                 ),
@@ -73,7 +73,7 @@ class MyInfoEditCheck extends StatelessWidget {
                 children: [
                   Text(
                     '비밀번호',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       fontSize: Responsive.getFont(context, 13),
                       fontWeight: FontWeight.bold,
                     ),
@@ -82,7 +82,7 @@ class MyInfoEditCheck extends StatelessWidget {
                     margin: EdgeInsets.only(left: 4),
                     child: Text(
                       '*',
-                      style: TextStyle( fontFamily: 'Pretendard',
+                      style: TextStyle(
                         fontSize: Responsive.getFont(context, 13),
                         color: Color(0xFFFF6192),
                       ),
@@ -94,7 +94,7 @@ class MyInfoEditCheck extends StatelessWidget {
                 margin: EdgeInsets.only(top: 10),
                 child: TextField(
                   obscureText: true, // 비밀번호 입력을 위해 텍스트 숨김
-                  style: TextStyle( fontFamily: 'Pretendard',
+                  style: TextStyle(
                     fontSize: Responsive.getFont(context, 14),
                   ),
                   enabled: true,
@@ -104,7 +104,7 @@ class MyInfoEditCheck extends StatelessWidget {
                     contentPadding:
                     EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                     hintText: '비밀번호 입력',
-                    hintStyle: TextStyle( fontFamily: 'Pretendard',
+                    hintStyle: TextStyle(
                         fontSize: Responsive.getFont(context, 14),
                         color: Color(0xFF595959)),
                     enabledBorder: OutlineInputBorder(
@@ -147,7 +147,7 @@ class MyInfoEditCheck extends StatelessWidget {
                 child: Center(
                   child: Text(
                     '확인',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),

@@ -104,7 +104,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                   children: [
                     Text(
                       '회원가입 정보입력',
-                      style: TextStyle( fontFamily: 'Pretendard',
+                      style: TextStyle(
                         fontSize: Responsive.getFont(context, 20),
                         fontWeight: FontWeight.bold,
                       ),
@@ -113,7 +113,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                       margin: EdgeInsets.only(top: 8, bottom: 10),
                       child: Text(
                         '회원가입을 위해 회원님의 정보를 입력해 주세요',
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
                             color: Color(0xFF7B7B7B)),
                       ),
@@ -161,7 +161,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                 child: Center(
                                     child: Text(
                                   '중복확인',
-                                  style: TextStyle( fontFamily: 'Pretendard',
+                                  style: TextStyle(
                                       fontSize:
                                           Responsive.getFont(context, 14)),
                                 ))),
@@ -173,7 +173,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                       margin: EdgeInsets.only(top: 8),
                       child: Text(
                         '5~15자의 영문 소문자, 숫자만 입력해 주세요',
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                             color: Color(0xFFF23728),
                             fontSize: Responsive.getFont(context, 12)),
                       ),
@@ -236,7 +236,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                 child: Center(
                                     child: Text(
                                   '인증요청',
-                                  style: TextStyle( fontFamily: 'Pretendard',
+                                  style: TextStyle(
                                       fontSize:
                                           Responsive.getFont(context, 14)),
                                 ))),
@@ -301,7 +301,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                 child: Center(
                                   child: Text(
                                     '확인',
-                                    style: TextStyle( fontFamily: 'Pretendard',
+                                    style: TextStyle(
                                         fontSize:
                                             Responsive.getFont(context, 14),
                                         color: _phoneAuthChecked
@@ -348,8 +348,8 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('생일 쿠폰 지급!', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 16), fontWeight: FontWeight.bold),),
-                                    Text('생년월일을 입력 주시면, 생일날 쿠폰 지급!', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 12), color: Color(0xFF6A5B54)),),
+                                    Text('생일 쿠폰 지급!', style: TextStyle(fontSize: Responsive.getFont(context, 16), fontWeight: FontWeight.bold),),
+                                    Text('생년월일을 입력 주시면, 생일날 쿠폰 지급!', style: TextStyle(fontSize: Responsive.getFont(context, 12), color: Color(0xFF6A5B54)),),
                                   ],
                               ),
                             ),
@@ -360,13 +360,13 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                     Row(
                       children: [
                         Text('성별',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: Responsive.getFont(context, 13))),
                         Container(
                             margin: EdgeInsets.only(left: 4),
                             child: Text('선택',
-                                style: TextStyle( fontFamily: 'Pretendard',
+                                style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: Responsive.getFont(context, 13),
                                     color: Color(0xFFFF6192)))),
@@ -477,7 +477,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                 child: Center(
                   child: Text(
                     '확인',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       fontSize: Responsive.getFont(context, 14),
                       color:
                           _isAllFieldsFilled ? Colors.white : Color(0xFF7B7B7B),
@@ -509,13 +509,13 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 13))),
                 Container(
                     margin: EdgeInsets.only(left: 4),
                     child: Text('*',
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFFFF6192)))),
@@ -524,7 +524,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
           ),
           if (label.isNotEmpty)
             TextField(
-              style: TextStyle( fontFamily: 'Pretendard',
+              style: TextStyle(
                 fontSize: Responsive.getFont(context, 14),
               ),
               enabled: isEnable,
@@ -535,7 +535,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
-                hintStyle: TextStyle( fontFamily: 'Pretendard',
+                hintStyle: TextStyle(
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF595959)),
                 enabledBorder: OutlineInputBorder(
@@ -567,7 +567,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
         children: [
           if (label.isNotEmpty)
             TextField(
-              style: TextStyle( fontFamily: 'Pretendard',
+              style: TextStyle(
                 fontSize: Responsive.getFont(context, 14),
               ),
               enabled: isEnable,
@@ -578,7 +578,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
-                hintStyle: TextStyle( fontFamily: 'Pretendard',
+                hintStyle: TextStyle(
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF595959)),
                 enabledBorder: OutlineInputBorder(
@@ -613,13 +613,13 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 13))),
                 Container(
                     margin: EdgeInsets.only(left: 4),
                     child: Text('선택',
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFFFF6192)))),
@@ -627,7 +627,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
             ),
           ),
           TextField(
-            style: TextStyle( fontFamily: 'Pretendard',
+            style: TextStyle(
               fontSize: Responsive.getFont(context, 14),
             ),
             enabled: isEnable,
@@ -638,7 +638,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
               contentPadding:
                   EdgeInsets.symmetric(vertical: 14, horizontal: 15),
               hintText: hintText,
-              hintStyle: TextStyle( fontFamily: 'Pretendard',
+              hintStyle: TextStyle(
                   fontSize: Responsive.getFont(context, 14),
                   color: Color(0xFF595959)),
               enabledBorder: OutlineInputBorder(
@@ -676,7 +676,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
           child: Center(
               child: Text(
             gender,
-            style: TextStyle( fontFamily: 'Pretendard',
+            style: TextStyle(
                 color: isSelected ? Color(0xFFFF6192) : Colors.black,
                 fontSize: Responsive.getFont(context, 14)),
           ))),

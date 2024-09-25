@@ -77,7 +77,7 @@ class StoreCategoryItem extends ConsumerWidget {
               const SizedBox(height: 12),
               Text(
                 product.stName ?? "",
-                style: TextStyle( fontFamily: 'Pretendard',
+                style: TextStyle(
                   fontSize: Responsive.getFont(context, 12),
                   color: const Color(0xFF7B7B7B),
                 ),
@@ -85,7 +85,7 @@ class StoreCategoryItem extends ConsumerWidget {
               const SizedBox(height: 4),
               Text(
                 product.ptName ?? "",
-                style: TextStyle( fontFamily: 'Pretendard',
+                style: TextStyle(
                   fontSize: Responsive.getFont(context, 14),
                 ),
                 maxLines: 2,
@@ -98,7 +98,7 @@ class StoreCategoryItem extends ConsumerWidget {
                 children: [
                   Text(
                     '${product.ptDiscountPer}%',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       fontSize: Responsive.getFont(context, 14),
                       color: const Color(0xFFFF6192),
                       fontWeight: FontWeight.bold,
@@ -108,7 +108,7 @@ class StoreCategoryItem extends ConsumerWidget {
                     margin: EdgeInsets.only(left: 3),
                     child: Text(
                       '${product.ptPrice}원',
-                      style: TextStyle( fontFamily: 'Pretendard',
+                      style: TextStyle(
                         fontSize: Responsive.getFont(context, 14),
                         fontWeight: FontWeight.bold,
                       ),
@@ -129,7 +129,7 @@ class StoreCategoryItem extends ConsumerWidget {
                   const SizedBox(width: 3),
                   Text(
                     '${product.ptLike}',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       fontSize: Responsive.getFont(context, 12),
                       color: Colors.grey,
                     ),
@@ -144,7 +144,7 @@ class StoreCategoryItem extends ConsumerWidget {
                     const SizedBox(width: 3),
                     Text(
                       '${product.ptReviewCount}',
-                      style: TextStyle( fontFamily: 'Pretendard',
+                      style: TextStyle(
                         fontSize: Responsive.getFont(context, 12),
                         color: Colors.grey,
                       ),

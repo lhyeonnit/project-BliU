@@ -63,7 +63,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('리뷰 상세'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -134,13 +134,13 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
                       children: [
                         Text(
                           '${_currentPage + 1}',
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                               fontSize: Responsive.getFont(context, 13),
                               color: Colors.white),
                         ),
                         Text(
                           '/${_images.length}',
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                               fontSize: Responsive.getFont(context, 13),
                               color: Color(0x80FFFFFF)),
                         ),
@@ -159,7 +159,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
                     children: [
                       Text(
                         'blackpink22',
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                             fontSize: Responsive.getFont(context, 12),
                             color: Color(0xFF7B7B7B)),
                       ),
@@ -167,7 +167,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
                         margin: EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
                           '2024.04.14',
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                               fontSize: Responsive.getFont(context, 12),
                               color: Color(0xFF7B7B7B)),
                         ),
@@ -180,7 +180,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
                   ),
                   Text(
                     '저희 아이를 위해 밀크마일 여름 티셔츠를 구매했는데 정말 만족스럽습니다! 옷감이 부드럽고 통기성이 좋아서 아이가 하루 종일 입고 다녀도 편안해해요. 디자인도 아주 귀엽고 색감이 예뻐서 어디에나 잘 어울립니다. 세탁 후에도 색이 바래지 않고, 형태도 그대로 유지되네요. 사이즈도 정확하게 맞아서 아이에게 딱 맞아요. \n\n가격 대비 품질이 매우 훌륭하고, 배송도 빠르게 이루어졌습니다. 특히 할인 쿠폰 덕분에 더 저렴하게 구매할 수 있어서 기분이 좋네요. 앞으로도 이 쇼핑몰에서 자주 구매할 것 같아요. 부모님들께 강력히 추천합니다!',
-                    style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
+                    style: TextStyle(fontSize: Responsive.getFont(context, 14)),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
@@ -194,7 +194,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
                       },
                       child: const Text(
                         '신고',
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey,
                         ),

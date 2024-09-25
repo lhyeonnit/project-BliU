@@ -5,6 +5,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class CategoryScreen extends ConsumerStatefulWidget {
   const CategoryScreen({super.key});
@@ -14,12 +15,20 @@ class CategoryScreen extends ConsumerStatefulWidget {
 }
 
 class _CategoryScreenState extends ConsumerState<CategoryScreen> {
+  final ItemScrollController _scrollController = ItemScrollController();
   int _selectedCategoryIndex = 0; // 선택된 카테고리의 인덱스
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> requestData = {'category_type': '2'};
-    ref.read(categoryModelProvider.notifier).getCategory(requestData);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -28,7 +37,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('카테고리'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -55,15 +64,10 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
         actions: [
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MainScreen(),
-                  ),
-              );
+              ref.read(mainScreenProvider.notifier).selectNavigation(2);
             },
             child: Container(
-                margin: EdgeInsets.only(right: 16),
+                margin: const EdgeInsets.only(right: 16),
                 child: SvgPicture.asset('assets/images/product/ic_close.svg')),
           ),
         ],
@@ -78,7 +82,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
               // 왼쪽 상위 카테고리 목록
               Container(
                 width: 130,
-                color: Color(0xFFF5F9F9),
+                color: const Color(0xFFF5F9F9),
                 child: ListView.builder(
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
@@ -87,20 +91,19 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                     return ListTile(
                       selectedColor: Colors.black,
                       selectedTileColor: Colors.white,
-                      tileColor:
-                          isSelectCategory ? Colors.white : Color(0xFFF5F9F9),
+                      tileColor: isSelectCategory ? Colors.white : const Color(0xFFF5F9F9),
                       selected: isSelectCategory,
                       title: Text(
                         categoryData.ctName ?? "",
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                             fontSize: Responsive.getFont(context, 15),
                             fontWeight: FontWeight.w600),
                       ),
                       onTap: () {
-                        // TODO 왼쪽 상위 카테고리 클릭 시 동작할 코드
                         setState(() {
                           _selectedCategoryIndex = index;
                         });
+                        _scrollController.scrollTo(index: index, duration: const Duration(milliseconds: 500));
                       },
                     );
                   },
@@ -109,9 +112,12 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
               // 오른쪽 모든 상위 + 하위 카테고리 목록을 나열
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(top: 21),
-                  child: ListView(
-                    children: categories.map((category) {
+                  margin: const EdgeInsets.only(top: 21),
+                  child: ScrollablePositionedList.builder(
+                    itemScrollController: _scrollController,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      final category = categories[index];
                       final subCategories = category.subList ?? [];
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +132,6 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                   MaterialPageRoute(
                                     builder: (context) => ProductListScreen(
                                       selectedCategory: category,
-                                      subList: subCategories,
                                     ),
                                   ),
                                 );
@@ -142,18 +147,18 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                           width: 40,
                                           height: 40,
                                           decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(color: Color(0xFFEFEFEF),)
+                                              shape: BoxShape.circle,
+                                              border: Border.all(color: const Color(0xFFEFEFEF),)
                                           ),
                                           child: SvgPicture.network(
                                             category.img ?? "",
                                           ),
                                         ),
                                         Container(
-                                          margin: EdgeInsets.symmetric(horizontal: 10),
+                                          margin: const EdgeInsets.symmetric(horizontal: 10),
                                           child: Text(
                                             category.ctName ?? "",
-                                            style:  TextStyle( fontFamily: 'Pretendard',
+                                            style:  TextStyle(
                                               fontSize: Responsive.getFont(context, 18),
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -162,7 +167,6 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                       ],
                                     ),
                                   ),
-
                                   Expanded(
                                     flex: 2,
                                     child: SvgPicture.asset('assets/images/category/그룹 37778.svg')
@@ -174,27 +178,27 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                           // 하위 카테고리 목록
                           ...subCategories.map((subCategory) => ListTile(
                             minTileHeight: 0.1,
-                                title: Text(subCategory.ctName ?? "", style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14),),),
-                                trailing: SvgPicture.asset('assets/images/ic_link.svg'),
-                                onTap: () {
-                                  // 하위 카테고리 선택 시 처리
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ProductListScreen(
-                                        selectedCategory: category,
-                                        subList: subCategories,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              )),
+                            title: Text(subCategory.ctName ?? "", style: TextStyle(fontSize: Responsive.getFont(context, 14),),),
+                            trailing: SvgPicture.asset('assets/images/ic_link.svg'),
+                            onTap: () {
+                              // 하위 카테고리 선택 시 처리
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProductListScreen(
+                                    selectedCategory: category,
+                                    selectSubCategoryIndex: subCategories.indexOf(subCategory),
+                                  ),
+                                ),
+                              );
+                            },
+                          )),
                           Container(
-                              margin: EdgeInsets.symmetric(vertical: 30,horizontal: 15),
-                              child: const Divider(color: Color(0xFFEEEEEE,)),), // 상위 카테고리 구분을 위한 구분선
+                            margin: const EdgeInsets.symmetric(vertical: 30,horizontal: 15),
+                            child: const Divider(color: Color(0xFFEEEEEE,)),), // 상위 카테고리 구분을 위한 구분선
                         ],
                       );
-                    }).toList(),
+                    },
                   ),
                 ),
               ),
@@ -203,5 +207,10 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
         },
       ),
     );
+  }
+
+  void _afterBuild(BuildContext context) {
+    Map<String, dynamic> requestData = {'category_type': '2'};
+    ref.read(categoryModelProvider.notifier).getCategory(requestData);
   }
 }

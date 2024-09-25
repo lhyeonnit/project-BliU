@@ -56,7 +56,7 @@ class _ExchangeReturnDetailScreenState
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: Text('${widget.title}'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -110,7 +110,7 @@ class _ExchangeReturnDetailScreenState
                           ),
                           child: Text(
                             '배송조회',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                               color: Colors.black,
                               fontSize: Responsive.getFont(context, 14),
                             ),
@@ -132,7 +132,7 @@ class _ExchangeReturnDetailScreenState
                           },
                           child: Text(
                             '문의하기',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                               color: Colors.black,
                               fontSize: Responsive.getFont(context, 14),
                             ),
@@ -159,11 +159,11 @@ class _ExchangeReturnDetailScreenState
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('배송비',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black)),
                         Text('${widget.orderDetails['deliveryCost']}',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black)),
                       ],
@@ -186,12 +186,12 @@ class _ExchangeReturnDetailScreenState
                         children: [
                           Text(
                             '요청일',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14)),
                           ),
                           Text(
                             '23.03.12',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14)),
                           ),
                         ],
@@ -200,14 +200,14 @@ class _ExchangeReturnDetailScreenState
                           margin: EdgeInsets.only(top: 15, bottom: 8),
                           child: Text(
                             '${widget.reason}',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14)),
                           )),
                       Container(
                           margin: EdgeInsets.only(bottom: 10),
                           child: Text(
                             '${widget.details}',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14)),
                           )),
                       _buildUploadedImages(),
@@ -217,7 +217,7 @@ class _ExchangeReturnDetailScreenState
                             ? // 교환 페이지일 때 표시
                         Text(
                           '${widget.shippingCost}',
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
                           ),
                         )
@@ -227,13 +227,13 @@ class _ExchangeReturnDetailScreenState
                           children: [
                             Text(
                               '${widget.returnBank}',
-                              style: TextStyle( fontFamily: 'Pretendard',
+                              style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                               ),
                             ),
                             Text(
                               '${widget.returnAccount}',
-                              style: TextStyle( fontFamily: 'Pretendard',
+                              style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                               ),
                             ),
@@ -243,7 +243,7 @@ class _ExchangeReturnDetailScreenState
                     ],
                   ),
                 ),
-                ExchangeReturnInfo(),
+                //ExchangeReturnInfo(),
                 //OrderDetailItem(orderDetails: widget.orderDetails),
               ],
             ),

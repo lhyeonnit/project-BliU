@@ -27,7 +27,7 @@ class NoticeDetail extends ConsumerWidget {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('공지사항'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -84,7 +84,7 @@ class NoticeDetail extends ConsumerWidget {
                       children: [
                         Text(
                           ntTitle,
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                             fontSize: Responsive.getFont(context, 18),
                             fontWeight: FontWeight.bold,
                           ),
@@ -93,7 +93,7 @@ class NoticeDetail extends ConsumerWidget {
                           margin: EdgeInsets.only(top: 8, bottom: 17),
                           child: Text(
                             ntWdate,
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                               fontSize: Responsive.getFont(context, 14),
                               color: Color(0xFF7B7B7B),
                             ),
@@ -108,7 +108,7 @@ class NoticeDetail extends ConsumerWidget {
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       ntContent,
-                      style: TextStyle( fontFamily: 'Pretendard',
+                      style: TextStyle(
                           fontSize: Responsive.getFont(context, 14)),
                     ),
                   ),

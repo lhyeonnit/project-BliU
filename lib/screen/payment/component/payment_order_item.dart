@@ -69,7 +69,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                           vertical: 12, horizontal: 10),
                       child: Text(
                         item.stName ?? "", // 스토어 이름
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                         ),
                       ),
@@ -108,7 +108,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                           children: [
                             Text(
                               item.ptTitle ?? "", // 상품 이름
-                              style: TextStyle( fontFamily: 'Pretendard',
+                              style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black,
                               ),
@@ -121,14 +121,14 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                                 children: [
                                   Text(
                                     item.ptOption ?? "", // 아이템 설명
-                                    style: TextStyle( fontFamily: 'Pretendard',
+                                    style: TextStyle(
                                       fontSize: Responsive.getFont(context, 13),
                                       color: const Color(0xFF7B7B7B),
                                     ),
                                   ),
                                   Text(
                                     ' ${item.ptCount ?? 0}개', // 수량
-                                    style: TextStyle( fontFamily: 'Pretendard',
+                                    style: TextStyle(
                                       fontSize: Responsive.getFont(context, 13),
                                       color: const Color(0xFF7B7B7B),
                                     ),
@@ -138,7 +138,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                             ),
                             Text(
                               '${Utils.getInstance().priceString(item.ptPrice ?? 0)}원', // 가격 정보
-                              style: TextStyle( fontFamily: 'Pretendard',
+                              style: TextStyle(
                                 fontSize: Responsive.getFont(context, 16),
                                 fontWeight: FontWeight.bold,
                               ),

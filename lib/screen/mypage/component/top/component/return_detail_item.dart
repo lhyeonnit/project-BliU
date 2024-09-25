@@ -1,16 +1,19 @@
 import 'dart:io';
-
+import 'package:BliU/data/category_data.dart';
+import 'package:BliU/data/order_detail_info_data.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../../../utils/responsive.dart';
 import 'exchange_return_info.dart';
 
 class ReturnItem extends StatefulWidget {
-  final Function(String reason, String detail, String returnAccount, String returnBank, List<File> images) onDataCollected;
+  final OrderDetailInfoData? orderDetailInfoData;
+  final List<CategoryData> returnCategory;
+  final Function(String reason, int reasonIdx, String detail, String returnAccount, String returnBank, List<File> images) onDataCollected;
 
-  const ReturnItem({required this.onDataCollected, super.key});
+  const ReturnItem({required this.orderDetailInfoData, required this.returnCategory, required this.onDataCollected, super.key});
 
   @override
   State<ReturnItem> createState() => _ReturnItemState();
@@ -19,7 +22,8 @@ class ReturnItem extends StatefulWidget {
 class _ReturnItemState extends State<ReturnItem> {
   OverlayEntry? _overlayEntryReason; // 취소 사유 드롭다운
   OverlayEntry? _overlayEntryBank;   // 은행명 드롭다운
-  String _dropdownValue = '사유 선택';
+  String _dropdownText = '사유 선택';
+  int _dropdownValue = 0;
   String _dropdownAccount = '은행명';
   String _detailedReason = '';
   String _returnAccount = '';
@@ -27,14 +31,8 @@ class _ReturnItemState extends State<ReturnItem> {
   final LayerLink _layerLinkReason = LayerLink(); // 취소 사유 드롭다운을 위한 LayerLink
   final LayerLink _layerLinkBank = LayerLink();   // 은행명 드롭다운을 위한 LayerLink
 
-  final List<String> _returnReasons = [
-    '색상 및 사이즈 변경',
-    '제품 불량',
-    '배송 중 손상',
-    '오배송',
-    '기타',
-  ];
-
+  List<CategoryData> _returnReasons = [];
+  // TODO 은행 항목 변경 필요
   final List<String> _returnBank = [
     '국민은행',
     '농협은행',
@@ -48,9 +46,10 @@ class _ReturnItemState extends State<ReturnItem> {
   // 드롭다운 생성 (취소 사유).
   void _createOverlayReason() {
     if (_overlayEntryReason == null) {
-      _overlayEntryReason = _customDropdown(_returnReasons, _layerLinkReason, (String selected) {
+      _overlayEntryReason = _customDropdown(_returnReasons, _layerLinkReason, (int index) {
         setState(() {
-          _dropdownValue = selected;
+          _dropdownText = _returnReasons[index].ctName ?? "";
+          _dropdownValue = _returnReasons[index].ctIdx ?? 0;
           _updateCollectedData();
         });
       });
@@ -61,9 +60,9 @@ class _ReturnItemState extends State<ReturnItem> {
   // 드롭다운 생성 (은행명).
   void _createOverlayBank() {
     if (_overlayEntryBank == null) {
-      _overlayEntryBank = _customDropdown(_returnBank, _layerLinkBank, (String selected) {
+      _overlayEntryBank = _customDropdown(_returnBank, _layerLinkBank, (int index) {
         setState(() {
-          _dropdownAccount = selected;
+          _dropdownAccount = _returnBank[index];
           _updateCollectedData();
         });
       });
@@ -109,11 +108,18 @@ class _ReturnItemState extends State<ReturnItem> {
       });
     }
   }
+
   @override
   void dispose() {
     _removeOverlayReason();
     _removeOverlayBank();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _returnReasons = widget.returnCategory;
   }
 
   @override
@@ -154,8 +160,8 @@ class _ReturnItemState extends State<ReturnItem> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              _dropdownValue,
-                              style: TextStyle( fontFamily: 'Pretendard',
+                              _dropdownText,
+                              style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black,
                               ),
@@ -171,7 +177,7 @@ class _ReturnItemState extends State<ReturnItem> {
                   margin: const EdgeInsets.only(top: 8, bottom: 10),
                   child: Text(
                     '! 판매자 귀책이 아닐 시 반품 비용이 발생할 수 있습니다.',
-                    style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 12)),
+                    style: TextStyle(fontSize: Responsive.getFont(context, 12)),
                   ),
                 ),
                 Padding(
@@ -182,7 +188,7 @@ class _ReturnItemState extends State<ReturnItem> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '세부 내용 입력',
-                      hintStyle: TextStyle( fontFamily: 'Pretendard',
+                      hintStyle: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFF595959)),
                       enabledBorder: const OutlineInputBorder(
@@ -197,7 +203,7 @@ class _ReturnItemState extends State<ReturnItem> {
                         alignment: Alignment.centerLeft, // 왼쪽 정렬
                         child: Text(
                           '${_detailedReason.length}/500',
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                             fontSize: Responsive.getFont(context, 13),
                             color: const Color(0xFF7B7B7B),
                           ),
@@ -221,7 +227,7 @@ class _ReturnItemState extends State<ReturnItem> {
               children: [
                 Text(
                   '환불계좌',
-                  style: TextStyle( fontFamily: 'Pretendard',
+                  style: TextStyle(
                     fontSize: Responsive.getFont(context, 13),
                     color: Colors.black,
                     fontWeight: FontWeight.normal,
@@ -231,7 +237,7 @@ class _ReturnItemState extends State<ReturnItem> {
                   margin: const EdgeInsets.symmetric(horizontal: 4),
                   child: Text(
                     '*',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       fontSize: Responsive.getFont(context, 13),
                       color: const Color(0xFFFF6192),
                       fontWeight: FontWeight.normal,
@@ -273,7 +279,7 @@ class _ReturnItemState extends State<ReturnItem> {
                               children: [
                                 Text(
                                   _dropdownAccount,
-                                  style: TextStyle( fontFamily: 'Pretendard',
+                                  style: TextStyle(
                                     fontSize: Responsive.getFont(context, 14),
                                     color: Colors.black,
                                   ),
@@ -295,7 +301,7 @@ class _ReturnItemState extends State<ReturnItem> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '환불받을 은행계좌',
-                      hintStyle: TextStyle( fontFamily: 'Pretendard',
+                      hintStyle: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFF595959)),
                       enabledBorder: const OutlineInputBorder(
@@ -331,14 +337,14 @@ class _ReturnItemState extends State<ReturnItem> {
                     children: [
                       Text(
                         '사진',
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                             fontSize: Responsive.getFont(context, 13),
                             color: Colors.black,
                             fontWeight: FontWeight.normal),
                       ),
                       Text(
                         '최대3장',
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                             color: const Color(0xFF7B7B7B),
                             fontSize: Responsive.getFont(context, 13)),
                       ),
@@ -359,7 +365,7 @@ class _ReturnItemState extends State<ReturnItem> {
                     child: Center(
                         child: Text(
                       '첨부하기',
-                      style: TextStyle( fontFamily: 'Pretendard',
+                      style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           fontWeight: FontWeight.normal),
                     )),
@@ -416,7 +422,7 @@ class _ReturnItemState extends State<ReturnItem> {
                     ),
                   ),
 
-                ExchangeReturnInfo(),
+                ExchangeReturnInfo(orderDetailInfoData: widget.orderDetailInfoData,),
               ],
             ),
           ),
@@ -426,7 +432,7 @@ class _ReturnItemState extends State<ReturnItem> {
   }
 
   OverlayEntry _customDropdown(
-      List<String> items, LayerLink link, Function(String) onSelect) {
+      List<dynamic> items, LayerLink link, Function(int) onSelect) {
     return OverlayEntry(
       maintainState: true,
       builder: (context) => Positioned(
@@ -448,11 +454,18 @@ class _ReturnItemState extends State<ReturnItem> {
                 shrinkWrap: true,
                 itemCount: items.length,
                 itemBuilder: (context, index) {
+                  String textStr = "";
+                  if (items[index] is CategoryData) {
+                    textStr = (items[index] as CategoryData).ctName ?? "";
+                  } else {
+                    textStr = items[index].toString();
+                  }
+
                   return CupertinoButton(
                     pressedOpacity: 1,
                     minSize: 0,
                     onPressed: () {
-                      onSelect(items.elementAt(index));
+                      onSelect(index);
                       if (link == _layerLinkReason) {
                         _removeOverlayReason();
                       } else {
@@ -462,8 +475,8 @@ class _ReturnItemState extends State<ReturnItem> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        items.elementAt(index),
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        textStr,
+                        style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black,
                         ),
@@ -480,11 +493,12 @@ class _ReturnItemState extends State<ReturnItem> {
   }
 
   void _updateCollectedData() {
-    String reason = _dropdownValue;
+    String reason = _dropdownText;
+    int reasonIdx = _dropdownValue;
     String details = _detailedReason;
     String returnBank = _dropdownAccount;
     String returnAccount = _returnAccount;
     List<File> images = _selectedImages; // 이미지를 리스트로 수집
-    widget.onDataCollected(reason, details, returnBank, returnAccount, images);
+    widget.onDataCollected(reason, reasonIdx, details, returnBank, returnAccount, images);
   }
 }

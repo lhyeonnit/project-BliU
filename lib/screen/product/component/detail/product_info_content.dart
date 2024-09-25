@@ -53,7 +53,7 @@ class _ProductInfoContentState extends State<ProductInfoContent> with TickerProv
                 alignment: Alignment.center,
                 child: Text(
                   isExpanded ? "상품 정보 접기" : "상품 정보 펼쳐보기",
-                  style: TextStyle( fontFamily: 'Pretendard',
+                  style: TextStyle(
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.w400,
                   ),

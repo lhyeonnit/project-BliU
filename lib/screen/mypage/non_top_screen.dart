@@ -89,8 +89,8 @@ class _NonTopScreenState extends State<NonTopScreen> {
                         children: [
                           Container(
                               margin: EdgeInsets.only(bottom: 4),
-                              child: Text('블리유', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 18), fontWeight: FontWeight.bold),)),
-                          Text('회원이 되어 주세요!', style: TextStyle( fontFamily: 'Pretendard',color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 12)),),
+                              child: Text('블리유', style: TextStyle(fontSize: Responsive.getFont(context, 18), fontWeight: FontWeight.bold),)),
+                          Text('회원이 되어 주세요!', style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 12)),),
                         ],
                       ),
                     ),
@@ -112,7 +112,7 @@ class _NonTopScreenState extends State<NonTopScreen> {
                     borderRadius: BorderRadius.circular(22),
                     border: Border.all(color: Color(0xFFFF6192)),
                   ),
-                  child: Text('로그인', style: TextStyle( fontFamily: 'Pretendard',color: Color(0xFFFF6192), fontSize: Responsive.getFont(context, 14)),),
+                  child: Text('로그인', style: TextStyle(color: Color(0xFFFF6192), fontSize: Responsive.getFont(context, 14)),),
                 ),
               ),
             ],

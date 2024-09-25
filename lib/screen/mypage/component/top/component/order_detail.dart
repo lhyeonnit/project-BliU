@@ -42,7 +42,7 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('주문상세'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -89,7 +89,7 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
                     children: [
                       Text(
                         widget.orderData.ctWdate ?? "",
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                           fontSize: Responsive.getFont(context, 16),
                           fontWeight: FontWeight.bold,
                         ),
@@ -98,7 +98,7 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
                           orderDetailInfoData?.product?[0].otCode ?? "",
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
                             color: const Color(0xFF7B7B7B),
                           ),
@@ -133,14 +133,14 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
                     children: [
                       Text(
                         '배송비',
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black,
                         ),
                       ),
                       Text(
                         "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원",
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black
                         ),

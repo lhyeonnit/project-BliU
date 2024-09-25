@@ -1,19 +1,14 @@
+import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class ExchangeReturnInfo extends StatelessWidget {
-
-  const ExchangeReturnInfo({super.key});
+  final OrderDetailInfoData? orderDetailInfoData;
+  const ExchangeReturnInfo({super.key, required this.orderDetailInfoData});
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> exchangeReturnInfo = {
-      'pointRefundAmount': '1,042원',
-      'shippingDeductionAmount': '(-) 0원',
-      'refundAmount': '13,366원',
-      'refundMethod': '카드승인취소',
-    };
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,7 +22,7 @@ class ExchangeReturnInfo extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
           child: Text(
             '환불정보',
-            style: TextStyle( fontFamily: 'Pretendard',
+            style: TextStyle(
                 fontSize: Responsive.getFont(context, 18),
                 fontWeight: FontWeight.bold),
           ),
@@ -46,11 +41,10 @@ class ExchangeReturnInfo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildInfoRow(
-                  '포인트환급액', exchangeReturnInfo['pointRefundAmount'], context),
+                  '포인트환급액', "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUsePoint ?? 0)}원", context),
               Container(
                 margin: const EdgeInsets.only(top: 15),
-                child: _buildInfoRow('배송비차감액',
-                    exchangeReturnInfo['shippingDeductionAmount'], context),
+                child: _buildInfoRow('배송비차감액', "(-) ${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원", context),
               ),
             ],
           ),
@@ -69,13 +63,15 @@ class ExchangeReturnInfo extends StatelessWidget {
             children: [
               Text(
                 '환불예정금액',
-                style: TextStyle( fontFamily: 'Pretendard',
+                style: TextStyle(
                     fontSize: Responsive.getFont(context, 18),
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                '${exchangeReturnInfo['refundAmount']}',
-                style: TextStyle( fontFamily: 'Pretendard',
+                "${Utils.getInstance().priceString(
+                    (orderDetailInfoData?.order?.otSprice ?? 0) - ((orderDetailInfoData?.order?.otUseCoupon ?? 0) + (orderDetailInfoData?.order?.otUsePoint ?? 0) + (orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))
+                )}원",
+                style: TextStyle(
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.bold),
               ),
@@ -92,6 +88,7 @@ class ExchangeReturnInfo extends StatelessWidget {
               ),
             ),
           ),
+          //TODO 차후 변경 필요
           child: _buildInfoRow(
               '환불방법', "카드승인취소", context),
         ),
@@ -107,14 +104,14 @@ class ExchangeReturnInfo extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle( fontFamily: 'Pretendard',
+            style: TextStyle(
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
             ),
           ),
           Text(
             value,
-            style: TextStyle( fontFamily: 'Pretendard',
+            style: TextStyle(
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
             ),

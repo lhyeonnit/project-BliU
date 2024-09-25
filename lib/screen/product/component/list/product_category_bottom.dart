@@ -18,16 +18,17 @@ class ProductCategoryBottom extends StatefulWidget {
 }
 
 class _ProductCategoryBottomState extends State<ProductCategoryBottom> {
+  Function(CategoryData) get onCategorySelected => widget.onCategorySelected;
+
   @override
   Widget build(BuildContext context) {
-    // TODO 변경 필요
     return Consumer(
       builder: (context, ref, widget) {
         final model = ref.watch(categoryModelProvider);
         final categories = model?.categoryResponseDTO?.list ?? [];
 
         return Container(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
@@ -41,26 +42,33 @@ class _ProductCategoryBottomState extends State<ProductCategoryBottom> {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Color(0xFFDDDDDD),
+                    color: const Color(0xFFDDDDDD),
                     borderRadius: BorderRadius.circular(3),
                   ),
                 ),
               ),
               Expanded(
                 child: ListView.builder(
-                    itemCount: categories.length,
-                    itemBuilder: (context, index) {
-                      final categoryData = categories[index];
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 24),
+                  itemCount: categories.length,
+                  itemBuilder: (context, index) {
+                    final categoryData = categories[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        onCategorySelected(categoryData);
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 24),
                         child: Text(
                           categoryData.ctName ?? "",
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                               fontSize: Responsive.getFont(context, 16),
                               fontWeight: FontWeight.w600),
                         ),
-                      );
-                    }),
+                      ),
+                    );
+                  }
+                ),
               ),
             ],
           ),

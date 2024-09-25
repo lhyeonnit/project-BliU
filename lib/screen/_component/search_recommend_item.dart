@@ -19,7 +19,7 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
           margin: EdgeInsets.only(top: 40),
           child: Text(
             '이런 아이템은 어떠세요?',
-            style: TextStyle( fontFamily: 'Pretendard',
+            style: TextStyle(
                 fontSize: Responsive.getFont(context, 18),
                 fontWeight: FontWeight.bold),
           ),
@@ -69,7 +69,7 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                           children: [
                             Text(
                               '꿈꾸는데이지',
-                              style: TextStyle( fontFamily: 'Pretendard',
+                              style: TextStyle(
                                   fontSize:
                                   Responsive.getFont(context, 12),
                                   color: Colors.grey),
@@ -79,7 +79,7 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                                 Responsive.getHeight(context, 4)),
                             const Text(
                               '꿈꾸는 데이지 안나 토션 레이스 베스트',
-                              style: TextStyle( fontFamily: 'Pretendard',
+                              style: TextStyle(
                                 fontSize: 14,
                               ),
                               maxLines: 2,
@@ -95,7 +95,7 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                               children: [
                                 Text(
                                   '15%',
-                                  style: TextStyle( fontFamily: 'Pretendard',
+                                  style: TextStyle(
                                     fontSize:
                                     Responsive.getFont(context, 14),
                                     color: const Color(0xFFFF6192),
@@ -105,7 +105,7 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                                 const SizedBox(width: 2),
                                 Text(
                                   '32,800원',
-                                  style: TextStyle( fontFamily: 'Pretendard',
+                                  style: TextStyle(
                                     fontSize:
                                     Responsive.getFont(context, 14),
                                     fontWeight: FontWeight.bold,

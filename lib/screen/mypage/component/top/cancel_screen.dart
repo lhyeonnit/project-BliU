@@ -1,37 +1,39 @@
+import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
+import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/cancel_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/exchange_return_info.dart';
+import 'package:BliU/screen/mypage/viewmodel/cancel_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class CancelScreen extends StatefulWidget {
+class CancelScreen extends ConsumerStatefulWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
 
   const CancelScreen({super.key, required this.orderData, required this.orderDetailData,});
 
   @override
-  State<CancelScreen> createState() => _CancelScreenState();
+  _CancelScreenState createState() => _CancelScreenState();
 }
 
-class _CancelScreenState extends State<CancelScreen> {
+class _CancelScreenState extends ConsumerState<CancelScreen> {
+  OrderDetailInfoData? orderDetailInfoData;
+
   final ScrollController _scrollController = ScrollController();
   OverlayEntry? _overlayEntry;
-  String _dropdownValue = '취소사유 선택';
+  String _dropdownText = '취소사유 선택';
+  int _dropdownValue = 0;
   String _detailedReason = '';
   final LayerLink _layerLink = LayerLink();
-  final List<String> _cancelReasons = [
-    '단순 변심',
-    '상품 정보 변경',
-    '배송 지연 예상',
-    '결제 실수',
-    '재주문 예정',
-    '기타',
-  ];
+  List<CategoryData> _cancelCategory = [];
 
   // 드롭다운 생성.
   void _createOverlay() {
@@ -45,6 +47,14 @@ class _CancelScreenState extends State<CancelScreen> {
   void _removeOverlay() {
     _overlayEntry?.remove();
     _overlayEntry = null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
   }
 
   @override
@@ -62,7 +72,7 @@ class _CancelScreenState extends State<CancelScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('취소요청'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -136,8 +146,8 @@ class _CancelScreenState extends State<CancelScreen> {
                                       children: [
                                         // 선택값.
                                         Text(
-                                          _dropdownValue,
-                                          style: TextStyle( fontFamily: 'Pretendard',
+                                          _dropdownText,
+                                          style: TextStyle(
                                             fontSize:
                                                 Responsive.getFont(context, 14),
                                             color: Colors.black,
@@ -156,7 +166,7 @@ class _CancelScreenState extends State<CancelScreen> {
                             Padding(
                               padding: const EdgeInsets.only(top: 10.0),
                               child: TextField(
-                                style: TextStyle( fontFamily: 'Pretendard',
+                                style: TextStyle(
                                   fontSize: Responsive.getFont(context, 14),),
                                 maxLines: 4,
                                 maxLength: 500,
@@ -164,7 +174,7 @@ class _CancelScreenState extends State<CancelScreen> {
                                   contentPadding: const EdgeInsets.symmetric(
                                       vertical: 14, horizontal: 15),
                                   hintText: '세부 내용 입력',
-                                  hintStyle: TextStyle( fontFamily: 'Pretendard',
+                                  hintStyle: TextStyle(
                                       fontSize: Responsive.getFont(context, 14),
                                       color: const Color(0xFF595959)),
                                   enabledBorder: const OutlineInputBorder(
@@ -183,7 +193,7 @@ class _CancelScreenState extends State<CancelScreen> {
                                     alignment: Alignment.centerLeft, // 왼쪽 정렬
                                     child: Text(
                                       '${_detailedReason.length}/500',
-                                      style: TextStyle( fontFamily: 'Pretendard',
+                                      style: TextStyle(
                                         fontSize:
                                             Responsive.getFont(context, 13),
                                         color: const Color(0xFF7B7B7B),
@@ -201,7 +211,7 @@ class _CancelScreenState extends State<CancelScreen> {
                           ],
                         ),
                       ),
-                      ExchangeReturnInfo(),
+                      ExchangeReturnInfo(orderDetailInfoData: orderDetailInfoData,),
                     ],
                   ),
                 ),
@@ -222,6 +232,16 @@ class _CancelScreenState extends State<CancelScreen> {
                   child: GestureDetector(
                     onTap: () {
                       // 확인 버튼 눌렀을 때 처리
+                      if (_dropdownValue == 0) {
+                        Utils.getInstance().showSnackBar(context, "취소사유를 선택해 주세요");
+                        return;
+                      }
+
+                      if (_detailedReason.isEmpty) {
+                        Utils.getInstance().showSnackBar(context, "세부 내용을 입력해 주세요.");
+                        return;
+                      }
+                      _orderCancel();
                     },
                     child: Container(
                       height: Responsive.getHeight(context, 48),
@@ -233,7 +253,7 @@ class _CancelScreenState extends State<CancelScreen> {
                       child: Center(
                         child: Text(
                           '확인',
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.white,
                           ),
@@ -248,6 +268,64 @@ class _CancelScreenState extends State<CancelScreen> {
         ],
       ),
     );
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getOrderDetail();
+  }
+
+  void _getOrderDetail() async {
+    // TODO 회원 비회원 처리 필요
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    Map<String, dynamic> requestData = {
+      'type' : 1,
+      'mt_idx' : mtIdx,
+      'temp_mt_id' : '',
+      'ot_code' : widget.orderDetailData.otCode,
+    };
+
+    final orderDetailInfoResponseDTO = await ref.read(cancelViewModelProvider.notifier).getOrderDetail(requestData);
+    final categoryResponseDTO = await ref.read(cancelViewModelProvider.notifier).getCategory();
+
+    if (orderDetailInfoResponseDTO != null) {
+      if (orderDetailInfoResponseDTO.result == true) {
+        orderDetailInfoData = orderDetailInfoResponseDTO.data;
+      } else {
+        if (!context.mounted) return;
+        Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
+      }
+    }
+
+    if (categoryResponseDTO != null) {
+      if (categoryResponseDTO.result == true) {
+        _cancelCategory = categoryResponseDTO.list ?? [];
+      }
+    }
+    setState(() {});
+  }
+
+  void _orderCancel() async {
+    // TODO 회원 비회원 확인 필요
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    Map<String, dynamic> requestData = {
+      'type' : 1,
+      'mt_idx' : mtIdx,
+      'temp_mt_id' : '',
+      'odt_code' : widget.orderDetailData.odtCode,
+      'ct_idx' : _dropdownValue,
+      'ct_reason' : _detailedReason,
+    };
+
+    final defaultResponseDTO = await ref.read(cancelViewModelProvider.notifier).orderCancel(requestData);
+    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+    if (defaultResponseDTO.result == true) {
+      Navigator.pop(context);
+    }
   }
 
   OverlayEntry _customDropdown() {
@@ -270,22 +348,23 @@ class _CancelScreenState extends State<CancelScreen> {
                 physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 shrinkWrap: true,
-                itemCount: _cancelReasons.length,
+                itemCount: _cancelCategory.length,
                 itemBuilder: (context, index) {
                   return CupertinoButton(
                     pressedOpacity: 1,
                     minSize: 0,
                     onPressed: () {
                       setState(() {
-                        _dropdownValue = _cancelReasons.elementAt(index);
+                        _dropdownText = _cancelCategory[index].ctName ?? "";
+                        _dropdownValue = _cancelCategory[index].ctIdx ?? 0;
                       });
                       _removeOverlay();
                     },
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        _cancelReasons.elementAt(index),
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        _cancelCategory[index].ctName ?? "",
+                        style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black,
                         ),

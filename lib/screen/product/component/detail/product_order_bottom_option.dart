@@ -149,7 +149,7 @@ class _ProductOrderBottomOptionContentState
                                 child: ExpansionTile(
                                   title: Text(
                                     '추가상품',
-                                    style: TextStyle( fontFamily: 'Pretendard',
+                                    style: TextStyle(
                                         fontSize:
                                             Responsive.getFont(context, 14)),
                                   ),
@@ -157,7 +157,7 @@ class _ProductOrderBottomOptionContentState
                                     return ListTile(
                                       title: Text(
                                         ptAdd.option ?? "",
-                                        style: TextStyle( fontFamily: 'Pretendard',
+                                        style: TextStyle(
                                             fontSize: Responsive.getFont(
                                                 context, 14)),
                                       ),
@@ -230,7 +230,7 @@ class _ProductOrderBottomOptionContentState
                                             Text(
                                               _addPtOptionArr[index].option ??
                                                   "",
-                                              style: TextStyle( fontFamily: 'Pretendard',
+                                              style: TextStyle(
                                                 fontSize: Responsive.getFont(
                                                     context, 14),
                                               ),
@@ -295,7 +295,7 @@ class _ProductOrderBottomOptionContentState
                                                       .symmetric(horizontal: 5),
                                                   child: Text(
                                                     '${_addPtOptionArr[index].count}',
-                                                    style: TextStyle( fontFamily: 'Pretendard',
+                                                    style: TextStyle(
                                                       fontSize:
                                                           Responsive.getFont(
                                                               context, 14),
@@ -323,7 +323,7 @@ class _ProductOrderBottomOptionContentState
                                           ),
                                           Text(
                                             '${Utils.getInstance().priceString(_addPtOptionArr[index].count * (_addPtOptionArr[index].potPrice ?? 0))}원',
-                                            style: TextStyle( fontFamily: 'Pretendard',
+                                            style: TextStyle(
                                               fontSize: Responsive.getFont(
                                                   context, 14),
                                               fontWeight: FontWeight.bold,
@@ -368,7 +368,7 @@ class _ProductOrderBottomOptionContentState
                                         children: [
                                           Text(
                                             _addPtAddArr[index].option ?? "",
-                                            style: TextStyle( fontFamily: 'Pretendard',
+                                            style: TextStyle(
                                               fontSize: Responsive.getFont(
                                                   context, 14),
                                             ),
@@ -431,7 +431,7 @@ class _ProductOrderBottomOptionContentState
                                                         horizontal: 5),
                                                 child: Text(
                                                   '${_addPtAddArr[index].count}',
-                                                  style: TextStyle( fontFamily: 'Pretendard',
+                                                  style: TextStyle(
                                                     fontSize:
                                                         Responsive.getFont(
                                                             context, 14),
@@ -453,7 +453,7 @@ class _ProductOrderBottomOptionContentState
                                         ),
                                         Text(
                                           '${Utils.getInstance().priceString(_addPtAddArr[index].count * (_addPtAddArr[index].patPrice ?? 0))}원',
-                                          style: TextStyle( fontFamily: 'Pretendard',
+                                          style: TextStyle(
                                             fontSize:
                                                 Responsive.getFont(context, 14),
                                             fontWeight: FontWeight.bold,
@@ -535,7 +535,7 @@ class _ProductOrderBottomOptionContentState
           // 타일의 초기 상태 설정
           title: Text(
             title,
-            style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
+            style: TextStyle(fontSize: Responsive.getFont(context, 14)),
           ),
           onExpansionChanged: (bool expanded) {
             setState(() {
@@ -547,7 +547,7 @@ class _ProductOrderBottomOptionContentState
               return ListTile(
                 title: Text(
                   option,
-                  style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
+                  style: TextStyle(fontSize: Responsive.getFont(context, 14)),
                 ),
                 onTap: () {
                   onSelected(option); // 항목이 선택되면 콜백 실행
@@ -613,11 +613,11 @@ class _ProductOrderBottomOptionContentState
       children: [
         Text(
           title,
-          style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
+          style: TextStyle(fontSize: Responsive.getFont(context, 14)),
         ),
         Text(
           value,
-          style: TextStyle( fontFamily: 'Pretendard',
+          style: TextStyle(
             fontSize: Responsive.getFont(context, 14),
             fontWeight: FontWeight.bold,
           ),
@@ -652,7 +652,7 @@ class _ProductOrderBottomOptionContentState
                 child: Center(
                   child: Text(
                     '장바구니',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       fontSize: Responsive.getFont(context, 14),
                       fontWeight: FontWeight.normal,
                       color: Colors.black,
@@ -679,7 +679,7 @@ class _ProductOrderBottomOptionContentState
                 child: Center(
                   child: Text(
                     '구매하기',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       fontSize: Responsive.getFont(context, 14),
                       fontWeight: FontWeight.normal,
                       color: Colors.white,
@@ -803,7 +803,7 @@ class _ProductOrderBottomOptionContentState
                       margin: EdgeInsets.symmetric(vertical: 30),
                       child: Text(
                         '장바구니에 상품을 담았습니다.',
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                             fontSize: Responsive.getFont(context, 18),
                             fontWeight: FontWeight.bold),
                       ),
@@ -827,7 +827,7 @@ class _ProductOrderBottomOptionContentState
                         child: Center(
                           child: Text(
                             '담은 상품 보러 가기',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.normal,
                               color: Colors.white,
@@ -853,7 +853,7 @@ class _ProductOrderBottomOptionContentState
                         child: Center(
                           child: Text(
                             '계속 쇼핑하기',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.normal,
                               color: Colors.black,

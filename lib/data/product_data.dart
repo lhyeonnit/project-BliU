@@ -5,6 +5,7 @@ class ProductData {
   final String? stName;
   final int? ptIdx;
   final String? ptName;
+  final String? ptCategory;
   final int? ptDiscountPer;
   final int? ptSellingPrice;
   final int? ptPrice;
@@ -25,6 +26,7 @@ class ProductData {
     required this.stName,
     required this.ptIdx,
     required this.ptName,
+    required this.ptCategory,
     required this.ptDiscountPer,
     required this.ptSellingPrice,
     required this.ptPrice,
@@ -57,6 +59,7 @@ class ProductData {
       stName: json['st_name'],
       ptIdx: json['pt_idx'],
       ptName: json['pt_name'],
+      ptCategory: json['pt_category'],
       ptDiscountPer: json['pt_discount_per'],
       ptSellingPrice: json['pt_selling_price'],
       ptPrice: json['pt_price'],
@@ -81,6 +84,7 @@ class ProductData {
       'st_name': stName,
       'pt_idx': ptIdx,
       'pt_name': ptName,
+      'pt_category': ptCategory,
       'pt_discount_per': ptDiscountPer,
       'pt_selling_price': ptSellingPrice,
       'pt_price': ptPrice,

@@ -91,7 +91,7 @@ class _ProductSortBottomState extends State<ProductSortBottom> {
           margin: EdgeInsets.only(bottom: 24),
           child: Text(
             sortOption,
-            style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 16),
+            style: TextStyle(fontSize: Responsive.getFont(context, 16),
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal
             ),
           )),

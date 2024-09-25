@@ -29,7 +29,7 @@ class _PaymentCouponState extends State<PaymentCoupon> {
           },
         ),
         title: const Text("쿠폰"),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -62,7 +62,7 @@ class _PaymentCouponState extends State<PaymentCoupon> {
             margin: const EdgeInsets.only(left: 16, top: 20),
             child: Text(
               '보유 쿠폰 ${widget.couponList.length}장',
-              style: TextStyle( fontFamily: 'Pretendard',
+              style: TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: Responsive.getFont(context, 14),
               ),
@@ -127,7 +127,7 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                                       children: [
                                         Text(
                                           couponDiscount,
-                                          style: TextStyle( fontFamily: 'Pretendard',
+                                          style: TextStyle(
                                             fontSize: Responsive.getFont(context, 16),
                                             color: const Color(0xFFFF6192),
                                             fontWeight: FontWeight.bold,
@@ -137,7 +137,7 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                                           padding: const EdgeInsets.symmetric(horizontal: 6),
                                           child: Text(
                                             couponName,
-                                            style: TextStyle( fontFamily: 'Pretendard',
+                                            style: TextStyle(
                                               fontSize: Responsive.getFont(context, 16),
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -149,14 +149,14 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                                       padding: const EdgeInsets.symmetric(vertical: 10),
                                       child: Text(
                                         couponEnd,
-                                        style: TextStyle( fontFamily: 'Pretendard',
+                                        style: TextStyle(
                                           fontSize: Responsive.getFont(context, 14),
                                         ),
                                       ),
                                     ),
                                     Text(
                                       detailMessage,
-                                      style: TextStyle( fontFamily: 'Pretendard',
+                                      style: TextStyle(
                                         fontSize: Responsive.getFont(context, 12),
                                         color: const Color(0xFFA4A4A4),
                                       ),
@@ -201,7 +201,7 @@ class _PaymentCouponState extends State<PaymentCoupon> {
               child: Center(
                 child: Text(
                   '할인 적용', // 여기에 실제 적용된 할인 금액을 표시
-                  style: TextStyle( fontFamily: 'Pretendard',
+                  style: TextStyle(
                     fontSize: Responsive.getFont(context, 14),
                     color: Colors.white,
                   ),

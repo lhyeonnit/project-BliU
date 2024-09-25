@@ -25,7 +25,7 @@ class TermsDetail extends ConsumerWidget {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: Text(title),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -79,7 +79,7 @@ class TermsDetail extends ConsumerWidget {
 
               return Text(
                 content,
-                style: TextStyle( fontFamily: 'Pretendard',
+                style: TextStyle(
                   color: Colors.black,
                     fontWeight: FontWeight.w400,
                   fontSize: Responsive.getFont(context, 14),

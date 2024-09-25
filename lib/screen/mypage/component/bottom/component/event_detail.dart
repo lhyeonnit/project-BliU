@@ -13,8 +13,6 @@ class EventDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ScrollController _scrollController = ScrollController();
-
     final Map<String, dynamic> requestData = {
       'bt_idx': btIdx,
     };
@@ -27,7 +25,7 @@ class EventDetail extends ConsumerWidget {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('이벤트 상세'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -82,7 +80,7 @@ class EventDetail extends ConsumerWidget {
                       children: [
                         Text(
                           btTitle,
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                             fontSize: Responsive.getFont(context, 18),
                             fontWeight: FontWeight.bold,
                           ),
@@ -91,7 +89,7 @@ class EventDetail extends ConsumerWidget {
                           margin: EdgeInsets.only(top: 8, bottom: 20),
                           child: Text(
                             btWdate,
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                               fontSize: Responsive.getFont(context, 14),
                               color: Color(0xFF7B7B7B),
                             ),

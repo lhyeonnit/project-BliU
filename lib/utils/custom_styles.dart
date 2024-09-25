@@ -23,25 +23,25 @@ class CustomStyles {
     ],
   );
 
-  static const TextStyle headerTextStyle = TextStyle( fontFamily: 'Pretendard',
+  static const TextStyle headerTextStyle = TextStyle(
     color: textColor,
     fontSize: 24.0,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle bodyTextStyle = TextStyle( fontFamily: 'Pretendard',
+  static const TextStyle bodyTextStyle = TextStyle(
     color: textColor,
     fontSize: 14.0,
     fontWeight: FontWeight.normal,
   );
 
-  static const TextStyle buttonTextStyle = TextStyle( fontFamily: 'Pretendard',
+  static const TextStyle buttonTextStyle = TextStyle(
     color: Colors.white,
     fontSize: 16.0,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle greyTextStyle = TextStyle( fontFamily: 'Pretendard',
+  static const TextStyle greyTextStyle = TextStyle(
     color: greyColor,
     fontSize: 14.0,
     fontWeight: FontWeight.normal,

@@ -36,7 +36,7 @@ class _CouponDownloadState extends ConsumerState<CouponDownload> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('쿠폰 받기'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -143,7 +143,7 @@ class _CouponDownloadState extends ConsumerState<CouponDownload> {
                 child: Center(
                   child: Text(
                     '전체받기',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),

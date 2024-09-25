@@ -127,7 +127,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           },
         ),
         title: const Text("장바구니"),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -207,7 +207,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                               ),
                               Text(
                                 '전체선택($_selectedItemsCount/$totalCount)',
-                                style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
+                                style: TextStyle(fontSize: Responsive.getFont(context, 14)),
                               ),
                             ],
                           ),
@@ -223,7 +223,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                             icon: SvgPicture.asset('assets/images/ic_delet.svg'),
                             label: Text(
                               '전체삭제',
-                              style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14), color: Colors.black),
+                              style: TextStyle(fontSize: Responsive.getFont(context, 14), color: Colors.black),
                             ),
                           ),
                         ],
@@ -266,7 +266,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                   padding: const EdgeInsets.symmetric(vertical: 12),
                                   child: Text(
                                     cartItem.stName ?? "",
-                                    style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
+                                    style: TextStyle(fontSize: Responsive.getFont(context, 14)),
                                   ),
                                 ),
                               ],
@@ -320,7 +320,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                               children: [
                                 Text(
                                   '배송비 ${(cartItem.stDeliveryPrice ?? 0) == 0 ? "무료" : "${Utils.getInstance().priceString(cartItem.stDeliveryPrice ?? 0)}원"}',
-                                  style: TextStyle( fontFamily: 'Pretendard',
+                                  style: TextStyle(
                                     fontSize: Responsive.getFont(context, 13),
                                     color: const Color(0xFF7B7B7B),
                                   ),
@@ -328,12 +328,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 SizedBox(width: Responsive.getWidth(context, 10)),
                                 Text(
                                   '총 결제금액',
-                                  style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
+                                  style: TextStyle(fontSize: Responsive.getFont(context, 14)),
                                 ),
                                 SizedBox(width: Responsive.getWidth(context, 10)),
                                 Text(
                                   '${Utils.getInstance().priceString(cartItem.stProductPrice ?? 0)}원',
-                                  style: TextStyle( fontFamily: 'Pretendard',
+                                  style: TextStyle(
                                     fontSize: Responsive.getFont(context, 14),
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -355,16 +355,16 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('총 상품 금액', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14))),
-                              Text('${_getTotalProductPrice()} 원', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14))),
+                              Text('총 상품 금액', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                              Text('${_getTotalProductPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                             ],
                           ),
                           const SizedBox(height: 8.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('총 배송비', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14))),
-                              Text('${_getTotalDeliveryPrice()} 원', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14))),
+                              Text('총 배송비', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                              Text('${_getTotalDeliveryPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                             ],
                           ),
                           const Padding(
@@ -374,8 +374,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('총 결제예상금액', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14))),
-                              Text('${_getTotalPaymentPrice()} 원', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14), fontWeight: FontWeight.bold)),
+                              Text('총 결제예상금액', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                              Text('${_getTotalPaymentPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14), fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ],
@@ -419,16 +419,16 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('총 상품 금액: ', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14))),
-                    Text('${_getTotalProductPrice()} 원', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14))),
+                    Text('총 상품 금액: ', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                    Text('${_getTotalProductPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                   ],
                 ),
                 const SizedBox(height: 15.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('총 배송비: ', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14))),
-                    Text('${_getTotalDeliveryPrice()} 원', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14))),
+                    Text('총 배송비: ', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                    Text('${_getTotalDeliveryPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
                   ],
                 ),
                 const SizedBox(height: 20.0),
@@ -447,7 +447,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   ),
                   child: Text(
                     '주문하기',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: Responsive.getFont(context, 14),
                     ),

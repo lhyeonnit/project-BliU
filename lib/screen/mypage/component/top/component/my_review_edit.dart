@@ -87,7 +87,7 @@ class _MyReviewEditState extends State<MyReviewEdit> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('리뷰수정'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -130,7 +130,7 @@ class _MyReviewEditState extends State<MyReviewEdit> {
                         children: [
                           Text(
                             '상품은 어떠셨나요?',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                                 fontSize: Responsive.getFont(context, 16),
                                 fontWeight: FontWeight.bold),
                           ),
@@ -153,13 +153,13 @@ class _MyReviewEditState extends State<MyReviewEdit> {
                           ),
                           TextField(
                             controller: _reviewController,
-                            style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
+                            style: TextStyle(fontSize: Responsive.getFont(context, 14)),
                             maxLines: 10,
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                               hintText: '최소 10자 이상 입력해주세요. \n구매하신 상품에 대한 솔직한 리뷰를 남겨주세요. :)',
-                              hintStyle: TextStyle( fontFamily: 'Pretendard',
+                              hintStyle: TextStyle(
                                   fontSize: Responsive.getFont(context, 14),
                                   color: Color(0xFF595959)),
                               enabledBorder: OutlineInputBorder(
@@ -181,8 +181,8 @@ class _MyReviewEditState extends State<MyReviewEdit> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('이미지', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 13)),),
-                                Text('${_selectedImages.length+_currentImages.length}/4', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 13), color: Color(0xFF7B7B7B)),),
+                                Text('이미지', style: TextStyle(fontSize: Responsive.getFont(context, 13)),),
+                                Text('${_selectedImages.length+_currentImages.length}/4', style: TextStyle(fontSize: Responsive.getFont(context, 13), color: Color(0xFF7B7B7B)),),
                               ],
                             ),
                           ),
@@ -205,7 +205,7 @@ class _MyReviewEditState extends State<MyReviewEdit> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SvgPicture.asset('assets/images/my/btn_add_img.svg'),
-                                  Text('사진선택', style: TextStyle( fontFamily: 'Pretendard',color: Color(0xFF707070), fontSize: Responsive.getFont(context, 14)),)
+                                  Text('사진선택', style: TextStyle(color: Color(0xFF707070), fontSize: Responsive.getFont(context, 14)),)
                                 ],
                               ),
                             ),
@@ -295,7 +295,7 @@ class _MyReviewEditState extends State<MyReviewEdit> {
                 child: Center(
                   child: Text(
                     '등록',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),

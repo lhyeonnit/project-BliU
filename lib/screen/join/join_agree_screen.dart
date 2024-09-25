@@ -58,7 +58,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
               children: [
                 Text(
                   '회원가입 약관동의',
-                  style: TextStyle( fontFamily: 'Pretendard',
+                  style: TextStyle(
                     fontSize: Responsive.getFont(context, 20),
                     fontWeight: FontWeight.bold,
                   ),
@@ -67,7 +67,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                   margin: EdgeInsets.only(top: 8, bottom: 30),
                   child: Text(
                     '회원가입을 위해 약관에 동의해 주세요!',
-                    style: TextStyle( fontFamily: 'Pretendard',
+                    style: TextStyle(
                         fontSize: Responsive.getFont(context, 14),
                         color: Color(0xFF7B7B7B)),
                   ),
@@ -193,7 +193,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                     child: Center(
                       child: Text(
                         '다음',
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           color: _allAgreed ?  Colors.white : Color(0xFF7B7B7B),
                         ),
@@ -247,7 +247,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
           ),
           Text(
             title,
-            style: TextStyle( fontFamily: 'Pretendard',
+            style: TextStyle(
               fontSize: Responsive.getFont(context, 14),
             ),
           ),
@@ -300,7 +300,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
           ),
           Text(
             title,
-            style: TextStyle( fontFamily: 'Pretendard',
+            style: TextStyle(
               fontSize: Responsive.getFont(context, 16),
             ),
           ),

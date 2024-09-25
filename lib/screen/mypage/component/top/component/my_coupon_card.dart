@@ -91,7 +91,7 @@ class _MyCouponCardState extends State<MyCouponCard> {
                         children: [
                           Text(
                               widget.discount,
-                              style: TextStyle( fontFamily: 'Pretendard',
+                              style: TextStyle(
                                 fontSize: Responsive.getFont(context, 16),
                                 fontWeight: FontWeight.bold,
                                 color: isDownloaded ? const Color(0xFFA4A4A4) : const Color(0xFFFF6192),
@@ -102,7 +102,7 @@ class _MyCouponCardState extends State<MyCouponCard> {
                               margin: const EdgeInsets.only(left: 6),
                               child: Text(
                                 widget.title,
-                                style: TextStyle( fontFamily: 'Pretendard',
+                                style: TextStyle(
                                   fontSize: Responsive.getFont(context, 16),
                                   fontWeight: FontWeight.bold,
                                   color: isDownloaded ? const Color(0xFFA4A4A4) : Colors.black,
@@ -117,7 +117,7 @@ class _MyCouponCardState extends State<MyCouponCard> {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
                           widget.expiryDate,
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
                             color: isDownloaded ? const Color(0xFFA4A4A4) : Colors.black,
                           ),
@@ -125,7 +125,7 @@ class _MyCouponCardState extends State<MyCouponCard> {
                       ),
                       Text(
                         widget.discountDetails,
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                           fontSize: Responsive.getFont(context, 12),
                           color: const Color(0xFFA4A4A4),
                         ),
@@ -157,7 +157,7 @@ class _MyCouponCardState extends State<MyCouponCard> {
                          child: SizedBox(
                           child: Text(
                             '사용완료',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                               fontSize: Responsive.getFont(context, 12),
                               color: Colors.grey,
                             ),

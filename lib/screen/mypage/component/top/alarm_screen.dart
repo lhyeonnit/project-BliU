@@ -37,7 +37,7 @@ class AlarmScreenState extends State<AlarmScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('알림'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,

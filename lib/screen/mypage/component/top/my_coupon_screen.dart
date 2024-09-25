@@ -74,7 +74,7 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('쿠폰'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -124,7 +124,7 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                     child: FilterChip(
                       label: Text(
                         categories[index],
-                        style: TextStyle( fontFamily: 'Pretendard',
+                        style: TextStyle(
                           color: isSelected ? Color(0xFFFF6192) : Colors.black, // 텍스트 색상
                         ),
                       ),

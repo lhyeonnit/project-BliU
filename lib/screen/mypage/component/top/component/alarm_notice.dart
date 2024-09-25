@@ -63,7 +63,7 @@ class _AlarmNoticeState extends State<AlarmNotice> {
                         children: [
                           Text(
                             '공지',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                               color: const Color(0xFFFF6192),
                               fontSize: Responsive.getFont(context, 15),
                               fontWeight: FontWeight.w600,
@@ -74,7 +74,7 @@ class _AlarmNoticeState extends State<AlarmNotice> {
                           ),
                           Text(
                             '여름 신상 레인코트 입고 안내',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                               color: Colors.black,
                               fontSize: Responsive.getFont(context, 15),
                               fontWeight: FontWeight.w600,
@@ -88,7 +88,7 @@ class _AlarmNoticeState extends State<AlarmNotice> {
                       SizedBox(
                         child: Text(
                           '여러분 안녕하세요! 장마철을 대비해 새롭게 입고된 여름 신상 레인코트를 소개합니다. 다양한 디자인과 컬러로 구성되어 있어 아이들이 더욱 즐겁게 장마철',
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                             color: const Color(0xFF7B7B7B),
                             fontSize: Responsive.getFont(context, 14),
                           ),
@@ -102,7 +102,7 @@ class _AlarmNoticeState extends State<AlarmNotice> {
                       SizedBox(
                         child: Text(
                           '2023-01-01',
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                             color: const Color(0xFF7B7B7B),
                             fontSize: Responsive.getFont(context, 14),
                           ),

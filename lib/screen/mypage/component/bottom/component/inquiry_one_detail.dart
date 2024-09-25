@@ -31,7 +31,7 @@ class InquiryOneDetail extends ConsumerWidget {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('문의내역'),
-        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
+        titleTextStyle: TextStyle(
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -107,7 +107,7 @@ class InquiryOneDetail extends ConsumerWidget {
                           children: [
                             Text(
                               detailData?.qtStatusTxt ?? "",
-                              style: TextStyle( fontFamily: 'Pretendard',
+                              style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black,
@@ -117,7 +117,7 @@ class InquiryOneDetail extends ConsumerWidget {
                               margin: const EdgeInsets.only(left: 11),
                               child: Text(
                                 detailData?.qtWdate ?? "",
-                                style: TextStyle( fontFamily: 'Pretendard',
+                                style: TextStyle(
                                   fontSize: Responsive.getFont(context, 12),
                                   color: Color(0xFF7B7B7B),
                                 ),
@@ -129,7 +129,7 @@ class InquiryOneDetail extends ConsumerWidget {
                           margin: EdgeInsets.only(top: 12, bottom: 10),
                           child: Text(
                             detailData?.qtTitle ?? "",
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -138,7 +138,7 @@ class InquiryOneDetail extends ConsumerWidget {
                         ),
                         Text(
                           detailData?.qtContent ?? "",
-                          style: TextStyle( fontFamily: 'Pretendard',
+                          style: TextStyle(
                               fontSize: Responsive.getFont(context, 14),
                             color: Colors.black,
                             fontWeight: FontWeight.w400,
@@ -177,7 +177,7 @@ class InquiryOneDetail extends ConsumerWidget {
                         child: Center(
                           child: Text(
                             '삭제',
-                            style: TextStyle( fontFamily: 'Pretendard',
+                            style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                                 fontWeight: FontWeight.w500),
                           ),
@@ -240,7 +240,7 @@ class InquiryOneDetail extends ConsumerWidget {
           children: [
             Text(
               '고객센터',
-              style: TextStyle( fontFamily: 'Pretendard',
+              style: TextStyle(
                 fontSize: Responsive.getFont(context, 14),
                 fontWeight: FontWeight.w400,
                 color: Colors.black,
@@ -250,7 +250,7 @@ class InquiryOneDetail extends ConsumerWidget {
               margin: EdgeInsets.only(top: 4),
               child: Text(
                 detailData?.qtUdate ?? "",
-                style: TextStyle( fontFamily: 'Pretendard',
+                style: TextStyle(
                   fontSize: Responsive.getFont(context, 13),
                   color: Color(0xFF7B7B7B),
                 ),
@@ -262,7 +262,7 @@ class InquiryOneDetail extends ConsumerWidget {
           margin: EdgeInsets.symmetric(vertical: 20),
           child: Text(
             detailData?.qtAnswer ?? "",
-            style: TextStyle( fontFamily: 'Pretendard',
+            style: TextStyle(
                 fontSize: Responsive.getFont(context, 14), color: Colors.black, fontWeight: FontWeight.w400,),
           ),
         ),
