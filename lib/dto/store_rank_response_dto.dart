@@ -1,6 +1,7 @@
 import 'package:BliU/data/store_rank_data.dart';
 
 class StoreRankResponseDTO {
+
   final bool result;
   List<StoreRankData>? list;
 
