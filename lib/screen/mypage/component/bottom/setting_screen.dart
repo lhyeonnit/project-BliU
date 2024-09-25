@@ -22,7 +22,7 @@ class SettingScreen extends ConsumerWidget {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('설정'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -83,7 +83,7 @@ class SettingScreen extends ConsumerWidget {
                           children: [
                             Text(
                               '알림',
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 15),
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500),
@@ -159,7 +159,7 @@ class SettingScreen extends ConsumerWidget {
           children: [
             Text(
               title,
-              style: TextStyle(
+              style: TextStyle( fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 15),
                   color: Colors.black,
                   fontWeight: FontWeight.w500),

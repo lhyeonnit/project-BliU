@@ -46,7 +46,7 @@ class FindIdCompleteScreen extends StatelessWidget {
                   margin: EdgeInsets.only(top: 25, bottom: 10),
                   child: Text(
                     '회원님의 아이디는 ID_1234입니다.',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 18),
                       fontWeight: FontWeight.bold,
                     ),
@@ -54,7 +54,7 @@ class FindIdCompleteScreen extends StatelessWidget {
                 ),
                 Text(
                   '아이디 찾기가 완료되었습니다. 로그인해 주세요',
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                   ),
                 ),
@@ -94,7 +94,7 @@ class FindIdCompleteScreen extends StatelessWidget {
                         child: Center(
                           child: Text(
                             '비밀번호 찾기',
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Colors.black,
                             ),
@@ -124,7 +124,7 @@ class FindIdCompleteScreen extends StatelessWidget {
                         child: Center(
                           child: Text(
                             '로그인',
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Colors.white,
                             ),

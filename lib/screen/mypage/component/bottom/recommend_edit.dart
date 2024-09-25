@@ -50,7 +50,7 @@ class _RecommendEditState extends State<RecommendEdit> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('추천정보'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -86,7 +86,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                         children: [
                           Text(
                             '자녀의 출생년도',
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 15),
                                 fontWeight: FontWeight.w600),
                           ),
@@ -110,7 +110,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                         children: [
                           Text(
                             '자녀의 성별',
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 15),
                                 fontWeight: FontWeight.w600),
                           ),
@@ -145,13 +145,13 @@ class _RecommendEditState extends State<RecommendEdit> {
                               children: [
                                 Text(
                                   '선호 스타일',
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 15),
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Text(
                                   '* 다중선택가능',
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 13),
                                       color: Color(0xFFFF6192)),
                                 ),
@@ -178,7 +178,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                                 child: Chip(
                                   label: Text(
                                     style,
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                       color: isSelected
                                           ? const Color(0xFFFF6192)
                                           : Colors.black,
@@ -231,7 +231,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                       child: Center(
                         child: Text(
                           '확인',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.white,
                           ),
@@ -288,7 +288,7 @@ class _RecommendEditState extends State<RecommendEdit> {
               ),
               Text(
                 gender,
-                style: TextStyle(fontSize: Responsive.getFont(context, 14), color: isSelected ? Color(0xFFFF6192) : Colors.black),
+                style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14), color: isSelected ? Color(0xFFFF6192) : Colors.black),
               ),
             ],
           ),
@@ -311,7 +311,7 @@ class _RecommendEditState extends State<RecommendEdit> {
               margin: EdgeInsets.only(bottom: 8),
               child: Text(
                 '출생년도',
-                style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+                style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
               ),
             ),
             TextFormField(
@@ -322,7 +322,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                 border: InputBorder.none,
               ),
               controller: _birthController,
-              style: TextStyle(
+              style: TextStyle( fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 16),
                   color: Color(0xFFFF6192),
                   fontWeight: FontWeight.bold),
@@ -353,7 +353,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                   children: [
                     Text(
                       '출생년도',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 18),
                         fontWeight: FontWeight.w600,
                       ),
@@ -407,7 +407,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                               return Center(
                                 child: Text(
                                   '${1900 + index}년', // 년도로 표시
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 16),
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -443,7 +443,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                             return Center(
                               child: Text(
                                 '${index + 1}월', // 월로 표시
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 16),
                                     fontWeight: FontWeight.w600),
                               ),
@@ -476,7 +476,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                             return Center(
                               child: Text(
                                 '${index + 1}일', // 일로 표시
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 16),
                                     fontWeight: FontWeight.w600),
                               ),
@@ -517,7 +517,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                   child: Center(
                     child: Text(
                       '선택하기',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                         color: Colors.white,
                       ),

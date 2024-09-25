@@ -221,7 +221,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                 margin: EdgeInsets.only(right: 8),
                 child: Text(
                   _selectedCategory?.ctName ?? "",
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                       fontWeight: FontWeight.bold,
                       fontSize: Responsive.getFont(context, 18)),
                 ),
@@ -291,7 +291,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                     ),
                     child: const Text(
                       '2',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         color: Colors.white,
                         fontSize: 12,
                       ),
@@ -315,7 +315,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: TabBar(
                       controller: _tabController,
-                      labelStyle: TextStyle(
+                      labelStyle: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                         fontWeight: FontWeight.w600,
                       ),
@@ -352,7 +352,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                                   sortOptionSelected.isNotEmpty
                                       ? sortOptionSelected
                                       : '최신순', // 선택된 정렬 옵션 표시
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize:
                                           Responsive.getFont(context, 14)),
                                 ),
@@ -412,7 +412,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
+              style: TextStyle( fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14)),
             ),
@@ -433,7 +433,7 @@ Widget _buildProductGrid() {
         padding: EdgeInsets.only(bottom: 20),
         child: Text(
           '상품 ${items.length}', // 상품 수 표시
-          style: const TextStyle(fontSize: 14, color: Colors.black),
+          style: const TextStyle( fontFamily: 'Pretendard',fontSize: 14, color: Colors.black),
         ),
       ),
       Expanded(

@@ -88,7 +88,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
           },
         ),
         title: const Text("결제하기"),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -141,7 +141,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                         children: [
                           Text(
                             '배송지 정보',
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 18),
                               fontWeight: FontWeight.bold,
                             ),
@@ -184,7 +184,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                               const SizedBox(width: 8),
                               Text(
                                 '다음에도 이 배송지 사용',
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
                                 ),
                               ),
@@ -269,7 +269,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                     child: Center(
                       child: Text(
                         '결제하기',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.white,
                         ),
@@ -314,7 +314,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 children: [
                   Text(
                     '주문을 취소하시겠습니까?',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),
@@ -330,7 +330,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                           },
                           child: Text(
                             "취소",
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                               color: Colors.white,
                               fontSize: Responsive.getFont(context, 14),
                             ),
@@ -345,7 +345,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                             margin: const EdgeInsets.only(left: 15),
                             child: Text(
                               "확인",
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                 color: Colors.white,
                                 fontSize: Responsive.getFont(context, 14),
                               ),
@@ -552,7 +552,7 @@ class CustomExpansionTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Text(
             title,
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 18),
               fontWeight: FontWeight.bold,
             ),

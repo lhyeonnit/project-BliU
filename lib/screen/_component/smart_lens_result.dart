@@ -61,7 +61,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('스마트렌즈'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -140,7 +140,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
                         margin: EdgeInsets.only(top: 13, bottom: 20),
                         child: Text(
                           '이미지와 비슷한 상품',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 20),
                             fontWeight: FontWeight.bold,
                           ),
@@ -215,11 +215,11 @@ class _SmartLensResultState extends State<SmartLensResult> {
                       Container(
                           margin: EdgeInsets.only(bottom: 10),
                           child: Text('비슷한 상품을 찾지 못했어요',
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 18),
                                   fontWeight: FontWeight.bold))),
                       Text('다른 이미지로 찾아보세요.',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Color(0xFFA4A4A4))),
                       GestureDetector(
@@ -241,7 +241,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
                             ),
                             child: Center(
                               child: Text('다시 검색하기',
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       fontWeight: FontWeight.bold)),
                             )),
@@ -320,14 +320,14 @@ class _SmartLensResultState extends State<SmartLensResult> {
                   margin: EdgeInsets.only(top: 12, bottom: 4),
                   child: Text(
                     item['brand']!,
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 12),
                         color: Colors.grey),
                   ),
                 ),
                 Text(
                   item['name']!,
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: 14,
                   ),
                   maxLines: 2,
@@ -341,7 +341,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
                     children: [
                       Text(
                         item['discount']!,
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
@@ -351,7 +351,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
                         margin: EdgeInsets.symmetric(horizontal: 2),
                         child: Text(
                           item['price']!,
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
                           ),
@@ -372,7 +372,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
                       margin: EdgeInsets.only(left: 2, bottom: 2),
                       child: Text(
                         item['likes']!,
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
                         ),
@@ -391,7 +391,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
                             margin: EdgeInsets.only(left: 2, bottom: 2),
                             child: Text(
                               item['comments']!,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
                                   color: Colors.grey),
                             ),

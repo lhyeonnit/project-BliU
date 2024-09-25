@@ -35,7 +35,7 @@ class _NoticeScreenState extends State<NoticeScreen> with SingleTickerProviderSt
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('공지사항'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -72,7 +72,7 @@ class _NoticeScreenState extends State<NoticeScreen> with SingleTickerProviderSt
                 height: 60,
                 child: TabBar(
                   controller: _tabController,
-                  labelStyle: TextStyle(
+                  labelStyle: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.w600,
                   ),

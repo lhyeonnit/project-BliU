@@ -52,7 +52,7 @@ class _CouponCardState extends State<CouponCard> {
                       children: [
                         Text(
                           widget.discount,
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 16),
                             fontWeight: FontWeight.bold,
                             color: isDownloaded
@@ -64,7 +64,7 @@ class _CouponCardState extends State<CouponCard> {
                           padding: const EdgeInsets.symmetric(horizontal: 6),
                           child: Text(
                             widget.title,
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 16),
                               fontWeight: FontWeight.bold,
                               color: isDownloaded
@@ -79,7 +79,7 @@ class _CouponCardState extends State<CouponCard> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Text(
                         widget.expiryDate,
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: isDownloaded ? const Color(0xFFA4A4A4) : Colors.black,
                         ),
@@ -87,7 +87,7 @@ class _CouponCardState extends State<CouponCard> {
                     ),
                     Text(
                       widget.discountDetails,
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 12),
                         color: const Color(0xFFA4A4A4),
                       ),
@@ -118,7 +118,7 @@ class _CouponCardState extends State<CouponCard> {
                       child: SizedBox(
                         child: Text(
                           '사용완료',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 12),
                             color: isDownloaded ? Colors.grey : Colors.black,
                           ),

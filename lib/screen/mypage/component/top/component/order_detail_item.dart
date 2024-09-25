@@ -20,11 +20,11 @@ class OrderDetailItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('ㄴ${orderDetailInfoData?.order?.otCouponInfo?.ctName ?? ""}',
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: const Color(0xFFA4A4A4))),
               Text("${orderDetailInfoData?.order?.otCouponInfo?.ctPrice ?? ""}",
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: const Color(0xFFA4A4A4))),
             ],
@@ -46,7 +46,7 @@ class OrderDetailItem extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
           child: Text(
             '배송지 정보',
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 18),
                 fontWeight: FontWeight.bold),
           ),
@@ -94,13 +94,13 @@ class OrderDetailItem extends StatelessWidget {
             children: [
               Text(
                 '결제 금액',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 18),
                     fontWeight: FontWeight.bold),
               ),
               Text(
                 '${Utils.getInstance().priceString(_getBillingPrice())}원',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.bold),
               ),
@@ -145,7 +145,7 @@ class OrderDetailItem extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                 child: Text(
                   '결제 수단',
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 18),
                       fontWeight: FontWeight.bold),
                 ),
@@ -167,11 +167,11 @@ class OrderDetailItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(orderDetailInfoData?.order?.otPayType ?? "",
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Colors.black)),
                       Text('${Utils.getInstance().priceString(_getBillingPrice())}원',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Colors.black)),
                     ],
@@ -194,14 +194,14 @@ class OrderDetailItem extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
             ),
           ),
           Text(
             value,
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
             ),
@@ -222,7 +222,7 @@ class OrderDetailItem extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
             ),
@@ -233,7 +233,7 @@ class OrderDetailItem extends StatelessWidget {
               Text(
                 //'[${address['addressCode']}] ${address['addressAll']}',
                 address,
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14),
                   color: Colors.black,
                 ),
@@ -241,7 +241,7 @@ class OrderDetailItem extends StatelessWidget {
               Text(
                 //'${address['addressDetail']}',
                 addressDetail,
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14),
                   color: Colors.black,
                 ),

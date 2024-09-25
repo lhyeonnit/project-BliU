@@ -100,13 +100,13 @@ class TopScreen extends ConsumerWidget {
         ),
         Text(
           label,
-          style: TextStyle(
+          style: TextStyle( fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 16),
           ),
         ),
         Text(
           num,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle( fontFamily: 'Pretendard',fontWeight: FontWeight.bold),
         ),
       ],
     );

@@ -90,7 +90,7 @@ class _CartItemState extends State<CartItem> {
                     width: Responsive.getWidth(context, 204),
                     child: Text(
                       widget.item.ptTitle ?? "", // widget.item 사용
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                         color: Colors.black,
                       ),
@@ -101,7 +101,7 @@ class _CartItemState extends State<CartItem> {
                   const SizedBox(height: 10),
                   Text(
                     widget.item.ptOption ?? "", // widget.item 사용
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 13),
                       color: const Color(0xFF7B7B7B),
                     ),
@@ -128,7 +128,7 @@ class _CartItemState extends State<CartItem> {
                         ),
                         Text(
                           widget.item.ptCount.toString(), // widget.item 사용
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                           ),
                         ),
@@ -143,7 +143,7 @@ class _CartItemState extends State<CartItem> {
                   const SizedBox(height: 10),
                   Text(
                     '${Utils.getInstance().priceString(widget.item.ptPrice ?? 0)}원', // widget.item 사용
-                    style: const TextStyle(
+                    style: const TextStyle( fontFamily: 'Pretendard',
                         fontSize: 16.0, fontWeight: FontWeight.bold),
                   ),
                 ],

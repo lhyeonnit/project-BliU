@@ -47,13 +47,13 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
             children: [
               Text(
                 '쿠폰',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 13),
                     fontWeight: FontWeight.normal),
               ),
               Text(
                 '보유 쿠폰 ${_couponList.length}장',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 13),
                     color: const Color(0xFF7B7B7B)),
               ),
@@ -84,7 +84,7 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(_couponText,
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           fontWeight: FontWeight.normal)),
                   SvgPicture.asset(
@@ -98,12 +98,12 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('포인트 사용',
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 13),
                       fontWeight: FontWeight.normal)),
               Text(
                 '보유 포인트 ${Utils.getInstance().priceString(_point)}P',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 13),
                     color: const Color(0xFF7B7B7B)),
               ),
@@ -132,7 +132,7 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                             decoration: InputDecoration(
                               border: InputBorder.none, // 테두리 제거
                               hintText: '0',
-                              hintStyle: TextStyle(
+                              hintStyle: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: const Color(0xFF707070),
                               ),
@@ -147,7 +147,7 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                         Container(
                           padding: const EdgeInsets.only(right: 15, left: 10),
                           child: Text('P',
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
                                   fontWeight: FontWeight.normal)),
                         ),
@@ -172,7 +172,7 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                       child: Center(
                         child: Text(
                           '전액사용',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.normal),
                         ),

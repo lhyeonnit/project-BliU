@@ -49,7 +49,7 @@ class HomeFooter extends ConsumerWidget {
                 onTap: () {},
                 child: Text(
                   '공지사항',
-                  style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 13)),
+                  style: TextStyle( fontFamily: 'Pretendard',color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 13)),
                 ),
               ),
 
@@ -63,7 +63,7 @@ class HomeFooter extends ConsumerWidget {
                   onTap: () {},
                   child: Text(
                     '이용약관',
-                    style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 13)),
+                    style: TextStyle( fontFamily: 'Pretendard',color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 13)),
                   ),
                 ),
               ),
@@ -72,7 +72,7 @@ class HomeFooter extends ConsumerWidget {
                 onTap: () {},
                 child: Text(
                   '개인정보처리방침',
-                  style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 13)),
+                  style: TextStyle( fontFamily: 'Pretendard',color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 13)),
                 ),
               ),
             ],
@@ -88,7 +88,7 @@ class HomeFooter extends ConsumerWidget {
                 children: [
                   Text(
                     '사업자 정보',
-                    style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 13)),
+                    style: TextStyle( fontFamily: 'Pretendard',color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 13)),
                   ),
                   Container(
                       margin: EdgeInsets.only(left: 5),
@@ -100,14 +100,14 @@ class HomeFooter extends ConsumerWidget {
           ),
           Text(footInfo,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 12)),
+            style: TextStyle( fontFamily: 'Pretendard',color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 12)),
             ),
           Container(
             margin: EdgeInsets.only(top: 20),
             child: Text(
               'Copyright © 2024 블리유. All rights reserved.',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 12),
+              style: TextStyle( fontFamily: 'Pretendard',color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 12),
               ),
             ),
           ),

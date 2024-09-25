@@ -42,7 +42,7 @@ class OrderItemButton extends StatelessWidget {
               ),
               child: Text(
                 '취소하기',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -68,7 +68,7 @@ class OrderItemButton extends StatelessWidget {
               ),
               child: Text(
                 '문의하기',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -98,7 +98,7 @@ class OrderItemButton extends StatelessWidget {
               ),
               child: Text(
                 '교환/반품 요청',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -124,7 +124,7 @@ class OrderItemButton extends StatelessWidget {
               ),
               child: Text(
                 '배송조회',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -150,7 +150,7 @@ class OrderItemButton extends StatelessWidget {
               ),
               child: Text(
                 '문의하기',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -176,7 +176,7 @@ class OrderItemButton extends StatelessWidget {
               ),
               child: Text(
                 '구매확정',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   color: const Color(0xFFFF6192),
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -203,7 +203,7 @@ class OrderItemButton extends StatelessWidget {
                   ),
                   child: Text(
                     '교환/반품 요청',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       color: Colors.black,
                       fontSize: Responsive.getFont(context, 14),
                     ),
@@ -229,7 +229,7 @@ class OrderItemButton extends StatelessWidget {
                   ),
                   child: Text(
                     '배송조회',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       color: Colors.black,
                       fontSize: Responsive.getFont(context, 14),
                     ),
@@ -255,7 +255,7 @@ class OrderItemButton extends StatelessWidget {
                   ),
                   child: Text(
                     '문의하기',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       color: Colors.black,
                       fontSize: Responsive.getFont(context, 14),
                     ),
@@ -288,7 +288,7 @@ class OrderItemButton extends StatelessWidget {
               ),
               child: Text(
                 '리뷰쓰기',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   color: const Color(0xFFFF6192),
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -314,7 +314,7 @@ class OrderItemButton extends StatelessWidget {
               ),
               child: Text(
                 '배송조회',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -340,7 +340,7 @@ class OrderItemButton extends StatelessWidget {
               ),
               child: Text(
                 '문의하기',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),

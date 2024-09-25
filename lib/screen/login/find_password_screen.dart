@@ -67,7 +67,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                   children: [
                     Text(
                       '비밀번호 찾기',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 20),
                         fontWeight: FontWeight.bold,
                       ),
@@ -76,7 +76,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                       margin: EdgeInsets.only(top: 8, bottom: 10),
                       child: Text(
                         '비밀번호를 찾으려면 아래 정보를 입력하세요.',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Color(0xFF7B7B7B)),
                       ),
@@ -136,7 +136,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                                 child: Center(
                                     child: Text(
                                       '인증요청',
-                                      style: TextStyle(
+                                      style: TextStyle( fontFamily: 'Pretendard',
                                           fontSize:
                                           Responsive.getFont(context, 14)),
                                     ))),
@@ -201,7 +201,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                                 child: Center(
                                   child: Text(
                                     '확인',
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                         fontSize:
                                         Responsive.getFont(context, 14),
                                         color: Colors.white),
@@ -247,7 +247,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                 child: Center(
                   child: Text(
                     '확인',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color:
                       _isAllFieldsFilled ? Colors.white : Color(0xFF7B7B7B),
@@ -278,13 +278,13 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 13))),
                 Container(
                     margin: EdgeInsets.only(left: 4),
                     child: Text('*',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                             fontWeight: FontWeight.bold,
                             fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFFFF6192)))),
@@ -293,7 +293,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
           ),
           if (label.isNotEmpty)
             TextField(
-              style: TextStyle(
+              style: TextStyle( fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
               enabled: isEnable,
@@ -304,7 +304,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                 contentPadding:
                 EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
-                hintStyle: TextStyle(
+                hintStyle: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF595959)),
                 enabledBorder: OutlineInputBorder(
@@ -336,7 +336,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
         children: [
           if (label.isNotEmpty)
             TextField(
-              style: TextStyle(
+              style: TextStyle( fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
               enabled: isEnable,
@@ -347,7 +347,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                 contentPadding:
                 EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
-                hintStyle: TextStyle(
+                hintStyle: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF595959)),
                 enabledBorder: OutlineInputBorder(

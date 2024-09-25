@@ -123,7 +123,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                             // 선택값.
                             Text(
                               _dropdownValue,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black,
                               ),
@@ -146,7 +146,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '세부 내용 입력',
-                      hintStyle: TextStyle(
+                      hintStyle: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFF595959)),
                       enabledBorder: const OutlineInputBorder(
@@ -161,7 +161,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                         alignment: Alignment.centerLeft, // 왼쪽 정렬
                         child: Text(
                           '${_detailedReason.length}/500',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 13),
                             color: const Color(0xFF7B7B7B),
                           ),
@@ -190,14 +190,14 @@ class _ExchangeItemState extends State<ExchangeItem> {
                   children: [
                     Text(
                       '사진',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
                           color: Colors.black,
                           fontWeight: FontWeight.normal),
                     ),
                     Text(
                       '최대3장',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                           color: const Color(0xFF7B7B7B),
                           fontSize: Responsive.getFont(context, 13)),
                     ),
@@ -217,7 +217,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                     child: Center(
                         child: Text(
                       '첨부하기',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           fontWeight: FontWeight.normal),
                     )),
@@ -285,7 +285,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                   children: [
                     Text(
                       '교환 배송비',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 13),
                         color: Colors.black,
                         fontWeight: FontWeight.normal,
@@ -295,7 +295,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       child: Text(
                         '*',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.normal,
@@ -327,7 +327,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                   Expanded(
                     child: Text(
                       "택배에 동봉 (6,000원)",
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                       ),
                     ),
@@ -359,14 +359,14 @@ class _ExchangeItemState extends State<ExchangeItem> {
                       children: [
                         Text(
                           "판매자 계좌로 입금",
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                           ),
                         ),
                         const SizedBox(height: 5),
                         Text(
                           "국민은행 123456789 홍길동",
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                           ),
                         ),
@@ -397,7 +397,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                   Expanded(
                     child: Text(
                       "해당 사항 없음",
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                       ),
                     ),
@@ -447,7 +447,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         _exchangeReasons.elementAt(index),
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black,
                         ),

@@ -20,7 +20,7 @@ class OrderItem extends StatelessWidget {
           margin: const EdgeInsets.only(top: 15),
           child: Text(
             orderDetailData.ctStatusTxt ?? "",
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
               fontWeight: FontWeight.w600,
               color: Colors.black,
               fontSize: Responsive.getFont(context, 15),
@@ -54,7 +54,7 @@ class OrderItem extends StatelessWidget {
                     Text(
                       // order['items'][0]['store'] ?? "",
                       orderDetailData.stName ?? "",
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
                           color: const Color(0xFF7B7B7B)),
                     ),
@@ -62,7 +62,7 @@ class OrderItem extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 4, bottom: 10),
                       child: Text(
                         orderDetailData.ptName ?? "",
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -71,7 +71,7 @@ class OrderItem extends StatelessWidget {
                     ),
                     Text(
                       "${orderDetailData.ctOptValue} ${orderDetailData.ctOptQty}개",
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 13),
                         color: const Color(0xFF7B7B7B),
                       ),
@@ -80,7 +80,7 @@ class OrderItem extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 15),
                       child: Text(
                         "${Utils.getInstance().priceString(orderDetailData.ptPrice ?? 0)}원",
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontWeight: FontWeight.bold,
                           fontSize: Responsive.getFont(context, 14),
                         ),

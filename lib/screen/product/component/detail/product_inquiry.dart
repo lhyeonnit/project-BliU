@@ -47,7 +47,7 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
           ),
           child: Text(
             '상품문의',
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 20),
                 fontWeight: FontWeight.bold),
           ),
@@ -79,7 +79,7 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                             children: [
                               Text(
                                 qnaData.qtStatus == "Y" ? '답변완료' : '미답변',
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                     fontWeight: FontWeight.w600,
                                     color: Colors.black),
@@ -88,13 +88,13 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                                 margin: EdgeInsets.only(left: 11, right: 10),
                                 child: Text(
                                     '${qnaData.mtId.toString().substring(0, 2)}',
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                       color: Color(0xFF7B7B7B),
                                       fontSize: Responsive.getFont(context, 12),
                                     )),
                               ),
                               Text('${qnaData.qtWdate}',
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                     color: Color(0xFF7B7B7B),
                                     fontSize: Responsive.getFont(context, 12),
                                   )),
@@ -112,7 +112,7 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                                   margin: EdgeInsets.symmetric(horizontal: 8),
                                   child: Text(
                                     qnaData.qtTitle ?? "",
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                         fontSize:
                                             Responsive.getFont(context, 14),
                                         color: Colors.black),
@@ -157,14 +157,14 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                           children: [
                             Text(
                               '${currentPage.toString().padLeft(2, '0')}',
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 16),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                             Text(
                               ' / $totalPages',
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 16),
                                   color: Color(0xFFCCCCCC),
                                   fontWeight: FontWeight.w600),

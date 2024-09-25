@@ -63,7 +63,7 @@ class _AlarmEventState extends State<AlarmEvent> {
                         children: [
                           Text(
                             '이벤트',
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                               color: const Color(0xFFFF6192),
                               fontSize: Responsive.getFont(context, 15),
                               fontWeight: FontWeight.w600,
@@ -74,7 +74,7 @@ class _AlarmEventState extends State<AlarmEvent> {
                           ),
                           Text(
                             '장마 필수템 레인코트',
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                               color: Colors.black,
                               fontSize: Responsive.getFont(context, 15),
                               fontWeight: FontWeight.w600,
@@ -88,7 +88,7 @@ class _AlarmEventState extends State<AlarmEvent> {
                       SizedBox(
                         child: Text(
                           '귀엽고 실용적인 레인코트로 우리 아이 비 오는 날도 즐겁게! 다양한 디자인과 컬러로 장마철을 더욱 특별하게 만들어보세요.',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             color: const Color(0xFF7B7B7B),
                             fontSize: Responsive.getFont(context, 14),
                           ),
@@ -102,7 +102,7 @@ class _AlarmEventState extends State<AlarmEvent> {
                       SizedBox(
                         child: Text(
                           '2023-01-01',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             color: const Color(0xFF7B7B7B),
                             fontSize: Responsive.getFont(context, 14),
                           ),

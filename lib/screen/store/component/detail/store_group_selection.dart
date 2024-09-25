@@ -82,7 +82,7 @@ class _StoreGroupSelectionState extends State<StoreGroupSelection> {
                   const SizedBox(width: 5.0),
                   Text(
                     getSelectedSortGroupText(), // 정렬 순서 텍스트
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14)),
                   ),
                 ],
@@ -108,7 +108,7 @@ class _StoreGroupSelectionState extends State<StoreGroupSelection> {
                         getSelectedAgeGroupText(), // 선택된 연령대 표시
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.black),
                       ),

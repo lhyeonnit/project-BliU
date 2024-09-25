@@ -89,7 +89,7 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                   children: [
                     Text(
                       '$starAvg',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 20),
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -99,7 +99,7 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                       padding: const EdgeInsets.symmetric(horizontal: 4.0),
                       child: Text(
                         '/5.0',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 20),
                           fontWeight: FontWeight.bold,
                           color: Color(0xFFA4A4A4),
@@ -109,7 +109,7 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                     const Spacer(),
                     Text(
                       '$reviewCount명의 리뷰',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w400,
                         fontSize: Responsive.getFont(context, 14),
                       ),
@@ -159,7 +159,7 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                               children: [
                                 Text(
                                   '${reviewData.mtId.toString().substring(0, 2)}**********',
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                       color: Color(0xFF7B7B7B),
                                       fontSize: Responsive.getFont(context, 12)),
                                 ),
@@ -167,7 +167,7 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                                   margin: EdgeInsets.symmetric(horizontal: 10),
                                   child: Text(
                                     reviewData.rtWdate ?? "",
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                         color: Color(0xFF7B7B7B),
                                         fontSize: Responsive.getFont(context, 12)),
                                   ),
@@ -185,7 +185,7 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                             margin: EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
                               reviewData.rtContent ?? "",
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black
                               ),
@@ -205,7 +205,7 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                               },
                               child: Text(
                                 '신고',
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
                                   color: Color(0xFF7B7B7B),
                                 ),
@@ -262,14 +262,14 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                       children: [
                         Text(
                           '${currentPage.toString().padLeft(2, '0')}',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 16),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         Text(
                           ' / $totalPages',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 16),
                               color: Color(0xFFCCCCCC),
                               fontWeight: FontWeight.w600),

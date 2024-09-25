@@ -123,7 +123,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                                 ),
                                 child: Text(
                                   _currentPage == 2 ? "다음" : "건너뛰기",
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                   ),
                                 ),

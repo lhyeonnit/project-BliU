@@ -155,7 +155,7 @@ class _ReturnItemState extends State<ReturnItem> {
                           children: [
                             Text(
                               _dropdownValue,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black,
                               ),
@@ -171,7 +171,7 @@ class _ReturnItemState extends State<ReturnItem> {
                   margin: const EdgeInsets.only(top: 8, bottom: 10),
                   child: Text(
                     '! 판매자 귀책이 아닐 시 반품 비용이 발생할 수 있습니다.',
-                    style: TextStyle(fontSize: Responsive.getFont(context, 12)),
+                    style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 12)),
                   ),
                 ),
                 Padding(
@@ -182,7 +182,7 @@ class _ReturnItemState extends State<ReturnItem> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '세부 내용 입력',
-                      hintStyle: TextStyle(
+                      hintStyle: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFF595959)),
                       enabledBorder: const OutlineInputBorder(
@@ -197,7 +197,7 @@ class _ReturnItemState extends State<ReturnItem> {
                         alignment: Alignment.centerLeft, // 왼쪽 정렬
                         child: Text(
                           '${_detailedReason.length}/500',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 13),
                             color: const Color(0xFF7B7B7B),
                           ),
@@ -221,7 +221,7 @@ class _ReturnItemState extends State<ReturnItem> {
               children: [
                 Text(
                   '환불계좌',
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 13),
                     color: Colors.black,
                     fontWeight: FontWeight.normal,
@@ -231,7 +231,7 @@ class _ReturnItemState extends State<ReturnItem> {
                   margin: const EdgeInsets.symmetric(horizontal: 4),
                   child: Text(
                     '*',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 13),
                       color: const Color(0xFFFF6192),
                       fontWeight: FontWeight.normal,
@@ -273,7 +273,7 @@ class _ReturnItemState extends State<ReturnItem> {
                               children: [
                                 Text(
                                   _dropdownAccount,
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                     color: Colors.black,
                                   ),
@@ -295,7 +295,7 @@ class _ReturnItemState extends State<ReturnItem> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '환불받을 은행계좌',
-                      hintStyle: TextStyle(
+                      hintStyle: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFF595959)),
                       enabledBorder: const OutlineInputBorder(
@@ -331,14 +331,14 @@ class _ReturnItemState extends State<ReturnItem> {
                     children: [
                       Text(
                         '사진',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 13),
                             color: Colors.black,
                             fontWeight: FontWeight.normal),
                       ),
                       Text(
                         '최대3장',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                             color: const Color(0xFF7B7B7B),
                             fontSize: Responsive.getFont(context, 13)),
                       ),
@@ -359,7 +359,7 @@ class _ReturnItemState extends State<ReturnItem> {
                     child: Center(
                         child: Text(
                       '첨부하기',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           fontWeight: FontWeight.normal),
                     )),
@@ -463,7 +463,7 @@ class _ReturnItemState extends State<ReturnItem> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         items.elementAt(index),
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black,
                         ),

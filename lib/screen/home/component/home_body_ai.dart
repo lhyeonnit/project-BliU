@@ -23,7 +23,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
         children: [
           Text(
             'AI 추천 상품',
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 20),
               fontWeight: FontWeight.bold,
             ),
@@ -101,7 +101,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                               margin: EdgeInsets.only(top: 12, bottom: 4),
                               child: Text(
                                 '꿈꾸는데이지',
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 12),
                                   color: Color(0xFF7B7B7B),
                                 ),
@@ -109,7 +109,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                             ),
                             Text(
                               '꿈꾸는 데이지 안나 토션 레이스 베스트',
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                               ),
                               maxLines: 2,
@@ -123,7 +123,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                 children: [
                                   Text(
                                     '15%',
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       color: const Color(0xFFFF6192),
                                       fontWeight: FontWeight.bold,
@@ -133,7 +133,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                     margin: EdgeInsets.symmetric(horizontal: 2),
                                     child: Text(
                                       '32,800원',
-                                      style: TextStyle(
+                                      style: TextStyle( fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(context, 14),
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -155,7 +155,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                   margin: EdgeInsets.only(left: 2, bottom: 2),
                                   child: Text(
                                     '13,000',
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
                                       color: Color(0xFFA4A4A4),
                                     ),
@@ -174,7 +174,7 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                         margin: EdgeInsets.only(left: 2, bottom: 2),
                                         child: Text(
                                           '49',
-                                          style: TextStyle(
+                                          style: TextStyle( fontFamily: 'Pretendard',
                                               fontSize: Responsive.getFont(context, 12),
                                             color: Color(0xFFA4A4A4),
                                           ),

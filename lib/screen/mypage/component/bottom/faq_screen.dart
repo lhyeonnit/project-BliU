@@ -45,7 +45,7 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('FAQ'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -93,18 +93,18 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                       children: [
                         Expanded(
                           child: TextField(
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                                 decorationThickness: 0,
                                 fontSize: Responsive.getFont(context, 14)),
                             controller: _searchController,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 14, horizontal: 15),
-                              labelStyle: TextStyle(
+                              labelStyle: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                               ),
                               hintText: '내용을 입력해 주세요.',
-                              hintStyle: TextStyle(
+                              hintStyle: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
                                   color: Color(0xFF595959)),
                               border: InputBorder.none,
@@ -167,7 +167,7 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                         child: FilterChip(
                           label: Text(
                             faqCategoryData.cftName ?? "",
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                               color: isSelected
                                   ? Color(0xFFFF6192)
                                   : Colors.black, // 텍스트 색상
@@ -231,7 +231,7 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                               children: [
                                 Text(
                                   cateName,
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.bold,
                                     fontSize: Responsive.getFont(context, 14),
                                   ),
@@ -241,7 +241,7 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                                     margin: EdgeInsets.symmetric(horizontal: 5),
                                     child: Text(
                                       faq.ftSubject ?? "",
-                                      style: TextStyle(
+                                      style: TextStyle( fontFamily: 'Pretendard',
                                         fontSize:
                                             Responsive.getFont(context, 14),
                                       ),
@@ -264,7 +264,7 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                                   children: [
                                     Text(
                                       faq.ftSubject ?? "",
-                                      style: TextStyle(
+                                      style: TextStyle( fontFamily: 'Pretendard',
                                         fontWeight: FontWeight.bold,
                                         fontSize:
                                             Responsive.getFont(context, 14),
@@ -274,7 +274,7 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                                       margin: EdgeInsets.only(top: 15),
                                       child: Text(
                                         faq.ftContent ?? "",
-                                        style: TextStyle(
+                                        style: TextStyle( fontFamily: 'Pretendard',
                                             fontSize: Responsive.getFont(
                                                 context, 14)),
                                       ),

@@ -57,7 +57,7 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               '스타일',
-              style: TextStyle(fontSize: Responsive.getFont(context, 18), fontWeight: FontWeight.bold),
+              style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 18), fontWeight: FontWeight.bold),
             ),
           ),
           Container(
@@ -112,7 +112,7 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
                       child: const Center(
                           child: Text(
                             '선택완료',
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle( fontFamily: 'Pretendard',color: Colors.white),
                           )),
                       onTap: () {
                         widget.onSelectionChanged(_tempSelectedStyle);
@@ -135,7 +135,7 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
       child: Chip(
         label: Text(
           style,
-          style: TextStyle(
+          style: TextStyle( fontFamily: 'Pretendard',
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
           ),
           overflow: TextOverflow.ellipsis,

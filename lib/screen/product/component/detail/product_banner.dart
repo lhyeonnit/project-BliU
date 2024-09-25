@@ -71,13 +71,13 @@ class _ProductBannerState extends State<ProductBanner> {
                 children: [
                   Text(
                     '${_currentPage + 1}',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 13),
                         color: Colors.white),
                   ),
                   Text(
                     '/${_imgArr.length}',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 13),
                         color: Color(0x80FFFFFF)),
                   ),

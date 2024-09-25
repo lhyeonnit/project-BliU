@@ -34,7 +34,7 @@ class OrderListItem extends StatelessWidget {
                   children: [
                     Text(
                       orderData.ctWdate ?? "",
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 16),
@@ -44,7 +44,7 @@ class OrderListItem extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Text(
                         orderData.detailList?[0].otCode ?? "",
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFF7B7B7B),
                         ),
@@ -66,7 +66,7 @@ class OrderListItem extends StatelessWidget {
                   children: [
                     Text(
                       '주문상세',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         color: const Color(0xFFFF6192),
                         fontSize: Responsive.getFont(context, 14),
                       ),

@@ -41,7 +41,7 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('교환/반품 요청'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -152,7 +152,7 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
                       child: Center(
                         child: Text(
                           '확인',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.white,
                           ),
@@ -221,7 +221,7 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
           child: Center(
             child: Text(
               text,
-              style: TextStyle(
+              style: TextStyle( fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
                 color: isSelected ? const Color(0xFFFF6192) : Colors.black,
                 // 선택 시 텍스트 색상 변경

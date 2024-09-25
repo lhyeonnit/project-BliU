@@ -81,15 +81,15 @@ class _ProductListCardState extends State<ProductListCard> {
                   margin: EdgeInsets.only(top: 12, bottom: 4),
                   child: Text(
                     widget.item['brand']!,
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 12),
                         color: Colors.grey),
                   ),
                 ),
                 Text(
                   widget.item['name']!,
-                  style: TextStyle(
-                    fontSize: 14,
+                  style: TextStyle( fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 14),
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -102,7 +102,7 @@ class _ProductListCardState extends State<ProductListCard> {
                     children: [
                       Text(
                         widget.item['discount']!,
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
@@ -112,7 +112,7 @@ class _ProductListCardState extends State<ProductListCard> {
                         margin: EdgeInsets.symmetric(horizontal: 2),
                         child: Text(
                           widget.item['price']!,
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
                           ),
@@ -133,7 +133,7 @@ class _ProductListCardState extends State<ProductListCard> {
                       margin: EdgeInsets.only(left: 2, bottom: 2),
                       child: Text(
                         widget.item['likes']!,
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
                         ),
@@ -152,7 +152,7 @@ class _ProductListCardState extends State<ProductListCard> {
                             margin: EdgeInsets.only(left: 2, bottom: 2),
                             child: Text(
                               widget.item['comments']!,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
                                   color: Colors.grey),
                             ),

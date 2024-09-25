@@ -55,7 +55,7 @@ class _ProductCategoryBottomState extends State<ProductCategoryBottom> {
                         margin: EdgeInsets.only(bottom: 24),
                         child: Text(
                           categoryData.ctName ?? "",
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 16),
                               fontWeight: FontWeight.w600),
                         ),

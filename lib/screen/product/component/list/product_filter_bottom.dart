@@ -92,7 +92,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
                             '연령',
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 18),
                                 fontWeight: FontWeight.bold),
                           ),
@@ -120,7 +120,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
                             '스타일',
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 18),
                                 fontWeight: FontWeight.bold),
                           ),
@@ -154,7 +154,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
                             '가격',
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 18),
                                 fontWeight: FontWeight.bold),
                           ),
@@ -164,7 +164,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           child: Center(
                             child: Text(
                               '${_tempSelectedRange.start.toInt()}원 ~ ${_tempSelectedRange.end.toInt()}원',
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -236,7 +236,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                       child: const Center(
                           child: Text(
                         '상품보기',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle( fontFamily: 'Pretendard',color: Colors.white),
                       )),
                       onTap: () {
                         widget.onAgeOptionSelected(_tempSelectedAgeGroup);
@@ -262,7 +262,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
       child: Chip(
         label: Text(
           ageGroup,
-          style: TextStyle(
+          style: TextStyle( fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
           ),
@@ -287,7 +287,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
       child: Chip(
         label: Text(
           style,
-          style: TextStyle(
+          style: TextStyle( fontFamily: 'Pretendard',
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
           ),
           overflow: TextOverflow.ellipsis,

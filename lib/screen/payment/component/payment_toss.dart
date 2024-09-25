@@ -49,7 +49,7 @@ class PaymentTossState extends State<PaymentToss> {
         appBar: AppBar(
           title: const Text('결제'),
           centerTitle: true,
-          titleTextStyle: const TextStyle(
+          titleTextStyle: const TextStyle( fontFamily: 'Pretendard',
             fontSize: 20,
             color: Colors.black,
           ),
@@ -109,7 +109,7 @@ class PaymentTossState extends State<PaymentToss> {
                           ),
                           child: const Text(
                             '결제하기',
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                                 color: Colors.white
                             ),
                           )

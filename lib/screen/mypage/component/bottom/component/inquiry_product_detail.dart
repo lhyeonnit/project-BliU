@@ -33,7 +33,7 @@ class InquiryProductDetail extends ConsumerWidget {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('문의내역'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -130,14 +130,14 @@ class InquiryProductDetail extends ConsumerWidget {
                               children: [
                                 Text(
                                   product?.stName ?? "",
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 12),
                                     color: Color(0xFF7B7B7B),
                                   ),
                                 ),
                                 Text(
                                   product?.ptName ?? "",
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -148,7 +148,7 @@ class InquiryProductDetail extends ConsumerWidget {
                                   margin: EdgeInsets.only(top: 8),
                                   child: Text(
                                     '${product?.ptPrice ?? 0}원',
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 16),
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -173,7 +173,7 @@ class InquiryProductDetail extends ConsumerWidget {
                           children: [
                             Text(
                               detailData?.qtStatusTxt ?? "",
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black,
@@ -183,7 +183,7 @@ class InquiryProductDetail extends ConsumerWidget {
                               margin: const EdgeInsets.only(left: 11),
                               child: Text(
                                 detailData?.qtWdate ?? "",
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
                                   color: Color(0xFF7B7B7B),
                                 ),
@@ -195,7 +195,7 @@ class InquiryProductDetail extends ConsumerWidget {
                           margin: EdgeInsets.only(top: 12, bottom: 10),
                           child: Text(
                             detailData?.qtTitle ?? "",
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -204,7 +204,7 @@ class InquiryProductDetail extends ConsumerWidget {
                         ),
                         Text(
                           detailData?.qtContent ?? "",
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Colors.black,
                             fontWeight: FontWeight.w400,
@@ -244,7 +244,7 @@ class InquiryProductDetail extends ConsumerWidget {
                         child: Center(
                           child: Text(
                             '삭제',
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.w500
                             ),
@@ -326,7 +326,7 @@ class InquiryProductDetail extends ConsumerWidget {
                 children: [
                   Text(
                     product?.stName ?? "",
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       fontWeight: FontWeight.w400,
                       color: Colors.black,
@@ -334,7 +334,7 @@ class InquiryProductDetail extends ConsumerWidget {
                   ),
                   Text(
                     detailData?.qtUdate ?? "",
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 13),
                       color: Color(0xFF7B7B7B),
                     ),
@@ -347,7 +347,7 @@ class InquiryProductDetail extends ConsumerWidget {
             margin: EdgeInsets.symmetric(vertical: 20),
             child: Text(
               detailData?.qtAnswer ?? "",
-              style: TextStyle(
+              style: TextStyle( fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14), color: Colors.black, fontWeight: FontWeight.w400),
             ),
           ),

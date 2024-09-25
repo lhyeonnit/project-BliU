@@ -27,7 +27,7 @@ class ExchangeReturnInfo extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
           child: Text(
             '환불정보',
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 18),
                 fontWeight: FontWeight.bold),
           ),
@@ -69,13 +69,13 @@ class ExchangeReturnInfo extends StatelessWidget {
             children: [
               Text(
                 '환불예정금액',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 18),
                     fontWeight: FontWeight.bold),
               ),
               Text(
                 '${exchangeReturnInfo['refundAmount']}',
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.bold),
               ),
@@ -107,14 +107,14 @@ class ExchangeReturnInfo extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
             ),
           ),
           Text(
             value,
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
             ),

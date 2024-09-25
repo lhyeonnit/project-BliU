@@ -34,14 +34,14 @@ class MyInfo extends StatelessWidget {
                 children: [
                   Text(
                     '${memberInfoData?.mtName ?? ""}님 안녕하세요',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 18),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                       memberInfoData?.mtId ?? "",
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF7B7B7B),
                   ),
@@ -73,7 +73,7 @@ class MyInfo extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(color: Color(0xFFDDDDDD)),
                 ),
-                child: Text('내정보수정',style: TextStyle(color: Colors.black, fontSize: Responsive.getFont(context, 12)),)),
+                child: Text('내정보수정',style: TextStyle( fontFamily: 'Pretendard',color: Colors.black, fontSize: Responsive.getFont(context, 12)),)),
           ),
         ],
       );

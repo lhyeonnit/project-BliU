@@ -114,7 +114,7 @@ class _HomeHeaderState extends State<HomeHeader> {
             children: [
               Text(
                 title,
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 30),
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -122,7 +122,7 @@ class _HomeHeaderState extends State<HomeHeader> {
               ),
               Text(
                 subtitle,
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 30),
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -131,7 +131,7 @@ class _HomeHeaderState extends State<HomeHeader> {
               SizedBox(height: Responsive.getHeight(context, 13.82)),
               Text(
                 description,
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 16),
                   color: Colors.white,
                 ),

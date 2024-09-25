@@ -84,7 +84,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                             children: [
                               Text(
                                 widget.storeData?.stName ?? "", // 브랜드명
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                     color: Color(0xFF7B7B7B),
                                     fontSize: Responsive.getFont(context, 13)),
                               ),
@@ -111,7 +111,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                       margin: EdgeInsets.only(top: 8, bottom: 12),
                       child: Text(
                         widget.productData?.ptName ?? "",
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 16),
                           fontWeight: FontWeight.bold,
                         ),
@@ -125,7 +125,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                                 children: [
                                   Text(
                                     "${widget.productData?.ptDiscountPer ?? 0}%", // 할인률
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 18),
                                       color: Color(0xFFFF6192),
                                       fontWeight: FontWeight.bold,
@@ -138,7 +138,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                           margin: EdgeInsets.only(left: 8, right: 5),
                           child: Text(
                             '${Utils.getInstance().priceString(widget.productData?.ptPrice ?? 0)}원', // 할인된 가격
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 18),
                               fontWeight: FontWeight.bold,
                             ),
@@ -146,7 +146,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                         ),
                         Text(
                           '${Utils.getInstance().priceString(widget.productData?.ptSellingPrice ?? 0)}원', // 원래 가격
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Color(0xFFABABAB),
                             decoration: TextDecoration.lineThrough, // 취소선
@@ -179,7 +179,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                         margin: EdgeInsets.only(right: 30),
                         child: Text(
                           '배송비', // 배송비 텍스트
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Color(0xFF7B7B7B),
                           ),
@@ -190,7 +190,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                             children: [
                               Text(
                                 '${Utils.getInstance().priceString(widget.productData?.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0)}원 (${Utils.getInstance().priceString(widget.productData?.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0)}원 이상 ${(widget.productData?.deliveryInfo?.deliveryPrice ?? 0) == 0 ? '무료배송)' : '${Utils.getInstance().priceString((widget.productData?.deliveryInfo?.deliveryPrice ?? 0))}원)'}', // 배송비 정보
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
                                   color: Colors.black,
                                   fontWeight: FontWeight.w400,
@@ -224,7 +224,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                       children: [
                         Text(
                           '택배사: CJ대한통운',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 12),
                             fontWeight: FontWeight.bold,
                           ),
@@ -232,7 +232,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                         SizedBox(height: 5),
                         Text(
                           '배송비: 기본 배송비 0000원 / 50,000원 이상 무료',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 10)),
                         ),
                         SizedBox(height: 5),
@@ -241,13 +241,13 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                           children: [
                             Text(
                               '도서산간 추가배송비: 3000원',
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize:
                                   Responsive.getFont(context, 10)),
                             ),
                             Text(
                               '제주 추가배송비: 3000원',
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize:
                                   Responsive.getFont(context, 10)),
                             ),
@@ -256,7 +256,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                         SizedBox(height: 5),
                         Text(
                           '배송 기간: 평균 2-5일 이내 발송 (영업일 기준), 재고현황에 따라 배송이 다소 지연될 수 있습니다.',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 10)),
                         ),
                       ],
@@ -271,7 +271,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                         margin: EdgeInsets.only(right: 40),
                         child: Text(
                           '쿠폰',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Color(0xFF7B7B7B),
                           ),
@@ -298,7 +298,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                                 vertical: 3.0, horizontal: 8),
                             child: Text(
                               '쿠폰 다운로드',
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
                                   color: Colors.black),
                             ),

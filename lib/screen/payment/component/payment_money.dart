@@ -67,14 +67,14 @@ class PaymentMoney extends StatelessWidget {
               children: [
                 Text(
                   '결제 금액',
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Colors.black,
                   ),
                 ),
                 Text(
                   '${Utils.getInstance().priceString(total)}원',
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -96,14 +96,14 @@ class PaymentMoney extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
             ),
           ),
           Text(
             value,
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
             ),
