@@ -1,5 +1,7 @@
 import 'package:BliU/data/category_data.dart';
+import 'package:BliU/screen/home/home_screen.dart';
 import 'package:BliU/screen/home/viewmodel/home_body_category_view_model.dart';
+import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/screen/product/product_list_screen.dart';
 import 'package:BliU/screen/store/store_screen.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -18,7 +20,7 @@ class HomeBodyCategory extends ConsumerWidget {
     ref.read(homeBodyCategoryModelProvider.notifier).getCategory(requestData);
 
     return Padding(
-      padding: EdgeInsets.only(top: 30, bottom: 25),
+      padding: const EdgeInsets.only(top: 30, bottom: 25),
       child: Container(
         height: Responsive.getHeight(context, 115.0),
         padding: const EdgeInsets.only(left: 16),
@@ -47,15 +49,11 @@ class HomeBodyCategory extends ConsumerWidget {
                   overlayColor: WidgetStateColor.transparent,
                   onTap: () {
                     if (index == 0) {
-                      // TODO store 이동시 바텀 사라짐
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => StoreScreen()),
-                      );
+                      ref.read(mainScreenProvider.notifier).selectNavigation(1);
                     } else {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ProductListScreen(selectedCategory: category,)),
+                        MaterialPageRoute(builder: (context) => ProductListScreen(selectedCategory: category, subList: category.subList,)),
                       );
                     }
                   },
@@ -101,7 +99,7 @@ class HomeBodyCategory extends ConsumerWidget {
                         ),
                         Container(
                           alignment: Alignment.topCenter,
-                          margin: EdgeInsets.only(top: 15),
+                          margin: const EdgeInsets.only(top: 15),
                           child: Text(
                             category.ctName ?? "스토어",
                             textAlign: TextAlign.center,

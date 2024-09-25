@@ -13,8 +13,6 @@ class EventDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ScrollController _scrollController = ScrollController();
-
     final Map<String, dynamic> requestData = {
       'bt_idx': btIdx,
     };

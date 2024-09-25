@@ -4,16 +4,17 @@ import 'package:BliU/screen/like/like_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:BliU/screen/mypage/my_screen.dart';
 import 'package:BliU/screen/store/store_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '_component/custom_bottom_navigation_bar.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
 
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends ConsumerState<MainScreen> {
   DateTime? _backButtonPressedTime;
   int _selectedIndex = 2;
 
@@ -26,9 +27,7 @@ class _MainScreenState extends State<MainScreen> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    ref.read(mainScreenProvider.notifier).selectNavigation(index);
   }
 
   Future<bool> _onWillPop() async {
@@ -54,6 +53,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _selectedIndex = ref.watch(mainScreenProvider) ?? 2;
+
     return WillPopScope(  // WillPopScope로 뒤로가기 동작 제어
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -64,5 +65,18 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+}
+
+final mainScreenProvider = StateNotifierProvider<MainScreenProvider, int?>((ref){
+  return MainScreenProvider(null, ref);
+});
+
+class MainScreenProvider extends StateNotifier<int?> {
+  final Ref ref;
+  MainScreenProvider(super.state, this.ref);
+
+  void selectNavigation(int index){
+    state = index;
   }
 }

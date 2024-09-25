@@ -64,13 +64,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       backgroundColor:
                       _isScrolled ? Colors.white : Colors.transparent,
                       expandedHeight: 625,
-                      title: Container(
-                        child: SvgPicture.asset(
-                          'assets/images/home/bottom_home.svg', // SVG 파일 경로
-                          color: _isScrolled ? Colors.black : Colors.white,
-                          // 색상 조건부 변경
-                          height: Responsive.getHeight(context, 40),
-                        ),
+                      title: SvgPicture.asset(
+                        'assets/images/home/bottom_home.svg', // SVG 파일 경로
+                        color: _isScrolled ? Colors.black : Colors.white,
+                        // 색상 조건부 변경
+                        height: Responsive.getHeight(context, 40),
                       ),
                       flexibleSpace: const FlexibleSpaceBar(
                         background: HomeHeader(),

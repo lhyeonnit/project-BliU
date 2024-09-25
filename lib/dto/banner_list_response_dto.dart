@@ -13,10 +13,14 @@ class BannerListResponseDTO {
 
   // JSON to Object
   factory BannerListResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<BannerData>.from((json['data']['list'])?.map((item) {
+      return BannerData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return BannerListResponseDTO(
       result: json['result'],
       message: json['data']['message'],
-      list: (json['data']['list'] as List<BannerData>),
+      list: list,
     );
   }
 
