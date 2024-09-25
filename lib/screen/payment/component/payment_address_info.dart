@@ -56,14 +56,14 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                       margin: const EdgeInsets.only(right: 4),
                       child: Text(
                         '수령인',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
                         ),
                       ),
                     ),
                     Text(
                       '*',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         color: const Color(0xFFFF6192),
                         fontSize: Responsive.getFont(context, 13),
                       ),
@@ -79,7 +79,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '수령인',
-                      hintStyle: TextStyle(
+                      hintStyle: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                         color: const Color(0xFF595959)
                       ),
@@ -119,14 +119,14 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                       margin: const EdgeInsets.only(right: 4),
                       child: Text(
                         '휴대폰',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
                         ),
                       ),
                     ),
                     Text(
                       '*',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         color: const Color(0xFFFF6192),
                         fontSize: Responsive.getFont(context, 13),
                       ),
@@ -142,7 +142,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '‘-’ 없이 번호만 입력',
-                      hintStyle: TextStyle(
+                      hintStyle: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                         color: const Color(0xFF595959)
                       ),
@@ -183,14 +183,14 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                       margin: const EdgeInsets.only(right: 4),
                       child: Text(
                         '주소',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
                         ),
                       ),
                     ),
                     Text(
                       '*',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         color: const Color(0xFFFF6192),
                         fontSize: Responsive.getFont(context, 13),
                       ),
@@ -217,7 +217,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                                 horizontal: 15
                               ),
                               hintText: '주소를 검색해 주세요.',
-                              hintStyle: TextStyle(
+                              hintStyle: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: const Color(0xFF595959)
                               ),
@@ -269,7 +269,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                               child: Center(
                                 child: Text(
                                   '주소검색',
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                     fontWeight: FontWeight.normal,
                                   ),
@@ -290,7 +290,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                             horizontal: 15
                           ),
                           hintText: '상세주소 입력',
-                          hintStyle: TextStyle(
+                          hintStyle: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: const Color(0xFF595959)),
                           enabledBorder: const OutlineInputBorder(
@@ -325,7 +325,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
               hintText: '배송 메모 입력',
-              hintStyle: TextStyle(
+              hintStyle: TextStyle( fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
                 color: const Color(0xFF595959)
               ),

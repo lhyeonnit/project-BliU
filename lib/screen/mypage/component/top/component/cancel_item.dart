@@ -27,7 +27,7 @@ class _CancelItemState extends State<CancelItem> {
             children: [
               Text(
                 widget.orderData.ctWdate ?? "",
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   fontWeight: FontWeight.bold,
                   fontSize: Responsive.getFont(context, 16)
                 ),
@@ -36,7 +36,7 @@ class _CancelItemState extends State<CancelItem> {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   widget.orderDetailData.otCode ?? "",
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: const Color(0xFF7B7B7B),
                   ),
@@ -55,7 +55,7 @@ class _CancelItemState extends State<CancelItem> {
                 margin: const EdgeInsets.only(top: 15),
                 child: Text(
                   widget.orderDetailData.ctStatusTxt ?? "",
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                     fontWeight: FontWeight.w600,
                     color: Colors.black,
                     fontSize: Responsive.getFont(context, 15),
@@ -89,7 +89,7 @@ class _CancelItemState extends State<CancelItem> {
                         children: [
                           Text(
                             widget.orderDetailData.stName ?? "",
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize:
                                 Responsive.getFont(context, 12),
                                 color: const Color(0xFF7B7B7B)),
@@ -98,7 +98,7 @@ class _CancelItemState extends State<CancelItem> {
                             padding: const EdgeInsets.only(top: 4, bottom: 10),
                             child: Text(
                               widget.orderDetailData.ptName ?? "",
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize:
                                 Responsive.getFont(context, 14),
                               ),
@@ -108,7 +108,7 @@ class _CancelItemState extends State<CancelItem> {
                           ),
                           Text(
                             "${widget.orderDetailData.ctOptValue ?? ""} ${widget.orderDetailData.ctOptQty}개",
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                               fontSize:
                               Responsive.getFont(context, 13),
                               color: const Color(0xFF7B7B7B),
@@ -119,7 +119,7 @@ class _CancelItemState extends State<CancelItem> {
                             child: Text(
                               // '${order['price']}원',
                               "${Utils.getInstance().priceString(widget.orderDetailData.ptPrice ?? 0)}원",
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.bold,
                                 fontSize:
                                 Responsive.getFont(context, 14),

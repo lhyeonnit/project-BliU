@@ -76,18 +76,18 @@ class _SearchHasResultState extends State<SearchHasResult> {
                     children: [
                       Expanded(
                         child: TextField(
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               decorationThickness: 0,
                               fontSize: Responsive.getFont(context, 14)),
                           controller: _searchController,
                           decoration: InputDecoration(
                             contentPadding:
                                 const EdgeInsets.only(left: 16, bottom: 8),
-                            labelStyle: TextStyle(
+                            labelStyle: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                             ),
                             hintText: '검색어를 입력해 주세요',
-                            hintStyle: TextStyle(
+                            hintStyle: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Color(0xFF595959)),
                             border: InputBorder.none,
@@ -162,7 +162,7 @@ class _SearchHasResultState extends State<SearchHasResult> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('상품 128,123', style: TextStyle(fontSize: Responsive.getFont(context, 14)),),
+                  Text('상품 128,123', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),),
                   GridView.builder(
                     controller: _scrollController,
                     shrinkWrap: true,
@@ -211,7 +211,7 @@ class _SearchHasResultState extends State<SearchHasResult> {
                                 children: [
                                   Text(
                                     '꿈꾸는데이지',
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(context, 12),
                                         color: Colors.grey),
                                   ),
@@ -219,7 +219,7 @@ class _SearchHasResultState extends State<SearchHasResult> {
                                       height: Responsive.getHeight(context, 4)),
                                   const Text(
                                     '꿈꾸는 데이지 안나 토션 레이스 베스트',
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: 14,
                                     ),
                                     maxLines: 2,
@@ -234,7 +234,7 @@ class _SearchHasResultState extends State<SearchHasResult> {
                                     children: [
                                       Text(
                                         '15%',
-                                        style: TextStyle(
+                                        style: TextStyle( fontFamily: 'Pretendard',
                                           fontSize: Responsive.getFont(context, 14),
                                           color: const Color(0xFFFF6192),
                                           fontWeight: FontWeight.bold,
@@ -243,7 +243,7 @@ class _SearchHasResultState extends State<SearchHasResult> {
                                       const SizedBox(width: 2),
                                       Text(
                                         '32,800원',
-                                        style: TextStyle(
+                                        style: TextStyle( fontFamily: 'Pretendard',
                                           fontSize: Responsive.getFont(context, 14),
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -263,7 +263,7 @@ class _SearchHasResultState extends State<SearchHasResult> {
                                   const SizedBox(width: 3),
                                   Text(
                                     '13,000',
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
                                       color: Colors.grey,
                                     ),
@@ -277,7 +277,7 @@ class _SearchHasResultState extends State<SearchHasResult> {
                                   const SizedBox(width: 3),
                                   Text(
                                     '49',
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
                                       color: Colors.grey,
                                     ),

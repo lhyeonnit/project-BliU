@@ -36,7 +36,7 @@ class _StoreScreenState extends State<StoreScreen>
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
         title: const Text("스토어"),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -67,7 +67,7 @@ class _StoreScreenState extends State<StoreScreen>
                 height: 60,
                 child: TabBar(
                   controller: _tabController,
-                  labelStyle: TextStyle(
+                  labelStyle: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.w600,
                   ),

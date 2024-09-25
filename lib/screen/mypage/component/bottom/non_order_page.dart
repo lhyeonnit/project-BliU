@@ -43,7 +43,7 @@ class _NonOrderPageState extends State<NonOrderPage> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('비회원구매조회'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -90,7 +90,7 @@ class _NonOrderPageState extends State<NonOrderPage> {
                   keyboardType: TextInputType.text,),
                 Container(
                     margin: EdgeInsets.only(top: 8),
-                    child: Text('주문번호는 주문자의 휴대폰 번호로 발송됩니다. \n주문번호 확인이 어려울 시, 고객센터로 문의 바랍니다.', style: TextStyle(fontSize: Responsive.getFont(context, 12)),))
+                    child: Text('주문번호는 주문자의 휴대폰 번호로 발송됩니다. \n주문번호 확인이 어려울 시, 고객센터로 문의 바랍니다.', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 12)),))
               ],
             ),
           ),
@@ -122,7 +122,7 @@ class _NonOrderPageState extends State<NonOrderPage> {
                 child: Center(
                   child: Text(
                     '확인',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color:
                       _isAllFieldsFilled ? Colors.white : Color(0xFF7B7B7B),
@@ -152,13 +152,13 @@ class _NonOrderPageState extends State<NonOrderPage> {
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 13))),
                 Container(
                     margin: EdgeInsets.only(left: 4),
                     child: Text('*',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                             fontWeight: FontWeight.bold,
                             fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFFFF6192)))),
@@ -167,7 +167,7 @@ class _NonOrderPageState extends State<NonOrderPage> {
           ),
           if (label.isNotEmpty)
             TextField(
-              style: TextStyle(
+              style: TextStyle( fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
               controller: controller,
@@ -177,7 +177,7 @@ class _NonOrderPageState extends State<NonOrderPage> {
                 contentPadding:
                 EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
-                hintStyle: TextStyle(
+                hintStyle: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF595959)),
                 enabledBorder: OutlineInputBorder(

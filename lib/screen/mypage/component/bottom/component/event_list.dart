@@ -40,12 +40,12 @@ class EventList extends ConsumerWidget {
                       contentPadding: EdgeInsets.symmetric(horizontal: 16),
                       title: Text(
                         eventData.btTitle ?? "",
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 15),
                             fontWeight: FontWeight.w600),
                       ),
                       subtitle: Text(eventData.btWdate ?? "",
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               color: Color(0xFF7B7B7B),
                               fontSize: Responsive.getFont(context, 14))),
                       trailing: SvgPicture.asset('assets/images/ic_link.svg'),

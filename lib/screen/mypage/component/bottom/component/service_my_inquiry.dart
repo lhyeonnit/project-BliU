@@ -33,7 +33,7 @@ class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with Si
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('문의내역'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -70,7 +70,7 @@ class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with Si
                 height: 60,
                 child: TabBar(
                   controller: _tabController,
-                  labelStyle: TextStyle(
+                  labelStyle: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.w600,
                   ),

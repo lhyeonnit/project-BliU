@@ -144,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       child: const Text(
                                         '2',
-                                        style: TextStyle(
+                                        style: TextStyle( fontFamily: 'Pretendard',
                                           color: Colors.white,
                                           fontSize: 12,
                                         ),

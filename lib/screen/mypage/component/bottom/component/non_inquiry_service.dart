@@ -44,7 +44,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('문의하기'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -101,13 +101,13 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
                     children: [
                       Text(
                         '이미지',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                         ),
                       ),
                       Text(
                         '$_imageCnt/4',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFF7B7B7B)),
                       ),
@@ -142,7 +142,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
                                   'assets/images/my/btn_add_img.svg'),
                               Text(
                                 '사진선택',
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                     color: Color(0xFF707070),
                                     fontSize: Responsive.getFont(context, 14)),
                               )
@@ -184,7 +184,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
                 child: Center(
                   child: Text(
                     '등록',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),
@@ -327,13 +327,13 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
       TextEditingController controller, String hintText) {
     return TextField(
       controller: controller,
-      style: TextStyle(
+      style: TextStyle( fontFamily: 'Pretendard',
         fontSize: Responsive.getFont(context, 14),
       ),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         hintText: hintText,
-        hintStyle: TextStyle(
+        hintStyle: TextStyle( fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             color: Color(0xFF595959)),
         enabledBorder: OutlineInputBorder(
@@ -358,7 +358,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
           hintText: hintText,
-          hintStyle: TextStyle(
+          hintStyle: TextStyle( fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Color(0xFF595959)),
           enabledBorder: OutlineInputBorder(
@@ -388,13 +388,13 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 13))),
                 Container(
                     margin: EdgeInsets.only(left: 4),
                     child: Text('*',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                             fontWeight: FontWeight.bold,
                             fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFFFF6192)))),
@@ -403,7 +403,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
           ),
           if (label.isNotEmpty)
             TextField(
-              style: TextStyle(
+              style: TextStyle( fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
               controller: controller,
@@ -413,7 +413,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
                 contentPadding:
                 EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
-                hintStyle: TextStyle(
+                hintStyle: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF595959)),
                 enabledBorder: OutlineInputBorder(

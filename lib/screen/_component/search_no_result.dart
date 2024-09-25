@@ -73,18 +73,18 @@ class _SearchNoResultState extends State<SearchNoResult> {
                     children: [
                       Expanded(
                         child: TextField(
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               decorationThickness: 0,
                               fontSize: Responsive.getFont(context, 14)),
                           controller: _searchController,
                           decoration: InputDecoration(
                             contentPadding:
                             const EdgeInsets.only(left: 16, bottom: 8),
-                            labelStyle: TextStyle(
+                            labelStyle: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                             ),
                             hintText: '검색어를 입력해 주세요',
-                            hintStyle: TextStyle(
+                            hintStyle: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Color(0xFF595959)),
                             border: InputBorder.none,
@@ -167,9 +167,9 @@ class _SearchNoResultState extends State<SearchNoResult> {
                   child: SvgPicture.asset('assets/images/product/ic_top_sch.svg',height: 50,width: 50,)),
               Container(
                   margin: EdgeInsets.only(top: 25,bottom: 10),
-                  child: Text('검색하신 결과가 없습니다.', style: TextStyle(fontSize: Responsive.getFont(context, 18), fontWeight: FontWeight.bold))),
+                  child: Text('검색하신 결과가 없습니다.', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 18), fontWeight: FontWeight.bold))),
 
-              Text('다른 내용으로 검색해보세요.', style: TextStyle(fontSize: Responsive.getFont(context, 14),color: Color(0xFFA4A4A4))),
+              Text('다른 내용으로 검색해보세요.', style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14),color: Color(0xFFA4A4A4))),
             ],
           ),
         ),

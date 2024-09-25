@@ -63,7 +63,7 @@ class _HomeBodyBestSalesCategoryState
                   ),
                   child: Text(
                     category,
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: 14,
                       color: _tabController.index == categories.indexOf(category)
                           ? const Color(0xFFFF6192)

@@ -36,7 +36,7 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('배송현황'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -67,7 +67,7 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                     child: Text(
                       '스마트택배 배송현황',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 18),
                           fontWeight: FontWeight.bold),
                     ),
@@ -90,11 +90,11 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('운송장번호',
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black)),
                               Text(orderDeliveryData?.ctDeliveryNumber ?? "",
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black)),
                             ],
@@ -107,11 +107,11 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('택배사',
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black)),
                               Text(orderDeliveryData?.ctDeliveryCom ?? "",
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
@@ -137,19 +137,19 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                       children: [
                         Text(
                           '시간',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
                           '현재위치',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
                           '배송상태',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.bold),
                         ),
@@ -186,7 +186,7 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                               children: [
                                 Text(
                                   item.time ?? '',
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14)),
                                 ),
                                 Expanded(
@@ -195,14 +195,14 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                                     margin: const EdgeInsets.only(left: 30),
                                     child: Text(
                                       item.where ?? '',
-                                      style: TextStyle(
+                                      style: TextStyle( fontFamily: 'Pretendard',
                                           fontSize: Responsive.getFont(context, 14)),
                                     ),
                                   ),
                                 ),
                                 Text(
                                   item.kind ?? '',
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14)),
                                 ),
                               ],

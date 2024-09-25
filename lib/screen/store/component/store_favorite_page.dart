@@ -31,7 +31,7 @@ class StoreFavoritePage extends ConsumerWidget {
       return const Center(
         child: Text(
           '북마크된 스토어가 없습니다.',
-          style: TextStyle(fontSize: 16, color: Colors.grey),
+          style: TextStyle( fontFamily: 'Pretendard',fontSize: 16, color: Colors.grey),
         ), // 로딩 인디케이터 추가
       );
     }
@@ -52,7 +52,7 @@ class StoreFavoritePage extends ConsumerWidget {
 
                     child: Text(
                       '즐겨찾기 $totalItem',
-                      style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+                      style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
                     ),
                   ),
                   Container(
@@ -119,7 +119,7 @@ class StoreFavoritePage extends ConsumerWidget {
                                         children: [
                                           Text(
                                             store.stName ?? "",
-                                            style: TextStyle(
+                                            style: TextStyle( fontFamily: 'Pretendard',
                                                 fontSize: Responsive.getFont(context, 14)),
                                           ),
                                           Row(
@@ -127,7 +127,7 @@ class StoreFavoritePage extends ConsumerWidget {
                                               Expanded(
                                                 child: Text(
                                                   store.styleTxt ?? "",
-                                                  style: TextStyle(
+                                                  style: TextStyle( fontFamily: 'Pretendard',
                                                     fontSize: Responsive.getFont(context, 13),
                                                     color: const Color(0xFF7B7B7B),
                                                   ),
@@ -139,7 +139,7 @@ class StoreFavoritePage extends ConsumerWidget {
                                               Expanded(
                                                 child: Text(
                                                   store.ageTxt ?? "",
-                                                  style: TextStyle(
+                                                  style: TextStyle( fontFamily: 'Pretendard',
                                                     fontSize: Responsive.getFont(context, 13),
                                                     color: const Color(0xFF7B7B7B),
                                                   ),
@@ -173,7 +173,7 @@ class StoreFavoritePage extends ConsumerWidget {
                                         ),
                                         Text(
                                           '${store.stLike}',
-                                          style: TextStyle(
+                                          style: TextStyle( fontFamily: 'Pretendard',
                                             color: const Color(0xFFA4A4A4),
                                             fontSize:
                                             Responsive.getFont(context, 12),
@@ -227,12 +227,12 @@ class StoreFavoritePage extends ConsumerWidget {
                       children: [
                         Expanded(
                           child: TextField(
-                            style: const TextStyle(decorationThickness: 0),
+                            style: const TextStyle( fontFamily: 'Pretendard',decorationThickness: 0),
                             controller: storeFavoriteViewModel.searchController,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.only(left: 16, bottom: 8),
                               hintText: '즐겨찾기한 스토어 상품 검색',
-                              hintStyle: TextStyle(
+                              hintStyle: TextStyle( fontFamily: 'Pretendard',
                                   color: const Color(0xFF595959),
                                   fontSize: Responsive.getFont(context, 14)),
                               border: InputBorder.none,

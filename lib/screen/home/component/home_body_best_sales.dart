@@ -100,7 +100,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
         children: [
           Text(
             '판매베스트',
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 20),
               fontWeight: FontWeight.bold,
             ),
@@ -150,7 +150,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                           margin: EdgeInsets.only(right: 5),
                           child: Text(
                             getSelectedAgeGroupText(),
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black),
                           ),
@@ -213,7 +213,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
       ),
       child: Text(
         categories[index],
-        style: TextStyle(
+        style: TextStyle( fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14), color: textColor),
       ),
     );
@@ -282,14 +282,14 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                   margin: EdgeInsets.only(top: 12, bottom: 4),
                   child: Text(
                     item['brand']!,
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 12),
                         color: Colors.grey),
                   ),
                 ),
                 Text(
                   item['name']!,
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: 14,
                   ),
                   maxLines: 2,
@@ -303,7 +303,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                     children: [
                       Text(
                         item['discount']!,
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
@@ -313,7 +313,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                         margin: EdgeInsets.symmetric(horizontal: 2),
                         child: Text(
                           item['price']!,
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
                           ),
@@ -334,7 +334,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                       margin: EdgeInsets.only(left: 2, bottom: 2),
                       child: Text(
                         item['likes']!,
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
                         ),
@@ -353,7 +353,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                             margin: EdgeInsets.only(left: 2, bottom: 2),
                             child: Text(
                               item['comments']!,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
                                   color: Colors.grey),
                             ),

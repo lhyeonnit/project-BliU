@@ -134,7 +134,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
             children: [
               Text(
                 title,
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 22),
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -143,7 +143,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
               SizedBox(height: Responsive.getHeight(context, 10)),
               Text(
                 subtitle,
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14),
                   color: Colors.white,
                 ),
@@ -256,7 +256,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                               alignment: Alignment.center,
                               child: Text(
                                 '+35',
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
@@ -267,7 +267,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                             // '자세히보기' 텍스트
                             Text(
                               '자세히보기',
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 12),
                                 color: Colors.white,
                               ),

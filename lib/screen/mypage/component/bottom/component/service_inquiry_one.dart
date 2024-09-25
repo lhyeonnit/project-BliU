@@ -65,7 +65,7 @@ class _ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
                             children: [
                               Text(
                                 qnaData.qtStatusTxt ?? "",
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                     fontWeight: FontWeight.w600),
                               ),
@@ -73,14 +73,14 @@ class _ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
                               Container(
                                 margin: EdgeInsets.symmetric(horizontal: 11),
                                 child: Text(qnaData.qtWdate ?? "",
-                                    style: TextStyle(
+                                    style: TextStyle( fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(context, 12),
                                         color: Color(0xFF7B7B7B))),
                               ),
                             ],
                           ),
                           subtitle: Text(qnaData.qtTitle ?? "",
-                              style: TextStyle(fontSize: Responsive.getFont(context, 14),
+                              style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14),
                                   fontWeight: FontWeight.w400)),
                           onTap: () {
                             final qtIdx = qnaData.qtIdx;
@@ -130,14 +130,14 @@ class _ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
                             children: [
                               Text(
                                 '${currentPage.toString().padLeft(2, '0')}',
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 16),
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                               Text(
                                 ' / $totalPages',
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 16),
                                     color: Color(0xFFCCCCCC),
                                     fontWeight: FontWeight.w600),

@@ -104,7 +104,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       ),
                       child: Text(
                         '2',// TODO 장바구니 수
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           color: Colors.white,
                           fontSize: Responsive.getFont(context, 12),
                         ),
@@ -219,7 +219,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                   child: Center(
                                     child: Text(
                                       '구매하기',
-                                      style: TextStyle(
+                                      style: TextStyle( fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(context, 14),
                                         color: Colors.white,
                                       ),

@@ -62,7 +62,7 @@ class _CancelScreenState extends State<CancelScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('취소요청'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -137,7 +137,7 @@ class _CancelScreenState extends State<CancelScreen> {
                                         // 선택값.
                                         Text(
                                           _dropdownValue,
-                                          style: TextStyle(
+                                          style: TextStyle( fontFamily: 'Pretendard',
                                             fontSize:
                                                 Responsive.getFont(context, 14),
                                             color: Colors.black,
@@ -156,7 +156,7 @@ class _CancelScreenState extends State<CancelScreen> {
                             Padding(
                               padding: const EdgeInsets.only(top: 10.0),
                               child: TextField(
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),),
                                 maxLines: 4,
                                 maxLength: 500,
@@ -164,7 +164,7 @@ class _CancelScreenState extends State<CancelScreen> {
                                   contentPadding: const EdgeInsets.symmetric(
                                       vertical: 14, horizontal: 15),
                                   hintText: '세부 내용 입력',
-                                  hintStyle: TextStyle(
+                                  hintStyle: TextStyle( fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       color: const Color(0xFF595959)),
                                   enabledBorder: const OutlineInputBorder(
@@ -183,7 +183,7 @@ class _CancelScreenState extends State<CancelScreen> {
                                     alignment: Alignment.centerLeft, // 왼쪽 정렬
                                     child: Text(
                                       '${_detailedReason.length}/500',
-                                      style: TextStyle(
+                                      style: TextStyle( fontFamily: 'Pretendard',
                                         fontSize:
                                             Responsive.getFont(context, 13),
                                         color: const Color(0xFF7B7B7B),
@@ -233,7 +233,7 @@ class _CancelScreenState extends State<CancelScreen> {
                       child: Center(
                         child: Text(
                           '확인',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.white,
                           ),
@@ -285,7 +285,7 @@ class _CancelScreenState extends State<CancelScreen> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         _cancelReasons.elementAt(index),
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black,
                         ),

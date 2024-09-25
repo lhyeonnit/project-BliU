@@ -37,7 +37,7 @@ class MyScreen extends ConsumerWidget {
           automaticallyImplyLeading: false,
           // 기본 뒤로가기 버튼을 숨김
           title: const Text('마이페이지'),
-          titleTextStyle: TextStyle(
+          titleTextStyle: TextStyle( fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 18),
             fontWeight: FontWeight.w600,
             color: Colors.black,
@@ -95,7 +95,7 @@ class MyScreen extends ConsumerWidget {
                     ),
                     child: Text(
                       '2',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'Pretendard',
                         color: Colors.white,
                         fontSize: Responsive.getFont(context, 12),
                       ),
@@ -168,7 +168,7 @@ class MyScreen extends ConsumerWidget {
                   margin: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     '로그아웃',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 16),
                         color: Colors.black,
                         fontWeight: FontWeight.w400),
@@ -220,7 +220,7 @@ class MyScreen extends ConsumerWidget {
       margin: EdgeInsets.only(bottom: 20),
       child: Text(
         title,
-        style: TextStyle(
+        style: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 14),
           color: Color(0xFFA4A4A4),
         ),
@@ -242,7 +242,7 @@ class MyScreen extends ConsumerWidget {
           children: [
             Text(
               title,
-              style: TextStyle(
+              style: TextStyle( fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 15),
                 color: Colors.black,
                 fontWeight: FontWeight.w400,

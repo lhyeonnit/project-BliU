@@ -41,7 +41,7 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('주문/배송'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -76,7 +76,7 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
                   ),
                   child: const Text(
                     '2',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       color: Colors.white,
                       fontSize: 12,
                     ),
@@ -128,7 +128,7 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
                         child: FilterChip(
                           label: Text(
                             categories[index],
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: isSelected
                                   ? const Color(0xFFFF6192)

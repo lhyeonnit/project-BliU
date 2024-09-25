@@ -105,7 +105,7 @@ class HomeBodyCategory extends ConsumerWidget {
                           child: Text(
                             category.ctName ?? "스토어",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'Pretendard',
                                 color: Colors.black,
                                 fontSize: Responsive.getFont(context, 14)),
                           ),

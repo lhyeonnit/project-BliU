@@ -60,7 +60,7 @@ class StoreDetailScreen extends HookConsumerWidget {
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: TabBar(
                           controller: tabController,
-                          labelStyle: TextStyle(
+                          labelStyle: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.w600,
                           ),
@@ -84,7 +84,7 @@ class StoreDetailScreen extends HookConsumerWidget {
                         padding: const EdgeInsets.only(left: 16.0),
                         child: Text(
                           '상품 1', // 상품 개수 텍스트
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Colors.black),
                         ),

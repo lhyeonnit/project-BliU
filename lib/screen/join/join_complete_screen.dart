@@ -47,7 +47,7 @@ class JoinCompleteScreen extends StatelessWidget {
                   margin: EdgeInsets.only(top: 25, bottom: 10),
                   child: Text(
                     '회원가입이 완료되었습니다.',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 18),
                       fontWeight: FontWeight.bold,
                     ),
@@ -55,7 +55,7 @@ class JoinCompleteScreen extends StatelessWidget {
                 ),
                 Text(
                   '블리유의 회원이 되신 걸 환영합니다!',
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                   ),
                 ),
@@ -85,7 +85,7 @@ class JoinCompleteScreen extends StatelessWidget {
                 child: Center(
                   child: Text(
                     '로그인',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),

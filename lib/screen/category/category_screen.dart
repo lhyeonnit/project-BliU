@@ -28,7 +28,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('카테고리'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -92,7 +92,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                       selected: isSelectCategory,
                       title: Text(
                         categoryData.ctName ?? "",
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 15),
                             fontWeight: FontWeight.w600),
                       ),
@@ -153,7 +153,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                           margin: EdgeInsets.symmetric(horizontal: 10),
                                           child: Text(
                                             category.ctName ?? "",
-                                            style:  TextStyle(
+                                            style:  TextStyle( fontFamily: 'Pretendard',
                                               fontSize: Responsive.getFont(context, 18),
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -174,7 +174,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                           // 하위 카테고리 목록
                           ...subCategories.map((subCategory) => ListTile(
                             minTileHeight: 0.1,
-                                title: Text(subCategory.ctName ?? "", style: TextStyle(fontSize: Responsive.getFont(context, 14),),),
+                                title: Text(subCategory.ctName ?? "", style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14),),),
                                 trailing: SvgPicture.asset('assets/images/ic_link.svg'),
                                 onTap: () {
                                   // 하위 카테고리 선택 시 처리

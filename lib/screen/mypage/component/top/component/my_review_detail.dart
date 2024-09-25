@@ -75,7 +75,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('리뷰 상세'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -146,13 +146,13 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                       children: [
                         Text(
                           '${_currentPage + 1}',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 13),
                               color: Colors.white),
                         ),
                         Text(
                           '/${_currentReview.images.length}',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 13),
                               color: Color(0x80FFFFFF)),
                         ),
@@ -171,7 +171,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                     children: [
                       Text(
                         'blackpink22',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 12),
                             color: Color(0xFF7B7B7B)),
                       ),
@@ -179,7 +179,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                         margin: EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
                           '2024.04.14',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 12),
                               color: Color(0xFF7B7B7B)),
                         ),
@@ -192,7 +192,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                   ),
                   Text(
                     _currentReview.reviewText,
-                    style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+                    style: TextStyle( fontFamily: 'Pretendard',fontSize: Responsive.getFont(context, 14)),
                   ),
                   GestureDetector(
                     onTap:  _editReview,
@@ -207,7 +207,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                       child: Center(
                         child: Text(
                           '수정',
-                          style: TextStyle(
+                          style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                           ),
                         ),

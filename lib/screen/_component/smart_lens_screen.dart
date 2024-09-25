@@ -96,7 +96,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: const Text("스마트렌즈"),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -209,7 +209,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
                   margin: EdgeInsets.only(bottom: 10),
                   child: Text(
                     title,
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 16),
                         fontWeight: FontWeight.bold),
                   )),
@@ -217,7 +217,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
                 width: 276,
                 child: Text(
                   content,
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'Pretendard',
                       color: Color(0xFF7B7B7B),
                       fontSize: Responsive.getFont(context, 12)),
                   softWrap: true,

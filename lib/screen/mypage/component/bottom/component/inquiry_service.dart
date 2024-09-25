@@ -36,7 +36,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('문의하기'),
-        titleTextStyle: TextStyle(
+        titleTextStyle: TextStyle( fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -92,13 +92,13 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                     children: [
                       Text(
                         '이미지',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                         ),
                       ),
                       Text(
                         '$_imageCnt/4',
-                        style: TextStyle(
+                        style: TextStyle( fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 13),
                             color: const Color(0xFF7B7B7B)),
                       ),
@@ -132,7 +132,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                                   'assets/images/my/btn_add_img.svg'),
                               Text(
                                 '사진선택',
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                     color: const Color(0xFF707070),
                                     fontSize: Responsive.getFont(context, 14)),
                               )
@@ -173,7 +173,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                 child: Center(
                   child: Text(
                     '등록',
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),
@@ -313,13 +313,13 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
       TextEditingController controller, String hintText) {
     return TextField(
       controller: controller,
-      style: TextStyle(
+      style: TextStyle( fontFamily: 'Pretendard',
         fontSize: Responsive.getFont(context, 14),
       ),
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         hintText: hintText,
-        hintStyle: TextStyle(
+        hintStyle: TextStyle( fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             color: const Color(0xFF595959)),
         enabledBorder: const OutlineInputBorder(
@@ -344,7 +344,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
           hintText: hintText,
-          hintStyle: TextStyle(
+          hintStyle: TextStyle( fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: const Color(0xFF595959)),
           enabledBorder: const OutlineInputBorder(

@@ -114,7 +114,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                 getSelectedAgeGroupText(), // 선택된 연령대 표시
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                     color: Colors.black),
                               ),
@@ -148,7 +148,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                               child: Text(
                                 getSelectedStyleText(), // 선택된 연령대 표시
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                     color: Colors.black),
                               ),
@@ -203,7 +203,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                           //           child: Center(
                           //             child: Text(
                           //               rankData,
-                          //               style: TextStyle(
+                          //               style: TextStyle( fontFamily: 'Pretendard',
                           //                   fontSize:
                           //                       Responsive.getFont(context, 24),
                           //                   fontWeight: FontWeight.w600),
@@ -249,7 +249,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                           //                     children: [
                           //                       Text(
                           //                         '${rankData.stName}',
-                          //                         style: TextStyle(
+                          //                         style: TextStyle( fontFamily: 'Pretendard',
                           //                           fontSize:
                           //                               Responsive.getFont(
                           //                                   context, 14),
@@ -261,7 +261,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                           //                         children: [
                           //                           Text(
                           //                             '${rankData.stStyleTxt}',
-                          //                             style: TextStyle(
+                          //                             style: TextStyle( fontFamily: 'Pretendard',
                           //                                 fontSize: Responsive
                           //                                     .getFont(
                           //                                         context, 13),
@@ -272,7 +272,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                           //                           ),
                           //                           Text(
                           //                             '${rankData.stAgeTxt}',
-                          //                             style: TextStyle(
+                          //                             style: TextStyle( fontFamily: 'Pretendard',
                           //                                 fontSize: Responsive
                           //                                     .getFont(
                           //                                         context, 13),
@@ -321,7 +321,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                           //               // TODO bookmark count check
                           //               Text(
                           //                 '${rankData.stAge}',
-                          //                 style: TextStyle(
+                          //                 style: TextStyle( fontFamily: 'Pretendard',
                           //                   color: const Color(0xFFA4A4A4),
                           //                   fontSize:
                           //                       Responsive.getFont(context, 12),
