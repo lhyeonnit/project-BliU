@@ -19,7 +19,7 @@ class OrderItemButton extends StatelessWidget {
     // TODO 테스트
     String ctStatusTxt = orderDetailData.ctStatusTxt ?? "";
     //ctStatusTxt = "상품준비중";
-    ctStatusTxt = "배송중";
+    //ctStatusTxt = "배송중";
 
     if (ctStatusTxt == "상품준비중") {
       return Row(

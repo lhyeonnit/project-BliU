@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:BliU/data/category_data.dart';
+import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,9 +9,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../../utils/responsive.dart';
 
 class ExchangeItem extends StatefulWidget {
-  final Function(String reason, String details, String shippingCost, List<File> images) onDataCollected;
+  final OrderDetailInfoData? orderDetailInfoData;
+  final List<CategoryData> exchangeCategory;
+  final List<CategoryData> exchangeDeliveryCostCategory;
+  final Function(String reason, int reasonIdx, String details, int shippingCost, List<File> images) onDataCollected;
 
-  const ExchangeItem({required this.onDataCollected, super.key});
+  const ExchangeItem({required this.orderDetailInfoData, required this.exchangeCategory, required this.exchangeDeliveryCostCategory, required this.onDataCollected, super.key});
 
   @override
   State<ExchangeItem> createState() => _ExchangeItemState();
@@ -17,22 +22,18 @@ class ExchangeItem extends StatefulWidget {
 
 class _ExchangeItemState extends State<ExchangeItem> {
   OverlayEntry? _overlayEntry;
-  String _dropdownValue = '사유 선택';
+  String _dropdownText = '사유 선택';
+  int _dropdownValue = 0;
   String _detailedReason = '';
   final LayerLink _layerLink = LayerLink();
-  final List<String> _exchangeReasons = [
-    '색상 및 사이즈 변경',
-    '제품 불량',
-    '배송 중 손상',
-    '오배송',
-    '기타',
-  ];
+  List<CategoryData> get _exchangeReasons => widget.exchangeCategory;
+  List<CategoryData> get _exchangeDeliveryCostMethod => widget.exchangeDeliveryCostCategory;
 
   // 이미지 리스트
   List<File> _selectedImages = [];
 
   // 교환 배송비 선택
-  String _shippingOption = '택배에 동봉 (6,000원)';
+  int _shippingOption = 0;
 
   // 드롭다운 생성.
   void _createOverlay() {
@@ -83,6 +84,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       // 하단 버튼 공간 확보
@@ -122,7 +124,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                           children: [
                             // 선택값.
                             Text(
-                              _dropdownValue,
+                              _dropdownText,
                               style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black,
@@ -305,105 +307,38 @@ class _ExchangeItemState extends State<ExchangeItem> {
                   ],
                 ),
               ),
-              Row(
-                children: [
-                  Radio(
-                    value: '택배에 동봉 (6,000원)',
-                    groupValue: _shippingOption,
-                    onChanged: (value) {
-                      setState(() {
-                        _shippingOption = value.toString();
-                        _updateCollectedData();
-                      });
-                    },
-                    activeColor: const Color(0xFFFF6192),
-                    fillColor: MaterialStateProperty.resolveWith((states) {
-                      if (!states.contains(MaterialState.selected)) {
-                        return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
-                      }
-                      return const Color(0xFFFF6192); // 선택된 상태의 색상
-                    }),
-                  ),
-                  Expanded(
-                    child: Text(
-                      "택배에 동봉 (6,000원)",
-                      style: TextStyle(
-                        fontSize: Responsive.getFont(context, 14),
+              ..._exchangeDeliveryCostMethod.map((categoty) {
+                int index = _exchangeDeliveryCostMethod.indexOf(categoty);
+                return Row(
+                  children: [
+                    Radio(
+                      value: index,
+                      groupValue: _shippingOption,
+                      onChanged: (value) {
+                        setState(() {
+                          _shippingOption = value ?? 0;
+                          _updateCollectedData();
+                        });
+                      },
+                      activeColor: const Color(0xFFFF6192),
+                      fillColor: MaterialStateProperty.resolveWith((states) {
+                        if (!states.contains(MaterialState.selected)) {
+                          return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
+                        }
+                        return const Color(0xFFFF6192); // 선택된 상태의 색상
+                      }),
+                    ),
+                    Expanded(
+                      child: Text(
+                        categoty.ctName ?? "",
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 14),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Radio(
-                    value: '판매자 계좌로 입금',
-                    groupValue: _shippingOption,
-                    onChanged: (value) {
-                      setState(() {
-                        _shippingOption = value.toString();
-                        _updateCollectedData();
-                      });
-                    },
-                    activeColor: const Color(0xFFFF6192),
-                    fillColor: MaterialStateProperty.resolveWith((states) {
-                      if (!states.contains(MaterialState.selected)) {
-                        return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
-                      }
-                      return const Color(0xFFFF6192); // 선택된 상태의 색상
-                    }),
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "판매자 계좌로 입금",
-                          style: TextStyle(
-                            fontSize: Responsive.getFont(context, 14),
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          "국민은행 123456789 홍길동",
-                          style: TextStyle(
-                            fontSize: Responsive.getFont(context, 14),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Radio(
-                    value: '해당 사항 없음',
-                    groupValue: _shippingOption,
-                    onChanged: (value) {
-                      setState(() {
-                        _shippingOption = value.toString();
-                        _updateCollectedData();
-                      });
-                    },
-                    activeColor: const Color(0xFFFF6192),
-                    fillColor: MaterialStateProperty.resolveWith((states) {
-                      if (!states.contains(MaterialState.selected)) {
-                        return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
-                      }
-                      return const Color(0xFFFF6192); // 선택된 상태의 색상
-                    }),
-                  ),
-                  Expanded(
-                    child: Text(
-                      "해당 사항 없음",
-                      style: TextStyle(
-                        fontSize: Responsive.getFont(context, 14),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                  ],
+                );
+              }),
             ],
           ),
         ],
@@ -438,7 +373,8 @@ class _ExchangeItemState extends State<ExchangeItem> {
                     minSize: 0,
                     onPressed: () {
                       setState(() {
-                        _dropdownValue = _exchangeReasons.elementAt(index);
+                        _dropdownText = _exchangeReasons[index].ctName ?? "";
+                        _dropdownValue = _exchangeReasons[index].ctIdx ?? 0;
                         _updateCollectedData();
                       });
                       _removeOverlay();
@@ -446,7 +382,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        _exchangeReasons.elementAt(index),
+                        _exchangeReasons[index].ctName ?? "",
                         style: TextStyle(
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black,
@@ -464,10 +400,11 @@ class _ExchangeItemState extends State<ExchangeItem> {
   }
 
   void _updateCollectedData() {
-    String reason = _dropdownValue;
+    String reason = _dropdownText;
+    int reasonIdx = _dropdownValue;
     String details = _detailedReason;
-    String shippingCost = _shippingOption;
+    int shippingCost = _exchangeDeliveryCostMethod[_shippingOption].ctIdx ?? 0;
     List<File> images = _selectedImages; // 이미지를 리스트로 수집
-    widget.onDataCollected(reason, details, shippingCost, images);
+    widget.onDataCollected(reason, reasonIdx, details, shippingCost, images);
   }
 }

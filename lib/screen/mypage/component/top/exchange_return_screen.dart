@@ -1,37 +1,57 @@
 import 'dart:io';
+import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
+import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/cancel_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/exchange_detail_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/return_detail_item.dart';
 import 'package:BliU/screen/mypage/component/top/exchange_return_detail_screen.dart';
+import 'package:BliU/screen/mypage/viewmodel/exchange_return_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 //교환 반품
-class ExchangeReturnScreen extends StatefulWidget {
+class ExchangeReturnScreen extends ConsumerStatefulWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
 
   const ExchangeReturnScreen({super.key, required this.orderData, required this.orderDetailData});
 
   @override
-  State<ExchangeReturnScreen> createState() => _ExchangeReturnScreenState();
+  _ExchangeReturnScreenState createState() => _ExchangeReturnScreenState();
 }
 
-class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
+class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
+  OrderDetailInfoData? orderDetailInfoData;
+  List<CategoryData> exchangeCategory = [];
+  List<CategoryData> returnCategory = [];
+  List<CategoryData> exchangeDeliveryCostCategory = [];
+
   final ScrollController _scrollController = ScrollController();
 
   List<String> categories = ['교환', '반품/환불'];
   int selectedIndex = 0;
   String reason = ''; // 요청사유
+  int reasonIdx = 0;
   String returnAccount = '';
   String returnBank = '';
   String details = ''; // 상세내용
-  String shippingCost = '';
+  int shippingCost = 0;
   List<File> images = [];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,8 +138,10 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
                   color: Colors.white,
                   child: GestureDetector(
                     onTap: () {
+                      _orderReturn();
+
                       // 교환 또는 반품/환불에 따른 타이틀 설정
-                      String title = selectedIndex == 0 ? '교환' : '반품/환불';
+                      //String title = selectedIndex == 0 ? '교환' : '반품/환불';
 
                       // Navigator.push(
                       //   context,
@@ -168,14 +190,117 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
       ),
     );
   }
+
+  void _afterBuild(BuildContext context) {
+    _getOrderDetail();
+  }
+
+  void _getOrderDetail() async {
+    // TODO 회원 비회원 처리 필요
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    Map<String, dynamic> requestData1 = {
+      'type' : 1,
+      'mt_idx' : mtIdx,
+      'temp_mt_id' : '',
+      'ot_code' : widget.orderDetailData.otCode,
+    };
+
+    Map<String, dynamic> requestData2 = {
+      'ct_type' : 1,
+    };
+
+    Map<String, dynamic> requestData3 = {
+      'ct_type' : 2,
+    };
+
+    final orderDetailInfoResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getOrderDetail(requestData1);
+    final exchangeCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getCategory(requestData2);
+    final returnCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getCategory(requestData3);
+    final exchangeDeliveryCostCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getExchangeDeliveryCostCategory();
+
+    if (orderDetailInfoResponseDTO != null) {
+      if (orderDetailInfoResponseDTO.result == true) {
+        orderDetailInfoData = orderDetailInfoResponseDTO.data;
+      } else {
+        if (!context.mounted) return;
+        Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
+      }
+    }
+    if (exchangeCategoryResponseDTO != null) {
+      if (exchangeCategoryResponseDTO.result == true) {
+        exchangeCategory = exchangeCategoryResponseDTO.list ?? [];
+      }
+    }
+    if (returnCategoryResponseDTO != null) {
+      if (returnCategoryResponseDTO.result == true) {
+        returnCategory = returnCategoryResponseDTO.list ?? [];
+      }
+    }
+    if (exchangeDeliveryCostCategoryResponseDTO != null) {
+      if (exchangeDeliveryCostCategoryResponseDTO.result == true) {
+        exchangeDeliveryCostCategory = exchangeDeliveryCostCategoryResponseDTO.list ?? [];
+      }
+    }
+    setState(() {});
+  }
+
+  void _orderReturn() async {
+    // TODO 회원 비회원 처리
+    if (reasonIdx == 0) {
+      Utils.getInstance().showSnackBar(context, "사유를 선택해 주세요");
+      return;
+    }
+
+    if (details.isEmpty) {
+      Utils.getInstance().showSnackBar(context, "세부 내용을 입력해 주세요.");
+      return;
+    }
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    String ctType = selectedIndex == 0 ? 'X' : 'R';
+    String ortReturnInfo = "";
+    if (ctType == "X") {
+      ortReturnInfo = shippingCost.toString();
+    }
+
+    final List<MultipartFile> files = images.map((img) => MultipartFile.fromFileSync(img.path)).toList();
+
+    final formData = FormData.fromMap({
+      'type' : 1,
+      'mt_idx' : mtIdx,
+      'odt_code' : widget.orderDetailData.odtCode,
+      'ct_type' : ctType,
+      'ct_idx' : reasonIdx,
+      'ct_reason' : details,
+      'ort_return_info' : ortReturnInfo,
+      'ct_img' : files,
+      'ort_return_bank_info' : "$returnBank $returnAccount",
+    });
+
+    final defaultResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).orderReturn(formData);
+    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+    if (defaultResponseDTO.result) {
+      Navigator.pop(context);
+    }
+  }
+
   Widget _buildSelectedPage() {
     if (selectedIndex == 0) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: ExchangeItem(
-          onDataCollected: (String collectedReason, String collectedDetails, String collectedShippingCost, List<File> collectedImages) {
+          orderDetailInfoData: orderDetailInfoData,
+          exchangeCategory: exchangeCategory,
+          exchangeDeliveryCostCategory: exchangeDeliveryCostCategory,
+          onDataCollected: (String collectedReason, int collectedReasonIdx, String collectedDetails, int collectedShippingCost, List<File> collectedImages) {
             setState(() {
               reason = collectedReason;
+              reasonIdx = collectedReasonIdx;
               details = collectedDetails;
               shippingCost = collectedShippingCost;
               images = collectedImages;
@@ -187,9 +312,12 @@ class _ExchangeReturnScreenState extends State<ExchangeReturnScreen> {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: ReturnItem(
-          onDataCollected: (String collectedReason, String collectedDetails, String collectedReturnBank, String collectedReturnAccount, List<File> collectedImages) {
+          orderDetailInfoData: orderDetailInfoData,
+          returnCategory: returnCategory,
+          onDataCollected: (String collectedReason, int collectedReasonIdx, String collectedDetails, String collectedReturnBank, String collectedReturnAccount, List<File> collectedImages) {
             setState(() {
               reason = collectedReason;
+              reasonIdx = collectedReasonIdx;
               details = collectedDetails;
               returnBank = collectedReturnBank;
               returnAccount = collectedReturnAccount;

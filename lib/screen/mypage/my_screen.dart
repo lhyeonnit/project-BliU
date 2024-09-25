@@ -24,7 +24,8 @@ class MyScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final model = ref.watch(myModelProvider);
-    final mtIdx = ref.watch(sharedPreferencesProvider).getString('mtIdx');
+    //final mtIdx = ref.watch(sharedPreferencesProvider).getString('mtIdx');
+    final mtIdx = "2";
     return FocusDetector(
       onFocusGained: () {
         viewWillAppear(ref, context);

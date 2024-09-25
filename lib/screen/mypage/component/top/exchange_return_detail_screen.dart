@@ -243,7 +243,7 @@ class _ExchangeReturnDetailScreenState
                     ],
                   ),
                 ),
-                ExchangeReturnInfo(),
+                //ExchangeReturnInfo(),
                 //OrderDetailItem(orderDetails: widget.orderDetails),
               ],
             ),
