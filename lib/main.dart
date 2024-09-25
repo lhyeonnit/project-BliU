@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screen/login/new_password_screen.dart';
 
@@ -136,9 +137,13 @@ void _handleData(FcmData fcmData) {
     // fcmProvider.setFcmData(fcmData);
   }
 }
+final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
+  throw UnimplementedError();  // ProviderScope에서 값을 주입하기 전까지 에러를 던지도록 설정
+});
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final sharedPreferences = await SharedPreferences.getInstance();
 
   KakaoSdk.init(
       nativeAppKey: '525bbbd40b4de98d500d446c14f28bd4'
@@ -177,7 +182,15 @@ Future<void> main() async {
 
   await PermissionManager().requestPermission();
 
-  runApp(const ProviderScope(child: MyApp()));
+  // runApp(const ProviderScope(child: MyApp()));
+  runApp(
+    ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

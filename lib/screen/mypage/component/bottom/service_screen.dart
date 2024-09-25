@@ -1,4 +1,7 @@
+import 'package:BliU/main.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
+import 'package:BliU/screen/mypage/component/bottom/component/non_inquiry_service.dart';
+import 'package:BliU/screen/mypage/component/bottom/component/non_inquiry_store.dart';
 import 'package:BliU/screen/mypage/viewmodel/service_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +16,7 @@ class ServiceScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(serviceModelProvider.notifier).getService();
-
+    final mtIdx = ref.watch(sharedPreferencesProvider).getString('mtIdx');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -79,23 +82,43 @@ class ServiceScreen extends ConsumerWidget {
               context,
               '판매자 입점 문의',
                   () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const InquiryStore()),
-                );
+                if (mtIdx != null && mtIdx.isNotEmpty) {
+                  // 회원인 경우
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const InquiryStore()),
+                  );
+                } else {
+                  // 비회원인 경우
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const NonInquiryStore()), // 비회원용 페이지
+                  );
+                }
               },
             ),
             _buildCustomTile(
               context,
               '고객센터 문의하기',
                   () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const InquiryService(
-                    qnaType: '1',)),
-                );
+                if (mtIdx != null && mtIdx.isNotEmpty) {
+                  // 회원인 경우
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const InquiryService(
+                      qnaType: '1',
+                    )),
+                  );
+                } else {
+                  // 비회원인 경우
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const NonInquiryService(qnaType: '1')), // 비회원용 페이지
+                  );
+                }
               },
             ),
+
             _buildCustomTile(
               context,
               '문의내역',

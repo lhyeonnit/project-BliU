@@ -1,15 +1,14 @@
+import 'package:BliU/main.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/faq_screen.dart';
+import 'package:BliU/screen/mypage/component/bottom/non_order_page.dart';
 import 'package:BliU/screen/mypage/component/bottom/notice_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/setting_screen.dart';
 import 'package:BliU/screen/mypage/component/top/alarm_screen.dart';
-import 'package:BliU/screen/mypage/component/top/my_coupon_screen.dart';
-import 'package:BliU/screen/mypage/component/top/component/my_info.dart';
 import 'package:BliU/screen/mypage/component/bottom/recommend_edit.dart';
 import 'package:BliU/screen/mypage/component/bottom/service_screen.dart';
-import 'package:BliU/screen/mypage/component/top/my_review_screen.dart';
-import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
-import 'package:BliU/screen/mypage/component/top/point_screen.dart';
+import 'package:BliU/screen/mypage/non_top_screen.dart';
+import 'package:BliU/screen/mypage/top_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/my_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -24,9 +23,11 @@ class MyScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final model = ref.watch(myModelProvider);
+    final mtIdx = ref.watch(sharedPreferencesProvider).getString('mtIdx');
     return FocusDetector(
       onFocusGained: () {
-        viewWillAppear(ref);
+        viewWillAppear(ref, context);
       },
       onFocusLost: viewWillDisappear,
       child: Scaffold(
@@ -108,77 +109,9 @@ class MyScreen extends ConsumerWidget {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Consumer(builder: (context, ref, widget) {
-              // TODO 비회원 또는 비로그인 처리???
-              final model = ref.watch(myModelProvider);
-
-              int myRevieCount = 0;
-              int myCouponCount = 0;
-              int myPoint = 0;
-              if (model != null) {
-                if (model.memberInfoResponseDTO?.result == true) {
-                  myRevieCount =
-                      model.memberInfoResponseDTO?.data?.myRevieCount ?? 0;
-                  myCouponCount =
-                      model.memberInfoResponseDTO?.data?.myCouponCount ?? 0;
-                  myPoint = model.memberInfoResponseDTO?.data?.myPoint ?? 0;
-                }
-              }
-
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      margin:
-                          EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                      child: MyInfo(
-                        memberInfoData: model?.memberInfoResponseDTO?.data,
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildIconButton(context, '주문·배송',
-                            'assets/images/my/mypage_ic01.svg', () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const OrderListScreen()),
-                          );
-                        }, ''),
-                        _buildIconButton(
-                            context, '나의리뷰', 'assets/images/my/mypage_ic02.svg',
-                            () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MyReviewScreen()),
-                          );
-                        }, '$myRevieCount'),
-                        _buildIconButton(context, '쿠폰함',
-                            'assets/images/my/mypage_ic03_1.svg', () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MyCouponScreen()),
-                          );
-                        }, '$myCouponCount'),
-                        _buildIconButton(
-                            context, '포인트', 'assets/images/my/mypage_ic04.svg',
-                            () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const PointScreen()),
-                          );
-                        }, '$myPoint'),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-            }),
+            mtIdx != null && mtIdx.isNotEmpty
+                ? TopScreen() // 로그인된 상태
+                : NonTopScreen(), // 비회원/비로그인 상태
             Container(
               margin: EdgeInsets.only(top: 20, bottom: 30),
               width: double.infinity,
@@ -186,10 +119,19 @@ class MyScreen extends ConsumerWidget {
               height: 10,
             ),
             _buildSection(context, '쇼핑정보'),
-            _buildSectionItem(context, '추천정보관리', () {
+            mtIdx != null && mtIdx.isNotEmpty
+                ? _buildSectionItem(context, '추천정보관리', () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const RecommendEdit()),
+                MaterialPageRoute(
+                    builder: (context) => const RecommendEdit()),
+              );
+            })
+                : _buildSectionItem(context, '주문 내역 보기', () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NonOrderPage()), // 비회원일 때의 화면
               );
             }),
             SizedBox(
@@ -220,7 +162,8 @@ class MyScreen extends ConsumerWidget {
                 MaterialPageRoute(builder: (context) => const SettingScreen()),
               );
             }),
-            GestureDetector(
+            if (mtIdx != null && mtIdx.isNotEmpty)
+              GestureDetector(
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
@@ -232,55 +175,43 @@ class MyScreen extends ConsumerWidget {
                   ),
                 ),
                 onTap: () {
-                  // TODO 로그아웃 동작
-                }),
+                  // TODO 로그아웃 동작 처리
+                  SharedPreferencesManager.getInstance().then((pref) {
+                    // pref.clear(); // 저장된 사용자 정보 삭제
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MyApp()), // 로그아웃 후 메인화면으로
+                    );
+                  });
+                },
+              ),
           ],
         ),
       ),
     );
   }
 
-  void viewWillAppear(WidgetRef ref) {
-    print("viewWillAppear");
+  void viewWillAppear(WidgetRef ref, BuildContext context) {
     SharedPreferencesManager.getInstance().then((pref) {
       final mtIdx = pref.getMtIdx();
-      if (mtIdx != null) {
-        if (mtIdx.isNotEmpty) {
-          Map<String, dynamic> requestData = {
-            'mt_idx': mtIdx,
-          };
-          ref.read(myModelProvider.notifier).getMy(requestData);
-        }
+      if (mtIdx != null && mtIdx.isNotEmpty) {
+        Map<String, dynamic> requestData = {
+          'mt_idx': mtIdx,
+        };
+        ref.read(myModelProvider.notifier).getMy(requestData);
+      } else {
+        // 비회원 상태이면 NonTopScreen으로 전환
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const NonTopScreen()),
+        );
       }
     });
   }
 
-  void viewWillDisappear() {}
-
-  Widget _buildIconButton(BuildContext context, String label, String icon,
-      VoidCallback onPressed, String num) {
-    return Column(
-      children: [
-        IconButton(
-          icon: SvgPicture.asset(
-            icon,
-            width: 40,
-            height: 40,
-          ),
-          onPressed: onPressed,
-        ),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: Responsive.getFont(context, 16),
-          ),
-        ),
-        Text(
-          num,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ],
-    );
+  void viewWillDisappear() {
+    print("viewWillDisappear");
   }
 
   Widget _buildSection(BuildContext context, String title) {
