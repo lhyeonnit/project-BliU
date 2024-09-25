@@ -188,7 +188,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
             padding: const EdgeInsets.only(right: 16.0, left: 16, bottom: 20),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.55,
+              childAspectRatio: 0.5,
               crossAxisSpacing: 12,
               mainAxisSpacing: 30,
             ),

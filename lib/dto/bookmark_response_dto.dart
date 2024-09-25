@@ -3,7 +3,7 @@ import 'package:BliU/data/bookmark_data.dart';
 class BookmarkResponseDTO {
   final bool? result;
   final int? count;  // 추가된 count 필드
-  final List<BookmarkData>? list;
+  List<BookmarkData>? list;
 
   BookmarkResponseDTO({
     required this.result,
@@ -12,12 +12,13 @@ class BookmarkResponseDTO {
   });
 
   factory BookmarkResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<BookmarkData>.from((json['data']['list'])?.map((item) {
+      return BookmarkData.fromJson(item as Map<String, dynamic>);
+    }).toList());
     return BookmarkResponseDTO(
       result: json['result'],
       count: json['data']['count'],  // count 값을 추출
-      list: (json['data']['list'] as List)
-          .map((item) => BookmarkData.fromJson(item))
-          .toList(),
+      list: list,
     );
   }
 

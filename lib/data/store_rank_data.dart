@@ -1,25 +1,4 @@
-import 'package:BliU/data/product_data.dart';
-
 class StoreRankData {
-  final List<Store>? list;
-
-  StoreRankData({required this.list});
-
-  factory StoreRankData.fromJson(Map<String, dynamic> json) {
-    final list = List<Store>.from((json['list'])?.map((item) {
-      return Store.fromJson(item as Map<String, dynamic>);
-    }).toList());
-    return StoreRankData(list: list);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'list': list?.map((store) => store.toJson()).toList(),
-    };
-  }
-}
-
-class Store {
   int? stIdx;
   String? stName;
   String? stProfile;
@@ -28,9 +7,9 @@ class Store {
   String? stAge;
   String? stAgeTxt;
   String? checkMark;
-  List<ProductData>? productList;
+  List<String>? productList;
 
-  Store({
+  StoreRankData({
     required this.stIdx,
     required this.stName,
     required this.stProfile,
@@ -42,11 +21,8 @@ class Store {
     required this.productList,
   });
 
-  factory Store.fromJson(Map<String, dynamic> json) {
-    final list = List<ProductData>.from((json['product_list'])?.map((item) {
-      return ProductData.fromJson(item as Map<String, dynamic>);
-    }).toList());
-    return Store(
+  factory StoreRankData.fromJson(Map<String, dynamic> json) {
+    return StoreRankData(
       stIdx: json['st_idx'],
       stName: json['st_name'],
       stProfile: json['st_profile'],
@@ -55,7 +31,7 @@ class Store {
       stAge: json['st_age'],
       stAgeTxt: json['st_age_txt'],
       checkMark: json['check_mark'],
-      productList: list,
+      productList: List<String>.from(json['product_list']),
     );
   }
 
@@ -73,3 +49,4 @@ class Store {
     };
   }
 }
+

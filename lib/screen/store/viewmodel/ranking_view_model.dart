@@ -28,11 +28,8 @@ class RankingViewModel extends StateNotifier<RankingModel?> {
           Map<String, dynamic> responseData = response.data;
           StoreRankResponseDTO storeRankResponseDTO = StoreRankResponseDTO.fromJson(responseData);
 
-          var list = state?.storeRankResponseDTO?.list ?? [];
-          List<StoreRankData> addList = storeRankResponseDTO.list ?? [];
-          for (var item in addList) {
-            list.add(item);
-          }
+          List<StoreRankData> list = storeRankResponseDTO.list ?? [];
+
 
           storeRankResponseDTO.list = list;
 

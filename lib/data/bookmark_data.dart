@@ -4,7 +4,7 @@ class BookmarkData {
   final String? stProfile;
   final String? ageTxt;
   final String? styleTxt;
-  final int? stLike;
+  late final int? stLike;
 
   BookmarkData({
     required this.stIdx,

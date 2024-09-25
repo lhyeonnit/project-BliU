@@ -52,13 +52,15 @@ class StoreCategoryItem extends ConsumerWidget {
                 children: [
                   ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
-                    child: Image.network(
-                      product.ptImg ?? "",
-                      fit: BoxFit.cover,
+                    child: Container(
                       height: 184,
-                      width: double.infinity,
-                      errorBuilder: (context, error, stackTrace) =>
-                          Image.asset('assets/images/home/exhi.png'),
+                      child: Image.network(
+                        product.ptImg ?? "",
+                        fit: BoxFit.cover,
+                        width: 184,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset('assets/images/home/exhi.png'),
+                      ),
                     ),
                   ),
                   Positioned(
