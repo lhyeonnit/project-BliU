@@ -446,7 +446,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
           context,
           MaterialPageRoute(builder: (context) => PaymentToss(paymentData: paymentData,)),
         );
-
+        print("test1 ${paymentResult}");
         if (paymentResult != null) {
           // if (paymentResult['result'] == true) {
           //   final Success success = paymentResult["successData"];

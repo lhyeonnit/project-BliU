@@ -1,7 +1,10 @@
 import 'package:BliU/data/category_data.dart';
+import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
+import 'package:BliU/screen/product/viewmodel/product_list_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,95 +15,35 @@ import 'component/list/product_sort_bottom.dart';
 
 class ProductListScreen extends ConsumerStatefulWidget {
   final CategoryData selectedCategory;
-  final List<CategoryData>? subList;
+  final int? selectSubCategoryIndex;
 
-  const ProductListScreen(
-      {super.key, required this.selectedCategory, this.subList});
+  const ProductListScreen({super.key, required this.selectedCategory, this.selectSubCategoryIndex});
 
   @override
   _ProductListScreenState createState() => _ProductListScreenState();
 }
 
-final List<Map<String, String>> items = [
-  {
-    'image': 'http://example.com/item1.png',
-    'name': '꿈꾸는데이지 안나 토션 레이스 베스트',
-    'brand': '꿈꾸는데이지',
-    'price': '32,800원',
-    'discount': '15%',
-    'likes': '13,000',
-    'comments': '49'
-  },
-  {
-    'image': 'http://example.com/item2.png',
-    'name': '레인보우꿈 안나 토션 레이스 베스트',
-    'brand': '레인보우꿈',
-    'price': '32,800원',
-    'discount': '15%',
-    'likes': '13,000',
-    'comments': '49'
-  },
-  {
-    'image': 'http://example.com/item3.png',
-    'name': '기글옷장 안나 토션 레이스 베스트',
-    'brand': '기글옷장',
-    'price': '32,800원',
-    'discount': '15%',
-    'likes': '13,000',
-    'comments': '49'
-  },
-  {
-    'image': 'http://example.com/item4.png',
-    'name': '스파클나라 안나 토션 레이스 베스트',
-    'brand': '스파클나라',
-    'price': '32,800원',
-    'discount': '15%',
-    'likes': '13,000',
-    'comments': '49'
-  },
-];
-
-class FilterOption {
-  final String label;
-
-  FilterOption({required this.label});
-}
-
-List<FilterOption> ageOptions = [
-  FilterOption(label: '베이비(0-24개월)'),
-  FilterOption(label: '키즈(3-8세)'),
-  FilterOption(label: '주니어(9세 이상)'),
-];
-
-List<FilterOption> styleOptions = [
-  FilterOption(label: '캐주얼'),
-  FilterOption(label: '스포티'),
-  FilterOption(label: '포멀/클래식'),
-  FilterOption(label: '베이직'),
-  FilterOption(label: '프린세스/페어리'),
-  FilterOption(label: '힙스터'),
-  FilterOption(label: '럭셔리'),
-  FilterOption(label: '어반 스트릿'),
-  FilterOption(label: '로맨틱'),
-];
-
-// TODO 상위 카테고리일시 하위카테고리까지 리스트업
-// TODO 하위 카테고리일시 확인 필요
-
 class _ProductListScreenState extends ConsumerState<ProductListScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late TabController _tabController;
-  CategoryData? _selectedCategory;
-  List<CategoryData>? _subList;
+  late CategoryData _selectedCategory;
+  late List<CategoryData> _subList;
   String sortOption = '최신순';
   String sortOptionSelected = '';
+  List<List<ProductData>> productList = [];
 
   @override
   void initState() {
     super.initState();
     _selectedCategory = widget.selectedCategory;
-    _subList = widget.subList;
-    _tabController = TabController(length: 5, vsync: this);
+    _subList = _selectedCategory.subList ?? [];
+    _tabController = TabController(length: _subList.length, vsync: this);
+    if (widget.selectSubCategoryIndex != null) {
+      _tabController.animateTo(widget.selectSubCategoryIndex ?? 0);
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
   }
 
   @override
@@ -161,6 +104,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
           onCategorySelected: (category) {
             setState(() {
               _selectedCategory = category;
+              _subList = _selectedCategory.subList ?? [];
+              _tabController = TabController(length: _subList.length, vsync: this);
+              _getAllList();
             });
           },
         );
@@ -172,7 +118,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      constraints: BoxConstraints(maxHeight: 700, minHeight: 400),
+      constraints: const BoxConstraints(maxHeight: 700, minHeight: 400),
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
         return ProductFilterBottom(
@@ -218,9 +164,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                margin: EdgeInsets.only(right: 8),
+                margin: const EdgeInsets.only(right: 8),
                 child: Text(
-                  _selectedCategory?.ctName ?? "",
+                  _selectedCategory.ctName ?? "",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: Responsive.getFont(context, 18)),
@@ -262,7 +208,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
             },
           ),
           Container(
-            margin: EdgeInsets.only(right:6),
+            margin: const EdgeInsets.only(right:6),
             child: Stack(
               children: [
                 IconButton(
@@ -321,7 +267,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                       ),
                       overlayColor: WidgetStateColor.transparent,
                       indicatorColor: Colors.black,
-                      dividerColor: Color(0xFFDDDDDD),
+                      dividerColor: const Color(0xFFDDDDDD),
                       indicatorSize: TabBarIndicatorSize.tab,
                       labelColor: Colors.black,
                       unselectedLabelColor: const Color(0xFF7B7B7B),
@@ -329,14 +275,14 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                       indicatorWeight: 2.0,
                       tabAlignment: TabAlignment.start,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      tabs: widget.subList!.map((subCategory) {
+                      tabs: (_subList ?? []).map((subCategory) {
                         return Tab(text: subCategory.ctName);
                       }).toList(),
                     ),
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                    padding: EdgeInsets.only(top: 15, bottom: 10),
+                    padding: const EdgeInsets.only(top: 15, bottom: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -347,7 +293,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                               SvgPicture.asset(
                                   'assets/images/product/ic_filter02.svg'),
                               Container(
-                                margin: EdgeInsets.only(left: 5),
+                                margin: const EdgeInsets.only(left: 5),
                                 child: Text(
                                   sortOptionSelected.isNotEmpty
                                       ? sortOptionSelected
@@ -364,7 +310,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                           children: [
                             _buildFilterButton(getSelectedAgeGroupText()),
                             Container(
-                                margin: EdgeInsets.symmetric(horizontal: 4),
+                                margin: const EdgeInsets.symmetric(horizontal: 4),
                                 child: _buildFilterButton(getSelectedStyleText())),
                             _buildFilterButton(getSelectedRangeValues()),
                           ],
@@ -379,16 +325,54 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
         },
         body: TabBarView(
           controller: _tabController,
-          children: List.generate(
-            widget.subList!.length,
-            (index) {
+          children: List.generate(_subList.length, (index) {
               // 상품 리스트
-              return _buildProductGrid();
+            print("test11 => ${_subList[index].toJson()}");
+              return _buildProductGrid(index);
             },
           ),
         ),
       ),
     );
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getAllList();
+  }
+
+  void _getAllList() async {
+    // TODO 회원 비회원 처리
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    // TODO 검색 결과 확인
+    for (int i = 0; i < _subList.length; i++) {
+      Map<String, dynamic> requestData = {
+        'mt_idx' : mtIdx,
+        'category' : _selectedCategory.ctIdx,
+        'sub_category' : _subList[i].ctIdx,
+        'sort' : 1,
+        'age' : 1,
+        'styles' : '',
+        'min_price' : 0,
+        'max_price' : 99999,
+        'pg' : 1,
+      };
+
+      final productListResponseDTO = await ref.read(productListViewModelProvider.notifier).getList(requestData);
+      if (productListResponseDTO != null) {
+        if (productListResponseDTO.result == true) {
+          productList.add(productListResponseDTO.list ?? []);
+        } else {
+          productList.add([]);
+        }
+      } else {
+        productList.add([]);
+      }
+    }
+    setState(() {
+
+    });
   }
 
   Widget _buildFilterButton(String label) {
@@ -397,17 +381,17 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(22.0),
         ),
-        side: BorderSide(
+        side: const BorderSide(
           color: Color(0xFFDDDDDD),
         ),
-        padding: EdgeInsets.only(top: 11.0, bottom: 11, left: 20.0, right: 17),
+        padding: const EdgeInsets.only(top: 11.0, bottom: 11, left: 20.0, right: 17),
       ),
       onPressed: _openFilterBottomSheet,
       child: Row(
         children: [
           Container(
             width: 35,
-            margin: EdgeInsets.only(right: 5),
+            margin: const EdgeInsets.only(right: 5),
             child: Text(
               label,
               maxLines: 1,
@@ -422,38 +406,55 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
       ),
     );
   }
+
+  Widget _buildProductGrid(int productIndex) {
+    List<ProductData> pList = [];
+    try {
+      pList = productList[productIndex];
+    } catch (e) {
+      print("e = ${e.toString()}");
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Text(
+            '상품 ${pList.length}', // 상품 수 표시
+            style: const TextStyle(fontSize: 14, color: Colors.black),
+          ),
+        ),
+        Expanded(
+          child: GridView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.55,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 30,
+            ),
+            itemCount: pList.length, // 실제 상품 수로 변경
+            itemBuilder: (context, index) {
+              return ProductListCard(
+                productData: pList[index],
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }
 
-Widget _buildProductGrid() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16.0),
-        padding: EdgeInsets.only(bottom: 20),
-        child: Text(
-          '상품 ${items.length}', // 상품 수 표시
-          style: const TextStyle(fontSize: 14, color: Colors.black),
-        ),
-      ),
-      Expanded(
-        child: GridView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.55,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 30,
-          ),
-          itemCount: items.length, // 실제 상품 수로 변경
-          itemBuilder: (context, index) {
-            return ProductListCard(
-              item: items[index],
-              index: index,
-            );
-          },
-        ),
-      ),
-    ],
-  );
+class FilterOption {
+  final String label;
+
+  FilterOption({required this.label});
 }
+
+List<FilterOption> ageOptions = [
+  FilterOption(label: '베이비(0-24개월)'),
+  FilterOption(label: '키즈(3-8세)'),
+  FilterOption(label: '주니어(9세 이상)'),
+];

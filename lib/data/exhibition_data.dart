@@ -19,13 +19,17 @@ class ExhibitionData {
 
   // JSON to Object
   factory ExhibitionData.fromJson(Map<String, dynamic> json) {
+    final product = List<ProductData>.from((json['product'])?.map((item) {
+      return ProductData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return ExhibitionData(
       etIdx: json['et_idx'],
       etTitle: json['et_title'],
       etSubTitle: json['et_sub_title'],
       etBanner: json['et_banner'],
       etProductCount: json['et_product_count'],
-      product: (json['product'] as List<ProductData>),
+      product: product,
     );
   }
 

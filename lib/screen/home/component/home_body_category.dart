@@ -53,7 +53,7 @@ class HomeBodyCategory extends ConsumerWidget {
                     } else {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ProductListScreen(selectedCategory: category, subList: category.subList,)),
+                        MaterialPageRoute(builder: (context) => ProductListScreen(selectedCategory: category)),
                       );
                     }
                   },

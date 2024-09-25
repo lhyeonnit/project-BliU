@@ -183,7 +183,6 @@ class _HomeBodyAiState extends State<HomeBodyAi> {
                                     ],
                                   ),
                                 ),
-
                               ],
                             ),
                           ],
