@@ -1,5 +1,6 @@
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
+import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:BliU/screen/product/viewmodel/product_list_view_model.dart';
@@ -23,14 +24,13 @@ class ProductListScreen extends ConsumerStatefulWidget {
   _ProductListScreenState createState() => _ProductListScreenState();
 }
 
-class _ProductListScreenState extends ConsumerState<ProductListScreen>
-    with TickerProviderStateMixin {
+class _ProductListScreenState extends ConsumerState<ProductListScreen> with TickerProviderStateMixin {
   late TabController _tabController;
   late CategoryData _selectedCategory;
   late List<CategoryData> _subList;
   String sortOption = '최신순';
   String sortOptionSelected = '';
-  List<List<ProductData>> productList = [];
+  List<ProductListResponseDTO?> productList = [];
 
   @override
   void initState() {
@@ -327,7 +327,6 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
           controller: _tabController,
           children: List.generate(_subList.length, (index) {
               // 상품 리스트
-            print("test11 => ${_subList[index].toJson()}");
               return _buildProductGrid(index);
             },
           ),
@@ -345,7 +344,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
-    // TODO 검색 결과 확인
+    // TODO 정렬 및 검색 결과 파라매터 넣어야 함
     for (int i = 0; i < _subList.length; i++) {
       Map<String, dynamic> requestData = {
         'mt_idx' : mtIdx,
@@ -362,12 +361,12 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
       final productListResponseDTO = await ref.read(productListViewModelProvider.notifier).getList(requestData);
       if (productListResponseDTO != null) {
         if (productListResponseDTO.result == true) {
-          productList.add(productListResponseDTO.list ?? []);
+          productList.add(productListResponseDTO);
         } else {
-          productList.add([]);
+          productList.add(null);
         }
       } else {
-        productList.add([]);
+        productList.add(null);
       }
     }
     setState(() {
@@ -409,8 +408,10 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
 
   Widget _buildProductGrid(int productIndex) {
     List<ProductData> pList = [];
+    int count = 0;
     try {
-      pList = productList[productIndex];
+      pList = productList[productIndex]?.list ?? [];
+      count = productList[productIndex]?.count ?? 0;
     } catch (e) {
       print("e = ${e.toString()}");
     }
@@ -421,7 +422,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
           margin: const EdgeInsets.symmetric(horizontal: 16.0),
           padding: const EdgeInsets.only(bottom: 20),
           child: Text(
-            '상품 ${pList.length}', // 상품 수 표시
+            '상품 $count', // 상품 수 표시
             style: const TextStyle(fontSize: 14, color: Colors.black),
           ),
         ),

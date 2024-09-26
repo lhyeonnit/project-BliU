@@ -1,9 +1,13 @@
+import 'package:BliU/data/category_data.dart';
+import 'package:BliU/data/product_data.dart';
+import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/like/viewmodel/like_view_model.dart';
 import 'package:BliU/screen/product/component/list/product_list_card.dart';
+import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../utils/responsive.dart';
 
 class LikeScreen extends ConsumerStatefulWidget {
   const LikeScreen({super.key});
@@ -12,66 +16,19 @@ class LikeScreen extends ConsumerStatefulWidget {
   _LikeScreenState createState() => _LikeScreenState();
 }
 
-final ScrollController _scrollController = ScrollController();
-
-final List<String> categories = [
-  '전체',
-  '아우터',
-  '상의',
-  '하의',
-  '슈즈',
-  '세트/한벌옷',
-  '언더웨어/홈웨어',
-];
-
-final List<Map<String, String>> items = [
-  {
-    'image': 'http://example.com/item1.png',
-    'name': '꿈꾸는데이지 안나 토션 레이스 베스트',
-    'brand': '꿈꾸는데이지',
-    'price': '32,800원',
-    'discount': '15%',
-    'likes': '13,000',
-    'comments': '49'
-  },
-  {
-    'image': 'http://example.com/item2.png',
-    'name': '레인보우꿈 안나 토션 레이스 베스트',
-    'brand': '레인보우꿈',
-    'price': '32,800원',
-    'discount': '15%',
-    'likes': '13,000',
-    'comments': '49'
-  },
-  {
-    'image': 'http://example.com/item3.png',
-    'name': '기글옷장 안나 토션 레이스 베스트',
-    'brand': '기글옷장',
-    'price': '32,800원',
-    'discount': '15%',
-    'likes': '13,000',
-    'comments': '49'
-  },
-  {
-    'image': 'http://example.com/item4.png',
-    'name': '스파클나라 안나 토션 레이스 베스트',
-    'brand': '스파클나라',
-    'price': '32,800원',
-    'discount': '15%',
-    'likes': '13,000',
-    'comments': '49'
-  },
-];
-
-class _LikeScreenState extends ConsumerState<LikeScreen>
-    with SingleTickerProviderStateMixin {
-  String selectedCategory = '전체';
+class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStateMixin {
   late TabController _tabController;
+  final ScrollController _scrollController = ScrollController();
+  final List<CategoryData> categories = [ CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', subList: []) ];
+  List<ProductListResponseDTO?> productList = [];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: categories.length, vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
   }
 
   @override
@@ -137,7 +94,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
                           overlayColor: WidgetStateColor.transparent,
                           indicatorColor: Colors.black,
                           indicatorSize: TabBarIndicatorSize.tab,
-                          dividerColor: Color(0xFFDDDDDD),
+                          dividerColor: const Color(0xFFDDDDDD),
                           labelColor: Colors.black,
                           unselectedLabelColor: const Color(0xFF7B7B7B),
                           isScrollable: true,
@@ -145,7 +102,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
                           tabAlignment: TabAlignment.start,
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           tabs: categories.map((category) {
-                            return Tab(text: category);
+                            return Tab(text: category.ctName);
                           }).toList(),
                         ),
                       ),
@@ -156,11 +113,9 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
             },
             body: TabBarView(
               controller: _tabController,
-              children: List.generate(
-                categories.length,
-                (index) {
+              children: List.generate(categories.length, (index) {
                   // 상품 리스트
-                  return _buildProductGrid();
+                  return _buildProductGrid(index);
                 },
               ),
             ),
@@ -171,15 +126,75 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
     );
   }
 
-  Widget _buildProductGrid() {
+  void _afterBuild(BuildContext context) {
+    _getAllList();
+  }
+
+  void _getAllList() async {
+    // TODO 회원 비회원 처리
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    // TODO 페이징 처리 필요
+    Map<String, dynamic> requestData = {'category_type': '1'};
+    final categoryResponseDTO = await ref.read(likeViewModelProvider.notifier).getCategory(requestData);
+    if(categoryResponseDTO != null) {
+      if (categoryResponseDTO.result == true) {
+        final list = categoryResponseDTO.list ?? [];
+        for (var item in list) {
+          categories.add(item);
+        }
+
+        for (var cate in categories) {
+          String category = "all";
+          if ((cate.ctIdx ?? 0) > 0) {
+            category = cate.ctIdx.toString();
+          }
+
+          Map<String, dynamic> requestData = {
+            'mt_idx' : mtIdx,
+            'category' : category,
+            'sub_category' : "all",
+            'pg' : 1,
+          };
+
+          final productListResponseDTO = await ref.read(likeViewModelProvider.notifier).getList(requestData);
+          if (productListResponseDTO != null) {
+            if (productListResponseDTO.result == true) {
+              productList.add(productListResponseDTO);
+            } else {
+              productList.add(null);
+            }
+          } else {
+            productList.add(null);
+          }
+        }
+
+        setState(() {
+          _tabController = TabController(length: categories.length, vsync: this);
+        });
+      }
+    }
+  }
+
+  Widget _buildProductGrid(int productIndex) {
+    List<ProductData> pList = [];
+    int count = 0;
+    try {
+      pList = productList[productIndex]?.list ?? [];
+      count = productList[productIndex]?.count ?? 0;
+    } catch (e) {
+      print("e = ${e.toString()}");
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16.0),
-          padding: EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 20),
           child: Text(
-            '상품 ${items.length}', // 상품 수 표시
+            '상품 $count', // 상품 수 표시
             style: const TextStyle(fontSize: 14, color: Colors.black),
           ),
         ),
@@ -192,11 +207,10 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
               crossAxisSpacing: 12,
               mainAxisSpacing: 30,
             ),
-            itemCount: items.length, // 실제 상품 수로 변경
+            itemCount: pList.length, // 실제 상품 수로 변경
             itemBuilder: (context, index) {
               return ProductListCard(
-                item: items[index],
-                index: index,
+                productData: pList[index],
               );
             },
           ),
