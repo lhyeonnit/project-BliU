@@ -1,16 +1,16 @@
 class ReviewInfoData {
-  final double? starAvg;
+  final String? startAvg;
   final int? reviewCount;
 
   ReviewInfoData({
-    required this.starAvg,
+    required this.startAvg,
     required this.reviewCount,
   });
 
   // JSON to Object
   factory ReviewInfoData.fromJson(Map<String, dynamic> json) {
     return ReviewInfoData(
-      starAvg: json['star_avg'],
+      startAvg: json['start_avg'],
       reviewCount: json['review_count'],
     );
   }
@@ -18,7 +18,7 @@ class ReviewInfoData {
   // Object to JSOn
   Map<String, dynamic> toJson() {
     return {
-      'star_avg': starAvg,
+      'star_avg': startAvg,
       'review_count': reviewCount,
     };
   }

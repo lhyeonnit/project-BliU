@@ -1,31 +1,80 @@
+import 'package:BliU/data/category_data.dart';
+import 'package:BliU/screen/product/viewmodel/report_page_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ReportPage extends StatefulWidget {
-  const ReportPage({super.key});
+class ReportPage extends ConsumerStatefulWidget {
+  final int rtIdx;
+  const ReportPage({super.key, required this.rtIdx});
 
   @override
   _ReportPageState createState() => _ReportPageState();
 }
 
-class _ReportPageState extends State<ReportPage> {
-  int? _selectedReason;
+class _ReportPageState extends ConsumerState<ReportPage> {
   final TextEditingController _controller = TextEditingController();
+  
+  List<CategoryData> categories = [];
+  
+  int? _selectedReason;
+  
   bool _isReported = false;
 
-  bool get _isOtherSelected => _selectedReason == 8;
+  bool get _isOtherSelected => _selectedReason == 1;
 
-  void _submitReport() {
-    setState(() {
-      _isReported = true;
-    });
-    // Dismiss the success message after a short delay
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        _isReported = false;
-        Navigator.pop(context);
-      });
+  void _submitReport() async {
+    if (_selectedReason == null) {
+      Utils.getInstance().showSnackBar(context, "신고 사유를 선택해 주세요.");
+      return;
+    }
+
+    if (_isOtherSelected) {
+      if (_controller.text.isEmpty) {
+        Utils.getInstance().showSnackBar(context, "신고 사유를 입력해 주세요.");
+        return;
+      }
+    }
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    Map<String, dynamic> requestData = {
+      'mt_idx' : mtIdx,
+      'rt_idx' : widget.rtIdx,
+      'rt_category' : _selectedReason,
+      'rt_category_txt' : _controller.text,
+    };
+
+    final defaultResponseDTO = await ref.read(reportPageViewModelProvider.notifier).reviewSingo(requestData);
+    if (defaultResponseDTO != null) {
+      if (defaultResponseDTO.result == true) {
+        setState(() {
+          _isReported = true;
+        });
+
+        // Dismiss the success message after a short delay
+        Future.delayed(const Duration(seconds: 2), () {
+          setState(() {
+            _isReported = false;
+            Navigator.pop(context);
+          });
+        });
+      } else {
+        if (!context.mounted) return;
+        Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
     });
   }
 
@@ -70,7 +119,7 @@ class _ReportPageState extends State<ReportPage> {
               Navigator.pop(context);
             },
             child: Container(
-                margin: EdgeInsets.only(right: 16),
+                margin: const EdgeInsets.only(right: 16),
                 child: SvgPicture.asset('assets/images/product/ic_close.svg')),
           ),
         ],
@@ -81,35 +130,31 @@ class _ReportPageState extends State<ReportPage> {
             controller: ScrollController(),
             children: [
               Container(
-                margin: EdgeInsets.only(bottom: 80),
+                margin: const EdgeInsets.only(bottom: 80),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         horizontal: 16,
                       ),
-                      padding: EdgeInsets.only(top: 30, bottom: 20),
+                      padding: const EdgeInsets.only(top: 30, bottom: 20),
                       child: Text(
                         '신고의 부적합한 사용자/글을 지속적으로 신고하는 경우 제재 조치가 취해질 수 있으니 유의해 주세요',
                         style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
-                            color: Color(0xFF7B7B7B)),
+                            color: const Color(0xFF7B7B7B)),
                       ),
                     ),
-                    _buildRadioOption(0, '거짓 정보 및 허위 사실'),
-                    _buildRadioOption(1, '비속어 및 욕설'),
-                    _buildRadioOption(2, '부적절한 사진 및 영상'),
-                    _buildRadioOption(3, '개인정보 유출'),
-                    _buildRadioOption(4, '광고 및 홍보'),
-                    _buildRadioOption(5, '스팸 리뷰'),
-                    _buildRadioOption(6, '타인 비방'),
-                    _buildRadioOption(7, '리뷰의 무관성'),
-                    _buildRadioOption(8, '기타'),
+                    ...categories.map((category) {
+                      final idx = category.cstIdx ?? 0;
+                      final name = category.ctName ?? "";
+                      return _buildRadioOption(idx, name);
+                    }),
                     if (_isOtherSelected)
                       Container(
-                        margin: EdgeInsets.only(
+                        margin: const EdgeInsets.only(
                             top: 10.0, bottom: 300, right: 16, left: 16),
                         child: TextField(
                           style: TextStyle(
@@ -119,19 +164,19 @@ class _ReportPageState extends State<ReportPage> {
                           controller: _controller,
                           maxLines: 4,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                                 vertical: 14, horizontal: 15),
                             hintText: '직접 입력해주세요',
                             hintStyle: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
-                                color: Color(0xFF595959)),
-                            enabledBorder: OutlineInputBorder(
+                                color: const Color(0xFF595959)),
+                            enabledBorder: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(6)),
                               borderSide: BorderSide(color: Colors.black),
                             ),
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(6)),
                               borderSide: BorderSide(color: Colors.black),
@@ -175,9 +220,8 @@ class _ReportPageState extends State<ReportPage> {
               child: Container(
                 width: double.infinity,
                 height: Responsive.getHeight(context, 48),
-                margin:
-                    EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
-                decoration: BoxDecoration(
+                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                decoration: const BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.all(
                     Radius.circular(6),
@@ -201,11 +245,26 @@ class _ReportPageState extends State<ReportPage> {
     );
   }
 
-  Widget _buildRadioOption(int value, String label) {
+  void _afterBuild(BuildContext context) {
+    _getCategory();
+  }
+
+  void _getCategory() async {
+    final categoryResponseDTO = await ref.read(reportPageViewModelProvider.notifier).getCategory();
+    if (categoryResponseDTO != null) {
+      if (categoryResponseDTO.result == true) {
+        setState(() {
+          categories = categoryResponseDTO.list ?? [];
+        });
+      }
+    }
+  }
+
+  Widget _buildRadioOption(int idx, String name) {
     return Row(
       children: [
         Radio<int>(
-          activeColor: Color(0xFFFF6192),
+          activeColor: const Color(0xFFFF6192),
           fillColor: MaterialStateProperty.resolveWith((states) {
             if (!states.contains(MaterialState.selected)) {
               return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
@@ -213,7 +272,7 @@ class _ReportPageState extends State<ReportPage> {
             return const Color(0xFFFF6192); // 선택된 상태의 색상
           }),
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          value: value,
+          value: idx,
           groupValue: _selectedReason,
           onChanged: (int? newValue) {
             setState(() {
@@ -222,7 +281,7 @@ class _ReportPageState extends State<ReportPage> {
           },
         ),
         Text(
-          label,
+          name,
           style: TextStyle(
               fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14)),

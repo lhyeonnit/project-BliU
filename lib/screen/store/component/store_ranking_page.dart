@@ -33,20 +33,20 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
   final ScrollController _scrollController = ScrollController();
 
   void _showAgeGroupSelection() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.white,
-      builder: (BuildContext context) {
-        return StoreAgeGroupSelection(
-          selectedAgeGroup: selectedAgeGroup,
-          onSelectionChanged: (String newSelection) {
-            setState(() {
-              selectedAgeGroup = newSelection;
-            });
-          },
-        );
-      },
-    );
+    // showModalBottomSheet(
+    //   context: context,
+    //   backgroundColor: Colors.white,
+    //   builder: (BuildContext context) {
+    //     return StoreAgeGroupSelection(
+    //       selectedAgeGroup: selectedAgeGroup,
+    //       onSelectionChanged: (String newSelection) {
+    //         setState(() {
+    //           selectedAgeGroup = newSelection;
+    //         });
+    //       },
+    //     );
+    //   },
+    // );
   }
 
   String getSelectedAgeGroupText() {

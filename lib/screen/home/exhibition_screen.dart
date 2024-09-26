@@ -1,64 +1,35 @@
+import 'package:BliU/data/exhibition_data.dart';
+import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
+import 'package:BliU/screen/home/viewmodel/exhibition_view_model.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 //기획전
-class ExhibitionScreen extends StatefulWidget {
-  const ExhibitionScreen({super.key});
+class ExhibitionScreen extends ConsumerStatefulWidget {
+  final int etIdx;
+  const ExhibitionScreen({super.key, required this.etIdx});
 
   @override
-  State<StatefulWidget> createState() => ExhibitionScreenState();
+  ExhibitionScreenState createState() => ExhibitionScreenState();
 }
 
-class ExhibitionScreenState extends State<ExhibitionScreen> {
+class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
   final ScrollController _scrollController = ScrollController();
-  List<bool> isFavoriteList = List<bool>.generate(10, (index) => false);
-  final List<Map<String, String>> items = [
-    {
-      'image': 'http://example.com/item1.png',
-      'name': '꿈꾸는데이지 안나 토션 레이스 베스트',
-      'brand': '꿈꾸는데이지',
-      'price': '32,800원',
-      'discount': '15%',
-      'likes': '13,000',
-      'comments': '49'
-    },
-    {
-      'image': 'http://example.com/item2.png',
-      'name': '레인보우꿈 안나 토션 레이스 베스트',
-      'brand': '레인보우꿈',
-      'price': '32,800원',
-      'discount': '15%',
-      'likes': '13,000',
-      'comments': '49'
-    },
-    {
-      'image': 'http://example.com/item3.png',
-      'name': '기글옷장 안나 토션 레이스 베스트',
-      'brand': '기글옷장',
-      'price': '32,800원',
-      'discount': '15%',
-      'likes': '13,000',
-      'comments': '49'
-    },
-    {
-      'image': 'http://example.com/item4.png',
-      'name': '스파클나라 안나 토션 레이스 베스트',
-      'brand': '스파클나라',
-      'price': '32,800원',
-      'discount': '15%',
-      'likes': '13,000',
-      'comments': '49'
-    },
-  ];
+  ExhibitionData? exhibitionData;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
   }
 
   @override
@@ -74,7 +45,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
-        title: const Text("우리 아이를 위한 포근한 선택"),
+        title: Text(exhibitionData?.etTitle ?? ""),
         titleTextStyle: TextStyle(
           fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
@@ -164,8 +135,8 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                 SizedBox(
                   height: 620,
                   width: Responsive.getWidth(context, 412),
-                  child: Image.asset(
-                    "assets/images/exhibition/exhibition_img.png",
+                  child: Image.network(
+                    exhibitionData?.etDetailBanner ?? "",
                     width: Responsive.getWidth(context, 412),
                     height: 620,
                     fit: BoxFit.contain,
@@ -173,27 +144,25 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 10),
+                  margin: const EdgeInsets.only(bottom: 10),
                   child: Text(
-                    '우리 아이를 위한 포근한 선택',
+                    exhibitionData?.etTitle ?? "",
                     style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 20)),
                   ),
                 ),
-                Container(
-                  child: Text(
-                    '집에서도 스타일리시하게!\n우리 아이를 위한 홈웨어 컬렉션.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        color: const Color(0xFF7B7B7B)),
-                  ),
+                Text(
+                  exhibitionData?.etSubTitle ?? "",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      color: const Color(0xFF7B7B7B)),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+                  margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
                   child: GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -204,9 +173,10 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                       mainAxisSpacing: 30.0,
                       childAspectRatio: 0.5,
                     ),
-                    itemCount: items.length,
+                    itemCount: (exhibitionData?.product ?? []).length,
                     itemBuilder: (context, index) {
-                      return buildItemCard(items[index], index);
+                      final item = exhibitionData?.product?[index];
+                      return buildItemCard(item);
                     },
                   ),
                 ),
@@ -219,14 +189,32 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
     );
   }
 
-  Widget buildItemCard(Map<String, String> item, int index) {
+  void _afterBuild(BuildContext context) {
+    _getDetail();
+  }
+
+  void _getDetail() async {
+    Map<String, dynamic> requestData = {
+      'et_idx': widget.etIdx,
+    };
+
+    final exhibitionDetailResponseDTO = await ref.read(exhibitionViewModelProvider.notifier).getDetail(requestData);
+    if (exhibitionDetailResponseDTO != null) {
+      if (exhibitionDetailResponseDTO.result == true) {
+        setState(() {
+          exhibitionData = exhibitionDetailResponseDTO.data;
+        });
+      }
+    }
+  }
+
+  Widget buildItemCard(ProductData? productData) {
     return GestureDetector(
       onTap: () {
-        // TODO 이동 수정
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const ProductDetailScreen(ptIdx: 3),
+            builder: (context) => ProductDetailScreen(ptIdx: productData?.ptIdx),
           ),
         );
       },
@@ -242,8 +230,8 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: Image.asset(
-                    'assets/images/home/exhi.png',
+                  child: Image.network(
+                    productData?.ptImg ?? "",
                     height: 184,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -255,15 +243,14 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        isFavoriteList[index] =
-                            !isFavoriteList[index]; // 좋아요 상태 토글
+                        // TODO 좋아요 작업 필요
                       });
                     },
                     child: SvgPicture.asset(
-                      isFavoriteList[index]
+                      productData?.likeChk == "Y"
                           ? 'assets/images/home/like_btn_fill.svg'
                           : 'assets/images/home/like_btn.svg',
-                      color: isFavoriteList[index]
+                      color: productData?.likeChk == "Y"
                           ? const Color(0xFFFF6191)
                           : null,
                       // 좋아요 상태에 따라 내부 색상 변경
@@ -279,9 +266,9 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 12, bottom: 4),
+                  margin: const EdgeInsets.only(top: 12, bottom: 4),
                   child: Text(
-                    item['brand']!,
+                    productData?.stName ?? "",
                     style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 12),
@@ -289,22 +276,22 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                   ),
                 ),
                 Text(
-                  item['name']!,
+                  productData?.ptName ?? "",
                   style: TextStyle(
                     fontFamily: 'Pretendard',
-                    fontSize: 14,
+                    fontSize: Responsive.getFont(context, 14),
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 12, bottom: 10),
+                  margin: const EdgeInsets.only(top: 12, bottom: 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       Text(
-                        item['discount']!,
+                        "${productData?.ptDiscountPer ?? 0}%",
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
@@ -313,9 +300,9 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 2),
+                        margin: const EdgeInsets.symmetric(horizontal: 2),
                         child: Text(
-                          item['price']!,
+                          "${Utils.getInstance().priceString(productData?.ptPrice ?? 0)}원",
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
@@ -335,9 +322,9 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                       height: Responsive.getHeight(context, 11),
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 2, bottom: 2),
+                      margin: const EdgeInsets.only(left: 2, bottom: 2),
                       child: Text(
-                        item['likes']!,
+                        "${productData?.ptLike ?? ""}",
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
@@ -346,7 +333,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
                         children: [
                           SvgPicture.asset(
@@ -355,9 +342,9 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                             height: Responsive.getHeight(context, 12),
                           ),
                           Container(
-                            margin: EdgeInsets.only(left: 2, bottom: 2),
+                            margin: const EdgeInsets.only(left: 2, bottom: 2),
                             child: Text(
-                              item['comments']!,
+                              "${productData?.ptReview ?? ""}",
                               style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),

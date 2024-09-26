@@ -24,7 +24,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
-  List<CategoryData> cateList = [];
+  List<CategoryData> categories = [];
+  List<CategoryData> ageCategories = [];
   bool _isScrolled = false;
 
   @override
@@ -59,13 +60,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void _getCategoryList() async {
     Map<String, dynamic> requestData = {'category_type': '1'};
     final categoryResponseDTO = await ref.read(homeViewModelProvider.notifier).getCategory(requestData);
+    final ageCategoryResponseDTO = await ref.read(homeViewModelProvider.notifier).getAgeCategory();
     if (categoryResponseDTO != null) {
       if (categoryResponseDTO.result == true) {
-        setState(() {
-          cateList = categoryResponseDTO.list ?? [];
-        });
+        categories = categoryResponseDTO.list ?? [];
       }
     }
+
+    if (ageCategoryResponseDTO != null) {
+      if (ageCategoryResponseDTO.result == true) {
+        ageCategories = ageCategoryResponseDTO.list ?? [];
+      }
+    }
+    setState(() {});
   }
 
   @override
@@ -190,7 +197,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
-                          HomeBodyCategory(cateList: cateList,),
+                          HomeBodyCategory(categories: categories,),
                           const HomeBodyAi(),
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 30.0),
@@ -199,7 +206,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               child: HomeBodyExhibition(),
                             ),
                           ),
-                          const HomeBodyBestSales(), // TODO
+                          HomeBodyBestSales(categories: categories, ageCategories: ageCategories,),
                           const HomeFooter(),
                         ],
                       ),

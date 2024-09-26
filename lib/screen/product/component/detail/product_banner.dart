@@ -62,7 +62,7 @@ class _ProductBannerState extends State<ProductBanner> {
             right: 16,
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 15),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0x45000000),
                 borderRadius: BorderRadius.all(Radius.circular(22)),
               ),
@@ -81,7 +81,7 @@ class _ProductBannerState extends State<ProductBanner> {
                     style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 13),
-                        color: Color(0x80FFFFFF)),
+                        color: const Color(0x80FFFFFF)),
                   ),
                 ],
               ),

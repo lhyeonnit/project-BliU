@@ -16,11 +16,15 @@ class ReviewInfoResponseDTO {
 
   // JSON to Object
   factory ReviewInfoResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<ReviewData>.from((json['data']['list'])?.map((item) {
+      return ReviewData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return ReviewInfoResponseDTO(
       result: json['result'],
       message: json['data']['message'],
-      reviewInfo: json['data']['review_info'],
-      list: (json['data']['list'] as List<ReviewData>),
+      reviewInfo: ReviewInfoData.fromJson(json['data']['review_info']),
+      list: list,
     );
   }
 

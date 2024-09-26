@@ -119,5 +119,8 @@ class Constant {
   static const apiMyPagePrivacyUrl = "mypage/privacy";//개인정보 처리방침
 
   //비회원
-  //static const apiMyPageUrl = "${USER_URL}mypage";//
+  //static const apiMyPageUrl = "${USER_URL}mypage";
+
+  //카테고리
+  static const apiCategoryAgeUrl = "category/age";
 }

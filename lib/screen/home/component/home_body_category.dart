@@ -7,15 +7,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeBodyCategory extends ConsumerWidget {
-  final List<CategoryData> cateList;
-  const HomeBodyCategory({super.key, required this.cateList});
+  final List<CategoryData> categories;
+  const HomeBodyCategory({super.key, required this.categories});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     List<CategoryData> list = [
-      CategoryData(ctIdx: 0, cstIdx: 0, img: null, ctName: "스토어", subList: null)
+      CategoryData(ctIdx: 0, cstIdx: 0, img: null, ctName: "스토어", catIdx: 0, catName: '', subList: null)
     ];
-    for (var category in cateList) {
+    for (var category in categories) {
       list.add(category);
     }
 

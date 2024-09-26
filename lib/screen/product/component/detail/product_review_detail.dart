@@ -1,33 +1,34 @@
+import 'package:BliU/data/review_data.dart';
+import 'package:BliU/screen/product/component/detail/report_page.dart';
+import 'package:BliU/screen/product/viewmodel/product_review_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'report_page.dart';
-
-class ProductReviewDetail extends StatefulWidget {
-  const ProductReviewDetail({super.key});
+class ProductReviewDetail extends ConsumerStatefulWidget {
+  final int rtIdx;
+  const ProductReviewDetail({super.key, required this.rtIdx});
 
   @override
   _ProductReviewDetailState createState() => _ProductReviewDetailState();
 }
 
-class _ProductReviewDetailState extends State<ProductReviewDetail> {
-  PageController? _pageController;
-  int _currentPage = 0;
+class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
   final ScrollController _scrollController = ScrollController();
+  PageController? _pageController;
 
-  final List<String> _images = [
-    'assets/images/home/exhi.png',
-    'assets/images/home/exhi.png',
-    'assets/images/home/exhi.png',
-    'assets/images/home/exhi.png',
-    // 이미지 경로를 여기에 추가합니다.
-  ];
+  ReviewData? _reviewData;
+  int _currentPage = 0;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
   }
 
   @override
@@ -45,7 +46,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
       children: [
         // 꽉 찬 별을 표시
         for (int i = 0; i < fullStars; i++)
-          Icon(
+          const Icon(
             Icons.star,
             color: Color(0xFFFF6191),
             size: 16,
@@ -55,7 +56,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
 
         // 빈 별을 표시
         for (int i = 0; i < emptyStars; i++)
-          Icon(
+          const Icon(
             Icons.star,
             color: Color(0xFFEEEEEE),
             size: 16,
@@ -66,6 +67,11 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> _images = [];
+    if (_reviewData != null) {
+      _images = _reviewData?.imgArr ?? [];
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -111,7 +117,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
           children: [
             Stack(
               children: [
-                Container(
+                SizedBox(
                   height: Responsive.getHeight(context, 412),
                   child: PageView.builder(
                     controller: _pageController,
@@ -122,7 +128,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
                       });
                     },
                     itemBuilder: (context, index) {
-                      return Image.asset(
+                      return Image.network(
                         _images[index],
                         fit: BoxFit.cover,
                       );
@@ -135,7 +141,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(vertical: 4, horizontal: 15),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0x45000000),
                       borderRadius: BorderRadius.all(Radius.circular(22)),
                     ),
@@ -154,7 +160,7 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
                           style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 13),
-                              color: Color(0x80FFFFFF)),
+                              color: const Color(0x80FFFFFF)),
                         ),
                       ],
                     ),
@@ -163,37 +169,37 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
               ],
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Text(
-                        'blackpink22',
+                        _reviewData?.mtId ?? "",
                         style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 12),
-                            color: Color(0xFF7B7B7B)),
+                            color: const Color(0xFF7B7B7B)),
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
-                          '2024.04.14',
+                          _reviewData?.rtWdate ?? "",
                           style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 12),
-                              color: Color(0xFF7B7B7B)),
+                              color: const Color(0xFF7B7B7B)),
                         ),
                       ),
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
+                    margin: const EdgeInsets.symmetric(vertical: 10),
                     child: _ratingStars(4.5),
                   ),
                   Text(
-                    '저희 아이를 위해 밀크마일 여름 티셔츠를 구매했는데 정말 만족스럽습니다! 옷감이 부드럽고 통기성이 좋아서 아이가 하루 종일 입고 다녀도 편안해해요. 디자인도 아주 귀엽고 색감이 예뻐서 어디에나 잘 어울립니다. 세탁 후에도 색이 바래지 않고, 형태도 그대로 유지되네요. 사이즈도 정확하게 맞아서 아이에게 딱 맞아요. \n\n가격 대비 품질이 매우 훌륭하고, 배송도 빠르게 이루어졌습니다. 특히 할인 쿠폰 덕분에 더 저렴하게 구매할 수 있어서 기분이 좋네요. 앞으로도 이 쇼핑몰에서 자주 구매할 것 같아요. 부모님들께 강력히 추천합니다!',
+                    _reviewData?.rtContent ?? "",
                     style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14)),
@@ -202,11 +208,10 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
                     padding: const EdgeInsets.only(top: 10.0),
                     child: GestureDetector(
                       onTap: () {
-                        // 신고 버튼 클릭시 동작
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ReportPage()),
+                              builder: (context) => ReportPage(rtIdx: widget.rtIdx,)),
                         );
                       },
                       child: const Text(
@@ -227,26 +232,48 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
       ),
     );
   }
-}
 
-Widget _buildHalfStar(double rating) {
-  return Stack(
-    children: [
-      Icon(
-        Icons.star,
-        color: Color(0xFFEEEEEE), // 빈 별 색상
-        size: 16,
-      ),
-      ClipRect(
-        clipper: HalfClipper(),
-        child: Icon(
+  void _afterBuild(BuildContext context) {
+    _getDetail();
+  }
+
+  void _getDetail() async {
+    final pref = await SharedPreferencesManager.getInstance();
+
+    Map<String, dynamic> requestData = {
+      'mt_idx': pref.getMtIdx(),
+      'rt_idx': widget.rtIdx,
+    };
+
+    final reviewDetailResponseDTO = await ref.read(productReviewDetailViewModelProvider.notifier).getDetail(requestData);
+    if (reviewDetailResponseDTO != null) {
+      if (reviewDetailResponseDTO.result == true) {
+        setState(() {
+          _reviewData = reviewDetailResponseDTO.data;
+        });
+      }
+    }
+  }
+
+  Widget _buildHalfStar(double rating) {
+    return Stack(
+      children: [
+        const Icon(
           Icons.star,
-          color: Color(0xFFFF6191), // 채워진 별 색상
+          color: Color(0xFFEEEEEE), // 빈 별 색상
           size: 16,
         ),
-      ),
-    ],
-  );
+        ClipRect(
+          clipper: HalfClipper(),
+          child: const Icon(
+            Icons.star,
+            color: Color(0xFFFF6191), // 채워진 별 색상
+            size: 16,
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class HalfClipper extends CustomClipper<Rect> {
