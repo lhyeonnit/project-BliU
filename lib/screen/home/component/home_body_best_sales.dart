@@ -1,6 +1,9 @@
+import 'package:BliU/data/category_data.dart';
+import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/component/store_age_group_selection.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,7 +17,11 @@ class HomeBodyBestSales extends StatefulWidget {
 
 class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
   String selectedAgeGroup = '';
-  List<bool> isFavoriteList = List<bool>.generate(10, (index) => false);
+  int selectedCategoryIndex = 0;
+  List<CategoryData> categories = [
+    CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', subList: [])
+  ];
+  List<ProductData> productList = [];
 
   void _showAgeGroupSelection() {
     showModalBottomSheet(
@@ -41,55 +48,53 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
     }
   }
 
-  final List<String> categories = [
-    '전체',
-    '아우터',
-    '상의',
-    '하의',
-    '원피스',
-    '슈즈',
-  ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
+  }
 
-  final List<Map<String, String>> items = [
-    {
-      'image': 'http://example.com/item1.png',
-      'name': '꿈꾸는데이지 안나 토션 레이스 베스트',
-      'brand': '꿈꾸는데이지',
-      'price': '32,800원',
-      'discount': '15%',
-      'likes': '13,000',
-      'comments': '49'
-    },
-    {
-      'image': 'http://example.com/item2.png',
-      'name': '레인보우꿈 안나 토션 레이스 베스트',
-      'brand': '레인보우꿈',
-      'price': '32,800원',
-      'discount': '15%',
-      'likes': '13,000',
-      'comments': '49'
-    },
-    {
-      'image': 'http://example.com/item3.png',
-      'name': '기글옷장 안나 토션 레이스 베스트',
-      'brand': '기글옷장',
-      'price': '32,800원',
-      'discount': '15%',
-      'likes': '13,000',
-      'comments': '49'
-    },
-    {
-      'image': 'http://example.com/item4.png',
-      'name': '스파클나라 안나 토션 레이스 베스트',
-      'brand': '스파클나라',
-      'price': '32,800원',
-      'discount': '15%',
-      'likes': '13,000',
-      'comments': '49'
-    },
-  ];
 
-  String selectedCategory = '전체';
+  // final List<Map<String, String>> items = [
+  //   {
+  //     'image': 'http://example.com/item1.png',
+  //     'name': '꿈꾸는데이지 안나 토션 레이스 베스트',
+  //     'brand': '꿈꾸는데이지',
+  //     'price': '32,800원',
+  //     'discount': '15%',
+  //     'likes': '13,000',
+  //     'comments': '49'
+  //   },
+  //   {
+  //     'image': 'http://example.com/item2.png',
+  //     'name': '레인보우꿈 안나 토션 레이스 베스트',
+  //     'brand': '레인보우꿈',
+  //     'price': '32,800원',
+  //     'discount': '15%',
+  //     'likes': '13,000',
+  //     'comments': '49'
+  //   },
+  //   {
+  //     'image': 'http://example.com/item3.png',
+  //     'name': '기글옷장 안나 토션 레이스 베스트',
+  //     'brand': '기글옷장',
+  //     'price': '32,800원',
+  //     'discount': '15%',
+  //     'likes': '13,000',
+  //     'comments': '49'
+  //   },
+  //   {
+  //     'image': 'http://example.com/item4.png',
+  //     'name': '스파클나라 안나 토션 레이스 베스트',
+  //     'brand': '스파클나라',
+  //     'price': '32,800원',
+  //     'discount': '15%',
+  //     'likes': '13,000',
+  //     'comments': '49'
+  //   },
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +121,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
-                          selectedCategory = categories[index];
+                          selectedCategoryIndex = index;
                         });
                       },
                       child: categoryTab(index),
@@ -147,7 +152,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                     child: Row(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(right: 5),
+                          margin: const EdgeInsets.only(right: 5),
                           child: Text(
                             getSelectedAgeGroupText(),
                             style: TextStyle(
@@ -169,33 +174,43 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
               ),
             ],
           ),
-          Container(
-            margin: EdgeInsets.only(right: 16, bottom: 29),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12.0,
-                mainAxisSpacing: 30.0,
-                childAspectRatio: 0.5,
-              ),
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                return buildItemCard(items[index], index);
-              },
-            ),
-          ),
+          // Container(
+          //   margin: const EdgeInsets.only(right: 16, bottom: 29),
+          //   child: GridView.builder(
+          //     shrinkWrap: true,
+          //     physics: const NeverScrollableScrollPhysics(),
+          //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          //       crossAxisCount: 2,
+          //       crossAxisSpacing: 12.0,
+          //       mainAxisSpacing: 30.0,
+          //       childAspectRatio: 0.5,
+          //     ),
+          //     itemCount: items.length,
+          //     itemBuilder: (context, index) {
+          //       return buildItemCard(items[index], index);
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getList();
+  }
+
+  void _getList() async {
+    // TODO 회원 비회원 처리 필요
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
   }
 
   Widget categoryTab(int index) {
     var borderColor = const Color(0xFFDDDDDD);
     var textColor = Colors.black;
 
-    if (selectedCategory == categories[index]) {
+    if (selectedCategoryIndex == index) {
       borderColor = const Color(0xFFFF6192);
       textColor = const Color(0xFFFF6192);
     }
@@ -212,162 +227,161 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
         ),
       ),
       child: Text(
-        categories[index],
+        categories[index].ctName ?? "",
         style: TextStyle(
             fontSize: Responsive.getFont(context, 14), color: textColor),
       ),
     );
   }
 
-  Widget buildItemCard(Map<String, String> item, int index) {
-    return GestureDetector(
-      onTap: () {
-        // TODO 이동 수정
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ProductDetailScreen(ptIdx: 3),
-          ),
-        );
-      },
-      child: Container(
-        width: 184,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: Image.asset(
-                    'assets/images/home/exhi.png',
-                    height: 184,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isFavoriteList[index] =
-                            !isFavoriteList[index]; // 좋아요 상태 토글
-                      });
-                    },
-                    child: SvgPicture.asset(
-                      isFavoriteList[index]
-                          ? 'assets/images/home/like_btn_fill.svg'
-                          : 'assets/images/home/like_btn.svg',
-                      color: isFavoriteList[index]
-                          ? const Color(0xFFFF6191)
-                          : null,
-                      // 좋아요 상태에 따라 내부 색상 변경
-                      height: Responsive.getHeight(context, 34),
-                      width: Responsive.getWidth(context, 34),
-                      // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 12, bottom: 4),
-                  child: Text(
-                    item['brand']!,
-                    style: TextStyle(
-                        fontSize: Responsive.getFont(context, 12),
-                        color: Colors.grey),
-                  ),
-                ),
-                Text(
-                  item['name']!,
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 12, bottom: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Text(
-                        item['discount']!,
-                        style: TextStyle(
-                          fontSize: Responsive.getFont(context, 14),
-                          color: const Color(0xFFFF6192),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 2),
-                        child: Text(
-                          item['price']!,
-                          style: TextStyle(
-                            fontSize: Responsive.getFont(context, 14),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/home/item_like.svg',
-                      width: Responsive.getWidth(context, 13),
-                      height: Responsive.getHeight(context, 11),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 2, bottom: 2),
-                      child: Text(
-                        item['likes']!,
-                        style: TextStyle(
-                          fontSize: Responsive.getFont(context, 12),
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/images/home/item_comment.svg',
-                            width: Responsive.getWidth(context, 13),
-                            height: Responsive.getHeight(context, 12),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 2, bottom: 2),
-                            child: Text(
-                              item['comments']!,
-                              style: TextStyle(
-                                  fontSize: Responsive.getFont(context, 12),
-                                  color: Colors.grey),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget buildItemCard(Map<String, String> item, int index) {
+  //   return GestureDetector(
+  //     onTap: () {
+  //       // TODO 이동 수정
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => const ProductDetailScreen(ptIdx: 3),
+  //         ),
+  //       );
+  //     },
+  //     child: Container(
+  //       width: 184,
+  //       decoration: const BoxDecoration(
+  //         color: Colors.white,
+  //       ),
+  //       child: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Stack(
+  //             children: [
+  //               ClipRRect(
+  //                 borderRadius: const BorderRadius.all(Radius.circular(5)),
+  //                 child: Image.asset(
+  //                   'assets/images/home/exhi.png',
+  //                   height: 184,
+  //                   width: double.infinity,
+  //                   fit: BoxFit.cover,
+  //                 ),
+  //               ),
+  //               Positioned(
+  //                 top: 0,
+  //                 right: 0,
+  //                 child: GestureDetector(
+  //                   onTap: () {
+  //                     setState(() {
+  //                       // TODO 좋아요 작업
+  //                     });
+  //                   },
+  //                   child: SvgPicture.asset(
+  //                     isFavoriteList[index]
+  //                         ? 'assets/images/home/like_btn_fill.svg'
+  //                         : 'assets/images/home/like_btn.svg',
+  //                     color: isFavoriteList[index]
+  //                         ? const Color(0xFFFF6191)
+  //                         : null,
+  //                     // 좋아요 상태에 따라 내부 색상 변경
+  //                     height: Responsive.getHeight(context, 34),
+  //                     width: Responsive.getWidth(context, 34),
+  //                     // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //           Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               Container(
+  //                 margin: const EdgeInsets.only(top: 12, bottom: 4),
+  //                 child: Text(
+  //                   item['brand']!,
+  //                   style: TextStyle(
+  //                       fontSize: Responsive.getFont(context, 12),
+  //                       color: Colors.grey),
+  //                 ),
+  //               ),
+  //               Text(
+  //                 item['name']!,
+  //                 style: TextStyle(
+  //                   fontSize: Responsive.getFont(context, 14),
+  //                 ),
+  //                 maxLines: 2,
+  //                 overflow: TextOverflow.ellipsis,
+  //               ),
+  //               Container(
+  //                 margin: const EdgeInsets.only(top: 12, bottom: 10),
+  //                 child: Row(
+  //                   crossAxisAlignment: CrossAxisAlignment.baseline,
+  //                   textBaseline: TextBaseline.alphabetic,
+  //                   children: [
+  //                     Text(
+  //                       item['discount']!,
+  //                       style: TextStyle(
+  //                         fontSize: Responsive.getFont(context, 14),
+  //                         color: const Color(0xFFFF6192),
+  //                         fontWeight: FontWeight.bold,
+  //                       ),
+  //                     ),
+  //                     Container(
+  //                       margin: const EdgeInsets.symmetric(horizontal: 2),
+  //                       child: Text(
+  //                         item['price']!,
+  //                         style: TextStyle(
+  //                           fontSize: Responsive.getFont(context, 14),
+  //                           fontWeight: FontWeight.bold,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.start,
+  //                 children: [
+  //                   SvgPicture.asset(
+  //                     'assets/images/home/item_like.svg',
+  //                     width: Responsive.getWidth(context, 13),
+  //                     height: Responsive.getHeight(context, 11),
+  //                   ),
+  //                   Container(
+  //                     margin: const EdgeInsets.only(left: 2, bottom: 2),
+  //                     child: Text(
+  //                       item['likes']!,
+  //                       style: TextStyle(
+  //                         fontSize: Responsive.getFont(context, 12),
+  //                         color: Colors.grey,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     margin: const EdgeInsets.symmetric(horizontal: 10),
+  //                     child: Row(
+  //                       children: [
+  //                         SvgPicture.asset(
+  //                           'assets/images/home/item_comment.svg',
+  //                           width: Responsive.getWidth(context, 13),
+  //                           height: Responsive.getHeight(context, 12),
+  //                         ),
+  //                         Container(
+  //                           margin: const EdgeInsets.only(left: 2, bottom: 2),
+  //                           child: Text(
+  //                             item['comments']!,
+  //                             style: TextStyle(
+  //                                 fontSize: Responsive.getFont(context, 12),
+  //                                 color: Colors.grey),
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }

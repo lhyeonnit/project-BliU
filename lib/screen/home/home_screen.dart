@@ -1,3 +1,4 @@
+import 'package:BliU/data/category_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
@@ -8,19 +9,22 @@ import 'package:BliU/screen/home/component/home_body_category.dart';
 import 'package:BliU/screen/home/component/home_body_exhibition.dart';
 import 'package:BliU/screen/home/component/home_footer.dart';
 import 'package:BliU/screen/home/component/home_header.dart';
+import 'package:BliU/screen/home/viewmodel/home_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
+  List<CategoryData> cateList = [];
   bool _isScrolled = false;
 
   @override
@@ -37,12 +41,31 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getCategoryList();
+  }
+
+  void _getCategoryList() async {
+    Map<String, dynamic> requestData = {'category_type': '1'};
+    final categoryResponseDTO = await ref.read(homeViewModelProvider.notifier).getCategory(requestData);
+    if (categoryResponseDTO != null) {
+      if (categoryResponseDTO.result == true) {
+        setState(() {
+          cateList = categoryResponseDTO.list ?? [];
+        });
+      }
+    }
   }
 
   @override
@@ -158,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
-                          const HomeBodyCategory(),
+                          HomeBodyCategory(cateList: cateList,),
                           const HomeBodyAi(),
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 30.0),
