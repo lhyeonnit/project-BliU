@@ -12,9 +12,9 @@ class CategoryData {
     required this.cstIdx,
     required this.img,
     required this.ctName,
-    required this.subList,
     required this.catIdx,
     required this.catName,
+    required this.subList,
   });
 
   // JSON to Object

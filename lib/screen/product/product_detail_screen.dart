@@ -262,7 +262,6 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   void _afterBuild(BuildContext context) {
     _getDetail();
-    _getReviewList();
   }
 
   void _getDetail() async {
@@ -275,9 +274,5 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     };
 
     ref.read(productDetailModelProvider.notifier).getDetail(requestData);
-  }
-
-  void _getReviewList() async {
-
   }
 }
