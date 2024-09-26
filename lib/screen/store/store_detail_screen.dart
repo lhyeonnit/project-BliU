@@ -25,17 +25,17 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
     with TickerProviderStateMixin {
   final ItemScrollController _scrollController = ItemScrollController();
   late TabController _tabController;
-  final List<CategoryData> categories = [
-    CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', subList: [])
-  ];
+  // final List<CategoryData> categories = [
+  //   CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', subList: [])
+  // ];
   List<StoreResponseDTO?> storeList = [];
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: categories.length, vsync: this);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _afterBuild(context);
-    });
+    // _tabController = TabController(length: categories.length, vsync: this);
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _afterBuild(context);
+    // });
   }
 
   @override
@@ -76,27 +76,28 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
                       Container(
                         height: 60.0,
                         padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: TabBar(
-                          controller: _tabController,
-                          labelStyle: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            fontWeight: FontWeight.w600,
-                          ),
-                          overlayColor: WidgetStateColor.transparent,
-                          indicatorColor: Colors.black,
-                          dividerColor: Color(0xFFDDDDDD),
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          labelColor: Colors.black,
-                          unselectedLabelColor: const Color(0xFF7B7B7B),
-                          isScrollable: true,
-                          indicatorWeight: 2.0,
-                          tabAlignment: TabAlignment.start,
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          tabs: categories.map((category) {
-                            return Tab(text: category.ctName ?? "");
-                          }).toList(),
-                        ),
+                        // child: TabBar(
+                        //   controller: _tabController,
+                        //   labelStyle: TextStyle(
+                        //     fontFamily: 'Pretendard',
+                        //     fontSize: Responsive.getFont(context, 14),
+                        //     fontWeight: FontWeight.w600,
+                        //   ),
+                        //   overlayColor: WidgetStateColor.transparent,
+                        //   indicatorColor: Colors.black,
+                        //   dividerColor: Color(0xFFDDDDDD),
+                        //   indicatorSize: TabBarIndicatorSize.tab,
+                        //   labelColor: Colors.black,
+                        //   unselectedLabelColor: const Color(0xFF7B7B7B),
+                        //   isScrollable: true,
+                        //   indicatorWeight: 2.0,
+                        //   tabAlignment: TabAlignment.start,
+                        //   padding: const EdgeInsets.symmetric(horizontal: 12),
+                        //   tabs: categories.map((category) {
+                        //     return Tab(text: category.ctName ?? "");
+                        //   }
+                        //   ).toList(),
+                        // ),
                       ),
                     ],
                   ), // 상단 고정된 컨텐츠
@@ -106,7 +107,8 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
             body: TabBarView(
               controller: _tabController,
               children: List.generate(
-                categories.length,
+                // categories.length,
+                1,
                 (index) {
                   // 상품 리스트
                   return StoreCategoryItem(
@@ -122,58 +124,58 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
     );
   }
 
-  void _afterBuild(BuildContext context) {
-    _getAllList();
-  }
-
-  void _getAllList() async {
-    // TODO 회원 비회원 처리
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    // TODO 페이징 처리 필요
-    Map<String, dynamic> requestData = {'category_type': '2'};
-    final categoryResponseDTO =
-        await ref.read(StoreProductViewModelProvider.notifier).getCategory(requestData);
-    if (categoryResponseDTO != null) {
-      if (categoryResponseDTO.result == true) {
-        final list = categoryResponseDTO.list ?? [];
-        for (var item in list) {
-          categories.add(item);
-        }
-
-        for (var cate in categories) {
-          String category = "all";
-          if ((cate.ctIdx ?? 0) > 0) {
-            category = cate.ctIdx.toString();
-          }
-
-          Map<String, dynamic> requestData = {
-            'mt_idx': mtIdx,
-            'st_idx' : 1,
-            'category': 'all',
-            'pg': 1,
-          };
-
-          final storeProductListResponseDTO = await ref
-              .read(StoreProductViewModelProvider.notifier)
-              .getList(requestData);
-          if (storeProductListResponseDTO != null) {
-            if (storeProductListResponseDTO.result == true) {
-              storeList.add(storeProductListResponseDTO);
-            } else {
-              storeList.add(null);
-            }
-          } else {
-            storeList.add(null);
-          }
-        }
-
-        setState(() {
-          _tabController =
-              TabController(length: categories.length, vsync: this);
-        });
-      }
-    }
-  }
+  // void _afterBuild(BuildContext context) {
+  //   _getAllList();
+  // }
+  //
+  // void _getAllList() async {
+  //   // TODO 회원 비회원 처리
+  //   final pref = await SharedPreferencesManager.getInstance();
+  //   final mtIdx = pref.getMtIdx();
+  //
+  //   // TODO 페이징 처리 필요
+  //   Map<String, dynamic> requestData = {'category_type': '2'};
+  //   final categoryResponseDTO =
+  //       await ref.read(StoreProductViewModelProvider.notifier).getCategory(requestData);
+  //   if (categoryResponseDTO != null) {
+  //     if (categoryResponseDTO.result == true) {
+  //       final list = categoryResponseDTO.list ?? [];
+  //       for (var item in list) {
+  //         categories.add(item);
+  //       }
+  //
+  //       for (var cate in categories) {
+  //         String category = "all";
+  //         if ((cate.ctIdx ?? 0) > 0) {
+  //           category = cate.ctIdx.toString();
+  //         }
+  //
+  //         Map<String, dynamic> requestData = {
+  //           'mt_idx': mtIdx,
+  //           'st_idx' : 1,
+  //           'category': 'all',
+  //           'pg': 1,
+  //         };
+  //
+  //         final storeProductListResponseDTO = await ref
+  //             .read(StoreProductViewModelProvider.notifier)
+  //             .getList(requestData);
+  //         if (storeProductListResponseDTO != null) {
+  //           if (storeProductListResponseDTO.result == true) {
+  //             storeList.add(storeProductListResponseDTO);
+  //           } else {
+  //             storeList.add(null);
+  //           }
+  //         } else {
+  //           storeList.add(null);
+  //         }
+  //       }
+  //
+  //       setState(() {
+  //         _tabController =
+  //             TabController(length: categories.length, vsync: this);
+  //       });
+  //     }
+  //   }
+  // }
 }
