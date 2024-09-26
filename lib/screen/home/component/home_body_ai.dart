@@ -43,7 +43,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
             ),
           ),
           Container(
-            height: 290,
+            height: 277,
             margin: const EdgeInsets.only(top: 20),
             child: ListView.builder(
               shrinkWrap: true,
@@ -75,10 +75,12 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                             ClipRRect(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5)),
-                              child: Image.network(
-                                productData.ptImg ?? "",
-                                height: 160,
-                                fit: BoxFit.cover,
+                              child: AspectRatio(
+                                aspectRatio: 1,  // 1:1 비율로 설정
+                                child: Image.network(
+                                  productData.ptImg ?? "",
+                                  fit: BoxFit.cover,  // 이미지가 비율에 맞게 잘림
+                                ),
                               ),
                             ),
                             Positioned(
@@ -110,7 +112,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              margin: const EdgeInsets.only(top: 12, bottom: 4),
+                              margin: const EdgeInsets.only(top: 10, bottom: 3),
                               child: Text(
                                 productData.stName ?? "",
                                 style: TextStyle(
@@ -131,7 +133,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                             ),
                             Container(
                               margin:
-                                  const EdgeInsets.only(top: 12, bottom: 10),
+                                  const EdgeInsets.only(top: 8, bottom: 5),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.baseline,
                                 textBaseline: TextBaseline.alphabetic,

@@ -45,7 +45,7 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
             ...bannerList.map((banner) {
               return Stack(
                 children: [
-                  SizedBox(
+                  Container(
                     width: double.infinity,
                     height: Responsive.getHeight(context, 625),
                     child: GestureDetector(
@@ -65,6 +65,42 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
                       ),
                     ),
                   ),
+                  // 상단 그림자
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: 56, // 상단 그림자의 높이
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.black.withOpacity(0.4), // 더 진한 그림자 색
+                            Colors.transparent, // 투명색으로 변화
+                          ],
+                        ),
+                      ),
+                    ),
+                  ), Positioned(
+                    bottom: 30,
+                    left: 0,
+                    right: 0,
+                    height: 270, // 상단 그림자의 높이
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [
+                            Colors.black.withOpacity(0.4), // 더 진한 그림자 색
+                            Colors.transparent, // 투명색으로 변화
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   // Positioned(
                   //   top: Responsive.getHeight(context, 409),
                   //   left: Responsive.getWidth(context, 16),
@@ -72,7 +108,7 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
                   //     crossAxisAlignment: CrossAxisAlignment.start,
                   //     children: [
                   //       Text(
-                  //         title,
+                  //         'title',
                   //         style: TextStyle(
                   // fontFamily: 'Pretendard',
                   //           fontSize: Responsive.getFont(context, 30),
@@ -81,7 +117,7 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
                   //         ),
                   //       ),
                   //       Text(
-                  //         subtitle,
+                  //         'subtitle',
                   //         style: TextStyle(
                   // fontFamily: 'Pretendard',
                   //           fontSize: Responsive.getFont(context, 30),
@@ -91,7 +127,7 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
                   //       ),
                   //       SizedBox(height: Responsive.getHeight(context, 13.82)),
                   //       Text(
-                  //         description,
+                  //         'description',
                   //         style: TextStyle(
                   // fontFamily: 'Pretendard',
                   //           fontSize: Responsive.getFont(context, 16),

@@ -1,4 +1,4 @@
-import 'package:BliU/screen/store/component/detail/store_category.dart';
+import 'package:BliU/screen/category/viewmodel/category_view_model.dart';
 import 'package:BliU/screen/store/store_detail_screen.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,9 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage> {
       _afterBuild(context);
     });
   }
+
   final TextEditingController _searchController = TextEditingController();
+  late TabController _tabController;
 
   final int itemsPerPage = 5;
   final PageController pageController = PageController();
@@ -179,26 +181,27 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage> {
                                       Column(
                                         children: [
                                           Container(
-                                            height: Responsive.getHeight(
-                                                context, 30),
-                                            width: Responsive.getWidth(
-                                                context, 30),
+                                            height: 30,
+                                            width: 30,
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 8),
                                             child: GestureDetector(
                                               onTap: () async {
-                                                final pref = await SharedPreferencesManager.getInstance();
-                                                final mtIdx = pref.getMtIdx(); // 사용자 mtIdx 가져오기
-                                                Map<String, dynamic> requestData =
-                                                {
+                                                final pref =
+                                                    await SharedPreferencesManager
+                                                        .getInstance();
+                                                final mtIdx = pref
+                                                    .getMtIdx(); // 사용자 mtIdx 가져오기
+                                                Map<String, dynamic>
+                                                    requestData = {
                                                   'mt_idx': mtIdx,
                                                   'st_idx': store.stIdx,
                                                   // 상점 인덱스 사용
                                                 };
                                                 await ref
                                                     .read(
-                                                    storeFavoriteViewModelProvider
-                                                        .notifier)
+                                                        storeFavoriteViewModelProvider
+                                                            .notifier)
                                                     .toggleLike(requestData);
                                               },
                                               child: SvgPicture.asset(
@@ -234,8 +237,7 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
-                            (list.length / itemsPerPage).ceil(),
-                            (index) {
+                            (list.length / itemsPerPage).ceil(), (index) {
                           // Safe access to PageController.page, setting it to 0 if uninitialized
                           final currentPage = pageController.hasClients &&
                                   pageController.page != null
@@ -272,7 +274,7 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage> {
                                   fontFamily: 'Pretendard',
                                   decorationThickness: 0),
                               // controller:
-                                  // storeFavoriteViewModel.searchController,
+                              // storeFavoriteViewModel.searchController,
                               decoration: InputDecoration(
                                 contentPadding:
                                     const EdgeInsets.only(left: 16, bottom: 8),
@@ -318,7 +320,35 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage> {
                         ],
                       ),
                     ),
-                    const StoreCategory(),
+                    Consumer(builder: (context, ref, widget) {
+                      final model = ref.watch(categoryModelProvider);
+                      final categories = model?.categoryResponseDTO?.list ?? [];
+                      return Container(
+                        height: 60.0,
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: TabBar(
+                          controller: _tabController,
+                          labelStyle: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.w600,
+                          ),
+                          overlayColor: WidgetStateColor.transparent,
+                          indicatorColor: Colors.black,
+                          dividerColor: Color(0xFFDDDDDD),
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          labelColor: Colors.black,
+                          unselectedLabelColor: const Color(0xFF7B7B7B),
+                          isScrollable: true,
+                          indicatorWeight: 2.0,
+                          tabAlignment: TabAlignment.start,
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          tabs: categories.map((category) {
+                            return Tab(text: category.ctName ?? "");
+                          }).toList(),
+                        ),
+                      );
+                    })
                   ],
                 );
               }),
@@ -332,8 +362,13 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage> {
 
   void _afterBuild(BuildContext context) {
     _getList(true);
+    _getCategory;
   }
 
+  void _getCategory() async{
+    Map<String, dynamic> requestData = {'category_type': '2'};
+    ref.read(categoryModelProvider.notifier).getCategory(requestData);
+  }
   void _getList(bool isNew) async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();

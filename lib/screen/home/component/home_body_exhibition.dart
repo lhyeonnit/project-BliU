@@ -173,11 +173,14 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5.0),
-                              child: Image.asset(
-                                'assets/images/home/exhi.png',
-                                height: Responsive.getHeight(context, 84),
-                                fit: BoxFit
-                                    .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: Image.asset(
+                                  'assets/images/home/exhi.png',
+                                  height: Responsive.getHeight(context, 84),
+                                  fit: BoxFit
+                                      .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                ),
                               ),
                             ),
                           ),
@@ -198,11 +201,14 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5.0),
-                              child: Image.asset(
-                                'assets/images/home/exhi.png',
-                                height: Responsive.getHeight(context, 84),
-                                fit: BoxFit
-                                    .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: Image.asset(
+                                  'assets/images/home/exhi.png',
+                                  height: Responsive.getHeight(context, 84),
+                                  fit: BoxFit
+                                      .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                ),
                               ),
                             ),
                           ),
@@ -223,11 +229,14 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5.0),
-                              child: Image.asset(
-                                'assets/images/home/exhi.png',
-                                height: Responsive.getHeight(context, 84),
-                                fit: BoxFit
-                                    .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: Image.asset(
+                                  'assets/images/home/exhi.png',
+                                  height: Responsive.getHeight(context, 84),
+                                  fit: BoxFit
+                                      .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                ),
                               ),
                             ),
                           ),
@@ -271,7 +280,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10), // 간격을 위한 SizedBox
+                            const SizedBox(height: 5), // 간격을 위한 SizedBox
                             // '자세히보기' 텍스트
                             Text(
                               '자세히보기',

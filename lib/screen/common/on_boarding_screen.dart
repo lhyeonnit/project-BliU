@@ -36,7 +36,6 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
               child: Column(
                 children: [
                   Expanded(
-                    flex: 66,
                     child: PageView.builder(
                       scrollDirection: Axis.horizontal,
                       controller: _communityPageController,
@@ -59,23 +58,20 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                           color: Colors.white,
                           child: Image.asset(
                             imagePath,
-                            width: Responsive.getWidth(context, 412),
-                            height: Responsive.getHeight(context, 660),
+                            width: double.infinity,
                           ),
                         );
                       },
                     ),
                   ),
-                  SizedBox(
-                    height: Responsive.getHeight(context, 100),
-                    width: Responsive.getWidth(context, 412),
+                  Container(
+                    height: Responsive.getHeight(context, 150),
+
                     child: Column(
                       children: [
                         Expanded(
-                          flex: 1,
                           child: Container(
                             color: Colors.white,
-                            width: double.infinity,
                             alignment: Alignment.center,
                             child: SmoothPageIndicator(
                               controller: _communityPageController,
@@ -93,49 +89,52 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                             ),
                           ),
                         ),
-                        Container(
-                          color: Colors.white,
-                          alignment: Alignment.topRight,
-                          height: Responsive.getHeight(context, 58),
-                          child: SizedBox(
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MainScreen(),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: Responsive.getWidth(context, 88),
-                                height: Responsive.getHeight(context, 38),
-                                margin: EdgeInsets.only(
-                                  right: Responsive.getWidth(context, 16),
-                                ),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(19),
-                                  border: Border.all(
-                                    width: 1,
-                                    color: const Color(0xffDDDDDD),
-                                  ),
-                                ),
-                                child: Text(
-                                  _currentPage == 2 ? "다음" : "건너뛰기",
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   )
                 ],
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                color: Colors.white,
+                alignment: Alignment.topRight,
+                height: Responsive.getHeight(context, 58),
+                child: SizedBox(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MainScreen(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: Responsive.getHeight(context, 38),
+                      margin: EdgeInsets.only(right: 16,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(19),
+                        border: Border.all(
+                          width: 1,
+                          color: const Color(0xffDDDDDD),
+                        ),
+                      ),
+                      child: Text(
+                        _currentPage == 2 ? "다음" : "건너뛰기",
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
           ],

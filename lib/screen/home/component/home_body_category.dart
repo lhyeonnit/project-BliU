@@ -22,7 +22,7 @@ class HomeBodyCategory extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 30, bottom: 25),
       child: Container(
-        height: 110,
+        height: 100,
         padding: const EdgeInsets.only(left: 16),
         child: ListView.builder(
           shrinkWrap: true,
@@ -35,7 +35,7 @@ class HomeBodyCategory extends ConsumerWidget {
               overlayColor: WidgetStateColor.transparent,
               onTap: () {
                 if (index == 0) {
-                  ref.read(mainScreenProvider.notifier).selectNavigation(1);
+                  ref.read(mainScreenProvider.notifier).selectNavigation(0);
                 } else {
                   Navigator.push(
                     context,
@@ -85,13 +85,14 @@ class HomeBodyCategory extends ConsumerWidget {
                     ),
                     Container(
                       alignment: Alignment.topCenter,
-                      margin: const EdgeInsets.only(top: 15),
+                      margin: const EdgeInsets.only(top: 10),
                       child: Text(
                         category.ctName ?? "",
                         textAlign: TextAlign.center,
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             color: Colors.black,
-                            fontSize: Responsive.getFont(context, 14)),
+                            fontSize: Responsive.getFont(context, 14), fontWeight: FontWeight.w500),
                       ),
                     ),
                   ],
