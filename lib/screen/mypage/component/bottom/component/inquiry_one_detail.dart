@@ -32,6 +32,7 @@ class InquiryOneDetail extends ConsumerWidget {
         backgroundColor: Colors.white,
         title: const Text('문의내역'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -108,6 +109,7 @@ class InquiryOneDetail extends ConsumerWidget {
                             Text(
                               detailData?.qtStatusTxt ?? "",
                               style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black,
@@ -118,6 +120,7 @@ class InquiryOneDetail extends ConsumerWidget {
                               child: Text(
                                 detailData?.qtWdate ?? "",
                                 style: TextStyle(
+                                  fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
                                   color: Color(0xFF7B7B7B),
                                 ),
@@ -130,6 +133,7 @@ class InquiryOneDetail extends ConsumerWidget {
                           child: Text(
                             detailData?.qtTitle ?? "",
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -139,7 +143,8 @@ class InquiryOneDetail extends ConsumerWidget {
                         Text(
                           detailData?.qtContent ?? "",
                           style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
                             color: Colors.black,
                             fontWeight: FontWeight.w400,
                           ),
@@ -147,7 +152,6 @@ class InquiryOneDetail extends ConsumerWidget {
                       ],
                     ),
                   ),
-
 
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -178,6 +182,7 @@ class InquiryOneDetail extends ConsumerWidget {
                           child: Text(
                             '삭제',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 fontWeight: FontWeight.w500),
                           ),
@@ -241,6 +246,7 @@ class InquiryOneDetail extends ConsumerWidget {
             Text(
               '고객센터',
               style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
                 fontWeight: FontWeight.w400,
                 color: Colors.black,
@@ -251,6 +257,7 @@ class InquiryOneDetail extends ConsumerWidget {
               child: Text(
                 detailData?.qtUdate ?? "",
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 13),
                   color: Color(0xFF7B7B7B),
                 ),
@@ -263,7 +270,11 @@ class InquiryOneDetail extends ConsumerWidget {
           child: Text(
             detailData?.qtAnswer ?? "",
             style: TextStyle(
-                fontSize: Responsive.getFont(context, 14), color: Colors.black, fontWeight: FontWeight.w400,),
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 14),
+              color: Colors.black,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
       ],

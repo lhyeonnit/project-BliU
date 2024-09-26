@@ -58,10 +58,10 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                         return Container(
                           color: Colors.white,
                           child: Image.asset(
-                              imagePath,
-                              width: Responsive.getWidth(context, 412),
-                              height: Responsive.getHeight(context, 660),
-                            ),
+                            imagePath,
+                            width: Responsive.getWidth(context, 412),
+                            height: Responsive.getHeight(context, 660),
+                          ),
                         );
                       },
                     ),
@@ -124,6 +124,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                                 child: Text(
                                   _currentPage == 2 ? "다음" : "건너뛰기",
                                   style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                   ),
                                 ),
@@ -141,7 +142,6 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         ),
       ),
     );
-
   }
 
   Future<bool> _onWillPop() async {
@@ -149,7 +149,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
 
     bool backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
         _backButtonPressedTime == null ||
-            currentTime.difference(_backButtonPressedTime!) > const Duration(seconds: 3);
+            currentTime.difference(_backButtonPressedTime!) >
+                const Duration(seconds: 3);
 
     if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
       _backButtonPressedTime = currentTime;

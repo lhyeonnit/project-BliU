@@ -34,6 +34,7 @@ class InquiryProductDetail extends ConsumerWidget {
         backgroundColor: Colors.white,
         title: const Text('문의내역'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -117,8 +118,8 @@ class InquiryProductDetail extends ConsumerWidget {
                               width: 90,
                               height: 90,
                               fit: BoxFit.cover,
-                              errorBuilder: (BuildContext context, Object exception,
-                                  StackTrace? stackTrace) {
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
                                 return _errorImg(90, 90);
                               },
                             ),
@@ -126,36 +127,39 @@ class InquiryProductDetail extends ConsumerWidget {
                         ),
                         Expanded(
                           child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  product?.stName ?? "",
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                product?.stName ?? "",
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 12),
+                                  color: Color(0xFF7B7B7B),
+                                ),
+                              ),
+                              Text(
+                                product?.ptName ?? "",
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 8),
+                                child: Text(
+                                  '${product?.ptPrice ?? 0}원',
                                   style: TextStyle(
-                                    fontSize: Responsive.getFont(context, 12),
-                                    color: Color(0xFF7B7B7B),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 16),
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Text(
-                                  product?.ptName ?? "",
-                                  style: TextStyle(
-                                    fontSize: Responsive.getFont(context, 14),
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 8),
-                                  child: Text(
-                                    '${product?.ptPrice ?? 0}원',
-                                    style: TextStyle(
-                                      fontSize: Responsive.getFont(context, 16),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -174,6 +178,7 @@ class InquiryProductDetail extends ConsumerWidget {
                             Text(
                               detailData?.qtStatusTxt ?? "",
                               style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black,
@@ -184,6 +189,7 @@ class InquiryProductDetail extends ConsumerWidget {
                               child: Text(
                                 detailData?.qtWdate ?? "",
                                 style: TextStyle(
+                                  fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
                                   color: Color(0xFF7B7B7B),
                                 ),
@@ -196,6 +202,7 @@ class InquiryProductDetail extends ConsumerWidget {
                           child: Text(
                             detailData?.qtTitle ?? "",
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -205,8 +212,9 @@ class InquiryProductDetail extends ConsumerWidget {
                         Text(
                           detailData?.qtContent ?? "",
                           style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.black,
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Colors.black,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -245,9 +253,9 @@ class InquiryProductDetail extends ConsumerWidget {
                           child: Text(
                             '삭제',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.w500
-                            ),
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                       ),
@@ -327,6 +335,7 @@ class InquiryProductDetail extends ConsumerWidget {
                   Text(
                     product?.stName ?? "",
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       fontWeight: FontWeight.w400,
                       color: Colors.black,
@@ -335,6 +344,7 @@ class InquiryProductDetail extends ConsumerWidget {
                   Text(
                     detailData?.qtUdate ?? "",
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 13),
                       color: Color(0xFF7B7B7B),
                     ),
@@ -348,7 +358,10 @@ class InquiryProductDetail extends ConsumerWidget {
             child: Text(
               detailData?.qtAnswer ?? "",
               style: TextStyle(
-                  fontSize: Responsive.getFont(context, 14), color: Colors.black, fontWeight: FontWeight.w400),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400),
             ),
           ),
         ],

@@ -43,11 +43,13 @@ class NoticeList extends ConsumerWidget {
                       title: Text(
                         noticeData.ntTitle ?? "",
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 15),
                             fontWeight: FontWeight.w600),
                       ),
                       subtitle: Text(noticeData.ntWdate ?? "",
                           style: TextStyle(
+                              fontFamily: 'Pretendard',
                               color: Color(0xFF7B7B7B),
                               fontSize: Responsive.getFont(context, 14))),
                       trailing: SvgPicture.asset('assets/images/ic_link.svg'),

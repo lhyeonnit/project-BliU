@@ -55,6 +55,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
       'comments': '49'
     },
   ];
+
   @override
   void initState() {
     super.initState();
@@ -75,6 +76,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
         ),
         title: const Text("우리 아이를 위한 포근한 선택"),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -140,6 +142,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                   child: Text(
                     '2',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       color: Colors.white,
                       fontSize: Responsive.getFont(context, 9),
                     ),
@@ -174,6 +177,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                   child: Text(
                     '우리 아이를 위한 포근한 선택',
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 20)),
                   ),
@@ -183,16 +187,18 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                     '집에서도 스타일리시하게!\n우리 아이를 위한 홈웨어 컬렉션.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                         color: const Color(0xFF7B7B7B)),
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical:30, horizontal: 16),
+                  margin: EdgeInsets.symmetric(vertical: 30, horizontal: 16),
                   child: GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 12.0,
                       mainAxisSpacing: 30.0,
@@ -212,6 +218,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
       ),
     );
   }
+
   Widget buildItemCard(Map<String, String> item, int index) {
     return GestureDetector(
       onTap: () {
@@ -219,8 +226,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-            const ProductDetailScreen(ptIdx: 3),
+            builder: (context) => const ProductDetailScreen(ptIdx: 3),
           ),
         );
       },
@@ -235,8 +241,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius:
-                  const BorderRadius.all(Radius.circular(5)),
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: Image.asset(
                     'assets/images/home/exhi.png',
                     height: 184,
@@ -251,7 +256,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                     onTap: () {
                       setState(() {
                         isFavoriteList[index] =
-                        !isFavoriteList[index]; // 좋아요 상태 토글
+                            !isFavoriteList[index]; // 좋아요 상태 토글
                       });
                     },
                     child: SvgPicture.asset(
@@ -278,6 +283,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                   child: Text(
                     item['brand']!,
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 12),
                         color: Colors.grey),
                   ),
@@ -285,6 +291,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                 Text(
                   item['name']!,
                   style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: 14,
                   ),
                   maxLines: 2,
@@ -299,6 +306,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                       Text(
                         item['discount']!,
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
@@ -309,6 +317,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                         child: Text(
                           item['price']!,
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
                           ),
@@ -330,6 +339,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                       child: Text(
                         item['likes']!,
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
                         ),
@@ -346,10 +356,10 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                           ),
                           Container(
                             margin: EdgeInsets.only(left: 2, bottom: 2),
-
                             child: Text(
                               item['comments']!,
                               style: TextStyle(
+                                  fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
                                   color: Colors.grey),
                             ),
@@ -357,7 +367,6 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ],

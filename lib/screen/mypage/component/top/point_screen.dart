@@ -72,6 +72,7 @@ class _PointScreenState extends State<PointScreen> {
         backgroundColor: Colors.white,
         title: const Text('포인트'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -121,12 +122,14 @@ class _PointScreenState extends State<PointScreen> {
                       Text(
                         '나의 포인트',
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.black),
                       ),
                       Text(
                         '5,100P',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 18),
                           fontWeight: FontWeight.bold,
                         ),
@@ -150,6 +153,8 @@ class _PointScreenState extends State<PointScreen> {
                           label: Text(
                             categories[index],
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
+
                               fontSize: Responsive.getFont(context, 14),
                               color: isSelected
                                   ? Color(0xFFFF6192)
@@ -226,9 +231,8 @@ class _PointScreenState extends State<PointScreen> {
           Text(
             type,
             style: TextStyle(
-              color: type == '적립'
-                  ? const Color(0xFFFF6192)
-                  :  Colors.black,
+              fontFamily: 'Pretendard',
+              color: type == '적립' ? const Color(0xFFFF6192) : Colors.black,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -240,6 +244,7 @@ class _PointScreenState extends State<PointScreen> {
                 Text(
                   point,
                   style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 15),
                     fontWeight: FontWeight.bold,
                   ),
@@ -249,6 +254,7 @@ class _PointScreenState extends State<PointScreen> {
                   child: Text(
                     description,
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         color: Color(0xFF7B7B7B),
                         fontSize: Responsive.getFont(context, 14)),
                   ),
@@ -256,6 +262,7 @@ class _PointScreenState extends State<PointScreen> {
                 Text(
                   date,
                   style: TextStyle(
+                      fontFamily: 'Pretendard',
                       color: Color(0xFF7B7B7B),
                       fontSize: Responsive.getFont(context, 14)),
                 ),

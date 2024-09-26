@@ -11,7 +11,8 @@ class ServiceMyInquiryScreen extends StatefulWidget {
   _ServiceMyInquiryScreenState createState() => _ServiceMyInquiryScreenState();
 }
 
-class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with SingleTickerProviderStateMixin {
+class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -25,6 +26,7 @@ class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with Si
     _tabController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +36,7 @@ class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with Si
         backgroundColor: Colors.white,
         title: const Text('문의내역'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -71,6 +74,7 @@ class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with Si
                 child: TabBar(
                   controller: _tabController,
                   labelStyle: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.w600,
                   ),
@@ -80,7 +84,8 @@ class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with Si
                   ],
                   overlayColor: WidgetStateColor.transparent,
                   indicatorColor: Colors.black,
-                  indicatorSize: TabBarIndicatorSize.tab, // 인디케이터가 각 탭의 길이에 맞게 조정됨
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  // 인디케이터가 각 탭의 길이에 맞게 조정됨
                   labelColor: Colors.black,
                   unselectedLabelColor: const Color(0xFF7B7B7B),
                   dividerColor: Color(0xFFDDDDDD),

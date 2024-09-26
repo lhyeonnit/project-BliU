@@ -58,6 +58,7 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
           child: Text(
             '연령대',
             style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 18),
                 fontWeight: FontWeight.bold),
           ),
@@ -75,10 +76,12 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
           ),
         ),
         Container(
-          padding: EdgeInsets.only(left: 11, right: 10, top: 9,bottom: 8),
+          padding: EdgeInsets.only(left: 11, right: 10, top: 9, bottom: 8),
           decoration: BoxDecoration(
-            border: Border(top: BorderSide(color: Color(0xD000000),))
-          ),
+              border: Border(
+                  top: BorderSide(
+            color: Color(0xD000000),
+          ))),
           child: Row(
             children: [
               Container(
@@ -108,7 +111,8 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
                     child: const Center(
                         child: Text(
                       '선택완료',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          fontFamily: 'Pretendard', color: Colors.white),
                     )),
                     onTap: () {
                       widget.onSelectionChanged(_tempSelectedAgeGroup);
@@ -132,6 +136,7 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
         label: Text(
           ageGroup,
           style: TextStyle(
+            fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
           ),

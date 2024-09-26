@@ -84,6 +84,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                     Text(
                       '추가 정보',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 20),
                         fontWeight: FontWeight.bold,
                       ),
@@ -93,11 +94,13 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                       child: Text(
                         '추가 정보를 입력해 주세요.',
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Color(0xFF7B7B7B)),
                       ),
                     ),
-                    _buildTextField('이름', _nameController, '이름 입력', keyboardType: TextInputType.name),
+                    _buildTextField('이름', _nameController, '이름 입력',
+                        keyboardType: TextInputType.name),
                     Row(
                       children: [
                         Expanded(
@@ -151,6 +154,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                                     child: Text(
                                   '인증요청',
                                   style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize:
                                           Responsive.getFont(context, 14)),
                                 ))),
@@ -215,13 +219,15 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                                   child: Text(
                                     '확인',
                                     style: TextStyle(
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: Colors.white),
-                                    ),
+                                        fontFamily: 'Pretendard',
+                                        fontSize:
+                                            Responsive.getFont(context, 14),
+                                        color: Colors.white),
                                   ),
                                 ),
                               ),
                             ),
+                          ),
                         ],
                       ),
                     ),
@@ -261,6 +267,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                                   Text(
                                     '생일 쿠폰 지급!',
                                     style: TextStyle(
+                                        fontFamily: 'Pretendard',
                                         fontSize:
                                             Responsive.getFont(context, 16),
                                         fontWeight: FontWeight.bold),
@@ -268,6 +275,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                                   Text(
                                     '생년월일을 입력 주시면, 생일날 쿠폰 지급!',
                                     style: TextStyle(
+                                        fontFamily: 'Pretendard',
                                         fontSize:
                                             Responsive.getFont(context, 12),
                                         color: Color(0xFF6A5B54)),
@@ -283,12 +291,14 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                       children: [
                         Text('성별',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.bold,
                                 fontSize: Responsive.getFont(context, 13))),
                         Container(
                             margin: EdgeInsets.only(left: 4),
                             child: Text('선택',
                                 style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.bold,
                                     fontSize: Responsive.getFont(context, 13),
                                     color: Color(0xFFFF6192)))),
@@ -347,6 +357,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                   child: Text(
                     '확인',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color:
                           _isAllFieldsFilled ? Colors.white : Color(0xFF7B7B7B),
@@ -379,12 +390,14 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
               children: [
                 Text(label,
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 13))),
                 Container(
                     margin: EdgeInsets.only(left: 4),
                     child: Text('*',
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontWeight: FontWeight.bold,
                             fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFFFF6192)))),
@@ -394,6 +407,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
           if (label.isNotEmpty)
             TextField(
               style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
               enabled: isEnable,
@@ -405,6 +419,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                     EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF595959)),
                 enabledBorder: OutlineInputBorder(
@@ -437,6 +452,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
           if (label.isNotEmpty)
             TextField(
               style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
               enabled: isEnable,
@@ -448,6 +464,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                     EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF595959)),
                 enabledBorder: OutlineInputBorder(
@@ -483,12 +500,14 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
               children: [
                 Text(label,
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 13))),
                 Container(
                     margin: EdgeInsets.only(left: 4),
                     child: Text('선택',
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontWeight: FontWeight.bold,
                             fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFFFF6192)))),
@@ -497,6 +516,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
           ),
           TextField(
             style: TextStyle(
+              fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
             ),
             enabled: isEnable,
@@ -508,6 +528,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                   EdgeInsets.symmetric(vertical: 14, horizontal: 15),
               hintText: hintText,
               hintStyle: TextStyle(
+                  fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14),
                   color: Color(0xFF595959)),
               enabledBorder: OutlineInputBorder(
@@ -546,6 +567,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
               child: Text(
             gender,
             style: TextStyle(
+                fontFamily: 'Pretendard',
                 color: isSelected ? Color(0xFFFF6192) : Colors.black,
                 fontSize: Responsive.getFont(context, 14)),
           ))),
@@ -562,7 +584,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
 //       crossAxisAlignment: CrossAxisAlignment.start,
 //       children: [
 //         if (label.isNotEmpty)
-//           Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+//           Text(label, style: const TextStyle( fontFamily: 'Pretendard',fontWeight: FontWeight.bold)),
 //         if (label.isNotEmpty) const SizedBox(height: 8),
 //         TextField(
 //           controller: controller,

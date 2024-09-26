@@ -73,67 +73,79 @@ class _MyCouponCardState extends State<MyCouponCard> {
     return Container(
       margin: const EdgeInsets.only(bottom: 15.0),
       decoration: BoxDecoration(
-        border: Border.all(style: BorderStyle.solid, color: const Color(0xFFDDDDDD)),
+        border: Border.all(
+            style: BorderStyle.solid, color: const Color(0xFFDDDDDD)),
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: IntrinsicHeight(
         child: Row(
           children: [
-             Expanded(
-               flex: 8,
-               child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                              widget.discount,
+            Expanded(
+              flex: 8,
+              child: Container(
+                margin:
+                    const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.discount,
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 16),
+                            fontWeight: FontWeight.bold,
+                            color: isDownloaded
+                                ? const Color(0xFFA4A4A4)
+                                : const Color(0xFFFF6192),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 6),
+                            child: Text(
+                              widget.title,
                               style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 16),
                                 fontWeight: FontWeight.bold,
-                                color: isDownloaded ? const Color(0xFFA4A4A4) : const Color(0xFFFF6192),
+                                color: isDownloaded
+                                    ? const Color(0xFFA4A4A4)
+                                    : Colors.black,
                               ),
+                              softWrap: true,
                             ),
-                          Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 6),
-                              child: Text(
-                                widget.title,
-                                style: TextStyle(
-                                  fontSize: Responsive.getFont(context, 16),
-                                  fontWeight: FontWeight.bold,
-                                  color: isDownloaded ? const Color(0xFFA4A4A4) : Colors.black,
-                                ),
-                                softWrap: true,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Text(
-                          widget.expiryDate,
-                          style: TextStyle(
-                            fontSize: Responsive.getFont(context, 14),
-                            color: isDownloaded ? const Color(0xFFA4A4A4) : Colors.black,
                           ),
                         ),
-                      ),
-                      Text(
-                        widget.discountDetails,
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        widget.expiryDate,
                         style: TextStyle(
-                          fontSize: Responsive.getFont(context, 12),
-                          color: const Color(0xFFA4A4A4),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: isDownloaded
+                              ? const Color(0xFFA4A4A4)
+                              : Colors.black,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    Text(
+                      widget.discountDetails,
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 12),
+                        color: const Color(0xFFA4A4A4),
+                      ),
+                    ),
+                  ],
                 ),
-             ),
+              ),
+            ),
             Expanded(
               flex: 3,
               child: Container(
@@ -147,23 +159,25 @@ class _MyCouponCardState extends State<MyCouponCard> {
                     GestureDetector(
                       onTap: isDownloaded == true ? null : _handleDownload,
                       child: SvgPicture.asset(
-                        isDownloaded ? 'assets/images/store/ic_cu_down_end.svg' : 'assets/images/store/ic_cu_down.svg',
-              
+                        isDownloaded
+                            ? 'assets/images/store/ic_cu_down_end.svg'
+                            : 'assets/images/store/ic_cu_down.svg',
                       ),
                     ),
                     if (isDownloaded == true) // 다운로드된 경우에만 텍스트 표시
-                       Padding(
-                         padding: const EdgeInsets.only(top: 10.0),
-                         child: SizedBox(
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: SizedBox(
                           child: Text(
                             '사용완료',
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 12),
                               color: Colors.grey,
                             ),
                           ),
-                                             ),
-                       ),
+                        ),
+                      ),
                   ],
                 ),
               ),

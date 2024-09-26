@@ -53,6 +53,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
         // 기본 뒤로가기 버튼을 숨김
         title: const Text("주문완료"),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -98,7 +99,8 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 40, horizontal: 16),
                     child: Column(
                       children: [
                         Center(
@@ -111,6 +113,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                 const EdgeInsets.only(top: 25.0, bottom: 29.55),
                             child: Text('주문이 완료되었습니다!',
                                 style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 18),
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -124,20 +127,24 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => OrderListScreen()),
+                                        builder: (context) =>
+                                            OrderListScreen()),
                                   );
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 14),
                                   margin: const EdgeInsets.only(right: 4),
                                   decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                      border:
-                                          Border.all(color: const Color(0xFFDDDDDD))),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(6)),
+                                      border: Border.all(
+                                          color: const Color(0xFFDDDDDD))),
                                   child: Center(
                                       child: Text(
                                     '주문상세보기',
                                     style: TextStyle(
+                                        fontFamily: 'Pretendard',
                                         fontSize:
                                             Responsive.getFont(context, 14)),
                                   )),
@@ -152,7 +159,8 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                   Navigator.of(context).pop();
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 14),
                                   margin: const EdgeInsets.only(left: 4),
                                   decoration: const BoxDecoration(
                                     color: Colors.black,
@@ -163,6 +171,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                       child: Text(
                                     '계속 쇼핑하기',
                                     style: TextStyle(
+                                        fontFamily: 'Pretendard',
                                         color: Colors.white,
                                         fontSize:
                                             Responsive.getFont(context, 14)),
@@ -181,7 +190,8 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                     color: const Color(0xFFF5F9F9),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 16),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -190,6 +200,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                           child: Text(
                             '주문번호',
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                             ),
                           ),
@@ -197,6 +208,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                         Text(
                           payOrderResultDetailData?.otCode ?? "",
                           style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.bold),
                         ),
@@ -209,7 +221,8 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                     color: const Color(0xFFF5F9F9),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -218,6 +231,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                           child: Text(
                             '결제 금액',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 18),
                                 fontWeight: FontWeight.bold),
                           ),
@@ -230,14 +244,16 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                               Text(
                                 '${Utils.getInstance().priceString(payOrderResultDetailData?.otSprice ?? 0)}원',
                                 style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                     fontWeight: FontWeight.bold),
                               ),
                               Container(
                                 margin: const EdgeInsets.only(left: 4),
                                 child: Text(
-                                  '네이버페이',//TODO 졀제수단 들고 오기
+                                  '네이버페이', //TODO 졀제수단 들고 오기
                                   style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                   ),
                                 ),
@@ -249,7 +265,8 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 20),
                     decoration: const BoxDecoration(
                       border: Border(
                         top: BorderSide(
@@ -261,11 +278,15 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildPaymentCompleteRow(
-                            '총 상품 금액', '${Utils.getInstance().priceString(payOrderResultDetailData?.otPrice ?? 0)}원', context),
+                            '총 상품 금액',
+                            '${Utils.getInstance().priceString(payOrderResultDetailData?.otPrice ?? 0)}원',
+                            context),
                         Container(
                             margin: const EdgeInsets.symmetric(vertical: 15),
                             child: _buildPaymentCompleteRow(
-                                '총 배송비', '${Utils.getInstance().priceString(payOrderResultDetailData?.allDeliveryPrice ?? 0)}원', context)),
+                                '총 배송비',
+                                '${Utils.getInstance().priceString(payOrderResultDetailData?.allDeliveryPrice ?? 0)}원',
+                                context)),
                         const Divider(
                           color: Color(0xFFEEEEEE),
                         ),
@@ -274,7 +295,9 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                           child: Column(
                             children: [
                               _buildPaymentCompleteRow(
-                                  '할인금액', '${Utils.getInstance().priceString(payOrderResultDetailData?.otUseCoupon ?? 0)}원', context),
+                                  '할인금액',
+                                  '${Utils.getInstance().priceString(payOrderResultDetailData?.otUseCoupon ?? 0)}원',
+                                  context),
                               // TODO 할인 쿠폰 사용처 확인
                               // Padding(
                               //   padding: const EdgeInsets.only(left: 10.0),
@@ -287,12 +310,14 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                               //           MainAxisAlignment.spaceBetween,
                               //       children: [
                               //         Text('ㄴproductPrice',
-                              //             style: TextStyle(
+                              //             style: TextStyle( fontFamily: 'Pretendard',
+
                               //                 fontSize: Responsive.getFont(
                               //                     context, 14),
                               //                 color: const Color(0xFFA4A4A4))),
                               //         Text('productPrice',
-                              //             style: TextStyle(
+                              //             style: TextStyle( fontFamily: 'Pretendard',
+
                               //                 fontSize: Responsive.getFont(
                               //                     context, 14),
                               //                 color: const Color(0xFFA4A4A4))),
@@ -304,7 +329,9 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                           ),
                         ),
                         _buildPaymentCompleteRow(
-                            '포인트할인', '${payOrderResultDetailData?.otUsePoint ?? 0}원', context),
+                            '포인트할인',
+                            '${payOrderResultDetailData?.otUsePoint ?? 0}원',
+                            context),
                       ],
                     ),
                   ),
@@ -314,16 +341,19 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                     color: const Color(0xFFF5F9F9),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 16),
                     child: Text(
                       '배송지 정보',
                       style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 18),
                           fontWeight: FontWeight.bold),
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 16),
                     decoration: const BoxDecoration(
                       border: Border(
                         top: BorderSide(
@@ -342,6 +372,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                 child: Text(
                                   '받는사람',
                                   style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize:
                                           Responsive.getFont(context, 14)),
                                 )),
@@ -353,6 +384,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                   Text(
                                     '${widget.savedRecipientName}',
                                     style: TextStyle(
+                                        fontFamily: 'Pretendard',
                                         fontSize:
                                             Responsive.getFont(context, 14),
                                         fontWeight: FontWeight.bold),
@@ -362,6 +394,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                       child: Text(
                                         '${widget.savedRecipientPhone}',
                                         style: TextStyle(
+                                          fontFamily: 'Pretendard',
                                           fontSize:
                                               Responsive.getFont(context, 14),
                                         ),
@@ -382,6 +415,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                   child: Text(
                                     '배송지 주소',
                                     style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                     ),
                                   )),
@@ -393,6 +427,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                     Text(
                                       '${widget.savedAddressRoad}',
                                       style: TextStyle(
+                                        fontFamily: 'Pretendard',
                                         fontSize:
                                             Responsive.getFont(context, 14),
                                       ),
@@ -400,6 +435,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                     Text(
                                       '${widget.savedAddressDetail}',
                                       style: TextStyle(
+                                        fontFamily: 'Pretendard',
                                         fontSize:
                                             Responsive.getFont(context, 14),
                                       ),
@@ -411,7 +447,8 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                           ),
                         ),
                         // 예시에서 productPrice를 배송메모로 가정하겠습니다.
-                        if (widget.savedMemo != null && widget.savedMemo!.isNotEmpty)
+                        if (widget.savedMemo != null &&
+                            widget.savedMemo!.isNotEmpty)
                           Container(
                             padding: const EdgeInsets.only(top: 15),
                             child: _buildPaymentCompleteRow(
@@ -434,6 +471,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                         child: Text(
                           '주문상품',
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 18),
                             fontWeight: FontWeight.bold,
                           ),
@@ -450,7 +488,9 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                               ),
                             ),
                           ),
-                          child: PaymentOrderItem(cartList: payOrderResultDetailData?.product ?? []),
+                          child: PaymentOrderItem(
+                              cartList:
+                                  payOrderResultDetailData?.product ?? []),
                         ),
                       ],
                     ),
@@ -473,6 +513,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
         Text(
           title,
           style: TextStyle(
+            fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             color: Colors.black,
           ),
@@ -480,6 +521,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
         Text(
           value,
           style: TextStyle(
+            fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             color: Colors.black,
           ),

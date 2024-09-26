@@ -10,12 +10,13 @@ import 'event_detail.dart';
 class EventList extends ConsumerWidget {
   // TODO 페이징
   var pg = 0;
+
   EventList({super.key});
+
   final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     _getList(ref, true);
 
     return Stack(
@@ -26,7 +27,8 @@ class EventList extends ConsumerWidget {
           child: Consumer(builder: (context, ref, widget) {
             final model = ref.watch(eventListModelProvider);
 
-            final List<EventData> eventList = model?.eventListResponseDTO?.list ?? [];
+            final List<EventData> eventList =
+                model?.eventListResponseDTO?.list ?? [];
 
             return ListView.builder(
               shrinkWrap: true,
@@ -41,11 +43,13 @@ class EventList extends ConsumerWidget {
                       title: Text(
                         eventData.btTitle ?? "",
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 15),
                             fontWeight: FontWeight.w600),
                       ),
                       subtitle: Text(eventData.btWdate ?? "",
                           style: TextStyle(
+                              fontFamily: 'Pretendard',
                               color: Color(0xFF7B7B7B),
                               fontSize: Responsive.getFont(context, 14))),
                       trailing: SvgPicture.asset('assets/images/ic_link.svg'),
@@ -87,9 +91,7 @@ class EventList extends ConsumerWidget {
       model?.eventListResponseDTO?.list?.clear();
     }
 
-    final Map<String, dynamic> requestData = {
-      'pg' : pg
-    };
+    final Map<String, dynamic> requestData = {'pg': pg};
 
     ref.read(eventListModelProvider.notifier).getList(requestData);
   }

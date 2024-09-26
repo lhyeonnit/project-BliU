@@ -19,6 +19,7 @@ import 'component/detail/product_review_list.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final int? ptIdx;
+
   const ProductDetailScreen({super.key, required this.ptIdx});
 
   @override
@@ -40,205 +41,223 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ref, widget) {
-        final model = ref.watch(productDetailModelProvider);
+    return Consumer(builder: (context, ref, widget) {
+      final model = ref.watch(productDetailModelProvider);
 
-        if (model != null) {
-          if (model.productDetailResponseDto?.result != true) {
-            Future.delayed(Duration.zero, () {
-              Utils.getInstance().showSnackBar(context, model.productDetailResponseDto?.message ?? "");
-            });
-            Navigator.pop(context);
-            return const Scaffold();
-          }
+      if (model != null) {
+        if (model.productDetailResponseDto?.result != true) {
+          Future.delayed(Duration.zero, () {
+            Utils.getInstance().showSnackBar(
+                context, model.productDetailResponseDto?.message ?? "");
+          });
+          Navigator.pop(context);
+          return const Scaffold();
         }
+      }
 
-        final store = model?.productDetailResponseDto?.store;
-        final sameList = model?.productDetailResponseDto?.sameList ?? [];
-        final product = model?.productDetailResponseDto?.product;
-        final info = model?.productDetailResponseDto?.info;
-        final reviewInfo = model?.reviewInfoResponseDTO?.reviewInfo;
+      final store = model?.productDetailResponseDto?.store;
+      final sameList = model?.productDetailResponseDto?.sameList ?? [];
+      final product = model?.productDetailResponseDto?.product;
+      final info = model?.productDetailResponseDto?.info;
+      final reviewInfo = model?.reviewInfoResponseDTO?.reviewInfo;
 
-        return Scaffold(
+      return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          scrolledUnderElevation: 0,
           backgroundColor: Colors.white,
-          appBar: AppBar(
-            scrolledUnderElevation: 0,
-            backgroundColor: Colors.white,
-            leading: IconButton(
-              icon: SvgPicture.asset("assets/images/product/ic_back.svg"),
+          leading: IconButton(
+            icon: SvgPicture.asset("assets/images/product/ic_back.svg"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          actions: [
+            IconButton(
+              icon: SvgPicture.asset("assets/images/product/ic_top_sch.svg"),
+              color: Colors.black,
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SearchScreen()),
+                );
               },
             ),
-            actions: [
-              IconButton(
-                icon: SvgPicture.asset("assets/images/product/ic_top_sch.svg"),
-                color: Colors.black,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SearchScreen()),
-                  );
-                },
-              ),
-              Stack(
-                children: [
-                  IconButton(
-                    icon: SvgPicture.asset("assets/images/product/ic_cart.svg"),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const CartScreen()),
-                      );
-                    },
-                  ),
-                  Positioned(
-                    right: 4,
-                    top: 20,
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: Colors.pinkAccent,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Text(
-                        '2',// TODO 장바구니 수
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: Responsive.getFont(context, 12),
-                        ),
+            Stack(
+              children: [
+                IconButton(
+                  icon: SvgPicture.asset("assets/images/product/ic_cart.svg"),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CartScreen()),
+                    );
+                  },
+                ),
+                Positioned(
+                  right: 4,
+                  top: 20,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.pinkAccent,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      '2', // TODO 장바구니 수
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        color: Colors.white,
+                        fontSize: Responsive.getFont(context, 12),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
-          body: Stack(
-            children: [
-              DefaultTabController(
-                length: 2, // 두 개의 탭
-                child: NestedScrollView(
-                  controller: _scrollController,
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      SliverToBoxAdapter(
-                        child: Column(
-                          children: [
-                            ProductBanner(imgArr: product?.imgArr ?? [],),
-                            ProductInfoTitle(storeData: store, productData: product,),
-                          ],
-                        ),
-                      ),
-                    ];
-                  },
-                  body: Column(
-                    children: [
-                      TabBar(
-                        overlayColor: WidgetStateColor.transparent,
-                        indicatorColor: Colors.black,
-                        dividerColor: Color(0xFFDDDDDD),
-                        indicatorSize: TabBarIndicatorSize.tab, // 인디케이터가 각 탭의 길이에 맞게 조정됨
-                        labelColor: Colors.black,
-                        unselectedLabelColor: const Color(0xFF7B7B7B),
-                        tabs: [
-                          const Tab(text: '상세정보'),
-                          Tab(text: '리뷰(${reviewInfo?.reviewCount ?? 0})'),
+                ),
+              ],
+            ),
+          ],
+        ),
+        body: Stack(
+          children: [
+            DefaultTabController(
+              length: 2, // 두 개의 탭
+              child: NestedScrollView(
+                controller: _scrollController,
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          ProductBanner(
+                            imgArr: product?.imgArr ?? [],
+                          ),
+                          ProductInfoTitle(
+                            storeData: store,
+                            productData: product,
+                          ),
                         ],
                       ),
-                      Expanded(
-                        child: TabBarView(
-                          children: [
-                            // 첫 번째 탭: 상세정보에 모든 정보 포함
-                            Container(
-                              margin: EdgeInsets.only(bottom: 50),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    ProductInfoContent(content: product?.ptContent ?? "",),
-                                    ProductAi(productList: sameList,),
-                                    ProductInfoBeforeOrder(infoData: info,),
-                                    ProductInquiry(ptIdx: ptIdx,),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            // 두 번째 탭: 리뷰만 표시
-                            ProductReview(ptIdx: ptIdx),// TODO 리뷰수
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Column(
+                    ),
+                  ];
+                },
+                body: Column(
                   children: [
-                    MoveTopButton(scrollController: _scrollController),
-                    Container(
-                      padding:
-                      const EdgeInsets.only(top: 9, bottom: 8, left: 11, right: 10),
-                      color: Colors.white,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    TabBar(
+                      overlayColor: WidgetStateColor.transparent,
+                      indicatorColor: Colors.black,
+                      dividerColor: Color(0xFFDDDDDD),
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      // 인디케이터가 각 탭의 길이에 맞게 조정됨
+                      labelColor: Colors.black,
+                      unselectedLabelColor: const Color(0xFF7B7B7B),
+                      tabs: [
+                        const Tab(text: '상세정보'),
+                        Tab(text: '리뷰(${reviewInfo?.reviewCount ?? 0})'),
+                      ],
+                    ),
+                    Expanded(
+                      child: TabBarView(
                         children: [
-                          GestureDetector(
-                              child: Container(
-                                height: 48,
-                                width: 48,
-                                margin: const EdgeInsets.only(right: 9),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                    const BorderRadius.all(Radius.circular(6)),
-                                    border: Border.all(color: const Color(0xFFDDDDDD))),
-                                child: SvgPicture.asset(
-                                    'assets/images/product/like_lg_off.svg'),
+                          // 첫 번째 탭: 상세정보에 모든 정보 포함
+                          Container(
+                            margin: EdgeInsets.only(bottom: 50),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  ProductInfoContent(
+                                    content: product?.ptContent ?? "",
+                                  ),
+                                  ProductAi(
+                                    productList: sameList,
+                                  ),
+                                  ProductInfoBeforeOrder(
+                                    infoData: info,
+                                  ),
+                                  ProductInquiry(
+                                    ptIdx: ptIdx,
+                                  ),
+                                ],
                               ),
                             ),
-                          Expanded(
-                            child: GestureDetector(
-                                onTap: () {
-                                  if (product != null) {
-                                    ProductOrderBottomOption.showBottomSheet(context, product);
-                                  }
-                                },
-                                child: Container(
-                                  height: 48,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(6),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      '구매하기',
-                                      style: TextStyle(
-                                        fontSize: Responsive.getFont(context, 14),
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
                           ),
+                          // 두 번째 탭: 리뷰만 표시
+                          ProductReview(ptIdx: ptIdx), // TODO 리뷰수
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        );
-      }
-    );
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  MoveTopButton(scrollController: _scrollController),
+                  Container(
+                    padding: const EdgeInsets.only(
+                        top: 9, bottom: 8, left: 11, right: 10),
+                    color: Colors.white,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          child: Container(
+                            height: 48,
+                            width: 48,
+                            margin: const EdgeInsets.only(right: 9),
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(6)),
+                                border:
+                                    Border.all(color: const Color(0xFFDDDDDD))),
+                            child: SvgPicture.asset(
+                                'assets/images/product/like_lg_off.svg'),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              if (product != null) {
+                                ProductOrderBottomOption.showBottomSheet(
+                                    context, product);
+                              }
+                            },
+                            child: Container(
+                              height: 48,
+                              decoration: const BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(6),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '구매하기',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   void _afterBuild(BuildContext context) {
@@ -250,15 +269,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     final pref = await SharedPreferencesManager.getInstance();
 
     Map<String, dynamic> requestData = {
-      'mt_idx' : pref.getMtIdx(),
-      'pt_idx' : ptIdx,
-      'reload' : 'N',
+      'mt_idx': pref.getMtIdx(),
+      'pt_idx': ptIdx,
+      'reload': 'N',
     };
-    
+
     ref.read(productDetailModelProvider.notifier).getDetail(requestData);
   }
 
-  void _getReviewList() {
-
-  }
+  void _getReviewList() {}
 }

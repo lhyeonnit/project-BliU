@@ -18,7 +18,11 @@ class CancelScreen extends ConsumerStatefulWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
 
-  const CancelScreen({super.key, required this.orderData, required this.orderDetailData,});
+  const CancelScreen({
+    super.key,
+    required this.orderData,
+    required this.orderDetailData,
+  });
 
   @override
   _CancelScreenState createState() => _CancelScreenState();
@@ -73,6 +77,7 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
         backgroundColor: Colors.white,
         title: const Text('취소요청'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -104,7 +109,10 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 주문 날짜 및 ID
-                CancelItem(orderData: widget.orderData, orderDetailData: widget.orderDetailData,),
+                CancelItem(
+                  orderData: widget.orderData,
+                  orderDetailData: widget.orderDetailData,
+                ),
                 // 취소사유 선택
                 Padding(
                   padding: const EdgeInsets.only(bottom: 80),
@@ -148,6 +156,7 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                                         Text(
                                           _dropdownText,
                                           style: TextStyle(
+                                            fontFamily: 'Pretendard',
                                             fontSize:
                                                 Responsive.getFont(context, 14),
                                             color: Colors.black,
@@ -167,7 +176,9 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                               padding: const EdgeInsets.only(top: 10.0),
                               child: TextField(
                                 style: TextStyle(
-                                  fontSize: Responsive.getFont(context, 14),),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                ),
                                 maxLines: 4,
                                 maxLength: 500,
                                 decoration: InputDecoration(
@@ -175,6 +186,7 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                                       vertical: 14, horizontal: 15),
                                   hintText: '세부 내용 입력',
                                   hintStyle: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       color: const Color(0xFF595959)),
                                   enabledBorder: const OutlineInputBorder(
@@ -194,6 +206,7 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                                     child: Text(
                                       '${_detailedReason.length}/500',
                                       style: TextStyle(
+                                        fontFamily: 'Pretendard',
                                         fontSize:
                                             Responsive.getFont(context, 13),
                                         color: const Color(0xFF7B7B7B),
@@ -211,7 +224,9 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                           ],
                         ),
                       ),
-                      ExchangeReturnInfo(orderDetailInfoData: orderDetailInfoData,),
+                      ExchangeReturnInfo(
+                        orderDetailInfoData: orderDetailInfoData,
+                      ),
                     ],
                   ),
                 ),
@@ -233,27 +248,33 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                     onTap: () {
                       // 확인 버튼 눌렀을 때 처리
                       if (_dropdownValue == 0) {
-                        Utils.getInstance().showSnackBar(context, "취소사유를 선택해 주세요");
+                        Utils.getInstance()
+                            .showSnackBar(context, "취소사유를 선택해 주세요");
                         return;
                       }
 
                       if (_detailedReason.isEmpty) {
-                        Utils.getInstance().showSnackBar(context, "세부 내용을 입력해 주세요.");
+                        Utils.getInstance()
+                            .showSnackBar(context, "세부 내용을 입력해 주세요.");
                         return;
                       }
                       _orderCancel();
                     },
                     child: Container(
                       height: Responsive.getHeight(context, 48),
-                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                      margin: const EdgeInsets.only(
+                          right: 16.0, left: 16, top: 8, bottom: 9),
                       decoration: const BoxDecoration(
                         color: Colors.black,
-                        borderRadius: BorderRadius.all(Radius.circular(6),),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(6),
+                        ),
                       ),
                       child: Center(
                         child: Text(
                           '확인',
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.white,
                           ),
@@ -281,21 +302,25 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
     final mtIdx = pref.getMtIdx();
 
     Map<String, dynamic> requestData = {
-      'type' : 1,
-      'mt_idx' : mtIdx,
-      'temp_mt_id' : '',
-      'ot_code' : widget.orderDetailData.otCode,
+      'type': 1,
+      'mt_idx': mtIdx,
+      'temp_mt_id': '',
+      'ot_code': widget.orderDetailData.otCode,
     };
 
-    final orderDetailInfoResponseDTO = await ref.read(cancelViewModelProvider.notifier).getOrderDetail(requestData);
-    final categoryResponseDTO = await ref.read(cancelViewModelProvider.notifier).getCategory();
+    final orderDetailInfoResponseDTO = await ref
+        .read(cancelViewModelProvider.notifier)
+        .getOrderDetail(requestData);
+    final categoryResponseDTO =
+        await ref.read(cancelViewModelProvider.notifier).getCategory();
 
     if (orderDetailInfoResponseDTO != null) {
       if (orderDetailInfoResponseDTO.result == true) {
         orderDetailInfoData = orderDetailInfoResponseDTO.data;
       } else {
         if (!context.mounted) return;
-        Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
+        Utils.getInstance()
+            .showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
       }
     }
 
@@ -313,15 +338,17 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
     final mtIdx = pref.getMtIdx();
 
     Map<String, dynamic> requestData = {
-      'type' : 1,
-      'mt_idx' : mtIdx,
-      'temp_mt_id' : '',
-      'odt_code' : widget.orderDetailData.odtCode,
-      'ct_idx' : _dropdownValue,
-      'ct_reason' : _detailedReason,
+      'type': 1,
+      'mt_idx': mtIdx,
+      'temp_mt_id': '',
+      'odt_code': widget.orderDetailData.odtCode,
+      'ct_idx': _dropdownValue,
+      'ct_reason': _detailedReason,
     };
 
-    final defaultResponseDTO = await ref.read(cancelViewModelProvider.notifier).orderCancel(requestData);
+    final defaultResponseDTO = await ref
+        .read(cancelViewModelProvider.notifier)
+        .orderCancel(requestData);
     Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     if (defaultResponseDTO.result == true) {
       Navigator.pop(context);
@@ -365,6 +392,7 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                       child: Text(
                         _cancelCategory[index].ctName ?? "",
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black,
                         ),

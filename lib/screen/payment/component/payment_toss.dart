@@ -11,6 +11,7 @@ import 'package:tosspayments_widget_sdk_flutter/widgets/payment_method.dart';
 //결제하기
 class PaymentToss extends StatefulWidget {
   final PaymentData paymentData;
+
   const PaymentToss({required this.paymentData, super.key});
 
   @override
@@ -31,15 +32,13 @@ class PaymentTossState extends State<PaymentToss> {
       customerKey: paymentData.customerKey,
     );
 
-    _paymentWidget
-        .renderPaymentMethods(
+    _paymentWidget.renderPaymentMethods(
         selector: 'methods',
-        amount: Amount(value: paymentData.amount, currency: Currency.KRW, country: "KR"),
-        options: RenderPaymentMethodsOptions(variantKey: "DEFAULT")
-    );
+        amount: Amount(
+            value: paymentData.amount, currency: Currency.KRW, country: "KR"),
+        options: RenderPaymentMethodsOptions(variantKey: "DEFAULT"));
 
-    _paymentWidget
-        .renderAgreement(selector: 'agreement');
+    _paymentWidget.renderAgreement(selector: 'agreement');
   }
 
   @override
@@ -50,6 +49,7 @@ class PaymentTossState extends State<PaymentToss> {
           title: const Text('결제'),
           centerTitle: true,
           titleTextStyle: const TextStyle(
+            fontFamily: 'Pretendard',
             fontSize: 20,
             color: Colors.black,
           ),
@@ -62,64 +62,57 @@ class PaymentTossState extends State<PaymentToss> {
         ),
         body: SafeArea(
             child: Column(children: [
-              Expanded(
-                  child: ListView(children: [
-                    PaymentMethodWidget(
-                      paymentWidget: _paymentWidget,
-                      selector: 'methods',
-                    ),
-                    AgreementWidget(paymentWidget: _paymentWidget, selector: 'agreement'),
-                    Container(
-                      margin: const EdgeInsets.all(20),
-                      child: TextButton(
-                          onPressed: () async {
-                            final paymentResult = await _paymentWidget.requestPayment(
-                                paymentInfo: PaymentInfo(
-                                  orderId: paymentData.orderId,
-                                  orderName: paymentData.orderName,
-                                  taxFreeAmount: paymentData.taxFreeAmount,
-                                  customerName: paymentData.customerName,
-                                  appScheme: Platform.isIOS ? 'bliuApp://' : null,
-                                )
-                            );
+          Expanded(
+              child: ListView(children: [
+            PaymentMethodWidget(
+              paymentWidget: _paymentWidget,
+              selector: 'methods',
+            ),
+            AgreementWidget(
+                paymentWidget: _paymentWidget, selector: 'agreement'),
+            Container(
+              margin: const EdgeInsets.all(20),
+              child: TextButton(
+                  onPressed: () async {
+                    final paymentResult = await _paymentWidget.requestPayment(
+                        paymentInfo: PaymentInfo(
+                      orderId: paymentData.orderId,
+                      orderName: paymentData.orderName,
+                      taxFreeAmount: paymentData.taxFreeAmount,
+                      customerName: paymentData.customerName,
+                      appScheme: Platform.isIOS ? 'bliuApp://' : null,
+                    ));
 
-                            if (paymentResult.success != null) {
-                              // 결제 성공 처리
-                              var resultData = <String, dynamic>{};
-                              resultData['result'] = true;
-                              resultData['successData'] = paymentResult.success;
+                    if (paymentResult.success != null) {
+                      // 결제 성공 처리
+                      var resultData = <String, dynamic>{};
+                      resultData['result'] = true;
+                      resultData['successData'] = paymentResult.success;
 
-                              paymentResultData(resultData);
-                            } else if (paymentResult.fail != null) {
-                              // 결제 실패 처리
-                              var resultData = <String, dynamic>{};
-                              resultData['result'] = false;
-                              resultData['errorMessage'] = paymentResult.fail?.errorMessage;
+                      paymentResultData(resultData);
+                    } else if (paymentResult.fail != null) {
+                      // 결제 실패 처리
+                      var resultData = <String, dynamic>{};
+                      resultData['result'] = false;
+                      resultData['errorMessage'] =
+                          paymentResult.fail?.errorMessage;
 
-                              paymentResultData(resultData);
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                              backgroundColor: const Color(0xff7C001D),
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(100)
-                                  )
-                              )
-                          ),
-                          child: const Text(
-                            '결제하기',
-                            style: TextStyle(
-                                color: Colors.white
-                            ),
-                          )
-                      ),
-                    ),
-                  ])
-              )
-            ])
-        )
-    );
+                      paymentResultData(resultData);
+                    }
+                  },
+                  style: TextButton.styleFrom(
+                      backgroundColor: const Color(0xff7C001D),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(100)))),
+                  child: const Text(
+                    '결제하기',
+                    style: TextStyle(
+                        fontFamily: 'Pretendard', color: Colors.white),
+                  )),
+            ),
+          ]))
+        ])));
   }
 
   void paymentResultData(Map<String, dynamic> resultData) {

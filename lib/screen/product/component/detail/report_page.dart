@@ -40,6 +40,7 @@ class _ReportPageState extends State<ReportPage> {
         automaticallyImplyLeading: false,
         title: const Text("신고하기"),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -92,6 +93,7 @@ class _ReportPageState extends State<ReportPage> {
                       child: Text(
                         '신고의 부적합한 사용자/글을 지속적으로 신고하는 경우 제재 조치가 취해질 수 있으니 유의해 주세요',
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Color(0xFF7B7B7B)),
                       ),
@@ -111,6 +113,7 @@ class _ReportPageState extends State<ReportPage> {
                             top: 10.0, bottom: 300, right: 16, left: 16),
                         child: TextField(
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                           ),
                           controller: _controller,
@@ -120,6 +123,7 @@ class _ReportPageState extends State<ReportPage> {
                                 vertical: 14, horizontal: 15),
                             hintText: '직접 입력해주세요',
                             hintStyle: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Color(0xFF595959)),
                             enabledBorder: OutlineInputBorder(
@@ -155,7 +159,8 @@ class _ReportPageState extends State<ReportPage> {
                     ),
                     child: const Text(
                       "신고하기가 완료되었습니다!",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          fontFamily: 'Pretendard', color: Colors.white),
                     ),
                   ),
                 ),
@@ -182,6 +187,7 @@ class _ReportPageState extends State<ReportPage> {
                   child: Text(
                     '확인',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),
@@ -217,7 +223,9 @@ class _ReportPageState extends State<ReportPage> {
         ),
         Text(
           label,
-          style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+          style: TextStyle(
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 14)),
         ),
       ],
     );

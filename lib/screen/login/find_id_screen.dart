@@ -63,6 +63,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                       Text(
                         '아이디 찾기',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 20),
                           fontWeight: FontWeight.bold,
                         ),
@@ -72,6 +73,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                         child: Text(
                           '아이디를 찾으려면 아래 정보를 입력하세요.',
                           style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Color(0xFF7B7B7B)),
                         ),
@@ -132,6 +134,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                                       child: Text(
                                     '인증요청',
                                     style: TextStyle(
+                                        fontFamily: 'Pretendard',
                                         fontSize:
                                             Responsive.getFont(context, 14)),
                                   ))),
@@ -196,6 +199,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                                     child: Text(
                                       '확인',
                                       style: TextStyle(
+                                          fontFamily: 'Pretendard',
                                           fontSize:
                                               Responsive.getFont(context, 14),
                                           color: Colors.white),
@@ -220,21 +224,20 @@ class _FindIdScreenState extends State<FindIdScreen> {
             child: GestureDetector(
               onTap: _isAllFieldsFilled
                   ? () {
-                // 아이디 확인 로직 추가
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                    const FindIdCompleteScreen(),
-                  ),
-                );
-              }
+                      // 아이디 확인 로직 추가
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FindIdCompleteScreen(),
+                        ),
+                      );
+                    }
                   : null,
               child: Container(
                 width: double.infinity,
                 height: Responsive.getHeight(context, 48),
                 margin:
-                EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                    EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
                 decoration: BoxDecoration(
                   color: _isAllFieldsFilled ? Colors.black : Color(0xFFDDDDDD),
                   borderRadius: BorderRadius.all(
@@ -245,9 +248,10 @@ class _FindIdScreenState extends State<FindIdScreen> {
                   child: Text(
                     '확인',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color:
-                      _isAllFieldsFilled ? Colors.white : Color(0xFF7B7B7B),
+                          _isAllFieldsFilled ? Colors.white : Color(0xFF7B7B7B),
                     ),
                   ),
                 ),
@@ -277,12 +281,14 @@ class _FindIdScreenState extends State<FindIdScreen> {
               children: [
                 Text(label,
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 13))),
                 Container(
                     margin: EdgeInsets.only(left: 4),
                     child: Text('*',
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontWeight: FontWeight.bold,
                             fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFFFF6192)))),
@@ -292,6 +298,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
           if (label.isNotEmpty)
             TextField(
               style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
               enabled: isEnable,
@@ -303,6 +310,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                     EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF595959)),
                 enabledBorder: OutlineInputBorder(
@@ -335,6 +343,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
           if (label.isNotEmpty)
             TextField(
               style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
               enabled: isEnable,
@@ -346,6 +355,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                     EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF595959)),
                 enabledBorder: OutlineInputBorder(

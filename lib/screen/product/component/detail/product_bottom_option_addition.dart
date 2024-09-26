@@ -7,10 +7,12 @@ class ProductBottomOptionAddition extends StatefulWidget {
   const ProductBottomOptionAddition({super.key});
 
   @override
-  State<ProductBottomOptionAddition> createState() => _ProductBottomOptionAdditionState();
+  State<ProductBottomOptionAddition> createState() =>
+      _ProductBottomOptionAdditionState();
 }
 
-class _ProductBottomOptionAdditionState extends State<ProductBottomOptionAddition> {
+class _ProductBottomOptionAdditionState
+    extends State<ProductBottomOptionAddition> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,6 +35,7 @@ class _ProductBottomOptionAdditionState extends State<ProductBottomOptionAdditio
                     Text(
                       '팔찌',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                       ),
                     ),
@@ -70,6 +73,7 @@ class _ProductBottomOptionAdditionState extends State<ProductBottomOptionAdditio
                           child: Text(
                             '1',
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                             ),
                           ),
@@ -84,6 +88,7 @@ class _ProductBottomOptionAdditionState extends State<ProductBottomOptionAdditio
                   Text(
                     '9,900원',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       fontWeight: FontWeight.bold,
                     ),

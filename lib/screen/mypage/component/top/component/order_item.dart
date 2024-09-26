@@ -9,7 +9,11 @@ class OrderItem extends StatelessWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
 
-  const OrderItem({super.key, required this.orderData, required this.orderDetailData,});
+  const OrderItem({
+    super.key,
+    required this.orderData,
+    required this.orderDetailData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +25,7 @@ class OrderItem extends StatelessWidget {
           child: Text(
             orderDetailData.ctStatusTxt ?? "",
             style: TextStyle(
+              fontFamily: 'Pretendard',
               fontWeight: FontWeight.w600,
               color: Colors.black,
               fontSize: Responsive.getFont(context, 15),
@@ -55,6 +60,7 @@ class OrderItem extends StatelessWidget {
                       // order['items'][0]['store'] ?? "",
                       orderDetailData.stName ?? "",
                       style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
                           color: const Color(0xFF7B7B7B)),
                     ),
@@ -63,6 +69,7 @@ class OrderItem extends StatelessWidget {
                       child: Text(
                         orderDetailData.ptName ?? "",
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -72,6 +79,7 @@ class OrderItem extends StatelessWidget {
                     Text(
                       "${orderDetailData.ctOptValue} ${orderDetailData.ctOptQty}개",
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 13),
                         color: const Color(0xFF7B7B7B),
                       ),
@@ -81,6 +89,7 @@ class OrderItem extends StatelessWidget {
                       child: Text(
                         "${Utils.getInstance().priceString(orderDetailData.ptPrice ?? 0)}원",
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontWeight: FontWeight.bold,
                           fontSize: Responsive.getFont(context, 14),
                         ),
@@ -93,7 +102,10 @@ class OrderItem extends StatelessWidget {
           ),
         ),
         // 상태에 따라 버튼 표시
-        OrderItemButton(orderData: orderData, orderDetailData: orderDetailData,),
+        OrderItemButton(
+          orderData: orderData,
+          orderDetailData: orderDetailData,
+        ),
       ],
     );
   }
