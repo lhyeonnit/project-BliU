@@ -183,24 +183,24 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
             style: const TextStyle(fontSize: 14, color: Colors.black),
           ),
         ),
-        Expanded(
-          child: GridView.builder(
-            padding: const EdgeInsets.only(right: 16.0, left: 16, bottom: 20),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.5,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 30,
-            ),
-            itemCount: items.length, // 실제 상품 수로 변경
-            itemBuilder: (context, index) {
-              return ProductListCard(
-                item: items[index],
-                index: index,
-              );
-            },
-          ),
-        ),
+        // Expanded(
+        //   child: GridView.builder(
+        //     padding: const EdgeInsets.only(right: 16.0, left: 16, bottom: 20),
+        //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        //       crossAxisCount: 2,
+        //       childAspectRatio: 0.5,
+        //       crossAxisSpacing: 12,
+        //       mainAxisSpacing: 30,
+        //     ),
+        //     itemCount: items.length, // 실제 상품 수로 변경
+        //     itemBuilder: (context, index) {
+        //       return ProductListCard(
+        //         item: items[index],
+        //         index: index,
+        //       );
+        //     },
+        //   ),
+        // ),
       ],
     );
   }

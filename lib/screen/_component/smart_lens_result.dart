@@ -152,7 +152,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: 0.55,
+                            childAspectRatio: 0.5,
                             crossAxisSpacing: 12,
                             mainAxisSpacing: 30,
                           ),
@@ -283,7 +283,6 @@ class _SmartLensResultState extends State<SmartLensResult> {
                   child: Image.asset(
                     'assets/images/home/exhi.png',
                     height: 184,
-                    width: double.infinity,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -321,6 +320,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
                   child: Text(
                     item['brand']!,
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 12),
                         color: Colors.grey),
                   ),
@@ -328,6 +328,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
                 Text(
                   item['name']!,
                   style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: 14,
                   ),
                   maxLines: 2,
@@ -342,6 +343,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
                       Text(
                         item['discount']!,
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
@@ -352,6 +354,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
                         child: Text(
                           item['price']!,
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
                           ),
@@ -373,6 +376,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
                       child: Text(
                         item['likes']!,
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
                         ),
@@ -392,6 +396,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
                             child: Text(
                               item['comments']!,
                               style: TextStyle(
+                                  fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
                                   color: Colors.grey),
                             ),

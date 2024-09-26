@@ -81,7 +81,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
               ),
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(bottom: 100),
+                  margin: EdgeInsets.only(bottom: 80),
                   child: SingleChildScrollView(
                     controller: ScrollController(),
                     child: Column(

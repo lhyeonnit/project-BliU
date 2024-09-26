@@ -22,7 +22,7 @@ class HomeBodyCategory extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 30, bottom: 25),
       child: Container(
-        height: Responsive.getHeight(context, 115.0),
+        height: 110,
         padding: const EdgeInsets.only(left: 16),
         child: Consumer(
           builder: (context, ref, widget){
@@ -40,6 +40,7 @@ class HomeBodyCategory extends ConsumerWidget {
             }
 
             return ListView.builder(
+              shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemCount: list.length,
               itemBuilder: (context, index) {
