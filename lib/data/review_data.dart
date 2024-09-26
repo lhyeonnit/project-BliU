@@ -1,4 +1,5 @@
 class ReviewData {
+  final String? myReview;
   final int? rtIdx;
   final String? mtId;
   final String? rtStart;
@@ -7,6 +8,7 @@ class ReviewData {
   final List<String>? imgArr;
 
   ReviewData({
+    required this.myReview,
     required this.rtIdx,
     required this.mtId,
     required this.rtStart,
@@ -22,6 +24,7 @@ class ReviewData {
       imgArr = List<String>.from(json['img_arr']);
     }
     return ReviewData(
+      myReview: json['my_review'],
       rtIdx: json['rt_idx'],
       mtId: json['mt_id'],
       rtStart: json['rt_start'],
@@ -34,6 +37,7 @@ class ReviewData {
   // Object to JSOn
   Map<String, dynamic> toJson() {
     return {
+      'my_review': myReview,
       'rt_idx': rtIdx,
       'mt_id': mtId,
       'rt_start': rtStart,

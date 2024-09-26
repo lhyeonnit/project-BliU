@@ -1,4 +1,5 @@
 import 'package:BliU/data/review_data.dart';
+import 'package:BliU/screen/mypage/component/top/component/my_review_edit.dart';
 import 'package:BliU/screen/product/component/detail/report_page.dart';
 import 'package:BliU/screen/product/viewmodel/product_review_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -67,9 +68,11 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMy = false;
     List<String> _images = [];
     if (_reviewData != null) {
       _images = _reviewData?.imgArr ?? [];
+      isMy = _reviewData?.myReview == "Y";
     }
 
     return Scaffold(
@@ -196,7 +199,7 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: _ratingStars(4.5),
+                    child: _ratingStars(double.parse(_reviewData?.rtStart ?? "0.0")),
                   ),
                   Text(
                     _reviewData?.rtContent ?? "",
@@ -204,22 +207,64 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14)),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
+                  Visibility(
+                    visible: !isMy,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ReportPage(rtIdx: widget.rtIdx,)),
+                          );
+                        },
+                        child: const Text(
+                          '신고',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: isMy,
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ReportPage(rtIdx: widget.rtIdx,)),
-                        );
+                      onTap: () async {
+                        if (_reviewData != null) {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyReviewEdit(reviewData: _reviewData!,)),
+                          );
+                          if (result == true) {
+                            _getDetail();
+                          }
+                        }
                       },
-                      child: const Text(
-                        '신고',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: 12,
-                          color: Colors.grey,
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 10.0),
+                        height: Responsive.getHeight(context, 48),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(6),
+                          ),
+                          border: Border.all(color: const Color(0xFFDDDDDD)),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '수정',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
                       ),
                     ),

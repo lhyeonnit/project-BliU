@@ -36,18 +36,18 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
   }
 
   Future<void> _editReview() async {
-    final updatedReview = await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => MyReviewEdit(review: _currentReview)),
-    );
-
-    if (updatedReview != null) {
-      // 수정된 리뷰를 반영
-      setState(() {
-        _currentReview = updatedReview;
-      });
-    }
+    // final updatedReview = await Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //       builder: (context) => MyReviewEdit(review: _currentReview)),
+    // );
+    //
+    // if (updatedReview != null) {
+    //   // 수정된 리뷰를 반영
+    //   setState(() {
+    //     _currentReview = updatedReview;
+    //   });
+    // }
   }
 
   Widget _ratingStars(double rating) {
