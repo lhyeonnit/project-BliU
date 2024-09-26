@@ -49,7 +49,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                       width: 40,
                       decoration: BoxDecoration(
                         borderRadius:
-                        const BorderRadius.all(Radius.circular(20)),
+                            const BorderRadius.all(Radius.circular(20)),
                         border: Border.all(
                           color: const Color(0xFFDDDDDD),
                           width: 1.0,
@@ -57,7 +57,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                       ),
                       child: ClipRRect(
                         borderRadius:
-                        const BorderRadius.all(Radius.circular(20)),
+                            const BorderRadius.all(Radius.circular(20)),
                         child: Image.network(
                           item.stProfile ?? "", // 스토어 로고
                           fit: BoxFit.contain,
@@ -70,6 +70,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                       child: Text(
                         item.stName ?? "", // 스토어 이름
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                         ),
                       ),
@@ -95,7 +96,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                         ),
                         child: ClipRRect(
                           borderRadius:
-                          const BorderRadius.all(Radius.circular(6)),
+                              const BorderRadius.all(Radius.circular(6)),
                           child: Image.asset(
                             'assets/images/home/exhi.png', // 실제 이미지 경로
                             fit: BoxFit.cover,
@@ -109,6 +110,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                             Text(
                               item.ptTitle ?? "", // 상품 이름
                               style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black,
                               ),
@@ -116,12 +118,14 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Container(
-                              margin: const EdgeInsets.only(top: 10, bottom: 15),
+                              margin:
+                                  const EdgeInsets.only(top: 10, bottom: 15),
                               child: Row(
                                 children: [
                                   Text(
                                     item.ptOption ?? "", // 아이템 설명
                                     style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 13),
                                       color: const Color(0xFF7B7B7B),
                                     ),
@@ -129,6 +133,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                                   Text(
                                     ' ${item.ptCount ?? 0}개', // 수량
                                     style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 13),
                                       color: const Color(0xFF7B7B7B),
                                     ),
@@ -139,6 +144,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                             Text(
                               '${Utils.getInstance().priceString(item.ptPrice ?? 0)}원', // 가격 정보
                               style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 16),
                                 fontWeight: FontWeight.bold,
                               ),

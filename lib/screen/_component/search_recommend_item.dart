@@ -23,6 +23,7 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
           child: Text(
             '이런 아이템은 어떠세요?',
             style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 18),
                 fontWeight: FontWeight.bold),
           ),
@@ -43,7 +44,7 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                        const ProductDetailScreen(ptIdx: 3),
+                            const ProductDetailScreen(ptIdx: 3),
                       ),
                     );
                   },
@@ -60,11 +61,10 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                           children: [
                             ClipRRect(
                               borderRadius:
-                              const BorderRadius.all(Radius.circular(5)),
+                                  const BorderRadius.all(Radius.circular(5)),
                               child: Image.asset(
                                 'assets/images/home/exhi.png',
                                 height: 160,
-
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -75,7 +75,7 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                                 onTap: () {
                                   setState(() {
                                     isFavoriteList[index] =
-                                    !isFavoriteList[index]; // 좋아요 상태 토글
+                                        !isFavoriteList[index]; // 좋아요 상태 토글
                                   });
                                 },
                                 child: SvgPicture.asset(
@@ -102,6 +102,7 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                               child: Text(
                                 '꿈꾸는데이지',
                                 style: TextStyle(
+                                  fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
                                   color: Color(0xFF7B7B7B),
                                 ),
@@ -110,6 +111,7 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                             Text(
                               '꿈꾸는 데이지 안나 토션 레이스 베스트',
                               style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                               ),
                               maxLines: 2,
@@ -124,6 +126,7 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                                   Text(
                                     '15%',
                                     style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       color: const Color(0xFFFF6192),
                                       fontWeight: FontWeight.bold,
@@ -134,7 +137,9 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                                     child: Text(
                                       '32,800원',
                                       style: TextStyle(
-                                        fontSize: Responsive.getFont(context, 14),
+                                        fontFamily: 'Pretendard',
+                                        fontSize:
+                                            Responsive.getFont(context, 14),
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -156,6 +161,7 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                                   child: Text(
                                     '13,000',
                                     style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
                                       color: Color(0xFFA4A4A4),
                                     ),
@@ -168,14 +174,18 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                                       SvgPicture.asset(
                                         'assets/images/home/item_comment.svg',
                                         width: Responsive.getWidth(context, 13),
-                                        height: Responsive.getHeight(context, 12),
+                                        height:
+                                            Responsive.getHeight(context, 12),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.only(left: 2, bottom: 2),
+                                        margin:
+                                            EdgeInsets.only(left: 2, bottom: 2),
                                         child: Text(
                                           '49',
                                           style: TextStyle(
-                                            fontSize: Responsive.getFont(context, 12),
+                                            fontFamily: 'Pretendard',
+                                            fontSize:
+                                                Responsive.getFont(context, 12),
                                             color: Color(0xFFA4A4A4),
                                           ),
                                         ),

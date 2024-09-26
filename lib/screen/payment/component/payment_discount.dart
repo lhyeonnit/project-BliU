@@ -15,7 +15,13 @@ class PaymentDiscount extends ConsumerStatefulWidget {
   final Function(CouponData couponData) onCouponSelected; // 선택된 쿠폰 할인율을 전달할 콜백
   final Function(int point) onPointChanged;
   final List<CartData> cartList;
-  const PaymentDiscount({super.key, required this.onCouponSelected, required this.onPointChanged, required this.cartList,});
+
+  const PaymentDiscount({
+    super.key,
+    required this.onCouponSelected,
+    required this.onPointChanged,
+    required this.cartList,
+  });
 
   @override
   _PaymentDiscountState createState() => _PaymentDiscountState();
@@ -48,12 +54,14 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
               Text(
                 '쿠폰',
                 style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 13),
                     fontWeight: FontWeight.normal),
               ),
               Text(
                 '보유 쿠폰 ${_couponList.length}장',
                 style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 13),
                     color: const Color(0xFF7B7B7B)),
               ),
@@ -64,7 +72,10 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
               if (_couponList.isNotEmpty) {
                 CouponData? selectedCoupon = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PaymentCoupon(couponList: _couponList,)),
+                  MaterialPageRoute(
+                      builder: (context) => PaymentCoupon(
+                            couponList: _couponList,
+                          )),
                 );
                 if (selectedCoupon != null) {
                   setState(() {
@@ -85,6 +96,7 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                 children: [
                   Text(_couponText,
                       style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           fontWeight: FontWeight.normal)),
                   SvgPicture.asset(
@@ -99,11 +111,13 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
             children: [
               Text('포인트 사용',
                   style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 13),
                       fontWeight: FontWeight.normal)),
               Text(
                 '보유 포인트 ${Utils.getInstance().priceString(_point)}P',
                 style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 13),
                     color: const Color(0xFF7B7B7B)),
               ),
@@ -119,7 +133,8 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                   child: Container(
                     margin: const EdgeInsets.only(right: 8),
                     decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(6)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(6)),
                         border: Border.all(color: const Color(0xFFDDDDDD))),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -128,16 +143,19 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                         Expanded(
                           child: TextField(
                             controller: _pointController,
-                            keyboardType: TextInputType.number, // 숫자 입력만 가능하게 설정
+                            keyboardType: TextInputType.number,
+                            // 숫자 입력만 가능하게 설정
                             decoration: InputDecoration(
                               border: InputBorder.none, // 테두리 제거
                               hintText: '0',
                               hintStyle: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: const Color(0xFF707070),
                               ),
                             ),
-                            textAlign: TextAlign.right, // 텍스트를 오른쪽 정렬
+                            textAlign: TextAlign.right,
+                            // 텍스트를 오른쪽 정렬
                             onChanged: (text) {
                               print("change text === $text");
                               _pointCheck(text);
@@ -148,6 +166,7 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                           padding: const EdgeInsets.only(right: 15, left: 10),
                           child: Text('P',
                               style: TextStyle(
+                                  fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
                                   fontWeight: FontWeight.normal)),
                         ),
@@ -160,7 +179,8 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(6)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(6)),
                         border: Border.all(color: const Color(0xFFDDDDDD))),
                     child: GestureDetector(
                       onTap: () {
@@ -173,6 +193,7 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                         child: Text(
                           '전액사용',
                           style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.normal),
                         ),
@@ -196,10 +217,12 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
   void _getMy() async {
     final pref = await SharedPreferencesManager.getInstance();
     Map<String, dynamic> requestData = {
-      'mt_idx' : pref.getMtIdx(),
+      'mt_idx': pref.getMtIdx(),
     };
 
-    final memberInfoResponseDTO = await ref.read(paymentDiscountViewModelProvider.notifier).getMy(requestData);
+    final memberInfoResponseDTO = await ref
+        .read(paymentDiscountViewModelProvider.notifier)
+        .getMy(requestData);
     setState(() {
       _point = memberInfoResponseDTO?.data?.myPoint ?? 0;
     });
@@ -209,13 +232,12 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
     final pref = await SharedPreferencesManager.getInstance();
 
     List<Map<String, dynamic>> storeArr = [];
-    for(var cartItem in widget.cartList) {
-
+    for (var cartItem in widget.cartList) {
       Map<String, dynamic> storeMap = {
-        'st_idx' : cartItem.stIdx,
+        'st_idx': cartItem.stIdx,
       };
       int productPrice = 0;
-      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
         // if (product.isSelected) {
         //   productPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
         // }
@@ -229,20 +251,22 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
     }
 
     Map<String, dynamic> requestData = {
-      'mt_idx' : pref.getMtIdx(),
-      'store_arr' : json.encode(storeArr),
-      'all_price' : _getTotalProductPrice(),
+      'mt_idx': pref.getMtIdx(),
+      'store_arr': json.encode(storeArr),
+      'all_price': _getTotalProductPrice(),
     };
 
-    final couponResponseDTO = await ref.read(paymentDiscountViewModelProvider.notifier).getOrderCoupon(requestData);
+    final couponResponseDTO = await ref
+        .read(paymentDiscountViewModelProvider.notifier)
+        .getOrderCoupon(requestData);
     _couponList = couponResponseDTO?.list ?? [];
   }
 
   int _getTotalProductPrice() {
     // 선택된 기준으로 가격 가져오기
     int totalProductPrice = 0;
-    for(var cartItem in widget.cartList) {
-      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+    for (var cartItem in widget.cartList) {
+      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
         // if (product.isSelected) {
         //   totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
         // }

@@ -2,14 +2,12 @@ import 'dart:io';
 
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/exchange_return_detail_item.dart';
-import 'package:BliU/screen/mypage/component/top/component/exchange_return_info.dart';
-import 'package:BliU/screen/mypage/component/top/component/order_detail_item.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../utils/responsive.dart';
-import '../../../mypage/component/bottom/component/inquiry_service.dart';
-import '../../../mypage/component/top/delivery_screen.dart';
+
 
 class ExchangeReturnDetailScreen extends StatefulWidget {
   final String reason; // 요청사유
@@ -57,6 +55,7 @@ class _ExchangeReturnDetailScreenState
         backgroundColor: Colors.white,
         title: Text('${widget.title}'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -111,6 +110,7 @@ class _ExchangeReturnDetailScreenState
                           child: Text(
                             '배송조회',
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               color: Colors.black,
                               fontSize: Responsive.getFont(context, 14),
                             ),
@@ -133,6 +133,7 @@ class _ExchangeReturnDetailScreenState
                           child: Text(
                             '문의하기',
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               color: Colors.black,
                               fontSize: Responsive.getFont(context, 14),
                             ),
@@ -160,10 +161,12 @@ class _ExchangeReturnDetailScreenState
                       children: [
                         Text('배송비',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black)),
                         Text('${widget.orderDetails['deliveryCost']}',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black)),
                       ],
@@ -187,11 +190,13 @@ class _ExchangeReturnDetailScreenState
                           Text(
                             '요청일',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14)),
                           ),
                           Text(
                             '23.03.12',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14)),
                           ),
                         ],
@@ -201,6 +206,7 @@ class _ExchangeReturnDetailScreenState
                           child: Text(
                             '${widget.reason}',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14)),
                           )),
                       Container(
@@ -208,6 +214,7 @@ class _ExchangeReturnDetailScreenState
                           child: Text(
                             '${widget.details}',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14)),
                           )),
                       _buildUploadedImages(),
@@ -215,30 +222,34 @@ class _ExchangeReturnDetailScreenState
                         padding: const EdgeInsets.only(top: 15.0),
                         child: widget.title == '교환'
                             ? // 교환 페이지일 때 표시
-                        Text(
-                          '${widget.shippingCost}',
-                          style: TextStyle(
-                            fontSize: Responsive.getFont(context, 14),
-                          ),
-                        )
+                            Text(
+                                '${widget.shippingCost}',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                ),
+                              )
                             : // 반품/환불 페이지일 때 표시
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '${widget.returnBank}',
-                              style: TextStyle(
-                                fontSize: Responsive.getFont(context, 14),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '${widget.returnBank}',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                    ),
+                                  ),
+                                  Text(
+                                    '${widget.returnAccount}',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Text(
-                              '${widget.returnAccount}',
-                              style: TextStyle(
-                                fontSize: Responsive.getFont(context, 14),
-                              ),
-                            ),
-                          ],
-                        ),
                       )
                     ],
                   ),

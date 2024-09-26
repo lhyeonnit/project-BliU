@@ -30,7 +30,8 @@ class _AlarmEventState extends State<AlarmEvent> {
         // );
       },
       child: Container(
-        color: _isPressed ? Colors.white : const Color(0xFFF5F9F9), // 눌린 상태에 따라 색상 변경
+        color: _isPressed ? Colors.white : const Color(0xFFF5F9F9),
+        // 눌린 상태에 따라 색상 변경
         width: double.infinity,
         child: Container(
           width: Responsive.getWidth(context, 380),
@@ -64,6 +65,7 @@ class _AlarmEventState extends State<AlarmEvent> {
                           Text(
                             '이벤트',
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               color: const Color(0xFFFF6192),
                               fontSize: Responsive.getFont(context, 15),
                               fontWeight: FontWeight.w600,
@@ -75,6 +77,7 @@ class _AlarmEventState extends State<AlarmEvent> {
                           Text(
                             '장마 필수템 레인코트',
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               color: Colors.black,
                               fontSize: Responsive.getFont(context, 15),
                               fontWeight: FontWeight.w600,
@@ -89,6 +92,7 @@ class _AlarmEventState extends State<AlarmEvent> {
                         child: Text(
                           '귀엽고 실용적인 레인코트로 우리 아이 비 오는 날도 즐겁게! 다양한 디자인과 컬러로 장마철을 더욱 특별하게 만들어보세요.',
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             color: const Color(0xFF7B7B7B),
                             fontSize: Responsive.getFont(context, 14),
                           ),
@@ -103,6 +107,7 @@ class _AlarmEventState extends State<AlarmEvent> {
                         child: Text(
                           '2023-01-01',
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             color: const Color(0xFF7B7B7B),
                             fontSize: Responsive.getFont(context, 14),
                           ),
@@ -116,7 +121,8 @@ class _AlarmEventState extends State<AlarmEvent> {
                 width: Responsive.getWidth(context, 21),
               ),
               Padding(
-                padding: EdgeInsets.only(top: Responsive.getHeight(context, 28)),
+                padding:
+                    EdgeInsets.only(top: Responsive.getHeight(context, 28)),
                 child: SizedBox(
                   child: SvgPicture.asset(
                     'assets/images/ic_link.svg',

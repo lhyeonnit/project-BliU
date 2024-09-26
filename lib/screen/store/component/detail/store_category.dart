@@ -38,7 +38,8 @@ class StoreCategory extends HookConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: TabBar(
             controller: tabController,
-            labelStyle: TextStyle( fontFamily: 'Pretendard',
+            labelStyle: TextStyle(
+              fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               fontWeight: FontWeight.w600,
             ),
@@ -62,11 +63,15 @@ class StoreCategory extends HookConsumerWidget {
           padding: const EdgeInsets.only(left: 16.0),
           child: Text(
             '상품 ${model?.productList?.length ?? 0}', // 상품 개수 텍스트
-            style: TextStyle( fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14), color: Colors.black),
+            style: TextStyle(
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 14),
+                color: Colors.black),
           ),
         ),
-        const SizedBox(height: 20,),
+        const SizedBox(
+          height: 20,
+        ),
         Container(
           // 기본 세로 길이를 301로 설정하고, 상품이 더 있으면 301씩 추가
           height: (model?.productList?.length ?? 0) > 0
@@ -76,7 +81,7 @@ class StoreCategory extends HookConsumerWidget {
             controller: tabController,
             children: List.generate(
               categories.length,
-                  (index) {
+              (index) {
                 // 상품 리스트
                 return StoreCategoryItem();
               },

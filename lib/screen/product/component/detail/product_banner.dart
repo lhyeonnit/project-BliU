@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class ProductBanner extends StatefulWidget {
   final List<String> imgArr;
+
   const ProductBanner({super.key, required this.imgArr});
 
   @override
@@ -60,8 +61,7 @@ class _ProductBannerState extends State<ProductBanner> {
             bottom: 15,
             right: 16,
             child: Container(
-              padding:
-              const EdgeInsets.symmetric(vertical: 4, horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 15),
               decoration: BoxDecoration(
                 color: Color(0x45000000),
                 borderRadius: BorderRadius.all(Radius.circular(22)),
@@ -72,12 +72,14 @@ class _ProductBannerState extends State<ProductBanner> {
                   Text(
                     '${_currentPage + 1}',
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 13),
                         color: Colors.white),
                   ),
                   Text(
                     '/${_imgArr.length}',
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 13),
                         color: Color(0x80FFFFFF)),
                   ),

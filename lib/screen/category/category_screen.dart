@@ -28,7 +28,6 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -38,6 +37,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
         backgroundColor: Colors.white,
         title: const Text('카테고리'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -87,15 +87,19 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
                     final categoryData = categories[index];
-                    final bool isSelectCategory = _selectedCategoryIndex == index;
+                    final bool isSelectCategory =
+                        _selectedCategoryIndex == index;
                     return ListTile(
                       selectedColor: Colors.black,
                       selectedTileColor: Colors.white,
-                      tileColor: isSelectCategory ? Colors.white : const Color(0xFFF5F9F9),
+                      tileColor: isSelectCategory
+                          ? Colors.white
+                          : const Color(0xFFF5F9F9),
                       selected: isSelectCategory,
                       title: Text(
                         categoryData.ctName ?? "",
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 15),
                             fontWeight: FontWeight.w600),
                       ),
@@ -103,7 +107,9 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                         setState(() {
                           _selectedCategoryIndex = index;
                         });
-                        _scrollController.scrollTo(index: index, duration: const Duration(milliseconds: 500));
+                        _scrollController.scrollTo(
+                            index: index,
+                            duration: const Duration(milliseconds: 500));
                       },
                     );
                   },
@@ -124,7 +130,8 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                         children: [
                           // 상위 카테고리 제목과 이미지
                           Padding(
-                            padding: const EdgeInsets.only(left: 20,right: 15,bottom: 10),
+                            padding: const EdgeInsets.only(
+                                left: 20, right: 15, bottom: 10),
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -137,7 +144,8 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 );
                               },
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     flex: 8,
@@ -148,18 +156,22 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                           height: 40,
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
-                                              border: Border.all(color: const Color(0xFFEFEFEF),)
-                                          ),
+                                              border: Border.all(
+                                                color: const Color(0xFFEFEFEF),
+                                              )),
                                           child: SvgPicture.network(
                                             category.img ?? "",
                                           ),
                                         ),
                                         Container(
-                                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 10),
                                           child: Text(
                                             category.ctName ?? "",
-                                            style:  TextStyle(
-                                              fontSize: Responsive.getFont(context, 18),
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(
+                                                  context, 18),
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -168,34 +180,48 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                     ),
                                   ),
                                   Expanded(
-                                    flex: 2,
-                                    child: SvgPicture.asset('assets/images/category/그룹 37778.svg')
-                                  ),
+                                      flex: 2,
+                                      child: SvgPicture.asset(
+                                          'assets/images/category/그룹 37778.svg')),
                                 ],
                               ),
                             ),
                           ),
                           // 하위 카테고리 목록
                           ...subCategories.map((subCategory) => ListTile(
-                            minTileHeight: 0.1,
-                            title: Text(subCategory.ctName ?? "", style: TextStyle(fontSize: Responsive.getFont(context, 14),),),
-                            trailing: SvgPicture.asset('assets/images/ic_link.svg'),
-                            onTap: () {
-                              // 하위 카테고리 선택 시 처리
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ProductListScreen(
-                                    selectedCategory: category,
-                                    selectSubCategoryIndex: subCategories.indexOf(subCategory),
+                                minTileHeight: 0.1,
+                                title: Text(
+                                  subCategory.ctName ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
                                   ),
                                 ),
-                              );
-                            },
-                          )),
+                                trailing: SvgPicture.asset(
+                                    'assets/images/ic_link.svg'),
+                                onTap: () {
+                                  // 하위 카테고리 선택 시 처리
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductListScreen(
+                                        selectedCategory: category,
+                                        selectSubCategoryIndex:
+                                            subCategories.indexOf(subCategory),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )),
                           Container(
-                            margin: const EdgeInsets.symmetric(vertical: 30,horizontal: 15),
-                            child: const Divider(color: Color(0xFFEEEEEE,)),), // 상위 카테고리 구분을 위한 구분선
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 30, horizontal: 15),
+                            child: const Divider(
+                                color: Color(
+                              0xFFEEEEEE,
+                            )),
+                          ),
+                          // 상위 카테고리 구분을 위한 구분선
                         ],
                       );
                     },

@@ -14,7 +14,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 class OrderDetail extends ConsumerStatefulWidget {
   final OrderData orderData;
 
-  const OrderDetail({super.key, required this.orderData,});
+  const OrderDetail({
+    super.key,
+    required this.orderData,
+  });
 
   @override
   _OrderDetailState createState() => _OrderDetailState();
@@ -43,6 +46,7 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
         backgroundColor: Colors.white,
         title: const Text('주문상세'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -90,6 +94,7 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
                       Text(
                         widget.orderData.ctWdate ?? "",
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 16),
                           fontWeight: FontWeight.bold,
                         ),
@@ -99,6 +104,7 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
                         child: Text(
                           orderDetailInfoData?.product?[0].otCode ?? "",
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: const Color(0xFF7B7B7B),
                           ),
@@ -111,8 +117,12 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
-                    children: (orderDetailInfoData?.product ?? []).map((orderDetailData) {
-                      return OrderItem(orderData: widget.orderData, orderDetailData: orderDetailData,);
+                    children: (orderDetailInfoData?.product ?? [])
+                        .map((orderDetailData) {
+                      return OrderItem(
+                        orderData: widget.orderData,
+                        orderDetailData: orderDetailData,
+                      );
                     }).toList(),
                   ),
                 ),
@@ -134,6 +144,7 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
                       Text(
                         '배송비',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black,
                         ),
@@ -141,9 +152,9 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
                       Text(
                         "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원",
                         style: TextStyle(
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Colors.black
-                        ),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Colors.black),
                       ),
                     ],
                   ),
@@ -169,13 +180,15 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
     final mtIdx = pref.getMtIdx();
 
     Map<String, dynamic> requestData = {
-      'type' : 1,
-      'mt_idx' : mtIdx,
-      'temp_mt_id' : '',
-      'ot_code' : widget.orderData.detailList?[0].otCode,
+      'type': 1,
+      'mt_idx': mtIdx,
+      'temp_mt_id': '',
+      'ot_code': widget.orderData.detailList?[0].otCode,
     };
 
-    final orderDetailInfoResponseDTO = await ref.read(orderDetailViewModelProvider.notifier).getOrderDetail(requestData);
+    final orderDetailInfoResponseDTO = await ref
+        .read(orderDetailViewModelProvider.notifier)
+        .getOrderDetail(requestData);
     if (orderDetailInfoResponseDTO != null) {
       if (orderDetailInfoResponseDTO.result == true) {
         setState(() {
@@ -183,7 +196,8 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
         });
       } else {
         if (!context.mounted) return;
-        Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
+        Utils.getInstance()
+            .showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
       }
     }
   }

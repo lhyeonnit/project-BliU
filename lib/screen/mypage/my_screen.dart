@@ -38,6 +38,7 @@ class MyScreen extends ConsumerWidget {
           // 기본 뒤로가기 버튼을 숨김
           title: const Text('마이페이지'),
           titleTextStyle: TextStyle(
+            fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 18),
             fontWeight: FontWeight.w600,
             color: Colors.black,
@@ -96,6 +97,7 @@ class MyScreen extends ConsumerWidget {
                     child: Text(
                       '2',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         color: Colors.white,
                         fontSize: Responsive.getFont(context, 12),
                       ),
@@ -121,19 +123,20 @@ class MyScreen extends ConsumerWidget {
             _buildSection(context, '쇼핑정보'),
             mtIdx != null && mtIdx.isNotEmpty
                 ? _buildSectionItem(context, '추천정보관리', () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const RecommendEdit()),
-              );
-            })
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RecommendEdit()),
+                    );
+                  })
                 : _buildSectionItem(context, '주문 내역 보기', () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const NonOrderPage()), // 비회원일 때의 화면
-              );
-            }),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const NonOrderPage()), // 비회원일 때의 화면
+                    );
+                  }),
             SizedBox(
               height: 10,
             ),
@@ -169,6 +172,7 @@ class MyScreen extends ConsumerWidget {
                   child: Text(
                     '로그아웃',
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 16),
                         color: Colors.black,
                         fontWeight: FontWeight.w400),
@@ -221,6 +225,7 @@ class MyScreen extends ConsumerWidget {
       child: Text(
         title,
         style: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 14),
           color: Color(0xFFA4A4A4),
         ),
@@ -243,6 +248,7 @@ class MyScreen extends ConsumerWidget {
             Text(
               title,
               style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 15),
                 color: Colors.black,
                 fontWeight: FontWeight.w400,

@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class StoreInfoPage extends StatefulWidget {
   const StoreInfoPage({super.key});
+
   @override
   State<StoreInfoPage> createState() => _StoreInfoPageState();
 }
@@ -59,6 +60,7 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                       Text(
                         '밀크마일',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -67,6 +69,7 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                       Text(
                         '캐주얼 (Casual), 키즈(3-8세)',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: 14,
                           color: Color(0xFF7B7B7B),
                         ),
@@ -85,7 +88,8 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                     children: [
                       Container(
                         margin: EdgeInsets.only(top: 5),
-                        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 12.0),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey.shade300),
                           borderRadius: BorderRadius.circular(20.0),
@@ -94,7 +98,10 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                           children: [
                             const Text(
                               '즐겨찾기 1,761',
-                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                              style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(width: 8), // 텍스트와 아이콘 사이의 간격
                             Container(
@@ -104,7 +111,6 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                                 color: isSelected == true
                                     ? const Color(0xFFFF6192)
                                     : null,
-
                               ),
                             ),
                           ],
@@ -113,17 +119,17 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),
           // 설명 텍스트
-           Container(
+          Container(
             padding: EdgeInsets.symmetric(horizontal: 10.0),
             margin: EdgeInsets.symmetric(vertical: 20),
             child: Text(
               '저희 키즈 의류 쇼핑몰은 다양한 스타일과 고품질의 어린이 의류 브랜드들을 자랑합니다. 각 브랜드는 아이들의 편안함과 안전을 최우선으로 생각하며, 트렌디하면서도 실용적인 디자인을 제공합니다. 모든 의류는 친환경 소재로 제작되어 아이들의 민감한 피부에도 심하고 착용할 수 있습니다.',
               style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: 14,
                 color: Color(0xFF7B7B7B),
               ),
@@ -135,32 +141,33 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             margin: EdgeInsets.only(bottom: 15),
             child: GestureDetector(
-                onTap: () {
-                  // TODO 쿠폰 다운로드 기능 구현
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                      const CouponDownload(ptIdx: 3),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: Color(0xFFDDDDDD)),
+              onTap: () {
+                // TODO 쿠폰 다운로드 기능 구현
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CouponDownload(ptIdx: 3),
                   ),
-                  child: Center(
-                    child: Text(
-                      '쿠폰 다운로드',
-                      style: TextStyle(fontSize: Responsive.getFont(context, 14)),
-                    ),
+                );
+              },
+              child: Container(
+                width: double.infinity,
+                height: 44,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: Color(0xFFDDDDDD)),
+                ),
+                child: Center(
+                  child: Text(
+                    '쿠폰 다운로드',
+                    style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14)),
                   ),
                 ),
               ),
             ),
+          ),
         ],
       ),
     );

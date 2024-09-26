@@ -36,7 +36,8 @@ class _CouponCardState extends State<CouponCard> {
     return Container(
       margin: const EdgeInsets.only(bottom: 15.0),
       decoration: BoxDecoration(
-        border: Border.all(style: BorderStyle.solid, color: const Color(0xFFDDDDDD)),
+        border: Border.all(
+            style: BorderStyle.solid, color: const Color(0xFFDDDDDD)),
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: IntrinsicHeight(
@@ -44,7 +45,8 @@ class _CouponCardState extends State<CouponCard> {
           children: [
             Expanded(
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -53,6 +55,7 @@ class _CouponCardState extends State<CouponCard> {
                         Text(
                           widget.discount,
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 16),
                             fontWeight: FontWeight.bold,
                             color: isDownloaded
@@ -65,6 +68,7 @@ class _CouponCardState extends State<CouponCard> {
                           child: Text(
                             widget.title,
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 16),
                               fontWeight: FontWeight.bold,
                               color: isDownloaded
@@ -80,14 +84,18 @@ class _CouponCardState extends State<CouponCard> {
                       child: Text(
                         widget.expiryDate,
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
-                          color: isDownloaded ? const Color(0xFFA4A4A4) : Colors.black,
+                          color: isDownloaded
+                              ? const Color(0xFFA4A4A4)
+                              : Colors.black,
                         ),
                       ),
                     ),
                     Text(
                       widget.discountDetails,
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 12),
                         color: const Color(0xFFA4A4A4),
                       ),
@@ -119,6 +127,7 @@ class _CouponCardState extends State<CouponCard> {
                         child: Text(
                           '사용완료',
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 12),
                             color: isDownloaded ? Colors.grey : Colors.black,
                           ),

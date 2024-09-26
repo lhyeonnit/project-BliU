@@ -60,8 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     SliverAppBar(
                       scrolledUnderElevation: 0,
                       pinned: true,
-                      automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
-                      backgroundColor: _isScrolled ? Colors.white : Colors.transparent,
+                      automaticallyImplyLeading: false,
+                      // 기본 뒤로가기 버튼을 숨김
+                      backgroundColor:
+                          _isScrolled ? Colors.white : Colors.transparent,
                       expandedHeight: 625,
                       title: SvgPicture.asset(
                         'assets/images/home/bottom_home.svg', // SVG 파일 경로
@@ -75,13 +77,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       actions: [
                         Container(
                           padding: EdgeInsets.only(
-                              right: Responsive.getWidth(context, 8)), // 왼쪽 여백 추가
+                              right: Responsive.getWidth(context, 8)),
+                          // 왼쪽 여백 추가
                           child: Row(
                             children: [
                               IconButton(
                                 icon: SvgPicture.asset(
                                   "assets/images/home/ic_top_sch_w.svg",
-                                  color: _isScrolled ? Colors.black : Colors.white,
+                                  color:
+                                      _isScrolled ? Colors.black : Colors.white,
                                   height: Responsive.getHeight(context, 30),
                                   width: Responsive.getWidth(context, 30),
                                 ),
@@ -89,7 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const SearchScreen(),
+                                      builder: (context) =>
+                                          const SearchScreen(),
                                     ),
                                   );
                                 },
@@ -106,7 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const SmartLensScreen(),
+                                      builder: (context) =>
+                                          const SmartLensScreen(),
                                     ),
                                   );
                                 },
@@ -116,8 +122,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   IconButton(
                                     icon: SvgPicture.asset(
                                       "assets/images/product/ic_cart.svg",
-                                      color:
-                                      _isScrolled ? Colors.black : Colors.white,
+                                      color: _isScrolled
+                                          ? Colors.black
+                                          : Colors.white,
                                       height: Responsive.getHeight(context, 30),
                                       width: Responsive.getWidth(context, 30),
                                     ),
@@ -125,7 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const CartScreen(),
+                                          builder: (context) =>
+                                              const CartScreen(),
                                         ),
                                       );
                                     },
@@ -142,6 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: const Text(
                                         '2',
                                         style: TextStyle(
+                                          fontFamily: 'Pretendard',
                                           color: Colors.white,
                                           fontSize: 12,
                                         ),

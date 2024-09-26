@@ -25,7 +25,6 @@ class StoreCategoryItem extends ConsumerWidget {
         crossAxisSpacing: 12.0,
         childAspectRatio: 0.5,
         mainAxisSpacing: 30,
-
       ),
       physics: const NeverScrollableScrollPhysics(),
       //itemCount: model.productList!.length,
@@ -42,8 +41,7 @@ class StoreCategoryItem extends ConsumerWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                const ProductDetailScreen(ptIdx: 3),
+                builder: (context) => const ProductDetailScreen(ptIdx: 3),
               ),
             );
           },
@@ -80,6 +78,7 @@ class StoreCategoryItem extends ConsumerWidget {
               Text(
                 product.stName ?? "",
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 12),
                   color: const Color(0xFF7B7B7B),
                 ),
@@ -88,6 +87,7 @@ class StoreCategoryItem extends ConsumerWidget {
               Text(
                 product.ptName ?? "",
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14),
                 ),
                 maxLines: 2,
@@ -101,6 +101,7 @@ class StoreCategoryItem extends ConsumerWidget {
                   Text(
                     '${product.ptDiscountPer}%',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: const Color(0xFFFF6192),
                       fontWeight: FontWeight.bold,
@@ -111,6 +112,7 @@ class StoreCategoryItem extends ConsumerWidget {
                     child: Text(
                       '${product.ptPrice}원',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                         fontWeight: FontWeight.bold,
                       ),
@@ -132,6 +134,7 @@ class StoreCategoryItem extends ConsumerWidget {
                   Text(
                     '${product.ptLike}',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 12),
                       color: Colors.grey,
                     ),
@@ -147,6 +150,7 @@ class StoreCategoryItem extends ConsumerWidget {
                     Text(
                       '${product.ptReviewCount}',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 12),
                         color: Colors.grey,
                       ),

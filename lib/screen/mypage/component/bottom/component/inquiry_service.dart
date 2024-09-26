@@ -37,6 +37,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
         backgroundColor: Colors.white,
         title: const Text('문의하기'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -93,12 +94,14 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                       Text(
                         '이미지',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                         ),
                       ),
                       Text(
                         '$_imageCnt/4',
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 13),
                             color: const Color(0xFF7B7B7B)),
                       ),
@@ -122,8 +125,10 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                           margin: const EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: const BorderRadius.all(Radius.circular(6)),
-                              border: Border.all(color: const Color(0xFFE7EAEF))),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(6)),
+                              border:
+                                  Border.all(color: const Color(0xFFE7EAEF))),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -133,6 +138,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                               Text(
                                 '사진선택',
                                 style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     color: const Color(0xFF707070),
                                     fontSize: Responsive.getFont(context, 14)),
                               )
@@ -142,13 +148,12 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                       ),
 
                       //추가함 이미지들
-                       Row(
-                          children: _addImagesWidget,
-                        ),
+                      Row(
+                        children: _addImagesWidget,
+                      ),
                     ],
                   ),
                 ),
-
               ],
             ),
           ),
@@ -159,7 +164,8 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
             child: Container(
               width: double.infinity,
               height: Responsive.getHeight(context, 48),
-              margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+              margin: const EdgeInsets.only(
+                  right: 16.0, left: 16, top: 9, bottom: 8),
               decoration: const BoxDecoration(
                 color: Colors.black,
                 borderRadius: BorderRadius.all(
@@ -174,6 +180,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                   child: Text(
                     '등록',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),
@@ -213,8 +220,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
       child: Stack(
         children: [
           ClipRRect(
-            borderRadius:
-            BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(6),
             child: Image.file(
               File(file.path),
               width: 100,
@@ -233,14 +239,14 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                   _addImageCheck();
                 });
               },
-              child: SvgPicture.asset(
-                  'assets/images/ic_del.svg'),
+              child: SvgPicture.asset('assets/images/ic_del.svg'),
             ),
           ),
         ],
       ),
     );
   }
+
   void _addImage() async {
     try {
       final ImagePicker picker = ImagePicker();
@@ -295,8 +301,11 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
         'qna_img': files,
         'temp_mt_hp': tempMtHp,
       });
-      
-      ref.read(inquiryWriteModelProvider.notifier).qnaWrite(formData).then((resultData) {
+
+      ref
+          .read(inquiryWriteModelProvider.notifier)
+          .qnaWrite(formData)
+          .then((resultData) {
         if (resultData != null) {
           Utils.getInstance()
               .showSnackBar(context, resultData.message.toString());
@@ -309,17 +318,21 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
       });
     });
   }
+
   Widget _buildTitleTextField(
       TextEditingController controller, String hintText) {
     return TextField(
       controller: controller,
       style: TextStyle(
+        fontFamily: 'Pretendard',
         fontSize: Responsive.getFont(context, 14),
       ),
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         hintText: hintText,
         hintStyle: TextStyle(
+            fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             color: const Color(0xFF595959)),
         enabledBorder: const OutlineInputBorder(
@@ -342,9 +355,11 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
         controller: controller,
         maxLines: 7,
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
           hintText: hintText,
           hintStyle: TextStyle(
+              fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: const Color(0xFF595959)),
           enabledBorder: const OutlineInputBorder(

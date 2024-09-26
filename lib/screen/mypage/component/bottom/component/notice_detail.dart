@@ -28,6 +28,7 @@ class NoticeDetail extends ConsumerWidget {
         backgroundColor: Colors.white,
         title: const Text('공지사항'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -85,6 +86,7 @@ class NoticeDetail extends ConsumerWidget {
                         Text(
                           ntTitle,
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 18),
                             fontWeight: FontWeight.bold,
                           ),
@@ -94,6 +96,7 @@ class NoticeDetail extends ConsumerWidget {
                           child: Text(
                             ntWdate,
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Color(0xFF7B7B7B),
                             ),
@@ -109,6 +112,7 @@ class NoticeDetail extends ConsumerWidget {
                     child: Text(
                       ntContent,
                       style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14)),
                     ),
                   ),

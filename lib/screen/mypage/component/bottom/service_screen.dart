@@ -24,6 +24,7 @@ class ServiceScreen extends ConsumerWidget {
         backgroundColor: Colors.white,
         title: const Text('고객센터'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -60,39 +61,46 @@ class ServiceScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Consumer(
-                builder: (context, ref, widget) {
-                  final model = ref.watch(serviceModelProvider);
+            Consumer(builder: (context, ref, widget) {
+              final model = ref.watch(serviceModelProvider);
 
-                  return Column(
-                    children: [
-                      _buildInfoRow(context, '메일문의',
-                          model?.stCustomerEmail ?? 'email@email.com',
-                          Colors.black, false),
-                      Container(
-                          margin: EdgeInsets.only(top: 20, bottom: 10),
-                          child: _buildInfoRow(context, '전화문의',
-                              model?.stCustomerTel ?? '02-000-000',
-                              Color(0xFFFF6192), true)),
-                    ],
-                  );
-                }
-            ),
+              return Column(
+                children: [
+                  _buildInfoRow(
+                      context,
+                      '메일문의',
+                      model?.stCustomerEmail ?? 'email@email.com',
+                      Colors.black,
+                      false),
+                  Container(
+                      margin: EdgeInsets.only(top: 20, bottom: 10),
+                      child: _buildInfoRow(
+                          context,
+                          '전화문의',
+                          model?.stCustomerTel ?? '02-000-000',
+                          Color(0xFFFF6192),
+                          true)),
+                ],
+              );
+            }),
             _buildCustomTile(
               context,
               '판매자 입점 문의',
-                  () {
+              () {
                 if (mtIdx != null && mtIdx.isNotEmpty) {
                   // 회원인 경우
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const InquiryStore()),
+                    MaterialPageRoute(
+                        builder: (context) => const InquiryStore()),
                   );
                 } else {
                   // 비회원인 경우
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const NonInquiryStore()), // 비회원용 페이지
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const NonInquiryStore()), // 비회원용 페이지
                   );
                 }
               },
@@ -100,29 +108,31 @@ class ServiceScreen extends ConsumerWidget {
             _buildCustomTile(
               context,
               '고객센터 문의하기',
-                  () {
+              () {
                 if (mtIdx != null && mtIdx.isNotEmpty) {
                   // 회원인 경우
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const InquiryService(
-                      qnaType: '1',
-                    )),
+                    MaterialPageRoute(
+                        builder: (context) => const InquiryService(
+                              qnaType: '1',
+                            )),
                   );
                 } else {
                   // 비회원인 경우
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const NonInquiryService(qnaType: '1')), // 비회원용 페이지
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const NonInquiryService(qnaType: '1')), // 비회원용 페이지
                   );
                 }
               },
             ),
-
             _buildCustomTile(
               context,
               '문의내역',
-                  () {
+              () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -144,6 +154,7 @@ class ServiceScreen extends ConsumerWidget {
         Text(
           title,
           style: TextStyle(
+            fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 15),
             color: Colors.black,
             fontWeight: FontWeight.w500,
@@ -152,19 +163,21 @@ class ServiceScreen extends ConsumerWidget {
         Text(
           content,
           style: TextStyle(
+            fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             fontWeight: FontWeight.w400,
             color: contentColor,
-            decoration: underline ? TextDecoration.underline : TextDecoration.none,
-              decorationColor: underline ? Color(0xFFFF6192) : null,
+            decoration:
+                underline ? TextDecoration.underline : TextDecoration.none,
+            decorationColor: underline ? Color(0xFFFF6192) : null,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildCustomTile(BuildContext context, String title,
-      VoidCallback onTap) {
+  Widget _buildCustomTile(
+      BuildContext context, String title, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -175,12 +188,16 @@ class ServiceScreen extends ConsumerWidget {
             Text(
               title,
               style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 16),
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SvgPicture.asset('assets/images/ic_link.svg', color: Colors.black,),
+            SvgPicture.asset(
+              'assets/images/ic_link.svg',
+              color: Colors.black,
+            ),
           ],
         ),
       ),

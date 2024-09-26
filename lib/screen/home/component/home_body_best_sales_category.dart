@@ -1,3 +1,4 @@
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class HomeBodyBestSalesCategory extends StatefulWidget {
@@ -8,8 +9,8 @@ class HomeBodyBestSalesCategory extends StatefulWidget {
       _HomeBodyBestSalesCategoryState();
 }
 
-class _HomeBodyBestSalesCategoryState
-    extends State<HomeBodyBestSalesCategory> with SingleTickerProviderStateMixin {
+class _HomeBodyBestSalesCategoryState extends State<HomeBodyBestSalesCategory>
+    with SingleTickerProviderStateMixin {
   final List<String> categories = [
     '전체',
     '아우터',
@@ -41,20 +42,25 @@ class _HomeBodyBestSalesCategoryState
           child: TabBar(
             controller: _tabController,
             isScrollable: true,
-            labelColor: const Color(0xFFFF6192), // 선택된 탭 텍스트 색상
-            unselectedLabelColor: Colors.black, // 선택되지 않은 탭 텍스트 색상
-            indicatorColor: const Color(0xFFFF6192), // 선택된 탭 아래의 선 색상
+            labelColor: const Color(0xFFFF6192),
+            // 선택된 탭 텍스트 색상
+            unselectedLabelColor: Colors.black,
+            // 선택되지 않은 탭 텍스트 색상
+            indicatorColor: const Color(0xFFFF6192),
+            // 선택된 탭 아래의 선 색상
             indicatorWeight: 2.0,
             tabs: categories.map((category) {
               return Tab(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: _tabController.index == categories.indexOf(category)
-                          ? const Color(0xFFFF6192)
-                          : const Color(0xFFDDDDDD),
+                      color:
+                          _tabController.index == categories.indexOf(category)
+                              ? const Color(0xFFFF6192)
+                              : const Color(0xFFDDDDDD),
                       width: 1.0,
                     ),
                     color: _tabController.index == categories.indexOf(category)
@@ -64,10 +70,12 @@ class _HomeBodyBestSalesCategoryState
                   child: Text(
                     category,
                     style: TextStyle(
-                      fontSize: 14,
-                      color: _tabController.index == categories.indexOf(category)
-                          ? const Color(0xFFFF6192)
-                          : Colors.black,
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      color:
+                          _tabController.index == categories.indexOf(category)
+                              ? const Color(0xFFFF6192)
+                              : Colors.black,
                     ),
                   ),
                 ),

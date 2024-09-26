@@ -12,9 +12,15 @@ class ExchangeItem extends StatefulWidget {
   final OrderDetailInfoData? orderDetailInfoData;
   final List<CategoryData> exchangeCategory;
   final List<CategoryData> exchangeDeliveryCostCategory;
-  final Function(String reason, int reasonIdx, String details, int shippingCost, List<File> images) onDataCollected;
+  final Function(String reason, int reasonIdx, String details, int shippingCost,
+      List<File> images) onDataCollected;
 
-  const ExchangeItem({required this.orderDetailInfoData, required this.exchangeCategory, required this.exchangeDeliveryCostCategory, required this.onDataCollected, super.key});
+  const ExchangeItem(
+      {required this.orderDetailInfoData,
+      required this.exchangeCategory,
+      required this.exchangeDeliveryCostCategory,
+      required this.onDataCollected,
+      super.key});
 
   @override
   State<ExchangeItem> createState() => _ExchangeItemState();
@@ -26,8 +32,11 @@ class _ExchangeItemState extends State<ExchangeItem> {
   int _dropdownValue = 0;
   String _detailedReason = '';
   final LayerLink _layerLink = LayerLink();
+
   List<CategoryData> get _exchangeReasons => widget.exchangeCategory;
-  List<CategoryData> get _exchangeDeliveryCostMethod => widget.exchangeDeliveryCostCategory;
+
+  List<CategoryData> get _exchangeDeliveryCostMethod =>
+      widget.exchangeDeliveryCostCategory;
 
   // 이미지 리스트
   List<File> _selectedImages = [];
@@ -84,7 +93,6 @@ class _ExchangeItemState extends State<ExchangeItem> {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       // 하단 버튼 공간 확보
@@ -126,6 +134,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                             Text(
                               _dropdownText,
                               style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black,
                               ),
@@ -146,9 +155,11 @@ class _ExchangeItemState extends State<ExchangeItem> {
                     maxLines: 4,
                     maxLength: 500,
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 15),
                       hintText: '세부 내용 입력',
                       hintStyle: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFF595959)),
                       enabledBorder: const OutlineInputBorder(
@@ -164,6 +175,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                         child: Text(
                           '${_detailedReason.length}/500',
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 13),
                             color: const Color(0xFF7B7B7B),
                           ),
@@ -193,6 +205,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                     Text(
                       '사진',
                       style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
                           color: Colors.black,
                           fontWeight: FontWeight.normal),
@@ -200,6 +213,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                     Text(
                       '최대3장',
                       style: TextStyle(
+                          fontFamily: 'Pretendard',
                           color: const Color(0xFF7B7B7B),
                           fontSize: Responsive.getFont(context, 13)),
                     ),
@@ -220,6 +234,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                         child: Text(
                       '첨부하기',
                       style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           fontWeight: FontWeight.normal),
                     )),
@@ -288,6 +303,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                     Text(
                       '교환 배송비',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 13),
                         color: Colors.black,
                         fontWeight: FontWeight.normal,
@@ -298,6 +314,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                       child: Text(
                         '*',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.normal,
@@ -332,6 +349,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                       child: Text(
                         categoty.ctName ?? "",
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                         ),
                       ),
@@ -384,6 +402,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                       child: Text(
                         _exchangeReasons[index].ctName ?? "",
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black,
                         ),

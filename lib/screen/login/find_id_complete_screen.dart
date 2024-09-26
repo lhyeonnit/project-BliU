@@ -40,13 +40,17 @@ class FindIdCompleteScreen extends StatelessWidget {
                     color: Color(0xFFF5F9F9),
                     shape: BoxShape.circle,
                   ),
-                  child: SvgPicture.asset('assets/images/check01_off.svg', color: Colors.black,),
+                  child: SvgPicture.asset(
+                    'assets/images/check01_off.svg',
+                    color: Colors.black,
+                  ),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 25, bottom: 10),
                   child: Text(
                     '회원님의 아이디는 ID_1234입니다.',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 18),
                       fontWeight: FontWeight.bold,
                     ),
@@ -55,6 +59,7 @@ class FindIdCompleteScreen extends StatelessWidget {
                 Text(
                   '아이디 찾기가 완료되었습니다. 로그인해 주세요',
                   style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                   ),
                 ),
@@ -95,6 +100,7 @@ class FindIdCompleteScreen extends StatelessWidget {
                           child: Text(
                             '비밀번호 찾기',
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Colors.black,
                             ),
@@ -105,7 +111,7 @@ class FindIdCompleteScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap:() {
+                      onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -125,6 +131,7 @@ class FindIdCompleteScreen extends StatelessWidget {
                           child: Text(
                             '로그인',
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Colors.white,
                             ),

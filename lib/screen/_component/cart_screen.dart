@@ -42,13 +42,14 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
     Map<String, dynamic> requestData = {
-      'type' : 1,
-      'mt_idx' : mtIdx,
-      'temp_mt_id' : '',// 앱토큰 비회원
-      'pg' : 1,
+      'type': 1,
+      'mt_idx': mtIdx,
+      'temp_mt_id': '', // 앱토큰 비회원
+      'pg': 1,
     };
 
-    final cartResponseDTO = await ref.read(cartModelProvider.notifier).getList(requestData);
+    final cartResponseDTO =
+        await ref.read(cartModelProvider.notifier).getList(requestData);
     if (cartResponseDTO != null) {
       setState(() {
         _cartItems = cartResponseDTO.list ?? [];
@@ -58,8 +59,9 @@ class _CartScreenState extends ConsumerState<CartScreen> {
         }
 
         if (_isAllSelected) {
-          for(var item in _cartItems) {
-            for (var product in (item.productList ?? [] as List<CartItemData>)) {
+          for (var item in _cartItems) {
+            for (var product
+                in (item.productList ?? [] as List<CartItemData>)) {
               product.isSelected = true;
             }
           }
@@ -75,7 +77,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
   void _toggleSelectAll() {
     setState(() {
-
       _isAllSelected = !_isAllSelected;
       _selectedItemsCount = _isAllSelected ? totalCount : 0;
 
@@ -114,7 +115,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -128,6 +128,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
         ),
         title: const Text("장바구니"),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -163,7 +164,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   children: [
                     // 전체선택 및 전체삭제 UI
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
                       decoration: const BoxDecoration(
                         border: Border(
                           bottom: BorderSide(color: Color(0xFFEEEEEE)),
@@ -181,11 +183,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                   height: 22,
                                   width: 22,
                                   decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(6)),
                                     border: Border.all(
                                       color: _isAllSelected
                                           ? const Color(0xFFFF6191)
-                                          :  const Color(0xFFCCCCCC),
+                                          : const Color(0xFFCCCCCC),
                                     ),
                                     color: _isAllSelected
                                         ? const Color(0xFFFF6191)
@@ -207,7 +210,9 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                               ),
                               Text(
                                 '전체선택($_selectedItemsCount/$totalCount)',
-                                style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+                                style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14)),
                               ),
                             ],
                           ),
@@ -220,10 +225,14 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 // _isAllSelected = false;
                               });
                             },
-                            icon: SvgPicture.asset('assets/images/ic_delet.svg'),
+                            icon:
+                                SvgPicture.asset('assets/images/ic_delet.svg'),
                             label: Text(
                               '전체삭제',
-                              style: TextStyle(fontSize: Responsive.getFont(context, 14), color: Colors.black),
+                              style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black),
                             ),
                           ),
                         ],
@@ -238,7 +247,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                         children: [
                           // 스토어명
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 10),
                             height: 40,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,26 +257,34 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                   height: 40,
                                   width: 40,
                                   decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(Radius.circular(20)), // 사진의 모서리 둥글게 설정
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20)), // 사진의 모서리 둥글게 설정
                                     border: Border.all(
-                                      color: const Color(0xFFDDDDDD), // 테두리 색상 설정
+                                      color: const Color(0xFFDDDDDD),
+                                      // 테두리 색상 설정
                                       width: 1.0, // 테두리 두께 설정
                                     ),
                                   ),
                                   child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(Radius.circular(20)), // 사진의 모서리만 둥글게 설정
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20)), // 사진의 모서리만 둥글게 설정
                                     child: Image.network(
                                       cartItem.stProfile ?? "",
                                       fit: BoxFit.contain,
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: Responsive.getWidth(context, 10)),
+                                SizedBox(
+                                    width: Responsive.getWidth(context, 10)),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
                                   child: Text(
                                     cartItem.stName ?? "",
-                                    style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+                                    style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize:
+                                            Responsive.getFont(context, 14)),
                                   ),
                                 ),
                               ],
@@ -280,17 +298,22 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 isSelected: product.isSelected,
                                 onIncrementQuantity: (index) {
                                   setState(() {
-                                    final cartCount = (product.ptCount ?? 0) + 1;
+                                    final cartCount =
+                                        (product.ptCount ?? 0) + 1;
                                     if ((product.ctIdx ?? 0) > 0) {
-                                      _cartUpdate(product.ctIdx ?? 0, cartCount);
+                                      _cartUpdate(
+                                          product.ctIdx ?? 0, cartCount);
                                     }
                                   });
                                 },
                                 onDecrementQuantity: (index) {
                                   setState(() {
-                                    final cartCount = (product.ptCount ?? 0) - 1;
-                                    if ((product.ctIdx ?? 0) > 0 && cartCount > 0) {
-                                      _cartUpdate(product.ctIdx ?? 0, cartCount);
+                                    final cartCount =
+                                        (product.ptCount ?? 0) - 1;
+                                    if ((product.ctIdx ?? 0) > 0 &&
+                                        cartCount > 0) {
+                                      _cartUpdate(
+                                          product.ctIdx ?? 0, cartCount);
                                     }
                                   });
                                 },
@@ -301,7 +324,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                     }
                                   });
                                 },
-                                onToggleSelection: _toggleSelection, // 개별 선택 상태 변경 함수 전달
+                                onToggleSelection:
+                                    _toggleSelection, // 개별 선택 상태 변경 함수 전달
                               );
                             }).toList(),
                           ),
@@ -321,19 +345,26 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 Text(
                                   '배송비 ${(cartItem.stDeliveryPrice ?? 0) == 0 ? "무료" : "${Utils.getInstance().priceString(cartItem.stDeliveryPrice ?? 0)}원"}',
                                   style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 13),
                                     color: const Color(0xFF7B7B7B),
                                   ),
                                 ),
-                                SizedBox(width: Responsive.getWidth(context, 10)),
+                                SizedBox(
+                                    width: Responsive.getWidth(context, 10)),
                                 Text(
                                   '총 결제금액',
-                                  style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+                                  style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize:
+                                          Responsive.getFont(context, 14)),
                                 ),
-                                SizedBox(width: Responsive.getWidth(context, 10)),
+                                SizedBox(
+                                    width: Responsive.getWidth(context, 10)),
                                 Text(
                                   '${Utils.getInstance().priceString(cartItem.stProductPrice ?? 0)}원',
                                   style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -348,34 +379,60 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                     }),
                     const Divider(thickness: 10, color: Color(0xFFF5F9F9)),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('총 상품 금액', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                              Text('${_getTotalProductPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                              Text('총 상품 금액',
+                                  style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize:
+                                          Responsive.getFont(context, 14))),
+                              Text('${_getTotalProductPrice()} 원',
+                                  style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize:
+                                          Responsive.getFont(context, 14))),
                             ],
                           ),
                           const SizedBox(height: 8.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('총 배송비', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                              Text('${_getTotalDeliveryPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                              Text('총 배송비',
+                                  style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize:
+                                          Responsive.getFont(context, 14))),
+                              Text('${_getTotalDeliveryPrice()} 원',
+                                  style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize:
+                                          Responsive.getFont(context, 14))),
                             ],
                           ),
                           const Padding(
                             padding: EdgeInsets.only(top: 15.0, bottom: 20),
-                            child: Divider(thickness: 1, color: Color(0xFFEEEEEE)),
+                            child:
+                                Divider(thickness: 1, color: Color(0xFFEEEEEE)),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('총 결제예상금액', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                              Text('${_getTotalPaymentPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14), fontWeight: FontWeight.bold)),
+                              Text('총 결제예상금액',
+                                  style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize:
+                                          Responsive.getFont(context, 14))),
+                              Text('${_getTotalPaymentPrice()} 원',
+                                  style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ],
@@ -419,16 +476,28 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('총 상품 금액: ', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                    Text('${_getTotalProductPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                    Text('총 상품 금액: ',
+                        style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14))),
+                    Text('${_getTotalProductPrice()} 원',
+                        style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14))),
                   ],
                 ),
                 const SizedBox(height: 15.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('총 배송비: ', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
-                    Text('${_getTotalDeliveryPrice()} 원', style: TextStyle(fontSize: Responsive.getFont(context, 14))),
+                    Text('총 배송비: ',
+                        style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14))),
+                    Text('${_getTotalDeliveryPrice()} 원',
+                        style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14))),
                   ],
                 ),
                 const SizedBox(height: 20.0),
@@ -440,7 +509,9 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 48),
-                    backgroundColor: _selectedItemsCount > 0 ? Colors.black : const Color(0xFFDDDDDD), // 선택된 항목이 없으면 회색
+                    backgroundColor: _selectedItemsCount > 0
+                        ? Colors.black
+                        : const Color(0xFFDDDDDD), // 선택된 항목이 없으면 회색
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.0),
                     ),
@@ -448,6 +519,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   child: Text(
                     '주문하기',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       color: Colors.white,
                       fontSize: Responsive.getFont(context, 14),
                     ),
@@ -464,10 +536,11 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   int _getTotalProductPrice() {
     // 선택된 기준으로 가격 가져오기
     int totalProductPrice = 0;
-    for(var cartItem in _cartItems) {
-      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+    for (var cartItem in _cartItems) {
+      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
         if (product.isSelected) {
-          totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
+          totalProductPrice +=
+              ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
         }
       }
     }
@@ -476,9 +549,9 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
   int _getTotalDeliveryPrice() {
     int totalDeliveryPrice = 0;
-    for(var cartItem in _cartItems) {
+    for (var cartItem in _cartItems) {
       bool isAllCheck = true;
-      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
         if (!product.isSelected) {
           isAllCheck = false;
         }
@@ -486,13 +559,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       if (isAllCheck) {
         totalDeliveryPrice += cartItem.stDeliveryPrice ?? 0;
       } else {
-        for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+        for (var product in cartItem.productList ?? [] as List<CartItemData>) {
           if (product.isSelected) {
             totalDeliveryPrice += product.ctDeliveryDefaultPrice ?? 0;
           }
         }
       }
-
     }
     return totalDeliveryPrice;
   }
@@ -512,16 +584,18 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       'mt_idx': mtIdx,
       'temp_mt_id': '',
       'ct_idx': ctIdx,
-      'ct_count' : ctCount
+      'ct_count': ctCount
     };
 
-    final defaultResponseDTO = await ref.read(cartModelProvider.notifier).cartUpdate(requestData);
+    final defaultResponseDTO =
+        await ref.read(cartModelProvider.notifier).cartUpdate(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _getList();
       } else {
         if (!context.mounted) return;
-        Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+        Utils.getInstance()
+            .showSnackBar(context, defaultResponseDTO.message ?? "");
       }
     }
   }
@@ -539,14 +613,16 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       'ct_idx': ctIdx,
     };
 
-    final defaultResponseDTO = await ref.read(cartModelProvider.notifier).cartDel(requestData);
+    final defaultResponseDTO =
+        await ref.read(cartModelProvider.notifier).cartDel(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _getList();
       }
 
       if (!context.mounted) return;
-      Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+      Utils.getInstance()
+          .showSnackBar(context, defaultResponseDTO.message ?? "");
     }
   }
 
@@ -556,12 +632,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     final mtIdx = pref.getMtIdx();
 
     List<Map<String, dynamic>> cartArr = [];
-    for(var cartItem in _cartItems) {
+    for (var cartItem in _cartItems) {
       Map<String, dynamic> cartMap = {
-        'st_idx' : cartItem.stIdx,
+        'st_idx': cartItem.stIdx,
       };
       List<int> ctIdxs = [];
-      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
         if (product.isSelected) {
           ctIdxs.add(product.ctIdx ?? 0);
         }
@@ -574,14 +650,15 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     }
 
     Map<String, dynamic> requestData = {
-      'type' : 1,
-      'ot_idx' : '',
-      'mt_idx' : mtIdx,
-      'temp_mt_id' : '',
-      'cart_arr' : json.encode(cartArr),
+      'type': 1,
+      'ot_idx': '',
+      'mt_idx': mtIdx,
+      'temp_mt_id': '',
+      'cart_arr': json.encode(cartArr),
     };
 
-    final payOrderDetailDTO = await ref.read(cartModelProvider.notifier).orderDetail(requestData);
+    final payOrderDetailDTO =
+        await ref.read(cartModelProvider.notifier).orderDetail(requestData);
     if (payOrderDetailDTO != null) {
       final payOrderDetailData = payOrderDetailDTO.data;
 

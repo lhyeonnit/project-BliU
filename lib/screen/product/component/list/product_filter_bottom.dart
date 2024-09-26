@@ -28,6 +28,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
   late String _tempSelectedAgeGroup;
   late List<String> _tempSelectedStyle;
   late RangeValues _tempSelectedRange;
+
   @override
   void initState() {
     super.initState();
@@ -93,6 +94,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           child: Text(
                             '연령',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 18),
                                 fontWeight: FontWeight.bold),
                           ),
@@ -110,9 +112,11 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 30),
                           decoration: BoxDecoration(
-                            border: Border.all(width: 1,color: Color(0xFFEEEEEE)),
+                            border:
+                                Border.all(width: 1, color: Color(0xFFEEEEEE)),
                           ),
                         ),
                         Container(
@@ -121,6 +125,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           child: Text(
                             '스타일',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 18),
                                 fontWeight: FontWeight.bold),
                           ),
@@ -144,9 +149,11 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 30),
                           decoration: BoxDecoration(
-                            border: Border.all(width: 1,color: Color(0xFFEEEEEE)),
+                            border:
+                                Border.all(width: 1, color: Color(0xFFEEEEEE)),
                           ),
                         ),
                         Container(
@@ -155,6 +162,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           child: Text(
                             '가격',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 18),
                                 fontWeight: FontWeight.bold),
                           ),
@@ -165,6 +173,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                             child: Text(
                               '${_tempSelectedRange.start.toInt()}원 ~ ${_tempSelectedRange.end.toInt()}원',
                               style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -177,8 +186,10 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           min: 0,
                           max: 100000,
                           divisions: 100,
-                          activeColor: Color(0xFFFF6192), // 슬라이더의 활성 부분 색상
-                          inactiveColor: Color(0xFFEEEEEE), // 슬라이더의 비활성 부분 색상
+                          activeColor: Color(0xFFFF6192),
+                          // 슬라이더의 활성 부분 색상
+                          inactiveColor: Color(0xFFEEEEEE),
+                          // 슬라이더의 비활성 부분 색상
                           labels: RangeLabels(
                             _tempSelectedRange.start.round().toString(),
                             _tempSelectedRange.end.round().toString(),
@@ -236,7 +247,8 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                       child: const Center(
                           child: Text(
                         '상품보기',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            fontFamily: 'Pretendard', color: Colors.white),
                       )),
                       onTap: () {
                         widget.onAgeOptionSelected(_tempSelectedAgeGroup);
@@ -263,6 +275,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
         label: Text(
           ageGroup,
           style: TextStyle(
+            fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
           ),
@@ -288,6 +301,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
         label: Text(
           style,
           style: TextStyle(
+            fontFamily: 'Pretendard',
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
           ),
           overflow: TextOverflow.ellipsis,

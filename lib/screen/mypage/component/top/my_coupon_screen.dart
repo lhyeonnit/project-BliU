@@ -10,19 +10,22 @@ const List<Map<String, String>> couponData = [
     "discount": "10%",
     "title": "키즈스타일 여름 특별 할인 쿠폰",
     "expiryDate": "~ 24.05.05까지 사용 가능",
-    "discountDetails": "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
+    "discountDetails":
+        "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
   },
   {
     "discount": "30%",
     "title": "꼬마옷장 첫 구매 30% 할인권",
     "expiryDate": "~ 24.05.05까지 사용 가능",
-    "discountDetails": "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
+    "discountDetails":
+        "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
   },
   {
     "discount": "5%",
     "title": "패션 키즈 VIP 할인 쿠폰",
     "expiryDate": "~ 24.05.05까지 사용 가능",
-    "discountDetails": "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
+    "discountDetails":
+        "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
   },
 ];
 
@@ -75,6 +78,7 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
         backgroundColor: Colors.white,
         title: const Text('쿠폰'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -125,7 +129,11 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                       label: Text(
                         categories[index],
                         style: TextStyle(
-                          color: isSelected ? Color(0xFFFF6192) : Colors.black, // 텍스트 색상
+                          fontFamily: 'Pretendard',
+
+                          color: isSelected
+                              ? Color(0xFFFF6192)
+                              : Colors.black, // 텍스트 색상
                         ),
                       ),
                       selected: isSelected,
@@ -138,7 +146,9 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                       selectedColor: Colors.white,
                       shape: StadiumBorder(
                         side: BorderSide(
-                          color: isSelected ? Color(0xFFFF6192) : Color(0xFFDDDDDD),
+                          color: isSelected
+                              ? Color(0xFFFF6192)
+                              : Color(0xFFDDDDDD),
                           // 테두리 색상
                           width: 1.0,
                         ),
@@ -157,36 +167,37 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
               ),
             ),
             const SizedBox(height: 10),
-             ListView.builder(
-               shrinkWrap: true,
-                itemCount: selectedCategoryIndex == 0
-                    ? availableCoupons.length
-                    : issuedCoupons.length,
-                itemBuilder: (context, index) {
-                  final coupon = selectedCategoryIndex == 0
-                      ? availableCoupons[index]
-                      : issuedCoupons[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: MyCouponCard(
-                      discount: coupon["discount"]!,
-                      title: coupon["title"]!,
-                      expiryDate: coupon["expiryDate"]!,
-                      discountDetails: coupon["discountDetails"]!,
-                      isDownloaded: selectedCategoryIndex == 1 || issuedCoupons.contains(coupon), // 상태 전달
-                      onDownload: () {
-                        setState(() {
-                          _markCouponAsDownloaded(coupon["title"]!); // 다운로드 상태 저장
-                          availableCoupons.removeAt(index);
-                          _filterCoupons(); // 쿠폰 리스트 업데이트
-                        });
-                      },
-                      couponKey: coupon["title"]!, // 고유한 키 전달
-                    ),
-                  );
-                },
-              ),
-
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: selectedCategoryIndex == 0
+                  ? availableCoupons.length
+                  : issuedCoupons.length,
+              itemBuilder: (context, index) {
+                final coupon = selectedCategoryIndex == 0
+                    ? availableCoupons[index]
+                    : issuedCoupons[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: MyCouponCard(
+                    discount: coupon["discount"]!,
+                    title: coupon["title"]!,
+                    expiryDate: coupon["expiryDate"]!,
+                    discountDetails: coupon["discountDetails"]!,
+                    isDownloaded: selectedCategoryIndex == 1 ||
+                        issuedCoupons.contains(coupon),
+                    // 상태 전달
+                    onDownload: () {
+                      setState(() {
+                        _markCouponAsDownloaded(coupon["title"]!); // 다운로드 상태 저장
+                        availableCoupons.removeAt(index);
+                        _filterCoupons(); // 쿠폰 리스트 업데이트
+                      });
+                    },
+                    couponKey: coupon["title"]!, // 고유한 키 전달
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),

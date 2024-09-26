@@ -26,6 +26,7 @@ class EventDetail extends ConsumerWidget {
         backgroundColor: Colors.white,
         title: const Text('이벤트 상세'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -57,53 +58,55 @@ class EventDetail extends ConsumerWidget {
         ),
       ),
       body: Container(
-            margin: const EdgeInsets.only(top: 40.0),
-            child: Consumer(builder: (context, ref, widget) {
-              final model = ref.watch(eventDetailModelProvider);
-              if (model?.eventDetailResponseDTO?.result == false) {
-                Future.delayed(Duration.zero, () {
-                  Utils.getInstance().showSnackBar(
-                      context, model?.eventDetailResponseDTO?.message ?? "");
-                });
-              }
+        margin: const EdgeInsets.only(top: 40.0),
+        child: Consumer(builder: (context, ref, widget) {
+          final model = ref.watch(eventDetailModelProvider);
+          if (model?.eventDetailResponseDTO?.result == false) {
+            Future.delayed(Duration.zero, () {
+              Utils.getInstance().showSnackBar(
+                  context, model?.eventDetailResponseDTO?.message ?? "");
+            });
+          }
 
-              final eventData = model?.eventDetailResponseDTO?.data;
-              final btTitle = eventData?.btTitle ?? "";
-              final btWdate = eventData?.btWdate ?? "";
-              final btImage = eventData?.btImg ?? "";
+          final eventData = model?.eventDetailResponseDTO?.data;
+          final btTitle = eventData?.btTitle ?? "";
+          final btWdate = eventData?.btWdate ?? "";
+          final btImage = eventData?.btImg ?? "";
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Column(
-                      children: [
-                        Text(
-                          btTitle,
-                          style: TextStyle(
-                            fontSize: Responsive.getFont(context, 18),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 8, bottom: 20),
-                          child: Text(
-                            btWdate,
-                            style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Color(0xFF7B7B7B),
-                            ),
-                          ),
-                        ),
-                      ],
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Column(
+                  children: [
+                    Text(
+                      btTitle,
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 18),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  //Image.asset('assets/images/my/event_dt.png'),
-                  Image.network(btImage)
-                ],
-              );
-            }),
-          ),
+                    Container(
+                      margin: EdgeInsets.only(top: 8, bottom: 20),
+                      child: Text(
+                        btWdate,
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: Color(0xFF7B7B7B),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              //Image.asset('assets/images/my/event_dt.png'),
+              Image.network(btImage)
+            ],
+          );
+        }),
+      ),
     );
   }
 }

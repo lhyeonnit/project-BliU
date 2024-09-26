@@ -37,6 +37,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
           Text(
             'AI 추천 상품',
             style: TextStyle(
+              fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 20),
               fontWeight: FontWeight.bold,
             ),
@@ -55,7 +56,8 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProductDetailScreen(ptIdx: productData.ptIdx),
+                        builder: (context) =>
+                            ProductDetailScreen(ptIdx: productData.ptIdx),
                       ),
                     );
                   },
@@ -76,7 +78,6 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                               child: Image.network(
                                 productData.ptImg ?? "",
                                 height: 160,
-
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -113,7 +114,8 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                               child: Text(
                                 productData.stName ?? "",
                                 style: TextStyle(
-                                    fontSize: Responsive.getFont(context, 12),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 12),
                                   color: const Color(0xFF7B7B7B),
                                 ),
                               ),
@@ -121,13 +123,15 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                             Text(
                               productData.ptName ?? "",
                               style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             Container(
-                              margin: const EdgeInsets.only(top: 12, bottom: 10),
+                              margin:
+                                  const EdgeInsets.only(top: 12, bottom: 10),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.baseline,
                                 textBaseline: TextBaseline.alphabetic,
@@ -135,17 +139,21 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                                   Text(
                                     '${productData.ptDiscountPer}%',
                                     style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       color: const Color(0xFFFF6192),
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 2),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 2),
                                     child: Text(
                                       '${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원',
                                       style: TextStyle(
-                                        fontSize: Responsive.getFont(context, 14),
+                                        fontFamily: 'Pretendard',
+                                        fontSize:
+                                            Responsive.getFont(context, 14),
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -163,30 +171,37 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                                   height: Responsive.getHeight(context, 11),
                                 ),
                                 Container(
-                                  margin: const EdgeInsets.only(left: 2, bottom: 2),
+                                  margin:
+                                      const EdgeInsets.only(left: 2, bottom: 2),
                                   child: Text(
                                     '${productData.ptLike ?? ""}',
                                     style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
                                       color: const Color(0xFFA4A4A4),
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   child: Row(
                                     children: [
                                       SvgPicture.asset(
                                         'assets/images/home/item_comment.svg',
                                         width: Responsive.getWidth(context, 13),
-                                        height: Responsive.getHeight(context, 12),
+                                        height:
+                                            Responsive.getHeight(context, 12),
                                       ),
                                       Container(
-                                        margin: const EdgeInsets.only(left: 2, bottom: 2),
+                                        margin: const EdgeInsets.only(
+                                            left: 2, bottom: 2),
                                         child: Text(
                                           '${productData.ptReview ?? ""}',
                                           style: TextStyle(
-                                              fontSize: Responsive.getFont(context, 12),
+                                            fontFamily: 'Pretendard',
+                                            fontSize:
+                                                Responsive.getFont(context, 12),
                                             color: const Color(0xFFA4A4A4),
                                           ),
                                         ),
@@ -219,10 +234,12 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
     Map<String, dynamic> requestData = {
-      'mt_idx' : mtIdx,
+      'mt_idx': mtIdx,
     };
 
-    final productListResponseDTO = await ref.read(homeBodyAiViewModelProvider.notifier).getList(requestData);
+    final productListResponseDTO = await ref
+        .read(homeBodyAiViewModelProvider.notifier)
+        .getList(requestData);
     if (productListResponseDTO != null) {
       if (productListResponseDTO.result == true) {
         setState(() {

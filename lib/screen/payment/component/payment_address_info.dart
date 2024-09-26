@@ -57,6 +57,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                       child: Text(
                         '수령인',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
                         ),
                       ),
@@ -64,6 +65,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                     Text(
                       '*',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         color: const Color(0xFFFF6192),
                         fontSize: Responsive.getFont(context, 13),
                       ),
@@ -77,12 +79,13 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                   child: TextField(
                     maxLines: 1,
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 15),
                       hintText: '수령인',
                       hintStyle: TextStyle(
-                        fontSize: Responsive.getFont(context, 14),
-                        color: const Color(0xFF595959)
-                      ),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: const Color(0xFF595959)),
                       enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         borderSide: BorderSide(color: Colors.black),
@@ -95,8 +98,8 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                     onChanged: (value) {
                       setState(() {
                         _receiveName = value;
-                        widget.onSave(_receiveName, _receiveTel, _receiveZip, _addressRoad,
-                            _addressDetail, _deliveryMemo);
+                        widget.onSave(_receiveName, _receiveTel, _receiveZip,
+                            _addressRoad, _addressDetail, _deliveryMemo);
                       });
                     },
                   ),
@@ -120,6 +123,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                       child: Text(
                         '휴대폰',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
                         ),
                       ),
@@ -127,6 +131,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                     Text(
                       '*',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         color: const Color(0xFFFF6192),
                         fontSize: Responsive.getFont(context, 13),
                       ),
@@ -140,12 +145,13 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                   child: TextField(
                     maxLines: 1,
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 15),
                       hintText: '‘-’ 없이 번호만 입력',
                       hintStyle: TextStyle(
-                        fontSize: Responsive.getFont(context, 14),
-                        color: const Color(0xFF595959)
-                      ),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: const Color(0xFF595959)),
                       enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         borderSide: BorderSide(color: Colors.black),
@@ -158,8 +164,8 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                     onChanged: (value) {
                       setState(() {
                         _receiveTel = value;
-                        widget.onSave(_receiveName, _receiveTel, _receiveZip, _addressRoad,
-                            _addressDetail, _deliveryMemo);
+                        widget.onSave(_receiveName, _receiveTel, _receiveZip,
+                            _addressRoad, _addressDetail, _deliveryMemo);
                       });
                     },
                   ),
@@ -184,6 +190,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                       child: Text(
                         '주소',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
                         ),
                       ),
@@ -191,6 +198,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                     Text(
                       '*',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         color: const Color(0xFFFF6192),
                         fontSize: Responsive.getFont(context, 13),
                       ),
@@ -213,19 +221,17 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                             maxLines: 1,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
-                                vertical: 14,
-                                horizontal: 15
-                              ),
+                                  vertical: 14, horizontal: 15),
                               hintText: '주소를 검색해 주세요.',
                               hintStyle: TextStyle(
-                                fontSize: Responsive.getFont(context, 14),
-                                color: const Color(0xFF595959)
-                              ),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: const Color(0xFF595959)),
                               border: const OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(6)),
+                                    BorderRadius.all(Radius.circular(6)),
                                 borderSide:
-                                BorderSide(color: Color(0xFFE1E1E1)),
+                                    BorderSide(color: Color(0xFFE1E1E1)),
                               ),
                             ),
                           ),
@@ -238,15 +244,18 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                               DaumPostData? result = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const WebviewWithDaumPostWebview(), // 주소 검색 창으로 이동
+                                  builder: (context) =>
+                                      const WebviewWithDaumPostWebview(), // 주소 검색 창으로 이동
                                 ),
                               );
 
                               if (result != null) {
                                 setState(() {
-                                  _roadAddressController.text = result.roadAddress;
+                                  _roadAddressController.text =
+                                      result.roadAddress;
                                   _receiveZip = result.zonecode;
-                                  _addressRoad = result.roadAddress; // 검색된 주소로 도로명 주소 업데이트
+                                  _addressRoad =
+                                      result.roadAddress; // 검색된 주소로 도로명 주소 업데이트
                                   widget.onSave(
                                       _receiveName,
                                       _receiveTel,
@@ -270,6 +279,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                                 child: Text(
                                   '주소검색',
                                   style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                     fontWeight: FontWeight.normal,
                                   ),
@@ -286,11 +296,10 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                         maxLines: 1,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(
-                            vertical: 14,
-                            horizontal: 15
-                          ),
+                              vertical: 14, horizontal: 15),
                           hintText: '상세주소 입력',
                           hintStyle: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: const Color(0xFF595959)),
                           enabledBorder: const OutlineInputBorder(
@@ -305,8 +314,13 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                         onChanged: (value) {
                           setState(() {
                             _addressDetail = value;
-                            widget.onSave(_receiveName, _receiveTel, _receiveZip,
-                                _addressRoad, _addressDetail, _deliveryMemo);
+                            widget.onSave(
+                                _receiveName,
+                                _receiveTel,
+                                _receiveZip,
+                                _addressRoad,
+                                _addressDetail,
+                                _deliveryMemo);
                           });
                         },
                       ),
@@ -323,12 +337,13 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
           child: TextField(
             maxLines: 4,
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
               hintText: '배송 메모 입력',
               hintStyle: TextStyle(
-                fontSize: Responsive.getFont(context, 14),
-                color: const Color(0xFF595959)
-              ),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: const Color(0xFF595959)),
               enabledBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6)),
                 borderSide: BorderSide(color: Color(0xFFE1E1E1)),
@@ -341,8 +356,8 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
             onChanged: (value) {
               setState(() {
                 _deliveryMemo = value;
-                widget.onSave(_receiveName, _receiveTel, _receiveZip, _addressRoad,
-                    _addressDetail, _deliveryMemo);
+                widget.onSave(_receiveName, _receiveTel, _receiveZip,
+                    _addressRoad, _addressDetail, _deliveryMemo);
               });
             },
           ),
