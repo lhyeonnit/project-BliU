@@ -165,7 +165,7 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5.0),
                             child: Image.network(
-                              exhibitionData.product?[0] ?? "",
+                              exhibitionData.ptImg?[0] ?? "",
                               height: Responsive.getHeight(context, 84),
                               fit: BoxFit
                                   .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
@@ -178,7 +178,7 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5.0),
                             child: Image.network(
-                              exhibitionData.product?[1] ?? "",
+                              exhibitionData.ptImg?[1] ?? "",
                               height: Responsive.getHeight(context, 84),
                               fit: BoxFit
                                   .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
@@ -191,7 +191,7 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5.0),
                             child: Image.network(
-                              exhibitionData.product?[2] ?? "",
+                              exhibitionData.ptImg?[2] ?? "",
                               height: Responsive.getHeight(context, 84),
                               fit: BoxFit
                                   .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
@@ -208,6 +208,8 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
                           minimumSize: Size.zero, // 최소 사이즈를 0으로 설정하여 여백 제거
                         ),
                         onPressed: () {
+                          print("exhibitionData.etIdx ?? 0 ${exhibitionData.etIdx ?? 0}");
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
