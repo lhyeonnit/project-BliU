@@ -19,7 +19,6 @@ class HomeFooter extends ConsumerWidget {
 
     if (model?.footResponseDTO != null) {
       if (model?.footResponseDTO?.result == true) {
-        print('푸터 성공 == ${model?.footResponseDTO?.data?.toJson()}');
         var data = model?.footResponseDTO?.data;
         if (data != null) {
           footInfo =
@@ -27,7 +26,6 @@ class HomeFooter extends ConsumerWidget {
               '사업자등록번호 ${data.stCompanyNum1}\n'
               '제 통신판매업신고번호 : ${data.stCompanyNum2}\n'
               '주소 : ${data.stCompanyAdd}';
-          print("footInfo == ${footInfo}");
         }
       } else {
         Future.delayed(Duration.zero, () {
@@ -52,14 +50,14 @@ class HomeFooter extends ConsumerWidget {
                   '공지사항',
                   style: TextStyle(
                       fontFamily: 'Pretendard',
-                      color: Color(0xFF7B7B7B),
+                      color: const Color(0xFF7B7B7B),
                       fontSize: Responsive.getFont(context, 13)),
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: const BoxDecoration(
                     border: Border.symmetric(
                         vertical: BorderSide(color: Color(0xFFDDDDDD)))),
                 child: GestureDetector(
@@ -68,7 +66,7 @@ class HomeFooter extends ConsumerWidget {
                     '이용약관',
                     style: TextStyle(
                         fontFamily: 'Pretendard',
-                        color: Color(0xFF7B7B7B),
+                        color: const Color(0xFF7B7B7B),
                         fontSize: Responsive.getFont(context, 13)),
                   ),
                 ),
@@ -79,7 +77,7 @@ class HomeFooter extends ConsumerWidget {
                   '개인정보처리방침',
                   style: TextStyle(
                       fontFamily: 'Pretendard',
-                      color: Color(0xFF7B7B7B),
+                      color: const Color(0xFF7B7B7B),
                       fontSize: Responsive.getFont(context, 13)),
                 ),
               ),
@@ -90,7 +88,7 @@ class HomeFooter extends ConsumerWidget {
               //  TODO 사업자 정보
             },
             child: Container(
-              margin: EdgeInsets.symmetric(vertical: 15),
+              margin: const EdgeInsets.symmetric(vertical: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -98,14 +96,14 @@ class HomeFooter extends ConsumerWidget {
                     '사업자 정보',
                     style: TextStyle(
                         fontFamily: 'Pretendard',
-                        color: Color(0xFF7B7B7B),
+                        color: const Color(0xFF7B7B7B),
                         fontSize: Responsive.getFont(context, 13)),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 5),
+                    margin: const EdgeInsets.only(left: 5),
                     child: SvgPicture.asset(
                         'assets/images/home/ft_collapse.svg',
-                        color: Color(0xFF7B7B7B)),
+                        color: const Color(0xFF7B7B7B)),
                   ),
                 ],
               ),
@@ -116,17 +114,17 @@ class HomeFooter extends ConsumerWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontFamily: 'Pretendard',
-                color: Color(0xFF7B7B7B),
+                color: const Color(0xFF7B7B7B),
                 fontSize: Responsive.getFont(context, 12)),
           ),
           Container(
-            margin: EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.only(top: 20),
             child: Text(
               'Copyright © 2024 블리유. All rights reserved.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Pretendard',
-                color: Color(0xFF7B7B7B),
+                color: const Color(0xFF7B7B7B),
                 fontSize: Responsive.getFont(context, 12),
               ),
             ),

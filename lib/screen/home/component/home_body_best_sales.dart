@@ -1,25 +1,29 @@
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
+import 'package:BliU/screen/home/viewmodel/home_body_best_sales_view_model.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/component/store_age_group_selection.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 
-class HomeBodyBestSales extends StatefulWidget {
-  const HomeBodyBestSales({super.key});
+class HomeBodyBestSales extends ConsumerStatefulWidget {
+  final List<CategoryData> categories;
+  final List<CategoryData> ageCategories;
+  const HomeBodyBestSales({super.key, required this.categories, required this.ageCategories});
 
   @override
-  State<HomeBodyBestSales> createState() => _HomeBodyBestSalesState();
+  _HomeBodyBestSalesState createState() => _HomeBodyBestSalesState();
 }
 
-class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
-  String selectedAgeGroup = '';
+class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
+  CategoryData? selectedAgeGroup;
   int selectedCategoryIndex = 0;
   List<CategoryData> categories = [
-    CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', subList: [])
+    CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', catIdx: 0, catName: '', subList: [])
   ];
   List<ProductData> productList = [];
 
@@ -29,10 +33,12 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
         return StoreAgeGroupSelection(
+          ageCategories: widget.ageCategories,
           selectedAgeGroup: selectedAgeGroup,
-          onSelectionChanged: (String newSelection) {
+          onSelectionChanged: (CategoryData? newSelection) {
             setState(() {
               selectedAgeGroup = newSelection;
+              _getList();
             });
           },
         );
@@ -41,60 +47,23 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
   }
 
   String getSelectedAgeGroupText() {
-    if (selectedAgeGroup.isEmpty) {
+    if (selectedAgeGroup == null) {
       return '연령';
     } else {
-      return selectedAgeGroup;
+      return selectedAgeGroup?.catName ?? "";
     }
   }
 
   @override
   void initState() {
     super.initState();
+    for (var category in widget.categories) {
+      categories.add(category);
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
   }
-
-
-  // final List<Map<String, String>> items = [
-  //   {
-  //     'image': 'http://example.com/item1.png',
-  //     'name': '꿈꾸는데이지 안나 토션 레이스 베스트',
-  //     'brand': '꿈꾸는데이지',
-  //     'price': '32,800원',
-  //     'discount': '15%',
-  //     'likes': '13,000',
-  //     'comments': '49'
-  //   },
-  //   {
-  //     'image': 'http://example.com/item2.png',
-  //     'name': '레인보우꿈 안나 토션 레이스 베스트',
-  //     'brand': '레인보우꿈',
-  //     'price': '32,800원',
-  //     'discount': '15%',
-  //     'likes': '13,000',
-  //     'comments': '49'
-  //   },
-  //   {
-  //     'image': 'http://example.com/item3.png',
-  //     'name': '기글옷장 안나 토션 레이스 베스트',
-  //     'brand': '기글옷장',
-  //     'price': '32,800원',
-  //     'discount': '15%',
-  //     'likes': '13,000',
-  //     'comments': '49'
-  //   },
-  //   {
-  //     'image': 'http://example.com/item4.png',
-  //     'name': '스파클나라 안나 토션 레이스 베스트',
-  //     'brand': '스파클나라',
-  //     'price': '32,800원',
-  //     'discount': '15%',
-  //     'likes': '13,000',
-  //     'comments': '49'
-  //   },
-  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +92,7 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
                       onTap: () {
                         setState(() {
                           selectedCategoryIndex = index;
+                          _getList();
                         });
                       },
                       child: categoryTab(index),
@@ -176,23 +146,23 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
               ),
             ],
           ),
-          // Container(
-          //   margin: const EdgeInsets.only(right: 16, bottom: 29),
-          //   child: GridView.builder(
-          //     shrinkWrap: true,
-          //     physics: const NeverScrollableScrollPhysics(),
-          //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          //       crossAxisCount: 2,
-          //       crossAxisSpacing: 12.0,
-          //       mainAxisSpacing: 30.0,
-          //       childAspectRatio: 0.5,
-          //     ),
-          //     itemCount: items.length,
-          //     itemBuilder: (context, index) {
-          //       return buildItemCard(items[index], index);
-          //     },
-          //   ),
-          // ),
+          Container(
+            margin: const EdgeInsets.only(right: 16, bottom: 29),
+            child: GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12.0,
+                mainAxisSpacing: 30.0,
+                childAspectRatio: 0.5,
+              ),
+              itemCount: productList.length,
+              itemBuilder: (context, index) {
+                return buildItemCard(productList[index], index);
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -206,6 +176,31 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
     // TODO 회원 비회원 처리 필요
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
+
+    final category = categories[selectedCategoryIndex];
+    String categoryStr = "all";
+    if (selectedCategoryIndex > 0) {
+      categoryStr = category.ctIdx.toString();
+    }
+    String ageStr = "all";
+    if (selectedAgeGroup != null) {
+      ageStr = (selectedAgeGroup?.catIdx ?? 0).toString();
+    }
+
+    Map<String, dynamic> requestData = {
+      'mt_idx' : mtIdx,
+      'category' : categoryStr,
+      'age' : ageStr,
+    };
+
+    final productListResponseDTO = await ref.read(homeBodyBestSalesViewModelProvider.notifier).getList(requestData);
+    if (productListResponseDTO != null) {
+      if (productListResponseDTO.result == true) {
+        setState(() {
+          productList = productListResponseDTO.list;
+        });
+      }
+    }
   }
 
   Widget categoryTab(int index) {
@@ -238,154 +233,153 @@ class _HomeBodyBestSalesState extends State<HomeBodyBestSales> {
     );
   }
 
-  // Widget buildItemCard(Map<String, String> item, int index) {
-  //   return GestureDetector(
-  //     onTap: () {
-  //       // TODO 이동 수정
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => const ProductDetailScreen(ptIdx: 3),
-  //         ),
-  //       );
-  //     },
-  //     child: Container(
-  //       width: 184,
-  //       decoration: const BoxDecoration(
-  //         color: Colors.white,
-  //       ),
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Stack(
-  //             children: [
-  //               ClipRRect(
-  //                 borderRadius: const BorderRadius.all(Radius.circular(5)),
-  //                 child: Image.asset(
-  //                   'assets/images/home/exhi.png',
-  //                   height: 184,
-  //                   width: double.infinity,
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //               ),
-  //               Positioned(
-  //                 top: 0,
-  //                 right: 0,
-  //                 child: GestureDetector(
-  //                   onTap: () {
-  //                     setState(() {
-  //                       // TODO 좋아요 작업
-  //                     });
-  //                   },
-  //                   child: SvgPicture.asset(
-  //                     isFavoriteList[index]
-  //                         ? 'assets/images/home/like_btn_fill.svg'
-  //                         : 'assets/images/home/like_btn.svg',
-  //                     color: isFavoriteList[index]
-  //                         ? const Color(0xFFFF6191)
-  //                         : null,
-  //                     // 좋아요 상태에 따라 내부 색상 변경
-  //                     height: Responsive.getHeight(context, 34),
-  //                     width: Responsive.getWidth(context, 34),
-  //                     // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //           Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Container(
-  //                 margin: const EdgeInsets.only(top: 12, bottom: 4),
-  //                 child: Text(
-  //                   item['brand']!,
-  //                   style: TextStyle(
-  //                       fontSize: Responsive.getFont(context, 12),
-  //                       color: Colors.grey),
-  //                 ),
-  //               ),
-  //               Text(
-  //                 item['name']!,
-  //                 style: TextStyle(
-  //                   fontSize: Responsive.getFont(context, 14),
-  //                 ),
-  //                 maxLines: 2,
-  //                 overflow: TextOverflow.ellipsis,
-  //               ),
-  //               Container(
-  //                 margin: const EdgeInsets.only(top: 12, bottom: 10),
-  //                 child: Row(
-  //                   crossAxisAlignment: CrossAxisAlignment.baseline,
-  //                   textBaseline: TextBaseline.alphabetic,
-  //                   children: [
-  //                     Text(
-  //                       item['discount']!,
-  //                       style: TextStyle(
-  //                         fontSize: Responsive.getFont(context, 14),
-  //                         color: const Color(0xFFFF6192),
-  //                         fontWeight: FontWeight.bold,
-  //                       ),
-  //                     ),
-  //                     Container(
-  //                       margin: const EdgeInsets.symmetric(horizontal: 2),
-  //                       child: Text(
-  //                         item['price']!,
-  //                         style: TextStyle(
-  //                           fontSize: Responsive.getFont(context, 14),
-  //                           fontWeight: FontWeight.bold,
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.start,
-  //                 children: [
-  //                   SvgPicture.asset(
-  //                     'assets/images/home/item_like.svg',
-  //                     width: Responsive.getWidth(context, 13),
-  //                     height: Responsive.getHeight(context, 11),
-  //                   ),
-  //                   Container(
-  //                     margin: const EdgeInsets.only(left: 2, bottom: 2),
-  //                     child: Text(
-  //                       item['likes']!,
-  //                       style: TextStyle(
-  //                         fontSize: Responsive.getFont(context, 12),
-  //                         color: Colors.grey,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   Container(
-  //                     margin: const EdgeInsets.symmetric(horizontal: 10),
-  //                     child: Row(
-  //                       children: [
-  //                         SvgPicture.asset(
-  //                           'assets/images/home/item_comment.svg',
-  //                           width: Responsive.getWidth(context, 13),
-  //                           height: Responsive.getHeight(context, 12),
-  //                         ),
-  //                         Container(
-  //                           margin: const EdgeInsets.only(left: 2, bottom: 2),
-  //                           child: Text(
-  //                             item['comments']!,
-  //                             style: TextStyle(
-  //                                 fontSize: Responsive.getFont(context, 12),
-  //                                 color: Colors.grey),
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget buildItemCard(ProductData product, int index) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductDetailScreen(ptIdx: product.ptIdx),
+          ),
+        );
+      },
+      child: Container(
+        width: 184,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  child: Image.network(
+                    product.ptImg ?? "",
+                    height: 184,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        // TODO 좋아요 작업
+                      });
+                    },
+                    child: SvgPicture.asset(
+                      product.likeChk == "Y"
+                          ? 'assets/images/home/like_btn_fill.svg'
+                          : 'assets/images/home/like_btn.svg',
+                      color: product.likeChk == "Y"
+                          ? const Color(0xFFFF6191)
+                          : null,
+                      // 좋아요 상태에 따라 내부 색상 변경
+                      height: Responsive.getHeight(context, 34),
+                      width: Responsive.getWidth(context, 34),
+                      // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 12, bottom: 4),
+                  child: Text(
+                    product.stName ?? "",
+                    style: TextStyle(
+                        fontSize: Responsive.getFont(context, 12),
+                        color: Colors.grey),
+                  ),
+                ),
+                Text(
+                  product.ptName ?? "",
+                  style: TextStyle(
+                    fontSize: Responsive.getFont(context, 14),
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 12, bottom: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        "${product.ptDiscountPer}%",
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 14),
+                          color: const Color(0xFFFF6192),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 2),
+                        child: Text(
+                          "${product.ptPrice}원",
+                          style: TextStyle(
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/images/home/item_like.svg',
+                      width: Responsive.getWidth(context, 13),
+                      height: Responsive.getHeight(context, 11),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 2, bottom: 2),
+                      child: Text(
+                        "${product.ptLike ?? ""}",
+                        style: TextStyle(
+                          fontSize: Responsive.getFont(context, 12),
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/images/home/item_comment.svg',
+                            width: Responsive.getWidth(context, 13),
+                            height: Responsive.getHeight(context, 12),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(left: 2, bottom: 2),
+                            child: Text(
+                              "${product.ptReview ?? ""}",
+                              style: TextStyle(
+                                  fontSize: Responsive.getFont(context, 12),
+                                  color: Colors.grey),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

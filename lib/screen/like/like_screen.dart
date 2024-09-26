@@ -21,7 +21,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
   late TabController _tabController;
   final ScrollController _scrollController = ScrollController();
   final List<CategoryData> categories = [
-    CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', subList: [])
+    CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', catIdx: 0, catName: '', subList: [])
   ];
   List<ProductListResponseDTO?> productList = [];
 

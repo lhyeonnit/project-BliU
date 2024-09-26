@@ -29,6 +29,24 @@ class HomeViewModel extends StateNotifier<HomeModel?> {
       return null;
     }
   }
+
+  Future<CategoryResponseDTO?> getAgeCategory() async {
+    final response = await repository.reqGet(url: Constant.apiCategoryAgeUrl);
+    try {
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseData = response.data;
+          CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.fromJson(responseData);
+          return categoryResponseDTO;
+        }
+      }
+      return null;
+    } catch(e) {
+      // Catch and log any exceptions
+      print('Error request Api: $e');
+      return null;
+    }
+  }
 }
 
 // ViewModel Provider 정의

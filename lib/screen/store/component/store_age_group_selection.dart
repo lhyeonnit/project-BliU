@@ -1,12 +1,15 @@
+import 'package:BliU/data/category_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class StoreAgeGroupSelection extends StatefulWidget {
-  final String selectedAgeGroup;
-  final ValueChanged<String> onSelectionChanged;
+  final List<CategoryData> ageCategories;
+  final CategoryData? selectedAgeGroup;
+  final ValueChanged<CategoryData?> onSelectionChanged;
 
   const StoreAgeGroupSelection({
+    required this.ageCategories,
     required this.selectedAgeGroup,
     required this.onSelectionChanged,
     super.key,
@@ -17,7 +20,7 @@ class StoreAgeGroupSelection extends StatefulWidget {
 }
 
 class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
-  late String _tempSelectedAgeGroup;
+  CategoryData? _tempSelectedAgeGroup;
 
   @override
   void initState() {
@@ -25,10 +28,10 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
     _tempSelectedAgeGroup = widget.selectedAgeGroup;
   }
 
-  void _toggleSelection(String ageGroup) {
+  void _toggleSelection(CategoryData ageGroup) {
     setState(() {
-      if (_tempSelectedAgeGroup == ageGroup) {
-        _tempSelectedAgeGroup = "";
+      if (_tempSelectedAgeGroup?.catIdx == ageGroup.catIdx) {
+        _tempSelectedAgeGroup = null;
       } else {
         _tempSelectedAgeGroup = ageGroup;
       }
@@ -43,17 +46,17 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
       children: [
         Center(
           child: Container(
-            margin: EdgeInsets.only(top: 15, bottom: 17),
+            margin: const EdgeInsets.only(top: 15, bottom: 17),
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Color(0xFFDDDDDD),
+              color: const Color(0xFFDDDDDD),
               borderRadius: BorderRadius.circular(3),
             ),
           ),
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
+          margin: const EdgeInsets.symmetric(vertical: 10),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             '연령대',
@@ -65,19 +68,19 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
         ),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
-          padding: EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildAgeGroupChip('베이비(0-24개월)'),
-              _buildAgeGroupChip('키즈(3-8세)'),
-              _buildAgeGroupChip('주니어(9세이상)'),
+              ...widget.ageCategories.map((category) {
+                return _buildAgeGroupChip(category);
+              }),
             ],
           ),
         ),
         Container(
-          padding: EdgeInsets.only(left: 11, right: 10, top: 9, bottom: 8),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.only(left: 11, right: 10, top: 9, bottom: 8),
+          decoration: const BoxDecoration(
               border: Border(
                   top: BorderSide(
             color: Color(0xD000000),
@@ -94,14 +97,14 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
                   child: SvgPicture.asset('assets/images/store/ic_release.svg'),
                   onTap: () {
                     setState(() {
-                      _tempSelectedAgeGroup = "";
+                      _tempSelectedAgeGroup = null;
                     });
                   },
                 ),
               ),
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(left: 9),
+                  margin: const EdgeInsets.only(left: 9),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(6)),
                       color: Colors.black),
@@ -128,13 +131,13 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
     );
   }
 
-  Widget _buildAgeGroupChip(String ageGroup) {
-    final isSelected = _tempSelectedAgeGroup.contains(ageGroup);
+  Widget _buildAgeGroupChip(CategoryData ageGroup) {
+    final isSelected = _tempSelectedAgeGroup?.catIdx == ageGroup.catIdx;
     return GestureDetector(
       onTap: () => _toggleSelection(ageGroup),
       child: Chip(
         label: Text(
-          ageGroup,
+          ageGroup.catName ?? "",
           style: TextStyle(
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),

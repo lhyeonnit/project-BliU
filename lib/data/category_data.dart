@@ -3,6 +3,8 @@ class CategoryData {
   final int? cstIdx;
   final String? img;
   final String? ctName;
+  final int? catIdx;
+  final String? catName;
   final List<CategoryData>? subList;
 
   CategoryData({
@@ -10,7 +12,9 @@ class CategoryData {
     required this.cstIdx,
     required this.img,
     required this.ctName,
-    required this.subList
+    required this.subList,
+    required this.catIdx,
+    required this.catName,
   });
 
   // JSON to Object
@@ -27,6 +31,8 @@ class CategoryData {
       cstIdx: json['cst_idx'],
       img: json['img'],
       ctName: json['ct_name'],
+      catIdx: json['cat_idx'],
+      catName: json['cat_name'],
       subList: list
     );
   }
@@ -38,6 +44,8 @@ class CategoryData {
       'cst_idx': cstIdx,
       'img': img,
       'ct_name': ctName,
+      'cat_idx': catIdx,
+      'cat_name': catName,
       'sub_list': subList?.map((product) => product.toJson()).toList(),
     };
   }
