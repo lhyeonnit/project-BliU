@@ -94,7 +94,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       // 기본 뒤로가기 버튼을 숨김
                       backgroundColor:
                           _isScrolled ? Colors.white : Colors.transparent,
-                      expandedHeight: 625,
+                      expandedHeight: Responsive.getHeight(context, 625),
                       title: SvgPicture.asset(
                         'assets/images/home/bottom_home.svg', // SVG 파일 경로
                         color: _isScrolled ? Colors.black : Colors.white,

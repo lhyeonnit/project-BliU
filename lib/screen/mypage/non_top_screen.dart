@@ -138,7 +138,7 @@ class _NonTopScreenState extends State<NonTopScreen> {
         ),
         Container(
           height: 80,
-          margin: EdgeInsets.symmetric(vertical: 20),
+          margin: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
           child: PageView.builder(
             controller: _pageController,
             itemCount: _totalPages,
