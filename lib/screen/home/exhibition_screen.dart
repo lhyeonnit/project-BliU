@@ -8,7 +8,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 //기획전
 class ExhibitionScreen extends StatefulWidget {
-  const ExhibitionScreen({super.key});
+  final int etIdx;
+  const ExhibitionScreen({super.key, required this.etIdx});
 
   @override
   State<StatefulWidget> createState() => ExhibitionScreenState();
@@ -173,7 +174,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 10),
+                  margin: const EdgeInsets.only(bottom: 10),
                   child: Text(
                     '우리 아이를 위한 포근한 선택',
                     style: TextStyle(

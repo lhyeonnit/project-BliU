@@ -6,7 +6,7 @@ class ExhibitionData {
   final String? etSubTitle;
   final String? etBanner;
   final int? etProductCount;
-  final List<ProductData>? product;
+  final List<String>? product;
 
   ExhibitionData({
     required this.etIdx,
@@ -19,9 +19,10 @@ class ExhibitionData {
 
   // JSON to Object
   factory ExhibitionData.fromJson(Map<String, dynamic> json) {
-    final product = List<ProductData>.from((json['product'])?.map((item) {
-      return ProductData.fromJson(item as Map<String, dynamic>);
-    }).toList());
+    List<String>? product;
+    if (json['product'] != null) {
+      product = List<String>.from(json['product']);
+    }
 
     return ExhibitionData(
       etIdx: json['et_idx'],
@@ -41,7 +42,7 @@ class ExhibitionData {
       'et_sub_title': etSubTitle,
       'et_banner': etBanner,
       'et_product_count': etProductCount,
-      'product': product?.map((it) => it.toJson()).toList(),
+      'product': product,
     };
   }
 }

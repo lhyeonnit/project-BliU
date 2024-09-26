@@ -13,10 +13,14 @@ class ExhibitionListResponseDTO {
 
   // JSON to Object
   factory ExhibitionListResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<ExhibitionData>.from((json['data']['list'])?.map((item) {
+      return ExhibitionData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return ExhibitionListResponseDTO(
       result: json['result'],
       message: json['data']['message'],
-      list: (json['data']['list'] as List<ExhibitionData>),
+      list: list,
     );
   }
 
