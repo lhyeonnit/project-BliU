@@ -4,7 +4,6 @@ import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.da
 import 'package:BliU/screen/mypage/component/top/cancel_screen.dart';
 import 'package:BliU/screen/mypage/component/top/delivery_screen.dart';
 import 'package:BliU/screen/mypage/component/top/exchange_return_screen.dart';
-import 'package:BliU/screen/mypage/component/top/review_write_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +11,11 @@ class OrderItemButton extends StatelessWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
 
-  const OrderItemButton({super.key, required this.orderData, required this.orderDetailData,});
+  const OrderItemButton({
+    super.key,
+    required this.orderData,
+    required this.orderDetailData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,10 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CancelScreen(orderData: orderData, orderDetailData: orderDetailData,),
+                    builder: (context) => CancelScreen(
+                      orderData: orderData,
+                      orderDetailData: orderDetailData,
+                    ),
                   ),
                 );
               },
@@ -43,6 +49,7 @@ class OrderItemButton extends StatelessWidget {
               child: Text(
                 '취소하기',
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -56,7 +63,10 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InquiryService(qnaType: '3', ptIdx: orderDetailData.ptIdx,),
+                    builder: (context) => InquiryService(
+                      qnaType: '3',
+                      ptIdx: orderDetailData.ptIdx,
+                    ),
                   ),
                 );
               },
@@ -69,6 +79,7 @@ class OrderItemButton extends StatelessWidget {
               child: Text(
                 '문의하기',
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -86,7 +97,10 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ExchangeReturnScreen(orderData: orderData, orderDetailData: orderDetailData,),
+                    builder: (context) => ExchangeReturnScreen(
+                      orderData: orderData,
+                      orderDetailData: orderDetailData,
+                    ),
                   ),
                 );
               },
@@ -99,6 +113,7 @@ class OrderItemButton extends StatelessWidget {
               child: Text(
                 '교환/반품 요청',
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -112,7 +127,9 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DeliveryScreen(odtCode: orderDetailData.otCode ?? "",),
+                    builder: (context) => DeliveryScreen(
+                      odtCode: orderDetailData.otCode ?? "",
+                    ),
                   ),
                 );
               },
@@ -125,6 +142,7 @@ class OrderItemButton extends StatelessWidget {
               child: Text(
                 '배송조회',
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -138,7 +156,10 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InquiryService(qnaType: '3', ptIdx: orderDetailData.ptIdx,),
+                    builder: (context) => InquiryService(
+                      qnaType: '3',
+                      ptIdx: orderDetailData.ptIdx,
+                    ),
                   ),
                 );
               },
@@ -151,6 +172,7 @@ class OrderItemButton extends StatelessWidget {
               child: Text(
                 '문의하기',
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -177,6 +199,7 @@ class OrderItemButton extends StatelessWidget {
               child: Text(
                 '구매확정',
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   color: const Color(0xFFFF6192),
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -191,7 +214,10 @@ class OrderItemButton extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ExchangeReturnScreen(orderData: orderData, orderDetailData: orderDetailData,),
+                        builder: (context) => ExchangeReturnScreen(
+                          orderData: orderData,
+                          orderDetailData: orderDetailData,
+                        ),
                       ),
                     );
                   },
@@ -204,6 +230,7 @@ class OrderItemButton extends StatelessWidget {
                   child: Text(
                     '교환/반품 요청',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       color: Colors.black,
                       fontSize: Responsive.getFont(context, 14),
                     ),
@@ -217,7 +244,8 @@ class OrderItemButton extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DeliveryScreen(odtCode: orderDetailData.otCode ?? ""),
+                        builder: (context) => DeliveryScreen(
+                            odtCode: orderDetailData.otCode ?? ""),
                       ),
                     );
                   },
@@ -230,6 +258,7 @@ class OrderItemButton extends StatelessWidget {
                   child: Text(
                     '배송조회',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       color: Colors.black,
                       fontSize: Responsive.getFont(context, 14),
                     ),
@@ -243,7 +272,10 @@ class OrderItemButton extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InquiryService(qnaType: '3', ptIdx: orderDetailData.ptIdx,),
+                        builder: (context) => InquiryService(
+                          qnaType: '3',
+                          ptIdx: orderDetailData.ptIdx,
+                        ),
                       ),
                     );
                   },
@@ -256,6 +288,7 @@ class OrderItemButton extends StatelessWidget {
                   child: Text(
                     '문의하기',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       color: Colors.black,
                       fontSize: Responsive.getFont(context, 14),
                     ),
@@ -289,6 +322,7 @@ class OrderItemButton extends StatelessWidget {
               child: Text(
                 '리뷰쓰기',
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   color: const Color(0xFFFF6192),
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -302,7 +336,8 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DeliveryScreen(odtCode: orderDetailData.otCode ?? ""),
+                    builder: (context) =>
+                        DeliveryScreen(odtCode: orderDetailData.otCode ?? ""),
                   ),
                 );
               },
@@ -315,6 +350,7 @@ class OrderItemButton extends StatelessWidget {
               child: Text(
                 '배송조회',
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -328,7 +364,10 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InquiryService(qnaType: '3', ptIdx: orderDetailData.ptIdx,),
+                    builder: (context) => InquiryService(
+                      qnaType: '3',
+                      ptIdx: orderDetailData.ptIdx,
+                    ),
                   ),
                 );
               },
@@ -341,6 +380,7 @@ class OrderItemButton extends StatelessWidget {
               child: Text(
                 '문의하기',
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14),
                 ),

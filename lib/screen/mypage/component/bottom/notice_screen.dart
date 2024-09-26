@@ -11,7 +11,8 @@ class NoticeScreen extends StatefulWidget {
   _NoticeScreenState createState() => _NoticeScreenState();
 }
 
-class _NoticeScreenState extends State<NoticeScreen> with SingleTickerProviderStateMixin {
+class _NoticeScreenState extends State<NoticeScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -36,6 +37,7 @@ class _NoticeScreenState extends State<NoticeScreen> with SingleTickerProviderSt
         backgroundColor: Colors.white,
         title: const Text('공지사항'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -73,6 +75,7 @@ class _NoticeScreenState extends State<NoticeScreen> with SingleTickerProviderSt
                 child: TabBar(
                   controller: _tabController,
                   labelStyle: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.w600,
                   ),
@@ -82,7 +85,8 @@ class _NoticeScreenState extends State<NoticeScreen> with SingleTickerProviderSt
                   ],
                   overlayColor: WidgetStateColor.transparent,
                   indicatorColor: Colors.black,
-                  indicatorSize: TabBarIndicatorSize.tab, // 인디케이터가 각 탭의 길이에 맞게 조정됨
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  // 인디케이터가 각 탭의 길이에 맞게 조정됨
                   labelColor: Colors.black,
                   unselectedLabelColor: const Color(0xFF7B7B7B),
                   dividerColor: Color(0xFFDDDDDD),

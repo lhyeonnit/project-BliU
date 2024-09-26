@@ -36,6 +36,7 @@ class _ExchangeReturnDetailItemState extends State<ExchangeReturnDetailItem> {
                 child: Text(
                   '${widget.title}',
                   style: TextStyle(
+                      fontFamily: 'Pretendard',
                       color: Color(0xFFFF6192),
                       fontSize: Responsive.getFont(context, 16),
                       fontWeight: FontWeight.bold),
@@ -43,13 +44,17 @@ class _ExchangeReturnDetailItemState extends State<ExchangeReturnDetailItem> {
               ),
               Text(
                 '${widget.date}',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   '${widget.orderId}',
                   style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF7B7B7B),
                   ),
@@ -71,6 +76,7 @@ class _ExchangeReturnDetailItemState extends State<ExchangeReturnDetailItem> {
                     child: Text(
                       '${order['status']}',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w600,
                         color: Colors.black,
                         fontSize: Responsive.getFont(context, 15),
@@ -105,6 +111,7 @@ class _ExchangeReturnDetailItemState extends State<ExchangeReturnDetailItem> {
                               Text(
                                 order['items'][0]['store'] ?? "",
                                 style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 12),
                                     color: Color(0xFF7B7B7B)),
                               ),
@@ -113,6 +120,7 @@ class _ExchangeReturnDetailItemState extends State<ExchangeReturnDetailItem> {
                                 child: Text(
                                   order['items'][0]['name'] ?? "",
                                   style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -122,6 +130,7 @@ class _ExchangeReturnDetailItemState extends State<ExchangeReturnDetailItem> {
                               Text(
                                 order['items'][0]['size'] ?? "",
                                 style: TextStyle(
+                                  fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 13),
                                   color: Color(0xFF7B7B7B),
                                 ),
@@ -131,6 +140,7 @@ class _ExchangeReturnDetailItemState extends State<ExchangeReturnDetailItem> {
                                 child: Text(
                                   '${order['price']}원',
                                   style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.bold,
                                     fontSize: Responsive.getFont(context, 14),
                                   ),

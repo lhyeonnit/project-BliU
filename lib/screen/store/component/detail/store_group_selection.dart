@@ -15,6 +15,7 @@ class _StoreGroupSelectionState extends State<StoreGroupSelection> {
   String selectedAgeGroup = '';
   String sortOption = '최신순';
   String sortOptionSelected = '';
+
   void _openSortBottomSheet() {
     showModalBottomSheet(
       context: context,
@@ -32,6 +33,7 @@ class _StoreGroupSelectionState extends State<StoreGroupSelection> {
       },
     );
   }
+
   void _showAgeGroupSelection() {
     showModalBottomSheet(
       context: context,
@@ -48,6 +50,7 @@ class _StoreGroupSelectionState extends State<StoreGroupSelection> {
       },
     );
   }
+
   String getSelectedSortGroupText() {
     if (sortOptionSelected.isEmpty) {
       return sortOption;
@@ -55,6 +58,7 @@ class _StoreGroupSelectionState extends State<StoreGroupSelection> {
       return sortOptionSelected;
     }
   }
+
   String getSelectedAgeGroupText() {
     if (selectedAgeGroup.isEmpty) {
       return '연령';
@@ -62,6 +66,7 @@ class _StoreGroupSelectionState extends State<StoreGroupSelection> {
       return selectedAgeGroup;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -83,6 +88,7 @@ class _StoreGroupSelectionState extends State<StoreGroupSelection> {
                   Text(
                     getSelectedSortGroupText(), // 정렬 순서 텍스트
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14)),
                   ),
                 ],
@@ -94,7 +100,8 @@ class _StoreGroupSelectionState extends State<StoreGroupSelection> {
             child: GestureDetector(
               onTap: _showAgeGroupSelection, // 연령대 필터 선택
               child: Container(
-                padding: EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
+                padding:
+                    EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(22),
                   border: Border.all(color: Color(0xFFDDDDDD)),
@@ -109,12 +116,12 @@ class _StoreGroupSelectionState extends State<StoreGroupSelection> {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.black),
                       ),
                     ),
-                    SvgPicture.asset(
-                        'assets/images/product/filter_select.svg'),
+                    SvgPicture.asset('assets/images/product/filter_select.svg'),
                   ],
                 ),
               ),

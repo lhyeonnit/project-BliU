@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 
 import 'package:BliU/screen/mypage/viewmodel/inquiry_write_view_model.dart';
@@ -45,6 +43,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
         backgroundColor: Colors.white,
         title: const Text('문의하기'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -90,7 +89,6 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
                 _buildContentTextField(
                     _contentController, '문의 내용을 최소 10자 이상 입력해주세요.'),
 
-
                 // 이미지 선택 영역
                 Container(
                   margin: EdgeInsets.only(bottom: 10),
@@ -102,12 +100,14 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
                       Text(
                         '이미지',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                         ),
                       ),
                       Text(
                         '$_imageCnt/4',
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFF7B7B7B)),
                       ),
@@ -143,6 +143,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
                               Text(
                                 '사진선택',
                                 style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     color: Color(0xFF707070),
                                     fontSize: Responsive.getFont(context, 14)),
                               )
@@ -152,9 +153,9 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
                       ),
 
                       //추가함 이미지들
-                       Row(
-                          children: _addImagesWidget,
-                        ),
+                      Row(
+                        children: _addImagesWidget,
+                      ),
                     ],
                   ),
                 ),
@@ -185,6 +186,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
                   child: Text(
                     '등록',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),
@@ -224,8 +226,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
       child: Stack(
         children: [
           ClipRRect(
-            borderRadius:
-            BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(6),
             child: Image.file(
               File(file.path),
               width: 100,
@@ -244,14 +245,14 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
                   _addImageCheck();
                 });
               },
-              child: SvgPicture.asset(
-                  'assets/images/ic_del.svg'),
+              child: SvgPicture.asset('assets/images/ic_del.svg'),
             ),
           ),
         ],
       ),
     );
   }
+
   void _addImage() async {
     try {
       final ImagePicker picker = ImagePicker();
@@ -323,17 +324,20 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
       });
     });
   }
+
   Widget _buildTitleTextField(
       TextEditingController controller, String hintText) {
     return TextField(
       controller: controller,
       style: TextStyle(
+        fontFamily: 'Pretendard',
         fontSize: Responsive.getFont(context, 14),
       ),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         hintText: hintText,
         hintStyle: TextStyle(
+            fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             color: Color(0xFF595959)),
         enabledBorder: OutlineInputBorder(
@@ -359,6 +363,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
           contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
           hintText: hintText,
           hintStyle: TextStyle(
+              fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Color(0xFF595959)),
           enabledBorder: OutlineInputBorder(
@@ -373,10 +378,14 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
       ),
     );
   }
-  Widget _buildTextField(String label, TextEditingController controller,
-      String hintText,
-      {bool obscureText = false,
-        TextInputType keyboardType = TextInputType.text,}) {
+
+  Widget _buildTextField(
+    String label,
+    TextEditingController controller,
+    String hintText, {
+    bool obscureText = false,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: Column(
@@ -389,12 +398,14 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
               children: [
                 Text(label,
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 13))),
                 Container(
                     margin: EdgeInsets.only(left: 4),
                     child: Text('*',
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontWeight: FontWeight.bold,
                             fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFFFF6192)))),
@@ -404,6 +415,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
           if (label.isNotEmpty)
             TextField(
               style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
               controller: controller,
@@ -411,9 +423,10 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
               keyboardType: keyboardType,
               decoration: InputDecoration(
                 contentPadding:
-                EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF595959)),
                 enabledBorder: OutlineInputBorder(

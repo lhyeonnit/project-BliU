@@ -29,6 +29,7 @@ class _ProductAiState extends State<ProductAi> {
           child: Text(
             '연관 상품',
             style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 20),
                 fontWeight: FontWeight.bold),
           ),

@@ -8,14 +8,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ProductListCard extends StatefulWidget {
   final ProductData productData;
 
-  const ProductListCard({super.key, required this.productData,});
+  const ProductListCard({
+    super.key,
+    required this.productData,
+  });
 
   @override
   _ProductListCardState createState() => _ProductListCardState();
 }
 
 class _ProductListCardState extends State<ProductListCard> {
-
   @override
   Widget build(BuildContext context) {
     final ProductData productData = widget.productData;
@@ -83,6 +85,7 @@ class _ProductListCardState extends State<ProductListCard> {
                     //widget.item['brand']!,
                     productData.stName ?? "",
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 12),
                         color: Colors.grey),
                   ),
@@ -91,6 +94,7 @@ class _ProductListCardState extends State<ProductListCard> {
                   //widget.item['name']!,
                   productData.ptName ?? "",
                   style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                   ),
                   maxLines: 2,
@@ -106,6 +110,7 @@ class _ProductListCardState extends State<ProductListCard> {
                         //widget.item['discount']!,
                         '${productData.ptDiscountPer ?? 0}%',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
@@ -115,8 +120,10 @@ class _ProductListCardState extends State<ProductListCard> {
                         margin: const EdgeInsets.symmetric(horizontal: 2),
                         child: Text(
                           //widget.item['price']!,
-                          Utils.getInstance().priceString(productData.ptPrice ?? 0),
+                          Utils.getInstance()
+                              .priceString(productData.ptPrice ?? 0),
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
                           ),
@@ -139,6 +146,7 @@ class _ProductListCardState extends State<ProductListCard> {
                         //widget.item['likes']!,
                         '${productData.ptLike ?? ""}',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
                         ),
@@ -159,6 +167,7 @@ class _ProductListCardState extends State<ProductListCard> {
                               //widget.item['comments']!,
                               '${productData.ptReview ?? ""}',
                               style: TextStyle(
+                                  fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
                                   color: Colors.grey),
                             ),

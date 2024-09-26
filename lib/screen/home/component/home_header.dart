@@ -74,6 +74,7 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
                   //       Text(
                   //         title,
                   //         style: TextStyle(
+                  // fontFamily: 'Pretendard',
                   //           fontSize: Responsive.getFont(context, 30),
                   //           fontWeight: FontWeight.bold,
                   //           color: Colors.white,
@@ -82,6 +83,7 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
                   //       Text(
                   //         subtitle,
                   //         style: TextStyle(
+                  // fontFamily: 'Pretendard',
                   //           fontSize: Responsive.getFont(context, 30),
                   //           fontWeight: FontWeight.bold,
                   //           color: Colors.white,
@@ -91,6 +93,7 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
                   //       Text(
                   //         description,
                   //         style: TextStyle(
+                  // fontFamily: 'Pretendard',
                   //           fontSize: Responsive.getFont(context, 16),
                   //           color: Colors.white,
                   //         ),

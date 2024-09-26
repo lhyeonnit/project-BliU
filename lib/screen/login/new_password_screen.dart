@@ -57,6 +57,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   Text(
                     '새 비밀번호 입력',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 20),
                       fontWeight: FontWeight.bold,
                     ),
@@ -66,6 +67,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     child: Text(
                       '안전한 비밀번호는 8자 이상, 영문 대소문자, 숫자, \n특수문자를 포함하여야 합니다.',
                       style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: Color(0xFF7B7B7B)),
                     ),
@@ -77,6 +79,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     child: Text(
                       '8~20자의 영문 대/소문자, 숫자, 특수문자를 사용하세요.',
                       style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12)),
                     ),
                   ),
@@ -86,6 +89,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       child: Text(
                         '비밀번호를 입력해주세요.',
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             color: Color(0xFFF23728),
                             fontSize: Responsive.getFont(context, 12)),
                       ),
@@ -101,12 +105,14 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                           Text(
                             '비밀번호를 다시 입력해주세요.',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 color: Color(0xFFF23728),
                                 fontSize: Responsive.getFont(context, 12)),
                           ),
                           Text(
                             '비밀번호가 일치하지 않습니다.',
                             style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 color: Color(0xFFF23728),
                                 fontSize: Responsive.getFont(context, 12)),
                           ),
@@ -122,8 +128,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
             left: 0,
             right: 0,
             child: GestureDetector(
-              onTap:
-                  () {
+              onTap: () {
                 _validatePassword();
                 if (_formKey.currentState!.validate() &&
                     _isPasswordValid &&
@@ -142,9 +147,11 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                 width: double.infinity,
                 height: Responsive.getHeight(context, 48),
                 margin:
-                EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                    EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
                 decoration: BoxDecoration(
-                  color: _isConfirmPasswordValid ? Colors.black : Color(0xFFDDDDDD),
+                  color: _isConfirmPasswordValid
+                      ? Colors.black
+                      : Color(0xFFDDDDDD),
                   borderRadius: BorderRadius.all(
                     Radius.circular(6),
                   ),
@@ -153,9 +160,11 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   child: Text(
                     '확인',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
-                      color:
-                      _isConfirmPasswordValid ? Colors.white : Color(0xFF7B7B7B),
+                      color: _isConfirmPasswordValid
+                          ? Colors.white
+                          : Color(0xFF7B7B7B),
                     ),
                   ),
                 ),
@@ -181,12 +190,14 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
               children: [
                 Text(label,
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 13))),
                 Container(
                     margin: EdgeInsets.only(left: 4),
                     child: Text('*',
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontWeight: FontWeight.bold,
                             fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFFFF6192)))),
@@ -196,6 +207,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
           if (label.isNotEmpty)
             TextField(
               style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
               controller: controller,
@@ -208,6 +220,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF595959)),
                 enabledBorder: OutlineInputBorder(

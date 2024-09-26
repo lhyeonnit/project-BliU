@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 //약관 or 개인정보 처리방치등
 class TermsDetail extends ConsumerWidget {
-  final int type;//0 - 이용약관 1 - 개인정보 처리 방침
+  final int type; //0 - 이용약관 1 - 개인정보 처리 방침
 
   const TermsDetail({super.key, required this.type});
 
@@ -26,6 +26,7 @@ class TermsDetail extends ConsumerWidget {
         backgroundColor: Colors.white,
         title: Text(title),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -56,7 +57,7 @@ class TermsDetail extends ConsumerWidget {
           ),
         ),
       ),
-      body: Container (
+      body: Container(
         margin: const EdgeInsets.only(top: 40),
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -72,7 +73,8 @@ class TermsDetail extends ConsumerWidget {
                   content = model?.defaultResponseDTO?.message ?? "";
                 } else {
                   Future.delayed(Duration.zero, () {
-                    Utils.getInstance().showSnackBar(context, model?.defaultResponseDTO?.message ?? "");
+                    Utils.getInstance().showSnackBar(
+                        context, model?.defaultResponseDTO?.message ?? "");
                   });
                 }
               }
@@ -80,8 +82,9 @@ class TermsDetail extends ConsumerWidget {
               return Text(
                 content,
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   color: Colors.black,
-                    fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w400,
                   fontSize: Responsive.getFont(context, 14),
                 ),
               );
@@ -92,4 +95,3 @@ class TermsDetail extends ConsumerWidget {
     );
   }
 }
-

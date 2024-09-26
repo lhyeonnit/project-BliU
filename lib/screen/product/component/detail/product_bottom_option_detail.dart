@@ -31,6 +31,7 @@ class ProductBottomOptionDetail extends StatelessWidget {
                 Text(
                   '베이지 / 110',
                   style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                   ),
                 ),
@@ -59,7 +60,9 @@ class ProductBottomOptionDetail extends StatelessWidget {
                       child: const Icon(CupertinoIcons.minus, size: 20),
                       onTap: () {},
                     ),
-                    const Text('1', style: TextStyle(fontSize: 14)),
+                    const Text('1',
+                        style:
+                            TextStyle(fontFamily: 'Pretendard', fontSize: 14)),
                     GestureDetector(
                       child: const Icon(Icons.add, size: 20),
                       onTap: () {},
@@ -70,6 +73,7 @@ class ProductBottomOptionDetail extends StatelessWidget {
               const Text(
                 '9,900원',
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),
@@ -81,4 +85,3 @@ class ProductBottomOptionDetail extends StatelessWidget {
     );
   }
 }
-

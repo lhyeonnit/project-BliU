@@ -10,7 +10,9 @@ class ProductInfoBeforeOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 30,),
+      margin: EdgeInsets.only(
+        top: 30,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -33,8 +35,20 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('구매 전 필수 확인', style: TextStyle(fontSize: Responsive.getFont(context, 16), fontWeight: FontWeight.bold),),
-                      Text('만족스러운 쇼핑을 위해 구매 전에 꼼꼼히 \n살펴보세요.', style: TextStyle(fontSize: Responsive.getFont(context, 12), color: Color(0xFF6A5B54)),),
+                      Text(
+                        '구매 전 필수 확인',
+                        style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 16),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '만족스러운 쇼핑을 위해 구매 전에 꼼꼼히 \n살펴보세요.',
+                        style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 12),
+                            color: Color(0xFF6A5B54)),
+                      ),
                     ],
                   )),
             ],
@@ -43,13 +57,15 @@ class ProductInfoBeforeOrder extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 20),
             child: Theme(
-              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              data:
+                  Theme.of(context).copyWith(dividerColor: Colors.transparent),
               // 선 제거
 
               child: ExpansionTile(
                 title: Text(
                   '배송안내',
                   style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontWeight: FontWeight.bold,
                       fontSize: Responsive.getFont(context, 14)),
                 ),
@@ -67,7 +83,8 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                           infoData?.delivery ?? "",
-                          style: const TextStyle(color: Colors.black54),
+                          style: const TextStyle(
+                              fontFamily: 'Pretendard', color: Colors.black54),
                         ),
                       ),
                     ),
@@ -78,36 +95,38 @@ class ProductInfoBeforeOrder extends StatelessWidget {
           ),
 
           // 교환/반품 안내 섹션
-         Theme(
-              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-              // 선 제거
-              child: ExpansionTile(
-                title: Text(
-                  '교환/반품 안내',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: Responsive.getFont(context, 14)),
-                ),
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFF5F9F9),
-                        borderRadius: BorderRadius.circular(6.0),
-                      ),
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        infoData?.returnVal ?? "",
-                        style:
-                            TextStyle(fontSize: Responsive.getFont(context, 14)),
-                      ),
+          Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            // 선 제거
+            child: ExpansionTile(
+              title: Text(
+                '교환/반품 안내',
+                style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.getFont(context, 14)),
+              ),
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFF5F9F9),
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      infoData?.returnVal ?? "",
+                      style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14)),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
         ],
       ),
     );
@@ -129,13 +148,15 @@ class ProductInfoBeforeOrder extends StatelessWidget {
 //         children: [
 //           Text(
 //             label,
-//             style: const TextStyle(fontWeight: FontWeight.bold),
+//             style: const TextStyle( fontFamily: 'Pretendard',
+// fontWeight: FontWeight.bold),
 //           ),
 //           const SizedBox(width: 8),
 //           Expanded(
 //             child: Text(
 //               value,
-//               style: const TextStyle(color: Colors.black54),
+//               style: const TextStyle( fontFamily: 'Pretendard',
+// color: Colors.black54),
 //             ),
 //           ),
 //         ],

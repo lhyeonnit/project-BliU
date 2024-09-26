@@ -10,8 +10,8 @@ class MyReviewDetail extends StatefulWidget {
   const MyReviewDetail({
     super.key,
     required this.review,
-
   });
+
   @override
   _MyReviewDetailState createState() => _MyReviewDetailState();
 }
@@ -21,6 +21,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
   PageController? _pageController;
   int _currentPage = 0;
   final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -33,10 +34,12 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
     _pageController?.dispose();
     super.dispose();
   }
+
   Future<void> _editReview() async {
     final updatedReview = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MyReviewEdit(review: _currentReview)),
+      MaterialPageRoute(
+          builder: (context) => MyReviewEdit(review: _currentReview)),
     );
 
     if (updatedReview != null) {
@@ -56,17 +59,25 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
       children: [
         // 꽉 찬 별을 표시
         for (int i = 0; i < fullStars; i++)
-          Icon(Icons.star, color: Color(0xFFFF6191), size: 16,),
+          Icon(
+            Icons.star,
+            color: Color(0xFFFF6191),
+            size: 16,
+          ),
 
-        if (hasHalfStar)
-          _buildHalfStar(rating),
+        if (hasHalfStar) _buildHalfStar(rating),
 
         // 빈 별을 표시
         for (int i = 0; i < emptyStars; i++)
-          Icon(Icons.star, color: Color(0xFFEEEEEE), size: 16,),
+          Icon(
+            Icons.star,
+            color: Color(0xFFEEEEEE),
+            size: 16,
+          ),
       ],
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,6 +87,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
         backgroundColor: Colors.white,
         title: const Text('리뷰 상세'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -147,12 +159,14 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                         Text(
                           '${_currentPage + 1}',
                           style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 13),
                               color: Colors.white),
                         ),
                         Text(
                           '/${_currentReview.images.length}',
                           style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 13),
                               color: Color(0x80FFFFFF)),
                         ),
@@ -172,6 +186,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                       Text(
                         'blackpink22',
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 12),
                             color: Color(0xFF7B7B7B)),
                       ),
@@ -180,6 +195,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                         child: Text(
                           '2024.04.14',
                           style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 12),
                               color: Color(0xFF7B7B7B)),
                         ),
@@ -192,22 +208,24 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                   ),
                   Text(
                     _currentReview.reviewText,
-                    style: TextStyle(fontSize: Responsive.getFont(context, 14)),
+                    style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14)),
                   ),
                   GestureDetector(
-                    onTap:  _editReview,
+                    onTap: _editReview,
                     child: Container(
                       margin: EdgeInsets.only(top: 30),
                       height: 48,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xFFDDDDDD)),
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                        color: Colors.white
-                      ),
+                          border: Border.all(color: Color(0xFFDDDDDD)),
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                          color: Colors.white),
                       child: Center(
                         child: Text(
                           '수정',
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                           ),
                         ),
@@ -223,6 +241,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
     );
   }
 }
+
 Widget _buildHalfStar(double rating) {
   return Stack(
     children: [
@@ -254,4 +273,3 @@ class HalfClipper extends CustomClipper<Rect> {
     return false;
   }
 }
-

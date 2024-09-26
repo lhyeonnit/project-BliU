@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 class OrderDetailItem extends StatelessWidget {
   final OrderDetailInfoData? orderDetailInfoData;
+
   const OrderDetailItem({super.key, required this.orderDetailInfoData});
 
   @override
@@ -21,10 +22,12 @@ class OrderDetailItem extends StatelessWidget {
             children: [
               Text('ㄴ${orderDetailInfoData?.order?.otCouponInfo?.ctName ?? ""}',
                   style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: const Color(0xFFA4A4A4))),
               Text("${orderDetailInfoData?.order?.otCouponInfo?.ctPrice ?? ""}",
                   style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: const Color(0xFFA4A4A4))),
             ],
@@ -47,6 +50,7 @@ class OrderDetailItem extends StatelessWidget {
           child: Text(
             '배송지 정보',
             style: TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 18),
                 fontWeight: FontWeight.bold),
           ),
@@ -64,20 +68,22 @@ class OrderDetailItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildInfoRow('수령인', orderDetailInfoData?.delivery?.otRname ?? "", context),
+              _buildInfoRow(
+                  '수령인', orderDetailInfoData?.delivery?.otRname ?? "", context),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 15),
-                child: _buildInfoRow('휴대폰번호', orderDetailInfoData?.delivery?.otRtel ?? "", context),
+                child: _buildInfoRow('휴대폰번호',
+                    orderDetailInfoData?.delivery?.otRtel ?? "", context),
               ),
               _buildAddressRow(
-                '주소',
-                "[${orderDetailInfoData?.delivery?.otRzip ?? ""}]${orderDetailInfoData?.delivery?.otRadd1 ?? ""}",
-                orderDetailInfoData?.delivery?.otRadd1 ?? "",
-                context
-              ),
+                  '주소',
+                  "[${orderDetailInfoData?.delivery?.otRzip ?? ""}]${orderDetailInfoData?.delivery?.otRadd1 ?? ""}",
+                  orderDetailInfoData?.delivery?.otRadd1 ?? "",
+                  context),
               Container(
                   padding: const EdgeInsets.only(top: 15),
-                  child: _buildInfoRow('배송메모', orderDetailInfoData?.delivery?.otRmemo1 ?? "", context)),
+                  child: _buildInfoRow('배송메모',
+                      orderDetailInfoData?.delivery?.otRmemo1 ?? "", context)),
             ],
           ),
         ),
@@ -95,12 +101,14 @@ class OrderDetailItem extends StatelessWidget {
               Text(
                 '결제 금액',
                 style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 18),
                     fontWeight: FontWeight.bold),
               ),
               Text(
                 '${Utils.getInstance().priceString(_getBillingPrice())}원',
                 style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.bold),
               ),
@@ -120,21 +128,32 @@ class OrderDetailItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildInfoRow('총 상품 금액', "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otSprice ?? 0)}원", context),
+              _buildInfoRow(
+                  '총 상품 금액',
+                  "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otSprice ?? 0)}원",
+                  context),
               Container(
-                margin: const EdgeInsets.only(top: 15),
-                  child: _buildInfoRow('총 배송비', "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원", context)),
+                  margin: const EdgeInsets.only(top: 15),
+                  child: _buildInfoRow(
+                      '총 배송비',
+                      "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원",
+                      context)),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 15),
                 child: Column(
                   children: [
-                    _buildInfoRow('할인금액', "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUseCoupon ?? 0)}원", context),
+                    _buildInfoRow(
+                        '할인금액',
+                        "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUseCoupon ?? 0)}원",
+                        context),
                     widget,
                   ],
                 ),
               ),
               _buildInfoRow(
-                  '포인트할인', '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUsePoint ?? 0)}원', context),
+                  '포인트할인',
+                  '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUsePoint ?? 0)}원',
+                  context),
               Container(
                 margin: const EdgeInsets.only(top: 20),
                 height: 10,
@@ -142,10 +161,12 @@ class OrderDetailItem extends StatelessWidget {
                 color: const Color(0xFFF5F9F9),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                 child: Text(
                   '결제 수단',
                   style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 18),
                       fontWeight: FontWeight.bold),
                 ),
@@ -168,10 +189,13 @@ class OrderDetailItem extends StatelessWidget {
                     children: [
                       Text(orderDetailInfoData?.order?.otPayType ?? "",
                           style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Colors.black)),
-                      Text('${Utils.getInstance().priceString(_getBillingPrice())}원',
+                      Text(
+                          '${Utils.getInstance().priceString(_getBillingPrice())}원',
                           style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Colors.black)),
                     ],
@@ -195,6 +219,7 @@ class OrderDetailItem extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
+              fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
             ),
@@ -202,6 +227,7 @@ class OrderDetailItem extends StatelessWidget {
           Text(
             value,
             style: TextStyle(
+              fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
             ),
@@ -212,8 +238,8 @@ class OrderDetailItem extends StatelessWidget {
   }
 
   // 주소용 Row 빌더 함수
-  Widget _buildAddressRow(
-      String title, String address, String addressDetail, BuildContext context) {
+  Widget _buildAddressRow(String title, String address, String addressDetail,
+      BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -223,6 +249,7 @@ class OrderDetailItem extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
+              fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
             ),
@@ -234,6 +261,7 @@ class OrderDetailItem extends StatelessWidget {
                 //'[${address['addressCode']}] ${address['addressAll']}',
                 address,
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14),
                   color: Colors.black,
                 ),
@@ -242,6 +270,7 @@ class OrderDetailItem extends StatelessWidget {
                 //'${address['addressDetail']}',
                 addressDetail,
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14),
                   color: Colors.black,
                 ),
@@ -259,7 +288,9 @@ class OrderDetailItem extends StatelessWidget {
         (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0);
 
     // 할인금액 및 포인트 적용
-    result = result - (orderDetailInfoData?.order?.otUsePoint ?? 0) - (orderDetailInfoData?.order?.otUseCoupon ?? 0);
+    result = result -
+        (orderDetailInfoData?.order?.otUsePoint ?? 0) -
+        (orderDetailInfoData?.order?.otUseCoupon ?? 0);
     return result;
   }
 }

@@ -16,10 +16,13 @@ class LikeScreen extends ConsumerStatefulWidget {
   _LikeScreenState createState() => _LikeScreenState();
 }
 
-class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStateMixin {
+class _LikeScreenState extends ConsumerState<LikeScreen>
+    with TickerProviderStateMixin {
   late TabController _tabController;
   final ScrollController _scrollController = ScrollController();
-  final List<CategoryData> categories = [ CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', subList: []) ];
+  final List<CategoryData> categories = [
+    CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', subList: [])
+  ];
   List<ProductListResponseDTO?> productList = [];
 
   @override
@@ -48,6 +51,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
         scrolledUnderElevation: 0,
         title: const Text('좋아요'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -88,6 +92,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
                         child: TabBar(
                           controller: _tabController,
                           labelStyle: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.w600,
                           ),
@@ -113,7 +118,9 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
             },
             body: TabBarView(
               controller: _tabController,
-              children: List.generate(categories.length, (index) {
+              children: List.generate(
+                categories.length,
+                (index) {
                   // 상품 리스트
                   return _buildProductGrid(index);
                 },
@@ -137,8 +144,9 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
 
     // TODO 페이징 처리 필요
     Map<String, dynamic> requestData = {'category_type': '1'};
-    final categoryResponseDTO = await ref.read(likeViewModelProvider.notifier).getCategory(requestData);
-    if(categoryResponseDTO != null) {
+    final categoryResponseDTO =
+        await ref.read(likeViewModelProvider.notifier).getCategory(requestData);
+    if (categoryResponseDTO != null) {
       if (categoryResponseDTO.result == true) {
         final list = categoryResponseDTO.list ?? [];
         for (var item in list) {
@@ -152,13 +160,15 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
           }
 
           Map<String, dynamic> requestData = {
-            'mt_idx' : mtIdx,
-            'category' : category,
-            'sub_category' : "all",
-            'pg' : 1,
+            'mt_idx': mtIdx,
+            'category': category,
+            'sub_category': "all",
+            'pg': 1,
           };
 
-          final productListResponseDTO = await ref.read(likeViewModelProvider.notifier).getList(requestData);
+          final productListResponseDTO = await ref
+              .read(likeViewModelProvider.notifier)
+              .getList(requestData);
           if (productListResponseDTO != null) {
             if (productListResponseDTO.result == true) {
               productList.add(productListResponseDTO);
@@ -171,7 +181,8 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
         }
 
         setState(() {
-          _tabController = TabController(length: categories.length, vsync: this);
+          _tabController =
+              TabController(length: categories.length, vsync: this);
         });
       }
     }
@@ -195,7 +206,8 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Text(
             '상품 $count', // 상품 수 표시
-            style: const TextStyle(fontSize: 14, color: Colors.black),
+            style: const TextStyle(
+                fontFamily: 'Pretendard', fontSize: 14, color: Colors.black),
           ),
         ),
         Expanded(

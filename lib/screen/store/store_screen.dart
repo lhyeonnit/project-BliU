@@ -34,9 +34,11 @@ class _StoreScreenState extends State<StoreScreen>
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
+        automaticallyImplyLeading: false,
+        // 기본 뒤로가기 버튼을 숨김
         title: const Text("스토어"),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -68,6 +70,7 @@ class _StoreScreenState extends State<StoreScreen>
                 child: TabBar(
                   controller: _tabController,
                   labelStyle: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.w600,
                   ),
@@ -78,7 +81,8 @@ class _StoreScreenState extends State<StoreScreen>
                   overlayColor: WidgetStateColor.transparent,
                   dividerColor: Color(0xFFDDDDDD),
                   indicatorColor: Colors.black,
-                  indicatorSize: TabBarIndicatorSize.tab, // 인디케이터가 각 탭의 길이에 맞게 조정됨
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  // 인디케이터가 각 탭의 길이에 맞게 조정됨
                   labelColor: Colors.black,
                   unselectedLabelColor: const Color(0xFF7B7B7B),
                 ),

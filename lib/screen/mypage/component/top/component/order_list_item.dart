@@ -8,7 +8,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 class OrderListItem extends StatelessWidget {
   final OrderData orderData;
 
-  const OrderListItem({super.key, required this.orderData,});
+  const OrderListItem({
+    super.key,
+    required this.orderData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +38,7 @@ class OrderListItem extends StatelessWidget {
                     Text(
                       orderData.ctWdate ?? "",
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: Responsive.getFont(context, 16),
@@ -45,6 +49,7 @@ class OrderListItem extends StatelessWidget {
                       child: Text(
                         orderData.detailList?[0].otCode ?? "",
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFF7B7B7B),
                         ),
@@ -58,7 +63,9 @@ class OrderListItem extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => OrderDetail(orderData: orderData,),
+                      builder: (context) => OrderDetail(
+                        orderData: orderData,
+                      ),
                     ),
                   );
                 },
@@ -67,6 +74,7 @@ class OrderListItem extends StatelessWidget {
                     Text(
                       '주문상세',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         color: const Color(0xFFFF6192),
                         fontSize: Responsive.getFont(context, 14),
                       ),
@@ -85,7 +93,10 @@ class OrderListItem extends StatelessWidget {
           // 같은 날짜의 주문들을 묶어서 표시
           Column(
             children: (orderData.detailList ?? []).map((orderDetailData) {
-              return OrderItem(orderData: orderData, orderDetailData: orderDetailData,);
+              return OrderItem(
+                orderData: orderData,
+                orderDetailData: orderDetailData,
+              );
             }).toList(),
           ),
         ],

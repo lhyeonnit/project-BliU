@@ -80,7 +80,9 @@ class _NonTopScreenState extends State<NonTopScreen> {
                           end: Alignment.bottomCenter,
                         ),
                       ),
-                      child: ClipOval(child: Image.asset('assets/images/non/gender_select_boy.png')),
+                      child: ClipOval(
+                          child: Image.asset(
+                              'assets/images/non/gender_select_boy.png')),
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 10),
@@ -89,8 +91,20 @@ class _NonTopScreenState extends State<NonTopScreen> {
                         children: [
                           Container(
                               margin: EdgeInsets.only(bottom: 4),
-                              child: Text('블리유', style: TextStyle(fontSize: Responsive.getFont(context, 18), fontWeight: FontWeight.bold),)),
-                          Text('회원이 되어 주세요!', style: TextStyle(color: Color(0xFF7B7B7B), fontSize: Responsive.getFont(context, 12)),),
+                              child: Text(
+                                '블리유',
+                                style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 18),
+                                    fontWeight: FontWeight.bold),
+                              )),
+                          Text(
+                            '회원이 되어 주세요!',
+                            style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                color: Color(0xFF7B7B7B),
+                                fontSize: Responsive.getFont(context, 12)),
+                          ),
                         ],
                       ),
                     ),
@@ -101,18 +115,22 @@ class _NonTopScreenState extends State<NonTopScreen> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginScreen()
-                    ),
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
                   );
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 11,horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 11, horizontal: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(22),
                     border: Border.all(color: Color(0xFFFF6192)),
                   ),
-                  child: Text('로그인', style: TextStyle(color: Color(0xFFFF6192), fontSize: Responsive.getFont(context, 14)),),
+                  child: Text(
+                    '로그인',
+                    style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        color: Color(0xFFFF6192),
+                        fontSize: Responsive.getFont(context, 14)),
+                  ),
                 ),
               ),
             ],

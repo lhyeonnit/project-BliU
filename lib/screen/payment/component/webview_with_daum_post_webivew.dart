@@ -6,10 +6,12 @@ class WebviewWithDaumPostWebview extends StatefulWidget {
   const WebviewWithDaumPostWebview({super.key});
 
   @override
-  State<WebviewWithDaumPostWebview> createState() => _WebviewWithDaumPostWebviewState();
+  State<WebviewWithDaumPostWebview> createState() =>
+      _WebviewWithDaumPostWebviewState();
 }
 
-class _WebviewWithDaumPostWebviewState extends State<WebviewWithDaumPostWebview> {
+class _WebviewWithDaumPostWebviewState
+    extends State<WebviewWithDaumPostWebview> {
   final InAppLocalhostServer _localhostServer = InAppLocalhostServer();
   late InAppWebViewController _controller;
 
@@ -73,7 +75,10 @@ class _WebviewWithDaumPostWebviewState extends State<WebviewWithDaumPostWebview>
               child: const Center(
                 child: Text(
                   "페이지를 찾을 수 없습니다",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
                 ),
               ),
             ),

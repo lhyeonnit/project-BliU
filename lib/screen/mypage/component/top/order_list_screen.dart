@@ -30,7 +30,6 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
-
   }
 
   @override
@@ -42,6 +41,7 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
         backgroundColor: Colors.white,
         title: const Text('주문/배송'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -77,6 +77,7 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
                   child: const Text(
                     '2',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       color: Colors.white,
                       fontSize: 12,
                     ),
@@ -129,6 +130,8 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
                           label: Text(
                             categories[index],
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
+
                               fontSize: Responsive.getFont(context, 14),
                               color: isSelected
                                   ? const Color(0xFFFF6192)
@@ -177,8 +180,7 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
                         return OrderListItem(
                           orderData: orderData,
                         );
-                      }
-                  );
+                      });
                 }),
               ],
             ),
@@ -222,12 +224,12 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
     // TODO 회원 비회원
     // TODO 페이징 처리
     Map<String, dynamic> requestData = {
-      'type' : 1,
-      'mt_idx' : mtIdx,
-      'temp_mt_id' : '',
-      'ot_code' : '',// 비회원 주문조회의 경우에만 전달해주세요.
-      'ct_status' : ctStatus,
-      'pg' : 1,
+      'type': 1,
+      'mt_idx': mtIdx,
+      'temp_mt_id': '',
+      'ot_code': '', // 비회원 주문조회의 경우에만 전달해주세요.
+      'ct_status': ctStatus,
+      'pg': 1,
     };
 
     await ref.read(orderListViewModelProvider.notifier).getList(requestData);

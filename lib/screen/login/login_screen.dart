@@ -89,26 +89,25 @@ class LoginScreen extends ConsumerWidget {
                     children: [
                       TextField(
                         style: TextStyle(
-                          fontSize: Responsive.getFont(context, 14),),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                        ),
                         controller: _idController,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 14, horizontal: 15),
                           hintText: '아이디 입력',
                           hintStyle: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Color(0xFF595959)),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(6)),
-                            borderSide:
-                            BorderSide(color: Color(0xFFE1E1E1)),
+                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(6)),
-                            borderSide:
-                            BorderSide(color: Color(0xFFE1E1E1)),
+                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                           ),
                         ),
                       ),
@@ -116,7 +115,9 @@ class LoginScreen extends ConsumerWidget {
                         margin: EdgeInsets.symmetric(vertical: 10),
                         child: TextField(
                           style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                          ),
                           controller: _passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
@@ -124,19 +125,18 @@ class LoginScreen extends ConsumerWidget {
                                 vertical: 14, horizontal: 15),
                             hintText: '비밀번호 입력',
                             hintStyle: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Color(0xFF595959)),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(6)),
-                              borderSide:
-                              BorderSide(color: Color(0xFFE1E1E1)),
+                                  BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(6)),
-                              borderSide:
-                              BorderSide(color: Color(0xFFE1E1E1)),
+                                  BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                             ),
                           ),
                         ),
@@ -155,8 +155,8 @@ class LoginScreen extends ConsumerWidget {
                               height: 22,
                               width: 22,
                               decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(6)),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(6)),
                                 border: Border.all(
                                   color: _isAutoLogin
                                       ? const Color(0xFFFF6191)
@@ -180,19 +180,18 @@ class LoginScreen extends ConsumerWidget {
                           Text(
                             '자동로그인',
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                             ),
                           ),
                         ],
                       ),
-
                       GestureDetector(
                         onTap: () {
                           // 로그인 버튼 동작
                           _login(context);
                         },
-                     
-                        child:  Container(
+                        child: Container(
                           height: 48,
                           margin: EdgeInsets.only(top: 15),
                           decoration: BoxDecoration(
@@ -202,7 +201,10 @@ class LoginScreen extends ConsumerWidget {
                           child: Center(
                             child: Text(
                               '로그인',
-                              style: TextStyle(color: Colors.white,fontSize: Responsive.getFont(context, 14)),
+                              style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  color: Colors.white,
+                                  fontSize: Responsive.getFont(context, 14)),
                             ),
                           ),
                         ),
@@ -223,16 +225,20 @@ class LoginScreen extends ConsumerWidget {
                           ),
                         );
                       },
-                      child: Text('회원가입',style: TextStyle(
-                        fontSize: Responsive.getFont(context, 14),
-                      ),),
+                      child: Text(
+                        '회원가입',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                        ),
+                      ),
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       margin: EdgeInsets.symmetric(horizontal: 15),
                       decoration: BoxDecoration(
-                        border: Border.symmetric(vertical: BorderSide(color: Color(0xFFDDDDDD)))
-                      ),
+                          border: Border.symmetric(
+                              vertical: BorderSide(color: Color(0xFFDDDDDD)))),
                       child: GestureDetector(
                         onTap: () {
                           // 아이디찾기 버튼 동작
@@ -243,9 +249,13 @@ class LoginScreen extends ConsumerWidget {
                             ),
                           );
                         },
-                        child: Text('아이디찾기',style: TextStyle(
-                          fontSize: Responsive.getFont(context, 14),
-                        ),),
+                        child: Text(
+                          '아이디찾기',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                          ),
+                        ),
                       ),
                     ),
                     GestureDetector(
@@ -258,9 +268,13 @@ class LoginScreen extends ConsumerWidget {
                           ),
                         );
                       },
-                      child: Text('비밀번호찾기',style: TextStyle(
-                        fontSize: Responsive.getFont(context, 14),
-                      ),),
+                      child: Text(
+                        '비밀번호찾기',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -274,6 +288,7 @@ class LoginScreen extends ConsumerWidget {
                           child: Text(
                             'SNS 로그인',
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontWeight: FontWeight.bold,
                               fontSize: Responsive.getFont(context, 15),
                             ),
@@ -284,14 +299,18 @@ class LoginScreen extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           IconButton(
-                            icon: ClipOval(child: SvgPicture.asset('assets/images/login/sns_k.svg')),
+                            icon: ClipOval(
+                                child: SvgPicture.asset(
+                                    'assets/images/login/sns_k.svg')),
                             iconSize: 60,
                             onPressed: () {
                               _kakaoLogin();
                             },
                           ),
                           IconButton(
-                            icon: ClipOval(child: SvgPicture.asset('assets/images/login/sns_n.svg')),
+                            icon: ClipOval(
+                                child: SvgPicture.asset(
+                                    'assets/images/login/sns_n.svg')),
                             iconSize: 60,
                             onPressed: () {
                               _naverLogin();
@@ -299,7 +318,8 @@ class LoginScreen extends ConsumerWidget {
                           ),
                           IconButton(
                             icon: ClipOval(
-                                child: SvgPicture.asset('assets/images/login/sns_a.svg')),
+                                child: SvgPicture.asset(
+                                    'assets/images/login/sns_a.svg')),
                             iconSize: 60,
                             onPressed: () {
                               _appleLogin();
@@ -315,9 +335,13 @@ class LoginScreen extends ConsumerWidget {
                     onTap: () {
                       // TODO 비회원 배송조회 동작
                     },
-                    child: Text('비회원 배송조회', style: TextStyle(
-                      fontSize: Responsive.getFont(context, 14),
-                    ),),
+                    child: Text(
+                      '비회원 배송조회',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                      ),
+                    ),
                   ),
                 ),
               ],

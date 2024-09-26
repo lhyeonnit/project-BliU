@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 
 class DeliveryScreen extends ConsumerStatefulWidget {
   final String odtCode;
+
   const DeliveryScreen({super.key, required this.odtCode});
 
   @override
@@ -37,6 +38,7 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
         backgroundColor: Colors.white,
         title: const Text('배송현황'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -64,10 +66,12 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 16),
                     child: Text(
                       '스마트택배 배송현황',
                       style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 18),
                           fontWeight: FontWeight.bold),
                     ),
@@ -91,10 +95,12 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                             children: [
                               Text('운송장번호',
                                   style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black)),
                               Text(orderDeliveryData?.ctDeliveryNumber ?? "",
                                   style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black)),
                             ],
@@ -108,10 +114,12 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                             children: [
                               Text('택배사',
                                   style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black)),
                               Text(orderDeliveryData?.ctDeliveryCom ?? "",
                                   style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
@@ -138,18 +146,21 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                         Text(
                           '시간',
                           style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
                           '현재위치',
                           style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
                           '배송상태',
                           style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.bold),
                         ),
@@ -169,11 +180,12 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: (orderDeliveryData?.delivery ?? []).map((item) {
-                        int index = (orderDeliveryData?.delivery ?? []).indexOf(item);
+                        int index =
+                            (orderDeliveryData?.delivery ?? []).indexOf(item);
                         Color rowColor = index % 2 == 1
                             ? Colors.white // 짝수 행 색상
                             : const Color(0xFFF5F9F9); // 홀수 행 색상
-                    
+
                         return Container(
                           color: rowColor,
                           child: Padding(
@@ -187,7 +199,9 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                                 Text(
                                   item.time ?? '',
                                   style: TextStyle(
-                                      fontSize: Responsive.getFont(context, 14)),
+                                      fontFamily: 'Pretendard',
+                                      fontSize:
+                                          Responsive.getFont(context, 14)),
                                 ),
                                 Expanded(
                                   flex: 1,
@@ -196,14 +210,18 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                                     child: Text(
                                       item.where ?? '',
                                       style: TextStyle(
-                                          fontSize: Responsive.getFont(context, 14)),
+                                          fontFamily: 'Pretendard',
+                                          fontSize:
+                                              Responsive.getFont(context, 14)),
                                     ),
                                   ),
                                 ),
                                 Text(
                                   item.kind ?? '',
                                   style: TextStyle(
-                                      fontSize: Responsive.getFont(context, 14)),
+                                      fontFamily: 'Pretendard',
+                                      fontSize:
+                                          Responsive.getFont(context, 14)),
                                 ),
                               ],
                             ),
@@ -233,21 +251,23 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
     // TODO 회원 비회원 처리
 
     Map<String, dynamic> requestData = {
-      'type' : 1,
-      'mt_idx' : mtIdx,
-      'temp_mt_id' : '',
-      'odt_code' : widget.odtCode,
+      'type': 1,
+      'mt_idx': mtIdx,
+      'temp_mt_id': '',
+      'odt_code': widget.odtCode,
     };
 
-    final orderDeliveryResponseDTO = await ref.read(deliveryViewModelProvider.notifier).getList(requestData);
+    final orderDeliveryResponseDTO =
+        await ref.read(deliveryViewModelProvider.notifier).getList(requestData);
     if (orderDeliveryResponseDTO != null) {
       if (orderDeliveryResponseDTO.result == true) {
         setState(() {
           orderDeliveryData = orderDeliveryResponseDTO.data;
         });
       } else {
-        if(!context.mounted) return;
-        Utils.getInstance().showSnackBar(context, orderDeliveryResponseDTO.message ?? "");
+        if (!context.mounted) return;
+        Utils.getInstance()
+            .showSnackBar(context, orderDeliveryResponseDTO.message ?? "");
       }
     }
   }

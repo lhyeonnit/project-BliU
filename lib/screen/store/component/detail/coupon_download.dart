@@ -10,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class CouponDownload extends ConsumerStatefulWidget {
   final int? ptIdx;
+
   const CouponDownload({super.key, required this.ptIdx});
 
   @override
@@ -19,6 +20,7 @@ class CouponDownload extends ConsumerStatefulWidget {
 class _CouponDownloadState extends ConsumerState<CouponDownload> {
   late int ptIdx;
   bool isAllDownload = false;
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +39,7 @@ class _CouponDownloadState extends ConsumerState<CouponDownload> {
         backgroundColor: Colors.white,
         title: const Text('쿠폰 받기'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -74,48 +77,52 @@ class _CouponDownloadState extends ConsumerState<CouponDownload> {
             child: Column(
               children: [
                 Expanded(
-                  child: Consumer(
-                    builder: (context, ref, widget) {
-                      final model = ref.watch(couponReceiveModelProvider);
-                      List<ProductCouponData> list = model?.productCouponResponseDTO?.list ?? [];
-                      // TODO 전체다운 받아지는지 확인
-                      // setState(() {
-                      //   //isAllDownload = true;
-                      // });
+                  child: Consumer(builder: (context, ref, widget) {
+                    final model = ref.watch(couponReceiveModelProvider);
+                    List<ProductCouponData> list =
+                        model?.productCouponResponseDTO?.list ?? [];
+                    // TODO 전체다운 받아지는지 확인
+                    // setState(() {
+                    //   //isAllDownload = true;
+                    // });
 
-                      return ListView.builder(
-                        itemCount: list.length,
-                        itemBuilder: (context, index) {
-                          final productCouponData = list[index];
+                    return ListView.builder(
+                      itemCount: list.length,
+                      itemBuilder: (context, index) {
+                        final productCouponData = list[index];
 
-                          final couponDiscount = productCouponData.couponDiscount ?? "0";
-                          final ctName = productCouponData.ctName ?? "";
-                          final ctDate = "${productCouponData.ctDate ?? ""}까지 사용가능";
-                          
-                          String detailMessage = "구매금액 ${Utils.getInstance().priceString(productCouponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
-                          if (productCouponData.ctMaxPrice != null) {
-                            detailMessage = "최대 ${Utils.getInstance().priceString(productCouponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
-                          }
+                        final couponDiscount =
+                            productCouponData.couponDiscount ?? "0";
+                        final ctName = productCouponData.ctName ?? "";
+                        final ctDate =
+                            "${productCouponData.ctDate ?? ""}까지 사용가능";
 
-                          return CouponCard(
-                            discount: couponDiscount,
-                            title: ctName,
-                            expiryDate: ctDate,
-                            discountDetails: detailMessage,
-                            isDownloaded: productCouponData.down == "Y" ? true : false,
-                            // 상태 전달
-                            onDownload: () {
-                              setState(() {
-                                // TODO 다운로드 로직 필요
-                                list[index].down = "Y";
-                              });
-                            },
-                            couponKey: index.toString(), // 고유한 키 전달
-                          );
-                        },
-                      );
-                    }
-                  ),
+                        String detailMessage =
+                            "구매금액 ${Utils.getInstance().priceString(productCouponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
+                        if (productCouponData.ctMaxPrice != null) {
+                          detailMessage =
+                              "최대 ${Utils.getInstance().priceString(productCouponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
+                        }
+
+                        return CouponCard(
+                          discount: couponDiscount,
+                          title: ctName,
+                          expiryDate: ctDate,
+                          discountDetails: detailMessage,
+                          isDownloaded:
+                              productCouponData.down == "Y" ? true : false,
+                          // 상태 전달
+                          onDownload: () {
+                            setState(() {
+                              // TODO 다운로드 로직 필요
+                              list[index].down = "Y";
+                            });
+                          },
+                          couponKey: index.toString(), // 고유한 키 전달
+                        );
+                      },
+                    );
+                  }),
                 ),
               ],
             ),
@@ -131,7 +138,8 @@ class _CouponDownloadState extends ConsumerState<CouponDownload> {
               child: Container(
                 width: double.infinity,
                 height: Responsive.getHeight(context, 48),
-                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                margin: const EdgeInsets.only(
+                    right: 16.0, left: 16, top: 8, bottom: 9),
                 decoration: BoxDecoration(
                   color: isAllDownload
                       ? const Color(0xFFDDDDDD) // 모든 쿠폰이 다운로드된 경우 회색으로 비활성화
@@ -144,6 +152,7 @@ class _CouponDownloadState extends ConsumerState<CouponDownload> {
                   child: Text(
                     '전체받기',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),
@@ -164,15 +173,13 @@ class _CouponDownloadState extends ConsumerState<CouponDownload> {
   void _getList() async {
     final pref = await SharedPreferencesManager.getInstance();
     Map<String, dynamic> requestData = {
-      'mt_idx' : pref.getMtIdx(),
-      'pt_idx' : ptIdx,
+      'mt_idx': pref.getMtIdx(),
+      'pt_idx': ptIdx,
     };
 
     ref.read(couponReceiveModelProvider.notifier).getList(requestData);
   }
 
   // 전체쿠폰 다운로드
-  void _allCouponDownload() async {
-
-  }
+  void _allCouponDownload() async {}
 }

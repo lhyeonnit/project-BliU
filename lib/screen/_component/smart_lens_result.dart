@@ -62,6 +62,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
         backgroundColor: Colors.white,
         title: const Text('스마트렌즈'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -107,151 +108,157 @@ class _SmartLensResultState extends State<SmartLensResult> {
             ],
           ),
           if (result == true)
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: DraggableScrollableSheet(
-              initialChildSize: 0.5, // 처음 열렸을 때 차지할 화면 비율 (0.4는 40%)
-              minChildSize: 0.5, // 최소 확장 크기
-              maxChildSize: 0.95, // 최대 확장 크기
-              builder:
-                  (BuildContext context, ScrollController scrollController) {
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(8)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Container(
-                          margin: const EdgeInsets.only(bottom: 17, top: 15),
-                          width: 40,
-                          height: 4,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFDDDDDD),
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 13, bottom: 20),
-                        child: Text(
-                          '이미지와 비슷한 상품',
-                          style: TextStyle(
-                            fontSize: Responsive.getFont(context, 20),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: GridView.builder(
-                          controller: scrollController,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 0.5,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 30,
-                          ),
-                          itemCount: items.length,
-                          itemBuilder: (context, index) {
-                            return buildItemCard(items[index], index);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-          if (result == false)
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: DraggableScrollableSheet(
-              initialChildSize: 0.5, // 처음 열렸을 때 차지할 화면 비율 (0.4는 40%)
-              minChildSize: 0.5, // 최소 확장 크기
-              maxChildSize: 0.5, // 최대 확장 크기
-              builder:
-                  (BuildContext context, ScrollController scrollController) {
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                    BorderRadius.vertical(top: Radius.circular(8)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Container(
-                          margin: const EdgeInsets.only(bottom: 17, top: 15),
-                          width: 40,
-                          height: 4,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFDDDDDD),
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                      ),
-                      Container(
-                          margin: EdgeInsets.only(bottom: 25,top: 23),
-                          width: 90,
-                          height: 90,
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF5F9F9),
-                            borderRadius: BorderRadius.all(Radius.circular(70)),
-                          ),
-                          child: SvgPicture.asset(
-                            'assets/images/product/ic_top_sch.svg',
-                            height: 50,
-                            width: 50,
-                          )),
-                      Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          child: Text('비슷한 상품을 찾지 못했어요',
-                              style: TextStyle(
-                                  fontSize: Responsive.getFont(context, 18),
-                                  fontWeight: FontWeight.bold))),
-                      Text('다른 이미지로 찾아보세요.',
-                          style: TextStyle(
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Color(0xFFA4A4A4))),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SmartLensScreen(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                            margin: EdgeInsets.only(top: 20),
-                            padding: EdgeInsets.symmetric(vertical: 14),
-                            width: 150,
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: DraggableScrollableSheet(
+                initialChildSize: 0.5, // 처음 열렸을 때 차지할 화면 비율 (0.4는 40%)
+                minChildSize: 0.5, // 최소 확장 크기
+                maxChildSize: 0.95, // 최대 확장 크기
+                builder:
+                    (BuildContext context, ScrollController scrollController) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(8)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 17, top: 15),
+                            width: 40,
+                            height: 4,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(22),
-                              border: Border.all(color: Color(0xFFDDDDDD)),
+                              color: Color(0xFFDDDDDD),
+                              borderRadius: BorderRadius.circular(3),
                             ),
-                            child: Center(
-                              child: Text('다시 검색하기',
-                                  style: TextStyle(
-                                      fontSize: Responsive.getFont(context, 14),
-                                      fontWeight: FontWeight.bold)),
-                            )),
-                      ),
-                    ],
-                  ),
-                );
-              },
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 13, bottom: 20),
+                          child: Text(
+                            '이미지와 비슷한 상품',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 20),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GridView.builder(
+                            controller: scrollController,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.5,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 30,
+                            ),
+                            itemCount: items.length,
+                            itemBuilder: (context, index) {
+                              return buildItemCard(items[index], index);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
+          if (result == false)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: DraggableScrollableSheet(
+                initialChildSize: 0.5, // 처음 열렸을 때 차지할 화면 비율 (0.4는 40%)
+                minChildSize: 0.5, // 최소 확장 크기
+                maxChildSize: 0.5, // 최대 확장 크기
+                builder:
+                    (BuildContext context, ScrollController scrollController) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(8)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 17, top: 15),
+                            width: 40,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFDDDDDD),
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                          ),
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(bottom: 25, top: 23),
+                            width: 90,
+                            height: 90,
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF5F9F9),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(70)),
+                            ),
+                            child: SvgPicture.asset(
+                              'assets/images/product/ic_top_sch.svg',
+                              height: 50,
+                              width: 50,
+                            )),
+                        Container(
+                            margin: EdgeInsets.only(bottom: 10),
+                            child: Text('비슷한 상품을 찾지 못했어요',
+                                style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 18),
+                                    fontWeight: FontWeight.bold))),
+                        Text('다른 이미지로 찾아보세요.',
+                            style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: Color(0xFFA4A4A4))),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SmartLensScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                              margin: EdgeInsets.only(top: 20),
+                              padding: EdgeInsets.symmetric(vertical: 14),
+                              width: 150,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(22),
+                                border: Border.all(color: Color(0xFFDDDDDD)),
+                              ),
+                              child: Center(
+                                child: Text('다시 검색하기',
+                                    style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize:
+                                            Responsive.getFont(context, 14),
+                                        fontWeight: FontWeight.bold)),
+                              )),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
         ],
       ),
     );

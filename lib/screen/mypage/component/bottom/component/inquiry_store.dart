@@ -34,6 +34,7 @@ class _InquiryStoreState extends ConsumerState<InquiryStore> {
         backgroundColor: Colors.white,
         title: const Text('문의하기'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -90,12 +91,14 @@ class _InquiryStoreState extends ConsumerState<InquiryStore> {
                       Text(
                         '이미지',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                         ),
                       ),
                       Text(
                         '$_imageCnt/4',
                         style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 13),
                             color: Color(0xFF7B7B7B)),
                       ),
@@ -131,6 +134,7 @@ class _InquiryStoreState extends ConsumerState<InquiryStore> {
                               Text(
                                 '사진선택',
                                 style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     color: Color(0xFF707070),
                                     fontSize: Responsive.getFont(context, 14)),
                               )
@@ -140,9 +144,9 @@ class _InquiryStoreState extends ConsumerState<InquiryStore> {
                       ),
 
                       //추가함 이미지들
-                       Row(
-                          children: _addImagesWidget,
-                        ),
+                      Row(
+                        children: _addImagesWidget,
+                      ),
                     ],
                   ),
                 ),
@@ -171,6 +175,7 @@ class _InquiryStoreState extends ConsumerState<InquiryStore> {
                   child: Text(
                     '등록',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),
@@ -209,16 +214,15 @@ class _InquiryStoreState extends ConsumerState<InquiryStore> {
       ),
       child: Stack(
         children: [
-            ClipRRect(
-              borderRadius:
-              BorderRadius.circular(6),
-              child: Image.file(
-                File(file.path),
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
-              ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: Image.file(
+              File(file.path),
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
             ),
+          ),
           Positioned(
             top: 8,
             right: 7,
@@ -230,8 +234,7 @@ class _InquiryStoreState extends ConsumerState<InquiryStore> {
                   _addImageCheck();
                 });
               },
-              child: SvgPicture.asset(
-                  'assets/images/ic_del.svg'),
+              child: SvgPicture.asset('assets/images/ic_del.svg'),
             ),
           ),
         ],
@@ -309,12 +312,14 @@ class _InquiryStoreState extends ConsumerState<InquiryStore> {
     return TextField(
       controller: controller,
       style: TextStyle(
+        fontFamily: 'Pretendard',
         fontSize: Responsive.getFont(context, 14),
       ),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         hintText: hintText,
         hintStyle: TextStyle(
+            fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             color: Color(0xFF595959)),
         enabledBorder: OutlineInputBorder(
@@ -340,6 +345,7 @@ class _InquiryStoreState extends ConsumerState<InquiryStore> {
           contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
           hintText: hintText,
           hintStyle: TextStyle(
+              fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Color(0xFF595959)),
           enabledBorder: OutlineInputBorder(

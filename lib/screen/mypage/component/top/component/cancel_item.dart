@@ -8,7 +8,11 @@ class CancelItem extends StatefulWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
 
-  const CancelItem({super.key, required this.orderData, required this.orderDetailData,});
+  const CancelItem({
+    super.key,
+    required this.orderData,
+    required this.orderDetailData,
+  });
 
   @override
   State<CancelItem> createState() => _CancelItemState();
@@ -28,15 +32,16 @@ class _CancelItemState extends State<CancelItem> {
               Text(
                 widget.orderData.ctWdate ?? "",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: Responsive.getFont(context, 16)
-                ),
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.getFont(context, 16)),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   widget.orderDetailData.otCode ?? "",
                   style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: const Color(0xFF7B7B7B),
                   ),
@@ -56,6 +61,7 @@ class _CancelItemState extends State<CancelItem> {
                 child: Text(
                   widget.orderDetailData.ctStatusTxt ?? "",
                   style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontWeight: FontWeight.w600,
                     color: Colors.black,
                     fontSize: Responsive.getFont(context, 15),
@@ -84,14 +90,13 @@ class _CancelItemState extends State<CancelItem> {
                     // 상품 정보 텍스트
                     Expanded(
                       child: Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             widget.orderDetailData.stName ?? "",
                             style: TextStyle(
-                                fontSize:
-                                Responsive.getFont(context, 12),
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 12),
                                 color: const Color(0xFF7B7B7B)),
                           ),
                           Padding(
@@ -99,8 +104,8 @@ class _CancelItemState extends State<CancelItem> {
                             child: Text(
                               widget.orderDetailData.ptName ?? "",
                               style: TextStyle(
-                                fontSize:
-                                Responsive.getFont(context, 14),
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
                               ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -109,8 +114,8 @@ class _CancelItemState extends State<CancelItem> {
                           Text(
                             "${widget.orderDetailData.ctOptValue ?? ""} ${widget.orderDetailData.ctOptQty}개",
                             style: TextStyle(
-                              fontSize:
-                              Responsive.getFont(context, 13),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 13),
                               color: const Color(0xFF7B7B7B),
                             ),
                           ),
@@ -120,9 +125,9 @@ class _CancelItemState extends State<CancelItem> {
                               // '${order['price']}원',
                               "${Utils.getInstance().priceString(widget.orderDetailData.ptPrice ?? 0)}원",
                               style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.bold,
-                                fontSize:
-                                Responsive.getFont(context, 14),
+                                fontSize: Responsive.getFont(context, 14),
                               ),
                             ),
                           ),

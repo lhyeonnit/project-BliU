@@ -49,26 +49,26 @@ class _ProductCategoryBottomState extends State<ProductCategoryBottom> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    final categoryData = categories[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                        onCategorySelected(categoryData);
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 24),
-                        child: Text(
-                          categoryData.ctName ?? "",
-                          style: TextStyle(
-                              fontSize: Responsive.getFont(context, 16),
-                              fontWeight: FontWeight.w600),
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      final categoryData = categories[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          onCategorySelected(categoryData);
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 24),
+                          child: Text(
+                            categoryData.ctName ?? "",
+                            style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 16),
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                ),
+                      );
+                    }),
               ),
             ],
           ),

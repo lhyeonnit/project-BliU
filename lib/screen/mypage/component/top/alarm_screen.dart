@@ -38,6 +38,7 @@ class AlarmScreenState extends State<AlarmScreen> {
         backgroundColor: Colors.white,
         title: const Text('알림'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -64,7 +65,6 @@ class AlarmScreenState extends State<AlarmScreen> {
                   ),
                 ],
               ),
-
             ),
           ),
         ),
@@ -72,10 +72,11 @@ class AlarmScreenState extends State<AlarmScreen> {
       body: Stack(
         children: [
           ListView(
-            controller: _scrollController,  // ScrollController 설정
+            controller: _scrollController, // ScrollController 설정
             children: _viewArr,
           ),
-          MoveTopButton(scrollController: _scrollController), // 같은 ScrollController를 전달
+          MoveTopButton(scrollController: _scrollController),
+          // 같은 ScrollController를 전달
         ],
       ),
     );

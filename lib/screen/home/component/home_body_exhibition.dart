@@ -135,6 +135,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
               Text(
                 title,
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 22),
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -144,6 +145,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
               Text(
                 subtitle,
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14),
                   color: Colors.white,
                 ),
@@ -155,78 +157,83 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                   children: [
                     Expanded(
                         child: Row(
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: GestureDetector(
-                                onTap: () {
-                                  // TODO 이동 수정
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const ProductDetailScreen(ptIdx: 3),
-                                    ),
-                                  );
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  child: Image.asset(
-                                    'assets/images/home/exhi.png',
-                                    height: Responsive.getHeight(context, 84),
-                                    fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                                  ),
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () {
+                              // TODO 이동 수정
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ProductDetailScreen(ptIdx: 3),
                                 ),
+                              );
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5.0),
+                              child: Image.asset(
+                                'assets/images/home/exhi.png',
+                                height: Responsive.getHeight(context, 84),
+                                fit: BoxFit
+                                    .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                               ),
                             ),
-                            const SizedBox(width: 10),
-                            Flexible(
-                              flex: 1,
-                              child: GestureDetector(
-                                onTap: () {
-                                  // TODO 이동 수정
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const ProductDetailScreen(ptIdx: 3),
-                                    ),
-                                  );
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  child: Image.asset(
-                                    'assets/images/home/exhi.png',
-                                    height: Responsive.getHeight(context, 84),
-                                    fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                                  ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Flexible(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () {
+                              // TODO 이동 수정
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ProductDetailScreen(ptIdx: 3),
                                 ),
+                              );
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5.0),
+                              child: Image.asset(
+                                'assets/images/home/exhi.png',
+                                height: Responsive.getHeight(context, 84),
+                                fit: BoxFit
+                                    .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                               ),
                             ),
-                            const SizedBox(width: 10),
-                            Flexible(
-                              flex: 1,
-                              child: GestureDetector(
-                                onTap: () {
-                                  // TODO 이동 수정
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const ProductDetailScreen(ptIdx: 3),
-                                    ),
-                                  );
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  child: Image.asset(
-                                    'assets/images/home/exhi.png',
-                                    height: Responsive.getHeight(context, 84),
-                                    fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                                  ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Flexible(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () {
+                              // TODO 이동 수정
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ProductDetailScreen(ptIdx: 3),
                                 ),
+                              );
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5.0),
+                              child: Image.asset(
+                                'assets/images/home/exhi.png',
+                                height: Responsive.getHeight(context, 84),
+                                fit: BoxFit
+                                    .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                               ),
                             ),
-                          ],
-                        )
-                    ),
+                          ),
+                        ),
+                      ],
+                    )),
                     Container(
                       margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                       child: TextButton(
@@ -257,6 +264,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                               child: Text(
                                 '+35',
                                 style: TextStyle(
+                                  fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
@@ -268,6 +276,7 @@ class HomeBodyExhibitionState extends State<HomeBodyExhibition> {
                             Text(
                               '자세히보기',
                               style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 12),
                                 color: Colors.white,
                               ),

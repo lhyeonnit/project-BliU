@@ -7,7 +7,6 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/cancel_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/exchange_detail_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/return_detail_item.dart';
-import 'package:BliU/screen/mypage/component/top/exchange_return_detail_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/exchange_return_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -16,12 +15,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+
 //교환 반품
 class ExchangeReturnScreen extends ConsumerStatefulWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
 
-  const ExchangeReturnScreen({super.key, required this.orderData, required this.orderDetailData});
+  const ExchangeReturnScreen(
+      {super.key, required this.orderData, required this.orderDetailData});
 
   @override
   _ExchangeReturnScreenState createState() => _ExchangeReturnScreenState();
@@ -62,6 +63,7 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
         backgroundColor: Colors.white,
         title: const Text('교환/반품 요청'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -89,7 +91,10 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 주문 날짜 및 ID
-                CancelItem(orderData: widget.orderData, orderDetailData: widget.orderDetailData,),
+                CancelItem(
+                  orderData: widget.orderData,
+                  orderDetailData: widget.orderDetailData,
+                ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
@@ -106,7 +111,9 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
                           });
                         },
                       ),
-                      const SizedBox(width: 8,),
+                      const SizedBox(
+                        width: 8,
+                      ),
                       // 반품/환불 버튼
                       _buildCustomButton(
                         context,
@@ -164,7 +171,8 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
                     },
                     child: Container(
                       height: Responsive.getHeight(context, 48),
-                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                      margin: const EdgeInsets.only(
+                          right: 16.0, left: 16, top: 9, bottom: 8),
                       decoration: const BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.all(
@@ -175,6 +183,7 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
                         child: Text(
                           '확인',
                           style: TextStyle(
+                            fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.white,
                           ),
@@ -202,31 +211,40 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
     final mtIdx = pref.getMtIdx();
 
     Map<String, dynamic> requestData1 = {
-      'type' : 1,
-      'mt_idx' : mtIdx,
-      'temp_mt_id' : '',
-      'ot_code' : widget.orderDetailData.otCode,
+      'type': 1,
+      'mt_idx': mtIdx,
+      'temp_mt_id': '',
+      'ot_code': widget.orderDetailData.otCode,
     };
 
     Map<String, dynamic> requestData2 = {
-      'ct_type' : 1,
+      'ct_type': 1,
     };
 
     Map<String, dynamic> requestData3 = {
-      'ct_type' : 2,
+      'ct_type': 2,
     };
 
-    final orderDetailInfoResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getOrderDetail(requestData1);
-    final exchangeCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getCategory(requestData2);
-    final returnCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getCategory(requestData3);
-    final exchangeDeliveryCostCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getExchangeDeliveryCostCategory();
+    final orderDetailInfoResponseDTO = await ref
+        .read(exchangeReturnViewModelProvider.notifier)
+        .getOrderDetail(requestData1);
+    final exchangeCategoryResponseDTO = await ref
+        .read(exchangeReturnViewModelProvider.notifier)
+        .getCategory(requestData2);
+    final returnCategoryResponseDTO = await ref
+        .read(exchangeReturnViewModelProvider.notifier)
+        .getCategory(requestData3);
+    final exchangeDeliveryCostCategoryResponseDTO = await ref
+        .read(exchangeReturnViewModelProvider.notifier)
+        .getExchangeDeliveryCostCategory();
 
     if (orderDetailInfoResponseDTO != null) {
       if (orderDetailInfoResponseDTO.result == true) {
         orderDetailInfoData = orderDetailInfoResponseDTO.data;
       } else {
         if (!context.mounted) return;
-        Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
+        Utils.getInstance()
+            .showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
       }
     }
     if (exchangeCategoryResponseDTO != null) {
@@ -241,7 +259,8 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
     }
     if (exchangeDeliveryCostCategoryResponseDTO != null) {
       if (exchangeDeliveryCostCategoryResponseDTO.result == true) {
-        exchangeDeliveryCostCategory = exchangeDeliveryCostCategoryResponseDTO.list ?? [];
+        exchangeDeliveryCostCategory =
+            exchangeDeliveryCostCategoryResponseDTO.list ?? [];
       }
     }
     setState(() {});
@@ -268,21 +287,24 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
       ortReturnInfo = shippingCost.toString();
     }
 
-    final List<MultipartFile> files = images.map((img) => MultipartFile.fromFileSync(img.path)).toList();
+    final List<MultipartFile> files =
+        images.map((img) => MultipartFile.fromFileSync(img.path)).toList();
 
     final formData = FormData.fromMap({
-      'type' : 1,
-      'mt_idx' : mtIdx,
-      'odt_code' : widget.orderDetailData.odtCode,
-      'ct_type' : ctType,
-      'ct_idx' : reasonIdx,
-      'ct_reason' : details,
-      'ort_return_info' : ortReturnInfo,
-      'ct_img' : files,
-      'ort_return_bank_info' : "$returnBank $returnAccount",
+      'type': 1,
+      'mt_idx': mtIdx,
+      'odt_code': widget.orderDetailData.odtCode,
+      'ct_type': ctType,
+      'ct_idx': reasonIdx,
+      'ct_reason': details,
+      'ort_return_info': ortReturnInfo,
+      'ct_img': files,
+      'ort_return_bank_info': "$returnBank $returnAccount",
     });
 
-    final defaultResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).orderReturn(formData);
+    final defaultResponseDTO = await ref
+        .read(exchangeReturnViewModelProvider.notifier)
+        .orderReturn(formData);
     Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     if (defaultResponseDTO.result) {
       Navigator.pop(context);
@@ -297,7 +319,11 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
           orderDetailInfoData: orderDetailInfoData,
           exchangeCategory: exchangeCategory,
           exchangeDeliveryCostCategory: exchangeDeliveryCostCategory,
-          onDataCollected: (String collectedReason, int collectedReasonIdx, String collectedDetails, int collectedShippingCost, List<File> collectedImages) {
+          onDataCollected: (String collectedReason,
+              int collectedReasonIdx,
+              String collectedDetails,
+              int collectedShippingCost,
+              List<File> collectedImages) {
             setState(() {
               reason = collectedReason;
               reasonIdx = collectedReasonIdx;
@@ -314,7 +340,12 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
         child: ReturnItem(
           orderDetailInfoData: orderDetailInfoData,
           returnCategory: returnCategory,
-          onDataCollected: (String collectedReason, int collectedReasonIdx, String collectedDetails, String collectedReturnBank, String collectedReturnAccount, List<File> collectedImages) {
+          onDataCollected: (String collectedReason,
+              int collectedReasonIdx,
+              String collectedDetails,
+              String collectedReturnBank,
+              String collectedReturnAccount,
+              List<File> collectedImages) {
             setState(() {
               reason = collectedReason;
               reasonIdx = collectedReasonIdx;
@@ -341,7 +372,9 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
             border: Border.all(
-              color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD), // 테두리 색상
+              color: isSelected
+                  ? const Color(0xFFFF6192)
+                  : const Color(0xFFDDDDDD), // 테두리 색상
               width: 1.0,
             ),
             color: Colors.white, // 배경색
@@ -350,6 +383,8 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
             child: Text(
               text,
               style: TextStyle(
+                fontFamily: 'Pretendard',
+
                 fontSize: Responsive.getFont(context, 14),
                 color: isSelected ? const Color(0xFFFF6192) : Colors.black,
                 // 선택 시 텍스트 색상 변경

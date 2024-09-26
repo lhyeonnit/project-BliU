@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 
 class ProductInfoContent extends StatefulWidget {
   final String content;
+
   const ProductInfoContent({super.key, required this.content});
 
   @override
   _ProductInfoContentState createState() => _ProductInfoContentState();
 }
 
-class _ProductInfoContentState extends State<ProductInfoContent> with TickerProviderStateMixin {
+class _ProductInfoContentState extends State<ProductInfoContent>
+    with TickerProviderStateMixin {
   bool isExpanded = false;
   late String content;
 
@@ -28,12 +30,12 @@ class _ProductInfoContentState extends State<ProductInfoContent> with TickerProv
             AnimatedSize(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
-              child:
-              !isExpanded ?
-              SizedBox(
-                height: 750,
-                child: Text(content),
-              ) : Text(content),
+              child: !isExpanded
+                  ? SizedBox(
+                      height: 750,
+                      child: Text(content),
+                    )
+                  : Text(content),
             ),
             // 버튼
             GestureDetector(
@@ -54,6 +56,7 @@ class _ProductInfoContentState extends State<ProductInfoContent> with TickerProv
                 child: Text(
                   isExpanded ? "상품 정보 접기" : "상품 정보 펼쳐보기",
                   style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.w400,
                   ),

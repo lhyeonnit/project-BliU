@@ -16,6 +16,7 @@ class MyInfoEditCheck extends StatelessWidget {
         backgroundColor: Colors.white,
         title: Text('내정보수정'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -47,80 +48,88 @@ class MyInfoEditCheck extends StatelessWidget {
         ),
       ),
       body: Stack(
-        children:[ Container(
-          margin: EdgeInsets.symmetric(horizontal: 16.0),
-          padding: EdgeInsets.only(top: 40),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '내 정보 수정',
-                style: TextStyle(
-                  fontSize: Responsive.getFont(context, 20),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 8, bottom: 30),
-                child: Text(
-                  '본인 확인을 위해 한 번 더 비밀번호를 \n입력해주세요',
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16.0),
+            padding: EdgeInsets.only(top: 40),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '내 정보 수정',
                   style: TextStyle(
-                      color: Color(0xFF7B7B7B),
-                      fontSize: Responsive.getFont(context, 14)),
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    '비밀번호',
-                    style: TextStyle(
-                      fontSize: Responsive.getFont(context, 13),
-                      fontWeight: FontWeight.bold,
-                    ),
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 20),
+                    fontWeight: FontWeight.bold,
                   ),
-                  Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text(
-                      '*',
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 8, bottom: 30),
+                  child: Text(
+                    '본인 확인을 위해 한 번 더 비밀번호를 \n입력해주세요',
+                    style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        color: Color(0xFF7B7B7B),
+                        fontSize: Responsive.getFont(context, 14)),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      '비밀번호',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 13),
-                        color: Color(0xFFFF6192),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 4),
+                      child: Text(
+                        '*',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 13),
+                          color: Color(0xFFFF6192),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: TextField(
+                    obscureText: true,
+                    // 비밀번호 입력을 위해 텍스트 숨김
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                    ),
+                    enabled: true,
+                    controller: TextEditingController(),
+                    keyboardType: TextInputType.numberWithOptions(),
+                    decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                      hintText: '비밀번호 입력',
+                      hintStyle: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: Color(0xFF595959)),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        borderSide: BorderSide(color: Colors.black),
                       ),
                     ),
                   ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                child: TextField(
-                  obscureText: true, // 비밀번호 입력을 위해 텍스트 숨김
-                  style: TextStyle(
-                    fontSize: Responsive.getFont(context, 14),
-                  ),
-                  enabled: true,
-                  controller: TextEditingController(),
-                  keyboardType: TextInputType.numberWithOptions(),
-                  decoration: InputDecoration(
-                    contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                    hintText: '비밀번호 입력',
-                    hintStyle: TextStyle(
-                        fontSize: Responsive.getFont(context, 14),
-                        color: Color(0xFF595959)),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
           Positioned(
             bottom: 0,
             left: 0,
@@ -137,7 +146,7 @@ class MyInfoEditCheck extends StatelessWidget {
                 width: double.infinity,
                 height: Responsive.getHeight(context, 48),
                 margin:
-                EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                    EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
                 decoration: BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.all(
@@ -148,6 +157,7 @@ class MyInfoEditCheck extends StatelessWidget {
                   child: Text(
                     '확인',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),
@@ -156,7 +166,7 @@ class MyInfoEditCheck extends StatelessWidget {
               ),
             ),
           ),
-    ],
+        ],
       ),
     );
   }

@@ -97,6 +97,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
         automaticallyImplyLeading: false,
         title: const Text("스마트렌즈"),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,

@@ -59,6 +59,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                 Text(
                   '회원가입 약관동의',
                   style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 20),
                     fontWeight: FontWeight.bold,
                   ),
@@ -68,6 +69,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                   child: Text(
                     '회원가입을 위해 약관에 동의해 주세요!',
                     style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                         color: Color(0xFF7B7B7B)),
                   ),
@@ -94,7 +96,10 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                           ),
                         );
                       },
-                      child: SvgPicture.asset('assets/images/ic_link.svg', color: Colors.black,),
+                      child: SvgPicture.asset(
+                        'assets/images/ic_link.svg',
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 ),
@@ -122,7 +127,10 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                             ),
                           );
                         },
-                        child: SvgPicture.asset('assets/images/ic_link.svg', color: Colors.black,),
+                        child: SvgPicture.asset(
+                          'assets/images/ic_link.svg',
+                          color: Colors.black,
+                        ),
                       ),
                     ],
                   ),
@@ -194,8 +202,9 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                       child: Text(
                         '다음',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
-                          color: _allAgreed ?  Colors.white : Color(0xFF7B7B7B),
+                          color: _allAgreed ? Colors.white : Color(0xFF7B7B7B),
                         ),
                       ),
                     ),
@@ -215,44 +224,45 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
     required Function(bool?) onChanged,
   }) {
     return Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                value = !value;
-                onChanged(value);
-              });
-            },
-            child: Container(
-              margin: EdgeInsets.only(right: 10),
-              padding: const EdgeInsets.all(6),
-              height: 22,
-              width: 22,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(6)),
-                border: Border.all(
-                  color:
-                      value ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
-                ),
-                color: value ? const Color(0xFFFF6191) : Colors.white,
+      children: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              value = !value;
+              onChanged(value);
+            });
+          },
+          child: Container(
+            margin: EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.all(6),
+            height: 22,
+            width: 22,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(6)),
+              border: Border.all(
+                color:
+                    value ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
               ),
-              child: SvgPicture.asset(
-                'assets/images/check01_off.svg', // 체크박스 아이콘
-                color: value ? Colors.white : const Color(0xFFCCCCCC),
-                height: 10,
-                width: 10,
-                fit: BoxFit.contain,
-              ),
+              color: value ? const Color(0xFFFF6191) : Colors.white,
+            ),
+            child: SvgPicture.asset(
+              'assets/images/check01_off.svg', // 체크박스 아이콘
+              color: value ? Colors.white : const Color(0xFFCCCCCC),
+              height: 10,
+              width: 10,
+              fit: BoxFit.contain,
             ),
           ),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: Responsive.getFont(context, 14),
-            ),
+        ),
+        Text(
+          title,
+          style: TextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 14),
           ),
-        ],
-      );
+        ),
+      ],
+    );
   }
 
   Widget _buildAllAgreement({
@@ -301,6 +311,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
           Text(
             title,
             style: TextStyle(
+              fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 16),
             ),
           ),

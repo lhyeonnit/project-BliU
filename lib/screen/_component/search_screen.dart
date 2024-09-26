@@ -220,7 +220,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 BoxConstraints.tight(const Size(24, 24)),
                           ),
                           onChanged: (value) {
-                            _filterSuggestions(value);
+                            // _filterSuggestions(value);
                           },
                           onSubmitted: (value) {
                             if (value.isNotEmpty) {

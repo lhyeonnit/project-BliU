@@ -18,13 +18,15 @@ class ProductListScreen extends ConsumerStatefulWidget {
   final CategoryData selectedCategory;
   final int? selectSubCategoryIndex;
 
-  const ProductListScreen({super.key, required this.selectedCategory, this.selectSubCategoryIndex});
+  const ProductListScreen(
+      {super.key, required this.selectedCategory, this.selectSubCategoryIndex});
 
   @override
   _ProductListScreenState createState() => _ProductListScreenState();
 }
 
-class _ProductListScreenState extends ConsumerState<ProductListScreen> with TickerProviderStateMixin {
+class _ProductListScreenState extends ConsumerState<ProductListScreen>
+    with TickerProviderStateMixin {
   late TabController _tabController;
   late CategoryData _selectedCategory;
   late List<CategoryData> _subList;
@@ -71,6 +73,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
       return selectedStyles.join(', ');
     }
   }
+
   String getSelectedRangeValues() {
     // 초기 값인지 확인하여 '가격'이라는 기본값 반환
     if (selectedRangeValues == const RangeValues(0, 100000)) {
@@ -79,6 +82,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
       return '${selectedRangeValues.start.toInt()}원 ~ ${selectedRangeValues.end.toInt()}원';
     }
   }
+
   void _openSortBottomSheet() {
     showModalBottomSheet(
       context: context,
@@ -105,7 +109,8 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
             setState(() {
               _selectedCategory = category;
               _subList = _selectedCategory.subList ?? [];
-              _tabController = TabController(length: _subList.length, vsync: this);
+              _tabController =
+                  TabController(length: _subList.length, vsync: this);
               _getAllList();
             });
           },
@@ -168,6 +173,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                 child: Text(
                   _selectedCategory.ctName ?? "",
                   style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontWeight: FontWeight.bold,
                       fontSize: Responsive.getFont(context, 18)),
                 ),
@@ -208,7 +214,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
             },
           ),
           Container(
-            margin: const EdgeInsets.only(right:6),
+            margin: const EdgeInsets.only(right: 6),
             child: Stack(
               children: [
                 IconButton(
@@ -238,6 +244,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                     child: const Text(
                       '2',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         color: Colors.white,
                         fontSize: 12,
                       ),
@@ -262,6 +269,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                     child: TabBar(
                       controller: _tabController,
                       labelStyle: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                         fontWeight: FontWeight.w600,
                       ),
@@ -299,6 +307,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                                       ? sortOptionSelected
                                       : '인기순', // 선택된 정렬 옵션 표시
                                   style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize:
                                           Responsive.getFont(context, 14)),
                                 ),
@@ -310,8 +319,10 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                           children: [
                             _buildFilterButton(getSelectedAgeGroupText()),
                             Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 4),
-                                child: _buildFilterButton(getSelectedStyleText())),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 4),
+                                child:
+                                    _buildFilterButton(getSelectedStyleText())),
                             _buildFilterButton(getSelectedRangeValues()),
                           ],
                         ),
@@ -325,7 +336,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         },
         body: TabBarView(
           controller: _tabController,
-          children: List.generate(_subList.length, (index) {
+          children: List.generate(
+            _subList.length,
+            (index) {
               // 상품 리스트
               return _buildProductGrid(index);
             },
@@ -347,18 +360,20 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
     // TODO 정렬 및 검색 결과 파라매터 넣어야 함
     for (int i = 0; i < _subList.length; i++) {
       Map<String, dynamic> requestData = {
-        'mt_idx' : mtIdx,
-        'category' : _selectedCategory.ctIdx,
-        'sub_category' : _subList[i].ctIdx,
-        'sort' : 1,
-        'age' : 1,
-        'styles' : '',
-        'min_price' : 0,
-        'max_price' : 99999,
-        'pg' : 1,
+        'mt_idx': mtIdx,
+        'category': _selectedCategory.ctIdx,
+        'sub_category': _subList[i].ctIdx,
+        'sort': 1,
+        'age': 1,
+        'styles': '',
+        'min_price': 0,
+        'max_price': 99999,
+        'pg': 1,
       };
 
-      final productListResponseDTO = await ref.read(productListViewModelProvider.notifier).getList(requestData);
+      final productListResponseDTO = await ref
+          .read(productListViewModelProvider.notifier)
+          .getList(requestData);
       if (productListResponseDTO != null) {
         if (productListResponseDTO.result == true) {
           productList.add(productListResponseDTO);
@@ -369,9 +384,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         productList.add(null);
       }
     }
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   Widget _buildFilterButton(String label) {
@@ -383,7 +396,8 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         side: const BorderSide(
           color: Color(0xFFDDDDDD),
         ),
-        padding: const EdgeInsets.only(top: 11.0, bottom: 11, left: 15.0, right: 12),
+        padding:
+            const EdgeInsets.only(top: 11.0, bottom: 11, left: 15.0, right: 12),
       ),
       onPressed: _openFilterBottomSheet,
       child: Row(
@@ -396,6 +410,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
+                  fontFamily: 'Pretendard',
                   color: Colors.black,
                   fontSize: Responsive.getFont(context, 14)),
             ),
@@ -423,7 +438,8 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
           padding: const EdgeInsets.only(bottom: 20),
           child: Text(
             '상품 $count', // 상품 수 표시
-            style: const TextStyle(fontSize: 14, color: Colors.black),
+            style: const TextStyle(
+                fontFamily: 'Pretendard', fontSize: 14, color: Colors.black),
           ),
         ),
         Expanded(

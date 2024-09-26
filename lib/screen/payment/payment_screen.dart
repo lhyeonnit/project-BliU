@@ -22,10 +22,8 @@ import 'package:tosspayments_widget_sdk_flutter/model/tosspayments_result.dart';
 
 class PaymentScreen extends ConsumerStatefulWidget {
   final PayOrderDetailData payOrderDetailData;
-  const PaymentScreen({
-    required this.payOrderDetailData,
-    super.key
-  });
+
+  const PaymentScreen({required this.payOrderDetailData, super.key});
 
   @override
   PaymentScreenState createState() => PaymentScreenState();
@@ -62,12 +60,12 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   String? savedMemo; // 저장된 메모
 
   // 배송지 정보 저장 함수
-  void _saveAddress(
-      String name, String phone, String zip, String road, String detail, String memo) {
+  void _saveAddress(String name, String phone, String zip, String road,
+      String detail, String memo) {
     setState(() {
       savedRecipientName = name;
       savedRecipientPhone = phone;
-      savedZip  = zip;
+      savedZip = zip;
       savedAddressRoad = road;
       savedAddressDetail = detail;
       savedMemo = memo;
@@ -89,6 +87,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
         ),
         title: const Text("결제하기"),
         titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
@@ -142,6 +141,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                           Text(
                             '배송지 정보',
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 18),
                               fontWeight: FontWeight.bold,
                             ),
@@ -185,6 +185,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                               Text(
                                 '다음에도 이 배송지 사용',
                                 style: TextStyle(
+                                  fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
                                 ),
                               ),
@@ -255,7 +256,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 Container(
                   width: double.infinity,
                   height: Responsive.getHeight(context, 48),
-                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                  margin: const EdgeInsets.only(
+                      right: 16.0, left: 16, top: 8, bottom: 9),
                   decoration: const BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.all(
@@ -270,6 +272,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                       child: Text(
                         '결제하기',
                         style: TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.white,
                         ),
@@ -315,6 +318,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                   Text(
                     '주문을 취소하시겠습니까?',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
                     ),
@@ -331,6 +335,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                           child: Text(
                             "취소",
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               color: Colors.white,
                               fontSize: Responsive.getFont(context, 14),
                             ),
@@ -346,6 +351,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                             child: Text(
                               "확인",
                               style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 color: Colors.white,
                                 fontSize: Responsive.getFont(context, 14),
                               ),
@@ -382,12 +388,12 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
     List<Map<String, dynamic>> cartArr = [];
 
-    for(var cartItem in cartList) {
+    for (var cartItem in cartList) {
       Map<String, dynamic> cartMap = {
-        'st_idx' : cartItem.stIdx,
+        'st_idx': cartItem.stIdx,
       };
       List<int> ctIdxs = [];
-      for(var product in cartItem.productList ?? [] as List<CartItemData>) {
+      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
         ctIdxs.add(product.ctIdx ?? 0);
       }
 
@@ -398,14 +404,16 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     }
 
     Map<String, dynamic> requestData = {
-      'type' : 1,
-      'ot_idx' : widget.payOrderDetailData.otIdx,
-      'mt_idx' : mtIdx,
-      'temp_mt_id' : '',
-      'cart_arr' : json.encode(cartArr),
+      'type': 1,
+      'ot_idx': widget.payOrderDetailData.otIdx,
+      'mt_idx': mtIdx,
+      'temp_mt_id': '',
+      'cart_arr': json.encode(cartArr),
     };
 
-    final payOrderDetailDTO = await ref.read(paymentViewModelProvider.notifier).orderDetail(requestData);
+    final payOrderDetailDTO = await ref
+        .read(paymentViewModelProvider.notifier)
+        .orderDetail(requestData);
     if (payOrderDetailDTO != null) {
       final payOrderDetailData = payOrderDetailDTO.data;
 
@@ -418,7 +426,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
         String orderName = "";
         int itemCount = 0;
         for (var cart in cartList) {
-          for(var item in cart.productList ?? [] as List<CartItemData>) {
+          for (var item in cart.productList ?? [] as List<CartItemData>) {
             if (orderName.isEmpty) {
               orderName = item.ptTitle ?? "";
               itemCount += 1;
@@ -444,7 +452,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
         final Map<String, dynamic>? paymentResult = await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => PaymentToss(paymentData: paymentData,)),
+          MaterialPageRoute(
+              builder: (context) => PaymentToss(
+                    paymentData: paymentData,
+                  )),
         );
         print("test1 ${paymentResult}");
         if (paymentResult != null) {
@@ -462,7 +473,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     }
   }
 
-  void _paymentComplete(PayOrderDetailData payOrderDetailData, Success? success) async {
+  void _paymentComplete(
+      PayOrderDetailData payOrderDetailData, Success? success) async {
     // TODO 결제 결과값 전달?
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
@@ -475,21 +487,23 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     }
 
     Map<String, dynamic> requestData1 = {
-      'type' : 1,
-      'ot_code' : payOrderDetailData.otCode,
-      'mt_idx' : mtIdx,
-      'temp_mt_id' : '',
-      'mt_rname' : savedRecipientName,
-      'mt_rhp' : savedRecipientPhone,
-      'mt_zip' : savedZip,
-      'mt_add1' : savedAddressRoad,
-      'mt_add2' : savedAddressDetail,
-      'mt_save_add' : mtSaveAdd,
-      'memo' : savedMemo,
+      'type': 1,
+      'ot_code': payOrderDetailData.otCode,
+      'mt_idx': mtIdx,
+      'temp_mt_id': '',
+      'mt_rname': savedRecipientName,
+      'mt_rhp': savedRecipientPhone,
+      'mt_zip': savedZip,
+      'mt_add1': savedAddressRoad,
+      'mt_add2': savedAddressDetail,
+      'mt_save_add': mtSaveAdd,
+      'memo': savedMemo,
     };
 
     print("requestData == $requestData1");
-    final Map<String, dynamic>? response = await ref.read(paymentViewModelProvider.notifier).reqOrder(requestData1);
+    final Map<String, dynamic>? response = await ref
+        .read(paymentViewModelProvider.notifier)
+        .reqOrder(requestData1);
     if (response != null) {
       /*
       *
@@ -502,29 +516,30 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       // TODO 결제 검증 -> 결제 완료 API 순서로 진행
       // 결제검증 결과값 ex)  return res.status(200).json({'result': true, 'data':{'message': '결제 완료.'}});
 
-
       Map<String, dynamic> requestData2 = {
-        'type' : 1,
-        'ot_code' : payOrderDetailData.otCode,
-        'mt_idx' : mtIdx,
-        'temp_mt_id' : '',
+        'type': 1,
+        'ot_code': payOrderDetailData.otCode,
+        'mt_idx': mtIdx,
+        'temp_mt_id': '',
       };
-      final PayOrderResultDetailDTO? payOrderResult = await ref.read(paymentViewModelProvider.notifier).orderEnd(requestData2);
+      final PayOrderResultDetailDTO? payOrderResult = await ref
+          .read(paymentViewModelProvider.notifier)
+          .orderEnd(requestData2);
 
-      if(payOrderResult != null) {
+      if (payOrderResult != null) {
         if (payOrderResult.result == true) {
           final payOrderResultDetailData = payOrderResult.data;
           Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => PaymentCompleteScreen(
-                  payOrderResultDetailData: payOrderResultDetailData,
-                  savedAddressDetail: savedAddressDetail,
-                  savedAddressRoad: savedAddressRoad,
-                  savedMemo: savedMemo,
-                  savedRecipientName: savedRecipientName,
-                  savedRecipientPhone: savedRecipientPhone,
-                )),
+                      payOrderResultDetailData: payOrderResultDetailData,
+                      savedAddressDetail: savedAddressDetail,
+                      savedAddressRoad: savedAddressRoad,
+                      savedMemo: savedMemo,
+                      savedRecipientName: savedRecipientName,
+                      savedRecipientPhone: savedRecipientPhone,
+                    )),
           );
         }
       }
@@ -553,6 +568,7 @@ class CustomExpansionTile extends StatelessWidget {
           child: Text(
             title,
             style: TextStyle(
+              fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 18),
               fontWeight: FontWeight.bold,
             ),
