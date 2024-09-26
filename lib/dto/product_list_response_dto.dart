@@ -13,7 +13,7 @@ class ProductListResponseDTO {
 
   // JSON 데이터를 StoreDetailResponseDTO 객체로 변환하는 factory 메서드
   factory ProductListResponseDTO.fromJson(Map<String, dynamic> json) {
-    final list = List<ProductData>.from((json['data'])?.map((item) {
+    final list = List<ProductData>.from((json['data']['list'])?.map((item) {
       return ProductData.fromJson(item as Map<String, dynamic>);
     }).toList());
 

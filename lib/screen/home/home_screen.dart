@@ -61,8 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       scrolledUnderElevation: 0,
                       pinned: true,
                       automaticallyImplyLeading: false, // 기본 뒤로가기 버튼을 숨김
-                      backgroundColor:
-                      _isScrolled ? Colors.white : Colors.transparent,
+                      backgroundColor: _isScrolled ? Colors.white : Colors.transparent,
                       expandedHeight: 625,
                       title: SvgPicture.asset(
                         'assets/images/home/bottom_home.svg', // SVG 파일 경로

@@ -59,7 +59,6 @@ class _ProductListCardState extends State<ProductListCard> {
                       });
                     },
                     child: SvgPicture.asset(
-                      //'assets/images/home/like_btn.svg',
                       productData.likeChk == "Y"
                           ? "assets/images/home/like_btn_fill.svg"
                           : "assets/images/home/like_btn.svg",
@@ -82,7 +81,7 @@ class _ProductListCardState extends State<ProductListCard> {
                   margin: const EdgeInsets.only(top: 12, bottom: 4),
                   child: Text(
                     //widget.item['brand']!,
-                    productData.ptName ?? "",
+                    productData.stName ?? "",
                     style: TextStyle(
                         fontSize: Responsive.getFont(context, 12),
                         color: Colors.grey),

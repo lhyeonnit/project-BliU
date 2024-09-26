@@ -52,6 +52,7 @@ class Constant {
   static const apiProductSingoCateUrl = "product/singo_cate";//리뷰 신고 카테고리
   static const apiProductQnaListUrl = "product/qna_list";//문의 리스트
   static const apiCartAddUrl = "cart/add";//장바구니 담기
+  static const apiProductLikeListUrl = "product/like_list";//상품 좋아요 리스트
 
   //장바구니
   static const apiCartListUrl = "cart/list";//장바구니 리스트
