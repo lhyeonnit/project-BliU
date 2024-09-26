@@ -34,7 +34,7 @@ class _ProductAiState extends State<ProductAi> {
           ),
         ),
         Container(
-          height: Responsive.getHeight(context, 280),
+          height: 290,
           margin: const EdgeInsets.only(top: 20),
           child: ListView.builder(
             shrinkWrap: true,
@@ -58,7 +58,6 @@ class _ProductAiState extends State<ProductAi> {
                             child: Image.network(
                               productData.ptImg ?? "",
                               height: 160,
-                              width: 160, // 고정된 너비 설정
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -98,6 +97,7 @@ class _ProductAiState extends State<ProductAi> {
                             child: Text(
                               productData.stName ?? "",
                               style: TextStyle(
+                                fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 12),
                                 color: Color(0xFF7B7B7B),
                               ),
@@ -106,6 +106,7 @@ class _ProductAiState extends State<ProductAi> {
                           Text(
                             productData.ptName ?? "",
                             style: TextStyle(
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                             ),
                             maxLines: 2, // 한 줄만 표시
@@ -120,6 +121,7 @@ class _ProductAiState extends State<ProductAi> {
                                         Text(
                                           '${productData.ptDiscountPer ?? 0}%',
                                           style: TextStyle(
+                                            fontFamily: 'Pretendard',
                                             fontSize:
                                                 Responsive.getFont(context, 14),
                                             color: const Color(0xFFFF6192),
@@ -133,6 +135,7 @@ class _ProductAiState extends State<ProductAi> {
                                   child: Text(
                                     '${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원',
                                     style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -157,6 +160,7 @@ class _ProductAiState extends State<ProductAi> {
                                   Utils.getInstance()
                                       .priceString(productData.ptLike ?? 0),
                                   style: TextStyle(
+                                    fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 12),
                                     color: Color(0xFFA4A4A4),
                                   ),
@@ -179,6 +183,7 @@ class _ProductAiState extends State<ProductAi> {
                                     Utils.getInstance()
                                         .priceString(productData.ptReview ?? 0),
                                     style: TextStyle(
+                                      fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
                                       color: Color(0xFFA4A4A4),
                                     ),

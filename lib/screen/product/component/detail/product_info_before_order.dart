@@ -10,7 +10,7 @@ class ProductInfoBeforeOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 40,),
+      margin: EdgeInsets.only(top: 30,),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -18,9 +18,9 @@ class ProductInfoBeforeOrder extends StatelessWidget {
           Stack(
             children: [
               Container(
-                margin: EdgeInsets.only(left: 16),
+                margin: EdgeInsets.only(left: 16, right: 16),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(9),
+                  borderRadius: BorderRadius.circular(12),
                   child: Image.asset(
                     'assets/images/product/check_before@2x.png',
                     height: 80,
@@ -28,8 +28,8 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                 ),
               ),
               Positioned(
-                  right: 50,
-                  top: 11,
+                  left: 110,
+                  top: 15,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

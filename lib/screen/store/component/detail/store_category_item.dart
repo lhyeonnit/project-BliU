@@ -24,6 +24,8 @@ class StoreCategoryItem extends ConsumerWidget {
         crossAxisCount: 2,
         crossAxisSpacing: 12.0,
         childAspectRatio: 0.5,
+        mainAxisSpacing: 30,
+
       ),
       physics: const NeverScrollableScrollPhysics(),
       //itemCount: model.productList!.length,

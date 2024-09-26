@@ -42,7 +42,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
             ),
           ),
           Container(
-            height: Responsive.getHeight(context, 280),
+            height: 290,
             margin: const EdgeInsets.only(top: 20),
             child: ListView.builder(
               shrinkWrap: true,
@@ -76,7 +76,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                               child: Image.network(
                                 productData.ptImg ?? "",
                                 height: 160,
-                                width: double.infinity,
+
                                 fit: BoxFit.cover,
                               ),
                             ),

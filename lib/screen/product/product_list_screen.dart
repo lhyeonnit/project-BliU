@@ -28,7 +28,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
   late TabController _tabController;
   late CategoryData _selectedCategory;
   late List<CategoryData> _subList;
-  String sortOption = '최신순';
+  String sortOption = '인기순';
   String sortOptionSelected = '';
   List<ProductListResponseDTO?> productList = [];
 
@@ -297,7 +297,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                                 child: Text(
                                   sortOptionSelected.isNotEmpty
                                       ? sortOptionSelected
-                                      : '최신순', // 선택된 정렬 옵션 표시
+                                      : '인기순', // 선택된 정렬 옵션 표시
                                   style: TextStyle(
                                       fontSize:
                                           Responsive.getFont(context, 14)),
@@ -383,13 +383,13 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         side: const BorderSide(
           color: Color(0xFFDDDDDD),
         ),
-        padding: const EdgeInsets.only(top: 11.0, bottom: 11, left: 20.0, right: 17),
+        padding: const EdgeInsets.only(top: 11.0, bottom: 11, left: 15.0, right: 12),
       ),
       onPressed: _openFilterBottomSheet,
       child: Row(
         children: [
           Container(
-            width: 35,
+            width: 28,
             margin: const EdgeInsets.only(right: 5),
             child: Text(
               label,
@@ -431,7 +431,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.55,
+              childAspectRatio: 0.5,
               crossAxisSpacing: 12,
               mainAxisSpacing: 30,
             ),

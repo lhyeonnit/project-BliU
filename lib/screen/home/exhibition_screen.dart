@@ -196,7 +196,7 @@ class ExhibitionScreenState extends State<ExhibitionScreen> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 12.0,
                       mainAxisSpacing: 30.0,
-                      childAspectRatio: 0.55,
+                      childAspectRatio: 0.5,
                     ),
                     itemCount: items.length,
                     itemBuilder: (context, index) {
