@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ReportPage extends StatefulWidget {
-  const ReportPage({super.key});
+  final int rtIdx;
+  const ReportPage({super.key, required this.rtIdx});
 
   @override
   _ReportPageState createState() => _ReportPageState();

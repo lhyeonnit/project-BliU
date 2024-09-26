@@ -147,7 +147,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     TabBar(
                       overlayColor: WidgetStateColor.transparent,
                       indicatorColor: Colors.black,
-                      dividerColor: Color(0xFFDDDDDD),
+                      dividerColor: const Color(0xFFDDDDDD),
                       indicatorSize: TabBarIndicatorSize.tab,
                       // 인디케이터가 각 탭의 길이에 맞게 조정됨
                       labelColor: Colors.black,
@@ -162,7 +162,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         children: [
                           // 첫 번째 탭: 상세정보에 모든 정보 포함
                           Container(
-                            margin: EdgeInsets.only(bottom: 50),
+                            margin: const EdgeInsets.only(bottom: 50),
                             child: SingleChildScrollView(
                               child: Column(
                                 children: [
@@ -183,7 +183,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             ),
                           ),
                           // 두 번째 탭: 리뷰만 표시
-                          ProductReview(ptIdx: ptIdx), // TODO 리뷰수
+                          ProductReview(ptIdx: ptIdx),
                         ],
                       ),
                     ),
@@ -277,5 +277,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     ref.read(productDetailModelProvider.notifier).getDetail(requestData);
   }
 
-  void _getReviewList() {}
+  void _getReviewList() async {
+
+  }
 }

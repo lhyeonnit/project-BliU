@@ -5,7 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'report_page.dart';
 
 class ProductReviewDetail extends StatefulWidget {
-  const ProductReviewDetail({super.key});
+  final int rtIdx;
+  const ProductReviewDetail({super.key, required this.rtIdx});
 
   @override
   _ProductReviewDetailState createState() => _ProductReviewDetailState();
@@ -202,12 +203,12 @@ class _ProductReviewDetailState extends State<ProductReviewDetail> {
                     padding: const EdgeInsets.only(top: 10.0),
                     child: GestureDetector(
                       onTap: () {
-                        // 신고 버튼 클릭시 동작
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ReportPage()),
-                        );
+                        // TODO 신고 버튼 클릭시 동작
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const ReportPage()),
+                        // );
                       },
                       child: const Text(
                         '신고',
