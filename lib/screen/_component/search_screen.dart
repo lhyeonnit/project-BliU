@@ -176,9 +176,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         text: text.substring(start),
         style: TextStyle(
             fontFamily: 'Pretendard',
+            height: 1.2,
             fontSize: Responsive.getFont(context, 14),
             color: Colors.black
-          height: 1.2,
         ),
       ));
     }
