@@ -80,14 +80,10 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                                         !isFavoriteList[index]; // 좋아요 상태 토글
                                   });
                                 },
-                                child: SvgPicture.asset(
+                                child: Image.asset(
                                   isFavoriteList[index]
-                                      ? 'assets/images/home/like_btn_fill.svg'
-                                      : 'assets/images/home/like_btn.svg',
-                                  color: isFavoriteList[index]
-                                      ? const Color(0xFFFF6191)
-                                      : null,
-                                  // 좋아요 상태에 따라 내부 색상 변경
+                                      ? 'assets/images/home/like_btn_fill.png'
+                                      : 'assets/images/home/like_btn.png',
                                   height: Responsive.getHeight(context, 34),
                                   width: Responsive.getWidth(context, 34),
                                   // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리

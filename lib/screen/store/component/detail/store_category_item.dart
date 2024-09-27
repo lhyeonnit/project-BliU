@@ -100,8 +100,8 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                       Positioned(
                         top: 0,
                         right: 0,
-                        child: SvgPicture.asset(
-                          'assets/images/home/like_btn.svg',
+                        child: Image.asset(
+                          'assets/images/home/like_btn.png',
                           height: Responsive.getHeight(context, 34),
                           width: Responsive.getWidth(context, 34),
                         ),
