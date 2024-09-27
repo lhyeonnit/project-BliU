@@ -94,9 +94,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                                   });
                                 },
                                 child: Image.asset(
-                                  productData.likeChk == "Y"
-                                      ? 'assets/images/home/like_btn_fill.png'
-                                      : 'assets/images/home/like_btn.png',
+                                  productData.likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',
                                   height: Responsive.getHeight(context, 34),
                                   width: Responsive.getWidth(context, 34),
                                   // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
@@ -240,9 +238,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
       'mt_idx': mtIdx,
     };
 
-    final productListResponseDTO = await ref
-        .read(homeBodyAiViewModelProvider.notifier)
-        .getList(requestData);
+    final productListResponseDTO = await ref.read(homeBodyAiViewModelProvider.notifier).getList(requestData);
     if (productListResponseDTO != null) {
       if (productListResponseDTO.result == true) {
         setState(() {

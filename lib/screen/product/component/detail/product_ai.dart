@@ -25,7 +25,7 @@ class _ProductAiState extends State<ProductAi> {
       children: [
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          margin: EdgeInsets.only(top: 40),
+          margin: const EdgeInsets.only(top: 40),
           child: Text(
             '연관 상품',
             style: TextStyle(
@@ -48,7 +48,7 @@ class _ProductAiState extends State<ProductAi> {
 
               return Padding(
                 padding: const EdgeInsets.only(left: 16.0),
-                child: Container(
+                child: SizedBox(
                   width: 160, // 가로 너비를 160으로 고정
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,9 +77,7 @@ class _ProductAiState extends State<ProductAi> {
                                 // }
                               },
                               child: Image.asset(
-                                productList[index].likeChk == "Y"
-                                    ? 'assets/images/home/like_btn_fill.png'
-                                    : 'assets/images/home/like_btn.png',
+                                productList[index].likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',
                                 height: Responsive.getHeight(context, 34),
                                 width: Responsive.getWidth(context, 34),
                                 // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
@@ -92,13 +90,13 @@ class _ProductAiState extends State<ProductAi> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 12, bottom: 4),
+                            margin: const EdgeInsets.only(top: 12, bottom: 4),
                             child: Text(
                               productData.stName ?? "",
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 12),
-                                color: Color(0xFF7B7B7B),
+                                color: const Color(0xFF7B7B7B),
                                 height: 1.2,
                               ),
                             ),
@@ -114,7 +112,7 @@ class _ProductAiState extends State<ProductAi> {
                             overflow: TextOverflow.ellipsis, // 길면 생략부호 처리
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 12, bottom: 10),
+                            margin: const EdgeInsets.only(top: 12, bottom: 10),
                             child: Row(
                               children: [
                                 (productData.ptDiscountPer ?? 0) > 0
@@ -132,7 +130,7 @@ class _ProductAiState extends State<ProductAi> {
                                       ])
                                     : Container(),
                                 Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 2),
+                                  margin: const EdgeInsets.symmetric(horizontal: 2),
                                   child: Text(
                                     '${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원',
                                     style: TextStyle(
@@ -152,41 +150,39 @@ class _ProductAiState extends State<ProductAi> {
                             children: [
                               SvgPicture.asset(
                                 'assets/images/home/item_like.svg',
-                                color: Color(0xFFA4A4A4),
+                                color: const Color(0xFFA4A4A4),
                                 width: Responsive.getWidth(context, 13),
                                 height: Responsive.getHeight(context, 11),
                               ),
                               Container(
-                                margin: EdgeInsets.only(left: 2, bottom: 2),
+                                margin: const EdgeInsets.only(left: 2, bottom: 2),
                                 child: Text(
                                   Utils.getInstance().priceString(productData.ptLike ?? 0),
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 12),
-                                    color: Color(0xFFA4A4A4),
+                                    color: const Color(0xFFA4A4A4),
                                     height: 1.2,
                                   ),
                                   maxLines: 1, // 한 줄만 표시
                                 ),
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
+                              const SizedBox(width: 10,),
                               if ((productData.ptReview ?? 0) > 0) ...[
                                 SvgPicture.asset(
                                   'assets/images/home/item_comment.svg',
-                                  color: Color(0xFFA4A4A4),
+                                  color: const Color(0xFFA4A4A4),
                                   width: Responsive.getWidth(context, 13),
                                   height: Responsive.getHeight(context, 12),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(left: 2, bottom: 2),
+                                  margin: const EdgeInsets.only(left: 2, bottom: 2),
                                   child: Text(
                                     Utils.getInstance().priceString(productData.ptReview ?? 0),
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
-                                      color: Color(0xFFA4A4A4),
+                                      color: const Color(0xFFA4A4A4),
                                       height: 1.2,
                                     ),
                                     maxLines: 1, // 한 줄만 표시

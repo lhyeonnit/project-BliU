@@ -5,6 +5,7 @@ import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/component/store_age_group_selection.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -277,9 +278,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                       });
                     },
                     child: Image.asset(
-                      product.likeChk == "Y"
-                          ? 'assets/images/home/like_btn_fill.png'
-                          : 'assets/images/home/like_btn.png',
+                      product.likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',
                       height: Responsive.getHeight(context, 34),
                       width: Responsive.getWidth(context, 34),
                       // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
@@ -329,7 +328,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 2),
                         child: Text(
-                          "${product.ptPrice}원",
+                          "${Utils.getInstance().priceString(product.ptPrice ?? 0)}원",
                           style: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,

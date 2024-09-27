@@ -56,15 +56,10 @@ class _ProductListCardState extends State<ProductListCard> {
                     onTap: () {
                       setState(() {
                         // TODO 좋아요 관련
-                        // isFavoriteList[widget.index] =
-                        //     !isFavoriteList[widget.index]; // 좋아요 상태 토글
                       });
                     },
                     child: Image.asset(
-                      productData.likeChk == "Y"
-                          ? 'assets/images/home/like_btn_fill.png'
-                          : 'assets/images/home/like_btn.png',
-                      // 좋아요 상태에 따라 내부 색상 변경
+                      productData.likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',
                       height: Responsive.getHeight(context, 34),
                       width: Responsive.getWidth(context, 34),
                       // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
@@ -79,7 +74,6 @@ class _ProductListCardState extends State<ProductListCard> {
                 Container(
                   margin: const EdgeInsets.only(top: 12, bottom: 4),
                   child: Text(
-                    //widget.item['brand']!,
                     productData.stName ?? "",
                     style: TextStyle(
                       fontFamily: 'Pretendard',
@@ -90,7 +84,6 @@ class _ProductListCardState extends State<ProductListCard> {
                   ),
                 ),
                 Text(
-                  //widget.item['name']!,
                   productData.ptName ?? "",
                   style: TextStyle(
                     fontFamily: 'Pretendard',
@@ -107,7 +100,6 @@ class _ProductListCardState extends State<ProductListCard> {
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       Text(
-                        //widget.item['discount']!,
                         '${productData.ptDiscountPer ?? 0}%',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
@@ -120,8 +112,7 @@ class _ProductListCardState extends State<ProductListCard> {
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 2),
                         child: Text(
-                          //widget.item['price']!,
-                          Utils.getInstance().priceString(productData.ptPrice ?? 0),
+                          "${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원",
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
@@ -144,7 +135,6 @@ class _ProductListCardState extends State<ProductListCard> {
                     Container(
                       margin: const EdgeInsets.only(left: 2, bottom: 2),
                       child: Text(
-                        //widget.item['likes']!,
                         '${productData.ptLike ?? ""}',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
@@ -166,7 +156,6 @@ class _ProductListCardState extends State<ProductListCard> {
                           Container(
                             margin: const EdgeInsets.only(left: 2, bottom: 2),
                             child: Text(
-                              //widget.item['comments']!,
                               '${productData.ptReview ?? ""}',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',

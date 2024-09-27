@@ -172,12 +172,11 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                   child: GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 12.0,
                       mainAxisSpacing: 30.0,
-                      childAspectRatio: 0.5,
+                      childAspectRatio: 0.55,
                     ),
                     itemCount: (exhibitionData?.product ?? []).length,
                     itemBuilder: (context, index) {
@@ -225,7 +224,6 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
         );
       },
       child: Container(
-        width: 184,
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
@@ -236,11 +234,12 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: Image.network(
-                    productData?.ptImg ?? "",
-                    height: 184,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                  child: AspectRatio(
+                    aspectRatio: 1/1,
+                    child: Image.network(
+                      productData?.ptImg ?? "",
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Positioned(
@@ -253,9 +252,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                       });
                     },
                     child: Image.asset(
-                      productData?.likeChk == "Y"
-                          ? 'assets/images/home/like_btn_fill.png'
-                          : 'assets/images/home/like_btn.png',
+                      productData?.likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',
                       height: Responsive.getHeight(context, 34),
                       width: Responsive.getWidth(context, 34),
                       // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
