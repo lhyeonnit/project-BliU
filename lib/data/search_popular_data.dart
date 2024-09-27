@@ -1,15 +1,15 @@
-class SearchData {
+class SearchPopularData {
   final int? sltRank;
   final String? sltTxt;
 
-  SearchData({
+  SearchPopularData({
     required this.sltRank,
     required this.sltTxt,
   });
 
   // JSON to Object
-  factory SearchData.fromJson(Map<String, dynamic> json) {
-    return SearchData(
+  factory SearchPopularData.fromJson(Map<String, dynamic> json) {
+    return SearchPopularData(
       sltRank: json['slt_rank'],
       sltTxt: json['slt_txt'],
     );
