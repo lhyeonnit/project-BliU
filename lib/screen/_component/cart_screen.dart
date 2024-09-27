@@ -132,6 +132,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
@@ -211,8 +212,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                               Text(
                                 '전체선택($_selectedItemsCount/$totalCount)',
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14)),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
+                                ),
                               ),
                             ],
                           ),
@@ -230,9 +233,11 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                             label: Text(
                               '전체삭제',
                               style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: Colors.black),
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: Colors.black,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ],
@@ -282,9 +287,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                   child: Text(
                                     cartItem.stName ?? "",
                                     style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 14)),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -348,6 +354,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 13),
                                     color: const Color(0xFF7B7B7B),
+                                    height: 1.2,
                                   ),
                                 ),
                                 SizedBox(
@@ -355,9 +362,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 Text(
                                   '총 결제금액',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14)),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
                                 ),
                                 SizedBox(
                                     width: Responsive.getWidth(context, 10)),
@@ -367,6 +375,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                     fontWeight: FontWeight.bold,
+                                    height: 1.2,
                                   ),
                                 ),
                               ],
@@ -388,15 +397,19 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('총 상품 금액',
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14))),
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
+                                )
+                              ),
                               Text('${_getTotalProductPrice()} 원',
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14))),
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
+                                )
+                              ),
                             ],
                           ),
                           const SizedBox(height: 8.0),
@@ -404,15 +417,19 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('총 배송비',
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14))),
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
+                                )
+                              ),
                               Text('${_getTotalDeliveryPrice()} 원',
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14))),
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
+                                ),
+                              ),
                             ],
                           ),
                           const Padding(
@@ -424,15 +441,20 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('총 결제예상금액',
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14))),
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
+                                )
+                              ),
                               Text('${_getTotalPaymentPrice()} 원',
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      fontWeight: FontWeight.bold)),
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  fontWeight: FontWeight.bold,
+                                  height: 1.2,
+                                )
+                              ),
                             ],
                           ),
                         ],
@@ -477,13 +499,19 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('총 상품 금액: ',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14))),
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                      )
+                    ),
                     Text('${_getTotalProductPrice()} 원',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14))),
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                      )
+                    ),
                   ],
                 ),
                 const SizedBox(height: 15.0),
@@ -491,13 +519,19 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('총 배송비: ',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14))),
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                      )
+                    ),
                     Text('${_getTotalDeliveryPrice()} 원',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14))),
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                      )
+                    ),
                   ],
                 ),
                 const SizedBox(height: 20.0),
@@ -522,6 +556,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                       fontFamily: 'Pretendard',
                       color: Colors.white,
                       fontSize: Responsive.getFont(context, 14),
+                      height: 1.2,
                     ),
                   ),
                 ),

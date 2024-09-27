@@ -91,6 +91,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
@@ -187,6 +188,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
                                 ),
                               ),
                             ],
@@ -275,6 +277,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.white,
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -321,6 +324,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
+                      height: 1.2,
                     ),
                   ),
                   Container(
@@ -338,6 +342,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                               fontFamily: 'Pretendard',
                               color: Colors.white,
                               fontSize: Responsive.getFont(context, 14),
+                              height: 1.2,
                             ),
                           ),
                         ),
@@ -354,6 +359,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                 fontFamily: 'Pretendard',
                                 color: Colors.white,
                                 fontSize: Responsive.getFont(context, 14),
+                                height: 1.2,
                               ),
                             ),
                           ),
@@ -571,6 +577,7 @@ class CustomExpansionTile extends StatelessWidget {
               fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 18),
               fontWeight: FontWeight.bold,
+              height: 1.2,
             ),
           ),
         ),

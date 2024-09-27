@@ -29,9 +29,11 @@ class _ProductAiState extends State<ProductAi> {
           child: Text(
             '연관 상품',
             style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 20),
-                fontWeight: FontWeight.bold),
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 20),
+              fontWeight: FontWeight.bold,
+              height: 1.2,
+            ),
           ),
         ),
         Container(
@@ -101,6 +103,7 @@ class _ProductAiState extends State<ProductAi> {
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 12),
                                 color: Color(0xFF7B7B7B),
+                                height: 1.2,
                               ),
                             ),
                           ),
@@ -109,6 +112,7 @@ class _ProductAiState extends State<ProductAi> {
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
+                              height: 1.2,
                             ),
                             maxLines: 2, // 한 줄만 표시
                             overflow: TextOverflow.ellipsis, // 길면 생략부호 처리
@@ -123,10 +127,10 @@ class _ProductAiState extends State<ProductAi> {
                                           '${productData.ptDiscountPer ?? 0}%',
                                           style: TextStyle(
                                             fontFamily: 'Pretendard',
-                                            fontSize:
-                                                Responsive.getFont(context, 14),
+                                            fontSize: Responsive.getFont(context, 14),
                                             color: const Color(0xFFFF6192),
                                             fontWeight: FontWeight.bold,
+                                            height: 1.2,
                                           ),
                                         ),
                                       ])
@@ -139,6 +143,7 @@ class _ProductAiState extends State<ProductAi> {
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       fontWeight: FontWeight.bold,
+                                      height: 1.2,
                                     ),
                                     maxLines: 1, // 한 줄만 표시
                                   ),
@@ -158,12 +163,12 @@ class _ProductAiState extends State<ProductAi> {
                               Container(
                                 margin: EdgeInsets.only(left: 2, bottom: 2),
                                 child: Text(
-                                  Utils.getInstance()
-                                      .priceString(productData.ptLike ?? 0),
+                                  Utils.getInstance().priceString(productData.ptLike ?? 0),
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 12),
                                     color: Color(0xFFA4A4A4),
+                                    height: 1.2,
                                   ),
                                   maxLines: 1, // 한 줄만 표시
                                 ),
@@ -181,12 +186,12 @@ class _ProductAiState extends State<ProductAi> {
                                 Container(
                                   margin: EdgeInsets.only(left: 2, bottom: 2),
                                   child: Text(
-                                    Utils.getInstance()
-                                        .priceString(productData.ptReview ?? 0),
+                                    Utils.getInstance().priceString(productData.ptReview ?? 0),
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
                                       color: Color(0xFFA4A4A4),
+                                      height: 1.2,
                                     ),
                                     maxLines: 1, // 한 줄만 표시
                                   ),

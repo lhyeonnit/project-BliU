@@ -32,6 +32,7 @@ class NoticeDetail extends ConsumerWidget {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -89,6 +90,7 @@ class NoticeDetail extends ConsumerWidget {
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 18),
                             fontWeight: FontWeight.bold,
+                            height: 1.2,
                           ),
                         ),
                         Container(
@@ -99,6 +101,7 @@ class NoticeDetail extends ConsumerWidget {
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               color: Color(0xFF7B7B7B),
+                              height: 1.2,
                             ),
                           ),
                         ),
@@ -112,8 +115,10 @@ class NoticeDetail extends ConsumerWidget {
                     child: Text(
                       ntContent,
                       style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14)),
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                      ),
                     ),
                   ),
                 ],

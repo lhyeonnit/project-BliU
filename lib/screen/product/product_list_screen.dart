@@ -173,9 +173,11 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                 child: Text(
                   _selectedCategory.ctName ?? "",
                   style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.bold,
-                      fontSize: Responsive.getFont(context, 18)),
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.getFont(context, 18),
+                    height: 1.2,
+                  ),
                 ),
               ),
               SvgPicture.asset('assets/images/product/ic_select.svg',
@@ -247,6 +249,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                         fontFamily: 'Pretendard',
                         color: Colors.white,
                         fontSize: 12,
+                        height: 1.2,
                       ),
                     ),
                   ),
@@ -307,9 +310,10 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                                       ? sortOptionSelected
                                       : '인기순', // 선택된 정렬 옵션 표시
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14)),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
                                 ),
                               ),
                             ],
@@ -410,9 +414,11 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  color: Colors.black,
-                  fontSize: Responsive.getFont(context, 14)),
+                fontFamily: 'Pretendard',
+                color: Colors.black,
+                fontSize: Responsive.getFont(context, 14),
+                height: 1.2,
+              ),
             ),
           ),
           SvgPicture.asset('assets/images/product/filter_select.svg'),
@@ -439,7 +445,11 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
           child: Text(
             '상품 $count', // 상품 수 표시
             style: const TextStyle(
-                fontFamily: 'Pretendard', fontSize: 14, color: Colors.black),
+              fontFamily: 'Pretendard',
+              fontSize: 14,
+              color: Colors.black,
+              height: 1.2,
+            ),
           ),
         ),
         Expanded(

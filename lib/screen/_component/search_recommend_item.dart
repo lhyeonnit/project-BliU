@@ -19,13 +19,15 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 40),
+          margin: const EdgeInsets.only(top: 40),
           child: Text(
             '이런 아이템은 어떠세요?',
             style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 18),
-                fontWeight: FontWeight.bold),
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 18),
+              fontWeight: FontWeight.bold,
+              height: 1.2,
+            ),
           ),
         ),
         Padding(
@@ -98,13 +100,14 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(top: 12, bottom: 4),
+                              margin: const EdgeInsets.only(top: 12, bottom: 4),
                               child: Text(
                                 '꿈꾸는데이지',
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
-                                  color: Color(0xFF7B7B7B),
+                                  color: const Color(0xFF7B7B7B),
+                                  height: 1.2,
                                 ),
                               ),
                             ),
@@ -113,12 +116,13 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
+                                height: 1.2,
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             Container(
-                              margin: EdgeInsets.only(top: 12, bottom: 10),
+                              margin: const EdgeInsets.only(top: 12, bottom: 10),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.baseline,
                                 textBaseline: TextBaseline.alphabetic,
@@ -133,14 +137,14 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.symmetric(horizontal: 2),
+                                    margin: const EdgeInsets.symmetric(horizontal: 2),
                                     child: Text(
                                       '32,800원',
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 14),
+                                        fontSize: Responsive.getFont(context, 14),
                                         fontWeight: FontWeight.bold,
+                                        height: 1.2,
                                       ),
                                     ),
                                   ),
@@ -152,23 +156,24 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                               children: [
                                 SvgPicture.asset(
                                   'assets/images/home/item_like.svg',
-                                  color: Color(0xFFA4A4A4),
+                                  color: const Color(0xFFA4A4A4),
                                   width: Responsive.getWidth(context, 13),
                                   height: Responsive.getHeight(context, 11),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(left: 2, bottom: 2),
+                                  margin: const EdgeInsets.only(left: 2, bottom: 2),
                                   child: Text(
                                     '13,000',
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
-                                      color: Color(0xFFA4A4A4),
+                                      color: const Color(0xFFA4A4A4),
+                                      height: 1.2,
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  margin: const EdgeInsets.symmetric(horizontal: 10),
                                   child: Row(
                                     children: [
                                       SvgPicture.asset(
@@ -178,15 +183,14 @@ class _SearchRecommendItemState extends State<SearchRecommendItem> {
                                             Responsive.getHeight(context, 12),
                                       ),
                                       Container(
-                                        margin:
-                                            EdgeInsets.only(left: 2, bottom: 2),
+                                        margin: const EdgeInsets.only(left: 2, bottom: 2),
                                         child: Text(
                                           '49',
                                           style: TextStyle(
                                             fontFamily: 'Pretendard',
-                                            fontSize:
-                                                Responsive.getFont(context, 12),
-                                            color: Color(0xFFA4A4A4),
+                                            fontSize: Responsive.getFont(context, 12),
+                                            color: const Color(0xFFA4A4A4),
+                                            height: 1.2,
                                           ),
                                         ),
                                       ),

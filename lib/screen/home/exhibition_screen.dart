@@ -51,6 +51,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
@@ -116,6 +117,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                       fontFamily: 'Pretendard',
                       color: Colors.white,
                       fontSize: Responsive.getFont(context, 9),
+                      height: 1.2,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -148,18 +150,22 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                   child: Text(
                     exhibitionData?.etTitle ?? "",
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.bold,
-                        fontSize: Responsive.getFont(context, 20)),
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 20),
+                      height: 1.2,
+                    ),
                   ),
                 ),
                 Text(
                   exhibitionData?.etSubTitle ?? "",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      color: const Color(0xFF7B7B7B)),
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 14),
+                    color: const Color(0xFF7B7B7B),
+                    height: 1.2,
+                  ),
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
@@ -270,9 +276,11 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                   child: Text(
                     productData?.stName ?? "",
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 12),
-                        color: Colors.grey),
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 12),
+                      color: Colors.grey,
+                      height: 1.2,
+                    ),
                   ),
                 ),
                 Text(
@@ -280,6 +288,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                   style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
+                    height: 1.2,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -297,6 +306,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
+                          height: 1.2,
                         ),
                       ),
                       Container(
@@ -307,6 +317,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
+                            height: 1.2,
                           ),
                         ),
                       ),
@@ -329,6 +340,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -346,9 +358,11 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                             child: Text(
                               "${productData?.ptReview ?? ""}",
                               style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 12),
-                                  color: Colors.grey),
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 12),
+                                color: Colors.grey,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ],

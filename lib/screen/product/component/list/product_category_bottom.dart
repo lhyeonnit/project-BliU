@@ -62,9 +62,11 @@ class _ProductCategoryBottomState extends State<ProductCategoryBottom> {
                           child: Text(
                             categoryData.ctName ?? "",
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 16),
-                                fontWeight: FontWeight.w600),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 16),
+                              fontWeight: FontWeight.w600,
+                              height: 1.2,
+                            ),
                           ),
                         ),
                       );

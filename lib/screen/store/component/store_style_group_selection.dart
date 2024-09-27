@@ -58,9 +58,11 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
           child: Text(
             '스타일',
             style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 18),
-                fontWeight: FontWeight.bold),
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 18),
+              fontWeight: FontWeight.bold,
+              height: 1.2,
+            ),
           ),
         ),
         Container(
@@ -115,11 +117,15 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
                   height: 48,
                   child: GestureDetector(
                     child: const Center(
-                        child: Text(
-                      '선택완료',
-                      style: TextStyle(
-                          fontFamily: 'Pretendard', color: Colors.white),
-                    )),
+                      child: Text(
+                        '선택완료',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          color: Colors.white,
+                          height: 1.2,
+                        ),
+                      )
+                    ),
                     onTap: () {
                       widget.onSelectionChanged(_tempSelectedStyle);
                       Navigator.pop(context);
@@ -144,6 +150,7 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
           style: TextStyle(
             fontFamily: 'Pretendard',
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+            height: 1.2,
           ),
           overflow: TextOverflow.ellipsis,
           maxLines: 1,

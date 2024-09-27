@@ -78,11 +78,12 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                               count: 3,
                               effect: const ScrollingDotsEffect(
                                 activeDotColor: Colors.black,
+                                dotColor: Color(0xFFDDDDDD),
                                 activeStrokeWidth: 10,
                                 activeDotScale: 1.5,
                                 maxVisibleDots: 5,
                                 radius: 8,
-                                spacing: 10,
+                                spacing: 6,
                                 dotHeight: 4,
                                 dotWidth: 4,
                               ),
@@ -114,9 +115,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                     },
                     child: Container(
                       height: Responsive.getHeight(context, 38),
-                      margin: EdgeInsets.only(right: 16,
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      margin: const EdgeInsets.only(right: 16,),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(19),
@@ -130,6 +130,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
+                          height: 1.2,
                         ),
                       ),
                     ),

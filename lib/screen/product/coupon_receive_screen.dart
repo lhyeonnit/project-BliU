@@ -43,6 +43,7 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -155,6 +156,7 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
+                      height: 1.2,
                     ),
                   ),
                 ),

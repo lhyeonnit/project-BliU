@@ -30,6 +30,7 @@ class EventDetail extends ConsumerWidget {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -85,6 +86,7 @@ class EventDetail extends ConsumerWidget {
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 18),
                         fontWeight: FontWeight.bold,
+                        height: 1.2,
                       ),
                     ),
                     Container(
@@ -95,6 +97,7 @@ class EventDetail extends ConsumerWidget {
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: Color(0xFF7B7B7B),
+                          height: 1.2,
                         ),
                       ),
                     ),

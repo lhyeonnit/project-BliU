@@ -168,8 +168,10 @@ class _SearchHasResultState extends State<SearchHasResult> {
                   Text(
                     '상품 128,123',
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14)),
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      height: 1.2,
+                    ),
                   ),
                   GridView.builder(
                     controller: _scrollController,
@@ -223,18 +225,20 @@ class _SearchHasResultState extends State<SearchHasResult> {
                                   Text(
                                     '꿈꾸는데이지',
                                     style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 12),
-                                        color: Colors.grey),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 12),
+                                      color: Colors.grey,
+                                      height: 1.2,
+                                    ),
                                   ),
                                   SizedBox(
                                       height: Responsive.getHeight(context, 4)),
-                                  const Text(
+                                  Text(
                                     '꿈꾸는 데이지 안나 토션 레이스 베스트',
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
-                                      fontSize: 14,
+                                      fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
                                     ),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -251,10 +255,10 @@ class _SearchHasResultState extends State<SearchHasResult> {
                                         '15%',
                                         style: TextStyle(
                                           fontFamily: 'Pretendard',
-                                          fontSize:
-                                              Responsive.getFont(context, 14),
+                                          fontSize: Responsive.getFont(context, 14),
                                           color: const Color(0xFFFF6192),
                                           fontWeight: FontWeight.bold,
+                                          height: 1.2,
                                         ),
                                       ),
                                       const SizedBox(width: 2),
@@ -262,9 +266,9 @@ class _SearchHasResultState extends State<SearchHasResult> {
                                         '32,800원',
                                         style: TextStyle(
                                           fontFamily: 'Pretendard',
-                                          fontSize:
-                                              Responsive.getFont(context, 14),
+                                          fontSize: Responsive.getFont(context, 14),
                                           fontWeight: FontWeight.bold,
+                                          height: 1.2,
                                         ),
                                         maxLines: 1,
                                       ),
@@ -286,6 +290,7 @@ class _SearchHasResultState extends State<SearchHasResult> {
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
                                       color: Colors.grey,
+                                      height: 1.2,
                                     ),
                                   ),
                                   const SizedBox(width: 10),
@@ -301,6 +306,7 @@ class _SearchHasResultState extends State<SearchHasResult> {
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
                                       color: Colors.grey,
+                                      height: 1.2,
                                     ),
                                   ),
                                 ],

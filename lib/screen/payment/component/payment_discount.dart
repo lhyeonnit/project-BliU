@@ -54,16 +54,20 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
               Text(
                 '쿠폰',
                 style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 13),
-                    fontWeight: FontWeight.normal),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 13),
+                  fontWeight: FontWeight.normal,
+                  height: 1.2,
+                ),
               ),
               Text(
                 '보유 쿠폰 ${_couponList.length}장',
                 style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 13),
-                    color: const Color(0xFF7B7B7B)),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 13),
+                  color: const Color(0xFF7B7B7B),
+                  height: 1.2,
+                ),
               ),
             ],
           ),
@@ -95,10 +99,13 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(_couponText,
-                      style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          fontWeight: FontWeight.normal)),
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      fontWeight: FontWeight.normal,
+                      height: 1.2,
+                    ),
+                  ),
                   SvgPicture.asset(
                     'assets/images/ic_link.svg',
                   ),
@@ -111,15 +118,20 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
             children: [
               Text('포인트 사용',
                   style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 13),
-                      fontWeight: FontWeight.normal)),
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 13),
+                    fontWeight: FontWeight.normal,
+                    height: 1.2,
+                  ),
+              ),
               Text(
                 '보유 포인트 ${Utils.getInstance().priceString(_point)}P',
                 style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 13),
-                    color: const Color(0xFF7B7B7B)),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 13),
+                  color: const Color(0xFF7B7B7B),
+                  height: 1.2,
+                ),
               ),
             ],
           ),
@@ -166,9 +178,12 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                           padding: const EdgeInsets.only(right: 15, left: 10),
                           child: Text('P',
                               style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  fontWeight: FontWeight.normal)),
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                fontWeight: FontWeight.normal,
+                                height: 1.2,
+                              ),
+                          ),
                         ),
                       ],
                     ),
@@ -193,9 +208,11 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                         child: Text(
                           '전액사용',
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.normal),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.normal,
+                            height: 1.2,
+                          ),
                         ),
                       ),
                     ),

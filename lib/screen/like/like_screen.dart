@@ -55,6 +55,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
@@ -206,8 +207,12 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Text(
             '상품 $count', // 상품 수 표시
-            style: const TextStyle(
-                fontFamily: 'Pretendard', fontSize: 14, color: Colors.black),
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 14),
+              color: Colors.black,
+              height: 1.2,
+            ),
           ),
         ),
         Expanded(

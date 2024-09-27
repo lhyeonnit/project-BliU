@@ -47,6 +47,7 @@ class _NonOrderPageState extends State<NonOrderPage> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -97,13 +98,16 @@ class _NonOrderPageState extends State<NonOrderPage> {
                   keyboardType: TextInputType.text,
                 ),
                 Container(
-                    margin: EdgeInsets.only(top: 8),
-                    child: Text(
-                      '주문번호는 주문자의 휴대폰 번호로 발송됩니다. \n주문번호 확인이 어려울 시, 고객센터로 문의 바랍니다.',
-                      style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 12)),
-                    ))
+                  margin: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    '주문번호는 주문자의 휴대폰 번호로 발송됩니다. \n주문번호 확인이 어려울 시, 고객센터로 문의 바랍니다.',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 12),
+                      height: 1.2,
+                    ),
+                  )
+                )
               ],
             ),
           ),
@@ -138,8 +142,8 @@ class _NonOrderPageState extends State<NonOrderPage> {
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
-                      color:
-                          _isAllFieldsFilled ? Colors.white : Color(0xFF7B7B7B),
+                      color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
+                      height: 1.2,
                     ),
                   ),
                 ),
@@ -165,22 +169,29 @@ class _NonOrderPageState extends State<NonOrderPage> {
         children: [
           // if (label.isNotEmpty)
           Container(
-            margin: EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 10),
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.bold,
-                        fontSize: Responsive.getFont(context, 13))),
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.getFont(context, 13),
+                    height: 1.2,
+                  ),
+                ),
                 Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text('*',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.bold,
-                            fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFFFF6192)))),
+                  margin: const EdgeInsets.only(left: 4),
+                  child: Text('*',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 13),
+                      color: const Color(0xFFFF6192),
+                      height: 1.2,
+                    )
+                  )
+                ),
               ],
             ),
           ),
@@ -194,13 +205,14 @@ class _NonOrderPageState extends State<NonOrderPage> {
               obscureText: obscureText,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF595959)),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: const Color(0xFF595959),
+                  height: 1.2,
+                ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),

@@ -137,6 +137,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black,
+                                height: 1.2,
                               ),
                             ),
 
@@ -178,6 +179,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 13),
                             color: const Color(0xFF7B7B7B),
+                            height: 1.2,
                           ),
                         ),
                       ),
@@ -205,17 +207,21 @@ class _ExchangeItemState extends State<ExchangeItem> {
                     Text(
                       '사진',
                       style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 13),
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal),
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 13),
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                        height: 1.2,
+                      ),
                     ),
                     Text(
                       '최대3장',
                       style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          color: const Color(0xFF7B7B7B),
-                          fontSize: Responsive.getFont(context, 13)),
+                        fontFamily: 'Pretendard',
+                        color: const Color(0xFF7B7B7B),
+                        fontSize: Responsive.getFont(context, 13),
+                        height: 1.2,
+                      ),
                     ),
                   ],
                 ),
@@ -231,13 +237,16 @@ class _ExchangeItemState extends State<ExchangeItem> {
                   child: GestureDetector(
                     onTap: _pickImages, // 이미지 선택 함수 호출
                     child: Center(
-                        child: Text(
-                      '첨부하기',
-                      style: TextStyle(
+                      child: Text(
+                        '첨부하기',
+                        style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
-                          fontWeight: FontWeight.normal),
-                    )),
+                          fontWeight: FontWeight.normal,
+                          height: 1.2,
+                        ),
+                      )
+                    ),
                   ),
                 ),
                 // 선택된 이미지 표시
@@ -307,6 +316,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                         fontSize: Responsive.getFont(context, 13),
                         color: Colors.black,
                         fontWeight: FontWeight.normal,
+                        height: 1.2,
                       ),
                     ),
                     Container(
@@ -318,6 +328,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                           fontSize: Responsive.getFont(context, 13),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.normal,
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -351,6 +362,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -405,6 +417,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black,
+                          height: 1.2,
                         ),
                       ),
                     ),

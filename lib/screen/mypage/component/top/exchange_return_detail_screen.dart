@@ -59,6 +59,7 @@ class _ExchangeReturnDetailScreenState
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/product/ic_back.svg"),
@@ -113,6 +114,7 @@ class _ExchangeReturnDetailScreenState
                               fontFamily: 'Pretendard',
                               color: Colors.black,
                               fontSize: Responsive.getFont(context, 14),
+                              height: 1.2,
                             ),
                           ),
                         ),
@@ -136,6 +138,7 @@ class _ExchangeReturnDetailScreenState
                               fontFamily: 'Pretendard',
                               color: Colors.black,
                               fontSize: Responsive.getFont(context, 14),
+                              height: 1.2,
                             ),
                           ),
                           style: TextButton.styleFrom(
@@ -151,24 +154,34 @@ class _ExchangeReturnDetailScreenState
                 ),
                 Container(
                   padding: EdgeInsets.only(top: 20),
-                  decoration: BoxDecoration(
-                      border:
-                          Border(top: BorderSide(color: Color(0xFFEEEEEE)))),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: Color(0xFFEEEEEE)
+                      )
+                    )
+                  ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('배송비',
-                            style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: Colors.black)),
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Colors.black,
+                            height: 1.2,
+                          ),
+                        ),
                         Text('${widget.orderDetails['deliveryCost']}',
-                            style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: Colors.black)),
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Colors.black,
+                            height: 1.2,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -190,33 +203,43 @@ class _ExchangeReturnDetailScreenState
                           Text(
                             '요청일',
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14)),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              height: 1.2,
+                            ),
                           ),
                           Text(
                             '23.03.12',
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14)),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              height: 1.2,
+                            ),
                           ),
                         ],
                       ),
                       Container(
-                          margin: EdgeInsets.only(top: 15, bottom: 8),
-                          child: Text(
-                            '${widget.reason}',
-                            style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14)),
-                          )),
+                        margin: const EdgeInsets.only(top: 15, bottom: 8),
+                        child: Text(
+                          '${widget.reason}',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            height: 1.2,
+                          ),
+                        )
+                      ),
                       Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          child: Text(
-                            '${widget.details}',
-                            style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14)),
-                          )),
+                        margin: EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          '${widget.details}',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            height: 1.2,
+                          ),
+                        )
+                      ),
                       _buildUploadedImages(),
                       Padding(
                         padding: const EdgeInsets.only(top: 15.0),
@@ -227,6 +250,7 @@ class _ExchangeReturnDetailScreenState
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
                                 ),
                               )
                             : // 반품/환불 페이지일 때 표시
@@ -239,6 +263,7 @@ class _ExchangeReturnDetailScreenState
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
                                     ),
                                   ),
                                   Text(
@@ -246,6 +271,7 @@ class _ExchangeReturnDetailScreenState
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
                                     ),
                                   ),
                                 ],

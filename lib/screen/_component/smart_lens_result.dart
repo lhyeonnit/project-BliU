@@ -66,6 +66,7 @@ class _SmartLensResultState extends State<SmartLensResult> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -132,19 +133,20 @@ class _SmartLensResultState extends State<SmartLensResult> {
                             width: 40,
                             height: 4,
                             decoration: BoxDecoration(
-                              color: Color(0xFFDDDDDD),
+                              color: const Color(0xFFDDDDDD),
                               borderRadius: BorderRadius.circular(3),
                             ),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 13, bottom: 20),
+                          margin: const EdgeInsets.only(top: 13, bottom: 20),
                           child: Text(
                             '이미지와 비슷한 상품',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 20),
                               fontWeight: FontWeight.bold,
+                              height: 1.2,
                             ),
                           ),
                         ),
@@ -201,14 +203,13 @@ class _SmartLensResultState extends State<SmartLensResult> {
                           ),
                         ),
                         Container(
-                            margin: EdgeInsets.only(bottom: 25, top: 23),
+                            margin: const EdgeInsets.only(bottom: 25, top: 23),
                             width: 90,
                             height: 90,
-                            padding: EdgeInsets.all(20),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(20),
+                            decoration: const BoxDecoration(
                               color: Color(0xFFF5F9F9),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(70)),
+                              borderRadius: BorderRadius.all(Radius.circular(70)),
                             ),
                             child: SvgPicture.asset(
                               'assets/images/product/ic_top_sch.svg',
@@ -216,17 +217,24 @@ class _SmartLensResultState extends State<SmartLensResult> {
                               width: 50,
                             )),
                         Container(
-                            margin: EdgeInsets.only(bottom: 10),
+                            margin: const EdgeInsets.only(bottom: 10),
                             child: Text('비슷한 상품을 찾지 못했어요',
-                                style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 18),
-                                    fontWeight: FontWeight.bold))),
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 18),
+                                fontWeight: FontWeight.bold,
+                                height: 1.2,
+                              )
+                            )
+                        ),
                         Text('다른 이미지로 찾아보세요.',
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: Color(0xFFA4A4A4))),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: const Color(0xFFA4A4A4),
+                              height: 1.2,
+                            )
+                        ),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -237,20 +245,22 @@ class _SmartLensResultState extends State<SmartLensResult> {
                             );
                           },
                           child: Container(
-                              margin: EdgeInsets.only(top: 20),
-                              padding: EdgeInsets.symmetric(vertical: 14),
+                              margin: const EdgeInsets.only(top: 20),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
                               width: 150,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(22),
-                                border: Border.all(color: Color(0xFFDDDDDD)),
+                                border: Border.all(color: const Color(0xFFDDDDDD)),
                               ),
                               child: Center(
                                 child: Text('다시 검색하기',
-                                    style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 14),
-                                        fontWeight: FontWeight.bold)),
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    fontWeight: FontWeight.bold,
+                                    height: 1.2,
+                                  )
+                                ),
                               )),
                         ),
                       ],
@@ -323,26 +333,29 @@ class _SmartLensResultState extends State<SmartLensResult> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 12, bottom: 4),
+                  margin: const EdgeInsets.only(top: 12, bottom: 4),
                   child: Text(
                     item['brand']!,
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 12),
-                        color: Colors.grey),
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 12),
+                      color: Colors.grey,
+                      height: 1.2,
+                    ),
                   ),
                 ),
                 Text(
                   item['name']!,
                   style: TextStyle(
                     fontFamily: 'Pretendard',
-                    fontSize: 14,
+                    fontSize: Responsive.getFont(context, 14),
+                    height: 1.2,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 12, bottom: 10),
+                  margin: const EdgeInsets.only(top: 12, bottom: 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
@@ -354,16 +367,18 @@ class _SmartLensResultState extends State<SmartLensResult> {
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
+                          height: 1.2,
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 2),
+                        margin: const EdgeInsets.symmetric(horizontal: 2),
                         child: Text(
                           item['price']!,
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
+                            height: 1.2,
                           ),
                         ),
                       ),
@@ -379,13 +394,14 @@ class _SmartLensResultState extends State<SmartLensResult> {
                       height: Responsive.getHeight(context, 11),
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 2, bottom: 2),
+                      margin: const EdgeInsets.only(left: 2, bottom: 2),
                       child: Text(
                         item['likes']!,
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -399,13 +415,15 @@ class _SmartLensResultState extends State<SmartLensResult> {
                             height: Responsive.getHeight(context, 12),
                           ),
                           Container(
-                            margin: EdgeInsets.only(left: 2, bottom: 2),
+                            margin: const EdgeInsets.only(left: 2, bottom: 2),
                             child: Text(
                               item['comments']!,
                               style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 12),
-                                  color: Colors.grey),
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 12),
+                                color: Colors.grey,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ],

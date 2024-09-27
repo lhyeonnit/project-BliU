@@ -76,6 +76,7 @@ class _HomeBodyBestSalesCategoryState extends State<HomeBodyBestSalesCategory>
                           _tabController.index == categories.indexOf(category)
                               ? const Color(0xFFFF6192)
                               : Colors.black,
+                      height: 1.2,
                     ),
                   ),
                 ),

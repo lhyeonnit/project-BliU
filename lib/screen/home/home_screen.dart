@@ -177,12 +177,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                         color: Colors.pinkAccent,
                                         shape: BoxShape.circle,
                                       ),
-                                      child: const Text(
+                                      child: Text(
                                         '2',
                                         style: TextStyle(
                                           fontFamily: 'Pretendard',
                                           color: Colors.white,
-                                          fontSize: 12,
+                                          fontSize: Responsive.getFont(context, 12),
+                                          height: 1.2,
                                         ),
                                       ),
                                     ),

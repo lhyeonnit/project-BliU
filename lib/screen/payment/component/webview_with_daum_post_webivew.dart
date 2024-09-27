@@ -76,9 +76,11 @@ class _WebviewWithDaumPostWebviewState
                 child: Text(
                   "페이지를 찾을 수 없습니다",
                   style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    height: 1.2,
+                  ),
                 ),
               ),
             ),

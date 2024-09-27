@@ -32,22 +32,26 @@ class _ExchangeReturnDetailItemState extends State<ExchangeReturnDetailItem> {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Container(
-                margin: EdgeInsets.only(right: 10),
+                margin: const EdgeInsets.only(right: 10),
                 child: Text(
                   '${widget.title}',
                   style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      color: Color(0xFFFF6192),
-                      fontSize: Responsive.getFont(context, 16),
-                      fontWeight: FontWeight.bold),
+                    fontFamily: 'Pretendard',
+                    color: const Color(0xFFFF6192),
+                    fontSize: Responsive.getFont(context, 16),
+                    fontWeight: FontWeight.bold,
+                    height: 1.2,
+                  ),
                 ),
               ),
               Text(
                 '${widget.date}',
                 style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.bold,
+                  fontSize: Responsive.getFont(context, 16),
+                  height: 1.2,
+                ),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -56,7 +60,8 @@ class _ExchangeReturnDetailItemState extends State<ExchangeReturnDetailItem> {
                   style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF7B7B7B),
+                    color: const Color(0xFF7B7B7B),
+                    height: 1.2,
                   ),
                 ),
               ),
@@ -80,6 +85,7 @@ class _ExchangeReturnDetailItemState extends State<ExchangeReturnDetailItem> {
                         fontWeight: FontWeight.w600,
                         color: Colors.black,
                         fontSize: Responsive.getFont(context, 15),
+                        height: 1.2,
                       ),
                     ),
                   ),
@@ -111,17 +117,20 @@ class _ExchangeReturnDetailItemState extends State<ExchangeReturnDetailItem> {
                               Text(
                                 order['items'][0]['store'] ?? "",
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 12),
-                                    color: Color(0xFF7B7B7B)),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 12),
+                                  color: Color(0xFF7B7B7B),
+                                  height: 1.2,
+                                ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(top: 4, bottom: 10),
+                                padding: const EdgeInsets.only(top: 4, bottom: 10),
                                 child: Text(
                                   order['items'][0]['name'] ?? "",
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
@@ -132,7 +141,8 @@ class _ExchangeReturnDetailItemState extends State<ExchangeReturnDetailItem> {
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 13),
-                                  color: Color(0xFF7B7B7B),
+                                  color: const Color(0xFF7B7B7B),
+                                  height: 1.2,
                                 ),
                               ),
                               Padding(
@@ -143,6 +153,7 @@ class _ExchangeReturnDetailItemState extends State<ExchangeReturnDetailItem> {
                                     fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.bold,
                                     fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
                                   ),
                                 ),
                               ),

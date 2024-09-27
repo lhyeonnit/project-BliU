@@ -85,9 +85,11 @@ class _ProductListCardState extends State<ProductListCard> {
                     //widget.item['brand']!,
                     productData.stName ?? "",
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 12),
-                        color: Colors.grey),
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 12),
+                      color: Colors.grey,
+                      height: 1.2,
+                    ),
                   ),
                 ),
                 Text(
@@ -96,6 +98,7 @@ class _ProductListCardState extends State<ProductListCard> {
                   style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
+                    height: 1.2,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -114,18 +117,19 @@ class _ProductListCardState extends State<ProductListCard> {
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
+                          height: 1.2,
                         ),
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 2),
                         child: Text(
                           //widget.item['price']!,
-                          Utils.getInstance()
-                              .priceString(productData.ptPrice ?? 0),
+                          Utils.getInstance().priceString(productData.ptPrice ?? 0),
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
+                            height: 1.2,
                           ),
                         ),
                       ),
@@ -149,6 +153,7 @@ class _ProductListCardState extends State<ProductListCard> {
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -167,9 +172,11 @@ class _ProductListCardState extends State<ProductListCard> {
                               //widget.item['comments']!,
                               '${productData.ptReview ?? ""}',
                               style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 12),
-                                  color: Colors.grey),
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 12),
+                                color: Colors.grey,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ],

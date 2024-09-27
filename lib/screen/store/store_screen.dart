@@ -42,6 +42,7 @@ class _StoreScreenState extends State<StoreScreen>
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60 + 1.0), // TabBar 높이 + 구분선 두께

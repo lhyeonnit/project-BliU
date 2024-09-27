@@ -78,6 +78,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
               fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 20),
               fontWeight: FontWeight.bold,
+              height: 1.2,
             ),
           ),
           Container(
@@ -127,9 +128,11 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                           child: Text(
                             getSelectedAgeGroupText(),
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: Colors.black),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.black,
+                              height: 1.2,
+                            ),
                           ),
                         ),
                         SvgPicture.asset(
@@ -155,7 +158,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 12.0,
                 mainAxisSpacing: 30.0,
-                childAspectRatio: 0.5,
+                childAspectRatio: 0.55,
               ),
               itemCount: productList.length,
               itemBuilder: (context, index) {
@@ -226,9 +229,11 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
       child: Text(
         categories[index].ctName ?? "",
         style: TextStyle(
-            fontFamily: 'Pretendard',
-            fontSize: Responsive.getFont(context, 14),
-            color: textColor),
+          fontFamily: 'Pretendard',
+          fontSize: Responsive.getFont(context, 14),
+          color: textColor,
+          height: 1.2,
+        ),
       ),
     );
   }
@@ -244,7 +249,6 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
         );
       },
       child: Container(
-        width: 184,
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
@@ -255,11 +259,12 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: Image.network(
-                    product.ptImg ?? "",
-                    height: 184,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                  child: AspectRatio(
+                    aspectRatio: 1/1,
+                    child: Image.network(
+                      product.ptImg ?? "",
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Positioned(
@@ -295,14 +300,17 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                   child: Text(
                     product.stName ?? "",
                     style: TextStyle(
-                        fontSize: Responsive.getFont(context, 12),
-                        color: Colors.grey),
+                      fontSize: Responsive.getFont(context, 12),
+                      color: Colors.grey,
+                      height: 1.2,
+                    ),
                   ),
                 ),
                 Text(
                   product.ptName ?? "",
                   style: TextStyle(
                     fontSize: Responsive.getFont(context, 14),
+                    height: 1.2,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -319,6 +327,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
+                          height: 1.2,
                         ),
                       ),
                       Container(
@@ -328,6 +337,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                           style: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
+                            height: 1.2,
                           ),
                         ),
                       ),
@@ -349,6 +359,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                         style: TextStyle(
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -366,8 +377,10 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                             child: Text(
                               "${product.ptReview ?? ""}",
                               style: TextStyle(
-                                  fontSize: Responsive.getFont(context, 12),
-                                  color: Colors.grey),
+                                fontSize: Responsive.getFont(context, 12),
+                                color: Colors.grey,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ],

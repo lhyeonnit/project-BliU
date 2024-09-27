@@ -91,6 +91,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -159,16 +160,20 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                         Text(
                           '${_currentPage + 1}',
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 13),
-                              color: Colors.white),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 13),
+                            color: Colors.white,
+                            height: 1.2,
+                          ),
                         ),
                         Text(
                           '/${_currentReview.images.length}',
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 13),
-                              color: Color(0x80FFFFFF)),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 13),
+                            color: Color(0x80FFFFFF),
+                            height: 1.2,
+                          ),
                         ),
                       ],
                     ),
@@ -186,18 +191,22 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                       Text(
                         'blackpink22',
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 12),
-                            color: Color(0xFF7B7B7B)),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 12),
+                          color: Color(0xFF7B7B7B),
+                          height: 1.2,
+                        ),
                       ),
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
                           '2024.04.14',
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 12),
-                              color: Color(0xFF7B7B7B)),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 12),
+                            color: Color(0xFF7B7B7B),
+                            height: 1.2,
+                          ),
                         ),
                       ),
                     ],
@@ -209,8 +218,10 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                   Text(
                     _currentReview.reviewText,
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14)),
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      height: 1.2,
+                    ),
                   ),
                   GestureDetector(
                     onTap: _editReview,
@@ -227,6 +238,7 @@ class _MyReviewDetailState extends State<MyReviewDetail> {
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
+                            height: 1.2,
                           ),
                         ),
                       ),

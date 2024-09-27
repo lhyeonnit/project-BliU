@@ -112,12 +112,17 @@ class _SearchScreenState extends State<SearchScreen> {
           style: TextStyle(
             color: Colors.black,
             fontFamily: 'Pretendard',
+            height: 1.2,
           ),
         ));
       }
       spans.add(TextSpan(
         text: text.substring(indexOfHighlight, indexOfHighlight + query.length),
-        style: TextStyle(fontFamily: 'Pretendard', color: Color(0xFFFF6192)),
+        style: TextStyle(
+          fontFamily: 'Pretendard',
+          color: Color(0xFFFF6192),
+          height: 1.2,
+        ),
       ));
       start = indexOfHighlight + query.length;
     }
@@ -125,7 +130,11 @@ class _SearchScreenState extends State<SearchScreen> {
     if (start < text.length) {
       spans.add(TextSpan(
         text: text.substring(start),
-        style: TextStyle(fontFamily: 'Pretendard', color: Colors.black),
+        style: TextStyle(
+          fontFamily: 'Pretendard',
+          color: Colors.black,
+          height: 1.2,
+        ),
       ));
     }
 
@@ -133,8 +142,10 @@ class _SearchScreenState extends State<SearchScreen> {
       text: TextSpan(
         children: spans,
         style: TextStyle(
-            fontFamily: 'Pretendard',
-            fontSize: Responsive.getFont(context, 14)),
+          fontFamily: 'Pretendard',
+          fontSize: Responsive.getFont(context, 14),
+          height: 1.2,
+        ),
       ),
     );
   }
@@ -296,9 +307,11 @@ class _SearchScreenState extends State<SearchScreen> {
                         Text(
                           '최근 검색어',
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 18),
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
                         ),
                         GestureDetector(
                           onTap: _clearSearchHistory,
@@ -308,9 +321,12 @@ class _SearchScreenState extends State<SearchScreen> {
                               Container(
                                 margin: EdgeInsets.only(left: 5),
                                 child: Text('전체삭제',
-                                    style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: 14)),
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  )
+                                ),
                               ),
                             ],
                           ),
@@ -336,6 +352,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               search,
                               style: TextStyle(
                                 fontSize: Responsive.getFont(context, 14),
+                                height: 1.2,
                               ),
                             ),
                             shape: RoundedRectangleBorder(
@@ -368,9 +385,11 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: Text(
                       '인기 검색어',
                       style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
+                        fontFamily: 'Pretendard',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        height: 1.2,
+                      ),
                     ),
                   ),
                   GridView.builder(
@@ -397,16 +416,20 @@ class _SearchScreenState extends State<SearchScreen> {
                             Container(
                               width: 25,
                               child: Text('${index + 1}',
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 15),
-                                      fontWeight: FontWeight.w600)),
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 15),
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                )
+                              ),
                             ),
                             Text(
                               _popularSearches[index],
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 15),
+                                height: 1.2,
                               ),
                             ),
                           ],

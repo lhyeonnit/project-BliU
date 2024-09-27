@@ -182,6 +182,7 @@ class LoginScreen extends ConsumerWidget {
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
+                              height: 1.2,
                             ),
                           ),
                         ],
@@ -193,8 +194,8 @@ class LoginScreen extends ConsumerWidget {
                         },
                         child: Container(
                           height: 48,
-                          margin: EdgeInsets.only(top: 15),
-                          decoration: BoxDecoration(
+                          margin: const EdgeInsets.only(top: 15),
+                          decoration: const BoxDecoration(
                             color: Colors.black,
                             borderRadius: BorderRadius.all(Radius.circular(6)),
                           ),
@@ -202,9 +203,11 @@ class LoginScreen extends ConsumerWidget {
                             child: Text(
                               '로그인',
                               style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  color: Colors.white,
-                                  fontSize: Responsive.getFont(context, 14)),
+                                fontFamily: 'Pretendard',
+                                color: Colors.white,
+                                fontSize: Responsive.getFont(context, 14),
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ),
@@ -230,6 +233,7 @@ class LoginScreen extends ConsumerWidget {
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -254,6 +258,7 @@ class LoginScreen extends ConsumerWidget {
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
+                            height: 1.2,
                           ),
                         ),
                       ),
@@ -273,6 +278,7 @@ class LoginScreen extends ConsumerWidget {
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -291,6 +297,7 @@ class LoginScreen extends ConsumerWidget {
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.bold,
                               fontSize: Responsive.getFont(context, 15),
+                              height: 1.2,
                             ),
                           ),
                         ),
@@ -340,6 +347,7 @@ class LoginScreen extends ConsumerWidget {
                       style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
                       ),
                     ),
                   ),

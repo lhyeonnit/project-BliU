@@ -37,6 +37,7 @@ class _ProductBottomOptionAdditionState
                       style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
                       ),
                     ),
                     GestureDetector(
@@ -75,6 +76,7 @@ class _ProductBottomOptionAdditionState
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
+                              height: 1.2,
                             ),
                           ),
                         ),
@@ -91,6 +93,7 @@ class _ProductBottomOptionAdditionState
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       fontWeight: FontWeight.bold,
+                      height: 1.2,
                     ),
                   ),
                 ],

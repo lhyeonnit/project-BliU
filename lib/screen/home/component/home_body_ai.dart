@@ -40,6 +40,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
               fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 20),
               fontWeight: FontWeight.bold,
+              height: 1.2,
             ),
           ),
           Container(
@@ -119,6 +120,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
                                   color: const Color(0xFF7B7B7B),
+                                  height: 1.2,
                                 ),
                               ),
                             ),
@@ -127,6 +129,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
+                                height: 1.2,
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -145,6 +148,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                                       fontSize: Responsive.getFont(context, 14),
                                       color: const Color(0xFFFF6192),
                                       fontWeight: FontWeight.bold,
+                                      height: 1.2,
                                     ),
                                   ),
                                   Container(
@@ -154,9 +158,9 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                                       '${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원',
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 14),
+                                        fontSize: Responsive.getFont(context, 14),
                                         fontWeight: FontWeight.bold,
+                                        height: 1.2,
                                       ),
                                     ),
                                   ),
@@ -181,6 +185,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
                                       color: const Color(0xFFA4A4A4),
+                                      height: 1.2,
                                     ),
                                   ),
                                 ),
@@ -202,9 +207,9 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                                           '${productData.ptReview ?? ""}',
                                           style: TextStyle(
                                             fontFamily: 'Pretendard',
-                                            fontSize:
-                                                Responsive.getFont(context, 12),
+                                            fontSize: Responsive.getFont(context, 12),
                                             color: const Color(0xFFA4A4A4),
+                                            height: 1.2,
                                           ),
                                         ),
                                       ),

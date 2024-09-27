@@ -25,6 +25,7 @@ class MyReviewScreen extends StatelessWidget {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -116,10 +117,11 @@ class MyReviewScreen extends StatelessWidget {
                                     Text(
                                       review!.store,
                                       style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize:
-                                              Responsive.getFont(context, 12),
-                                          color: Color(0xFF7B7B7B)),
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 12),
+                                        color: const Color(0xFF7B7B7B),
+                                        height: 1.2,
+                                      ),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 4),
@@ -127,8 +129,8 @@ class MyReviewScreen extends StatelessWidget {
                                         review!.name,
                                         style: TextStyle(
                                           fontFamily: 'Pretendard',
-                                          fontSize:
-                                              Responsive.getFont(context, 14),
+                                          fontSize: Responsive.getFont(context, 14),
+                                          height: 1.2,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 2,
@@ -138,9 +140,9 @@ class MyReviewScreen extends StatelessWidget {
                                       review!.size,
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 13),
-                                        color: Color(0xFF7B7B7B),
+                                        fontSize: Responsive.getFont(context, 13),
+                                        color: const Color(0xFF7B7B7B),
+                                        height: 1.2,
                                       ),
                                     ),
                                   ],
@@ -161,6 +163,7 @@ class MyReviewScreen extends StatelessWidget {
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 16),
                         color: Colors.grey,
+                        height: 1.2,
                       ),
                     ),
                   ),

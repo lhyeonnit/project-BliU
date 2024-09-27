@@ -24,9 +24,11 @@ class ExchangeReturnInfo extends StatelessWidget {
           child: Text(
             '환불정보',
             style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 18),
-                fontWeight: FontWeight.bold),
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 18),
+              fontWeight: FontWeight.bold,
+              height: 1.2,
+            ),
           ),
         ),
         // 배송지 정보 세부 내용
@@ -71,16 +73,20 @@ class ExchangeReturnInfo extends StatelessWidget {
               Text(
                 '환불예정금액',
                 style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 18),
-                    fontWeight: FontWeight.bold),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 18),
+                  fontWeight: FontWeight.bold,
+                  height: 1.2,
+                ),
               ),
               Text(
                 "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otSprice ?? 0) - ((orderDetailInfoData?.order?.otUseCoupon ?? 0) + (orderDetailInfoData?.order?.otUsePoint ?? 0) + (orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0)))}원",
                 style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    fontWeight: FontWeight.bold),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  fontWeight: FontWeight.bold,
+                  height: 1.2,
+                ),
               ),
             ],
           ),
@@ -114,6 +120,7 @@ class ExchangeReturnInfo extends StatelessWidget {
               fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
+              height: 1.2,
             ),
           ),
           Text(
@@ -122,6 +129,7 @@ class ExchangeReturnInfo extends StatelessWidget {
               fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
+              height: 1.2,
             ),
           ),
         ],

@@ -75,7 +75,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
           SingleChildScrollView(
             // 스크롤 가능하도록 설정
             child: Container(
-              margin: EdgeInsets.only(top: 40, bottom: 80, right: 16, left: 16),
+              margin: const EdgeInsets.only(top: 40, bottom: 80, right: 16, left: 16),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -87,16 +87,19 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 20),
                         fontWeight: FontWeight.bold,
+                        height: 1.2,
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 8, bottom: 10),
+                      margin: const EdgeInsets.only(top: 8, bottom: 10),
                       child: Text(
                         '추가 정보를 입력해 주세요.',
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Color(0xFF7B7B7B)),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: const Color(0xFF7B7B7B),
+                          height: 1.2,
+                        ),
                       ),
                     ),
                     _buildTextField('이름', _nameController, '이름 입력',
@@ -144,20 +147,23 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                               // }
                             },
                             child: Container(
-                                margin: EdgeInsets.only(top: 50, left: 8),
-                                padding: EdgeInsets.symmetric(vertical: 14),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  border: Border.all(color: Color(0xFFDDDDDD)),
-                                ),
-                                child: Center(
-                                    child: Text(
+                              margin: const EdgeInsets.only(top: 50, left: 8),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(color: const Color(0xFFDDDDDD)),
+                              ),
+                              child: Center(
+                                child: Text(
                                   '인증요청',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14)),
-                                ))),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                )
+                              )
+                            ),
                           ),
                         ),
                       ],
@@ -219,10 +225,11 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                                   child: Text(
                                     '확인',
                                     style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 14),
-                                        color: Colors.white),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: Colors.white,
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -267,18 +274,20 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                                   Text(
                                     '생일 쿠폰 지급!',
                                     style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 16),
-                                        fontWeight: FontWeight.bold),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 16),
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.2,
+                                    ),
                                   ),
                                   Text(
                                     '생년월일을 입력 주시면, 생일날 쿠폰 지급!',
                                     style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 12),
-                                        color: Color(0xFF6A5B54)),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 12),
+                                      color: const Color(0xFF6A5B54),
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -290,32 +299,39 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                     Row(
                       children: [
                         Text('성별',
-                            style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.bold,
-                                fontSize: Responsive.getFont(context, 13))),
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.bold,
+                            fontSize: Responsive.getFont(context, 13),
+                            height: 1.2,
+                          )
+                        ),
                         Container(
-                            margin: EdgeInsets.only(left: 4),
-                            child: Text('선택',
-                                style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: Responsive.getFont(context, 13),
-                                    color: Color(0xFFFF6192)))),
+                          margin: const EdgeInsets.only(left: 4),
+                          child: Text('선택',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.bold,
+                              fontSize: Responsive.getFont(context, 13),
+                              color: const Color(0xFFFF6192),
+                              height: 1.2,
+                            )
+                          )
+                        ),
                       ],
                     ), // 성별 선택 타이틀
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
                         children: [
                           Expanded(
                             child: Container(
-                                margin: EdgeInsets.only(right: 4),
+                                margin: const EdgeInsets.only(right: 4),
                                 child: _buildGenderButton('남자')),
                           ),
                           Expanded(
                             child: Container(
-                                margin: EdgeInsets.only(left: 4),
+                                margin: const EdgeInsets.only(left: 4),
                                 child: _buildGenderButton('여자')),
                           ),
                         ],
@@ -345,11 +361,10 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
               child: Container(
                 width: double.infinity,
                 height: Responsive.getHeight(context, 48),
-                margin:
-                    EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
                 decoration: BoxDecoration(
-                  color: _isAllFieldsFilled ? Colors.black : Color(0xFFDDDDDD),
-                  borderRadius: BorderRadius.all(
+                  color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(6),
                   ),
                 ),
@@ -359,8 +374,8 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
-                      color:
-                          _isAllFieldsFilled ? Colors.white : Color(0xFF7B7B7B),
+                      color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
+                      height: 1.2,
                     ),
                   ),
                 ),
@@ -385,22 +400,29 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
         children: [
           // if (label.isNotEmpty)
           Container(
-            margin: EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 10),
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.bold,
-                        fontSize: Responsive.getFont(context, 13))),
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.getFont(context, 13),
+                    height: 1.2,
+                  )
+                ),
                 Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text('*',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.bold,
-                            fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFFFF6192)))),
+                  margin: const EdgeInsets.only(left: 4),
+                  child: Text('*',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 13),
+                      color: const Color(0xFFFF6192),
+                      height: 1.2,
+                    )
+                  )
+                ),
               ],
             ),
           ),
@@ -499,18 +521,25 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.bold,
-                        fontSize: Responsive.getFont(context, 13))),
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.getFont(context, 13),
+                    height: 1.2,
+                  )
+                ),
                 Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text('선택',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.bold,
-                            fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFFFF6192)))),
+                  margin: const EdgeInsets.only(left: 4),
+                  child: Text('선택',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 13),
+                      color: const Color(0xFFFF6192),
+                      height: 1.2,
+                    )
+                  )
+                ),
               ],
             ),
           ),
@@ -556,21 +585,24 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
         });
       },
       child: Container(
-          padding: EdgeInsets.symmetric(vertical: 14.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(
-                color: isSelected ? Color(0xFFFF6192) : Color(0xFFDDDDDD)),
-          ),
-          child: Center(
-              child: Text(
+        padding: const EdgeInsets.symmetric(vertical: 14.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+              color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+        ),
+        child: Center(
+          child: Text(
             gender,
             style: TextStyle(
-                fontFamily: 'Pretendard',
-                color: isSelected ? Color(0xFFFF6192) : Colors.black,
-                fontSize: Responsive.getFont(context, 14)),
-          ))),
+              fontFamily: 'Pretendard',
+              color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+              fontSize: Responsive.getFont(context, 14)
+            ),
+          )
+        )
+      ),
     );
   }
 }

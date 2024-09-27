@@ -41,6 +41,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
@@ -99,9 +100,11 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                       title: Text(
                         categoryData.ctName ?? "",
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 15),
-                            fontWeight: FontWeight.w600),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 15),
+                          fontWeight: FontWeight.w600,
+                          height: 1.2,
+                        ),
                       ),
                       onTap: () {
                         setState(() {
@@ -170,9 +173,9 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                             category.ctName ?? "",
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(
-                                                  context, 18),
+                                              fontSize: Responsive.getFont(context, 18),
                                               fontWeight: FontWeight.bold,
+                                              height: 1.2,
                                             ),
                                           ),
                                         ),
@@ -195,6 +198,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
                                   ),
                                 ),
                                 trailing: SvgPicture.asset(

@@ -81,6 +81,7 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         automaticallyImplyLeading: false,
         actions: [
@@ -157,9 +158,9 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                                           _dropdownText,
                                           style: TextStyle(
                                             fontFamily: 'Pretendard',
-                                            fontSize:
-                                                Responsive.getFont(context, 14),
+                                            fontSize: Responsive.getFont(context, 14),
                                             color: Colors.black,
+                                            height: 1.2,
                                           ),
                                         ),
 
@@ -207,9 +208,9 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                                       '${_detailedReason.length}/500',
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 13),
+                                        fontSize: Responsive.getFont(context, 13),
                                         color: const Color(0xFF7B7B7B),
+                                        height: 1.2,
                                       ),
                                     ),
                                   ),
@@ -277,6 +278,7 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.white,
+                            height: 1.2,
                           ),
                         ),
                       ),
@@ -395,6 +397,7 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: Colors.black,
+                          height: 1.2,
                         ),
                       ),
                     ),

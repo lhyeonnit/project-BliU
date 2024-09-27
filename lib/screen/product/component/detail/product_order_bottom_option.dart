@@ -150,18 +150,20 @@ class _ProductOrderBottomOptionContentState
                                   title: Text(
                                     '추가상품',
                                     style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 14)),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
+                                    ),
                                   ),
                                   children: _ptAddArr.map((ptAdd) {
                                     return ListTile(
                                       title: Text(
                                         ptAdd.option ?? "",
                                         style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(
-                                                context, 14)),
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          height: 1.2,
+                                        ),
                                       ),
                                       onTap: () {
                                         // TODO 선택시
@@ -230,12 +232,11 @@ class _ProductOrderBottomOptionContentState
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              _addPtOptionArr[index].option ??
-                                                  "",
+                                              _addPtOptionArr[index].option ?? "",
                                               style: TextStyle(
                                                 fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(
-                                                    context, 14),
+                                                fontSize: Responsive.getFont(context, 14),
+                                                height: 1.2,
                                               ),
                                             ),
                                             GestureDetector(
@@ -300,9 +301,8 @@ class _ProductOrderBottomOptionContentState
                                                     '${_addPtOptionArr[index].count}',
                                                     style: TextStyle(
                                                       fontFamily: 'Pretendard',
-                                                      fontSize:
-                                                          Responsive.getFont(
-                                                              context, 14),
+                                                      fontSize: Responsive.getFont(context, 14),
+                                                      height: 1.2,
                                                     ),
                                                   ),
                                                 ),
@@ -329,9 +329,9 @@ class _ProductOrderBottomOptionContentState
                                             '${Utils.getInstance().priceString(_addPtOptionArr[index].count * (_addPtOptionArr[index].potPrice ?? 0))}원',
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(
-                                                  context, 14),
+                                              fontSize: Responsive.getFont(context, 14),
                                               fontWeight: FontWeight.bold,
+                                              height: 1.2,
                                             ),
                                           ),
                                         ],
@@ -375,8 +375,8 @@ class _ProductOrderBottomOptionContentState
                                             _addPtAddArr[index].option ?? "",
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(
-                                                  context, 14),
+                                              fontSize: Responsive.getFont(context, 14),
+                                              height: 1.2,
                                             ),
                                           ),
                                           GestureDetector(
@@ -439,9 +439,8 @@ class _ProductOrderBottomOptionContentState
                                                   '${_addPtAddArr[index].count}',
                                                   style: TextStyle(
                                                     fontFamily: 'Pretendard',
-                                                    fontSize:
-                                                        Responsive.getFont(
-                                                            context, 14),
+                                                    fontSize: Responsive.getFont(context, 14),
+                                                    height: 1.2,
                                                   ),
                                                 ),
                                               ),
@@ -462,9 +461,9 @@ class _ProductOrderBottomOptionContentState
                                           '${Utils.getInstance().priceString(_addPtAddArr[index].count * (_addPtAddArr[index].patPrice ?? 0))}원',
                                           style: TextStyle(
                                             fontFamily: 'Pretendard',
-                                            fontSize:
-                                                Responsive.getFont(context, 14),
+                                            fontSize: Responsive.getFont(context, 14),
                                             fontWeight: FontWeight.bold,
+                                            height: 1.2,
                                           ),
                                         ),
                                       ],
@@ -544,8 +543,10 @@ class _ProductOrderBottomOptionContentState
           title: Text(
             title,
             style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14)),
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 14),
+              height: 1.2,
+            ),
           ),
           onExpansionChanged: (bool expanded) {
             setState(() {
@@ -558,8 +559,10 @@ class _ProductOrderBottomOptionContentState
                 title: Text(
                   option,
                   style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14)),
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 14),
+                    height: 1.2,
+                  ),
                 ),
                 onTap: () {
                   onSelected(option); // 항목이 선택되면 콜백 실행
@@ -626,8 +629,10 @@ class _ProductOrderBottomOptionContentState
         Text(
           title,
           style: TextStyle(
-              fontFamily: 'Pretendard',
-              fontSize: Responsive.getFont(context, 14)),
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 14),
+            height: 1.2,
+          ),
         ),
         Text(
           value,
@@ -635,6 +640,7 @@ class _ProductOrderBottomOptionContentState
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             fontWeight: FontWeight.bold,
+            height: 1.2,
           ),
         ),
       ],
@@ -672,6 +678,7 @@ class _ProductOrderBottomOptionContentState
                       fontSize: Responsive.getFont(context, 14),
                       fontWeight: FontWeight.normal,
                       color: Colors.black,
+                      height: 1.2,
                     ),
                   ),
                 ),
@@ -700,6 +707,7 @@ class _ProductOrderBottomOptionContentState
                       fontSize: Responsive.getFont(context, 14),
                       fontWeight: FontWeight.normal,
                       color: Colors.white,
+                      height: 1.2,
                     ),
                   ),
                 ),
@@ -821,9 +829,11 @@ class _ProductOrderBottomOptionContentState
                       child: Text(
                         '장바구니에 상품을 담았습니다.',
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 18),
-                            fontWeight: FontWeight.bold),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 18),
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                        ),
                       ),
                     ),
                     GestureDetector(
@@ -850,6 +860,7 @@ class _ProductOrderBottomOptionContentState
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.normal,
                               color: Colors.white,
+                              height: 1.2,
                             ),
                           ),
                         ),
@@ -877,6 +888,7 @@ class _ProductOrderBottomOptionContentState
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.normal,
                               color: Colors.black,
+                              height: 1.2,
                             ),
                           ),
                         ),

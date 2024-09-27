@@ -101,6 +101,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
@@ -202,28 +203,31 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
           ),
         ),
         Container(
-          padding: EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 16),
-                        fontWeight: FontWeight.bold),
-                  )),
-              Container(
+                margin: const EdgeInsets.only(bottom: 10),
                 child: Text(
-                  content,
+                  title,
                   style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      color: Color(0xFF7B7B7B),
-                      fontSize: Responsive.getFont(context, 12)),
-                  softWrap: true,
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 16),
+                    fontWeight: FontWeight.bold,
+                    height: 1.2,
+                  ),
+                )
+              ),
+              Text(
+                content,
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  color: const Color(0xFF7B7B7B),
+                  fontSize: Responsive.getFont(context, 12),
+                  height: 1.2,
                 ),
+                softWrap: true,
               ),
             ],
           ),

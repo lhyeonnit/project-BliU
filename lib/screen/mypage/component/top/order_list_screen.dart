@@ -45,6 +45,7 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -80,6 +81,7 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
                       fontFamily: 'Pretendard',
                       color: Colors.white,
                       fontSize: 12,
+                      height: 1.2,
                     ),
                   ),
                 ),
@@ -131,11 +133,9 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
                             categories[index],
                             style: TextStyle(
                               fontFamily: 'Pretendard',
-
                               fontSize: Responsive.getFont(context, 14),
-                              color: isSelected
-                                  ? const Color(0xFFFF6192)
-                                  : Colors.black, // 텍스트 색상
+                              color: isSelected ? const Color(0xFFFF6192) : Colors.black, // 텍스트 색상
+                              height: 1.2,
                             ),
                           ),
                           selected: isSelected,

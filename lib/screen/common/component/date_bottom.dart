@@ -1,3 +1,4 @@
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class DateBottom extends StatelessWidget {
@@ -20,9 +21,13 @@ class DateBottom extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 '출생년도',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: Responsive.getFont(context, 18),
+                  fontWeight: FontWeight.bold,
+                  height: 1.2,
+                ),
               ),
               IconButton(
                 icon: const Icon(Icons.close),

@@ -20,6 +20,7 @@ class MyInfoEditCheck extends StatelessWidget {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -61,6 +62,7 @@ class MyInfoEditCheck extends StatelessWidget {
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 20),
                     fontWeight: FontWeight.bold,
+                    height: 1.2,
                   ),
                 ),
                 Container(
@@ -68,9 +70,11 @@ class MyInfoEditCheck extends StatelessWidget {
                   child: Text(
                     '본인 확인을 위해 한 번 더 비밀번호를 \n입력해주세요',
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        color: Color(0xFF7B7B7B),
-                        fontSize: Responsive.getFont(context, 14)),
+                      fontFamily: 'Pretendard',
+                      color: Color(0xFF7B7B7B),
+                      fontSize: Responsive.getFont(context, 14),
+                      height: 1.2,
+                    ),
                   ),
                 ),
                 Row(
@@ -81,6 +85,7 @@ class MyInfoEditCheck extends StatelessWidget {
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 13),
                         fontWeight: FontWeight.bold,
+                        height: 1.2,
                       ),
                     ),
                     Container(
@@ -91,6 +96,7 @@ class MyInfoEditCheck extends StatelessWidget {
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
                           color: Color(0xFFFF6192),
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -160,6 +166,7 @@ class MyInfoEditCheck extends StatelessWidget {
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
+                      height: 1.2,
                     ),
                   ),
                 ),
