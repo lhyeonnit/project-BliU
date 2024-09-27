@@ -63,15 +63,17 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 18),
                           fontWeight: FontWeight.bold,
+                          height: 1.2,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         '캐주얼 (Casual), 키즈(3-8세)',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
-                          color: Color(0xFF7B7B7B),
+                          color: const Color(0xFF7B7B7B),
+                          height: 1.2,
                         ),
                       ),
                     ],
@@ -99,9 +101,11 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                              Text(
                               '즐겨찾기 1,761',
                               style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  fontWeight: FontWeight.w500),
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                fontWeight: FontWeight.w500,
+                                height: 1.2,
+                              ),
                             ),
                             const SizedBox(width: 8), // 텍스트와 아이콘 사이의 간격
                             Container(
@@ -130,7 +134,8 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
               style: TextStyle(
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
-                color: Color(0xFF7B7B7B),
+                color: const Color(0xFF7B7B7B),
+                height: 1.2,
               ),
             ),
           ),
@@ -155,8 +160,10 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                   child: Text(
                     '쿠폰 다운로드',
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14)),
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      height: 1.2,
+                    ),
                   ),
                 ),
               ),

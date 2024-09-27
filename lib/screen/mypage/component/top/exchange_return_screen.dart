@@ -67,6 +67,7 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/product/ic_back.svg"),
@@ -186,6 +187,7 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.white,
+                            height: 1.2,
                           ),
                         ),
                       ),
@@ -384,11 +386,11 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
               text,
               style: TextStyle(
                 fontFamily: 'Pretendard',
-
                 fontSize: Responsive.getFont(context, 14),
                 color: isSelected ? const Color(0xFFFF6192) : Colors.black,
                 // 선택 시 텍스트 색상 변경
                 fontWeight: FontWeight.normal,
+                height: 1.2,
               ),
             ),
           ),

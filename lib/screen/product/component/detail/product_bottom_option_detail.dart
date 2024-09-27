@@ -33,6 +33,7 @@ class ProductBottomOptionDetail extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
+                    height: 1.2,
                   ),
                 ),
                 GestureDetector(
@@ -61,8 +62,12 @@ class ProductBottomOptionDetail extends StatelessWidget {
                       onTap: () {},
                     ),
                     const Text('1',
-                        style:
-                            TextStyle(fontFamily: 'Pretendard', fontSize: 14)),
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: 14,
+                        height: 1.2,
+                      )
+                    ),
                     GestureDetector(
                       child: const Icon(Icons.add, size: 20),
                       onTap: () {},
@@ -76,6 +81,7 @@ class ProductBottomOptionDetail extends StatelessWidget {
                   fontFamily: 'Pretendard',
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
+                  height: 1.2,
                 ),
               ),
             ],

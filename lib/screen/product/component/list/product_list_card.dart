@@ -31,7 +31,6 @@ class _ProductListCardState extends State<ProductListCard> {
         );
       },
       child: Container(
-        width: 184,
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
@@ -42,11 +41,12 @@ class _ProductListCardState extends State<ProductListCard> {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: Image.network(
-                    productData.ptImg ?? "",
-                    height: 184,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                  child: AspectRatio(
+                    aspectRatio: 1/1,
+                    child: Image.network(
+                      productData.ptImg ?? "",
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Positioned(
@@ -56,18 +56,10 @@ class _ProductListCardState extends State<ProductListCard> {
                     onTap: () {
                       setState(() {
                         // TODO 좋아요 관련
-                        // isFavoriteList[widget.index] =
-                        //     !isFavoriteList[widget.index]; // 좋아요 상태 토글
                       });
                     },
-                    child: SvgPicture.asset(
-                      productData.likeChk == "Y"
-                          ? "assets/images/home/like_btn_fill.svg"
-                          : "assets/images/home/like_btn.svg",
-                      color: productData.likeChk == "Y"
-                          ? const Color(0xFFFF6191)
-                          : null,
-                      // 좋아요 상태에 따라 내부 색상 변경
+                    child: Image.asset(
+                      productData.likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',
                       height: Responsive.getHeight(context, 34),
                       width: Responsive.getWidth(context, 34),
                       // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
@@ -82,20 +74,21 @@ class _ProductListCardState extends State<ProductListCard> {
                 Container(
                   margin: const EdgeInsets.only(top: 12, bottom: 4),
                   child: Text(
-                    //widget.item['brand']!,
                     productData.stName ?? "",
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 12),
-                        color: Colors.grey),
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 12),
+                      color: Colors.grey,
+                      height: 1.2,
+                    ),
                   ),
                 ),
                 Text(
-                  //widget.item['name']!,
                   productData.ptName ?? "",
                   style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
+                    height: 1.2,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -107,25 +100,24 @@ class _ProductListCardState extends State<ProductListCard> {
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       Text(
-                        //widget.item['discount']!,
                         '${productData.ptDiscountPer ?? 0}%',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
+                          height: 1.2,
                         ),
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 2),
                         child: Text(
-                          //widget.item['price']!,
-                          Utils.getInstance()
-                              .priceString(productData.ptPrice ?? 0),
+                          "${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원",
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
+                            height: 1.2,
                           ),
                         ),
                       ),
@@ -143,12 +135,12 @@ class _ProductListCardState extends State<ProductListCard> {
                     Container(
                       margin: const EdgeInsets.only(left: 2, bottom: 2),
                       child: Text(
-                        //widget.item['likes']!,
                         '${productData.ptLike ?? ""}',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -164,12 +156,13 @@ class _ProductListCardState extends State<ProductListCard> {
                           Container(
                             margin: const EdgeInsets.only(left: 2, bottom: 2),
                             child: Text(
-                              //widget.item['comments']!,
                               '${productData.ptReview ?? ""}',
                               style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 12),
-                                  color: Colors.grey),
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 12),
+                                color: Colors.grey,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ],

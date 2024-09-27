@@ -90,20 +90,24 @@ class _NonTopScreenState extends State<NonTopScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                              margin: EdgeInsets.only(bottom: 4),
+                              margin: const EdgeInsets.only(bottom: 4),
                               child: Text(
                                 '블리유',
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 18),
-                                    fontWeight: FontWeight.bold),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 18),
+                                  fontWeight: FontWeight.bold,
+                                  height: 1.2,
+                                ),
                               )),
                           Text(
                             '회원이 되어 주세요!',
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                color: Color(0xFF7B7B7B),
-                                fontSize: Responsive.getFont(context, 12)),
+                              fontFamily: 'Pretendard',
+                              color: const Color(0xFF7B7B7B),
+                              fontSize: Responsive.getFont(context, 12),
+                              height: 1.2,
+                            ),
                           ),
                         ],
                       ),
@@ -127,9 +131,11 @@ class _NonTopScreenState extends State<NonTopScreen> {
                   child: Text(
                     '로그인',
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        color: Color(0xFFFF6192),
-                        fontSize: Responsive.getFont(context, 14)),
+                      fontFamily: 'Pretendard',
+                      color: const Color(0xFFFF6192),
+                      fontSize: Responsive.getFont(context, 14),
+                      height: 1.2,
+                    ),
                   ),
                 ),
               ),

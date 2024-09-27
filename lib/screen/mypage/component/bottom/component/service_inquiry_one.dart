@@ -66,26 +66,33 @@ class _ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
                               Text(
                                 qnaData.qtStatusTxt ?? "",
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    fontWeight: FontWeight.w600),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                ),
                               ),
                               Container(
                                 margin: EdgeInsets.symmetric(horizontal: 11),
                                 child: Text(qnaData.qtWdate ?? "",
-                                    style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 12),
-                                        color: Color(0xFF7B7B7B))),
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 12),
+                                    color: const Color(0xFF7B7B7B),
+                                    height: 1.2,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
                           subtitle: Text(qnaData.qtTitle ?? "",
-                              style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  fontWeight: FontWeight.w400)),
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              fontWeight: FontWeight.w400,
+                              height: 1.2,
+                            )
+                          ),
                           onTap: () {
                             final qtIdx = qnaData.qtIdx;
                             if (qtIdx != null) {
@@ -138,15 +145,18 @@ class _ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 16),
                                   fontWeight: FontWeight.w600,
+                                  height: 1.2,
                                 ),
                               ),
                               Text(
                                 ' / $totalPages',
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 16),
-                                    color: Color(0xFFCCCCCC),
-                                    fontWeight: FontWeight.w600),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 16),
+                                  color: const Color(0xFFCCCCCC),
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                ),
                               ),
                             ],
                           ),

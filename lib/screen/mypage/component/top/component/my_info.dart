@@ -37,6 +37,7 @@ class MyInfo extends StatelessWidget {
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 18),
                     fontWeight: FontWeight.bold,
+                    height: 1.2,
                   ),
                 ),
                 Text(
@@ -45,6 +46,7 @@ class MyInfo extends StatelessWidget {
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFF7B7B7B),
+                    height: 1.2,
                   ),
                 ),
               ],
@@ -76,11 +78,14 @@ class MyInfo extends StatelessWidget {
               ),
               child: Text(
                 '내정보수정',
-                style: TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Pretendard',
                     color: Colors.black,
-                    fontSize: Responsive.getFont(context, 12)),
-              )),
+                    fontSize: Responsive.getFont(context, 12),
+                    height: 1.2,
+                  ),
+                )
+              ),
         ),
       ],
     );

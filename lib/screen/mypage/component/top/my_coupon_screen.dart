@@ -82,6 +82,7 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -130,10 +131,8 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                         categories[index],
                         style: TextStyle(
                           fontFamily: 'Pretendard',
-
-                          color: isSelected
-                              ? Color(0xFFFF6192)
-                              : Colors.black, // 텍스트 색상
+                          color: isSelected ? const Color(0xFFFF6192) : Colors.black, // 텍스트 색상
+                          height: 1.2,
                         ),
                       ),
                       selected: isSelected,
@@ -164,6 +163,9 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
                 '쿠폰 ${selectedCategoryIndex == 0 ? availableCoupons.length : issuedCoupons.length}',
+                style: const TextStyle(
+                  height: 1.2,
+                ),
               ),
             ),
             const SizedBox(height: 10),

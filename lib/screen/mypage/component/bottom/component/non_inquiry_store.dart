@@ -40,6 +40,7 @@ class _NonInquiryStoreState extends ConsumerState<NonInquiryStore> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -95,14 +96,17 @@ class _NonInquiryStoreState extends ConsumerState<NonInquiryStore> {
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
+                          height: 1.2,
                         ),
                       ),
                       Text(
                         '$_imageCnt/4',
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFF7B7B7B)),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 13),
+                          color: const Color(0xFF7B7B7B),
+                          height: 1.2,
+                        ),
                       ),
                     ],
                   ),
@@ -136,9 +140,11 @@ class _NonInquiryStoreState extends ConsumerState<NonInquiryStore> {
                               Text(
                                 '사진선택',
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    color: Color(0xFF707070),
-                                    fontSize: Responsive.getFont(context, 14)),
+                                  fontFamily: 'Pretendard',
+                                  color: const Color(0xFF707070),
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
+                                ),
                               )
                             ],
                           ),
@@ -182,6 +188,7 @@ class _NonInquiryStoreState extends ConsumerState<NonInquiryStore> {
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
+                      height: 1.2,
                     ),
                   ),
                 ),
@@ -383,18 +390,25 @@ class _NonInquiryStoreState extends ConsumerState<NonInquiryStore> {
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.bold,
-                        fontSize: Responsive.getFont(context, 13))),
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.getFont(context, 13),
+                    height: 1.2,
+                  )
+                ),
                 Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text('*',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.bold,
-                            fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFFFF6192)))),
+                  margin: const EdgeInsets.only(left: 4),
+                  child: Text('*',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 13),
+                      color: const Color(0xFFFF6192),
+                      height: 1.2,
+                    )
+                  )
+                ),
               ],
             ),
           ),

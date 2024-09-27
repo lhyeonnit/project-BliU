@@ -61,9 +61,11 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
           child: Text(
             '연령대',
             style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 18),
-                fontWeight: FontWeight.bold),
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 18),
+              fontWeight: FontWeight.bold,
+              height: 1.2,
+            ),
           ),
         ),
         Container(
@@ -112,11 +114,15 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
                   height: 48,
                   child: GestureDetector(
                     child: const Center(
-                        child: Text(
-                      '선택완료',
-                      style: TextStyle(
-                          fontFamily: 'Pretendard', color: Colors.white),
-                    )),
+                      child: Text(
+                        '선택완료',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          color: Colors.white,
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
                     onTap: () {
                       widget.onSelectionChanged(_tempSelectedAgeGroup);
                       Navigator.pop(context);
@@ -142,6 +148,7 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+            height: 1.2,
           ),
           overflow: TextOverflow.ellipsis,
           maxLines: 1,

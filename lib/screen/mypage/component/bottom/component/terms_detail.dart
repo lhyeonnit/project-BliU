@@ -30,6 +30,7 @@ class TermsDetail extends ConsumerWidget {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -86,6 +87,7 @@ class TermsDetail extends ConsumerWidget {
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
                   fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
                 ),
               );
             },

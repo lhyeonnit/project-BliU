@@ -5,6 +5,7 @@ import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/component/store_age_group_selection.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -78,6 +79,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
               fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 20),
               fontWeight: FontWeight.bold,
+              height: 1.2,
             ),
           ),
           Container(
@@ -127,9 +129,11 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                           child: Text(
                             getSelectedAgeGroupText(),
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: Colors.black),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.black,
+                              height: 1.2,
+                            ),
                           ),
                         ),
                         SvgPicture.asset(
@@ -155,11 +159,11 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 12.0,
                 mainAxisSpacing: 30.0,
-                childAspectRatio: 0.5,
+                childAspectRatio: 0.55,
               ),
               itemCount: productList.length,
               itemBuilder: (context, index) {
-                return buildItemCard(productList[index], index);
+                return buildItemCard(productList[index]);
               },
             ),
           ),
@@ -226,14 +230,16 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
       child: Text(
         categories[index].ctName ?? "",
         style: TextStyle(
-            fontFamily: 'Pretendard',
-            fontSize: Responsive.getFont(context, 14),
-            color: textColor),
+          fontFamily: 'Pretendard',
+          fontSize: Responsive.getFont(context, 14),
+          color: textColor,
+          height: 1.2,
+        ),
       ),
     );
   }
 
-  Widget buildItemCard(ProductData product, int index) {
+  Widget buildItemCard(ProductData product) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -244,7 +250,6 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
         );
       },
       child: Container(
-        width: 184,
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
@@ -255,11 +260,12 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: Image.network(
-                    product.ptImg ?? "",
-                    height: 184,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                  child: AspectRatio(
+                    aspectRatio: 1/1,
+                    child: Image.network(
+                      product.ptImg ?? "",
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Positioned(
@@ -271,14 +277,8 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                         // TODO 좋아요 작업
                       });
                     },
-                    child: SvgPicture.asset(
-                      product.likeChk == "Y"
-                          ? 'assets/images/home/like_btn_fill.svg'
-                          : 'assets/images/home/like_btn.svg',
-                      color: product.likeChk == "Y"
-                          ? const Color(0xFFFF6191)
-                          : null,
-                      // 좋아요 상태에 따라 내부 색상 변경
+                    child: Image.asset(
+                      product.likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',
                       height: Responsive.getHeight(context, 34),
                       width: Responsive.getWidth(context, 34),
                       // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
@@ -295,14 +295,17 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                   child: Text(
                     product.stName ?? "",
                     style: TextStyle(
-                        fontSize: Responsive.getFont(context, 12),
-                        color: Colors.grey),
+                      fontSize: Responsive.getFont(context, 12),
+                      color: Colors.grey,
+                      height: 1.2,
+                    ),
                   ),
                 ),
                 Text(
                   product.ptName ?? "",
                   style: TextStyle(
                     fontSize: Responsive.getFont(context, 14),
+                    height: 1.2,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -319,15 +322,17 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                           fontSize: Responsive.getFont(context, 14),
                           color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
+                          height: 1.2,
                         ),
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 2),
                         child: Text(
-                          "${product.ptPrice}원",
+                          "${Utils.getInstance().priceString(product.ptPrice ?? 0)}원",
                           style: TextStyle(
                             fontSize: Responsive.getFont(context, 14),
                             fontWeight: FontWeight.bold,
+                            height: 1.2,
                           ),
                         ),
                       ),
@@ -349,6 +354,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                         style: TextStyle(
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -366,8 +372,10 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                             child: Text(
                               "${product.ptReview ?? ""}",
                               style: TextStyle(
-                                  fontSize: Responsive.getFont(context, 12),
-                                  color: Colors.grey),
+                                fontSize: Responsive.getFont(context, 12),
+                                color: Colors.grey,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ],

@@ -156,12 +156,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             color: Colors.black,
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
+            height: 1.2,
           ),
         ));
       }
       spans.add(TextSpan(
         text: text.substring(indexOfHighlight, indexOfHighlight + query.length),
         style: TextStyle(
+            height: 1.2,
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             color: Color(0xFFFF6192)),
@@ -175,7 +177,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         style: TextStyle(
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
-            color: Colors.black),
+            color: Colors.black
+          height: 1.2,
+        ),
       ));
     }
 
@@ -183,8 +187,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       text: TextSpan(
         children: spans,
         style: TextStyle(
-            fontFamily: 'Pretendard',
-            fontSize: Responsive.getFont(context, 14)),
+          fontFamily: 'Pretendard',
+          fontSize: Responsive.getFont(context, 14),
+          height: 1.2,
+        ),
       ),
     );
   }
@@ -255,6 +261,25 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          child: Container(
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
+            height: 1.0, // 구분선의 두께 설정
+            child: Container(
+              height: 1.0, // 그림자 부분의 높이
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFFF4F4F4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
           onPressed: () => Navigator.pop(context),

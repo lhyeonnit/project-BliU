@@ -22,7 +22,7 @@ class HomeBodyCategory extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 30, bottom: 25),
       child: Container(
-        height: 100,
+        height: 110,
         padding: const EdgeInsets.only(left: 16),
         child: ListView.builder(
           shrinkWrap: true,
@@ -90,9 +90,12 @@ class HomeBodyCategory extends ConsumerWidget {
                         category.ctName ?? "",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            color: Colors.black,
-                            fontSize: Responsive.getFont(context, 14), fontWeight: FontWeight.w500),
+                          fontFamily: 'Pretendard',
+                          color: Colors.black,
+                          fontSize: Responsive.getFont(context, 14),
+                          fontWeight: FontWeight.w500,
+                          height: 1.2,
+                        ),
                       ),
                     ),
                   ],

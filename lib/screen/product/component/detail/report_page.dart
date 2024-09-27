@@ -93,6 +93,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
@@ -142,9 +143,11 @@ class _ReportPageState extends ConsumerState<ReportPage> {
                       child: Text(
                         '신고의 부적합한 사용자/글을 지속적으로 신고하는 경우 제재 조치가 취해질 수 있으니 유의해 주세요',
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: const Color(0xFF7B7B7B)),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: const Color(0xFF7B7B7B),
+                          height: 1.2,
+                        ),
                       ),
                     ),
                     ...categories.map((category) {
@@ -205,7 +208,10 @@ class _ReportPageState extends ConsumerState<ReportPage> {
                     child: const Text(
                       "신고하기가 완료되었습니다!",
                       style: TextStyle(
-                          fontFamily: 'Pretendard', color: Colors.white),
+                        fontFamily: 'Pretendard',
+                        color: Colors.white,
+                        height: 1.2,
+                      ),
                     ),
                   ),
                 ),
@@ -234,6 +240,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
+                      height: 1.2,
                     ),
                   ),
                 ),
@@ -283,8 +290,10 @@ class _ReportPageState extends ConsumerState<ReportPage> {
         Text(
           name,
           style: TextStyle(
-              fontFamily: 'Pretendard',
-              fontSize: Responsive.getFont(context, 14)),
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 14),
+            height: 1.2,
+          ),
         ),
       ],
     );

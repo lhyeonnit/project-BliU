@@ -32,9 +32,11 @@ class _CancelItemState extends State<CancelItem> {
               Text(
                 widget.orderData.ctWdate ?? "",
                 style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.bold,
-                    fontSize: Responsive.getFont(context, 16)),
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.bold,
+                  fontSize: Responsive.getFont(context, 16),
+                  height: 1.2,
+                ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -44,6 +46,7 @@ class _CancelItemState extends State<CancelItem> {
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: const Color(0xFF7B7B7B),
+                    height: 1.2,
                   ),
                 ),
               ),
@@ -65,6 +68,7 @@ class _CancelItemState extends State<CancelItem> {
                     fontWeight: FontWeight.w600,
                     color: Colors.black,
                     fontSize: Responsive.getFont(context, 15),
+                    height: 1.2,
                   ),
                 ),
               ),
@@ -95,9 +99,11 @@ class _CancelItemState extends State<CancelItem> {
                           Text(
                             widget.orderDetailData.stName ?? "",
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 12),
-                                color: const Color(0xFF7B7B7B)),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 12),
+                              color: const Color(0xFF7B7B7B),
+                              height: 1.2,
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 4, bottom: 10),
@@ -106,6 +112,7 @@ class _CancelItemState extends State<CancelItem> {
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
+                                height: 1.2,
                               ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -117,6 +124,7 @@ class _CancelItemState extends State<CancelItem> {
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 13),
                               color: const Color(0xFF7B7B7B),
+                              height: 1.2,
                             ),
                           ),
                           Padding(
@@ -128,6 +136,7 @@ class _CancelItemState extends State<CancelItem> {
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.bold,
                                 fontSize: Responsive.getFont(context, 14),
+                                height: 1.2,
                               ),
                             ),
                           ),

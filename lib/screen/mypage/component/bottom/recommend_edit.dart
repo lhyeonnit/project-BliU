@@ -52,6 +52,7 @@ class _RecommendEditState extends State<RecommendEdit> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/product/ic_back.svg"),
@@ -85,17 +86,18 @@ class _RecommendEditState extends State<RecommendEdit> {
                           Text(
                             '자녀의 출생년도',
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 15),
-                                fontWeight: FontWeight.w600),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 15),
+                              fontWeight: FontWeight.w600,
+                              height: 1.2,
+                            ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 15),
+                            margin: const EdgeInsets.only(top: 15),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(6)),
-                              border: Border.all(color: Color(0xFFDDDDDD)),
+                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                              border: Border.all(color: const Color(0xFFDDDDDD)),
                             ),
                             child: BirthdayText(),
                           ),
@@ -110,9 +112,11 @@ class _RecommendEditState extends State<RecommendEdit> {
                           Text(
                             '자녀의 성별',
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 15),
-                                fontWeight: FontWeight.w600),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 15),
+                              fontWeight: FontWeight.w600,
+                              height: 1.2,
+                            ),
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 15),
@@ -146,16 +150,20 @@ class _RecommendEditState extends State<RecommendEdit> {
                                 Text(
                                   '선호 스타일',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 15),
-                                      fontWeight: FontWeight.w600),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 15),
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.2,
+                                  ),
                                 ),
                                 Text(
                                   '* 다중선택가능',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 13),
-                                      color: Color(0xFFFF6192)),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 13),
+                                    color: const Color(0xFFFF6192),
+                                    height: 1.2,
+                                  ),
                                 ),
                               ],
                             ),
@@ -182,9 +190,8 @@ class _RecommendEditState extends State<RecommendEdit> {
                                     style,
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
-                                      color: isSelected
-                                          ? const Color(0xFFFF6192)
-                                          : Colors.black,
+                                      color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                                      height: 1.2,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
@@ -223,9 +230,8 @@ class _RecommendEditState extends State<RecommendEdit> {
                     onTap: () {},
                     child: Container(
                       height: Responsive.getHeight(context, 48),
-                      margin: EdgeInsets.only(
-                          right: 16.0, left: 16, top: 9, bottom: 8),
-                      decoration: BoxDecoration(
+                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                      decoration: const BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.all(
                           Radius.circular(6),
@@ -238,6 +244,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.white,
+                            height: 1.2,
                           ),
                         ),
                       ),
@@ -294,9 +301,11 @@ class _RecommendEditState extends State<RecommendEdit> {
               Text(
                 gender,
                 style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: isSelected ? Color(0xFFFF6192) : Colors.black),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                  height: 1.2,
+                ),
               ),
             ],
           ),
@@ -311,17 +320,19 @@ class _RecommendEditState extends State<RecommendEdit> {
         _selectDate();
       },
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 40),
+        margin: const EdgeInsets.symmetric(vertical: 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: 8),
+              margin: const EdgeInsets.only(bottom: 8),
               child: Text(
                 '출생년도',
                 style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14)),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                ),
               ),
             ),
             TextFormField(
@@ -368,6 +379,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 18),
                         fontWeight: FontWeight.w600,
+                        height: 1.2,
                       ),
                     ),
                     GestureDetector(
@@ -420,9 +432,11 @@ class _RecommendEditState extends State<RecommendEdit> {
                                 child: Text(
                                   '${1900 + index}년', // 년도로 표시
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 16),
-                                      fontWeight: FontWeight.w600),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 16),
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.2,
+                                  ),
                                 ),
                               );
                             },
@@ -457,9 +471,11 @@ class _RecommendEditState extends State<RecommendEdit> {
                               child: Text(
                                 '${index + 1}월', // 월로 표시
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 16),
-                                    fontWeight: FontWeight.w600),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 16),
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                ),
                               ),
                             );
                           }),
@@ -491,9 +507,11 @@ class _RecommendEditState extends State<RecommendEdit> {
                               child: Text(
                                 '${index + 1}일', // 일로 표시
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 16),
-                                    fontWeight: FontWeight.w600),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 16),
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                ),
                               ),
                             );
                           }),
@@ -521,8 +539,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                 child: Container(
                   width: double.infinity,
                   height: Responsive.getHeight(context, 48),
-                  margin:
-                      EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                  margin: EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.all(
@@ -536,6 +553,7 @@ class _RecommendEditState extends State<RecommendEdit> {
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                         color: Colors.white,
+                        height: 1.2,
                       ),
                     ),
                   ),

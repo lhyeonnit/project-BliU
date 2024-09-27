@@ -59,6 +59,7 @@ class _ProductInfoContentState extends State<ProductInfoContent>
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     fontWeight: FontWeight.w400,
+                    height: 1.2,
                   ),
                 ),
               ),

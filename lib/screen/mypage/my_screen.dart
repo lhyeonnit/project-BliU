@@ -24,7 +24,8 @@ class MyScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final model = ref.watch(myModelProvider);
-    final mtIdx = ref.watch(sharedPreferencesProvider).getString('mtIdx');
+    String mtIdx = ref.watch(sharedPreferencesProvider).getString('mtIdx') ?? "";
+    mtIdx = "2";
     return FocusDetector(
       onFocusGained: () {
         viewWillAppear(ref, context);
@@ -42,6 +43,7 @@ class MyScreen extends ConsumerWidget {
             fontSize: Responsive.getFont(context, 18),
             fontWeight: FontWeight.w600,
             color: Colors.black,
+            height: 1.2,
           ),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
@@ -100,6 +102,7 @@ class MyScreen extends ConsumerWidget {
                         fontFamily: 'Pretendard',
                         color: Colors.white,
                         fontSize: Responsive.getFont(context, 12),
+                        height: 1.2,
                       ),
                     ),
                   ),
@@ -168,14 +171,16 @@ class MyScreen extends ConsumerWidget {
             if (mtIdx != null && mtIdx.isNotEmpty)
               GestureDetector(
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     '로그아웃',
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 16),
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400),
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 16),
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                      height: 1.2,
+                    ),
                   ),
                 ),
                 onTap: () {
@@ -221,13 +226,14 @@ class MyScreen extends ConsumerWidget {
   Widget _buildSection(BuildContext context, String title) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       child: Text(
         title,
         style: TextStyle(
           fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 14),
-          color: Color(0xFFA4A4A4),
+          color: const Color(0xFFA4A4A4),
+          height: 1.2,
         ),
       ),
     );
@@ -252,6 +258,7 @@ class MyScreen extends ConsumerWidget {
                 fontSize: Responsive.getFont(context, 15),
                 color: Colors.black,
                 fontWeight: FontWeight.w400,
+                height: 1.2,
               ),
             ),
             SvgPicture.asset(

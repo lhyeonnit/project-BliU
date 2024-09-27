@@ -88,14 +88,17 @@ class _ProductSortBottomState extends State<ProductSortBottom> {
         Navigator.pop(context);
       },
       child: Container(
-          margin: EdgeInsets.only(bottom: 24),
-          child: Text(
-            sortOption,
-            style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 16),
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
-          )),
+        margin: EdgeInsets.only(bottom: 24),
+        child: Text(
+          sortOption,
+          style: TextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 16),
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            height: 1.2,
+          ),
+        )
+      ),
     );
   }
 }

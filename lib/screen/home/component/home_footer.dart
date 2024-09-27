@@ -49,9 +49,11 @@ class HomeFooter extends ConsumerWidget {
                 child: Text(
                   '공지사항',
                   style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      color: const Color(0xFF7B7B7B),
-                      fontSize: Responsive.getFont(context, 13)),
+                    fontFamily: 'Pretendard',
+                    color: const Color(0xFF7B7B7B),
+                    fontSize: Responsive.getFont(context, 13),
+                    height: 1.2,
+                  ),
                 ),
               ),
               Container(
@@ -65,9 +67,11 @@ class HomeFooter extends ConsumerWidget {
                   child: Text(
                     '이용약관',
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        color: const Color(0xFF7B7B7B),
-                        fontSize: Responsive.getFont(context, 13)),
+                      fontFamily: 'Pretendard',
+                      color: const Color(0xFF7B7B7B),
+                      fontSize: Responsive.getFont(context, 13),
+                      height: 1.2,
+                    ),
                   ),
                 ),
               ),
@@ -76,9 +80,11 @@ class HomeFooter extends ConsumerWidget {
                 child: Text(
                   '개인정보처리방침',
                   style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      color: const Color(0xFF7B7B7B),
-                      fontSize: Responsive.getFont(context, 13)),
+                    fontFamily: 'Pretendard',
+                    color: const Color(0xFF7B7B7B),
+                    fontSize: Responsive.getFont(context, 13),
+                    height: 1.2,
+                  ),
                 ),
               ),
             ],
@@ -95,9 +101,11 @@ class HomeFooter extends ConsumerWidget {
                   Text(
                     '사업자 정보',
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        color: const Color(0xFF7B7B7B),
-                        fontSize: Responsive.getFont(context, 13)),
+                      fontFamily: 'Pretendard',
+                      color: const Color(0xFF7B7B7B),
+                      fontSize: Responsive.getFont(context, 13),
+                      height: 1.2,
+                    ),
                   ),
                   Container(
                     margin: const EdgeInsets.only(left: 5),
@@ -113,9 +121,11 @@ class HomeFooter extends ConsumerWidget {
             footInfo,
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontFamily: 'Pretendard',
-                color: const Color(0xFF7B7B7B),
-                fontSize: Responsive.getFont(context, 12)),
+              fontFamily: 'Pretendard',
+              color: const Color(0xFF7B7B7B),
+              fontSize: Responsive.getFont(context, 12),
+              height: 1.2,
+            ),
           ),
           Container(
             margin: const EdgeInsets.only(top: 20),
@@ -126,6 +136,7 @@ class HomeFooter extends ConsumerWidget {
                 fontFamily: 'Pretendard',
                 color: const Color(0xFF7B7B7B),
                 fontSize: Responsive.getFont(context, 12),
+                height: 1.2,
               ),
             ),
           ),

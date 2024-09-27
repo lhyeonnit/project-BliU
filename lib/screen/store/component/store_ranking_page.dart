@@ -117,9 +117,11 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    color: Colors.black),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black,
+                                  height: 1.2,
+                                ),
                               ),
                             ),
                             SvgPicture.asset(
@@ -152,9 +154,11 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                 getSelectedStyleText(), // 선택된 연령대 표시
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    color: Colors.black),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black,
+                                  height: 1.2,
+                                ),
                               ),
                             ),
                             SvgPicture.asset(
@@ -205,10 +209,11 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                         child: Text(
                                           '${rankData.stIdx}',
                                           style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(
-                                                  context, 24),
-                                              fontWeight: FontWeight.w600),
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 24),
+                                            fontWeight: FontWeight.w600,
+                                            height: 1.2,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -254,58 +259,42 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                                     rankData.stName ?? "",
                                                     style: TextStyle(
                                                       fontFamily: 'Pretendard',
-                                                      fontSize:
-                                                          Responsive.getFont(
-                                                              context, 14),
+                                                      fontSize: Responsive.getFont(context, 14),
+                                                      height: 1.2,
                                                     ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
                                                   Row(
                                                     children: [
                                                       Text(
-                                                        rankData.stStyleTxt
-                                                                ?.split(',')
-                                                                .first ??
-                                                            "",
+                                                        rankData.stStyleTxt?.split(',').first ?? "",
                                                         // 쉼표로 분리 후 첫 번째 값만 가져옴
                                                         style: TextStyle(
-                                                          fontFamily:
-                                                              'Pretendard',
-                                                          fontSize: Responsive
-                                                              .getFont(
-                                                                  context, 13),
-                                                          color: const Color(
-                                                              0xFF7B7B7B),
+                                                          fontFamily: 'Pretendard',
+                                                          fontSize: Responsive.getFont(context, 13),
+                                                          color: const Color(0xFF7B7B7B),
+                                                          height: 1.2,
                                                         ),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
+                                                        overflow: TextOverflow.ellipsis,
                                                       ),
                                                       Text(
                                                         ', ',
                                                         style: TextStyle(
-                                                            fontFamily:
-                                                                'Pretendard',
-                                                            fontSize: Responsive
-                                                                .getFont(
-                                                                    context,
-                                                                    13),
-                                                            color: const Color(
-                                                                0xFF7B7B7B)),
+                                                          fontFamily: 'Pretendard',
+                                                          fontSize: Responsive.getFont(context, 13),
+                                                          color: const Color(0xFF7B7B7B),
+                                                          height: 1.2,
+                                                        ),
                                                       ),
                                                       Text(
                                                         rankData.stAgeTxt ?? "",
                                                         style: TextStyle(
-                                                            fontFamily:
-                                                                'Pretendard',
-                                                            fontSize: Responsive
-                                                                .getFont(
-                                                                    context,
-                                                                    13),
-                                                            color: const Color(
-                                                                0xFF7B7B7B)),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
+                                                          fontFamily: 'Pretendard',
+                                                          fontSize: Responsive.getFont(context, 13),
+                                                          color: const Color(0xFF7B7B7B),
+                                                          height: 1.2,
+                                                        ),
+                                                        overflow: TextOverflow.ellipsis,
                                                       ),
                                                     ],
                                                   ),
@@ -374,8 +363,8 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
                                               color: const Color(0xFFA4A4A4),
-                                              fontSize: Responsive.getFont(
-                                                  context, 12),
+                                              fontSize: Responsive.getFont(context, 12),
+                                              height: 1.2,
                                             ),
                                           ),
                                         ],

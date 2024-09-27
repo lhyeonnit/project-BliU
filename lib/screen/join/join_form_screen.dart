@@ -96,7 +96,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
           SingleChildScrollView(
             // 스크롤 가능하도록 설정
             child: Container(
-              margin: EdgeInsets.only(top: 40, bottom: 80, right: 16, left: 16),
+              margin: const EdgeInsets.only(top: 40, bottom: 80, right: 16, left: 16),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -108,16 +108,19 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 20),
                         fontWeight: FontWeight.bold,
+                        height: 1.2,
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 8, bottom: 10),
+                      margin: const EdgeInsets.only(top: 8, bottom: 10),
                       child: Text(
                         '회원가입을 위해 회원님의 정보를 입력해 주세요',
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Color(0xFF7B7B7B)),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: const Color(0xFF7B7B7B),
+                          height: 1.2,
+                        ),
                       ),
                     ),
                     Row(
@@ -154,32 +157,37 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                               }
                             },
                             child: Container(
-                                margin: EdgeInsets.only(top: 50, left: 8),
-                                padding: EdgeInsets.symmetric(vertical: 14),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  border: Border.all(color: Color(0xFFDDDDDD)),
-                                ),
-                                child: Center(
-                                    child: Text(
+                              margin: const EdgeInsets.only(top: 50, left: 8),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(color: const Color(0xFFDDDDDD)),
+                              ),
+                              child: Center(
+                                child: Text(
                                   '중복확인',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14)),
-                                ))),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                )
+                              )
+                            ),
                           ),
                         ),
                       ],
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 8),
+                      margin: const EdgeInsets.only(top: 8),
                       child: Text(
                         '5~15자의 영문 소문자, 숫자만 입력해 주세요',
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            color: Color(0xFFF23728),
-                            fontSize: Responsive.getFont(context, 12)),
+                          fontFamily: 'Pretendard',
+                          color: const Color(0xFFF23728),
+                          fontSize: Responsive.getFont(context, 12),
+                          height: 1.2,
+                        ),
                       ),
                     ),
                     _buildTextField('비밀번호', _passwordController,
@@ -232,20 +240,23 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                               }
                             },
                             child: Container(
-                                margin: EdgeInsets.only(top: 50, left: 8),
-                                padding: EdgeInsets.symmetric(vertical: 14),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  border: Border.all(color: Color(0xFFDDDDDD)),
-                                ),
-                                child: Center(
-                                    child: Text(
+                              margin: const EdgeInsets.only(top: 50, left: 8),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(color: const Color(0xFFDDDDDD)),
+                              ),
+                              child: Center(
+                                child: Text(
                                   '인증요청',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14)),
-                                ))),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                )
+                              )
+                            ),
                           ),
                         ),
                       ],
@@ -296,24 +307,21 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                 }
                               },
                               child: Container(
-                                margin: EdgeInsets.only(top: 10, left: 8),
-                                padding: EdgeInsets.symmetric(vertical: 14),
+                                margin: const EdgeInsets.only(top: 10, left: 8),
+                                padding: const EdgeInsets.symmetric(vertical: 14),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6),
-                                  color: _phoneAuthChecked
-                                      ? Color(0xFFDDDDDD)
-                                      : Colors.black,
+                                  color: _phoneAuthChecked ? const Color(0xFFDDDDDD) : Colors.black,
                                 ),
                                 child: Center(
                                   child: Text(
                                     '확인',
                                     style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 14),
-                                        color: _phoneAuthChecked
-                                            ? Color(0xFF7B7B7B)
-                                            : Colors.white),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: _phoneAuthChecked ? const Color(0xFF7B7B7B) : Colors.white,
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -322,7 +330,6 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         ],
                       ),
                     ),
-
                     GestureDetector(
                       onTap: () => _selectDate(context),
                       child: AbsorbPointer(
@@ -340,7 +347,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                       child: Stack(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 10, bottom: 20),
+                            margin: const EdgeInsets.only(top: 10, bottom: 20),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(6),
                               child: Image.asset(
@@ -351,24 +358,26 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                             left: 25,
                             top: 10,
                             child: Container(
-                              margin: EdgeInsets.only(top: 15),
+                              margin: const EdgeInsets.only(top: 15),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     '생일 쿠폰 지급!',
                                     style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 16),
-                                        fontWeight: FontWeight.bold),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 16),
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.2,
+                                    ),
                                   ),
                                   Text(
                                     '생년월일을 입력 주시면, 생일날 쿠폰 지급!',
                                     style: TextStyle(
-                                        fontSize:
-                                            Responsive.getFont(context, 12),
-                                        color: Color(0xFF6A5B54)),
+                                      fontSize: Responsive.getFont(context, 12),
+                                      color: const Color(0xFF6A5B54),
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -380,32 +389,39 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                     Row(
                       children: [
                         Text('성별',
-                            style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.bold,
-                                fontSize: Responsive.getFont(context, 13))),
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.bold,
+                            fontSize: Responsive.getFont(context, 13),
+                            height: 1.2,
+                          ),
+                        ),
                         Container(
-                            margin: EdgeInsets.only(left: 4),
-                            child: Text('선택',
-                                style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: Responsive.getFont(context, 13),
-                                    color: Color(0xFFFF6192)))),
+                          margin: const EdgeInsets.only(left: 4),
+                          child: Text('선택',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.bold,
+                              fontSize: Responsive.getFont(context, 13),
+                              color: const Color(0xFFFF6192),
+                              height: 1.2,
+                            ),
+                          ),
+                        ),
                       ],
                     ), // 성별 선택 타이틀
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
                         children: [
                           Expanded(
                             child: Container(
-                                margin: EdgeInsets.only(right: 4),
+                                margin: const EdgeInsets.only(right: 4),
                                 child: _buildGenderButton('남자')),
                           ),
                           Expanded(
                             child: Container(
-                                margin: EdgeInsets.only(left: 4),
+                                margin: const EdgeInsets.only(left: 4),
                                 child: _buildGenderButton('여자')),
                           ),
                         ],
@@ -488,11 +504,10 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
               child: Container(
                 width: double.infinity,
                 height: Responsive.getHeight(context, 48),
-                margin:
-                    EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
                 decoration: BoxDecoration(
-                  color: _isAllFieldsFilled ? Colors.black : Color(0xFFDDDDDD),
-                  borderRadius: BorderRadius.all(
+                  color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(6),
                   ),
                 ),
@@ -502,8 +517,8 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
-                      color:
-                          _isAllFieldsFilled ? Colors.white : Color(0xFF7B7B7B),
+                      color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
+                      height: 1.2,
                     ),
                   ),
                 ),
@@ -528,22 +543,29 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
         children: [
           // if (label.isNotEmpty)
           Container(
-            margin: EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 10),
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.bold,
-                        fontSize: Responsive.getFont(context, 13))),
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.getFont(context, 13),
+                    height: 1.2,
+                  ),
+                ),
                 Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text('*',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.bold,
-                            fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFFFF6192)))),
+                  margin: const EdgeInsets.only(left: 4),
+                  child: Text('*',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 13),
+                      color: const Color(0xFFFF6192),
+                      height: 1.2,
+                    )
+                  )
+                ),
               ],
             ),
           ),
@@ -558,18 +580,18 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
               obscureText: obscureText,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF595959)),
-                enabledBorder: OutlineInputBorder(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: const Color(0xFF595959)
+                ),
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),
@@ -632,28 +654,35 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
       TextInputType keyboardType = TextInputType.text,
       bool isEnable = true}) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // if (label.isNotEmpty)
           Container(
-            margin: EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 10),
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.bold,
-                        fontSize: Responsive.getFont(context, 13))),
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.getFont(context, 13),
+                    height: 1.2,
+                  )
+                ),
                 Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text('선택',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.bold,
-                            fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFFFF6192)))),
+                  margin: const EdgeInsets.only(left: 4),
+                  child: Text('선택',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 13),
+                      color: const Color(0xFFFF6192),
+                      height: 1.2,
+                    )
+                  )
+                ),
               ],
             ),
           ),
@@ -699,21 +728,25 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
         });
       },
       child: Container(
-          padding: EdgeInsets.symmetric(vertical: 14.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(
-                color: isSelected ? Color(0xFFFF6192) : Color(0xFFDDDDDD)),
-          ),
-          child: Center(
-              child: Text(
+        padding: const EdgeInsets.symmetric(vertical: 14.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+              color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+        ),
+        child: Center(
+          child: Text(
             gender,
             style: TextStyle(
-                fontFamily: 'Pretendard',
-                color: isSelected ? Color(0xFFFF6192) : Colors.black,
-                fontSize: Responsive.getFont(context, 14)),
-          ))),
+              fontFamily: 'Pretendard',
+              color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+              fontSize: Responsive.getFont(context, 14),
+              height: 1.2,
+            ),
+          )
+        )
+      ),
     );
   }
 }

@@ -28,6 +28,7 @@ class ServiceScreen extends ConsumerWidget {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -158,6 +159,7 @@ class ServiceScreen extends ConsumerWidget {
             fontSize: Responsive.getFont(context, 15),
             color: Colors.black,
             fontWeight: FontWeight.w500,
+            height: 1.2,
           ),
         ),
         Text(
@@ -167,9 +169,9 @@ class ServiceScreen extends ConsumerWidget {
             fontSize: Responsive.getFont(context, 14),
             fontWeight: FontWeight.w400,
             color: contentColor,
-            decoration:
-                underline ? TextDecoration.underline : TextDecoration.none,
+            decoration: underline ? TextDecoration.underline : TextDecoration.none,
             decorationColor: underline ? Color(0xFFFF6192) : null,
+            height: 1.2,
           ),
         ),
       ],
@@ -192,6 +194,7 @@ class ServiceScreen extends ConsumerWidget {
                 fontSize: Responsive.getFont(context, 16),
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
+                height: 1.2,
               ),
             ),
             SvgPicture.asset(

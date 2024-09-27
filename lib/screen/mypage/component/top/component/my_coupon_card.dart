@@ -97,9 +97,8 @@ class _MyCouponCardState extends State<MyCouponCard> {
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 16),
                             fontWeight: FontWeight.bold,
-                            color: isDownloaded
-                                ? const Color(0xFFA4A4A4)
-                                : const Color(0xFFFF6192),
+                            color: isDownloaded ? const Color(0xFFA4A4A4) : const Color(0xFFFF6192),
+                            height: 1.2,
                           ),
                         ),
                         Expanded(
@@ -111,9 +110,8 @@ class _MyCouponCardState extends State<MyCouponCard> {
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 16),
                                 fontWeight: FontWeight.bold,
-                                color: isDownloaded
-                                    ? const Color(0xFFA4A4A4)
-                                    : Colors.black,
+                                color: isDownloaded ? const Color(0xFFA4A4A4) : Colors.black,
+                                height: 1.2,
                               ),
                               softWrap: true,
                             ),
@@ -128,9 +126,8 @@ class _MyCouponCardState extends State<MyCouponCard> {
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
-                          color: isDownloaded
-                              ? const Color(0xFFA4A4A4)
-                              : Colors.black,
+                          color: isDownloaded ? const Color(0xFFA4A4A4) : Colors.black,
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -140,6 +137,7 @@ class _MyCouponCardState extends State<MyCouponCard> {
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 12),
                         color: const Color(0xFFA4A4A4),
+                        height: 1.2,
                       ),
                     ),
                   ],
@@ -174,6 +172,7 @@ class _MyCouponCardState extends State<MyCouponCard> {
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 12),
                               color: Colors.grey,
+                              height: 1.2,
                             ),
                           ),
                         ),

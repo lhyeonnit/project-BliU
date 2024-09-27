@@ -25,6 +25,7 @@ class SettingScreen extends ConsumerWidget {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -82,10 +83,12 @@ class SettingScreen extends ConsumerWidget {
                           Text(
                             '알림',
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 15),
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 15),
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              height: 1.2,
+                            ),
                           ),
                           FlutterSwitch(
                             width: 55.0,
@@ -165,10 +168,12 @@ class SettingScreen extends ConsumerWidget {
             Text(
               title,
               style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 15),
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500),
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 15),
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+                height: 1.2,
+              ),
             ),
             SvgPicture.asset(
               'assets/images/ic_link.svg',

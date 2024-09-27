@@ -86,6 +86,7 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -154,16 +155,20 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                         Text(
                           '${_currentPage + 1}',
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 13),
-                              color: Colors.white),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 13),
+                            color: Colors.white,
+                            height: 1.2,
+                          ),
                         ),
                         Text(
                           '/${_images.length}',
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 13),
-                              color: const Color(0x80FFFFFF)),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 13),
+                            color: const Color(0x80FFFFFF),
+                            height: 1.2,
+                          ),
                         ),
                       ],
                     ),
@@ -181,18 +186,22 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                       Text(
                         _reviewData?.mtId ?? "",
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 12),
-                            color: const Color(0xFF7B7B7B)),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 12),
+                          color: const Color(0xFF7B7B7B),
+                          height: 1.2,
+                        ),
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
                           _reviewData?.rtWdate ?? "",
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 12),
-                              color: const Color(0xFF7B7B7B)),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 12),
+                            color: const Color(0xFF7B7B7B),
+                            height: 1.2,
+                          ),
                         ),
                       ),
                     ],
@@ -204,8 +213,10 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                   Text(
                     _reviewData?.rtContent ?? "",
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14)),
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      height: 1.2,
+                    ),
                   ),
                   Visibility(
                     visible: !isMy,
@@ -225,6 +236,7 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                             fontFamily: 'Pretendard',
                             fontSize: 12,
                             color: Colors.grey,
+                            height: 1.2,
                           ),
                         ),
                       ),
@@ -263,6 +275,7 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.normal,
                               color: Colors.black,
+                              height: 1.2,
                             ),
                           ),
                         ),

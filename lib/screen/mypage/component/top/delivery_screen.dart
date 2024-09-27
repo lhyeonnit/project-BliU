@@ -42,6 +42,7 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -71,9 +72,11 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                     child: Text(
                       '스마트택배 배송현황',
                       style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 18),
-                          fontWeight: FontWeight.bold),
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 18),
+                        fontWeight: FontWeight.bold,
+                        height: 1.2,
+                      ),
                     ),
                   ),
                   Container(
@@ -94,15 +97,21 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('운송장번호',
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: Colors.black)),
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black,
+                                  height: 1.2,
+                                ),
+                              ),
                               Text(orderDeliveryData?.ctDeliveryNumber ?? "",
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: Colors.black)),
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black,
+                                  height: 1.2,
+                                )
+                              ),
                             ],
                           ),
                         ),
@@ -113,16 +122,22 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('택배사',
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: Colors.black)),
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black,
+                                  height: 1.2,
+                                )
+                              ),
                               Text(orderDeliveryData?.ctDeliveryCom ?? "",
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  height: 1.2,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -146,23 +161,29 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                         Text(
                           '시간',
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.bold),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
                         ),
                         Text(
                           '현재위치',
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.bold),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
                         ),
                         Text(
                           '배송상태',
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.bold),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
                         ),
                       ],
                     ),
@@ -199,9 +220,10 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                                 Text(
                                   item.time ?? '',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14)),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
                                 ),
                                 Expanded(
                                   flex: 1,
@@ -210,18 +232,20 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                                     child: Text(
                                       item.where ?? '',
                                       style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize:
-                                              Responsive.getFont(context, 14)),
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
+                                      ),
                                     ),
                                   ),
                                 ),
                                 Text(
                                   item.kind ?? '',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14)),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
                                 ),
                               ],
                             ),

@@ -46,13 +46,14 @@ class FindIdOverlapScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 25, bottom: 10),
+                  margin: const EdgeInsets.only(top: 25, bottom: 10),
                   child: Text(
                     '이미 SNS 가입이 되어 있습니다.',
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 18),
                       fontWeight: FontWeight.bold,
+                      height: 1.2,
                     ),
                   ),
                 ),
@@ -61,6 +62,7 @@ class FindIdOverlapScreen extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
+                    height: 1.2,
                   ),
                 ),
               ],
@@ -96,6 +98,7 @@ class FindIdOverlapScreen extends StatelessWidget {
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
+                      height: 1.2,
                     ),
                   ),
                 ),

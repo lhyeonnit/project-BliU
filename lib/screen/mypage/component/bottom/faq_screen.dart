@@ -50,6 +50,7 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -173,10 +174,8 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                           faqCategoryData.cftName ?? "",
                           style: TextStyle(
                             fontFamily: 'Pretendard',
-
-                            color: isSelected
-                                ? Color(0xFFFF6192)
-                                : Colors.black, // 텍스트 색상
+                            color: isSelected ? const Color(0xFFFF6192) : Colors.black, // 텍스트 색상
+                            height: 1.2,
                           ),
                         ),
                         selected: isSelected,
@@ -241,16 +240,18 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                                   fontFamily: 'Pretendard',
                                   fontWeight: FontWeight.bold,
                                   fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
                                 ),
                               ),
                               Expanded(
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 5),
+                                  margin: const EdgeInsets.symmetric(horizontal: 5),
                                   child: Text(
                                     faq.ftSubject ?? "",
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -275,16 +276,18 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.bold,
                                       fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.only(top: 15),
+                                    margin: const EdgeInsets.only(top: 15),
                                     child: Text(
                                       faq.ftContent ?? "",
                                       style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize:
-                                              Responsive.getFont(context, 14)),
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
+                                      ),
                                     ),
                                   ),
                                 ],

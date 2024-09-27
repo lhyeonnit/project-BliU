@@ -71,16 +71,19 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 20),
                       fontWeight: FontWeight.bold,
+                      height: 1.2,
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 8, bottom: 10),
+                    margin: const EdgeInsets.only(top: 8, bottom: 10),
                     child: Text(
                       '비밀번호를 찾으려면 아래 정보를 입력하세요.',
                       style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Color(0xFF7B7B7B)),
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        color: const Color(0xFF7B7B7B),
+                        height: 1.2,
+                      ),
                     ),
                   ),
                   _buildTextField('아이디', _idController, '아이디 입력',
@@ -130,19 +133,23 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                             // }
                           },
                           child: Container(
-                              margin: EdgeInsets.only(top: 50, left: 8),
-                              padding: EdgeInsets.symmetric(vertical: 14),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: Color(0xFFDDDDDD)),
-                              ),
-                              child: Center(
-                                  child: Text(
+                            margin: const EdgeInsets.only(top: 50, left: 8),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(color: const Color(0xFFDDDDDD)),
+                            ),
+                            child: Center(
+                              child: Text(
                                 '인증요청',
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14)),
-                              ))),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
+                                ),
+                              )
+                            )
+                          ),
                         ),
                       ),
                     ],
@@ -205,9 +212,11 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                                 child: Text(
                                   '확인',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: Colors.white),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: Colors.white,
+                                    height: 1.2,
+                                  ),
                                 ),
                               ),
                             ),
@@ -239,11 +248,10 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
               child: Container(
                 width: double.infinity,
                 height: Responsive.getHeight(context, 48),
-                margin:
-                    EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
                 decoration: BoxDecoration(
-                  color: _isAllFieldsFilled ? Colors.black : Color(0xFFDDDDDD),
-                  borderRadius: BorderRadius.all(
+                  color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(6),
                   ),
                 ),
@@ -253,8 +261,8 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
-                      color:
-                          _isAllFieldsFilled ? Colors.white : Color(0xFF7B7B7B),
+                      color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
+                      height: 1.2,
                     ),
                   ),
                 ),
@@ -279,22 +287,29 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
         children: [
           // if (label.isNotEmpty)
           Container(
-            margin: EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 10),
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.bold,
-                        fontSize: Responsive.getFont(context, 13))),
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.getFont(context, 13),
+                    height: 1.2,
+                  ),
+                ),
                 Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text('*',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.bold,
-                            fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFFFF6192)))),
+                  margin: const EdgeInsets.only(left: 4),
+                  child: Text('*',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 13),
+                      color: const Color(0xFFFF6192),
+                      height: 1.2,
+                    )
+                  )
+                ),
               ],
             ),
           ),

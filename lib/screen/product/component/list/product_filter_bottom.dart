@@ -94,9 +94,11 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           child: Text(
                             '연령',
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 18),
-                                fontWeight: FontWeight.bold),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 18),
+                              fontWeight: FontWeight.bold,
+                              height: 1.2,
+                            ),
                           ),
                         ),
                         Container(
@@ -125,9 +127,11 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           child: Text(
                             '스타일',
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 18),
-                                fontWeight: FontWeight.bold),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 18),
+                              fontWeight: FontWeight.bold,
+                              height: 1.2,
+                            ),
                           ),
                         ),
                         Container(
@@ -162,9 +166,11 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           child: Text(
                             '가격',
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 18),
-                                fontWeight: FontWeight.bold),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 18),
+                              fontWeight: FontWeight.bold,
+                              height: 1.2,
+                            ),
                           ),
                         ),
                         Container(
@@ -176,6 +182,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                                 fontFamily: 'Pretendard',
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
+                                height: 1.2,
                               ),
                             ),
                           ),
@@ -245,11 +252,15 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                     height: 48,
                     child: GestureDetector(
                       child: const Center(
-                          child: Text(
-                        '상품보기',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard', color: Colors.white),
-                      )),
+                        child: Text(
+                          '상품보기',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            color: Colors.white,
+                            height: 1.2,
+                          ),
+                        )
+                      ),
                       onTap: () {
                         widget.onAgeOptionSelected(_tempSelectedAgeGroup);
                         widget.onStyleOptionSelected(_tempSelectedStyle);
@@ -278,6 +289,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+            height: 1.2,
           ),
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
@@ -303,6 +315,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
           style: TextStyle(
             fontFamily: 'Pretendard',
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+            height: 1.2,
           ),
           overflow: TextOverflow.ellipsis,
           maxLines: 1,

@@ -134,6 +134,7 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -176,9 +177,11 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
                         Text(
                           '상품은 어떠셨나요?',
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 16),
-                              fontWeight: FontWeight.bold),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 16),
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
                         ),
                         Directionality(
                           textDirection: _isRTLMode
@@ -236,15 +239,19 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
                               Text(
                                 '이미지',
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 13)),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 13),
+                                  height: 1.2,
+                                ),
                               ),
                               Text(
                                 '${_selectedImages.length}/4',
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 13),
-                                    color: Color(0xFF7B7B7B)),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 13),
+                                  color: Color(0xFF7B7B7B),
+                                  height: 1.2,
+                                ),
                               ),
                             ],
                           ),
@@ -276,10 +283,11 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
                                 Text(
                                   '사진선택',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      color: Color(0xFF707070),
-                                      fontSize:
-                                          Responsive.getFont(context, 14)),
+                                    fontFamily: 'Pretendard',
+                                    color: Color(0xFF707070),
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
                                 )
                               ],
                             ),
@@ -368,6 +376,7 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
                       color: Colors.white,
+                      height: 1.2,
                     ),
                   ),
                 ),

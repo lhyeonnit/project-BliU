@@ -43,15 +43,20 @@ class NoticeList extends ConsumerWidget {
                       title: Text(
                         noticeData.ntTitle ?? "",
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 15),
-                            fontWeight: FontWeight.w600),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 15),
+                          fontWeight: FontWeight.w600,
+                          height: 1.2,
+                        ),
                       ),
                       subtitle: Text(noticeData.ntWdate ?? "",
-                          style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              color: Color(0xFF7B7B7B),
-                              fontSize: Responsive.getFont(context, 14))),
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          color: const Color(0xFF7B7B7B),
+                          fontSize: Responsive.getFont(context, 14),
+                          height: 1.2,
+                        )
+                      ),
                       trailing: SvgPicture.asset('assets/images/ic_link.svg'),
                       onTap: () {
                         // 공지사항 상세 페이지로 이동

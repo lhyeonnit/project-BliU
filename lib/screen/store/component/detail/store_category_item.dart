@@ -39,9 +39,11 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
           child: Text(
             '상품 ${count}', // 상품 개수 텍스트
             style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14),
-                color: Colors.black),
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 14),
+              color: Colors.black,
+              height: 1.2,
+            ),
           ),
         ),
         GridView.builder(
@@ -98,8 +100,8 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                       Positioned(
                         top: 0,
                         right: 0,
-                        child: SvgPicture.asset(
-                          'assets/images/home/like_btn.svg',
+                        child: Image.asset(
+                          'assets/images/home/like_btn.png',
                           height: Responsive.getHeight(context, 34),
                           width: Responsive.getWidth(context, 34),
                         ),
@@ -114,6 +116,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 12),
                         color: const Color(0xFF7B7B7B),
+                        height: 1.2,
                       ),
                     ),
                   ),
@@ -122,6 +125,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
+                      height: 1.2,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -139,16 +143,18 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                             fontSize: Responsive.getFont(context, 14),
                             color: const Color(0xFFFF6192),
                             fontWeight: FontWeight.bold,
+                            height: 1.2,
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 3),
+                          margin: const EdgeInsets.only(left: 3),
                           child: Text(
                             '${storeProduct.ptPrice}원',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                               fontWeight: FontWeight.bold,
+                              height: 1.2,
                             ),
                           ),
                         ),
@@ -169,6 +175,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 12),
                           color: Colors.grey,
+                          height: 1.2,
                         ),
                       ),
                       if ((storeProduct.ptReviewCount ?? 0) > 0) ...[
@@ -185,6 +192,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 12),
                             color: Colors.grey,
+                            height: 1.2,
                           ),
                         ),
                       ],

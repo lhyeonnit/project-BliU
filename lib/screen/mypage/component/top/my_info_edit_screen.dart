@@ -77,6 +77,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
@@ -122,6 +123,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 20),
                         fontWeight: FontWeight.bold,
+                        height: 1.2,
                       ),
                     ),
                     Container(
@@ -129,9 +131,11 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                       child: Text(
                         '회원님의 개인정보 및 연락처, 주소 등을 수정할 수 있습니다',
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Color(0xFF7B7B7B)),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: const Color(0xFF7B7B7B),
+                          height: 1.2,
+                        ),
                       ),
                     ),
                     _buildIdPasswordField('아이디', _idController, 'id1234',
@@ -160,14 +164,17 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                                 border: Border.all(color: Color(0xFFDDDDDD)),
                               ),
                               child: Center(
-                                  child: Text(
-                                '변경',
-                                style: TextStyle(
+                                child: Text(
+                                  '변경',
+                                  style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                     color: Colors.black,
-                                    fontWeight: FontWeight.normal),
-                              )),
+                                    fontWeight: FontWeight.normal,
+                                    height: 1.2,
+                                  ),
+                                )
+                              ),
                             ),
                           ),
                         ],
@@ -200,13 +207,16 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                                   border: Border.all(color: Color(0xFFDDDDDD)),
                                 ),
                                 child: Center(
-                                    child: Text(
-                                  _isChange == false ? '변경' : '인증요청',
-                                  style: TextStyle(
+                                  child: Text(
+                                    _isChange == false ? '변경' : '인증요청',
+                                    style: TextStyle(
                                       fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14)),
-                                ))),
+                                      fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
+                                    ),
+                                  )
+                                )
+                            ),
                           ),
                         ),
                       ],
@@ -242,13 +252,14 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                                   child: Text(
                                     '확인',
                                     style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 14),
-                                        // color: _phoneAuthChecked
-                                        //     ? Color(0xFF7B7B7B)
-                                        //     : Colors.white),
-                                        color: Colors.white),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      // color: _phoneAuthChecked
+                                      //     ? Color(0xFF7B7B7B)
+                                      //     : Colors.white),
+                                      color: Colors.white,
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -274,20 +285,23 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                               // TODO 변경 버튼 동작 추가
                             },
                             child: Container(
-                                margin: EdgeInsets.only(top: 50, left: 8),
-                                padding: EdgeInsets.symmetric(vertical: 14),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  border: Border.all(color: Color(0xFFDDDDDD)),
-                                ),
-                                child: Center(
-                                    child: Text(
+                              margin: EdgeInsets.only(top: 50, left: 8),
+                              padding: EdgeInsets.symmetric(vertical: 14),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(color: Color(0xFFDDDDDD)),
+                              ),
+                              child: Center(
+                                child: Text(
                                   '변경',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize:
-                                          Responsive.getFont(context, 14)),
-                                ))),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                )
+                              )
+                            ),
                           ),
                         ),
                       ],
@@ -297,18 +311,25 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                       child: Row(
                         children: [
                           Text('생년월일',
-                              style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: Responsive.getFont(context, 13))),
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.bold,
+                              fontSize: Responsive.getFont(context, 13),
+                              height: 1.2,
+                            )
+                          ),
                           Container(
                               margin: EdgeInsets.only(left: 4),
                               child: Text('선택',
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: Responsive.getFont(context, 13),
-                                      color: Color(0xFFFF6192)))),
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Responsive.getFont(context, 13),
+                                  color: const Color(0xFFFF6192),
+                                  height: 1.2,
+                                )
+                              )
+                          ),
                         ],
                       ),
                     ),
@@ -345,18 +366,20 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                                   Text(
                                     '생일 쿠폰 지급!',
                                     style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 16),
-                                        fontWeight: FontWeight.bold),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 16),
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.2,
+                                    ),
                                   ),
                                   Text(
                                     '생년월일을 입력 주시면, 생일날 쿠폰 지급!',
                                     style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 12),
-                                        color: Color(0xFF6A5B54)),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 12),
+                                      color: const Color(0xFF6A5B54),
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -368,22 +391,29 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                     Row(
                       children: [
                         Text('성별',
-                            style: TextStyle(
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.bold,
+                            fontSize: Responsive.getFont(context, 13),
+                            height: 1.2,
+                          )
+                        ),
+                        Container(
+                            margin: const EdgeInsets.only(left: 4),
+                            child: Text('선택',
+                              style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.bold,
-                                fontSize: Responsive.getFont(context, 13))),
-                        Container(
-                            margin: EdgeInsets.only(left: 4),
-                            child: Text('선택',
-                                style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: Responsive.getFont(context, 13),
-                                    color: Color(0xFFFF6192)))),
+                                fontSize: Responsive.getFont(context, 13),
+                                color: const Color(0xFFFF6192),
+                                height: 1.2,
+                              )
+                            )
+                        ),
                       ],
                     ), // 성별 선택 타이틀
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
                         children: [
                           Expanded(
@@ -409,9 +439,11 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                           child: Text(
                             '회원탈퇴',
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                color: Color(0xFF7B7B7B),
-                                fontSize: Responsive.getFont(context, 14)),
+                              fontFamily: 'Pretendard',
+                              color: const Color(0xFF7B7B7B),
+                              fontSize: Responsive.getFont(context, 14),
+                              height: 1.2,
+                            ),
                             textAlign: TextAlign.center, // 텍스트 가운데 정렬
                           ),
                         ),
@@ -464,6 +496,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.white,
+                            height: 1.2,
                           ),
                         ),
                       ),
@@ -492,10 +525,13 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
           Container(
             margin: EdgeInsets.only(bottom: 10),
             child: Text(label,
-                style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.bold,
-                    fontSize: Responsive.getFont(context, 13))),
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                fontWeight: FontWeight.bold,
+                fontSize: Responsive.getFont(context, 13),
+                height: 1.2,
+              ),
+            ),
           ),
           if (label.isNotEmpty)
             TextField(
@@ -555,18 +591,25 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.bold,
-                        fontSize: Responsive.getFont(context, 13))),
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.getFont(context, 13),
+                    height: 1.2,
+                  )
+                ),
                 Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text('*',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.bold,
-                            fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFFFF6192)))),
+                  margin: const EdgeInsets.only(left: 4),
+                  child: Text('*',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 13),
+                      color: const Color(0xFFFF6192),
+                      height: 1.2,
+                    )
+                  )
+                ),
               ],
             ),
           ),
@@ -620,18 +663,25 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
             child: Row(
               children: [
                 Text(label,
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.bold,
-                        fontSize: Responsive.getFont(context, 13))),
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.getFont(context, 13),
+                    height: 1.2,
+                  )
+                ),
                 Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text('*',
-                        style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.bold,
-                            fontSize: Responsive.getFont(context, 13),
-                            color: Color(0xFFFF6192)))),
+                  margin: const EdgeInsets.only(left: 4),
+                  child: Text('*',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 13),
+                      color: const Color(0xFFFF6192),
+                      height: 1.2,
+                    )
+                  )
+                ),
               ],
             ),
           ),
@@ -738,13 +788,17 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                 color: isSelected ? Color(0xFFFF6192) : Color(0xFFDDDDDD)),
           ),
           child: Center(
-              child: Text(
-            gender,
-            style: TextStyle(
+            child: Text(
+              gender,
+              style: TextStyle(
                 fontFamily: 'Pretendard',
-                color: isSelected ? Color(0xFFFF6192) : Colors.black,
-                fontSize: Responsive.getFont(context, 14)),
-          ))),
+                color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                fontSize: Responsive.getFont(context, 14),
+                height: 1.2,
+              ),
+            )
+          )
+      ),
     );
   }
 
@@ -797,6 +851,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 18),
                         fontWeight: FontWeight.w600,
+                        height: 1.2,
                       ),
                     ),
                     GestureDetector(
@@ -849,9 +904,11 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                                 child: Text(
                                   '${1900 + index}년', // 년도로 표시
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 16),
-                                      fontWeight: FontWeight.w600),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 16),
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.2,
+                                  ),
                                 ),
                               );
                             },
@@ -886,9 +943,11 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                               child: Text(
                                 '${index + 1}월', // 월로 표시
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 16),
-                                    fontWeight: FontWeight.w600),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 16),
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                ),
                               ),
                             );
                           }),
@@ -920,9 +979,11 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                               child: Text(
                                 '${index + 1}일', // 일로 표시
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 16),
-                                    fontWeight: FontWeight.w600),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 16),
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                ),
                               ),
                             );
                           }),
@@ -950,8 +1011,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                 child: Container(
                   width: double.infinity,
                   height: Responsive.getHeight(context, 48),
-                  margin:
-                      EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.all(
@@ -965,6 +1025,7 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                         color: Colors.white,
+                        height: 1.2,
                       ),
                     ),
                   ),

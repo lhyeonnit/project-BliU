@@ -38,16 +38,20 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                       Text(
                         '구매 전 필수 확인',
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 16),
-                            fontWeight: FontWeight.bold),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 16),
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                        ),
                       ),
                       Text(
                         '만족스러운 쇼핑을 위해 구매 전에 꼼꼼히 \n살펴보세요.',
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 12),
-                            color: Color(0xFF6A5B54)),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 12),
+                          color: const Color(0xFF6A5B54),
+                          height: 1.2,
+                        ),
                       ),
                     ],
                   )),
@@ -65,9 +69,11 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                 title: Text(
                   '배송안내',
                   style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.bold,
-                      fontSize: Responsive.getFont(context, 14)),
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.getFont(context, 14),
+                    height: 1.2,
+                  ),
                 ),
                 children: [
                   Container(
@@ -84,7 +90,10 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                         child: Text(
                           infoData?.delivery ?? "",
                           style: const TextStyle(
-                              fontFamily: 'Pretendard', color: Colors.black54),
+                            fontFamily: 'Pretendard',
+                            color: Colors.black54,
+                            height: 1.2,
+                          ),
                         ),
                       ),
                     ),
@@ -102,9 +111,11 @@ class ProductInfoBeforeOrder extends StatelessWidget {
               title: Text(
                 '교환/반품 안내',
                 style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.bold,
-                    fontSize: Responsive.getFont(context, 14)),
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.bold,
+                  fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                ),
               ),
               children: [
                 Container(
@@ -119,8 +130,10 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                     child: Text(
                       infoData?.returnVal ?? "",
                       style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14)),
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                      ),
                     ),
                   ),
                 ),

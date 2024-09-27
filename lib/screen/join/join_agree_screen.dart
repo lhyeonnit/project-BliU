@@ -52,7 +52,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
       body: Stack(
         children: [
           Container(
-            margin: EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+            margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -62,16 +62,19 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 20),
                     fontWeight: FontWeight.bold,
+                    height: 1.2,
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 8, bottom: 30),
+                  margin: const EdgeInsets.only(top: 8, bottom: 30),
                   child: Text(
                     '회원가입을 위해 약관에 동의해 주세요!',
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        color: Color(0xFF7B7B7B)),
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      color: const Color(0xFF7B7B7B),
+                      height: 1.2,
+                    ),
                   ),
                 ),
                 Row(
@@ -190,11 +193,10 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                   child: Container(
                     width: double.infinity,
                     height: Responsive.getHeight(context, 48),
-                    margin: EdgeInsets.only(
-                        right: 16.0, left: 16, top: 8, bottom: 9),
+                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
                     decoration: BoxDecoration(
-                      color: _allAgreed ? Colors.black : Color(0xFFDDDDDD),
-                      borderRadius: BorderRadius.all(
+                      color: _allAgreed ? Colors.black : const Color(0xFFDDDDDD),
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(6),
                       ),
                     ),
@@ -204,7 +206,8 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
-                          color: _allAgreed ? Colors.white : Color(0xFF7B7B7B),
+                          color: _allAgreed ? Colors.white : const Color(0xFF7B7B7B),
+                          height: 1.2,
                         ),
                       ),
                     ),
@@ -259,6 +262,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
           style: TextStyle(
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
+            height: 1.2,
           ),
         ),
       ],
@@ -313,6 +317,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
             style: TextStyle(
               fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 16),
+              height: 1.2,
             ),
           ),
         ],

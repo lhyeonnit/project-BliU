@@ -55,8 +55,10 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage> {
                       child: Text(
                         '즐겨찾기 ${list.length}',
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14)),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          height: 1.2,
+                        ),
                       ),
                     ),
                     Container(
@@ -133,9 +135,10 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage> {
                                             Text(
                                               store.stName ?? "",
                                               style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  fontSize: Responsive.getFont(
-                                                      context, 14)),
+                                                fontFamily: 'Pretendard',
+                                                fontSize: Responsive.getFont(context, 14),
+                                                height: 1.2,
+                                              ),
                                             ),
                                             Row(
                                               children: [
@@ -144,15 +147,12 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage> {
                                                     store.styleTxt ?? "",
                                                     style: TextStyle(
                                                       fontFamily: 'Pretendard',
-                                                      fontSize:
-                                                          Responsive.getFont(
-                                                              context, 13),
-                                                      color: const Color(
-                                                          0xFF7B7B7B),
+                                                      fontSize: Responsive.getFont(context, 13),
+                                                      color: const Color(0xFF7B7B7B),
+                                                      height: 1.2,
                                                     ),
                                                     maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ),
                                                 const SizedBox(width: 5),
@@ -162,15 +162,12 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage> {
                                                     store.ageTxt ?? "",
                                                     style: TextStyle(
                                                       fontFamily: 'Pretendard',
-                                                      fontSize:
-                                                          Responsive.getFont(
-                                                              context, 13),
-                                                      color: const Color(
-                                                          0xFF7B7B7B),
+                                                      fontSize: Responsive.getFont(context, 13),
+                                                      color: const Color(0xFF7B7B7B),
+                                                      height: 1.2,
                                                     ),
                                                     maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ),
                                               ],
@@ -218,8 +215,8 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage> {
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
                                               color: const Color(0xFFA4A4A4),
-                                              fontSize: Responsive.getFont(
-                                                  context, 12),
+                                              fontSize: Responsive.getFont(context, 12),
+                                              height: 1.2,
                                             ),
                                           ),
                                         ],

@@ -88,6 +88,7 @@ class PaymentMoney extends StatelessWidget {
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Colors.black,
+                    height: 1.2,
                   ),
                 ),
                 Text(
@@ -97,6 +98,7 @@ class PaymentMoney extends StatelessWidget {
                     fontSize: Responsive.getFont(context, 14),
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
+                    height: 1.2,
                   ),
                 ),
               ],
@@ -119,6 +121,7 @@ class PaymentMoney extends StatelessWidget {
               fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
+              height: 1.2,
             ),
           ),
           Text(
@@ -127,6 +130,7 @@ class PaymentMoney extends StatelessWidget {
               fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
               color: Colors.black,
+              height: 1.2,
             ),
           ),
         ],

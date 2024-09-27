@@ -52,6 +52,7 @@ class PaymentTossState extends State<PaymentToss> {
             fontFamily: 'Pretendard',
             fontSize: 20,
             color: Colors.black,
+            height: 1.2,
           ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, size: 25),
@@ -108,8 +109,12 @@ class PaymentTossState extends State<PaymentToss> {
                   child: const Text(
                     '결제하기',
                     style: TextStyle(
-                        fontFamily: 'Pretendard', color: Colors.white),
-                  )),
+                      fontFamily: 'Pretendard',
+                      color: Colors.white,
+                      height: 1.2,
+                    ),
+                  )
+              ),
             ),
           ]))
         ])));

@@ -41,6 +41,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
           fontSize: Responsive.getFont(context, 18),
           fontWeight: FontWeight.w600,
           color: Colors.black,
+          height: 1.2,
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
@@ -92,24 +93,22 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                     return ListTile(
                       selectedColor: Colors.black,
                       selectedTileColor: Colors.white,
-                      tileColor: isSelectCategory
-                          ? Colors.white
-                          : const Color(0xFFF5F9F9),
+                      tileColor: isSelectCategory ? Colors.white : const Color(0xFFF5F9F9),
                       selected: isSelectCategory,
                       title: Text(
                         categoryData.ctName ?? "",
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 15),
-                            fontWeight: FontWeight.w600),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 15),
+                          fontWeight: FontWeight.w600,
+                          height: 1.2,
+                        ),
                       ),
                       onTap: () {
                         setState(() {
                           _selectedCategoryIndex = index;
                         });
-                        _scrollController.scrollTo(
-                            index: index,
-                            duration: const Duration(milliseconds: 500));
+                        _scrollController.scrollTo(index: index, duration: const Duration(milliseconds: 500));
                       },
                     );
                   },
@@ -144,8 +143,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 );
                               },
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     flex: 8,
@@ -155,24 +153,23 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                           width: 40,
                                           height: 40,
                                           decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color: const Color(0xFFEFEFEF),
-                                              )),
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: const Color(0xFFEFEFEF),
+                                            )),
                                           child: SvgPicture.network(
                                             category.img ?? "",
                                           ),
                                         ),
                                         Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 10),
+                                          margin: const EdgeInsets.symmetric(horizontal: 10),
                                           child: Text(
                                             category.ctName ?? "",
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(
-                                                  context, 18),
+                                              fontSize: Responsive.getFont(context, 18),
                                               fontWeight: FontWeight.bold,
+                                              height: 1.2,
                                             ),
                                           ),
                                         ),
@@ -180,9 +177,11 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                     ),
                                   ),
                                   Expanded(
-                                      flex: 2,
-                                      child: SvgPicture.asset(
-                                          'assets/images/category/그룹 37778.svg')),
+                                    flex: 2,
+                                    child: SvgPicture.asset(
+                                      'assets/images/category/그룹 37778.svg'
+                                    )
+                                  ),
                                 ],
                               ),
                             ),
@@ -195,6 +194,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
                                   ),
                                 ),
                                 trailing: SvgPicture.asset(
@@ -206,8 +206,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                     MaterialPageRoute(
                                       builder: (context) => ProductListScreen(
                                         selectedCategory: category,
-                                        selectSubCategoryIndex:
-                                            subCategories.indexOf(subCategory),
+                                        selectSubCategoryIndex: subCategories.indexOf(subCategory),
                                       ),
                                     ),
                                   );

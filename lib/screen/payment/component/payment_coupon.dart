@@ -68,6 +68,7 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                 fontFamily: 'Pretendard',
                 fontWeight: FontWeight.normal,
                 fontSize: Responsive.getFont(context, 14),
+                height: 1.2,
               ),
             ),
           ),
@@ -139,6 +140,7 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                                       fontSize: Responsive.getFont(context, 16),
                                       color: const Color(0xFFFF6192),
                                       fontWeight: FontWeight.bold,
+                                      height: 1.2,
                                     ),
                                   ),
                                   Padding(
@@ -148,9 +150,9 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                                       couponName,
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
-                                        fontSize:
-                                            Responsive.getFont(context, 16),
+                                        fontSize: Responsive.getFont(context, 16),
                                         fontWeight: FontWeight.bold,
+                                        height: 1.2,
                                       ),
                                     ),
                                   ),
@@ -164,6 +166,7 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
                                   ),
                                 ),
                               ),
@@ -173,6 +176,7 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
                                   color: const Color(0xFFA4A4A4),
+                                  height: 1.2,
                                 ),
                               ),
                             ],
@@ -220,6 +224,7 @@ class _PaymentCouponState extends State<PaymentCoupon> {
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Colors.white,
+                    height: 1.2,
                   ),
                 ),
               ),
