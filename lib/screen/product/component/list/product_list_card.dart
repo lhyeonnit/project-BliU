@@ -31,7 +31,6 @@ class _ProductListCardState extends State<ProductListCard> {
         );
       },
       child: Container(
-        width: 184,
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
@@ -42,11 +41,12 @@ class _ProductListCardState extends State<ProductListCard> {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: Image.network(
-                    productData.ptImg ?? "",
-                    height: 184,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                  child: AspectRatio(
+                    aspectRatio: 1/1,
+                    child: Image.network(
+                      productData.ptImg ?? "",
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Positioned(

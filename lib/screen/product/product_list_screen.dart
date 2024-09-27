@@ -323,10 +323,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                           children: [
                             _buildFilterButton(getSelectedAgeGroupText()),
                             Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 4),
-                                child:
-                                    _buildFilterButton(getSelectedStyleText())),
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              child: _buildFilterButton(getSelectedStyleText())
+                            ),
                             _buildFilterButton(getSelectedRangeValues()),
                           ],
                         ),
@@ -457,7 +456,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.5,
+              childAspectRatio: 0.55,
               crossAxisSpacing: 12,
               mainAxisSpacing: 30,
             ),

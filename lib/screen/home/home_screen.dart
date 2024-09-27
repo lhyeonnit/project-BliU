@@ -92,8 +92,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       pinned: true,
                       automaticallyImplyLeading: false,
                       // 기본 뒤로가기 버튼을 숨김
-                      backgroundColor:
-                          _isScrolled ? Colors.white : Colors.transparent,
+                      backgroundColor: _isScrolled ? Colors.white : Colors.transparent,
                       expandedHeight: Responsive.getHeight(context, 625),
                       title: SvgPicture.asset(
                         'assets/images/home/bottom_home.svg', // SVG 파일 경로
@@ -106,16 +105,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                       actions: [
                         Container(
-                          padding: EdgeInsets.only(
-                              right: Responsive.getWidth(context, 8)),
+                          padding: EdgeInsets.only(right: Responsive.getWidth(context, 8)),
                           // 왼쪽 여백 추가
                           child: Row(
                             children: [
                               IconButton(
                                 icon: SvgPicture.asset(
                                   "assets/images/home/ic_top_sch_w.svg",
-                                  color:
-                                      _isScrolled ? Colors.black : Colors.white,
+                                  color: _isScrolled ? Colors.black : Colors.white,
                                   height: Responsive.getHeight(context, 30),
                                   width: Responsive.getWidth(context, 30),
                                 ),
@@ -123,17 +120,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SearchScreen(),
+                                      builder: (context) => const SearchScreen(),
                                     ),
                                   );
                                 },
                               ),
                               IconButton(
                                 icon: SvgPicture.asset(
-                                  _isScrolled
-                                      ? "assets/images/product/ic_smart.svg"
-                                      : "assets/images/home/ic_smart_w.svg",
+                                  _isScrolled ? "assets/images/product/ic_smart.svg" : "assets/images/home/ic_smart_w.svg",
                                   height: Responsive.getHeight(context, 30),
                                   width: Responsive.getWidth(context, 30),
                                 ),
@@ -152,9 +146,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   IconButton(
                                     icon: SvgPicture.asset(
                                       "assets/images/product/ic_cart.svg",
-                                      color: _isScrolled
-                                          ? Colors.black
-                                          : Colors.white,
+                                      color: _isScrolled ? Colors.black : Colors.white,
                                       height: Responsive.getHeight(context, 30),
                                       width: Responsive.getWidth(context, 30),
                                     ),

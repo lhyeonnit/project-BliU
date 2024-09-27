@@ -162,7 +162,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
               ),
               itemCount: productList.length,
               itemBuilder: (context, index) {
-                return buildItemCard(productList[index], index);
+                return buildItemCard(productList[index]);
               },
             ),
           ),
@@ -238,7 +238,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
     );
   }
 
-  Widget buildItemCard(ProductData product, int index) {
+  Widget buildItemCard(ProductData product) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
