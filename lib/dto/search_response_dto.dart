@@ -1,22 +1,25 @@
-import 'package:BliU/data/search_data.dart';
+
+import 'package:BliU/data/search_popular_data.dart';
+import 'package:BliU/data/search_product_data.dart';
+import 'package:BliU/data/search_store_data.dart';
 
 class SearchResponseDTO {
   final bool? result;
-  final String? message;
-  final List<SearchData>? list;
+  final List<SearchStoreData>? storeSearch;
+  final List<SearchProductData>? productSearch;
 
   SearchResponseDTO({
     required this.result,
-    required this.message,
-    required this.list
+    required this.storeSearch,
+    required this.productSearch,
   });
 
   // JSON to Object
   factory SearchResponseDTO.fromJson(Map<String, dynamic> json) {
     return SearchResponseDTO(
       result: json['result'],
-      message: json['data']['message'],
-      list: (json['data']['list'] as List<SearchData>),
+      storeSearch: (json['data']['store_search']),
+      productSearch: (json['data']['product_search']),
     );
   }
 
@@ -24,9 +27,9 @@ class SearchResponseDTO {
   Map<String, dynamic> toJson() {
     return {
       'result': result,
-      'message': message,
       'data': {
-        'list': list?.map((it) => it.toJson()).toList(),
+        'store_search': storeSearch?.map((it) => it.toJson()).toList(),
+        'product_search': productSearch?.map((it) => it.toJson()).toList(),
       }
     };
   }
