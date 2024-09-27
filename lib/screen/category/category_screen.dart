@@ -88,11 +88,9 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
                     final categoryData = categories[index];
-                    final bool isSelectCategory =
-                        _selectedCategoryIndex == index;
+                    final bool isSelectCategory = _selectedCategoryIndex == index;
                     return ListTile(
                       selectedColor: Colors.black,
-                      selectedTileColor: Colors.white,
                       tileColor: isSelectCategory ? Colors.white : const Color(0xFFF5F9F9),
                       selected: isSelectCategory,
                       title: Text(
@@ -129,8 +127,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                         children: [
                           // 상위 카테고리 제목과 이미지
                           Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20, right: 15, bottom: 10),
+                            padding: const EdgeInsets.only(left: 20, right: 15, bottom: 10),
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -156,7 +153,8 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                             shape: BoxShape.circle,
                                             border: Border.all(
                                               color: const Color(0xFFEFEFEF),
-                                            )),
+                                            )
+                                          ),
                                           child: SvgPicture.network(
                                             category.img ?? "",
                                           ),
@@ -197,8 +195,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                     height: 1.2,
                                   ),
                                 ),
-                                trailing: SvgPicture.asset(
-                                    'assets/images/ic_link.svg'),
+                                trailing: SvgPicture.asset('assets/images/ic_link.svg'),
                                 onTap: () {
                                   // 하위 카테고리 선택 시 처리
                                   Navigator.push(

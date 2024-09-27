@@ -258,8 +258,18 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
           children: [
             Stack(
               children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                Container(
+                  foregroundDecoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    border: Border.all(
+                      width: 1,
+                      color: const Color(0X00000005),
+                    ),
+                  ),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                  ),
+                  clipBehavior: Clip.antiAlias,
                   child: AspectRatio(
                     aspectRatio: 1/1,
                     child: Image.network(

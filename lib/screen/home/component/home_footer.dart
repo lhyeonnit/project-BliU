@@ -144,12 +144,4 @@ class HomeFooter extends ConsumerWidget {
       ),
     );
   }
-
-// Widget _buildCountDown(BuildContext context, WidgetRef ref) {
-//   var test = ref.watch(footerViewModelProvider.)
-//
-//   return Text(
-//     remaining.toString(),
-//   );
-// }
 }

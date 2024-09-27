@@ -306,9 +306,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
                               Container(
                                 margin: const EdgeInsets.only(left: 5),
                                 child: Text(
-                                  sortOptionSelected.isNotEmpty
-                                      ? sortOptionSelected
-                                      : '인기순', // 선택된 정렬 옵션 표시
+                                  sortOptionSelected.isNotEmpty ? sortOptionSelected : '인기순', // 선택된 정렬 옵션 표시
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
