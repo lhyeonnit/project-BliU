@@ -1,16 +1,25 @@
+import 'package:BliU/data/store_data.dart';
 import 'package:BliU/screen/store/component/detail/coupon_download.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class StoreInfoPage extends StatefulWidget {
-  const StoreInfoPage({super.key});
+class StoreInfoPage extends ConsumerStatefulWidget {
+  final StoreData? storeData;
+
+  StoreInfoPage({super.key, required this.storeData});
 
   @override
-  State<StoreInfoPage> createState() => _StoreInfoPageState();
+  _StoreInfoPageState createState() => _StoreInfoPageState();
 }
 
-class _StoreInfoPageState extends State<StoreInfoPage> {
+class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isSelected = false;
@@ -25,21 +34,35 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
-                child: Image.asset(
-                  'assets/images/store/store_detail.png',
+                child: Image.network(
+                  widget.storeData?.stBackground ?? "",
                   width: double.infinity,
                   height: 500,
                   fit: BoxFit.cover,
                 ),
               ),
               Positioned(
-                bottom: -65, // 이미지 하단에 겹치도록 설정
-                left: -15,
-                child: Image.asset(
-                  'assets/images/store/brand_logo.png',
-                  width: 130,
-                  height: 130,
-                  fit: BoxFit.contain,
+                bottom: -30, // 이미지 하단에 겹치도록 설정
+                left: 15,
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x29000000),
+                        blurRadius: 3.0,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: ClipOval(
+                    child: Image.network(
+                      widget.storeData?.stProfile ?? "",
+                      width: 70,
+                      height: 70,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -53,12 +76,12 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 상점명 및 정보
-                 Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '밀크마일',
+                        widget.storeData?.stName ?? "",
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 18),
@@ -67,14 +90,39 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        '캐주얼 (Casual), 키즈(3-8세)',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: const Color(0xFF7B7B7B),
-                          height: 1.2,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            widget.storeData?.stStyleTxt?.split(',').first ?? "",
+                            // 쉼표로 분리 후 첫 번째 값만 가져옴
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 13),
+                              color: const Color(0xFF7B7B7B),
+                              height: 1.2,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            ', ',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 13),
+                              color: const Color(0xFF7B7B7B),
+                              height: 1.2,
+                            ),
+                          ),
+                          Text(
+                            widget.storeData?.stAgeTxt ?? "",
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 13),
+                              color: const Color(0xFF7B7B7B),
+                              height: 1.2,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -98,8 +146,8 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                         ),
                         child: Row(
                           children: [
-                             Text(
-                              '즐겨찾기 1,761',
+                            Text(
+                              '즐겨찾기 ${widget.storeData?.stLike}',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
@@ -145,10 +193,7 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             margin: EdgeInsets.only(bottom: 15),
             child: GestureDetector(
-              onTap: () {
-
-
-              },
+              onTap: () {},
               child: Container(
                 width: double.infinity,
                 height: 44,

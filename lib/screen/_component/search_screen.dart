@@ -2,7 +2,6 @@ import 'package:BliU/data/search_my_data.dart';
 import 'package:BliU/data/search_popular_data.dart';
 import 'package:BliU/data/search_product_data.dart';
 import 'package:BliU/data/search_store_data.dart';
-import 'package:BliU/dto/search_popular_response_dto.dart';
 import 'package:BliU/dto/search_response_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_recommend_item.dart';
@@ -16,7 +15,6 @@ import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -32,12 +30,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   bool _searchCompleted = false;
   List<bool> isFavoriteList = List<bool>.generate(10, (index) => false);
   List<SearchPopularData>? searchPopularList = [];
-  List<SearchMyData>? searchMyList = [];
-  SearchResponseDTO? searchResponseDTO;
+  List<SearchMyData> searchMyList = [];
   List<SearchStoreData>? searchStoreData = [];
   List<SearchProductData>? searchProductData = [];
   List<Map<String, String>> _suggestions = [];
-
+  int _currentStIdx = 0;
   @override
   void initState() {
     super.initState();
@@ -45,22 +42,26 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       _afterBuild(context);
     });
   }
+
   void _afterBuild(BuildContext context) {
     _getList();
     _searchMyList();
+    _getPopularList();
   }
 
   void _getList() async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
+    var searchTxt = "데이지";
     Map<String, dynamic> requestSearchData = {
       'mt_idx': mtIdx,
       'token': '',
-      'search_txt': '데이지',
+      'search_txt': searchTxt,
       'research': 'N',
     };
     final searchResponseDTO = await ref.read(searchModelProvider.notifier).getSearchList(requestSearchData);
-    final searchPopularResponseDTO = await ref.read(searchModelProvider.notifier).getPopularList();
+    final searchPopularResponseDTO =
+        await ref.read(searchModelProvider.notifier).getPopularList();
     if (searchResponseDTO != null && searchResponseDTO.result == true) {
       setState(() {
         searchStoreData = searchResponseDTO.storeSearch ?? [];
@@ -69,12 +70,25 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         _searchCompleted = true;
       });
     }
-    if (searchPopularResponseDTO != null && searchPopularResponseDTO.result == true) {
+    if (searchPopularResponseDTO != null &&
+        searchPopularResponseDTO.result == true) {
       setState(() {
         searchPopularList = searchPopularResponseDTO.list ?? [];
       });
     }
   }
+  void _getPopularList() async {
+    final searchPopularResponseDTO =
+        await ref.read(searchModelProvider.notifier).getPopularList();
+
+    if (searchPopularResponseDTO != null &&
+        searchPopularResponseDTO.result == true) {
+      setState(() {
+        searchPopularList = searchPopularResponseDTO.list ?? [];
+      });
+    }
+  }
+
   void _searchMyList() async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
@@ -90,7 +104,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   void _saveSearch(String search, int stIdx) async {
     setState(() {
       // SearchMyData 객체를 생성하여 searchMyList에 추가
-      searchMyList?.add(SearchMyData(sltIdx: stIdx, sltTxt: search));
+      searchMyList.add(SearchMyData(sltIdx: stIdx, sltTxt: search));
     });
   }
 
@@ -105,7 +119,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     };
 
     final defaultResponseDTO =
-    await ref.read(searchModelProvider.notifier).searchDel(requestData);
+        await ref.read(searchModelProvider.notifier).searchDel(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _getList();
@@ -115,7 +129,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       Utils.getInstance()
           .showSnackBar(context, defaultResponseDTO.message ?? "");
     }
+    setState(() {
+      searchMyList.clear();
+    });
   }
+
   void _searchAllDel() async {
     // TODO 회원 비회원 구분
     final pref = await SharedPreferencesManager.getInstance();
@@ -127,7 +145,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     };
 
     final defaultResponseDTO =
-    await ref.read(searchModelProvider.notifier).searchDel(requestData);
+        await ref.read(searchModelProvider.notifier).searchDel(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _getList();
@@ -137,6 +155,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       Utils.getInstance()
           .showSnackBar(context, defaultResponseDTO.message ?? "");
     }
+    setState(() {
+      searchMyList.clear();
+    });
   }
 
   Widget _buildHighlightedText(String text, String query) {
@@ -153,10 +174,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         spans.add(TextSpan(
           text: text.substring(start, indexOfHighlight),
           style: TextStyle(
+            height: 1.2,
             color: Colors.black,
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
-            height: 1.2,
           ),
         ));
       }
@@ -175,11 +196,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       spans.add(TextSpan(
         text: text.substring(start),
         style: TextStyle(
-            fontFamily: 'Pretendard',
             height: 1.2,
+            fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
-            color: Colors.black
-        ),
+            color: Colors.black),
       ));
     }
 
@@ -187,50 +207,60 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       text: TextSpan(
         children: spans,
         style: TextStyle(
+          height: 1.2,
           fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 14),
-          height: 1.2,
         ),
       ),
     );
   }
-  void _filterSuggestions(String query) {
-    if (query.isNotEmpty) {
-      List<Map<String, String>> filteredSuggestions = [];
 
-      // storeSearch에서 필터링
-      if (searchStoreData != null) {
-        filteredSuggestions.addAll(
-          searchStoreData!
-              .where((item) => item.stName!.toLowerCase().contains(query.toLowerCase()))
-              .map((store) => {
-            "type": "store",
-            "name": store.stName ?? "",
-            "logo": store.stProfile ?? "", // 이미지 URL
-            "id": store.stIdx!.toString(), // int -> String 변환
-          })
-              .toList(),
-        );
-      }
+  void _filterSuggestions(String query)  async {
+    if (query.isNotEmpty) {
+      // TODO 검색 API
+      //response > 결과를 보고
+      // _suggestions 결과 저장 변수
+      // SearchResponseDTO
+
+      //List<Map<String, String>> filteredSuggestions = [];
+
+      // // storeSearch에서 필터링
+      // if (searchStoreData != null) {
+      //   filteredSuggestions.addAll(
+      //     searchStoreData!
+      //         .where((item) =>
+      //             item.stName!.toLowerCase().contains(query.toLowerCase()))
+      //         .map((store) => {
+      //               "type": "store",
+      //               "name": store.stName ?? "",
+      //               "logo": store.stProfile ?? "", // 이미지 URL
+      //               "id": store.stIdx!.toString(), // int -> String 변환
+      //             })
+      //         .toList(),
+      //   );
+      // }
 
       // productSearch에서 필터링
-      if (searchProductData != null) {
-        filteredSuggestions.addAll(
-          searchProductData!
-              .where((item) => item.ptName!.toLowerCase().contains(query.toLowerCase()))
-              .map((product) => {
-            "type": "product",
-            "name": product.ptName ?? "",
-            "id": product.ptIdx!.toString(), // int -> String 변환
-          })
-              .toList(),
-        );
-      }
+      // if (searchProductData != null) {
+      //   filteredSuggestions.addAll(
+      //     searchProductData!
+      //         .where((item) =>
+      //             item.ptName!.toLowerCase().contains(query.toLowerCase()))
+      //         .map((product) => {
+      //               "type": "product",
+      //               "name": product.ptName ?? "",
+      //               "id": product.ptIdx!.toString(), // int -> String 변환
+      //             })
+      //         .toList(),
+      //   );
+      // }
 
-      setState(() {
-        _suggestions = filteredSuggestions;
-        _isSearching = query.isNotEmpty;
-      });
+      // setState(() {
+      //   _suggestions = filteredSuggestions;
+      //   _isSearching = query.isNotEmpty;
+      // });
+
+
     } else {
       setState(() {
         _suggestions = [];
@@ -239,19 +269,19 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     }
   }
 
+  void _searchAction() {
+    String search = _searchController.text;
+    if (search.isNotEmpty) {
+      _saveSearch(search, _currentStIdx);
+      _filterSuggestions(search); // 검색어에 맞는 결과 필터링
 
-  // void _searchAction() {
-  //   String search = _searchController.text;
-  //   if (search.isNotEmpty) {
-  //     _saveSearch(search);
-  //     _filterSuggestions(search); // 검색어에 맞는 결과 필터링
-  //
-  //     setState(() {
-  //       _isSearching = false; // 검색 중인 상태 해제
-  //       _searchCompleted = true; // 검색 완료 상태로 전환
-  //     });
-  //   }
-  // }
+      setState(() {
+        _isSearching = false; // 검색 중인 상태 해제
+        _searchCompleted = true; // 검색 완료 상태로 전환
+        _currentStIdx++; // 인덱스를 증가시켜서 다음 검색에 사용
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -301,6 +331,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       Expanded(
                         child: TextField(
                           style: TextStyle(
+                              height: 1.2,
                               fontSize: Responsive.getFont(context, 14)),
                           controller: _searchController,
                           decoration: InputDecoration(
@@ -308,6 +339,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 const EdgeInsets.only(left: 16, bottom: 8),
                             hintText: '검색어를 입력해 주세요',
                             hintStyle: TextStyle(
+                                height: 1.2,
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Color(0xFF595959)),
                             border: InputBorder.none,
@@ -330,15 +362,16 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             suffixIconConstraints:
                                 BoxConstraints.tight(const Size(24, 24)),
                           ),
-                          onChanged: (value) => _filterSuggestions(value), // 검색 중인 상태
-                          // onSubmitted: (value) => _searchAction(), // 검색 완료 시
+                          onChanged: (value) => _filterSuggestions(value),
+                          // 검색 중인 상태
+                          onSubmitted: (value) => _searchAction(), // 검색 완료 시
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
                             top: 8, left: 10, bottom: 8, right: 15),
                         child: GestureDetector(
-                          // onTap: () => _searchAction(),
+                          onTap: () => _searchAction(),
                           child: SvgPicture.asset(
                             'assets/images/home/ic_top_sch_w.svg',
                             color: Colors.black,
@@ -370,12 +403,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         ],
       ),
       body: _isSearching
-          ? _buildSearching()  // 검색 중일 때 화면
-          : _searchCompleted    // 검색이 완료되었을 때
-          ? (_suggestions.isNotEmpty
-          ? _buildSearchResults()  // 검색 결과가 있을 때
-          : _buildNoResults())     // 검색 결과가 없을 때
-          : _buildDefaultSearchPage(), // 검색 전 기본 화면 (추천 검색어 등)
+          ? _buildSearching() // 검색 중일 때 화면
+          : _searchCompleted // 검색이 완료되었을 때
+              ? (_suggestions.isNotEmpty
+                  ? _buildSearchResults() // 검색 결과가 있을 때
+                  : _buildNoResults()) // 검색 결과가 없을 때
+              : _buildDefaultSearchPage(), // 검색 전 기본 화면 (추천 검색어 등)
     );
   }
 
@@ -394,6 +427,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               Text(
                 '최근 검색어',
                 style: TextStyle(
+                    height: 1.2,
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 18),
                     fontWeight: FontWeight.bold),
@@ -407,6 +441,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       margin: const EdgeInsets.only(left: 5),
                       child: Text('전체삭제',
                           style: TextStyle(
+                              height: 1.2,
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14))),
                     ),
@@ -417,40 +452,44 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           ),
         ),
         // 검색 히스토리 표시
-        // Wrap(
-        //   spacing: 4,
-        //   runSpacing: 8,
-        //   children: _searchMyList.map((search) {
-        //     return GestureDetector(
-        //       onTap: () {
-        //         setState(() {
-        //           _searchController.text = search; // 검색 기록 누르면 텍스트 창에 반영
-        //         });
-        //       },
-        //       child: Chip(
-        //         label: Text(
-        //           search,
-        //           style: TextStyle(
-        //               fontFamily: 'Pretendard',
-        //               fontSize: Responsive.getFont(context, 14)),
-        //         ),
-        //         shape: RoundedRectangleBorder(
-        //           borderRadius: BorderRadius.circular(19),
-        //           side: const BorderSide(color: Color(0xFFDDDDDD)),
-        //         ),
-        //         backgroundColor: Colors.white,
-        //         deleteIcon: SvgPicture.asset(
-        //             'assets/images/product/filter_del.svg',
-        //             color: Color(0xFFACACAC)),
-        //         onDeleted: () {
-        //           setState(() {
-        //             _searchMyDel(stIdx); // 삭제 기능
-        //           });
-        //         },
-        //       ),
-        //     );
-        //   }).toList(),
-        // ),
+        Wrap(
+          spacing: 4,
+          runSpacing: 8,
+          children: searchMyList.asMap().entries.map((entry) {
+            SearchMyData searchData = entry.value;
+            int stIdx = searchData.sltIdx ?? 0;
+            String search = searchData.sltTxt ?? '';
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  _searchController.text = search; // 검색 기록 누르면 텍스트 창에 반영
+                });
+              },
+              child: Chip(
+                label: Text(
+                  search,
+                  style: TextStyle(
+                      height: 1.2,
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14)),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(19),
+                  side: const BorderSide(color: Color(0xFFDDDDDD)),
+                ),
+                backgroundColor: Colors.white,
+                deleteIcon: SvgPicture.asset(
+                    'assets/images/product/filter_del.svg',
+                    color: Color(0xFFACACAC)),
+                onDeleted: () {
+                  setState(() {
+                    _searchMyDel(stIdx); // 삭제 기능
+                  });
+                },
+              ),
+            );
+          }).toList(),
+        ),
       ],
     );
   }
@@ -467,9 +506,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // if (_searchMyList()) ...[
-                //   _buildSearchHistory(),
-                // ],
+                if (searchMyList.isNotEmpty) ...[
+                  _buildSearchHistory(), // 검색 기록을 표시하는 위젯
+                ],
                 if (_suggestions.isEmpty) ...[
                   _buildPopularSearches(),
                 ],
@@ -493,6 +532,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           child: Text(
             '인기 검색어',
             style: TextStyle(
+                height: 1.2,
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 18),
                 fontWeight: FontWeight.bold),
@@ -523,6 +563,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     width: 25,
                     child: Text('${popularData.sltRank}',
                         style: TextStyle(
+                            height: 1.2,
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 15),
                             fontWeight: FontWeight.w600)),
@@ -530,6 +571,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   Text(
                     popularData.sltTxt ?? "",
                     style: TextStyle(
+                        height: 1.2,
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 15)),
                   ),
@@ -565,22 +607,22 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             return ListTile(
               leading: suggestion["type"] == "store"
                   ? Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFDDDDDD)),
-                ),
-                child: ClipOval(
-                  child: suggestion["logo"]!.isNotEmpty
-                      ? Image.network(
-                    suggestion["logo"]!,
-                    fit: BoxFit.cover,
-                  )
-                      : Icon(Icons.store, size: 24), // 기본 아이콘 처리
-                ),
-              )
+                      margin: const EdgeInsets.only(bottom: 10),
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: const Color(0xFFDDDDDD)),
+                      ),
+                      child: ClipOval(
+                        child: suggestion["logo"]!.isNotEmpty
+                            ? Image.network(
+                                suggestion["logo"]!,
+                                fit: BoxFit.cover,
+                              )
+                            : Icon(Icons.store, size: 24), // 기본 아이콘 처리
+                      ),
+                    )
                   : null, // product에 대해서는 leading이 없거나 다른 이미지 제공 가능
               title: Container(
                 margin: const EdgeInsets.only(bottom: 10),
@@ -597,8 +639,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => StoreDetailScreen(
-                          // stIdx: int.parse(suggestion["id"]!), // 상점 ID로 이동
-                        ),
+                            // stIdx: int.parse(suggestion["id"]!), // 상점 ID로 이동
+                            ),
                       ),
                     );
                   } else if (suggestion["type"] == "product") {
@@ -630,6 +672,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           Text(
             '상품 ${_suggestions.length}',
             style: TextStyle(
+                height: 1.2,
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14)),
           ),
@@ -669,7 +712,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         children: [
                           ClipRRect(
                             borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
+                                const BorderRadius.all(Radius.circular(5)),
                             child: Image.asset(
                               'assets/images/home/exhi.png',
                               height: 160,
@@ -683,7 +726,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                               onTap: () {
                                 setState(() {
                                   isFavoriteList[index] =
-                                  !isFavoriteList[index]; // 좋아요 상태 토글
+                                      !isFavoriteList[index]; // 좋아요 상태 토글
                                 });
                               },
                               child: SvgPicture.asset(
@@ -710,6 +753,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             child: Text(
                               '꿈꾸는데이지',
                               style: TextStyle(
+                                height: 1.2,
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 12),
                                 color: Color(0xFF7B7B7B),
@@ -719,6 +763,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           Text(
                             '꿈꾸는 데이지 안나 토션 레이스 베스트',
                             style: TextStyle(
+                              height: 1.2,
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                             ),
@@ -734,6 +779,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 Text(
                                   '15%',
                                   style: TextStyle(
+                                    height: 1.2,
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                     color: const Color(0xFFFF6192),
@@ -745,9 +791,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   child: Text(
                                     '32,800원',
                                     style: TextStyle(
+                                      height: 1.2,
                                       fontFamily: 'Pretendard',
-                                      fontSize:
-                                      Responsive.getFont(context, 14),
+                                      fontSize: Responsive.getFont(context, 14),
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -769,6 +815,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 child: Text(
                                   '13,000',
                                   style: TextStyle(
+                                    height: 1.2,
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 12),
                                     color: Color(0xFFA4A4A4),
@@ -782,18 +829,18 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                     SvgPicture.asset(
                                       'assets/images/home/item_comment.svg',
                                       width: Responsive.getWidth(context, 13),
-                                      height:
-                                      Responsive.getHeight(context, 12),
+                                      height: Responsive.getHeight(context, 12),
                                     ),
                                     Container(
                                       margin:
-                                      EdgeInsets.only(left: 2, bottom: 2),
+                                          EdgeInsets.only(left: 2, bottom: 2),
                                       child: Text(
                                         '49',
                                         style: TextStyle(
+                                          height: 1.2,
                                           fontFamily: 'Pretendard',
                                           fontSize:
-                                          Responsive.getFont(context, 12),
+                                              Responsive.getFont(context, 12),
                                           color: Color(0xFFA4A4A4),
                                         ),
                                       ),
@@ -840,11 +887,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 margin: const EdgeInsets.only(top: 25, bottom: 10),
                 child: Text('검색하신 결과가 없습니다.',
                     style: TextStyle(
+                        height: 1.2,
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 18),
                         fontWeight: FontWeight.bold))),
             Text('다른 내용으로 검색해보세요.',
                 style: TextStyle(
+                    height: 1.2,
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
                     color: Color(0xFFA4A4A4))),

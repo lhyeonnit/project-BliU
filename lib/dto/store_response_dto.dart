@@ -2,7 +2,7 @@ import 'package:BliU/data/store_data.dart';
 
 class StoreResponseDTO {
   final bool result;
-  final StoreData data;
+  StoreData data;
 
   StoreResponseDTO({
     required this.result,

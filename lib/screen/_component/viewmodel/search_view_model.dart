@@ -10,9 +10,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchModel {
   SearchResponseDTO? searchResponseDTO;
+  SearchMyListResponseDTO? searchMyListResponseDTO;
 
   SearchModel({
     this.searchResponseDTO,
+    this.searchMyListResponseDTO,
   });
 }
 
