@@ -19,6 +19,9 @@ class ProductOrderBottomOption extends ConsumerStatefulWidget {
 
   static void showBottomSheet(BuildContext context, ProductData productData) {
     showModalBottomSheet(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+        ),
         context: context,
         backgroundColor: Colors.white,
         isScrollControlled: true,
@@ -59,8 +62,7 @@ class ProductOrderBottomOptionContent extends ConsumerStatefulWidget {
       {super.key, required this.productData, required this.scrollController});
 
   @override
-  _ProductOrderBottomOptionContentState createState() =>
-      _ProductOrderBottomOptionContentState();
+  _ProductOrderBottomOptionContentState createState() => _ProductOrderBottomOptionContentState();
 }
 
 class _ProductOrderBottomOptionContentState
@@ -93,18 +95,18 @@ class _ProductOrderBottomOptionContentState
           children: [
             Center(
               child: Container(
-                margin: EdgeInsets.only(top: 20, bottom: 17),
+                margin: const EdgeInsets.only(top: 20, bottom: 17),
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Color(0xFFDDDDDD),
+                  color: const Color(0xFFDDDDDD),
                   borderRadius: BorderRadius.circular(3),
                 ),
               ),
             ),
             Expanded(
               child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 child: Column(
                   children: [
                     Container(
@@ -112,7 +114,7 @@ class _ProductOrderBottomOptionContentState
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ListView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,
                         itemCount: _ptOption.length,
                         // 리스트의 길이를 사용

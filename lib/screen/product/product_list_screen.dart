@@ -85,6 +85,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
 
   void _openSortBottomSheet() {
     showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+      ),
       context: context,
       builder: (context) {
         return ProductSortBottom(
@@ -102,6 +105,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
 
   void _openCategoryBottomSheet() {
     showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+      ),
       context: context,
       builder: (context) {
         return ProductCategoryBottom(
@@ -121,6 +127,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
 
   void _openFilterBottomSheet() {
     showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+      ),
       context: context,
       isScrollControlled: true,
       constraints: const BoxConstraints(maxHeight: 700, minHeight: 400),

@@ -228,8 +228,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 // _isAllSelected = false;
                               });
                             },
-                            icon:
-                                SvgPicture.asset('assets/images/ic_delet.svg'),
+                            icon: SvgPicture.asset('assets/images/ic_delet.svg'),
                             label: Text(
                               '전체삭제',
                               style: TextStyle(

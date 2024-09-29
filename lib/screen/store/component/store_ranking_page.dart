@@ -1,5 +1,4 @@
 import 'package:BliU/data/category_data.dart';
-import 'package:BliU/data/store_rank_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/store_detail_screen.dart';
@@ -36,6 +35,9 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
 
   void _showAgeGroupSelection() {
     showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+      ),
       context: context,
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
@@ -63,6 +65,9 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
 
   void _showStyleSelection() {
     showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+      ),
       context: context,
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
@@ -105,17 +110,16 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                     GestureDetector(
                       onTap: _showAgeGroupSelection,
                       child: Container(
-                        padding: EdgeInsets.only(
-                            left: 20, right: 17, top: 11, bottom: 11),
+                        padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(22),
-                          border: Border.all(color: Color(0xFFDDDDDD)),
+                          border: Border.all(color: const Color(0xFFDDDDDD)),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(right: 5),
+                              margin: const EdgeInsets.only(right: 5),
                               child: Text(
                                 getSelectedAgeGroupText(), // 선택된 연령대 표시
                                 overflow: TextOverflow.ellipsis,
@@ -139,21 +143,20 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                     GestureDetector(
                       onTap: _showStyleSelection,
                       child: Container(
-                        padding: EdgeInsets.only(
-                            left: 20, right: 17, top: 11, bottom: 11),
+                        padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(22),
-                          border: Border.all(color: Color(0xFFDDDDDD)),
+                          border: Border.all(color: const Color(0xFFDDDDDD)),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
-                              constraints: BoxConstraints(
+                              constraints: const BoxConstraints(
                                 minWidth: 0, // 최소 너비를 0으로 설정 (자유롭게 확장)
                                 maxWidth: 93, // 최대 너비를 93으로 설정
                               ),
-                              margin: EdgeInsets.only(right: 5),
+                              margin: const EdgeInsets.only(right: 5),
                               child: Text(
                                 getSelectedStyleText(), // 선택된 연령대 표시
                                 overflow: TextOverflow.ellipsis,
@@ -188,7 +191,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
+                            SizedBox(
                               height: Responsive.getHeight(context, 40),
                               child: GestureDetector(
                                 onTap: () {
@@ -207,7 +210,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(right: 10),
+                                      margin: const EdgeInsets.only(right: 10),
                                       width: Responsive.getWidth(context, 30),
                                       child: Center(
                                         child: Text(
@@ -223,90 +226,86 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                     ),
                                     Flexible(
                                       flex: 1,
-                                      child: Container(
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              height: 40,
-                                              width: 40,
-                                              margin: const EdgeInsets.only(
-                                                  right: 10),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(20)),
-                                                // 사진의 모서리 둥글게 설정
-                                                border: Border.all(
-                                                  color:
-                                                      const Color(0xFFDDDDDD),
-                                                  // 테두리 색상 설정
-                                                  width: 1.0, // 테두리 두께 설정
-                                                ),
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(20)),
-                                                // 사진의 모서리만 둥글게 설정
-                                                child: Image.network(
-                                                  rankData.stProfile ?? "",
-                                                  fit: BoxFit.contain,
-                                                ),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: 40,
+                                            width: 40,
+                                            margin: const EdgeInsets.only(
+                                                right: 10),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(20)),
+                                              // 사진의 모서리 둥글게 설정
+                                              border: Border.all(
+                                                color:
+                                                    const Color(0xFFDDDDDD),
+                                                // 테두리 색상 설정
+                                                width: 1.0, // 테두리 두께 설정
                                               ),
                                             ),
-                                            Container(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(20)),
+                                              // 사진의 모서리만 둥글게 설정
+                                              child: Image.network(
+                                                rankData.stProfile ?? "",
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                rankData.stName ?? "",
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(context, 14),
+                                                  height: 1.2,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              Row(
                                                 children: [
                                                   Text(
-                                                    rankData.stName ?? "",
+                                                    rankData.stStyleTxt?.split(',').first ?? "",
+                                                    // 쉼표로 분리 후 첫 번째 값만 가져옴
                                                     style: TextStyle(
                                                       fontFamily: 'Pretendard',
-                                                      fontSize: Responsive.getFont(context, 14),
+                                                      fontSize: Responsive.getFont(context, 13),
+                                                      color: const Color(0xFF7B7B7B),
                                                       height: 1.2,
                                                     ),
                                                     overflow: TextOverflow.ellipsis,
                                                   ),
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        rankData.stStyleTxt?.split(',').first ?? "",
-                                                        // 쉼표로 분리 후 첫 번째 값만 가져옴
-                                                        style: TextStyle(
-                                                          fontFamily: 'Pretendard',
-                                                          fontSize: Responsive.getFont(context, 13),
-                                                          color: const Color(0xFF7B7B7B),
-                                                          height: 1.2,
-                                                        ),
-                                                        overflow: TextOverflow.ellipsis,
-                                                      ),
-                                                      Text(
-                                                        ', ',
-                                                        style: TextStyle(
-                                                          fontFamily: 'Pretendard',
-                                                          fontSize: Responsive.getFont(context, 13),
-                                                          color: const Color(0xFF7B7B7B),
-                                                          height: 1.2,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        rankData.stAgeTxt ?? "",
-                                                        style: TextStyle(
-                                                          fontFamily: 'Pretendard',
-                                                          fontSize: Responsive.getFont(context, 13),
-                                                          color: const Color(0xFF7B7B7B),
-                                                          height: 1.2,
-                                                        ),
-                                                        overflow: TextOverflow.ellipsis,
-                                                      ),
-                                                    ],
+                                                  Text(
+                                                    ', ',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Pretendard',
+                                                      fontSize: Responsive.getFont(context, 13),
+                                                      color: const Color(0xFF7B7B7B),
+                                                      height: 1.2,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    rankData.stAgeTxt ?? "",
+                                                    style: TextStyle(
+                                                      fontFamily: 'Pretendard',
+                                                      fontSize: Responsive.getFont(context, 13),
+                                                      color: const Color(0xFF7B7B7B),
+                                                      height: 1.2,
+                                                    ),
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     Container(
@@ -393,7 +392,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                   ),
                                 );
                               },
-                              child: Container(
+                              child: SizedBox(
                                 height: 120,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,

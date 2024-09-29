@@ -18,6 +18,9 @@ class _StoreGroupSelectionState extends State<StoreGroupSelection> {
 
   void _openSortBottomSheet() {
     showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+      ),
       context: context,
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
@@ -36,6 +39,9 @@ class _StoreGroupSelectionState extends State<StoreGroupSelection> {
 
   void _showAgeGroupSelection() {
     // showModalBottomSheet(
+    //   shape: const RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+    //   ),
     //   context: context,
     //   backgroundColor: Colors.white,
     //   builder: (BuildContext context) {
