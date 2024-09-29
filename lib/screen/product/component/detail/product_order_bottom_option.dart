@@ -137,10 +137,14 @@ class _ProductOrderBottomOptionContentState
                         ? Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Theme(
-                              data: Theme.of(context)
-                                  .copyWith(dividerColor: Colors.transparent),
+                              data: Theme.of(context).copyWith(
+                                disabledColor: Colors.transparent,
+                                listTileTheme: ListTileTheme.of(context).copyWith(
+                                    dense: true, minVerticalPadding: 14
+                                ),
+                              ),
                               child: Container(
-                                margin: EdgeInsets.only(bottom: 15),
+                                margin: const EdgeInsets.only(bottom: 15),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: const BorderRadius.all(
@@ -529,7 +533,12 @@ class _ProductOrderBottomOptionContentState
     required Function(String) onSelected,
   }) {
     return Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      data: Theme.of(context).copyWith(
+        disabledColor: Colors.transparent,
+        listTileTheme: ListTileTheme.of(context).copyWith(
+          dense: true, minVerticalPadding: 14
+        ),
+      ),
       child: Container(
         margin: const EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
