@@ -149,6 +149,7 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
           style,
           style: TextStyle(
             fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 14),
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
             height: 1.2,
           ),
