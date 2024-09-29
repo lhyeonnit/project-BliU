@@ -89,25 +89,31 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                   itemBuilder: (context, index) {
                     final categoryData = categories[index];
                     final bool isSelectCategory = _selectedCategoryIndex == index;
-                    return ListTile(
-                      selectedColor: Colors.black,
-                      tileColor: isSelectCategory ? Colors.white : const Color(0xFFF5F9F9),
-                      selected: isSelectCategory,
-                      title: Text(
-                        categoryData.ctName ?? "",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 15),
-                          fontWeight: FontWeight.w600,
-                          height: 1.2,
+                    return Container(
+                      padding: const EdgeInsets.only(left: 16),
+                      height: 50,
+                      color: isSelectCategory ? Colors.white : const Color(0xFFF5F9F9),
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _selectedCategoryIndex = index;
+                          });
+                          _scrollController.scrollTo(index: index, duration: const Duration(milliseconds: 500));
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              categoryData.ctName ?? "",
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 15),
+                                fontWeight: FontWeight.w600,
+                                height: 1.2,
+                              ),
+                            )
+                          ],
                         ),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          _selectedCategoryIndex = index;
-                        });
-                        _scrollController.scrollTo(index: index, duration: const Duration(milliseconds: 500));
-                      },
+                      )
                     );
                   },
                 ),
@@ -143,7 +149,6 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
-                                    flex: 8,
                                     child: Row(
                                       children: [
                                         Container(
@@ -174,28 +179,20 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                       ],
                                     ),
                                   ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: SvgPicture.asset(
-                                      'assets/images/category/그룹 37778.svg'
-                                    )
-                                  ),
+                                  SvgPicture.asset(
+                                    'assets/images/category/그룹 37778.svg',
+                                    width: 26,
+                                    height: 26,
+                                  )
                                 ],
                               ),
                             ),
                           ),
                           // 하위 카테고리 목록
-                          ...subCategories.map((subCategory) => ListTile(
-                                minTileHeight: 0.1,
-                                title: Text(
-                                  subCategory.ctName ?? "",
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    height: 1.2,
-                                  ),
-                                ),
-                                trailing: SvgPicture.asset('assets/images/ic_link.svg'),
+                          ...subCategories.map((subCategory) =>
+                            Container(
+                              margin: const EdgeInsets.fromLTRB(20, 10, 16, 10),
+                              child: GestureDetector(
                                 onTap: () {
                                   // 하위 카테고리 선택 시 처리
                                   Navigator.push(
@@ -208,10 +205,31 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                     ),
                                   );
                                 },
-                              )),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        subCategory.ctName ?? "",
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    ),
+                                    SvgPicture.asset(
+                                      'assets/images/ic_link.svg',
+                                      width: 15,
+                                      height: 15,
+                                      color: Colors.black,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ),
                           Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 30, horizontal: 15),
+                            margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                             child: const Divider(
                                 color: Color(
                               0xFFEEEEEE,

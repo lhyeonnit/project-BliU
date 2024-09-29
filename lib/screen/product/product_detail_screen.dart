@@ -153,6 +153,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       // 인디케이터가 각 탭의 길이에 맞게 조정됨
                       labelColor: Colors.black,
                       unselectedLabelColor: const Color(0xFF7B7B7B),
+                      isScrollable: true, // here
+                      tabAlignment: TabAlignment.start, // ** Use TabAlignment.start
                       tabs: [
                         const Tab(text: '상세정보'),
                         Tab(text: '리뷰(${reviewInfo?.reviewCount ?? 0})'),
@@ -212,20 +214,17 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             width: 48,
                             margin: const EdgeInsets.only(right: 9),
                             decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(6)),
-                                border:
-                                    Border.all(color: const Color(0xFFDDDDDD))),
-                            child: SvgPicture.asset(
-                                'assets/images/product/like_lg_off.svg'),
+                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                              border: Border.all(color: const Color(0xFFDDDDDD))
+                            ),
+                            child: SvgPicture.asset('assets/images/product/like_lg_off.svg'),
                           ),
                         ),
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
                               if (product != null) {
-                                ProductOrderBottomOption.showBottomSheet(
-                                    context, product);
+                                ProductOrderBottomOption.showBottomSheet(context, product);
                               }
                             },
                             child: Container(

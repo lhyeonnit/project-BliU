@@ -47,7 +47,7 @@ class _ProductAiState extends State<ProductAi> {
               final productData = productList[index];
 
               return Padding(
-                padding: const EdgeInsets.only(left: 16.0),
+                padding: const EdgeInsets.only(left: 12.0),
                 child: SizedBox(
                   width: 160, // 가로 너비를 160으로 고정
                   child: Column(
@@ -56,12 +56,13 @@ class _ProductAiState extends State<ProductAi> {
                       Stack(
                         children: [
                           ClipRRect(
-                            borderRadius: const BorderRadius.all(
-                                Radius.circular(10)), // 사진의 모서리만 둥글게 설정
-                            child: Image.network(
-                              productData.ptImg ?? "",
-                              height: 160,
-                              fit: BoxFit.cover,
+                            borderRadius: const BorderRadius.all(Radius.circular(10)), // 사진의 모서리만 둥글게 설정
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Image.network(
+                                productData.ptImg ?? "",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                           Positioned(

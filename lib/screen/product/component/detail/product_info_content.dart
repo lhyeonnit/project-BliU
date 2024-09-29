@@ -30,7 +30,7 @@ class _ProductInfoContentState extends State<ProductInfoContent>
             AnimatedSize(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
-              child: !isExpanded
+              child: isExpanded
                   ? SizedBox(
                       height: 750,
                       child: Text(content),
@@ -48,7 +48,7 @@ class _ProductInfoContentState extends State<ProductInfoContent>
                 margin: const EdgeInsets.only(top: 10.0),
                 padding: const EdgeInsets.symmetric(vertical: 14.0),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xFFDDDDDD)),
+                  border: Border.all(color: const Color(0xFFDDDDDD)),
                   borderRadius: BorderRadius.circular(8.0),
                   color: Colors.white,
                 ),
