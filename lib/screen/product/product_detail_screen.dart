@@ -72,6 +72,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               Navigator.pop(context);
             },
           ),
+          titleSpacing: -1.0,
           actions: [
             IconButton(
               icon: SvgPicture.asset("assets/images/product/ic_top_sch.svg"),

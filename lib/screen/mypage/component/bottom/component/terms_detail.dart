@@ -38,6 +38,7 @@ class TermsDetail extends ConsumerWidget {
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
+        titleSpacing: -1.0,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
           child: Container(

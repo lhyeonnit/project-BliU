@@ -172,6 +172,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen>
             Navigator.pop(context);
           },
         ),
+        titleSpacing: -1.0,
         title: InkWell(
           onTap: _openCategoryBottomSheet, // Open the bottom sheet on tap
           child: Row(

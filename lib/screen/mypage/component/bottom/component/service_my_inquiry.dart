@@ -48,6 +48,7 @@ class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen>
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
+        titleSpacing: -1.0,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60 + 1.0), // TabBar 높이 + 구분선 두께
           child: Column(

@@ -85,6 +85,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
             _showCancelDialog(context);
           },
         ),
+        titleSpacing: -1.0,
         title: const Text("결제하기"),
         titleTextStyle: TextStyle(
           fontFamily: 'Pretendard',

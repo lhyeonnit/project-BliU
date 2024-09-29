@@ -314,6 +314,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
           onPressed: () => Navigator.pop(context),
         ),
+        titleSpacing: -1.0,
         title: SizedBox(
           width: double.infinity,
           height: 56,

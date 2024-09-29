@@ -45,6 +45,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
+        titleSpacing: -1.0,
         title: Text(exhibitionData?.etTitle ?? ""),
         titleTextStyle: TextStyle(
           fontFamily: 'Pretendard',

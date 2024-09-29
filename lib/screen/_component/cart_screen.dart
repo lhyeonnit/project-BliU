@@ -126,6 +126,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
             Navigator.pop(context); // 뒤로가기 동작
           },
         ),
+        titleSpacing: -1.0,
         title: const Text("장바구니"),
         titleTextStyle: TextStyle(
           fontFamily: 'Pretendard',
@@ -165,8 +166,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   children: [
                     // 전체선택 및 전체삭제 UI
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                       decoration: const BoxDecoration(
                         border: Border(
                           bottom: BorderSide(color: Color(0xFFEEEEEE)),
@@ -219,7 +219,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                               ),
                             ],
                           ),
-                          TextButton.icon(
+                          TextButton(
                             onPressed: () {
                               setState(() {
                                 // TODO 전체 삭제
@@ -228,15 +228,23 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 // _isAllSelected = false;
                               });
                             },
-                            icon: SvgPicture.asset('assets/images/ic_delet.svg'),
-                            label: Text(
-                              '전체삭제',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: Colors.black,
-                                height: 1.2,
-                              ),
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.zero
+                            ),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset('assets/images/ic_delet.svg'),
+                                const SizedBox(width: 5,),
+                                Text(
+                                  '전체삭제',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: Colors.black,
+                                    height: 1.2,
+                                  ),
+                                )
+                              ]
                             ),
                           ),
                         ],

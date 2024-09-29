@@ -93,11 +93,11 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                     ),
                     enabledBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(6)),
-                      borderSide: BorderSide(color: Colors.black),
+                      borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                     ),
                     focusedBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(6)),
-                      borderSide: BorderSide(color: Colors.black),
+                      borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                     ),
                   ),
                   onChanged: (value) {
@@ -163,11 +163,11 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                         color: const Color(0xFF595959)),
                     enabledBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(6)),
-                      borderSide: BorderSide(color: Colors.black),
+                      borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                     ),
                     focusedBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(6)),
-                      borderSide: BorderSide(color: Colors.black),
+                      borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                     ),
                   ),
                   onChanged: (value) {
@@ -236,7 +236,7 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 14, horizontal: 15),
-                              hintText: '주소를 검색해 주세요.',
+                              //hintText: '주소를 검색해 주세요.',
                               hintStyle: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
@@ -324,11 +324,11 @@ class _PaymentAddressInfoState extends State<PaymentAddressInfo> {
                           ),
                           enabledBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(6)),
-                            borderSide: BorderSide(color: Colors.black),
+                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                           ),
                           focusedBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(6)),
-                            borderSide: BorderSide(color: Colors.black),
+                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                           ),
                         ),
                         onChanged: (value) {

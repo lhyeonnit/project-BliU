@@ -67,6 +67,7 @@ class _ExchangeReturnDetailScreenState
             Navigator.pop(context);
           },
         ),
+        titleSpacing: -1.0,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
           child: Container(
