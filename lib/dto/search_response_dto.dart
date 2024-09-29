@@ -1,5 +1,3 @@
-
-import 'package:BliU/data/search_popular_data.dart';
 import 'package:BliU/data/search_product_data.dart';
 import 'package:BliU/data/search_store_data.dart';
 
@@ -16,10 +14,16 @@ class SearchResponseDTO {
 
   // JSON to Object
   factory SearchResponseDTO.fromJson(Map<String, dynamic> json) {
+    final storeSearch = List<SearchStoreData>.from((json['data']['store_search'])?.map((item) {
+      return SearchStoreData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+    final productSearch = List<SearchProductData>.from((json['data']['product_search'])?.map((item) {
+      return SearchProductData.fromJson(item as Map<String, dynamic>);
+    }).toList());
     return SearchResponseDTO(
       result: json['result'],
-      storeSearch: (json['data']['store_search']),
-      productSearch: (json['data']['product_search']),
+      storeSearch: storeSearch,
+      productSearch: productSearch,
     );
   }
 
