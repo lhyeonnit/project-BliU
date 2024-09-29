@@ -1,3 +1,4 @@
+import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/store_rank_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
@@ -28,32 +29,35 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
     });
   }
 
-  String selectedAgeGroup = '';
+  late List<CategoryData> ageCategories;
+  CategoryData? selectedAgeGroup;
   String selectedStyle = '';
   final ScrollController _scrollController = ScrollController();
 
   void _showAgeGroupSelection() {
-    // showModalBottomSheet(
-    //   context: context,
-    //   backgroundColor: Colors.white,
-    //   builder: (BuildContext context) {
-    //     return StoreAgeGroupSelection(
-    //       selectedAgeGroup: selectedAgeGroup,
-    //       onSelectionChanged: (String newSelection) {
-    //         setState(() {
-    //           selectedAgeGroup = newSelection;
-    //         });
-    //       },
-    //     );
-    //   },
-    // );
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) {
+        return StoreAgeGroupSelection(
+          ageCategories: ageCategories,
+          selectedAgeGroup: selectedAgeGroup,
+          onSelectionChanged: (CategoryData? newSelection) {
+            setState(() {
+              selectedAgeGroup = newSelection;
+              _getList(true);
+            });
+          },
+        );
+      },
+    );
   }
 
   String getSelectedAgeGroupText() {
-    if (selectedAgeGroup.isEmpty) {
+    if (selectedAgeGroup == null) {
       return '연령';
     } else {
-      return selectedAgeGroup;
+      return selectedAgeGroup?.catName ?? "";
     }
   }
 
@@ -459,7 +463,12 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
       'age': 1, // 예시로 연령대를 1로 설정
       'pg': 1, // 첫 페이지
     };
-
+    final ageCategoryResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getAgeCategory();
+    if (ageCategoryResponseDTO != null) {
+      if (ageCategoryResponseDTO.result == true) {
+        ageCategories = ageCategoryResponseDTO.list ?? [];
+      }
+    }
     await ref
         .read(storeLankListViewModelProvider.notifier)
         .getRank(requestData); // 서버에서 데이터 가져오기
