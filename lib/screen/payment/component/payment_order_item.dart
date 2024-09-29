@@ -37,8 +37,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
             children: [
               // 스토어 정보 (스토어명, 스토어 로고)
               Container(
-                margin: const EdgeInsets.only(
-                    right: 16, left: 16, bottom: 10, top: 20),
+                margin: const EdgeInsets.only(right: 16, left: 16, bottom: 10, top: 20),
                 height: 40,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +80,6 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
 
               // 각 상품 정보
               ...productList.map((pItem) {
-                //print("${pItem.toJson()}");
                 return Container(
                   margin: const EdgeInsets.only(bottom: 20),
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -96,10 +94,9 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                           borderRadius: BorderRadius.all(Radius.circular(6)),
                         ),
                         child: ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(6)),
-                          child: Image.asset(
-                            'assets/images/home/exhi.png', // 실제 이미지 경로
+                          borderRadius: const BorderRadius.all(Radius.circular(6)),
+                          child: Image.network(
+                            pItem.ptImg ?? "",
                             fit: BoxFit.cover,
                           ),
                         ),

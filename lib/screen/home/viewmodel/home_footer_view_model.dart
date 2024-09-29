@@ -15,11 +15,9 @@ class HomeFooterViewModel extends StateNotifier<HomeFooterModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  HomeFooterViewModel(super.state, this.ref){
-    getFoot();
-  }
+  HomeFooterViewModel(super.state, this.ref);
 
-  Future<void> getFoot() async {
+  Future<HomeFooterModel?> getFoot() async {
     final response = await repository.reqGet(url: Constant.apiFootUrl);
     try {
       if (response != null) {
@@ -27,14 +25,16 @@ class HomeFooterViewModel extends StateNotifier<HomeFooterModel?> {
           Map<String, dynamic> responseData = response.data;
           FootResponseDTO footResponseDTO = FootResponseDTO.fromJson(responseData);
           state = HomeFooterModel(footResponseDTO: footResponseDTO);
-          return;
+          return state;
         }
       }
       state = HomeFooterModel(footResponseDTO: FootResponseDTO(result: false, message: "Network Or Data Error"));
+      return state;
     } catch(e) {
       // Catch and log any exceptions
       print('Error request Api: $e');
       state = HomeFooterModel(footResponseDTO: FootResponseDTO(result: false, message: e.toString()));
+      return state;
     }
   }
 }

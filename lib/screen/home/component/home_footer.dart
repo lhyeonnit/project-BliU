@@ -5,35 +5,60 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class HomeFooter extends ConsumerWidget {
-  const HomeFooter({super.key});
+class HomeFooter extends ConsumerStatefulWidget {
+  const HomeFooter({ super.key });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    String footInfo = '회사명 : #####  |  대표 : ###\n'
-        '사업자등록번호 ############\n'
-        '제 통신판매업신고번호 : ###############\n'
-        '주소 : ####################';
+  HomeFooterState createState() => HomeFooterState();
+}
 
-    final model = ref.watch(footerViewModelProvider);
+class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderStateMixin {
+  bool isExpand = true;
+  String footInfo = '회사명 : #####  |  대표 : ###\n'
+      '사업자등록번호 ############\n'
+      '제 통신판매업신고번호 : ###############\n'
+      '주소 : ####################';
 
-    if (model?.footResponseDTO != null) {
-      if (model?.footResponseDTO?.result == true) {
-        var data = model?.footResponseDTO?.data;
-        if (data != null) {
-          footInfo =
-              '회사명 : ${data.stCompanyName}  |  대표 : ${data.stCompanyBoss}\n'
-              '사업자등록번호 ${data.stCompanyNum1}\n'
-              '제 통신판매업신고번호 : ${data.stCompanyNum2}\n'
-              '주소 : ${data.stCompanyAdd}';
+  late final AnimationController _controller = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this);
+
+  late final Animation<double> _animation = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.easeIn,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      ref.read(footerViewModelProvider.notifier).getFoot().then((model) {
+        //final model = ref.watch(footerViewModelProvider);
+
+        if (model?.footResponseDTO != null) {
+          if (model?.footResponseDTO?.result == true) {
+            var data = model?.footResponseDTO?.data;
+            if (data != null) {
+              setState(() {
+                footInfo =
+                '회사명 : ${data.stCompanyName}  |  대표 : ${data.stCompanyBoss}\n'
+                    '사업자등록번호 ${data.stCompanyNum1}\n'
+                    '제 통신판매업신고번호 : ${data.stCompanyNum2}\n'
+                    '주소 : ${data.stCompanyAdd}';
+              });
+            }
+          } else {
+            Future.delayed(Duration.zero, () {
+              Utils.getInstance().showSnackBar(context, model?.footResponseDTO?.message ?? "");
+            });
+          }
         }
-      } else {
-        Future.delayed(Duration.zero, () {
-          Utils.getInstance()
-              .showSnackBar(context, model?.footResponseDTO?.message ?? "");
-        });
-      }
-    }
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return Container(
       color: const Color(0xFFF5F9F9), // 배경 색상
@@ -60,8 +85,10 @@ class HomeFooter extends ConsumerWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: const BoxDecoration(
-                    border: Border.symmetric(
-                        vertical: BorderSide(color: Color(0xFFDDDDDD)))),
+                  border: Border.symmetric(
+                    vertical: BorderSide(color: Color(0xFFDDDDDD))
+                  )
+                ),
                 child: GestureDetector(
                   onTap: () {},
                   child: Text(
@@ -91,7 +118,9 @@ class HomeFooter extends ConsumerWidget {
           ),
           GestureDetector(
             onTap: () {
-              //  TODO 사업자 정보
+              setState(() {
+                isExpand = !isExpand;
+              });
             },
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 15),
@@ -110,21 +139,31 @@ class HomeFooter extends ConsumerWidget {
                   Container(
                     margin: const EdgeInsets.only(left: 5),
                     child: SvgPicture.asset(
-                        'assets/images/home/ft_collapse.svg',
-                        color: const Color(0xFF7B7B7B)),
+                        isExpand ? 'assets/images/home/ft_collapse.svg' : 'assets/images/home/filter_select.svg',
+                        color: const Color(0xFF7B7B7B)
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          Text(
-            footInfo,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Pretendard',
-              color: const Color(0xFF7B7B7B),
-              fontSize: Responsive.getFont(context, 12),
-              height: 1.2,
+          AnimatedSize(
+            duration: const Duration(milliseconds: 150),
+            curve: Curves.fastOutSlowIn,
+            child: Container(
+              child: !isExpand
+                  ? null
+                  :
+              Text(
+                footInfo,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  color: const Color(0xFF7B7B7B),
+                  fontSize: Responsive.getFont(context, 12),
+                  height: 1.2,
+                ),
+              ),
             ),
           ),
           Container(

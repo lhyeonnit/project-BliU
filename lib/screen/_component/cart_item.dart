@@ -76,10 +76,13 @@ class _CartItemState extends State<CartItem> {
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(6)),
               ),
-              child: Image.asset(
-                'assets/images/home/exhi.png', // 실제 이미지 경로로 변경
-                fit: BoxFit.contain,
-              ),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(6)),
+                child: Image.network(
+                  widget.item.ptImg ?? "",
+                  fit: BoxFit.cover,
+                ),
+              )
             ),
             SizedBox(width: Responsive.getWidth(context, 20)),
             Expanded(
