@@ -33,16 +33,16 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 20, top: 10),
+          margin: const EdgeInsets.only(bottom: 20, top: 10),
           height: 10,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color(0xFFF5F9F9),
           ),
         ),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Color(0xFFEEEEEE))),
           ),
           child: Text(
@@ -71,17 +71,20 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                 itemBuilder: (context, index) {
                   final qnaData = list[index];
 
+                  final qtStatus = qnaData.qtStatus;
+                  final myQna = qnaData.myQna;
+
                   return Container(
-                    margin: EdgeInsets.only(top: 20),
+                    margin: const EdgeInsets.only(top: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
                             children: [
                               Text(
-                                qnaData.qtStatus == "Y" ? '답변완료' : '미답변',
+                                qtStatus == "Y" ? '답변완료' : '미답변',
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
@@ -91,12 +94,12 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.only(left: 11, right: 10),
+                                margin: const EdgeInsets.only(left: 11, right: 10),
                                 child: Text(
-                                  '${qnaData.mtId.toString().substring(0, 2)}',
+                                  qnaData.mtId ?? "",
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
-                                    color: Color(0xFF7B7B7B),
+                                    color: const Color(0xFF7B7B7B),
                                     fontSize: Responsive.getFont(context, 12),
                                     height: 1.2,
                                   ),
@@ -105,7 +108,7 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                               Text('${qnaData.qtWdate}',
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
-                                  color: Color(0xFF7B7B7B),
+                                  color: const Color(0xFF7B7B7B),
                                   fontSize: Responsive.getFont(context, 12),
                                   height: 1.2,
                                 )
@@ -114,14 +117,13 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 12, right: 16, left: 16),
+                          margin: const EdgeInsets.only(top: 12, right: 16, left: 16),
                           child: Row(
                             children: [
-                              SvgPicture.asset(
-                                  'assets/images/product/ic_lock.svg'),
+                              myQna == "N" ? SvgPicture.asset('assets/images/product/ic_lock.svg') : const SizedBox(),
                               Expanded(
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 8),
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
                                   child: Text(
                                     qnaData.qtTitle ?? "",
                                     style: TextStyle(
@@ -137,9 +139,12 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                           ),
                         ),
                         Container(
-                            margin: EdgeInsets.only(top: 20),
-                            child: Divider(
-                                thickness: 1, color: Color(0xFFEEEEEE))),
+                          margin: const EdgeInsets.only(top: 20),
+                          child: const Divider(
+                            thickness: 1,
+                            color: Color(0xFFEEEEEE)
+                          )
+                        ),
                       ],
                     ),
                   );
@@ -155,22 +160,21 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        icon: SvgPicture.asset(
-                            'assets/images/product/pager_prev.svg'),
-                        onPressed: currentPage > 1
-                            ? () {
-                                setState(() {
-                                  currentPage--;
-                                });
-                              }
-                            : null,
+                        icon: SvgPicture.asset('assets/images/product/pager_prev.svg'),
+                        onPressed: () {
+                          if (currentPage > 1) {
+                            setState(() {
+                              currentPage--;
+                            });
+                          }
+                        }
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
                           children: [
                             Text(
-                              '${currentPage.toString().padLeft(2, '0')}',
+                              currentPage.toString().padLeft(2, '0'),
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 16),
@@ -183,7 +187,7 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 16),
-                                color: Color(0xFFCCCCCC),
+                                color: const Color(0xFFCCCCCC),
                                 fontWeight: FontWeight.w600,
                                 height: 1.2,
                               ),
@@ -192,15 +196,14 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                         ),
                       ),
                       IconButton(
-                        icon: SvgPicture.asset(
-                            'assets/images/product/pager_next.svg'),
-                        onPressed: currentPage < totalPages
-                            ? () {
-                                setState(() {
-                                  currentPage++;
-                                });
-                              }
-                            : null,
+                        icon: SvgPicture.asset('assets/images/product/pager_next.svg'),
+                        onPressed: () {
+                          if (currentPage < totalPages) {
+                            setState(() {
+                              currentPage++;
+                            });
+                          }
+                        }
                       ),
                     ],
                   ),

@@ -27,7 +27,6 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
   void initState() {
     super.initState();
     ptIdx = widget.ptIdx ?? 0;
-    ptIdx = 1;
     _getList(true);
   }
 

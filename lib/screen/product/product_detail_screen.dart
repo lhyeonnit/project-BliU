@@ -34,6 +34,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   void initState() {
     super.initState();
     ptIdx = widget.ptIdx ?? 0;
+    //ptIdx = 1;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -47,8 +48,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       if (model != null) {
         if (model.productDetailResponseDto?.result != true) {
           Future.delayed(Duration.zero, () {
-            Utils.getInstance().showSnackBar(
-                context, model.productDetailResponseDto?.message ?? "");
+            Utils.getInstance().showSnackBar(context, model.productDetailResponseDto?.message ?? "");
           });
           Navigator.pop(context);
           return const Scaffold();
@@ -264,6 +264,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   void _afterBuild(BuildContext context) {
     _getDetail();
+    _getReviewList();
   }
 
   void _getDetail() async {
@@ -276,5 +277,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     };
 
     ref.read(productDetailModelProvider.notifier).getDetail(requestData);
+
+  }
+  void _getReviewList() async {
+    Map<String, dynamic> requestData = {
+      'pt_idx': ptIdx,
+    };
+
+    ref.read(productDetailModelProvider.notifier).getReviewList(requestData);
   }
 }

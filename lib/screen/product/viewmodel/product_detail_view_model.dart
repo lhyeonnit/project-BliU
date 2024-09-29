@@ -64,7 +64,7 @@ class ProductDetailViewModel extends StateNotifier<ProductDetailModel?> {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
           ReviewInfoResponseDTO reviewInfoResponseDTO = ReviewInfoResponseDTO.fromJson(responseData);
-          state = ProductDetailModel(productDetailResponseDto: state?.productDetailResponseDto, reviewInfoResponseDTO: state?.reviewInfoResponseDTO);
+          state = ProductDetailModel(productDetailResponseDto: state?.productDetailResponseDto, reviewInfoResponseDTO: reviewInfoResponseDTO);
           return;
         }
       }
