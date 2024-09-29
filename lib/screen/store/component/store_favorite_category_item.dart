@@ -1,6 +1,7 @@
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/store_data.dart';
+import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:BliU/dto/store_response_dto.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:flutter/material.dart';
@@ -8,19 +9,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:BliU/utils/responsive.dart';
 
-class StoreCategoryItem extends ConsumerStatefulWidget {
-  final ProductData productData;
-  final String? storeStName;
-  final int count;
-
-  StoreCategoryItem({super.key, required this.productData, required this.storeStName, required this.count});
+class StoreFavoriteCategoryItem extends ConsumerStatefulWidget {
+  final int index;
+  final List<ProductListResponseDTO?> productList;
+  StoreFavoriteCategoryItem({super.key, required this.index, required this.productList});
 
   @override
-  _StoreCategoryItemState createState() => _StoreCategoryItemState();
+  _StoreFavoriteCategoryItemState createState() => _StoreFavoriteCategoryItemState();
 }
 
-class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
+class _StoreFavoriteCategoryItemState extends ConsumerState<StoreFavoriteCategoryItem>
     with TickerProviderStateMixin {
+  List<ProductData> pList = [];
+  int count = 0;
   @override
   void initState() {
     super.initState();
@@ -28,6 +29,12 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
 
   @override
   Widget build(BuildContext context) {
+    try {
+      pList = widget.productList[widget.index]?.list ?? [];
+      count = widget.productList[widget.index]?.count ?? 0;
+    } catch (e) {
+      print("e = ${e.toString()}");
+    }
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,7 +43,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
             margin: EdgeInsets.symmetric(vertical: 20),
             padding: const EdgeInsets.only(left: 16.0),
             child: Text(
-              '상품 ${widget.count}', // 상품 개수 텍스트
+              '상품 ${count}', // 상품 개수 텍스트
               style: TextStyle(
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
@@ -56,10 +63,10 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                 mainAxisSpacing: 30,
               ),
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: widget.count,
+              itemCount: count,
               itemBuilder: (context, index) {
-                final storeProduct = widget.productData;
-                if (index >= widget.count) {
+                final storeProduct = pList[index];
+                if (index >= count) {
                   return const Center(
                       child: CircularProgressIndicator()); // 추가 로딩 시 로딩 인디케이터
                 }
@@ -110,7 +117,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                       Container(
                         margin: const EdgeInsets.only(top: 10, bottom: 3),
                         child: Text(
-                          widget.storeStName ?? "",
+                          storeProduct.stName ?? "",
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 12),

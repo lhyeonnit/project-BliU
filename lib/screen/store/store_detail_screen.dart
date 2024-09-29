@@ -37,6 +37,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
         catIdx: null,
         catName: null)
   ];
+  List<ProductListResponseDTO?> productList = [];
 
   @override
   void initState() {
@@ -148,7 +149,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
     final mtIdx = pref.getMtIdx();
 
     // TODO 페이징 처리 필요
-    Map<String, dynamic> requestData = {'category_type': '1'};
+    Map<String, dynamic> requestData = {'category_type': '2'};
     final categoryResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getCategory(requestData);
     if (categoryResponseDTO != null) {
       if (categoryResponseDTO.result == true) {
@@ -169,7 +170,17 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
             'category': category,
             'pg': 1,
           };
-          await ref.read(StoreProductViewModelProvider.notifier).getList(requestData);
+          await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
+          final productListResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getProductList(requestData);
+          if (productListResponseDTO != null) {
+            if (productListResponseDTO.result == true) {
+              productList.add(productListResponseDTO);
+            } else {
+              productList.add(null);
+            }
+          } else {
+            productList.add(null);
+          }
         }
 
         setState(() {

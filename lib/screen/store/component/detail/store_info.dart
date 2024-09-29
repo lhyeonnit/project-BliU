@@ -1,5 +1,4 @@
 import 'package:BliU/data/store_data.dart';
-import 'package:BliU/screen/store/component/detail/coupon_download.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -193,7 +192,9 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             margin: EdgeInsets.only(bottom: 15),
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                // TODO coupon download
+              },
               child: Container(
                 width: double.infinity,
                 height: 44,
