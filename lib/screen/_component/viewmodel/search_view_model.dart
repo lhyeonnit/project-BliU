@@ -1,8 +1,7 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
-import 'package:BliU/dto/cart_response_dto.dart';
 import 'package:BliU/dto/default_response_dto.dart';
-import 'package:BliU/dto/pay_order_detail_dto.dart';
+import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:BliU/dto/search_my_response_dto.dart';
 import 'package:BliU/dto/search_popular_response_dto.dart';
 import 'package:BliU/dto/search_response_dto.dart';
@@ -10,11 +9,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchModel {
   SearchResponseDTO? searchResponseDTO;
-  SearchMyListResponseDTO? searchMyListResponseDTO;
 
   SearchModel({
     this.searchResponseDTO,
-    this.searchMyListResponseDTO,
   });
 }
 
@@ -49,7 +46,8 @@ class SearchViewModel extends StateNotifier<SearchModel?> {
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
-          return SearchMyListResponseDTO.fromJson(responseData);
+          SearchMyListResponseDTO searchMyListResponseDTO = SearchMyListResponseDTO.fromJson(responseData);
+          return searchMyListResponseDTO;
         }
       }
       return null;
@@ -88,6 +86,23 @@ class SearchViewModel extends StateNotifier<SearchModel?> {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
           return DefaultResponseDTO.fromJson(responseData);
+        }
+      }
+      return null;
+    } catch (e) {
+      // Catch and log any exceptions
+      print('Error fetching : $e');
+      return null;
+    }
+  }
+  Future<ProductListResponseDTO?> getList(Map<String, dynamic> requestData) async {
+    try {
+      final response = await repository.reqPost(url: Constant.apiMainAiListUrl, data: requestData);
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseData = response.data;
+          ProductListResponseDTO productListResponseDTO = ProductListResponseDTO.fromJson(responseData);
+          return productListResponseDTO;
         }
       }
       return null;
