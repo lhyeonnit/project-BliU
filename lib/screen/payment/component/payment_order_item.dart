@@ -31,8 +31,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
       children: [
         ...selectedItems.map((item) {
           final productList = item.productList ?? [];
-          print("test11 ====> ${productList.length}");
-
+          bool isLast = (selectedItems.length - 1) == selectedItems.indexOf(item);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -81,7 +80,8 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
               ),
 
               // 각 상품 정보
-              ...productList.map((item) {
+              ...productList.map((pItem) {
+                //print("${pItem.toJson()}");
                 return Container(
                   margin: const EdgeInsets.only(bottom: 20),
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -109,7 +109,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              item.ptTitle ?? "", // 상품 이름
+                              pItem.ptName ?? "", // 상품 이름
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
@@ -120,12 +120,11 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Container(
-                              margin:
-                                  const EdgeInsets.only(top: 10, bottom: 15),
+                              margin: const EdgeInsets.only(top: 10, bottom: 15),
                               child: Row(
                                 children: [
                                   Text(
-                                    item.ptOption ?? "", // 아이템 설명
+                                    pItem.ptOption ?? "", // 아이템 설명
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 13),
@@ -134,7 +133,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                                     ),
                                   ),
                                   Text(
-                                    ' ${item.ptCount ?? 0}개', // 수량
+                                    ' ${pItem.ptCount ?? 0}개', // 수량
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 13),
@@ -146,7 +145,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                               ),
                             ),
                             Text(
-                              '${Utils.getInstance().priceString(item.ptPrice ?? 0)}원', // 가격 정보
+                              '${Utils.getInstance().priceString(pItem.ptPrice ?? 0)}원', // 가격 정보
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 16),
@@ -161,9 +160,12 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                   ),
                 );
               }),
-              const Divider(
-                thickness: 1,
-                color: Color(0xFFEEEEEE),
+              Visibility(
+                visible: !isLast,
+                child: const Divider(
+                  thickness: 1,
+                  color: Color(0xFFEEEEEE),
+                ),
               ),
             ],
           );

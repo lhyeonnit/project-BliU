@@ -49,28 +49,32 @@ class PaymentMoney extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildInfoRow('상품 금액',
-              '${Utils.getInstance().priceString(totalAmount)}원', context),
+          _buildInfoRow('상품 금액', '${Utils.getInstance().priceString(totalAmount)}원', context),
           Container(
-              margin: const EdgeInsets.symmetric(vertical: 15),
-              child: _buildInfoRow(
-                  '배송비',
-                  '${Utils.getInstance().priceString(shippingCost)}원',
-                  context)),
+            margin: const EdgeInsets.symmetric(vertical: 15),
+            child: _buildInfoRow(
+              '배송비',
+              '${Utils.getInstance().priceString(shippingCost)}원',
+              context
+            )
+          ),
           Container(
-              margin: const EdgeInsets.only(bottom: 15),
-              child: _buildInfoRow(
-                  '할인금액',
-                  couponDiscount != 0
-                      ? '- ${Utils.getInstance().priceString(couponDiscount)}원'
-                      : '${Utils.getInstance().priceString(couponDiscount)}원', // 0이 아니면 '-' 추가
-                  context)),
+            margin: const EdgeInsets.only(bottom: 15),
+            child: _buildInfoRow(
+              '할인금액',
+              couponDiscount != 0
+                  ? '- ${Utils.getInstance().priceString(couponDiscount)}원'
+                  : '${Utils.getInstance().priceString(couponDiscount)}원', // 0이 아니면 '-' 추가
+              context
+            )
+          ),
           _buildInfoRow(
-              '포인트할인',
-              pointsDiscount != 0
-                  ? '- ${Utils.getInstance().priceString(pointsDiscount)}원'
-                  : '${Utils.getInstance().priceString(pointsDiscount)}원', // 0이 아니면 '-' 추가
-              context),
+            '포인트할인',
+            pointsDiscount != 0
+                ? '- ${Utils.getInstance().priceString(pointsDiscount)}원'
+                : '${Utils.getInstance().priceString(pointsDiscount)}원', // 0이 아니면 '-' 추가
+            context
+          ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: const Divider(

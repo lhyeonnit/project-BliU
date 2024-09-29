@@ -56,7 +56,8 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                 style: TextStyle(
                   fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 13),
-                  fontWeight: FontWeight.normal,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
                   height: 1.2,
                 ),
               ),
@@ -98,7 +99,8 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(_couponText,
+                  Text(
+                    _couponText,
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
@@ -120,7 +122,8 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                   style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 13),
-                    fontWeight: FontWeight.normal,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
                     height: 1.2,
                   ),
               ),

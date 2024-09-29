@@ -130,12 +130,12 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                   width: double.infinity,
                   color: const Color(0xFFF5F9F9),
                 ),
-                Theme(
-                  data: Theme.of(context)
-                      .copyWith(dividerColor: Colors.transparent),
+                ListTileTheme(
+                  horizontalTitleGap: 0,
                   child: ExpansionTile(
+                    initiallyExpanded: true,
                     title: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 19.5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -182,7 +182,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: 10),
                               Text(
                                 '다음에도 이 배송지 사용',
                                 style: TextStyle(
@@ -569,8 +569,9 @@ class CustomExpansionTile extends StatelessWidget {
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
+        initiallyExpanded: true,
         title: Container(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 19.5),
           child: Text(
             title,
             style: TextStyle(
