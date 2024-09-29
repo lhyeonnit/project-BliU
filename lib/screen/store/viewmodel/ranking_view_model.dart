@@ -2,6 +2,7 @@ import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/data/store_data.dart';
 import 'package:BliU/data/store_rank_data.dart';
+import 'package:BliU/dto/category_response_dto.dart';
 import 'package:BliU/dto/store_rank_response_dto.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,6 +43,23 @@ class RankingViewModel extends StateNotifier<RankingModel?> {
       // Catch and log any exceptions
       print('Error fetching : $e');
       state = state;
+    }
+  }
+  Future<CategoryResponseDTO?> getAgeCategory() async {
+    final response = await repository.reqGet(url: Constant.apiCategoryAgeUrl);
+    try {
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseData = response.data;
+          CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.fromJson(responseData);
+          return categoryResponseDTO;
+        }
+      }
+      return null;
+    } catch(e) {
+      // Catch and log any exceptions
+      print('Error request Api: $e');
+      return null;
     }
   }
 }

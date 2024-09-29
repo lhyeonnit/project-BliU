@@ -2,8 +2,9 @@ import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/data/bookmark_data.dart';
 import 'package:BliU/dto/bookmark_response_dto.dart';
+import 'package:BliU/dto/category_response_dto.dart';
+import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class StoreFavoriteModel {
@@ -20,35 +21,75 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
 
   StoreFavoriteViewModel(super.state, this.ref);
 
-  /// 북마크 목록 초기화 및 가져오기
-  Future<void> getBookmark(Map<String, dynamic> requestData) async {
+  Future<CategoryResponseDTO?> getCategory(Map<String, dynamic> requestData) async {
+    final response = await repository.reqPost(url: Constant.apiMainCategoryUrl, data: requestData);
     try {
-      final response = await repository.reqPost(
-        url: Constant.apiStoreBookMarkUrl,
-        data: requestData,
-      );
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
-          BookmarkResponseDTO bookmarkResponseDTO =
-              BookmarkResponseDTO.fromJson(responseData);
-
-          List<BookmarkData> list = bookmarkResponseDTO.list ?? [];
-
-          bookmarkResponseDTO.list = list;
-
-          state = StoreFavoriteModel(bookmarkResponseDTO: bookmarkResponseDTO);
-          return;
+          CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.fromJson(responseData);
+          return categoryResponseDTO;
         }
       }
-      state = state;
+      return null;
+    } catch(e) {
+      // Catch and log any exceptions
+      print('Error request Api: $e');
+      return null;
+    }
+  }
+  /// 북마크 목록 초기화 및 가져오기
+  Future<BookmarkResponseDTO?> getBookmark(Map<String, dynamic> requestData) async {
+    final response = await repository.reqPost(url: Constant.apiStoreBookMarkUrl, data: requestData);
+    try {
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseData = response.data;
+          BookmarkResponseDTO bookmarkResponseDTO = BookmarkResponseDTO.fromJson(responseData);
+          return bookmarkResponseDTO;
+        }
+      }
+      return null;
+    } catch(e) {
+      // Catch and log any exceptions
+      print('Error request Api: $e');
+      return null;
+    }
+  }
+  Future<CategoryResponseDTO?> getAgeCategory() async {
+    final response = await repository.reqGet(url: Constant.apiCategoryAgeUrl);
+    try {
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseData = response.data;
+          CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.fromJson(responseData);
+          return categoryResponseDTO;
+        }
+      }
+      return null;
+    } catch(e) {
+      // Catch and log any exceptions
+      print('Error request Api: $e');
+      return null;
+    }
+  }
+  Future<ProductListResponseDTO?> getProductList(Map<String, dynamic> requestData) async {
+    try {
+      final response = await repository.reqPost(url: Constant.apiStoreProductsUrl, data: requestData);
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseData = response.data;
+          ProductListResponseDTO productListResponseDTO = ProductListResponseDTO.fromJson(responseData);
+          return productListResponseDTO;
+        }
+      }
+      return null;
     } catch (e) {
       // Catch and log any exceptions
       print('Error fetching : $e');
-      state = state;
+      return null;
     }
   }
-
   /// 북마크 상태를 토글하는 메서드
   Future<void> toggleLike(Map<String, dynamic> requestData) async {
     try {
