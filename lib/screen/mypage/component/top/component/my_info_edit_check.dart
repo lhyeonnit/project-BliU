@@ -1,20 +1,27 @@
 import 'package:BliU/screen/mypage/component/top/my_info_edit_screen.dart';
+import 'package:BliU/screen/mypage/viewmodel/my_info_edit_check_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
-class MyInfoEditCheck extends StatelessWidget {
-  const MyInfoEditCheck({super.key});
+class MyInfoEditCheck extends ConsumerWidget {
+  final TextEditingController _passwordController = TextEditingController();
+
+  MyInfoEditCheck({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        title: Text('내정보수정'),
+        title: const Text('내정보수정'),
         titleTextStyle: TextStyle(
           fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
@@ -30,13 +37,13 @@ class MyInfoEditCheck extends StatelessWidget {
         ),
         titleSpacing: -1.0,
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
           child: Container(
-            color: Color(0xFFF4F4F4), // 하단 구분선 색상
+            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
             height: 1.0, // 구분선의 두께 설정
             child: Container(
               height: 1.0, // 그림자 부분의 높이
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     color: Color(0xFFF4F4F4),
@@ -52,8 +59,8 @@ class MyInfoEditCheck extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16.0),
-            padding: EdgeInsets.only(top: 40),
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.only(top: 40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -67,12 +74,12 @@ class MyInfoEditCheck extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 8, bottom: 30),
+                  margin: const EdgeInsets.only(top: 8, bottom: 30),
                   child: Text(
                     '본인 확인을 위해 한 번 더 비밀번호를 \n입력해주세요',
                     style: TextStyle(
                       fontFamily: 'Pretendard',
-                      color: Color(0xFF7B7B7B),
+                      color: const Color(0xFF7B7B7B),
                       fontSize: Responsive.getFont(context, 14),
                       height: 1.2,
                     ),
@@ -90,13 +97,13 @@ class MyInfoEditCheck extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 4),
+                      margin: const EdgeInsets.only(left: 4),
                       child: Text(
                         '*',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
-                          color: Color(0xFFFF6192),
+                          color: const Color(0xFFFF6192),
                           height: 1.2,
                         ),
                       ),
@@ -104,7 +111,7 @@ class MyInfoEditCheck extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10),
+                  margin: const EdgeInsets.only(top: 10),
                   child: TextField(
                     obscureText: true,
                     // 비밀번호 입력을 위해 텍스트 숨김
@@ -113,21 +120,20 @@ class MyInfoEditCheck extends StatelessWidget {
                       fontSize: Responsive.getFont(context, 14),
                     ),
                     enabled: true,
-                    controller: TextEditingController(),
-                    keyboardType: TextInputType.numberWithOptions(),
+                    controller: _passwordController,
                     decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '비밀번호 입력',
                       hintStyle: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Color(0xFF595959)),
-                      enabledBorder: OutlineInputBorder(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        color: const Color(0xFF595959)
+                      ),
+                      enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         borderSide: BorderSide(color: Colors.black),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         borderSide: BorderSide(color: Colors.black),
                       ),
@@ -143,18 +149,13 @@ class MyInfoEditCheck extends StatelessWidget {
             right: 0,
             child: GestureDetector(
               onTap: () {
-                // TODO 비밀번호 확인 필요
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyInfoEditScreen()),
-                );
+                _passwordCheck(context, ref);
               },
               child: Container(
                 width: double.infinity,
                 height: Responsive.getHeight(context, 48),
-                margin:
-                    EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
-                decoration: BoxDecoration(
+                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                decoration: const BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.all(
                     Radius.circular(6),
@@ -177,5 +178,32 @@ class MyInfoEditCheck extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _passwordCheck(BuildContext context, WidgetRef ref) async {
+    String password = _passwordController.text;
+    if (password.isEmpty) {
+      Utils.getInstance().showSnackBar(context, "비밀번호를 입력해 주세요.");
+      return;
+    }
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    Map<String, dynamic> requestData = {
+      'mt_idx' : mtIdx,
+      'password' : password,
+    };
+
+    final defaultResponseDTO = await ref.read(myInfoEditCheckViewModelProvider.notifier).passwordCheck(requestData);
+    if (defaultResponseDTO != null) {
+      if (defaultResponseDTO.result == true) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MyInfoEditScreen()),
+        );
+      } else {
+          Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+      }
+    }
   }
 }

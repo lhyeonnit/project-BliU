@@ -118,7 +118,7 @@ class MyScreen extends ConsumerWidget {
                 ? TopScreen() // 로그인된 상태
                 : NonTopScreen(), // 비회원/비로그인 상태
             Container(
-              margin: EdgeInsets.only(top: 20, bottom: 30),
+              margin: const EdgeInsets.only(top: 20, bottom: 30),
               width: double.infinity,
               color: const Color(0xFFF5F9F9), // 색상 적용
               height: 10,
@@ -129,7 +129,8 @@ class MyScreen extends ConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const RecommendEdit()),
+                        builder: (context) => const RecommendEdit()
+                      ),
                     );
                   })
                 : _buildSectionItem(context, '주문 내역 보기', () {
@@ -244,7 +245,7 @@ class MyScreen extends ConsumerWidget {
       onTap: onPressed,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        margin: EdgeInsets.only(bottom: 20),
+        margin: const EdgeInsets.only(bottom: 20),
         // 최소한의 간격으로 조절 가능
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

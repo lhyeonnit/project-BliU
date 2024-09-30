@@ -14,6 +14,7 @@ class TopScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    
     return Consumer(
       builder: (context, ref, widget) {
         final model = ref.watch(myModelProvider);
@@ -24,8 +25,7 @@ class TopScreen extends ConsumerWidget {
         if (model != null) {
           if (model.memberInfoResponseDTO?.result == true) {
             myRevieCount = model.memberInfoResponseDTO?.data?.myRevieCount ?? 0;
-            myCouponCount =
-                model.memberInfoResponseDTO?.data?.myCouponCount ?? 0;
+            myCouponCount = model.memberInfoResponseDTO?.data?.myCouponCount ?? 0;
             myPoint = model.memberInfoResponseDTO?.data?.myPoint ?? 0;
           }
         }
@@ -34,10 +34,11 @@ class TopScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                margin: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                child: MyInfo(
-                  memberInfoData: model?.memberInfoResponseDTO?.data,
-                )),
+              margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+              child: MyInfo(
+                memberInfoData: model?.memberInfoResponseDTO?.data,
+              )
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
