@@ -1,12 +1,11 @@
 import 'package:BliU/data/review_data.dart';
+import 'package:BliU/screen/product/component/detail/product_review_detail.dart';
+import 'package:BliU/screen/product/component/detail/report_page.dart';
 import 'package:BliU/screen/product/viewmodel/product_review_list_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import 'product_review_detail.dart';
-import 'report_page.dart';
 
 class ProductReview extends ConsumerStatefulWidget {
   final int? ptIdx;
@@ -14,21 +13,22 @@ class ProductReview extends ConsumerStatefulWidget {
   const ProductReview({super.key, required this.ptIdx});
 
   @override
-  _ProductReviewState createState() => _ProductReviewState();
+  ConsumerState<ProductReview> createState() => _ProductReviewState();
 }
 
 class _ProductReviewState extends ConsumerState<ProductReview> {
   late int ptIdx;
 
-  // TODO 페이징 처리 필요
   int currentPage = 1;
-  int totalPages = 10;
+  int totalPages = 1;
 
   @override
   void initState() {
     super.initState();
     ptIdx = widget.ptIdx ?? 0;
-    _getList(true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
   }
 
   Widget _ratingTotalStars(double rating) {
@@ -94,6 +94,23 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
       List<ReviewData> list = model?.reviewInfoResponseDTO?.list ?? [];
       final starAvg = model?.reviewInfoResponseDTO?.reviewInfo?.startAvg ?? "0.0";
       final reviewCount = model?.reviewInfoResponseDTO?.reviewInfo?.reviewCount ?? 0;
+
+      if (reviewCount > 0) {
+        totalPages = (reviewCount~/10);
+        if ((reviewCount%10) > 0) {
+          totalPages = totalPages + 1;
+        }
+      }
+
+      String currentPageStr = currentPage.toString();
+      if (currentPage < 10) {
+        currentPageStr = "0$currentPage";
+      }
+
+      String totalPagesStr = totalPages.toString();
+      if (totalPages < 10) {
+        totalPagesStr = "0$totalPages";
+      }
 
       return Container(
         margin: const EdgeInsets.only(bottom: 80),
@@ -245,8 +262,7 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                         children: reviewImages.map((imagePath) {
                           return Expanded(
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 4.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 4.0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
                                 child: Image.network(
@@ -260,68 +276,71 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                         }).toList(),
                       ),
                     ),
-
                     Container(
-                        margin: const EdgeInsets.symmetric(vertical: 20),
-                        child: const Divider(thickness: 1, color: Color(0xFFEEEEEE))),
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      child: const Divider(thickness: 1, color: Color(0xFFEEEEEE))
+                    ),
                   ],
                 ),
               );
             }),
 
             // 페이지네이션
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon:
-                      SvgPicture.asset('assets/images/product/pager_prev.svg'),
-                  onPressed: currentPage > 1
-                      ? () {
-                          setState(() {
-                            currentPage--;
-                          });
-                        }
-                      : null,
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    children: [
-                      Text(
-                        currentPage.toString().padLeft(2, '0'),
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 16),
-                          fontWeight: FontWeight.w600,
-                          height: 1.2,
-                        ),
-                      ),
-                      Text(
-                        ' / $totalPages',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 16),
-                          color: const Color(0xFFCCCCCC),
-                          fontWeight: FontWeight.w600,
-                          height: 1.2,
-                        ),
-                      ),
-                    ],
+            Visibility(
+              visible: reviewCount == 0 ? false : true,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: SvgPicture.asset('assets/images/product/pager_prev.svg'),
+                    onPressed: () {
+                      if (currentPage > 1) {
+                        setState(() {
+                          currentPage--;
+                          _getList();
+                        });
+                      }
+                    }
                   ),
-                ),
-                IconButton(
-                  icon:
-                      SvgPicture.asset('assets/images/product/pager_next.svg'),
-                  onPressed: currentPage < totalPages
-                      ? () {
-                          setState(() {
-                            currentPage++;
-                          });
-                        }
-                      : null,
-                ),
-              ],
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: [
+                        Text(
+                          currentPageStr,
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 16),
+                            fontWeight: FontWeight.w600,
+                            height: 1.2,
+                          ),
+                        ),
+                        Text(
+                          ' / $totalPagesStr',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 16),
+                            color: const Color(0xFFCCCCCC),
+                            fontWeight: FontWeight.w600,
+                            height: 1.2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: SvgPicture.asset('assets/images/product/pager_next.svg'),
+                    onPressed: () {
+                      if (currentPage < totalPages) {
+                        setState(() {
+                          currentPage++;
+                          _getList();
+                        });
+                      }
+                    }
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -329,15 +348,16 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
     });
   }
 
-  void _getList(bool isNew) async {
-    // TODO 페이징 필요
+  void _afterBuild(BuildContext context) {
+    _getList();
+  }
+
+  void _getList() async {
     Map<String, dynamic> requestData = {
       'pt_idx': ptIdx,
-      'pg': 1,
+      'pg': currentPage,
     };
-    if (isNew) {
-      ref.read(productReviewListModelProvider)?.reviewInfoResponseDTO?.list?.clear();
-    }
+    ref.read(productReviewListModelProvider)?.reviewInfoResponseDTO?.list?.clear();
     ref.read(productReviewListModelProvider.notifier).getList(requestData);
   }
 }

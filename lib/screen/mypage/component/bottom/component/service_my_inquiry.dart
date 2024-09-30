@@ -8,11 +8,10 @@ class ServiceMyInquiryScreen extends StatefulWidget {
   const ServiceMyInquiryScreen({super.key});
 
   @override
-  _ServiceMyInquiryScreenState createState() => _ServiceMyInquiryScreenState();
+  State<ServiceMyInquiryScreen> createState() => _ServiceMyInquiryScreenState();
 }
 
-class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen>
-    with SingleTickerProviderStateMixin {
+class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override

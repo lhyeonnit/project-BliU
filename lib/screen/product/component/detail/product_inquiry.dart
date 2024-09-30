@@ -11,19 +11,21 @@ class ProductInquiry extends ConsumerStatefulWidget {
   const ProductInquiry({super.key, required this.ptIdx});
 
   @override
-  _ProductInquiryState createState() => _ProductInquiryState();
+  ConsumerState<ProductInquiry> createState() => _ProductInquiryState();
 }
 
 class _ProductInquiryState extends ConsumerState<ProductInquiry> {
   late int ptIdx;
   int currentPage = 1;
-  int totalPages = 10;
+  int totalPages = 1;
 
   @override
   void initState() {
     super.initState();
     ptIdx = widget.ptIdx ?? 0;
-    _getList(true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
   }
 
   @override
@@ -57,6 +59,24 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
         Consumer(builder: (context, ref, widget) {
           final model = ref.watch(productInquiryModelProvider);
           final list = model?.qnaListResponseDTO?.list ?? [];
+          final count = model?.qnaListResponseDTO?.count ?? 0;
+
+          if (count > 0) {
+            totalPages = (count~/10);
+            if ((count%10) > 0) {
+              totalPages = totalPages + 1;
+            }
+          }
+
+          String currentPageStr = currentPage.toString();
+          if (currentPage < 10) {
+            currentPageStr = "0$currentPage";
+          }
+
+          String totalPagesStr = totalPages.toString();
+          if (totalPages < 10) {
+            totalPagesStr = "0$totalPages";
+          }
 
           return Column(
             children: [
@@ -150,61 +170,65 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
                 },
               ),
 
-              // TODO 페이징 처리 필요
-              Container(
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: SvgPicture.asset('assets/images/product/pager_prev.svg'),
-                        onPressed: () {
-                          if (currentPage > 1) {
-                            setState(() {
-                              currentPage--;
-                            });
+              Visibility(
+                visible: count == 0 ? false : true,
+                child: Container(
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: SvgPicture.asset('assets/images/product/pager_prev.svg'),
+                          onPressed: () {
+                            if (currentPage > 1) {
+                              setState(() {
+                                currentPage--;
+                                _getList();
+                              });
+                            }
                           }
-                        }
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
-                            Text(
-                              currentPage.toString().padLeft(2, '0'),
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 16),
-                                fontWeight: FontWeight.w600,
-                                height: 1.2,
-                              ),
-                            ),
-                            Text(
-                              ' / $totalPages',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 16),
-                                color: const Color(0xFFCCCCCC),
-                                fontWeight: FontWeight.w600,
-                                height: 1.2,
-                              ),
-                            ),
-                          ],
                         ),
-                      ),
-                      IconButton(
-                        icon: SvgPicture.asset('assets/images/product/pager_next.svg'),
-                        onPressed: () {
-                          if (currentPage < totalPages) {
-                            setState(() {
-                              currentPage++;
-                            });
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              Text(
+                                currentPageStr,
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 16),
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                ),
+                              ),
+                              Text(
+                                ' / $totalPagesStr',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 16),
+                                  color: const Color(0xFFCCCCCC),
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          icon: SvgPicture.asset('assets/images/product/pager_next.svg'),
+                          onPressed: () {
+                            if (currentPage < totalPages) {
+                              setState(() {
+                                currentPage++;
+                                _getList();
+                              });
+                            }
                           }
-                        }
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -215,15 +239,18 @@ class _ProductInquiryState extends ConsumerState<ProductInquiry> {
     );
   }
 
-  void _getList(bool isNew) async {
-    // TODO 페이징 처리
+  void _afterBuild(BuildContext context) {
+    _getList();
+  }
+
+  void _getList() async {
     final pref = await SharedPreferencesManager.getInstance();
     Map<String, dynamic> requestData = {
       'mt_idx': pref.getMtIdx(),
       'pt_idx': ptIdx,
-      'pg': 1,
+      'pg': currentPage,
     };
-
+    ref.read(productInquiryModelProvider)?.qnaListResponseDTO?.list?.clear();
     ref.read(productInquiryModelProvider.notifier).getList(requestData);
   }
 }
