@@ -84,9 +84,7 @@ class _MyReviewEditState extends ConsumerState<MyReviewEdit> {
 
       final fileList = (_currentImages + _selectedImages);
       final List<MultipartFile> files = fileList.map((img) => MultipartFile.fromFileSync(img.path, contentType: DioMediaType("image", "jpg"))).toList();
-      // for (var file in files) {
-      //   print("test11 ${file.contentType} ==== ${file.filename}");
-      // }
+
       final formData = FormData.fromMap({
         'mt_idx': mtIdx,
         'rt_idx': widget.reviewData.rtIdx,

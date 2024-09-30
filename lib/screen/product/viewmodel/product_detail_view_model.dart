@@ -73,8 +73,6 @@ class ProductDetailViewModel extends StateNotifier<ProductDetailModel?> {
           reviewInfoResponseDTO: ReviewInfoResponseDTO(
               result: false,
               message: "Network Or Data Error",
-              reviewInfo: null,
-              list: null,
           )
       );
     } catch (e) {
@@ -83,10 +81,8 @@ class ProductDetailViewModel extends StateNotifier<ProductDetailModel?> {
       state = ProductDetailModel(
           productDetailResponseDto: state?.productDetailResponseDto,
           reviewInfoResponseDTO: ReviewInfoResponseDTO(
-              result: false,
-              message: e.toString(),
-            reviewInfo: null,
-            list: null,
+            result: false,
+            message: e.toString(),
           )
       );
     }

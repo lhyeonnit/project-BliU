@@ -251,7 +251,8 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                           final result = await Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MyReviewEdit(reviewData: _reviewData!,)),
+                                builder: (context) => MyReviewEdit(reviewData: _reviewData!,)
+                            ),
                           );
                           if (result == true) {
                             _getDetail();

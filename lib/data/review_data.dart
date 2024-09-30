@@ -6,6 +6,11 @@ class ReviewData {
   final String? rtContent;
   final String? rtWdate;
   final List<String>? imgArr;
+  final String? rtImg;
+  final String? stName;
+  final String? ptName;
+  final String? ctOptName;
+  final String? ctOptValue;
 
   ReviewData({
     required this.myReview,
@@ -15,6 +20,11 @@ class ReviewData {
     required this.rtContent,
     required this.rtWdate,
     required this.imgArr,
+    required this.rtImg,
+    required this.stName,
+    required this.ptName,
+    required this.ctOptName,
+    required this.ctOptValue,
   });
 
   // JSON to Object
@@ -31,6 +41,11 @@ class ReviewData {
       rtContent: json['rt_content'],
       rtWdate: json['rt_wdate'],
       imgArr: imgArr,
+      rtImg: json['rt_img'],
+      stName: json['st_name'],
+      ptName: json['pt_name'],
+      ctOptName: json['ct_opt_name'],
+      ctOptValue: json['ct_opt_value'],
     );
   }
 
@@ -44,6 +59,11 @@ class ReviewData {
       'rt_content': rtContent,
       'rt_wdate': rtWdate,
       'img_arr': imgArr,
+      'rt_img': rtImg,
+      'st_name': stName,
+      'pt_name': ptName,
+      'ct_opt_name': ctOptName,
+      'ct_opt_value': ctOptValue,
     };
   }
 }
