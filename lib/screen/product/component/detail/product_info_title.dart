@@ -15,7 +15,7 @@ class ProductInfoTitle extends StatefulWidget {
       {super.key, required this.storeData, required this.productData});
 
   @override
-  _ProductInfoTitleState createState() => _ProductInfoTitleState();
+  State<ProductInfoTitle> createState() => _ProductInfoTitleState();
 }
 
 class _ProductInfoTitleState extends State<ProductInfoTitle> {
@@ -44,7 +44,8 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const StoreDetailScreen()),
+                      builder: (context) => const StoreDetailScreen()
+                    ),
                   );
                 },
                 child: Container(
@@ -52,13 +53,15 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xFFDDDDDD)),
-                      shape: BoxShape.circle, // 이미지를 동그랗게 만들기
-                      image: DecorationImage(
-                          image: NetworkImage(
-                            widget.storeData?.stProfile ?? "",
-                          ),
-                          fit: BoxFit.cover)),
+                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                    shape: BoxShape.circle, // 이미지를 동그랗게 만들기
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        widget.storeData?.stProfile ?? "",
+                      ),
+                      fit: BoxFit.cover
+                    )
+                  ),
                 ),
               ),
               // 나머지 텍스트와 공유 버튼을 포함한 컬럼

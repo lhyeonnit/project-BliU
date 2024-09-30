@@ -10,7 +10,7 @@ class ProductAi extends StatefulWidget {
   const ProductAi({super.key, required this.productList});
 
   @override
-  _ProductAiState createState() => _ProductAiState();
+  State<ProductAi> createState() => _ProductAiState();
 }
 
 class _ProductAiState extends State<ProductAi> {

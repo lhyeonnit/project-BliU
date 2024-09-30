@@ -7,7 +7,7 @@ class ProductBanner extends StatefulWidget {
   const ProductBanner({super.key, required this.imgArr});
 
   @override
-  _ProductBannerState createState() => _ProductBannerState();
+  State<ProductBanner> createState() => _ProductBannerState();
 }
 
 class _ProductBannerState extends State<ProductBanner> {

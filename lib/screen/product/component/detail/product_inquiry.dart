@@ -7,7 +7,6 @@ import 'package:flutter_svg/svg.dart';
 
 class ProductInquiry extends ConsumerStatefulWidget {
   final int? ptIdx;
-
   const ProductInquiry({super.key, required this.ptIdx});
 
   @override

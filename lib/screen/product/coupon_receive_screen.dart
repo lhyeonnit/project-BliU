@@ -14,7 +14,7 @@ class CouponReceiveScreen extends ConsumerStatefulWidget {
   const CouponReceiveScreen({super.key, required this.ptIdx});
 
   @override
-  _CouponReceiveScreenState createState() => _CouponReceiveScreenState();
+  ConsumerState<CouponReceiveScreen> createState() => _CouponReceiveScreenState();
 }
 
 class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
@@ -81,8 +81,7 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
                 Expanded(
                   child: Consumer(builder: (context, ref, widget) {
                     final model = ref.watch(couponReceiveModelProvider);
-                    List<ProductCouponData> list =
-                        model?.productCouponResponseDTO?.list ?? [];
+                    List<ProductCouponData> list = model?.productCouponResponseDTO?.list ?? [];
                     // TODO 전체다운 받아지는지 확인
                     // setState(() {
                     //   //isAllDownload = true;
@@ -93,17 +92,13 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
                       itemBuilder: (context, index) {
                         final productCouponData = list[index];
 
-                        final couponDiscount =
-                            productCouponData.couponDiscount ?? "0";
+                        final couponDiscount = productCouponData.couponDiscount ?? "0";
                         final ctName = productCouponData.ctName ?? "";
-                        final ctDate =
-                            "${productCouponData.ctDate ?? ""}까지 사용가능";
+                        final ctDate = "${productCouponData.ctDate ?? ""}까지 사용가능";
 
-                        String detailMessage =
-                            "구매금액 ${Utils.getInstance().priceString(productCouponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
+                        String detailMessage = "구매금액 ${Utils.getInstance().priceString(productCouponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
                         if (productCouponData.ctMaxPrice != null) {
-                          detailMessage =
-                              "최대 ${Utils.getInstance().priceString(productCouponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
+                          detailMessage = "최대 ${Utils.getInstance().priceString(productCouponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
                         }
 
                         return CouponCard(
@@ -111,8 +106,7 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
                           title: ctName,
                           expiryDate: ctDate,
                           discountDetails: detailMessage,
-                          isDownloaded:
-                              productCouponData.down == "Y" ? true : false,
+                          isDownloaded: productCouponData.down == "Y" ? true : false,
                           // 상태 전달
                           onDownload: () {
                             setState(() {
@@ -140,8 +134,7 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
               child: Container(
                 width: double.infinity,
                 height: Responsive.getHeight(context, 48),
-                margin: const EdgeInsets.only(
-                    right: 16.0, left: 16, top: 8, bottom: 9),
+                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
                 decoration: BoxDecoration(
                   color: isAllDownload
                       ? const Color(0xFFDDDDDD) // 모든 쿠폰이 다운로드된 경우 회색으로 비활성화

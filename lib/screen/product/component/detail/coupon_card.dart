@@ -1,4 +1,6 @@
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/vertical_dashed_divider.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -23,7 +25,7 @@ class CouponCard extends StatefulWidget {
   });
 
   @override
-  _CouponCardState createState() => _CouponCardState();
+  State<CouponCard> createState() => _CouponCardState();
 }
 
 class _CouponCardState extends State<CouponCard> {
@@ -36,7 +38,8 @@ class _CouponCardState extends State<CouponCard> {
       margin: const EdgeInsets.only(bottom: 15.0),
       decoration: BoxDecoration(
         border: Border.all(
-            style: BorderStyle.solid, color: const Color(0xFFDDDDDD)),
+          style: BorderStyle.solid, color: const Color(0xFFDDDDDD)
+        ),
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: IntrinsicHeight(
@@ -44,8 +47,7 @@ class _CouponCardState extends State<CouponCard> {
           children: [
             Expanded(
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
+                padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -101,20 +103,27 @@ class _CouponCardState extends State<CouponCard> {
                 ),
               ),
             ),
+            const DottedLine(
+              dashColor: Color(0xFFDDDDDD),
+              direction: Axis.vertical,
+              lineLength: 135,
+            ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              decoration: const BoxDecoration(
-                border: Border(left: BorderSide(color: Color(0xFFDDDDDD))),
-              ),
+              // decoration: const BoxDecoration(
+              //   border: Border(
+              //     left: BorderSide(
+              //       color: Color(0xFFDDDDDD)
+              //     )
+              //   ),
+              // ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
                     onTap: isDownloaded ? null : widget.onDownload,
                     child: SvgPicture.asset(
-                      isDownloaded
-                          ? 'assets/images/store/ic_cu_down_end.svg'
-                          : 'assets/images/store/ic_cu_down.svg',
+                      isDownloaded ? 'assets/images/store/ic_cu_down_end.svg' : 'assets/images/store/ic_cu_down.svg',
                     ),
                   ),
                   if (isDownloaded) // 다운로드된 경우에만 텍스트 표시
