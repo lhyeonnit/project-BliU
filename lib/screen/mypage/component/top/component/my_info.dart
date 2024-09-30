@@ -18,7 +18,7 @@ class MyInfo extends StatelessWidget {
             child: Container(
           width: 70,
           height: 70,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
             color: Color(0xFFFFE4DF),
           ),
@@ -26,8 +26,8 @@ class MyInfo extends StatelessWidget {
         )),
         Expanded(
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            padding: EdgeInsets.only(top: 15),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.only(top: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -45,7 +45,7 @@ class MyInfo extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF7B7B7B),
+                    color: const Color(0xFF7B7B7B),
                     height: 1.2,
                   ),
                 ),
@@ -58,34 +58,27 @@ class MyInfo extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const MyInfoEditCheck(),
+                builder: (context) => MyInfoEditCheck(),
               ),
             );
-
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => LoginScreen(),
-            //   ),
-            // );
           },
           child: Container(
-              margin: EdgeInsets.only(top: 20),
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                border: Border.all(color: Color(0xFFDDDDDD)),
+            margin: const EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(color: const Color(0xFFDDDDDD)),
+            ),
+            child: Text(
+              '내정보수정',
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                color: Colors.black,
+                fontSize: Responsive.getFont(context, 12),
+                height: 1.2,
               ),
-              child: Text(
-                '내정보수정',
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    color: Colors.black,
-                    fontSize: Responsive.getFont(context, 12),
-                    height: 1.2,
-                  ),
-                )
-              ),
+            )
+          ),
         ),
       ],
     );
