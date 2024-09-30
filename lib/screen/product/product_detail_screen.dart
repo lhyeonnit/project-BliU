@@ -1,7 +1,14 @@
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
+import 'package:BliU/screen/product/component/detail/product_ai.dart';
+import 'package:BliU/screen/product/component/detail/product_banner.dart';
+import 'package:BliU/screen/product/component/detail/product_info_before_order.dart';
 import 'package:BliU/screen/product/component/detail/product_info_content.dart';
+import 'package:BliU/screen/product/component/detail/product_info_title.dart';
+import 'package:BliU/screen/product/component/detail/product_inquiry.dart';
+import 'package:BliU/screen/product/component/detail/product_order_bottom_option.dart';
+import 'package:BliU/screen/product/component/detail/product_review_list.dart';
 import 'package:BliU/screen/product/viewmodel/product_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -9,13 +16,6 @@ import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'component/detail/product_ai.dart';
-import 'component/detail/product_banner.dart';
-import 'component/detail/product_info_before_order.dart';
-import 'component/detail/product_info_title.dart';
-import 'component/detail/product_inquiry.dart';
-import 'component/detail/product_order_bottom_option.dart';
-import 'component/detail/product_review_list.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final int? ptIdx;
@@ -23,7 +23,7 @@ class ProductDetailScreen extends ConsumerStatefulWidget {
   const ProductDetailScreen({super.key, required this.ptIdx});
 
   @override
-  _ProductDetailScreenState createState() => _ProductDetailScreenState();
+  ConsumerState<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }
 
 class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
@@ -34,7 +34,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   void initState() {
     super.initState();
     ptIdx = widget.ptIdx ?? 0;
-    //ptIdx = 1;
+    ptIdx = 1;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });

@@ -1,12 +1,9 @@
-import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
-import 'package:BliU/data/store_data.dart';
-import 'package:BliU/dto/store_response_dto.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:BliU/utils/responsive.dart';
 
 class StoreCategoryItem extends ConsumerStatefulWidget {
   final List<ProductData> productData;

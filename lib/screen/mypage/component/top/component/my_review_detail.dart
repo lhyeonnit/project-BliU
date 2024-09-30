@@ -1,4 +1,3 @@
-import 'package:BliU/screen/mypage/component/top/component/my_review_edit.dart';
 import 'package:BliU/screen/mypage/component/top/review_write_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';

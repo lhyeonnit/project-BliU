@@ -2,15 +2,15 @@ import 'dart:convert';
 import 'package:BliU/data/cart_data.dart';
 import 'package:BliU/data/cart_item_data.dart';
 import 'package:BliU/data/coupon_data.dart';
+import 'package:BliU/data/iamport_pay_data.dart';
 import 'package:BliU/data/pay_order_detail_data.dart';
-import 'package:BliU/data/payment_data.dart';
 import 'package:BliU/dto/pay_order_result_detail_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/payment/component/payment_address_info.dart';
 import 'package:BliU/screen/payment/component/payment_discount.dart';
+import 'package:BliU/screen/payment/component/payment_iamport.dart';
 import 'package:BliU/screen/payment/component/payment_money.dart';
 import 'package:BliU/screen/payment/component/payment_order_item.dart';
-import 'package:BliU/screen/payment/component/payment_toss.dart';
 import 'package:BliU/screen/payment/payment_complete_screen.dart';
 import 'package:BliU/screen/payment/viewmodel/payment_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -18,7 +18,6 @@ import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:tosspayments_widget_sdk_flutter/model/tosspayments_result.dart';
 
 class PaymentScreen extends ConsumerStatefulWidget {
   final PayOrderDetailData payOrderDetailData;
@@ -445,26 +444,27 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
         }
 
         // TODO 고객 정보 설정 (여기서는 고정값 사용) 고객정보 가져오기 필요
-        String customerKey = "unique_customer_key";
-        String customerName = "고객 이름";
+        //String customerKey = "unique_customer_key";
+        //String customerName = "고객 이름";
 
-        final paymentData = PaymentData(
-          customerKey: customerKey,
-          orderId: payOrderDetailData.otCode ?? "",
-          amount: totalAmount,
-          taxFreeAmount: taxFreeAmount,
-          orderName: orderName,
-          customerName: customerName,
+        IamportPayData iamportPayData = IamportPayData(
+            name: orderName,
+            merchantUid: payOrderDetailData.otCode ?? "",
+            amount: totalAmount,
+            buyerName: "",
+            buyerTel: "",
+            buyerEmail: "",
+            buyerAddr: "",
+            buyerPostcode: ""
         );
 
-        final Map<String, dynamic>? paymentResult = await Navigator.push(
+        final Map<String, String>? paymentResult = await Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => PaymentToss(
-                    paymentData: paymentData,
+              builder: (context) => PaymentIamport(
+                    iamportPayData : iamportPayData,
                   )),
         );
-        print("test1 ${paymentResult}");
         if (paymentResult != null) {
           // if (paymentResult['result'] == true) {
           //   final Success success = paymentResult["successData"];
@@ -474,14 +474,13 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
           //   Utils.getInstance().showSnackBar(context, paymentResult["errorMessage"]);
           // }
           // TODO 일단 무조건 통과하게 변경
-          _paymentComplete(payOrderDetailData, null);
+          _paymentComplete(payOrderDetailData);
         }
       }
     }
   }
 
-  void _paymentComplete(
-      PayOrderDetailData payOrderDetailData, Success? success) async {
+  void _paymentComplete(PayOrderDetailData payOrderDetailData) async {
     // TODO 결제 결과값 전달?
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();

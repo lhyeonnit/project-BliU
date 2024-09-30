@@ -1,6 +1,5 @@
 import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/utils/responsive.dart';
-import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

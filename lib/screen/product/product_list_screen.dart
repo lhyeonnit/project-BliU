@@ -9,9 +9,10 @@ import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'component/list/product_category_bottom.dart';
 import 'component/list/product_filter_bottom.dart';
 import 'component/list/product_list_card.dart';
-import 'component/list/product_category_bottom.dart';
 import 'component/list/product_sort_bottom.dart';
 
 class ProductListScreen extends ConsumerStatefulWidget {

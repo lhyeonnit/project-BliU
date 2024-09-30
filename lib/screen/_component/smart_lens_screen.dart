@@ -1,6 +1,4 @@
 //스마트 렌즈
-import 'dart:typed_data';
-
 import 'package:BliU/screen/_component/grid_photo.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';

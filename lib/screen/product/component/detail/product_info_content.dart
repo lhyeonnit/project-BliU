@@ -7,11 +7,10 @@ class ProductInfoContent extends StatefulWidget {
   const ProductInfoContent({super.key, required this.content});
 
   @override
-  _ProductInfoContentState createState() => _ProductInfoContentState();
+  State<ProductInfoContent> createState() => _ProductInfoContentState();
 }
 
-class _ProductInfoContentState extends State<ProductInfoContent>
-    with TickerProviderStateMixin {
+class _ProductInfoContentState extends State<ProductInfoContent> with TickerProviderStateMixin {
   bool isExpanded = false;
   late String content;
 

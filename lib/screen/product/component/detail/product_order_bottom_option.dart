@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:BliU/data/add_option_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/product_option_data.dart';
@@ -42,12 +43,10 @@ class ProductOrderBottomOption extends ConsumerStatefulWidget {
   }
 
   @override
-  _ProductOrderBottomOptionState createState() =>
-      _ProductOrderBottomOptionState();
+  ConsumerState<ProductOrderBottomOption> createState() => _ProductOrderBottomOptionState();
 }
 
-class _ProductOrderBottomOptionState
-    extends ConsumerState<ProductOrderBottomOption> {
+class _ProductOrderBottomOptionState extends ConsumerState<ProductOrderBottomOption> {
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
@@ -62,11 +61,10 @@ class ProductOrderBottomOptionContent extends ConsumerStatefulWidget {
       {super.key, required this.productData, required this.scrollController});
 
   @override
-  _ProductOrderBottomOptionContentState createState() => _ProductOrderBottomOptionContentState();
+  ConsumerState<ProductOrderBottomOptionContent> createState() => _ProductOrderBottomOptionContentState();
 }
 
-class _ProductOrderBottomOptionContentState
-    extends ConsumerState<ProductOrderBottomOptionContent> {
+class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBottomOptionContent> {
   late ProductData _productData;
   ProductOptionData? _productOptionData;
   List<ProductOptionTypeData> _ptOption = [];
@@ -124,7 +122,6 @@ class _ProductOrderBottomOptionContentState
                             title: _ptOption[index].title ?? "",
                             options: _ptOption[index].children ?? [],
                             onSelected: (value) {
-                              print("size =- ${value}");
                               _ptOption[index].selectedValue = value;
                               _selectOptionCheck();
                               _isOptionSelected = true;
@@ -173,7 +170,6 @@ class _ProductOrderBottomOptionContentState
                                       ),
                                       onTap: () {
                                         // TODO 선택시
-                                        print("ptAdd ${ptAdd.option}");
                                         if (_addPtAddArr.isEmpty) {
                                           setState(() {
                                             _addPtAddArr.add(ptAdd);
@@ -212,7 +208,7 @@ class _ProductOrderBottomOptionContentState
                       child: ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: _addPtOptionArr.length,
                           // 리스트의 길이를 사용
                           itemBuilder: (context, index) {
@@ -355,7 +351,7 @@ class _ProductOrderBottomOptionContentState
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: _addPtAddArr.length,
                         // 리스트의 길이를 사용
                         itemBuilder: (context, index) {
@@ -623,38 +619,52 @@ class _ProductOrderBottomOptionContentState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildPriceRow(
-              '상품금액', '${Utils.getInstance().priceString(totalPrice)}원'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '상품금액',
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                ),
+              ),
+              Text(
+                '${Utils.getInstance().priceString(totalPrice)}원',
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  fontWeight: FontWeight.bold,
+                  height: 1.2,
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 15),
-          _buildPriceRow('배송비', deliveryPriceStr),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '배송비',
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                ),
+              ),
+              Text(
+                deliveryPriceStr,
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                ),
+              ),
+            ],
+          )
         ],
       ),
-    );
-  }
-
-  // 가격 Row
-  Widget _buildPriceRow(String title, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontFamily: 'Pretendard',
-            fontSize: Responsive.getFont(context, 14),
-            height: 1.2,
-          ),
-        ),
-        Text(
-          value,
-          style: TextStyle(
-            fontFamily: 'Pretendard',
-            fontSize: Responsive.getFont(context, 14),
-            fontWeight: FontWeight.bold,
-            height: 1.2,
-          ),
-        ),
-      ],
     );
   }
 
@@ -808,9 +818,7 @@ class _ProductOrderBottomOptionContentState
       'addProducts': json.encode(addProducts),
     };
 
-    final responseDto = await ref
-        .read(productOrderBottomOptionModelProvider.notifier)
-        .addCart(requestData);
+    final responseDto = await ref.read(productOrderBottomOptionModelProvider.notifier).addCart(requestData);
     if (responseDto != null) {
       Utils.getInstance().showToast(responseDto.message ?? "");
       if (responseDto.result == true) {
@@ -821,22 +829,22 @@ class _ProductOrderBottomOptionContentState
           builder: (context) {
             return Dialog(
               backgroundColor: Colors.white,
+              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 350,
                 alignment: Alignment.center,
-                padding: EdgeInsets.all(30),
+                padding: const EdgeInsets.all(30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
                       width: 90,
                       height: 90,
-                      decoration: BoxDecoration(
-                          color: Color(0xFFF5F9F9), shape: BoxShape.circle),
+                      decoration: const BoxDecoration(color: Color(0xFFF5F9F9), shape: BoxShape.circle),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: 30),
+                      margin: const EdgeInsets.symmetric(vertical: 30),
                       child: Text(
                         '장바구니에 상품을 담았습니다.',
                         style: TextStyle(

@@ -1,6 +1,7 @@
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'component/event_list.dart';
 import 'component/notice_list.dart';
 

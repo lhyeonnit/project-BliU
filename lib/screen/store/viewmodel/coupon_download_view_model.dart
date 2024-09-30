@@ -1,6 +1,5 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
-import 'package:BliU/dto/product_coupon_response_dto.dart';
 import 'package:BliU/dto/store_download_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

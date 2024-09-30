@@ -4,8 +4,9 @@ import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
+
 import '../../../../../utils/responsive.dart';
 
 class ExchangeItem extends StatefulWidget {

@@ -28,41 +28,40 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                 ),
               ),
               Positioned(
-                  left: 110,
-                  top: 15,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '구매 전 필수 확인',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 16),
-                          fontWeight: FontWeight.bold,
-                          height: 1.2,
-                        ),
+                left: 110,
+                top: 15,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '구매 전 필수 확인',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 16),
+                        fontWeight: FontWeight.bold,
+                        height: 1.2,
                       ),
-                      Text(
-                        '만족스러운 쇼핑을 위해 구매 전에 꼼꼼히 \n살펴보세요.',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 12),
-                          color: const Color(0xFF6A5B54),
-                          height: 1.2,
-                        ),
+                    ),
+                    Text(
+                      '만족스러운 쇼핑을 위해 구매 전에 꼼꼼히 \n살펴보세요.',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 12),
+                        color: const Color(0xFF6A5B54),
+                        height: 1.2,
                       ),
-                    ],
-                  )),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
           // 배송 안내 섹션
           Container(
-            margin: EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.only(top: 20),
             child: Theme(
-              data:
-                  Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
               // 선 제거
-
               child: ExpansionTile(
                 title: Text(
                   '배송안내',
@@ -78,7 +77,7 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color(0xFFF5F9F9),
+                        color: const Color(0xFFF5F9F9),
                         borderRadius: BorderRadius.circular(6.0),
                       ),
                       padding: const EdgeInsets.all(16.0),
@@ -121,7 +120,7 @@ class ProductInfoBeforeOrder extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Color(0xFFF5F9F9),
+                      color: const Color(0xFFF5F9F9),
                       borderRadius: BorderRadius.circular(6.0),
                     ),
                     padding: const EdgeInsets.all(16.0),

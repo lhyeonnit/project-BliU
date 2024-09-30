@@ -2,7 +2,6 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'find_password_screen.dart';
 import 'login_screen.dart';
 
 class FindIdOverlapScreen extends StatelessWidget {
