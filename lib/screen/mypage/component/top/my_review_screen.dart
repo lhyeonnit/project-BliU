@@ -72,8 +72,9 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
             child: Text(
               '작성한 리뷰 0',
               style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14)),
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 14)
+              ),
             ),
           ),
           Container(

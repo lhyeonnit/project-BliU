@@ -64,16 +64,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final searchList = await ref.read(searchModelProvider.notifier).getSearchList(requestSearchData);
     setState(() {
         searchStoreData = searchList?.storeSearch ?? [];
-            // ?.where((store) => store.stName?.toLowerCase().contains(searchTxt) ?? false)
-            // .toList() ?? [];
-
         searchProductData = searchList?.productSearch ?? [];
-            // ?.where((product) => product.ptName?.toLowerCase().contains(searchTxt) ?? false)
-            // .toList() ?? [];
-
         // 상점 및 상품 필터링 결과를 합쳐서 _filteredResults에 저장
         _filteredResults = <dynamic>[...searchProductData, ...searchStoreData];
-        _isSearching = true;
     });
   }
 
@@ -119,8 +112,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       }
 
       if (!context.mounted) return;
-      Utils.getInstance()
-          .showSnackBar(context, defaultResponseDTO.message ?? "");
+      Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     }
     setState(() {
       searchMyList.clear();
@@ -145,8 +137,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       }
 
       if (!context.mounted) return;
-      Utils.getInstance()
-          .showSnackBar(context, defaultResponseDTO.message ?? "");
+      Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     }
     setState(() {
       searchMyList.clear();
@@ -174,26 +165,32 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           ),
         ));
       }
-      spans.add(TextSpan(
-        text: text.substring(indexOfHighlight, indexOfHighlight + query.length),
-        style: TextStyle(
+      spans.add(
+        TextSpan(
+          text: text.substring(indexOfHighlight, indexOfHighlight + query.length),
+          style: TextStyle(
             height: 1.2,
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
-            color: Color(0xFFFF6192)),
-      ));
+            color: const Color(0xFFFF6192)
+          ),
+        )
+      );
       start = indexOfHighlight + query.length;
     }
 
     if (start < text.length) {
-      spans.add(TextSpan(
-        text: text.substring(start),
-        style: TextStyle(
+      spans.add(
+        TextSpan(
+          text: text.substring(start),
+          style: TextStyle(
             height: 1.2,
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
-            color: Colors.black),
-      ));
+            color: Colors.black
+          ),
+        )
+      );
     }
 
     return RichText(
@@ -300,18 +297,24 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             ),
                             suffixIconConstraints: BoxConstraints.tight(const Size(24, 24)),
                           ),
-                          onChanged: (value) => {
+                          onChanged: (value) {
                             if (value.isEmpty) {
                               setState(() {
                                 _isSearching = false;
-                                //_isFirst = true;
-                              })
+                                _isFirst = true;
+                              });
                             } else {
-                              _getList()
+                              setState(() {
+                                _isSearching = true;
+                                _isFirst = false;
+                              });
+                              _getList();
                             }
                           },
                           // 검색 중인 상태
-                          onSubmitted: (value) => _searchAction(), // 검색 완료 시
+                          onSubmitted: (value) {
+                            _searchAction();
+                          }, // 검색 완료 시
                         ),
                       ),
                       Padding(
@@ -457,8 +460,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                   backgroundColor: Colors.white,
                   deleteIcon: SvgPicture.asset(
-                      'assets/images/product/filter_del.svg',
-                      color: Color(0xFFACACAC)),
+                    'assets/images/product/filter_del.svg',
+                    color: const Color(0xFFACACAC)
+                  ),
                   onDeleted: () {
                     setState(() {
                       _searchMyDel(stIdx); // 삭제 기능
@@ -501,7 +505,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   Widget _buildPopularSearches() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
