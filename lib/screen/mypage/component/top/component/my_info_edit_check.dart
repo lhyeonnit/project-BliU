@@ -6,7 +6,6 @@ import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 class MyInfoEditCheck extends ConsumerWidget {
   final TextEditingController _passwordController = TextEditingController();

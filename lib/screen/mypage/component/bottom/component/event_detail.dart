@@ -1,4 +1,3 @@
-import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/viewmodel/event_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';

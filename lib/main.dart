@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:BliU/data/fcm_data.dart';
 import 'package:BliU/screen/common/on_boarding_screen.dart';
-import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/utils/navigation_service.dart';
 import 'package:BliU/utils/permission_manager.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -14,8 +13,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'screen/login/new_password_screen.dart';
 
 String? _fcmToken;
 FcmData? _fcmData;

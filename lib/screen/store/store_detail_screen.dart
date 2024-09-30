@@ -1,20 +1,14 @@
 import 'package:BliU/data/category_data.dart';
-import 'package:BliU/dto/category_response_dto.dart';
 import 'package:BliU/dto/product_list_response_dto.dart';
-import 'package:BliU/dto/store_response_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/category/viewmodel/category_view_model.dart';
-import 'package:BliU/screen/product/viewmodel/product_list_view_model.dart';
 import 'package:BliU/screen/store/component/detail/store_category_item.dart';
 import 'package:BliU/screen/store/component/detail/store_info.dart';
+import 'package:BliU/screen/store/viewmodel/store_product_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
-import 'viewmodel/store_product_view_model.dart';
 
 class StoreDetailScreen extends ConsumerStatefulWidget {
   const StoreDetailScreen({super.key});

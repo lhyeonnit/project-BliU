@@ -9,6 +9,7 @@ import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'component/detail/product_ai.dart';
 import 'component/detail/product_banner.dart';
 import 'component/detail/product_info_before_order.dart';

@@ -3,8 +3,6 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../login/login_screen.dart';
-
 class JoinCompleteScreen extends StatelessWidget {
   const JoinCompleteScreen({super.key});
 
