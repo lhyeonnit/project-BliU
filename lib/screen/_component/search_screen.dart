@@ -25,21 +25,22 @@ class SearchScreen extends ConsumerStatefulWidget {
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
+  bool _isFirst = true;
   bool _isSearching = false; // 검색 중인지 여부를 나타내는 플래그
   bool _searchCompleted = false;
+  bool _searchFailed = false;
   List<bool> isFavoriteList = List<bool>.generate(10, (index) => false);
   List<SearchPopularData>? searchPopularList = [];
   List<SearchMyData> searchMyList = [];
-  List<SearchStoreData>? searchStoreData;
-  List<SearchProductData>? searchProductData;
+  List<SearchStoreData> searchStoreData = [];
+  List<SearchProductData> searchProductData = [];
   SearchResponseDTO? searchResponseDTO;
+  List<dynamic> _filteredResults = [];
   int _searchCount = 0;
 
   @override
   void initState() {
     super.initState();
-    searchStoreData = [];
-    searchProductData = [];
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -48,10 +49,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   void _afterBuild(BuildContext context) {
     _searchMyList();
     _getPopularList();
-    setState(() {
-      _searchCount = searchStoreData!.length +
-          searchProductData!.length; // 데이터가 있을 경우 길이 설정
-    });
   }
 
   void _getList() async {
@@ -66,8 +63,17 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     };
     final searchList = await ref.read(searchModelProvider.notifier).getSearchList(requestSearchData);
     setState(() {
-      searchStoreData = searchList?.storeSearch ?? [];
-      searchProductData = searchList?.productSearch ?? [];
+        searchStoreData = searchList?.storeSearch ?? [];
+            // ?.where((store) => store.stName?.toLowerCase().contains(searchTxt) ?? false)
+            // .toList() ?? [];
+
+        searchProductData = searchList?.productSearch ?? [];
+            // ?.where((product) => product.ptName?.toLowerCase().contains(searchTxt) ?? false)
+            // .toList() ?? [];
+
+        // 상점 및 상품 필터링 결과를 합쳐서 _filteredResults에 저장
+        _filteredResults = <dynamic>[...searchProductData, ...searchStoreData];
+        _isSearching = true;
     });
   }
 
@@ -263,45 +269,53 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       Expanded(
                         child: TextField(
                           style: TextStyle(
-                              height: 1.2,
-                              fontSize: Responsive.getFont(context, 14)),
+                            height: 1.2,
+                            fontSize: Responsive.getFont(context, 14)
+                          ),
                           controller: _searchController,
                           decoration: InputDecoration(
-                            contentPadding:
-                                const EdgeInsets.only(left: 16, bottom: 8),
+                            contentPadding: const EdgeInsets.only(left: 16, bottom: 8),
                             hintText: '검색어를 입력해 주세요',
                             hintStyle: TextStyle(
-                                height: 1.2,
-                                fontSize: Responsive.getFont(context, 14),
-                                color: Color(0xFF595959)),
+                              height: 1.2,
+                              fontSize: Responsive.getFont(context, 14),
+                              color: const Color(0xFF595959)
+                            ),
                             border: InputBorder.none,
-                            suffixIcon: _searchController.text.isNotEmpty
-                                ? GestureDetector(
-                                    onTap: () {
-                                      _searchController.clear();
-                                      setState(() {
-                                        searchMyList.clear();
-                                        _isSearching =
-                                            false; // 검색어를 지우면 검색 상태 해제
-                                      });
-                                    },
-                                    child: SvgPicture.asset(
-                                      'assets/images/ic_word_del.svg',
-                                      fit: BoxFit.contain,
-                                    ),
-                                  )
-                                : null,
-                            suffixIconConstraints:
-                                BoxConstraints.tight(const Size(24, 24)),
+                            suffixIcon: Visibility(
+                              visible: _searchController.text.isNotEmpty,
+                              child: GestureDetector(
+                                onTap: () {
+                                  _searchController.clear();
+                                  setState(() {
+                                    searchMyList.clear();
+                                    _isSearching = false; // 검색어를 지우면 검색 상태 해제
+                                  });
+                                },
+                                child: SvgPicture.asset(
+                                  'assets/images/ic_word_del.svg',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                            suffixIconConstraints: BoxConstraints.tight(const Size(24, 24)),
                           ),
-                          onChanged: (value) => _getList(),
+                          onChanged: (value) => {
+                            if (value.isEmpty) {
+                              setState(() {
+                                _isSearching = false;
+                                //_isFirst = true;
+                              })
+                            } else {
+                              _getList()
+                            }
+                          },
                           // 검색 중인 상태
                           onSubmitted: (value) => _searchAction(), // 검색 완료 시
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            top: 8, left: 10, bottom: 8, right: 15),
+                        padding: const EdgeInsets.only(top: 8, left: 10, bottom: 8, right: 15),
                         child: GestureDetector(
                           onTap: () {
                             String search = _searchController.text;
@@ -340,19 +354,39 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           ),
         ],
       ),
-      body: _isSearching
-          ? _buildSearching() // 검색 중일 때 화면
-          : _searchCompleted // 검색이 완료되었을 때
-              ? (_searchCompleted == true
-                  ? _buildSearchResults() // 검색 결과가 있을 때
-                  : _buildNoResults()) // 검색 결과가 없을 때
-              : _buildDefaultSearchPage(), // 검색 전 기본 화면 (추천 검색어 등)
+      body: Stack(
+        children: [
+          Visibility(
+            visible: _isSearching,
+            child: _buildSearching(),
+          ),
+          Visibility(
+            visible: _searchCompleted,
+            child: _buildSearchResults(),
+          ),
+          Visibility(
+            visible: _searchFailed,
+            child: _buildNoResults(),
+          ),
+          Visibility(
+            visible: _isFirst,
+            child: _buildDefaultSearchPage(),
+          ),
+        ],
+      )
+      // body: _isSearching
+      //     ? _buildSearching() // 검색 중일 때 화면
+      //     : _searchCompleted // 검색이 완료되었을 때
+      //         ? (_searchCompleted
+      //             ? _buildSearchResults() // 검색 결과가 있을 때
+      //             : _buildNoResults()) // 검색 결과가 없을 때
+      //         : _buildDefaultSearchPage(), // 검색 전 기본 화면 (추천 검색어 등)
     );
   }
 
   Widget _buildSearchHistory() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -379,11 +413,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       SvgPicture.asset('assets/images/ic_delet.svg'),
                       Container(
                         margin: const EdgeInsets.only(left: 5),
-                        child: Text('전체삭제',
-                            style: TextStyle(
-                                height: 1.2,
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14))),
+                        child: Text(
+                          '전체삭제',
+                          style: TextStyle(
+                            height: 1.2,
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14)
+                          )
+                        ),
                       ),
                     ],
                   ),
@@ -409,9 +446,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   label: Text(
                     search,
                     style: TextStyle(
-                        height: 1.2,
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14)),
+                      height: 1.2,
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14)
+                    ),
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(19),
@@ -540,74 +578,117 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.only(top: 20),
-          child: Consumer(builder: (context, ref, widget) {
-            final model = ref.watch(searchModelProvider);
-            final storeList = model?.searchResponseDTO?.storeSearch ?? [];
-            final productList = model?.searchResponseDTO?.productSearch ?? [];
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: _searchCount,
-              itemBuilder: (context, index) {
-                final storeData = storeList[index];
-                final productData = productList[index];
-
-                return Column(
-                  children: [
-                    ListTile(
-                      leading: Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: const Color(0xFFDDDDDD)),
-                        ),
-                        child: ClipOval(
-                            child: Image.network(
-                          storeData.stProfile ?? '',
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: _filteredResults.length,
+            itemBuilder: (context, index) {
+              final result = _filteredResults[index];
+              if (result is SearchStoreData) {
+                return ListTile(
+                  leading: Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: const Color(0xFFDDDDDD)),
+                    ),
+                    child: ClipOval(
+                        child: Image.network(
+                          result.stProfile ?? '',
                           fit: BoxFit.cover,
-                        )),
-                      ),
-                      title: Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        child: _buildHighlightedText(
-                            storeData.stName ?? '', _searchController.text),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          _searchController.text = storeData.stName ?? '';
-                        });
-                      },
+                        )
                     ),
-                    ListTile(
-                      leading: Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: const Color(0xFFDDDDDD)),
-                        ),
-                        child: ClipOval(
-                          child: Image.asset('assets/images/home/sch_front.png'),
-                        ),
-                      ),
-                      title: Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        child: _buildHighlightedText(
-                            productData.ptName ?? '', _searchController.text),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          _searchController.text = productData.ptName ?? '';
-                        });
-                      },
-                    ),
-                  ],
+                  ),
+                  title: Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    child: _buildHighlightedText(result.stName ?? '', _searchController.text),),
+                  onTap: () {
+                    setState(() {
+                      _searchController.text = result.stName ?? '';
+                    });
+                  },
                 );
-              },
-            );
-          }),
+              } else {
+                return ListTile(
+                  leading: Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: const Color(0xFFDDDDDD)),
+                    ),
+                    child: ClipOval(
+                      child: Image.asset('assets/images/home/sch_front.png'),
+                    ),
+                  ),
+                  title: Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    child: _buildHighlightedText(result.ptName ?? '', _searchController.text),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      _searchController.text = result.ptName ?? '';
+                    });
+                  },
+                );
+              }
+
+              // return Column(
+              //   children: [
+              //     ListTile(
+              //       leading: Container(
+              //         margin: const EdgeInsets.only(bottom: 10),
+              //         width: 50,
+              //         height: 50,
+              //         decoration: BoxDecoration(
+              //           shape: BoxShape.circle,
+              //           border: Border.all(color: const Color(0xFFDDDDDD)),
+              //         ),
+              //         child: ClipOval(
+              //             child: Image.network(
+              //               result.stProfile ?? '',
+              //               fit: BoxFit.cover,
+              //             )
+              //         ),
+              //       ),
+              //       title: Container(
+              //         margin: const EdgeInsets.only(bottom: 10),
+              //         child: _buildHighlightedText(result.stName ?? '', _searchController.text),),
+              //       onTap: () {
+              //         setState(() {
+              //           _searchController.text = result.stName ?? '';
+              //         });
+              //       },
+              //     ),
+              //     ListTile(
+              //       leading: Container(
+              //         margin: const EdgeInsets.only(bottom: 10),
+              //         width: 50,
+              //         height: 50,
+              //         decoration: BoxDecoration(
+              //           shape: BoxShape.circle,
+              //           border: Border.all(color: const Color(0xFFDDDDDD)),
+              //         ),
+              //         child: ClipOval(
+              //           child: Image.asset('assets/images/home/sch_front.png'),
+              //         ),
+              //       ),
+              //       title: Container(
+              //         margin: const EdgeInsets.only(bottom: 10),
+              //         child: _buildHighlightedText(item.ptName ?? '', _searchController.text),
+              //       ),
+              //       onTap: () {
+              //         setState(() {
+              //           _searchController.text = item.ptName ?? '';
+              //         });
+              //       },
+              //     )
+              //   ],
+              // );
+            },
+          ),
         ),
       ),
     ],

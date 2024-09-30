@@ -28,7 +28,8 @@ class SearchViewModel extends StateNotifier<SearchModel?> {
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
-          return SearchResponseDTO.fromJson(responseData);
+          SearchResponseDTO searchResponseDTO = SearchResponseDTO.fromJson(responseData);
+          return searchResponseDTO;
         }
       }
       return null;
