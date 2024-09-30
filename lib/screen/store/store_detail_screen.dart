@@ -149,7 +149,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
     final mtIdx = pref.getMtIdx();
 
     // TODO 페이징 처리 필요
-    Map<String, dynamic> requestData = {'category_type': '2'};
+    Map<String, dynamic> requestData = {'category_type': '1'};
     final categoryResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getCategory(requestData);
     if (categoryResponseDTO != null) {
       if (categoryResponseDTO.result == true) {
