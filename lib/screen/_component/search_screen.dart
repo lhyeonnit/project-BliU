@@ -2,12 +2,14 @@ import 'package:BliU/data/search_my_data.dart';
 import 'package:BliU/data/search_popular_data.dart';
 import 'package:BliU/data/search_product_data.dart';
 import 'package:BliU/data/search_store_data.dart';
+import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:BliU/dto/search_response_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_recommend_item.dart';
 import 'package:BliU/screen/_component/smart_lens_screen.dart';
 import 'package:BliU/screen/_component/viewmodel/search_view_model.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
+import 'package:BliU/screen/store/store_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -36,7 +38,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   List<SearchProductData> searchProductData = [];
   SearchResponseDTO? searchResponseDTO;
   List<dynamic> _filteredResults = [];
-  int _searchCount = 0;
+  List<ProductListResponseDTO?> productList = [];
 
   @override
   void initState() {
@@ -61,6 +63,29 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       'search_txt': searchTxt,
       'research': 'N',
     };
+    Map<String, dynamic> requestProductData = {
+      'mt_idx': mtIdx,
+      'category': 'all',
+      'sub_category': 'all',
+      'sort': '',
+      'age': '',
+      'styles': '',
+      'min_price': 0,
+      'max_price': 99999,
+      'pg': 1,
+      'search_txt' :searchTxt,
+    };
+    final productListResponseDTO = await ref.read(searchModelProvider.notifier).getProductList(requestProductData);
+    if (productListResponseDTO != null) {
+      if (productListResponseDTO.result == true) {
+        productList.add(productListResponseDTO);
+      } else {
+        productList.add(null);
+      }
+    } else {
+      productList.add(null);
+    }
+
     final searchList = await ref.read(searchModelProvider.notifier).getSearchList(requestSearchData);
     setState(() {
         searchStoreData = searchList?.storeSearch ?? [];
@@ -69,13 +94,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         _filteredResults = <dynamic>[...searchProductData, ...searchStoreData];
     });
   }
-
   void _getPopularList() async {
-    final searchPopularResponseDTO =
-        await ref.read(searchModelProvider.notifier).getPopularList();
+    final searchPopularResponseDTO = await ref.read(searchModelProvider.notifier).getPopularList();
 
-    if (searchPopularResponseDTO != null &&
-        searchPopularResponseDTO.result == true) {
+    if (searchPopularResponseDTO != null && searchPopularResponseDTO.result == true) {
       setState(() {
         searchPopularList = searchPopularResponseDTO.list ?? [];
       });
@@ -110,13 +132,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       if (defaultResponseDTO.result == true) {
         _searchMyList();
       }
-
-      if (!context.mounted) return;
-      Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     }
-    setState(() {
-      searchMyList.clear();
-    });
   }
 
   void _searchAllDel() async {
@@ -135,13 +151,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       if (defaultResponseDTO.result == true) {
         _searchMyList();
       }
-
-      if (!context.mounted) return;
-      Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+      setState(() {
+        searchMyList.clear();
+      });
     }
-    setState(() {
-      searchMyList.clear();
-    });
   }
 
   Widget _buildHighlightedText(String text, String query) {
@@ -204,18 +217,82 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       ),
     );
   }
+  void _startSearch() {
+    setState(() {
+      _isFirst = false;        // 첫 화면 아님
+      _isSearching = true;     // 검색 중임
+      _searchCompleted = false; // 검색 완료 상태 아님
+      _searchFailed = false;   // 검색 실패 상태 아님
+    });
+  }
 
-  void _searchAction() {
-    String search = _searchController.text;
-    if (search.isNotEmpty) {
-      _searchMyList();
+  void _completeSearch() {
+    setState(() {
+      _isSearching = false;    // 더 이상 검색 중이 아님
+      _searchCompleted = true; // 검색 완료 상태로 설정
+      _searchFailed = false;   // 검색 실패 상태 아님
+    });
+  }
 
-      setState(() {
-        _isSearching = false; // 검색 중인 상태 해제
-        _searchCompleted = true; // 검색 완료 상태로 전환
-      });
+  void _failSearch() {
+    setState(() {
+      _isSearching = false;    // 더 이상 검색 중이 아님
+      _searchCompleted = false; // 검색 완료 상태 아님
+      _searchFailed = true;    // 검색 실패 상태로 설정
+    });
+  }
+
+  void _resetSearch() {
+    setState(() {
+      _isFirst = true;         // 첫 화면으로 돌아감
+      _isSearching = false;    // 검색 중이 아님
+      _searchCompleted = false; // 검색 완료 상태 아님
+      _searchFailed = false;   // 검색 실패 상태 아님
+    });
+  }
+
+  void _searchAction(String query) async {
+    // 검색을 시작할 때 상태 업데이트
+    _startSearch();
+
+    try {
+      // 실제 검색 로직 수행: _getList()와 동일한 로직을 이곳에 적용
+      final pref = await SharedPreferencesManager.getInstance();
+      final mtIdx = pref.getMtIdx();
+      String searchTxt = query.toLowerCase();  // query로 받은 검색어를 소문자로 변환
+
+      // API 호출을 위한 데이터 준비
+      Map<String, dynamic> requestSearchData = {
+        'mt_idx': mtIdx,
+        'token': '',
+        'search_txt': searchTxt,
+        'research': 'N',
+      };
+
+      // 검색 결과 가져오기
+      final searchList = await ref.read(searchModelProvider.notifier).getSearchList(requestSearchData);
+
+      if (searchList != null && (searchList.storeSearch?.isNotEmpty ?? false) || (searchList?.productSearch?.isNotEmpty ?? false)) {
+        // 검색 결과가 있으면 상태에 반영하고 완료 상태로 전환
+        setState(() {
+          searchStoreData = searchList?.storeSearch ?? [];
+          searchProductData = searchList?.productSearch ?? [];
+          // 상점 및 상품 필터링 결과를 합쳐서 _filteredResults에 저장
+          _filteredResults = <dynamic>[...searchProductData, ...searchStoreData];
+        });
+        _completeSearch();
+      } else {
+        // 검색 결과가 없으면 실패 상태로 전환
+        _failSearch();
+      }
+    } catch (e) {
+      // 오류 발생 시에도 실패 상태로 전환
+      _failSearch();
+      print('Error during search: $e');
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -286,7 +363,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   _searchController.clear();
                                   setState(() {
                                     searchMyList.clear();
-                                    _isSearching = false; // 검색어를 지우면 검색 상태 해제
+                                    _resetSearch();
                                   });
                                 },
                                 child: SvgPicture.asset(
@@ -313,7 +390,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           },
                           // 검색 중인 상태
                           onSubmitted: (value) {
-                            _searchAction();
+                            if (value.isNotEmpty) {
+                              _searchAction(value); // 검색어를 입력하고 검색을 실행
+                            }
                           }, // 검색 완료 시
                         ),
                       ),
@@ -361,15 +440,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         children: [
           Visibility(
             visible: _isSearching,
-            child: _buildSearching(),
+            child: _buildSearching(), // 검색 중 로딩 상태 UI
           ),
           Visibility(
             visible: _searchCompleted,
-            child: _buildSearchResults(),
+            child: _buildSearchResults(), // 검색 결과를 보여주는 UI
           ),
           Visibility(
             visible: _searchFailed,
-            child: _buildNoResults(),
+            child: _buildNoResults(), // 검색 실패 시의 UI
           ),
           Visibility(
             visible: _isFirst,
@@ -608,9 +687,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     margin: const EdgeInsets.only(bottom: 10),
                     child: _buildHighlightedText(result.stName ?? '', _searchController.text),),
                   onTap: () {
-                    setState(() {
-                      _searchController.text = result.stName ?? '';
-                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                        const StoreDetailScreen(),
+                      ),
+                    );
                   },
                 );
               } else {
@@ -632,9 +715,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     child: _buildHighlightedText(result.ptName ?? '', _searchController.text),
                   ),
                   onTap: () {
-                    setState(() {
-                      _searchController.text = result.ptName ?? '';
-                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                        const ProductDetailScreen(ptIdx: 3),
+                      ),
+                    );
                   },
                 );
               }
@@ -707,7 +794,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '상품 ${searchStoreData!.length}',
+            '상품 ${productList.length}',
             style: TextStyle(
                 height: 1.2,
                 fontFamily: 'Pretendard',
@@ -719,12 +806,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             padding: const EdgeInsets.only(top: 15.0),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              crossAxisSpacing: 12.0,
-              childAspectRatio: 0.5,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 30,
+              childAspectRatio: 0.55,
             ),
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: searchStoreData!.length,
+            itemCount: productList.length,
             itemBuilder: (context, index) {
+              final productDataList = productList[index]?.list ?? [];
+              final productData = productDataList[index];
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -737,8 +827,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   );
                 },
                 child: Container(
-                  width: 160,
-                  padding: const EdgeInsets.only(right: 12),
+                  width: 184,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                   ),
@@ -750,10 +839,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           ClipRRect(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(5)),
-                            child: Image.asset(
-                              'assets/images/home/exhi.png',
-                              height: 160,
-                              fit: BoxFit.cover,
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Image.network(
+                                productData.ptImg ?? "",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                           Positioned(
@@ -761,13 +852,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             right: 0,
                             child: GestureDetector(
                               onTap: () {
+                                // TODO like update
                                 setState(() {
                                   isFavoriteList[index] =
                                       !isFavoriteList[index]; // 좋아요 상태 토글
                                 });
                               },
                               child: SvgPicture.asset(
-                                isFavoriteList[index]
+                                productData.likeChk == "Y"
                                     ? 'assets/images/home/like_btn_fill.svg'
                                     : 'assets/images/home/like_btn.svg',
                                 color: isFavoriteList[index]
@@ -788,7 +880,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           Container(
                             margin: EdgeInsets.only(top: 12, bottom: 4),
                             child: Text(
-                              '꿈꾸는데이지',
+                              productData.stName ?? '',
                               style: TextStyle(
                                 height: 1.2,
                                 fontFamily: 'Pretendard',
@@ -798,7 +890,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             ),
                           ),
                           Text(
-                            '꿈꾸는 데이지 안나 토션 레이스 베스트',
+                            productData.ptName ?? '',
                             style: TextStyle(
                               height: 1.2,
                               fontFamily: 'Pretendard',
@@ -814,7 +906,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                               textBaseline: TextBaseline.alphabetic,
                               children: [
                                 Text(
-                                  '15%',
+                                  '${productData.ptDiscountPer}%' ,
                                   style: TextStyle(
                                     height: 1.2,
                                     fontFamily: 'Pretendard',
@@ -826,7 +918,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 Container(
                                   margin: EdgeInsets.symmetric(horizontal: 2),
                                   child: Text(
-                                    '32,800원',
+                                    '${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원',
                                     style: TextStyle(
                                       height: 1.2,
                                       fontFamily: 'Pretendard',
@@ -850,7 +942,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                               Container(
                                 margin: EdgeInsets.only(left: 2, bottom: 2),
                                 child: Text(
-                                  '13,000',
+                                  '${productData.ptLike ?? ""}',
                                   style: TextStyle(
                                     height: 1.2,
                                     fontFamily: 'Pretendard',
@@ -872,7 +964,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                       margin:
                                           EdgeInsets.only(left: 2, bottom: 2),
                                       child: Text(
-                                        '49',
+                                        '${productData.ptReview ?? ""}',
                                         style: TextStyle(
                                           height: 1.2,
                                           fontFamily: 'Pretendard',
