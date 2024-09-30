@@ -31,7 +31,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   bool _isSearching = false; // 검색 중인지 여부를 나타내는 플래그
   bool _searchCompleted = false;
   bool _searchFailed = false;
-  List<bool> isFavoriteList = List<bool>.generate(10, (index) => false);
   List<SearchPopularData>? searchPopularList = [];
   List<SearchMyData> searchMyList = [];
   List<SearchStoreData> searchStoreData = [];
@@ -423,7 +422,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         actions: [
           GestureDetector(
             child: Container(
-                margin: EdgeInsets.only(right: 16),
+                margin: const EdgeInsets.only(right: 16),
                 child: SvgPicture.asset("assets/images/product/ic_smart.svg")),
             onTap: () {
               Navigator.push(
@@ -620,7 +619,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 25,
                       child: Text('${popularData.sltRank}',
                           style: TextStyle(
@@ -690,8 +689,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                        const StoreDetailScreen(),
+                        builder: (context) => StoreDetailScreen(stIdx: result.stIdx ?? 0,),
                       ),
                     );
                   },
@@ -718,66 +716,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                        const ProductDetailScreen(ptIdx: 3),
+                        builder: (context) => ProductDetailScreen(ptIdx: result.ptIdx ?? 0),
                       ),
                     );
                   },
                 );
               }
-
-              // return Column(
-              //   children: [
-              //     ListTile(
-              //       leading: Container(
-              //         margin: const EdgeInsets.only(bottom: 10),
-              //         width: 50,
-              //         height: 50,
-              //         decoration: BoxDecoration(
-              //           shape: BoxShape.circle,
-              //           border: Border.all(color: const Color(0xFFDDDDDD)),
-              //         ),
-              //         child: ClipOval(
-              //             child: Image.network(
-              //               result.stProfile ?? '',
-              //               fit: BoxFit.cover,
-              //             )
-              //         ),
-              //       ),
-              //       title: Container(
-              //         margin: const EdgeInsets.only(bottom: 10),
-              //         child: _buildHighlightedText(result.stName ?? '', _searchController.text),),
-              //       onTap: () {
-              //         setState(() {
-              //           _searchController.text = result.stName ?? '';
-              //         });
-              //       },
-              //     ),
-              //     ListTile(
-              //       leading: Container(
-              //         margin: const EdgeInsets.only(bottom: 10),
-              //         width: 50,
-              //         height: 50,
-              //         decoration: BoxDecoration(
-              //           shape: BoxShape.circle,
-              //           border: Border.all(color: const Color(0xFFDDDDDD)),
-              //         ),
-              //         child: ClipOval(
-              //           child: Image.asset('assets/images/home/sch_front.png'),
-              //         ),
-              //       ),
-              //       title: Container(
-              //         margin: const EdgeInsets.only(bottom: 10),
-              //         child: _buildHighlightedText(item.ptName ?? '', _searchController.text),
-              //       ),
-              //       onTap: () {
-              //         setState(() {
-              //           _searchController.text = item.ptName ?? '';
-              //         });
-              //       },
-              //     )
-              //   ],
-              // );
             },
           ),
         ),
@@ -796,9 +740,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           Text(
             '상품 ${productList.length}',
             style: TextStyle(
-                height: 1.2,
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14)),
+              height: 1.2,
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 14)
+            ),
           ),
           GridView.builder(
             controller: _scrollController,
@@ -820,9 +765,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ProductDetailScreen(
-                        ptIdx: 1,
-                      ),
+                      builder: (context) => ProductDetailScreen(ptIdx: productData.ptIdx ?? 0),
                     ),
                   );
                 },
@@ -853,16 +796,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             child: GestureDetector(
                               onTap: () {
                                 // TODO like update
-                                setState(() {
-                                  isFavoriteList[index] =
-                                      !isFavoriteList[index]; // 좋아요 상태 토글
-                                });
+                                // setState(() {
+                                // });
                               },
                               child: SvgPicture.asset(
                                 productData.likeChk == "Y"
                                     ? 'assets/images/home/like_btn_fill.svg'
                                     : 'assets/images/home/like_btn.svg',
-                                color: isFavoriteList[index]
+                                color: productData.likeChk == "Y"
                                     ? const Color(0xFFFF6191)
                                     : null,
                                 // 좋아요 상태에 따라 내부 색상 변경
@@ -878,14 +819,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 12, bottom: 4),
+                            margin: const EdgeInsets.only(top: 12, bottom: 4),
                             child: Text(
                               productData.stName ?? '',
                               style: TextStyle(
                                 height: 1.2,
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 12),
-                                color: Color(0xFF7B7B7B),
+                                color: const Color(0xFF7B7B7B),
                               ),
                             ),
                           ),
@@ -900,7 +841,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 12, bottom: 10),
+                            margin: const EdgeInsets.only(top: 12, bottom: 10),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.baseline,
                               textBaseline: TextBaseline.alphabetic,
@@ -916,7 +857,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 2),
+                                  margin: const EdgeInsets.symmetric(horizontal: 2),
                                   child: Text(
                                     '${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원',
                                     style: TextStyle(
@@ -935,24 +876,24 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             children: [
                               SvgPicture.asset(
                                 'assets/images/home/item_like.svg',
-                                color: Color(0xFFA4A4A4),
+                                color: const Color(0xFFA4A4A4),
                                 width: Responsive.getWidth(context, 13),
                                 height: Responsive.getHeight(context, 11),
                               ),
                               Container(
-                                margin: EdgeInsets.only(left: 2, bottom: 2),
+                                margin: const EdgeInsets.only(left: 2, bottom: 2),
                                 child: Text(
                                   '${productData.ptLike ?? ""}',
                                   style: TextStyle(
                                     height: 1.2,
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 12),
-                                    color: Color(0xFFA4A4A4),
+                                    color: const Color(0xFFA4A4A4),
                                   ),
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                margin: const EdgeInsets.symmetric(horizontal: 10),
                                 child: Row(
                                   children: [
                                     SvgPicture.asset(
@@ -961,16 +902,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                       height: Responsive.getHeight(context, 12),
                                     ),
                                     Container(
-                                      margin:
-                                          EdgeInsets.only(left: 2, bottom: 2),
+                                      margin: const EdgeInsets.only(left: 2, bottom: 2),
                                       child: Text(
                                         '${productData.ptReview ?? ""}',
                                         style: TextStyle(
                                           height: 1.2,
                                           fontFamily: 'Pretendard',
-                                          fontSize:
-                                              Responsive.getFont(context, 12),
-                                          color: Color(0xFFA4A4A4),
+                                          fontSize: Responsive.getFont(context, 12),
+                                          color: const Color(0xFFA4A4A4),
                                         ),
                                       ),
                                     ),
@@ -1000,32 +939,38 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-                width: 90,
-                height: 90,
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Color(0xFFF5F9F9),
-                  borderRadius: BorderRadius.all(Radius.circular(70)),
-                ),
-                child: SvgPicture.asset(
-                  'assets/images/product/ic_top_sch.svg',
-                  height: 50,
-                  width: 50,
-                )),
+              width: 90,
+              height: 90,
+              padding: const EdgeInsets.all(20),
+              decoration: const BoxDecoration(
+                color: Color(0xFFF5F9F9),
+                borderRadius: BorderRadius.all(Radius.circular(70)),
+              ),
+              child: SvgPicture.asset(
+                'assets/images/product/ic_top_sch.svg',
+                height: 50,
+                width: 50,
+              )
+            ),
             Container(
-                margin: const EdgeInsets.only(top: 25, bottom: 10),
-                child: Text('검색하신 결과가 없습니다.',
-                    style: TextStyle(
-                        height: 1.2,
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 18),
-                        fontWeight: FontWeight.bold))),
-            Text('다른 내용으로 검색해보세요.',
+              margin: const EdgeInsets.only(top: 25, bottom: 10),
+              child: Text('검색하신 결과가 없습니다.',
                 style: TextStyle(
-                    height: 1.2,
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFFA4A4A4))),
+                  height: 1.2,
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 18),
+                  fontWeight: FontWeight.bold
+                )
+              )
+            ),
+            Text('다른 내용으로 검색해보세요.',
+              style: TextStyle(
+                height: 1.2,
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 14),
+                color: const Color(0xFFA4A4A4)
+              )
+            ),
           ],
         ),
       ),

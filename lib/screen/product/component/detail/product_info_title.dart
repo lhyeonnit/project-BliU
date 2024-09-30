@@ -11,8 +11,7 @@ class ProductInfoTitle extends StatefulWidget {
   final StoreData? storeData;
   final ProductData? productData;
 
-  const ProductInfoTitle(
-      {super.key, required this.storeData, required this.productData});
+  const ProductInfoTitle({super.key, required this.storeData, required this.productData});
 
   @override
   State<ProductInfoTitle> createState() => _ProductInfoTitleState();
@@ -44,7 +43,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const StoreDetailScreen()
+                      builder: (context) => StoreDetailScreen(stIdx: widget.storeData?.stIdx ?? 0,)
                     ),
                   );
                 },
@@ -79,7 +78,7 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const StoreDetailScreen()
+                                builder: (context) => StoreDetailScreen(stIdx: widget.storeData?.stIdx ?? 0,)
                               ),
                             );
                           },

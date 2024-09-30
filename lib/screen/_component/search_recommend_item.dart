@@ -12,7 +12,7 @@ class SearchRecommendItem extends ConsumerStatefulWidget {
   const SearchRecommendItem({super.key});
 
   @override
-  _SearchRecommendItemState createState() => _SearchRecommendItemState();
+  ConsumerState<SearchRecommendItem> createState() => _SearchRecommendItemState();
 }
 
 class _SearchRecommendItemState extends ConsumerState<SearchRecommendItem> {

@@ -13,14 +13,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class StoreDetailScreen extends ConsumerStatefulWidget {
-  const StoreDetailScreen({super.key});
+  final int stIdx;
+  const StoreDetailScreen({super.key, required this.stIdx});
 
   @override
-  _StoreDetailScreenState createState() => _StoreDetailScreenState();
+  ConsumerState<StoreDetailScreen> createState() => _StoreDetailScreenState();
 }
 
-class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
-    with TickerProviderStateMixin {
+class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   late TabController _tabController;
   final List<CategoryData> categories = [
@@ -154,7 +154,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
 
           Map<String, dynamic> requestData = {
             'mt_idx': mtIdx,
-            'st_idx': 1,
+            'st_idx': widget.stIdx,
             'category': category,
             'pg': 1,
           };
@@ -175,8 +175,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
         }
 
         setState(() {
-          _tabController =
-              TabController(length: categories.length, vsync: this);
+          _tabController = TabController(length: categories.length, vsync: this);
         });
       }
     }

@@ -17,11 +17,10 @@ class StoreFavoritePage extends ConsumerStatefulWidget {
   const StoreFavoritePage({super.key});
 
   @override
-  _StoreFavoritePageState createState() => _StoreFavoritePageState();
+  ConsumerState<StoreFavoritePage> createState() => _StoreFavoritePageState();
 }
 
-class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
-    with TickerProviderStateMixin {
+class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   late TabController _tabController;
 
@@ -169,10 +168,7 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const StoreDetailScreen(
-                                                  // Pass the store data to the detail screen
-                                                  ),
+                                          builder: (context) => StoreDetailScreen(stIdx: store.stIdx ?? 0,),
                                         ),
                                       );
                                     },

@@ -185,6 +185,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                   children: [
                     ...List.generate(list.length, (index) {
                       final rankData = list[index];
+
                       return Container(
                         margin: const EdgeInsets.symmetric(vertical: 15),
                         padding: const EdgeInsets.only(left: 16.0),
@@ -199,9 +200,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const StoreDetailScreen(
-                                          // Pass the store data to the detail screen
-                                          ),
+                                      builder: (context) => StoreDetailScreen(stIdx: rankData.stIdx ?? 0,),
                                     ),
                                   );
                                 },

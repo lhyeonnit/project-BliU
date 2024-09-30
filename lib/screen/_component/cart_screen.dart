@@ -17,19 +17,31 @@ class CartScreen extends ConsumerStatefulWidget {
   const CartScreen({super.key});
 
   @override
-  _CartScreenState createState() => _CartScreenState();
+  ConsumerState<CartScreen> createState() => _CartScreenState();
 }
 
 class _CartScreenState extends ConsumerState<CartScreen> {
   List<CartData> _cartItems = [];
   int totalCount = 0;
 
+  int _page = 1;
+  bool _hasNextPage = true;
+  bool _isFirstLoadRunning = false;
+  bool _isLoadMoreRunning = false;
+
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_nextLoad);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.removeListener(_nextLoad);
   }
 
   void _afterBuild(BuildContext context) {
@@ -38,18 +50,22 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
   void _getList() async {
     // TODO 회원 비회원 구분 필요
-    // TODO 페이징 필요
+    setState(() {
+      _isFirstLoadRunning = true;
+    });
+
+    _page = 1;
+
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
     Map<String, dynamic> requestData = {
       'type': 1,
       'mt_idx': mtIdx,
       'temp_mt_id': '', // 앱토큰 비회원
-      'pg': 1,
+      'pg': _page,
     };
 
-    final cartResponseDTO =
-        await ref.read(cartModelProvider.notifier).getList(requestData);
+    final cartResponseDTO = await ref.read(cartModelProvider.notifier).getList(requestData);
     if (cartResponseDTO != null) {
       setState(() {
         _cartItems = cartResponseDTO.list ?? [];
@@ -60,12 +76,64 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
         if (_isAllSelected) {
           for (var item in _cartItems) {
-            for (var product
-                in (item.productList ?? [] as List<CartItemData>)) {
+            for (var product in (item.productList ?? [] as List<CartItemData>)) {
               product.isSelected = true;
             }
           }
         }
+      });
+    }
+
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+  }
+
+  void _nextLoad() async {
+    // TODO 회원 비회원 구분 필요
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+
+      _page += 1;
+
+      final pref = await SharedPreferencesManager.getInstance();
+      final mtIdx = pref.getMtIdx();
+      Map<String, dynamic> requestData = {
+        'type': 1,
+        'mt_idx': mtIdx,
+        'temp_mt_id': '', // 앱토큰 비회원
+        'pg': _page,
+      };
+
+      final cartResponseDTO = await ref.read(cartModelProvider.notifier).getList(requestData);
+      if (cartResponseDTO != null) {
+        if ((cartResponseDTO.list ?? []).isNotEmpty) {
+          setState(() {
+            _cartItems.addAll(cartResponseDTO.list ?? []);
+            totalCount = 0;
+            for (var item in _cartItems) {
+              totalCount += item.productList?.length ?? 0;
+            }
+
+            if (_isAllSelected) {
+              for (var item in _cartItems) {
+                for (var product in (item.productList ?? [] as List<CartItemData>)) {
+                  product.isSelected = true;
+                }
+              }
+            }
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
       });
     }
   }
@@ -86,7 +154,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           product.isSelected = _isAllSelected;
         }
       }
-
       //금액 관련 변경
     });
   }
@@ -550,9 +617,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 48),
-                    backgroundColor: _selectedItemsCount > 0
-                        ? Colors.black
-                        : const Color(0xFFDDDDDD), // 선택된 항목이 없으면 회색
+                    backgroundColor: _selectedItemsCount > 0 ? Colors.black : const Color(0xFFDDDDDD), // 선택된 항목이 없으면 회색
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.0),
                     ),
@@ -629,8 +694,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       'ct_count': ctCount
     };
 
-    final defaultResponseDTO =
-        await ref.read(cartModelProvider.notifier).cartUpdate(requestData);
+    final defaultResponseDTO = await ref.read(cartModelProvider.notifier).cartUpdate(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _getList();

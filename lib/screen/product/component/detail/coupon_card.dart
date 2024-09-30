@@ -1,5 +1,4 @@
 import 'package:BliU/utils/responsive.dart';
-import 'package:BliU/utils/vertical_dashed_divider.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

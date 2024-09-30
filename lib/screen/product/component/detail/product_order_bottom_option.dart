@@ -785,7 +785,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
   }
 
   void _buyAndCartProduct(int addType) async {
-    // TODO 회원 비회원 구분 필요ß
+    // TODO 회원 비회원 구분 필요
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
     List<Map<String, dynamic>> products = [];
