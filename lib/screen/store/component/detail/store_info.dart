@@ -1,5 +1,8 @@
 import 'package:BliU/data/store_data.dart';
+import 'package:BliU/screen/store/viewmodel/coupon_download_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,6 +20,36 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
   @override
   void initState() {
     super.initState();
+  }
+  Future<void> _downloadCoupon() async {
+    // 쿠폰 다운로드를 위한 requestData 준비
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    final Map<String, dynamic> requestData = {
+      'mt_idx': mtIdx,
+      'st_idx': widget.storeData?.stIdx, // 실제 쿠폰 ID 값을 여기 넣어야 합니다
+    };
+
+    try {
+      // 쿠폰 다운로드 요청 수행
+      await ref.read(couponDownloadModelProvider.notifier).getList(requestData);
+
+      // 다운로드가 완료되었으면 사용자에게 알림
+      final storeDownloadResponse = ref.read(couponDownloadModelProvider)?.storeDownloadResponseDTO;
+      if (storeDownloadResponse != null && storeDownloadResponse.result == true) {
+        // 다운로드 성공 시 알림
+        Utils.getInstance().showSnackBar(context, "쿠폰이 성공적으로 다운로드되었습니다.");
+      } else {
+        // 다운로드 실패 시 알림
+        if (!context.mounted) return;
+        Utils.getInstance().showSnackBar(
+            context, storeDownloadResponse!.data.toString());
+      }
+    } catch (e) {
+      // 오류 발생 시 로그 및 사용자에게 알림
+      print("쿠폰 다운로드 중 오류 발생: $e");
+      Utils.getInstance().showSnackBar(context, "쿠폰 다운로드 중 오류가 발생했습니다.");
+    }
   }
 
   @override
@@ -177,7 +210,7 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
             padding: EdgeInsets.symmetric(horizontal: 10.0),
             margin: EdgeInsets.symmetric(vertical: 20),
             child: Text(
-              '저희 키즈 의류 쇼핑몰은 다양한 스타일과 고품질의 어린이 의류 브랜드들을 자랑합니다. 각 브랜드는 아이들의 편안함과 안전을 최우선으로 생각하며, 트렌디하면서도 실용적인 디자인을 제공합니다. 모든 의류는 친환경 소재로 제작되어 아이들의 민감한 피부에도 심하고 착용할 수 있습니다.',
+              widget.storeData?.stTxt2 ?? '',
               style: TextStyle(
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
@@ -193,7 +226,7 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
             margin: EdgeInsets.only(bottom: 15),
             child: GestureDetector(
               onTap: () {
-                // TODO coupon download
+                _downloadCoupon();
               },
               child: Container(
                 width: double.infinity,

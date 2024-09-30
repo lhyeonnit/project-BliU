@@ -9,11 +9,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:BliU/utils/responsive.dart';
 
 class StoreCategoryItem extends ConsumerStatefulWidget {
-  final ProductData productData;
-  final String? storeStName;
+  final List<ProductData> productData;
   final int count;
 
-  StoreCategoryItem({super.key, required this.productData, required this.storeStName, required this.count});
+  StoreCategoryItem({super.key, required this.productData, required this.count});
 
   @override
   _StoreCategoryItemState createState() => _StoreCategoryItemState();
@@ -58,7 +57,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
               physics: const NeverScrollableScrollPhysics(),
               itemCount: widget.count,
               itemBuilder: (context, index) {
-                final storeProduct = widget.productData;
+                final storeProduct = widget.productData[index];
                 if (index >= widget.count) {
                   return const Center(
                       child: CircularProgressIndicator()); // 추가 로딩 시 로딩 인디케이터
@@ -110,7 +109,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                       Container(
                         margin: const EdgeInsets.only(top: 10, bottom: 3),
                         child: Text(
-                          widget.storeStName ?? "",
+                          storeProduct.stName ?? "",
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 12),

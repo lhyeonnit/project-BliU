@@ -1,4 +1,5 @@
 import 'package:BliU/data/category_data.dart';
+import 'package:BliU/data/store_data.dart';
 import 'package:BliU/dto/category_response_dto.dart';
 import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:BliU/dto/store_response_dto.dart';
@@ -38,6 +39,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
         catName: null)
   ];
   List<ProductListResponseDTO?> productList = [];
+  StoreData? storeData;
 
   @override
   void initState() {
@@ -74,13 +76,8 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
             controller: _scrollController,
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
-                 SliverToBoxAdapter(
-                  child: Consumer(builder: (context, ref, widget) {
-                    final model = ref.watch(StoreProductViewModelProvider);
-                    final storeData = model?.storeResponseDTO?.data;
-
-                    return StoreInfoPage(storeData: storeData,);
-                  }),
+                SliverToBoxAdapter(
+                  child: StoreInfoPage(storeData: storeData),
                 ),
                 SliverToBoxAdapter(
                   child: Column(
@@ -116,22 +113,18 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
                 )
               ];
             },
-            body: Consumer(builder: (context, ref, widget) {
-              final model = ref.watch(StoreProductViewModelProvider);
-              final storeStName = model?.storeResponseDTO?.data.stName;
-              final productList = model?.storeResponseDTO?.data.list ?? [];
-
-              return TabBarView(
-                controller: _tabController,
-                children: List.generate(categories.length, (index) {
-                        final productData = productList[index];
-                        final count = productList.length;
-                    // 상품 리스트
-                    return StoreCategoryItem(productData: productData, count : count, storeStName : storeStName);
-                  },
-                ),
-              );
-            }),
+            body: TabBarView(
+              controller: _tabController,
+              children: List.generate(
+                categories.length, (index) {
+                  final productData = productList[index]?.list ?? [];
+                  final count = productData.length;
+                  // 상품 리스트
+                  return StoreCategoryItem(
+                      productData: productData, count: count);
+                },
+              ),
+            ),
           ),
           MoveTopButton(scrollController: _scrollController),
         ],
@@ -149,7 +142,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
     final mtIdx = pref.getMtIdx();
 
     // TODO 페이징 처리 필요
-    Map<String, dynamic> requestData = {'category_type': '1'};
+    Map<String, dynamic> requestData = {'category_type': '2'};
     final categoryResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getCategory(requestData);
     if (categoryResponseDTO != null) {
       if (categoryResponseDTO.result == true) {
@@ -170,7 +163,10 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen>
             'category': category,
             'pg': 1,
           };
-          await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
+          final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
+          setState(() {
+            storeData = storeResponseDTO?.data;
+          });
           final productListResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getProductList(requestData);
           if (productListResponseDTO != null) {
             if (productListResponseDTO.result == true) {

@@ -1,23 +1,18 @@
-import 'package:BliU/data/product_coupon_data.dart';
 
 class StoreDownloadResponseDTO {
   final bool? result;
-  final String? message;
+  final String? data;
 
   StoreDownloadResponseDTO({
     required this.result,
-    required this.message,
+    required this.data,
   });
 
   // JSON to Object
   factory StoreDownloadResponseDTO.fromJson(Map<String, dynamic> json) {
-    final list = List<ProductCouponData>.from((json['data']['list'])?.map((item) {
-      return ProductCouponData.fromJson(item as Map<String, dynamic>);
-    }).toList());
-
     return StoreDownloadResponseDTO(
       result: json['result'],
-      message: json['data']['message'],
+      data: json['data'],
     );
   }
 
@@ -25,10 +20,7 @@ class StoreDownloadResponseDTO {
   Map<String, dynamic> toJson() {
     return {
       'result': result,
-      'message': message,
-      'data': {
-
-      },
+      'data': data,
     };
   }
 }
