@@ -96,7 +96,7 @@ class SearchViewModel extends StateNotifier<SearchModel?> {
       return null;
     }
   }
-  Future<ProductListResponseDTO?> getList(Map<String, dynamic> requestData) async {
+  Future<ProductListResponseDTO?> getProductList(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiMainAiListUrl, data: requestData);
       if (response != null) {
