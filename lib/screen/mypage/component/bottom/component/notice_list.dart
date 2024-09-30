@@ -7,98 +7,148 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class NoticeList extends ConsumerWidget {
-  // TODO 페이징
-  var pg = 0;
-
-  NoticeList({super.key});
-
-  final ScrollController _scrollController = ScrollController();
+class NoticeList extends ConsumerStatefulWidget {
+  const NoticeList({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    _getList(ref, true);
+  ConsumerState<NoticeList> createState() => _NoticeListState();
+}
 
+class _NoticeListState extends ConsumerState<NoticeList> {
+  final ScrollController _scrollController = ScrollController();
+  List<NoticeData> noticeList = [];
+
+  int _page = 1;
+  bool _hasNextPage = true;
+  bool _isFirstLoadRunning = false;
+  bool _isLoadMoreRunning = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_nextLoad);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.removeListener(_nextLoad);
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getList();
+  }
+
+  void _getList() async {
+    setState(() {
+      _isFirstLoadRunning = true;
+    });
+    _page = 1;
+
+    final Map<String, dynamic> requestData = {
+      'pg': _page
+    };
+
+    final noticeListResponseDTO = await ref.read(noticeListModelProvider.notifier).getList(requestData);
+    noticeList = noticeListResponseDTO?.list ?? [];
+
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+  }
+
+  void _nextLoad() async {
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+      _page += 1;
+
+      final Map<String, dynamic> requestData = {
+        'pg': _page
+      };
+
+      final noticeListResponseDTO = await ref.read(noticeListModelProvider.notifier).getList(requestData);
+      if (noticeListResponseDTO != null) {
+        if ((noticeListResponseDTO.list ?? []).isNotEmpty) {
+          setState(() {
+            noticeList.addAll(noticeListResponseDTO.list ?? []);
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           color: Colors.white,
-          child: Consumer(builder: (context, ref, widget) {
-            final model = ref.watch(noticeListModelProvider);
-
-            final List<NoticeData> noticeList =
-                model?.noticeListResponseDTO?.list ?? [];
-
-            return ListView.builder(
-              shrinkWrap: true,
-              controller: _scrollController,
-              itemCount: noticeList.length,
-              itemBuilder: (context, index) {
-                final noticeData = noticeList[index];
-                return Column(
-                  children: [
-                    ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                      title: Text(
-                        noticeData.ntTitle ?? "",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 15),
-                          fontWeight: FontWeight.w600,
-                          height: 1.2,
-                        ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            controller: _scrollController,
+            itemCount: noticeList.length,
+            itemBuilder: (context, index) {
+              final noticeData = noticeList[index];
+              return Column(
+                children: [
+                  ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    title: Text(
+                      noticeData.ntTitle ?? "",
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 15),
+                        fontWeight: FontWeight.w600,
+                        height: 1.2,
                       ),
-                      subtitle: Text(noticeData.ntWdate ?? "",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          color: const Color(0xFF7B7B7B),
-                          fontSize: Responsive.getFont(context, 14),
-                          height: 1.2,
-                        )
-                      ),
-                      trailing: SvgPicture.asset('assets/images/ic_link.svg'),
-                      onTap: () {
-                        // 공지사항 상세 페이지로 이동
-                        final ntIdx = noticeData.ntIdx;
-                        if (ntIdx != null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NoticeDetail(
-                                ntIdx: ntIdx,
-                              ),
-                            ),
-                          );
-                        }
-                      },
                     ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16),
-                      child: Divider(
-                        thickness: 1,
-                        color: Color(0xFFEEEEEE),
-                      ),
-                    )
-                  ],
-                );
-              },
-            );
-          }),
+                    subtitle: Text(noticeData.ntWdate ?? "",
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        color: const Color(0xFF7B7B7B),
+                        fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                      )
+                    ),
+                    trailing: SvgPicture.asset('assets/images/ic_link.svg'),
+                    onTap: () {
+                      // 공지사항 상세 페이지로 이동
+                      final ntIdx = noticeData.ntIdx;
+                      if (ntIdx != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NoticeDetail(ntIdx: ntIdx),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    child: const Divider(thickness: 1, color: Color(0xFFEEEEEE),),
+                  )
+                ],
+              );
+            },
+          ),
         ),
         MoveTopButton(scrollController: _scrollController),
       ],
     );
-  }
-
-  void _getList(WidgetRef ref, bool isNew) {
-    if (isNew) {
-      final model = ref.read(noticeListModelProvider);
-      model?.noticeListResponseDTO?.list?.clear();
-    }
-
-    final Map<String, dynamic> requestData = {'pg': pg};
-
-    ref.read(noticeListModelProvider.notifier).getList(requestData);
   }
 }

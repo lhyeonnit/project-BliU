@@ -1,19 +1,17 @@
+import 'package:BliU/screen/mypage/component/bottom/component/event_list.dart';
+import 'package:BliU/screen/mypage/component/bottom/component/notice_list.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import 'component/event_list.dart';
-import 'component/notice_list.dart';
 
 class NoticeScreen extends StatefulWidget {
   const NoticeScreen({super.key});
 
   @override
-  _NoticeScreenState createState() => _NoticeScreenState();
+  State<NoticeScreen> createState() => _NoticeScreenState();
 }
 
-class _NoticeScreenState extends State<NoticeScreen>
-    with SingleTickerProviderStateMixin {
+class _NoticeScreenState extends State<NoticeScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -92,7 +90,7 @@ class _NoticeScreenState extends State<NoticeScreen>
                   // 인디케이터가 각 탭의 길이에 맞게 조정됨
                   labelColor: Colors.black,
                   unselectedLabelColor: const Color(0xFF7B7B7B),
-                  dividerColor: Color(0xFFDDDDDD),
+                  dividerColor: const Color(0xFFDDDDDD),
                 ),
               ),
             ],
@@ -101,7 +99,7 @@ class _NoticeScreenState extends State<NoticeScreen>
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
+        children: const [
           NoticeList(),
           EventList(), // 이벤트 탭 내용은 필요에 따라 채워 넣으세요.
         ],

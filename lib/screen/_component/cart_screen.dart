@@ -289,10 +289,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                           TextButton(
                             onPressed: () {
                               setState(() {
-                                // TODO 전체 삭제
-                                // _cartItems.removeWhere((item) => item['isSelected'] == true);
-                                // _selectedItemsCount = 0;
-                                // _isAllSelected = false;
+                                _cartDel("all");
                               });
                             },
                             style: TextButton.styleFrom(
@@ -345,19 +342,16 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                     ),
                                   ),
                                   child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(20)), // 사진의 모서리만 둥글게 설정
+                                    borderRadius: const BorderRadius.all(Radius.circular(20)), // 사진의 모서리만 둥글게 설정
                                     child: Image.network(
                                       cartItem.stProfile ?? "",
                                       fit: BoxFit.contain,
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                    width: Responsive.getWidth(context, 10)),
+                                SizedBox(width: Responsive.getWidth(context, 10)),
                                 Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 12),
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
                                   child: Text(
                                     cartItem.stName ?? "",
                                     style: TextStyle(
@@ -378,34 +372,28 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 isSelected: product.isSelected,
                                 onIncrementQuantity: (index) {
                                   setState(() {
-                                    final cartCount =
-                                        (product.ptCount ?? 0) + 1;
+                                    final cartCount = (product.ptCount ?? 0) + 1;
                                     if ((product.ctIdx ?? 0) > 0) {
-                                      _cartUpdate(
-                                          product.ctIdx ?? 0, cartCount);
+                                      _cartUpdate(product.ctIdx ?? 0, cartCount);
                                     }
                                   });
                                 },
                                 onDecrementQuantity: (index) {
                                   setState(() {
-                                    final cartCount =
-                                        (product.ptCount ?? 0) - 1;
-                                    if ((product.ctIdx ?? 0) > 0 &&
-                                        cartCount > 0) {
-                                      _cartUpdate(
-                                          product.ctIdx ?? 0, cartCount);
+                                    final cartCount = (product.ptCount ?? 0) - 1;
+                                    if ((product.ctIdx ?? 0) > 0 && cartCount > 0) {
+                                      _cartUpdate(product.ctIdx ?? 0, cartCount);
                                     }
                                   });
                                 },
                                 onDelete: (index) {
                                   setState(() {
                                     if ((product.ctIdx ?? 0) > 0) {
-                                      _cartDel(product.ctIdx ?? 0);
+                                      _cartDel((product.ctIdx ?? 0).toString());
                                     }
                                   });
                                 },
-                                onToggleSelection:
-                                    _toggleSelection, // 개별 선택 상태 변경 함수 전달
+                                onToggleSelection: _toggleSelection, // 개별 선택 상태 변경 함수 전달
                               );
                             }).toList(),
                           ),
@@ -707,7 +695,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   }
 
   //장바구니 삭제
-  void _cartDel(int ctIdx) async {
+  void _cartDel(String ctIdx) async {
     // TODO 회원 비회원 구분
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
@@ -719,16 +707,14 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       'ct_idx': ctIdx,
     };
 
-    final defaultResponseDTO =
-        await ref.read(cartModelProvider.notifier).cartDel(requestData);
+    final defaultResponseDTO = await ref.read(cartModelProvider.notifier).cartDel(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _getList();
       }
 
       if (!context.mounted) return;
-      Utils.getInstance()
-          .showSnackBar(context, defaultResponseDTO.message ?? "");
+      Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     }
   }
 
@@ -763,8 +749,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       'cart_arr': json.encode(cartArr),
     };
 
-    final payOrderDetailDTO =
-        await ref.read(cartModelProvider.notifier).orderDetail(requestData);
+    final payOrderDetailDTO = await ref.read(cartModelProvider.notifier).orderDetail(requestData);
     if (payOrderDetailDTO != null) {
       final payOrderDetailData = payOrderDetailDTO.data;
 

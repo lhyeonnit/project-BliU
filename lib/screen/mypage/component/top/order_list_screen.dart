@@ -13,23 +13,113 @@ class OrderListScreen extends ConsumerStatefulWidget {
   const OrderListScreen({super.key});
 
   @override
-  _OrderListScreenState createState() => _OrderListScreenState();
+  ConsumerState<OrderListScreen> createState() => _OrderListScreenState();
 }
 
 class _OrderListScreenState extends ConsumerState<OrderListScreen> {
-  List<OrderData> orderList = [];
+  final ScrollController _scrollController = ScrollController();
 
-  List<String> categories = ['전체', '배송중', '배송완료', '취소/교환반품'];
+  final List<String> categories = ['전체', '배송중', '배송완료', '취소/교환반품'];
   int selectedCategoryIndex = 0;
 
-  final ScrollController _scrollController = ScrollController();
+  List<OrderData> orderList = [];
+
+  int _page = 1;
+  bool _hasNextPage = true;
+  bool _isFirstLoadRunning = false;
+  bool _isLoadMoreRunning = false;
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_nextLoad);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.removeListener(_nextLoad);
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getList();
+  }
+
+  void _getList() async {
+    setState(() {
+      _isFirstLoadRunning = true;
+    });
+    _page = 1;
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    // 전체 시 all 전체 5 배송중 7 배송완료 99 취소/교환반품
+    String ctStatus = "";
+    switch (selectedCategoryIndex) {
+      case 0:
+        ctStatus = "all";
+        break;
+      case 1:
+        ctStatus = "5";
+        break;
+      case 2:
+        ctStatus = "7";
+        break;
+      case 3:
+        ctStatus = "99";
+        break;
+    }
+
+    // TODO 회원 비회원
+    Map<String, dynamic> requestData = {
+      'type': 1,
+      'mt_idx': mtIdx,
+      'temp_mt_id': '',
+      'ot_code': '', // 비회원 주문조회의 경우에만 전달해주세요.
+      'ct_status': ctStatus,
+      'pg': _page,
+    };
+
+    final orderResponseDTO = await ref.read(orderListViewModelProvider.notifier).getList(requestData);
+    orderList = orderResponseDTO?.list ?? [];
+
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+  }
+
+  void _nextLoad() async {
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+      _page += 1;
+
+      final Map<String, dynamic> requestData = {
+        'pg': _page
+      };
+
+      final orderResponseDTO = await ref.read(orderListViewModelProvider.notifier).getList(requestData);
+      if (orderResponseDTO != null) {
+        if ((orderResponseDTO.list ?? []).isNotEmpty) {
+          setState(() {
+            orderList.addAll(orderResponseDTO.list ?? []);
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
+      });
+    }
   }
 
   @override
@@ -143,16 +233,14 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
                           onSelected: (bool selected) {
                             setState(() {
                               selectedCategoryIndex = index;
-                              _getList(true);
+                              _getList();
                             });
                           },
                           backgroundColor: Colors.white,
                           selectedColor: Colors.white,
                           shape: StadiumBorder(
                             side: BorderSide(
-                              color: isSelected
-                                  ? const Color(0xFFFF6192)
-                                  : const Color(0xFFDDDDDD),
+                              color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
                               // 테두리 색상
                               width: 1.0,
                             ),
@@ -167,22 +255,18 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
                   height: 1,
                   color: Color(0xFFEEEEEE),
                 ),
-                Consumer(builder: (context, ref, widget) {
-                  final model = ref.watch(orderListViewModelProvider);
-                  final list = model?.orderResponseDTO?.list ?? [];
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: orderList.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final orderData = orderList[index];
 
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: list.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        final orderData = list[index];
-
-                        return OrderListItem(
-                          orderData: orderData,
-                        );
-                      });
-                }),
+                    return OrderListItem(
+                      orderData: orderData,
+                    );
+                  }
+                ),
               ],
             ),
           ),
@@ -190,49 +274,5 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
         ],
       ),
     );
-  }
-
-  void _afterBuild(BuildContext context) {
-    _getList(true);
-  }
-
-  void _getList(bool isNew) async {
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    // 전체 시 all 전체 5 배송중 7 배송완료 99 취소/교환반품
-    String ctStatus = "";
-    switch (selectedCategoryIndex) {
-      case 0:
-        ctStatus = "all";
-        break;
-      case 1:
-        ctStatus = "5";
-        break;
-      case 2:
-        ctStatus = "7";
-        break;
-      case 3:
-        ctStatus = "99";
-        break;
-    }
-
-    if (isNew) {
-      final model = ref.read(orderListViewModelProvider);
-      model?.orderResponseDTO?.list?.clear();
-    }
-
-    // TODO 회원 비회원
-    // TODO 페이징 처리
-    Map<String, dynamic> requestData = {
-      'type': 1,
-      'mt_idx': mtIdx,
-      'temp_mt_id': '',
-      'ot_code': '', // 비회원 주문조회의 경우에만 전달해주세요.
-      'ct_status': ctStatus,
-      'pg': 1,
-    };
-
-    await ref.read(orderListViewModelProvider.notifier).getList(requestData);
   }
 }
