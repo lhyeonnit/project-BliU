@@ -61,7 +61,6 @@ dependencies:
   flutter_naver_login: ^1.8.0
   kakao_flutter_sdk: ^1.9.5
   sign_in_with_apple: ^6.1.2
-  tosspayments_widget_sdk_flutter: ^2.0.4
   flutter_daum_postcode: ^0.0.3
   focus_detector_v2: ^3.1.0+1
   flutter_rating_bar: ^4.0.1
@@ -70,6 +69,7 @@ dependencies:
   scrollable_positioned_list: ^0.3.8
   path_provider: ^2.1.4
   http: ^1.2.2
+  iamport_flutter: ^0.10.19
 
 dependency_overrides:
   webview_flutter: 4.8.0
