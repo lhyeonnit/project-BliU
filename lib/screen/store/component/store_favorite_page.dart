@@ -246,18 +246,13 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                                                       child: Text(
                                                         store.ageTxt ?? "",
                                                         style: TextStyle(
-                                                          fontFamily:
-                                                              'Pretendard',
-                                                          fontSize: Responsive
-                                                              .getFont(
-                                                                  context, 13),
-                                                          color: const Color(
-                                                              0xFF7B7B7B),
-                                                          height: 1.2,
+                                                          fontFamily: 'Pretendard',
+                                                          fontSize: Responsive.getFont(context, 13),
+                                                          color: const Color(0xFF7B7B7B),
+                                                          height: 1.2
                                                         ),
                                                         maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
+                                                        overflow: TextOverflow.ellipsis
                                                       ),
                                                     ),
                                                   ],
@@ -280,18 +275,12 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                                                             .getInstance();
                                                     final mtIdx = pref
                                                         .getMtIdx(); // 사용자 mtIdx 가져오기
-                                                    Map<String, dynamic>
-                                                        requestData = {
+                                                    Map<String, dynamic> requestData = {
                                                       'mt_idx': mtIdx,
                                                       'st_idx': store.stIdx,
                                                       // 상점 인덱스 사용
                                                     };
-                                                    await ref
-                                                        .read(
-                                                            storeFavoriteViewModelProvider
-                                                                .notifier)
-                                                        .toggleLike(
-                                                            requestData);
+                                                    await ref.read(storeFavoriteViewModelProvider.notifier).toggleLike(requestData);
                                                   },
                                                   child: SvgPicture.asset(
                                                     'assets/images/store/book_mark.svg',
@@ -605,8 +594,7 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
         }
 
         setState(() {
-          _tabController =
-              TabController(length: categories.length, vsync: this);
+          _tabController = TabController(length: categories.length, vsync: this);
         });
       }
     }

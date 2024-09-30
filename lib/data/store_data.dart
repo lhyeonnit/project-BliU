@@ -10,6 +10,7 @@ class StoreData {
   final String? stStyleTxt;
   final String? stAge;
   final String? stAgeTxt;
+  final String? stTxt2;
   List<ProductData>? list;
 
   StoreData({
@@ -22,6 +23,7 @@ class StoreData {
     required this.stStyleTxt,
     required this.stAge,
     required this.stAgeTxt,
+    required this.stTxt2,
     required this.list,
   });
 
@@ -44,6 +46,7 @@ class StoreData {
       stStyleTxt: json['st_style_txt'],
       stAge: json['st_age'],
       stAgeTxt: json['st_age_txt'],
+      stTxt2: json['st_txt2'],
       list: list,
     );
   }
@@ -60,6 +63,7 @@ class StoreData {
       'st_style_txt': stStyleTxt,
       'st_age': stAge,
       'st_age_txt': stAgeTxt,
+      'st_txt2': stTxt2,
       'list': list?.map((product) => product.toJson()).toList(),
     };
   }

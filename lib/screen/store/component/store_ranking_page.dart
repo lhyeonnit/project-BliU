@@ -330,18 +330,10 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                               };
 
                                               // 북마크 토글 함수 호출
-                                              await ref
-                                                  .read(
-                                                      storeFavoriteViewModelProvider
-                                                          .notifier)
-                                                  .toggleLike(requestData);
-
+                                              await ref.read(storeFavoriteViewModelProvider.notifier).toggleLike(requestData);
                                               // 북마크 상태 반전 (check_mark 값 반전)
                                               setState(() {
-                                                rankData.checkMark =
-                                                    rankData.checkMark == "Y"
-                                                        ? "N"
-                                                        : "Y";
+                                                rankData.checkMark = rankData.checkMark == "Y" ? "N" : "Y";
                                               });
                                             },
                                             child: Container(
