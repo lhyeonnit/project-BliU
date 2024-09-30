@@ -15,11 +15,15 @@ class PushResponseDTO {
 
   // JSON to Object
   factory PushResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<PushData>.from((json['data']['list'])?.map((item) {
+      return PushData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return PushResponseDTO(
       result: json['result'],
       message: json['data']['message'],
       count: json['data']['count'],
-      list: (json['data']['list'] as List<PushData>),
+      list: list,
     );
   }
 
@@ -29,7 +33,7 @@ class PushResponseDTO {
       'result': result,
       'message': message,
       'data' : {
-        'count': list?.length,
+        'count': count,
         'list': list?.map((it) => it.toJson()).toList(),
       }
     };

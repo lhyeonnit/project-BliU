@@ -1,32 +1,31 @@
+import 'package:BliU/data/push_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/component/top/component/alarm_event.dart';
+import 'package:BliU/screen/mypage/viewmodel/alarm_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'component/alarm_notice.dart';
-
 // 알림 화면
-class AlarmScreen extends StatefulWidget {
+class AlarmScreen extends ConsumerStatefulWidget {
   const AlarmScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => AlarmScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => AlarmScreenState();
 }
 
-class AlarmScreenState extends State<AlarmScreen> {
-  final List<Widget> _viewArr = [];
+class AlarmScreenState extends ConsumerState<AlarmScreen> {
   final ScrollController _scrollController = ScrollController();
+
+  List<PushData> pushList = [];
 
   @override
   void initState() {
     super.initState();
-
-    // 리스트 항목 추가
-    for (int i = 0; i < 10; i++) {
-      _viewArr.add(const AlarmNotice());
-      _viewArr.add(const AlarmEvent());
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
   }
 
   @override
@@ -73,14 +72,124 @@ class AlarmScreenState extends State<AlarmScreen> {
       ),
       body: Stack(
         children: [
-          ListView(
-            controller: _scrollController, // ScrollController 설정
-            children: _viewArr,
+          ListView.builder(
+            controller: _scrollController,
+            itemCount: pushList.length,
+            itemBuilder: (context, index) {
+              final pushData = pushList[index];
+
+              return GestureDetector(
+                onTap: () {
+                  // TODO 화면 이동 작업 필요
+                },
+                child: Container(
+                  // 눌린 상태에 따라 색상 변경
+                  color: pushData.pRead == "Y" ? Colors.white : const Color(0xFFF5F9F9),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipOval(
+                          child: SizedBox(
+                            width: Responsive.getWidth(context, 50),
+                            height: Responsive.getWidth(context, 50),
+                            child: SvgPicture.asset(
+                              'assets/images/home/cate_ic_store.svg',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: Responsive.getWidth(context, 15),),
+                        Expanded(
+                          flex: 1,
+                          child: SizedBox(
+                            width: Responsive.getWidth(context, 315),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  pushData.ptSubject ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    color: Colors.black,
+                                    fontSize: Responsive.getFont(context, 15),
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.2,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: Responsive.getHeight(context, 8),
+                                ),
+                                SizedBox(
+                                  child: Text(
+                                    pushData.ptLabel ?? "",
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      color: const Color(0xFF7B7B7B),
+                                      fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                SizedBox(height: Responsive.getHeight(context, 8),),
+                                Text(
+                                  pushData.ptWdate ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    color: const Color(0xFF7B7B7B),
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: Responsive.getWidth(context, 21),),
+                        Padding(
+                          padding: EdgeInsets.only(top: Responsive.getHeight(context, 28)),
+                          child: SvgPicture.asset(
+                            'assets/images/ic_link.svg',
+                            width: Responsive.getWidth(context, 14),
+                            height: Responsive.getHeight(context, 14),
+                            fit: BoxFit.contain,
+                            color: const Color(0xFF7B7B7B),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }
           ),
           MoveTopButton(scrollController: _scrollController),
-          // 같은 ScrollController를 전달
         ],
       ),
     );
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getList();
+  }
+
+  void _getList() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    Map<String, dynamic> requestData = {
+      'mt_idx': mtIdx,
+    };
+
+    final pushResponseDTO = await ref.read(alarmViewModelProvider.notifier).getList(requestData);
+    if (pushResponseDTO != null) {
+      if (pushResponseDTO.result == true) {
+        setState(() {
+          pushList = pushResponseDTO.list ?? [];
+        });
+      }
+    }
   }
 }
