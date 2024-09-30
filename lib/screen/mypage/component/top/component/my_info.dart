@@ -63,22 +63,22 @@ class MyInfo extends StatelessWidget {
             );
           },
           child: Container(
-              margin: const EdgeInsets.only(top: 20),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                border: Border.all(color: const Color(0xFFDDDDDD)),
+            margin: const EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(color: const Color(0xFFDDDDDD)),
+            ),
+            child: Text(
+              '내정보수정',
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                color: Colors.black,
+                fontSize: Responsive.getFont(context, 12),
+                height: 1.2,
               ),
-              child: Text(
-                '내정보수정',
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    color: Colors.black,
-                    fontSize: Responsive.getFont(context, 12),
-                    height: 1.2,
-                  ),
-                )
-              ),
+            )
+          ),
         ),
       ],
     );

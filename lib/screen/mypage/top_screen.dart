@@ -14,7 +14,7 @@ class TopScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    
+
     return Consumer(
       builder: (context, ref, widget) {
         final model = ref.watch(myModelProvider);
@@ -45,37 +45,60 @@ class TopScreen extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _buildIconButton(
-                      context, '주문·배송', 'assets/images/my/mypage_ic01.svg', () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const OrderListScreen()),
-                    );
-                  }, ''),
+                    context,
+                    '주문·배송',
+                    'assets/images/my/mypage_ic01.svg',
+                    () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const OrderListScreen()
+                        ),
+                      );
+                    },
+                    ''
+                  ),
                   _buildIconButton(
-                      context, '나의리뷰', 'assets/images/my/mypage_ic02.svg', () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MyReviewScreen()),
-                    );
-                  }, '$myRevieCount'),
+                    context,
+                    '나의리뷰',
+                    'assets/images/my/mypage_ic02.svg',
+                    () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MyReviewScreen()
+                        ),
+                      );
+                    },
+                    '$myRevieCount'
+                  ),
                   _buildIconButton(
-                      context, '쿠폰함', 'assets/images/my/mypage_ic03_1.svg', () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MyCouponScreen()),
-                    );
-                  }, '$myCouponCount'),
+                    context,
+                    '쿠폰함',
+                    'assets/images/my/mypage_ic03_1.svg',
+                    () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MyCouponScreen()),
+                      );
+                    },
+                    '$myCouponCount'
+                  ),
                   _buildIconButton(
-                      context, '포인트', 'assets/images/my/mypage_ic04.svg', () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PointScreen()),
-                    );
-                  }, '$myPoint'),
+                    context,
+                    '포인트',
+                    'assets/images/my/mypage_ic04.svg',
+                    () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PointScreen()
+                        ),
+                      );
+                    },
+                    '$myPoint'
+                  ),
                 ],
               ),
             ),
