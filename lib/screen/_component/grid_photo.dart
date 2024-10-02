@@ -1,9 +1,10 @@
+import 'package:BliU/screen/_component/smart_lens_photo_crop.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
 
 class GridPhoto extends StatefulWidget {
-  List<AssetEntity> images;
+  final List<AssetEntity> images;
 
   GridPhoto({
     required this.images,
@@ -22,10 +23,23 @@ class _GridPhotoState extends State<GridPhoto> {
       gridDelegate:
       const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
       children: widget.images.map((e) {
-        return AssetEntityImage(
-          e,
-          isOriginal: false,
-          fit: BoxFit.cover,
+        return GestureDetector(
+          onTap: () {
+            // 이미지를 터치했을 때 로딩 화면으로 이동
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SmartLensPhotoCrop(
+                  imageEntity: e, // 선택한 이미지 데이터를 전달
+                ),
+              ),
+            );
+          },
+          child: AssetEntityImage(
+            e,
+            isOriginal: false,
+            fit: BoxFit.cover,
+          ),
         );
       }).toList(),
     );

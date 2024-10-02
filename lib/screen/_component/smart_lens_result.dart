@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SmartLensResult extends StatefulWidget {
-  const SmartLensResult({super.key});
+  final String imagePath;
+
+  const SmartLensResult({super.key, required this.imagePath});
 
   @override
   State<SmartLensResult> createState() => _SmartLensResultState();

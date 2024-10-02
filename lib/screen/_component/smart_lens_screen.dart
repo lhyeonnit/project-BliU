@@ -62,28 +62,26 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
     await getPhotos(_albums[0], albumChange: true);
   }
 
-  Future<void> getPhotos(
-    Album album, {
-    bool albumChange = false,
-  }) async {
+  Future<void> getPhotos(Album album, {bool albumChange = false}) async {
     _currentAlbum = album;
-    albumChange ? _currentPage = 0 : _currentPage++;
+
+    // 앨범 내 사진 총 개수 가져오기
+    final totalAssets = await _paths!
+        .singleWhere((AssetPathEntity e) => e.id == album.id)
+        .assetCountAsync;
 
     final loadImages = await _paths!
         .singleWhere((AssetPathEntity e) => e.id == album.id)
-        .getAssetListPaged(
-          page: _currentPage,
-          size: 20,
-        );
+        .getAssetListRange(
+      start: 0,         // 처음부터
+      end: totalAssets, // 마지막까지 (모든 사진)
+    );
 
     setState(() {
-      if (albumChange) {
-        _images = loadImages;
-      } else {
-        _images.addAll(loadImages);
-      }
+      _images = loadImages;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +130,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
         ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             margin: EdgeInsets.symmetric(vertical: 40),
@@ -150,33 +149,30 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
             ),
           ),
           Container(
+            margin: EdgeInsets.only(left: 16),
               child: _albums.isNotEmpty
                   ? DropdownButton(
                       value: _currentAlbum,
-                      items: _albums
-                          .map((e) => DropdownMenuItem(
+                      items: _albums.map((e) => DropdownMenuItem(
                                 value: e,
                                 child: Text(e.name),
-                              ))
-                          .toList(),
-                      onChanged: (Album? value) =>
-                          getPhotos(value!, albumChange: true),
+                              ),
+                      ).toList(),
+                      onChanged: (Album? value) => getPhotos(value!, albumChange: true),
                     )
                   : const SizedBox()),
-          NotificationListener<ScrollNotification>(
-            onNotification: (ScrollNotification scroll) {
-              final scrollPixels =
-                  scroll.metrics.pixels / scroll.metrics.maxScrollExtent;
-
-              print('scrollPixels = $scrollPixels');
-              if (scrollPixels > 0.7) getPhotos(_currentAlbum);
-
-              return false;
-            },
-            child: SafeArea(
-              child: _paths == null
-                  ? const Center(child: CircularProgressIndicator())
-                  : GridPhoto(images: _images),
+          Expanded(
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scroll) {
+                final scrollPixels = scroll.metrics.pixels / scroll.metrics.maxScrollExtent;
+                if (scrollPixels > 0.7) getPhotos(_currentAlbum);
+                return false;
+              },
+              child: SafeArea(
+                child: _paths == null
+                    ? const Center(child: CircularProgressIndicator())
+                    : GridPhoto(images: _images),
+              ),
             ),
           ),
         ],
