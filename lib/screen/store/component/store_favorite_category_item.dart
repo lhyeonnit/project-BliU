@@ -7,9 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class StoreFavoriteCategoryItem extends ConsumerStatefulWidget {
-  final int index;
-  final List<ProductListResponseDTO?> productList;
-  StoreFavoriteCategoryItem({super.key, required this.index, required this.productList});
+  final ProductListResponseDTO? productListResponseDTO;
+  StoreFavoriteCategoryItem({super.key, required this.productListResponseDTO});
 
   @override
   _StoreFavoriteCategoryItemState createState() => _StoreFavoriteCategoryItemState();
@@ -27,8 +26,8 @@ class _StoreFavoriteCategoryItemState extends ConsumerState<StoreFavoriteCategor
   @override
   Widget build(BuildContext context) {
     try {
-      pList = widget.productList[widget.index]?.list ?? [];
-      count = widget.productList[widget.index]?.count ?? 0;
+      pList = widget.productListResponseDTO?.list ?? [];
+      count = widget.productListResponseDTO?.count ?? 0;
     } catch (e) {
       print("e = ${e.toString()}");
     }
@@ -60,13 +59,13 @@ class _StoreFavoriteCategoryItemState extends ConsumerState<StoreFavoriteCategor
                 mainAxisSpacing: 30,
               ),
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: count,
+              itemCount: pList.length,
               itemBuilder: (context, index) {
+                // if (index >= count) {
+                //   return const Center(
+                //       child: CircularProgressIndicator()); // 추가 로딩 시 로딩 인디케이터
+                // }
                 final storeProduct = pList[index];
-                if (index >= count) {
-                  return const Center(
-                      child: CircularProgressIndicator()); // 추가 로딩 시 로딩 인디케이터
-                }
                 return GestureDetector(
                   onTap: () {
                     // 상품 클릭 시 상세 화면 이동 처리
@@ -74,7 +73,7 @@ class _StoreFavoriteCategoryItemState extends ConsumerState<StoreFavoriteCategor
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                        const ProductDetailScreen(ptIdx: 3),
+                        ProductDetailScreen(ptIdx: storeProduct.ptIdx ?? 0),
                       ),
                     );
                   },
