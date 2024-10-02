@@ -1,13 +1,10 @@
 import 'package:BliU/data/bookmark_data.dart';
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
-import 'package:BliU/dto/bookmark_response_dto.dart';
-import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/product/component/list/product_sort_bottom.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/component/store_age_group_selection.dart';
-import 'package:BliU/screen/store/component/store_favorite_category_item.dart';
 import 'package:BliU/screen/store/store_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';

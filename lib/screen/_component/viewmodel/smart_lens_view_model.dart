@@ -2,26 +2,27 @@ import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/cart_response_dto.dart';
 import 'package:BliU/dto/default_response_dto.dart';
-import 'package:BliU/dto/pay_order_detail_dto.dart';
+import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CartModel {
+class SmartLensModel {
 
 }
 
-class CartViewModel extends StateNotifier<CartModel?> {
+class SmartLensViewModel extends StateNotifier<SmartLensModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  CartViewModel(super.state, this.ref);
+  SmartLensViewModel(super.state, this.ref);
 
-  Future<CartResponseDTO?> getList(Map<String, dynamic> requestData) async {
+  Future<ProductListResponseDTO?> getList(Map<String, dynamic> requestData) async {
     try {
-      final response = await repository.reqPost(url: Constant.apiCartListUrl, data: requestData);
+      final response = await repository.reqPost(url: Constant.apiSearchSmartLensUrl, data: requestData);
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
-          return CartResponseDTO.fromJson(responseData);
+          ProductListResponseDTO productListResponseDTO = ProductListResponseDTO.fromJson(responseData);
+          return productListResponseDTO;
         }
       }
       return null;
@@ -31,48 +32,14 @@ class CartViewModel extends StateNotifier<CartModel?> {
       return null;
     }
   }
-
-  Future<DefaultResponseDTO?> cartUpdate(Map<String, dynamic> requestData) async {
+  Future<DefaultResponseDTO?> productLike(Map<String, dynamic> requestData) async {
     try {
-      final response = await repository.reqPost(url: Constant.apiCartUpdateUrl, data: requestData);
+      final response = await repository.reqPost(url: Constant.apiProductLikeUrl, data: requestData);
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
-          return DefaultResponseDTO.fromJson(responseData);
-        }
-      }
-      return null;
-    } catch (e) {
-      // Catch and log any exceptions
-      print('Error fetching : $e');
-      return null;
-    }
-  }
-
-  Future<DefaultResponseDTO?> cartDel(Map<String, dynamic> requestData) async {
-    try {
-      final response = await repository.reqPost(url: Constant.apiCartDelUrl, data: requestData);
-      if (response != null) {
-        if (response.statusCode == 200) {
-          Map<String, dynamic> responseData = response.data;
-          return DefaultResponseDTO.fromJson(responseData);
-        }
-      }
-      return null;
-    } catch (e) {
-      // Catch and log any exceptions
-      print('Error fetching : $e');
-      return null;
-    }
-  }
-
-  Future<PayOrderDetailDTO?> orderDetail(Map<String, dynamic> requestData) async {
-    try {
-      final response = await repository.reqPost(url: Constant.apiOrderDetailUrl, data: requestData);
-      if (response != null) {
-        if (response.statusCode == 200) {
-          Map<String, dynamic> responseData = response.data;
-          return PayOrderDetailDTO.fromJson(responseData);
+          DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+          return defaultResponseDTO;
         }
       }
       return null;
@@ -85,7 +52,7 @@ class CartViewModel extends StateNotifier<CartModel?> {
 }
 
 // ViewModel Provider 정의
-final cartModelProvider =
-StateNotifierProvider<CartViewModel, CartModel?>((ref) {
-  return CartViewModel(null, ref);
+final smartLensModelProvider =
+StateNotifierProvider<SmartLensViewModel, SmartLensModel?>((ref) {
+  return SmartLensViewModel(null, ref);
 });
