@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class StoreCategoryItem extends ConsumerStatefulWidget {
-  final List<ProductData?> productData;
+  final ProductData productData;
   final int count;
 
   StoreCategoryItem({super.key, required this.productData, required this.count});
@@ -54,11 +54,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
               physics: const NeverScrollableScrollPhysics(),
               itemCount: widget.count,
               itemBuilder: (context, index) {
-                final storeProduct = widget.productData[index];
-                if (index >= widget.count) {
-                  return const Center(
-                      child: CircularProgressIndicator()); // 추가 로딩 시 로딩 인디케이터
-                }
+                final storeProduct = widget.productData;
                 return GestureDetector(
                   onTap: () {
                     // 상품 클릭 시 상세 화면 이동 처리
@@ -83,7 +79,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                               child: AspectRatio(
                                 aspectRatio: 1,
                                 child: Image.network(
-                                  storeProduct?.ptImg ?? "",
+                                  storeProduct.ptImg ?? "",
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) =>
                                       Image.asset(
@@ -106,7 +102,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                       Container(
                         margin: const EdgeInsets.only(top: 10, bottom: 3),
                         child: Text(
-                          storeProduct?.stName ?? "",
+                          storeProduct.stName ?? "",
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 12),
@@ -116,7 +112,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                         ),
                       ),
                       Text(
-                        storeProduct?.ptName ?? "",
+                        storeProduct.ptName ?? "",
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
@@ -132,7 +128,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                           textBaseline: TextBaseline.alphabetic,
                           children: [
                             Text(
-                              '${storeProduct?.ptDiscountPer}%',
+                              '${storeProduct.ptDiscountPer}%',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
@@ -144,7 +140,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                             Container(
                               margin: const EdgeInsets.only(left: 3),
                               child: Text(
-                                '${storeProduct?.ptPrice}원',
+                                '${storeProduct.ptPrice}원',
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
@@ -165,7 +161,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                           ),
                           const SizedBox(width: 3),
                           Text(
-                            '${storeProduct?.ptLike}',
+                            '${storeProduct.ptLike}',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 12),
@@ -173,7 +169,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                               height: 1.2,
                             ),
                           ),
-                          if ((storeProduct?.ptReviewCount ?? 0) > 0) ...[
+                          if ((storeProduct.ptReviewCount ?? 0) > 0) ...[
                             const SizedBox(width: 10),
                             SvgPicture.asset(
                               'assets/images/home/item_comment.svg',
@@ -182,7 +178,7 @@ class _StoreCategoryItemState extends ConsumerState<StoreCategoryItem>
                             ),
                             const SizedBox(width: 3),
                             Text(
-                              '${storeProduct?.ptReviewCount}',
+                              '${storeProduct.ptReviewCount}',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 12),
