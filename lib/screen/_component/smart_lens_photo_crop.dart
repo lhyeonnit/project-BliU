@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:BliU/screen/_component/smart_lens_result.dart';
+import 'package:BliU/screen/_component/smart_lens_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -23,16 +24,6 @@ class _SmartLensPhotoCropState extends State<SmartLensPhotoCrop> {
   @override
   void initState() {
     super.initState();
-    _simulateLoading();
-  }
-
-  Future<void> _simulateLoading() async {
-    // 로딩을 3초간 시뮬레이션
-    await Future.delayed(const Duration(seconds: 3));
-    setState(() {
-      _isLoading = false;
-    });
-    // 로딩이 끝나면 파일을 불러오고 크롭 화면으로 전환
     _loadImageFile();
   }
 
@@ -41,9 +32,19 @@ class _SmartLensPhotoCropState extends State<SmartLensPhotoCrop> {
     if (file != null) {
       setState(() {
         _imageFile = file;
+        _simulateLoading();  // 이미지가 준비된 후 로딩 시뮬레이션 시작
       });
-      _showImageCropper();
     }
+  }
+
+  Future<void> _simulateLoading() async {
+    // 로딩을 3초간 시뮬레이션
+    await Future.delayed(const Duration(seconds: 3));
+    setState(() {
+      _isLoading = false;
+    });
+    // 3초 로딩 후 크롭 화면으로 전환
+    _showImageCropper();
   }
 
   Future<void> _showImageCropper() async {
@@ -54,8 +55,8 @@ class _SmartLensPhotoCropState extends State<SmartLensPhotoCrop> {
         compressQuality: 100,
         uiSettings: [
           AndroidUiSettings(
-            toolbarTitle: 'Cropper',
-            toolbarColor: Colors.deepOrange,
+            toolbarTitle: '선택사진 크롭',
+            toolbarColor: Colors.black,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.square,
             lockAspectRatio: false,
@@ -66,7 +67,7 @@ class _SmartLensPhotoCropState extends State<SmartLensPhotoCrop> {
             ],
           ),
           IOSUiSettings(
-            title: 'Cropper',
+            title: '선택사진 크롭',
             aspectRatioPresets: [
               CropAspectRatioPreset.original,
               CropAspectRatioPreset.square,
@@ -76,12 +77,19 @@ class _SmartLensPhotoCropState extends State<SmartLensPhotoCrop> {
         ],
       );
 
-      if (croppedFile != null) {
-        // 크롭된 이미지로 다음 화면으로 이동하거나 처리 로직을 넣을 수 있음
+      if (croppedFile == null) {
+        // 원하는 동작을 여기에 정의 (예: 특정 페이지로 이동)
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SmartLensScreen()), // 취소 시 보여줄 페이지
+        );
+      } else {
+        File croppedImageFile = File(croppedFile.path);
+        // 크롭이 완료된 경우 다음 화면으로 이동
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SmartLensResult(imagePath: croppedFile.path),
+            builder: (context) => SmartLensResult(imagePath: croppedImageFile),
           ),
         );
       }
@@ -113,15 +121,29 @@ class _SmartLensPhotoCropState extends State<SmartLensPhotoCrop> {
       ),
       body: Stack(
         children: [
-          Positioned.fill(
-            child: _imageFile != null
-                ? Image.file(
-                    _imageFile!,
-                    fit: BoxFit.cover,
-                  )
-                : Center(
-                    child: Image.asset('assets/images/스마트렌즈-로딩.gif'),
-                  ),
+          // 이미지 파일이 있을 때만 표시
+          Visibility(
+            visible: _imageFile != null, // 이미지 파일이 있으면 표시
+            child: Positioned.fill(
+              child: _imageFile != null
+                  ? Image.file(
+                _imageFile!,
+                fit: BoxFit.cover,
+              )
+                  : const SizedBox(), // _imageFile이 없을 때 빈 공간을 사용
+            ),
+          ),
+
+          // 로딩 중일 때만 GIF 표시
+          Visibility(
+            visible: _isLoading, // 로딩 중일 때만 표시
+            child: Center(
+              child: Image.asset(
+                'assets/images/스마트렌즈-로딩.gif',
+                height: 100,
+                width: 100,
+              ),
+            ),
           ),
         ],
       ),
