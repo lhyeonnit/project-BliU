@@ -1,5 +1,4 @@
 import 'package:BliU/data/product_data.dart';
-import 'package:BliU/data/store_product_data.dart';
 
 class StoreData {
   final int? stIdx;
@@ -12,7 +11,7 @@ class StoreData {
   final String? stAge;
   final String? stAgeTxt;
   final String? stTxt2;
-  List<StoreProductData>? list;
+  List<ProductData>? list;
 
   StoreData({
     required this.stIdx,
@@ -30,8 +29,8 @@ class StoreData {
 
   // JSON 데이터를 StoreDetailDataDTO 객체로 변환하는 factory 메서드
   factory StoreData.fromJson(Map<String, dynamic> json) {
-    final List<StoreProductData>? list = List<StoreProductData>.from((json['list'])?.map((item) {
-      return StoreProductData.fromJson(item as Map<String, dynamic>);
+    final List<ProductData>? list = List<ProductData>.from((json['list'])?.map((item) {
+      return ProductData.fromJson(item as Map<String, dynamic>);
     }).toList());
 
     return StoreData(
