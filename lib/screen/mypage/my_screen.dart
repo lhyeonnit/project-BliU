@@ -28,9 +28,9 @@ class MyScreen extends ConsumerWidget {
     mtIdx = "2";// TODO 테스트용
     return FocusDetector(
       onFocusGained: () {
-        viewWillAppear(ref, context);
+        _viewWillAppear(ref, context);
       },
-      onFocusLost: viewWillDisappear,
+      onFocusLost: _viewWillDisappear,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -200,7 +200,7 @@ class MyScreen extends ConsumerWidget {
     );
   }
 
-  void viewWillAppear(WidgetRef ref, BuildContext context) {
+  void _viewWillAppear(WidgetRef ref, BuildContext context) {
     SharedPreferencesManager.getInstance().then((pref) {
       final mtIdx = pref.getMtIdx();
       if (mtIdx != null && mtIdx.isNotEmpty) {
@@ -218,7 +218,7 @@ class MyScreen extends ConsumerWidget {
     });
   }
 
-  void viewWillDisappear() {
+  void _viewWillDisappear() {
     print("viewWillDisappear");
   }
 

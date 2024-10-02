@@ -12,20 +12,34 @@ class MyReviewScreen extends ConsumerStatefulWidget {
   const MyReviewScreen({super.key});
 
   @override
-  MyReviewScreenState createState() => MyReviewScreenState();
+  ConsumerState<MyReviewScreen> createState() => MyReviewScreenState();
 }
 
 class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
-  bool isListVisible = false;
-  int reviewCount = 0;
-  List<ReviewData> reviewList = [];
+  final ScrollController _scrollController = ScrollController();
+  List<ReviewData> _reviewList = [];
+
+  bool _isListVisible = false;
+  int _reviewCount = 0;
+
+  int _page = 1;
+  bool _hasNextPage = true;
+  bool _isFirstLoadRunning = false;
+  bool _isLoadMoreRunning = false;
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_nextLoad);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.removeListener(_nextLoad);
   }
 
   @override
@@ -78,7 +92,7 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             margin: const EdgeInsets.only(top: 20, bottom: 15),
             child: Text(
-              '작성한 리뷰 $reviewCount',
+              '작성한 리뷰 $_reviewCount',
               style: TextStyle(
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14)
@@ -96,12 +110,13 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
             child: Stack(
               children: [
                 Visibility(
-                  visible: isListVisible,
+                  visible: _isListVisible,
                   child: ListView.builder(
-                    itemCount: reviewList.length, // 리뷰 개수에 맞춰 설정
+                    controller: _scrollController,
+                    itemCount: _reviewList.length, // 리뷰 개수에 맞춰 설정
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      final reviewData = reviewList[index];
+                      final reviewData = _reviewList[index];
 
                       return GestureDetector(
                         onTap: () {
@@ -177,7 +192,7 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
                   )
                 ),
                 Visibility(
-                  visible: !isListVisible,
+                  visible: !_isListVisible,
                   child: Center(
                     child: Text(
                       "작성하신 리뷰가 없습니다.",
@@ -203,25 +218,67 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
   }
 
   void _getList() async {
-    // TODO 페이징 처리
+    setState(() {
+      _isFirstLoadRunning = true;
+    });
+    _page = 1;
+
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
     Map<String, dynamic> requestData = {
       'mt_idx': mtIdx,
-      'pg' : 1,
+      'pg' : _page,
     };
 
     final reviewInfoResponseDTO = await ref.read(myReviewViewModelProvider.notifier).getList(requestData);
     if (reviewInfoResponseDTO!= null) {
       if(reviewInfoResponseDTO.result == true) {
         setState(() {
-          reviewCount = reviewInfoResponseDTO.count ?? 0;
-          reviewList = reviewInfoResponseDTO.list ?? [];
-          if (reviewList.isNotEmpty) {
-            isListVisible = true;
+          _reviewCount = reviewInfoResponseDTO.count ?? 0;
+          _reviewList.addAll(reviewInfoResponseDTO.list ?? []);
+          if (_reviewList.isNotEmpty) {
+            _isListVisible = true;
           }
         });
       }
+    }
+
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+  }
+
+  void _nextLoad() async {
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+      _page += 1;
+
+      final pref = await SharedPreferencesManager.getInstance();
+      final mtIdx = pref.getMtIdx();
+      Map<String, dynamic> requestData = {
+        'mt_idx': mtIdx,
+        'pg' : _page,
+      };
+
+      final reviewInfoResponseDTO = await ref.read(myReviewViewModelProvider.notifier).getList(requestData);
+      if (reviewInfoResponseDTO != null) {
+        if ((reviewInfoResponseDTO.list ?? []).isNotEmpty) {
+          setState(() {
+            _reviewCount = reviewInfoResponseDTO.count ?? 0;
+            _reviewList.addAll(reviewInfoResponseDTO.list ?? []);
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
+      });
     }
   }
 }

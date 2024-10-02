@@ -15,7 +15,7 @@ class InquiryOneDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ScrollController _scrollController = ScrollController();
+    final ScrollController scrollController = ScrollController();
     SharedPreferencesManager.getInstance().then((pref) {
       Map<String, dynamic> requestData = {
         'mt_idx': pref.getMtIdx(),
@@ -73,8 +73,7 @@ class InquiryOneDetail extends ConsumerWidget {
 
               if (model?.qnaDetailResponseDTO?.result == false) {
                 Future.delayed(Duration.zero, () {
-                  Utils.getInstance().showSnackBar(
-                      context, model?.qnaDetailResponseDTO?.message ?? "");
+                  Utils.getInstance().showSnackBar(context, model?.qnaDetailResponseDTO?.message ?? "");
                   model?.qnaDetailResponseDTO = null;
                 });
                 return Container();
@@ -95,12 +94,12 @@ class InquiryOneDetail extends ConsumerWidget {
               }
 
               return ListView(
-                controller: _scrollController,
+                controller: scrollController,
                 children: [
                   // 문의 상태와 내용
                   Container(
-                    margin: EdgeInsets.only(top: 40),
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    margin: const EdgeInsets.only(top: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -133,7 +132,7 @@ class InquiryOneDetail extends ConsumerWidget {
                           ],
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 12, bottom: 10),
+                          margin: const EdgeInsets.only(top: 12, bottom: 10),
                           child: Text(
                             detailData?.qtTitle ?? "",
                             style: TextStyle(
@@ -162,8 +161,8 @@ class InquiryOneDetail extends ConsumerWidget {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20),
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
                         children: contentImgWidgetList,
                       ),
@@ -171,18 +170,17 @@ class InquiryOneDetail extends ConsumerWidget {
                   ),
 
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
                     width: double.infinity,
                     child: GestureDetector(
                       onTap: () {
-                        // TODO 삭제 동작 추가
-                        _delete();
+                        _delete(context, ref);
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 14),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: Color(0xFFDDDDDD)),
+                          border: Border.all(color: const Color(0xFFDDDDDD)),
                         ),
                         child: Center(
                           child: Text(
@@ -199,8 +197,8 @@ class InquiryOneDetail extends ConsumerWidget {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 20),
-                    child: Divider(
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    child: const Divider(
                       thickness: 1,
                       color: Color(0xFFEEEEEE),
                     ),
@@ -211,7 +209,7 @@ class InquiryOneDetail extends ConsumerWidget {
               );
             },
           ),
-          MoveTopButton(scrollController: _scrollController),
+          MoveTopButton(scrollController: scrollController),
         ],
       ),
     );
@@ -227,21 +225,11 @@ class InquiryOneDetail extends ConsumerWidget {
           width: 90,
           height: 90,
           fit: BoxFit.cover,
-          errorBuilder:
-              (BuildContext context, Object exception, StackTrace? stackTrace) {
-            return _errorImg(80, 80);
+          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+            return Utils.getInstance().errorImg(80, 80);
           },
         ),
       ),
-    );
-  }
-
-  Widget _errorImg(double width, double height) {
-    return Image.asset(
-      'assets/images/start_logo.png',
-      width: width,
-      height: height,
-      fit: BoxFit.cover,
     );
   }
 
@@ -262,13 +250,13 @@ class InquiryOneDetail extends ConsumerWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 4),
+              margin: const EdgeInsets.only(top: 4),
               child: Text(
                 detailData?.qtUdate ?? "",
                 style: TextStyle(
                   fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 13),
-                  color: Color(0xFF7B7B7B),
+                  color: const Color(0xFF7B7B7B),
                   height: 1.2,
                 ),
               ),
@@ -276,7 +264,7 @@ class InquiryOneDetail extends ConsumerWidget {
           ],
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 20),
+          margin: const EdgeInsets.symmetric(vertical: 20),
           child: Text(
             detailData?.qtAnswer ?? "",
             style: TextStyle(
@@ -292,5 +280,19 @@ class InquiryOneDetail extends ConsumerWidget {
     );
   }
 
-  void _delete() {}
+  void _delete(BuildContext context, WidgetRef ref) async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    Map<String, dynamic> requestData = {
+      'mt_idx' : mtIdx,
+      'qt_idx' : qtIdx,
+    };
+
+    final defaultResponseDTO = await ref.read(inquiryDetailModelProvider.notifier).delete(requestData);
+    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+    if (defaultResponseDTO.result == true) {
+      Navigator.pop(context);
+    }
+  }
 }

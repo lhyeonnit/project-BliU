@@ -89,7 +89,7 @@ class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with Si
                   // 인디케이터가 각 탭의 길이에 맞게 조정됨
                   labelColor: Colors.black,
                   unselectedLabelColor: const Color(0xFF7B7B7B),
-                  dividerColor: Color(0xFFDDDDDD),
+                  dividerColor: const Color(0xFFDDDDDD),
                 ),
               ),
             ],

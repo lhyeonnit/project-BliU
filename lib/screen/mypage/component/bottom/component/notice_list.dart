@@ -16,7 +16,7 @@ class NoticeList extends ConsumerStatefulWidget {
 
 class _NoticeListState extends ConsumerState<NoticeList> {
   final ScrollController _scrollController = ScrollController();
-  List<NoticeData> noticeList = [];
+  List<NoticeData> _noticeList = [];
 
   int _page = 1;
   bool _hasNextPage = true;
@@ -53,7 +53,7 @@ class _NoticeListState extends ConsumerState<NoticeList> {
     };
 
     final noticeListResponseDTO = await ref.read(noticeListModelProvider.notifier).getList(requestData);
-    noticeList = noticeListResponseDTO?.list ?? [];
+    _noticeList = noticeListResponseDTO?.list ?? [];
 
     setState(() {
       _isFirstLoadRunning = false;
@@ -75,7 +75,7 @@ class _NoticeListState extends ConsumerState<NoticeList> {
       if (noticeListResponseDTO != null) {
         if ((noticeListResponseDTO.list ?? []).isNotEmpty) {
           setState(() {
-            noticeList.addAll(noticeListResponseDTO.list ?? []);
+            _noticeList.addAll(noticeListResponseDTO.list ?? []);
           });
         } else {
           setState(() {
@@ -100,9 +100,9 @@ class _NoticeListState extends ConsumerState<NoticeList> {
           child: ListView.builder(
             shrinkWrap: true,
             controller: _scrollController,
-            itemCount: noticeList.length,
+            itemCount: _noticeList.length,
             itemBuilder: (context, index) {
-              final noticeData = noticeList[index];
+              final noticeData = _noticeList[index];
               return Column(
                 children: [
                   ListTile(

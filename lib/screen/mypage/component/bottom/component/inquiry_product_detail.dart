@@ -16,7 +16,7 @@ class InquiryProductDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ScrollController _scrollController = ScrollController();
+    final ScrollController scrollController = ScrollController();
 
     SharedPreferencesManager.getInstance().then((pref) {
       Map<String, dynamic> requestData = {
@@ -75,8 +75,7 @@ class InquiryProductDetail extends ConsumerWidget {
 
               if (model?.qnaDetailResponseDTO?.result == false) {
                 Future.delayed(Duration.zero, () {
-                  Utils.getInstance().showSnackBar(
-                      context, model?.qnaDetailResponseDTO?.message ?? "");
+                  Utils.getInstance().showSnackBar(context, model?.qnaDetailResponseDTO?.message ?? "");
                   model?.qnaDetailResponseDTO = null;
                 });
                 return Container();
@@ -98,20 +97,20 @@ class InquiryProductDetail extends ConsumerWidget {
               }
 
               return ListView(
-                controller: _scrollController,
+                controller: scrollController,
                 children: [
                   // 상품 정보
                   Container(
-                    margin: EdgeInsets.only(top: 30),
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    margin: const EdgeInsets.only(top: 30),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(right: 20),
+                          margin: const EdgeInsets.only(right: 20),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: Color(0x5000000)),
+                            border: Border.all(color: const Color(0x5000000)),
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(6),
@@ -136,7 +135,7 @@ class InquiryProductDetail extends ConsumerWidget {
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
-                                  color: Color(0xFF7B7B7B),
+                                  color: const Color(0xFF7B7B7B),
                                   height: 1.2,
                                 ),
                               ),
@@ -152,7 +151,7 @@ class InquiryProductDetail extends ConsumerWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Container(
-                                margin: EdgeInsets.only(top: 8),
+                                margin: const EdgeInsets.only(top: 8),
                                 child: Text(
                                   '${product?.ptPrice ?? 0}원',
                                   style: TextStyle(
@@ -171,8 +170,8 @@ class InquiryProductDetail extends ConsumerWidget {
                   ),
                   // 문의 상태와 내용
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    margin: EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    margin: const EdgeInsets.symmetric(vertical: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -197,7 +196,7 @@ class InquiryProductDetail extends ConsumerWidget {
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 12),
-                                  color: Color(0xFF7B7B7B),
+                                  color: const Color(0xFF7B7B7B),
                                   height: 1.2,
                                 ),
                               ),
@@ -205,7 +204,7 @@ class InquiryProductDetail extends ConsumerWidget {
                           ],
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 12, bottom: 10),
+                          margin: const EdgeInsets.only(top: 12, bottom: 10),
                           child: Text(
                             detailData?.qtTitle ?? "",
                             style: TextStyle(
@@ -235,8 +234,8 @@ class InquiryProductDetail extends ConsumerWidget {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      margin: const EdgeInsets.only(bottom: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
                         children: contentImgWidgetList,
                       ),
@@ -245,18 +244,17 @@ class InquiryProductDetail extends ConsumerWidget {
 
                   // 삭제 버튼
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
                     width: double.infinity,
                     child: GestureDetector(
                       onTap: () {
-                        // TODO 삭제 동작 추가
-                        _delete();
+                        _delete(context, ref);
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 14),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: Color(0xFFDDDDDD)),
+                          border: Border.all(color: const Color(0xFFDDDDDD)),
                         ),
                         child: Center(
                           child: Text(
@@ -273,8 +271,8 @@ class InquiryProductDetail extends ConsumerWidget {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 20),
-                    child: Divider(
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    child: const Divider(
                       thickness: 1,
                       color: Color(0xFFEEEEEE),
                     ),
@@ -284,7 +282,7 @@ class InquiryProductDetail extends ConsumerWidget {
               );
             },
           ),
-          MoveTopButton(scrollController: _scrollController),
+          MoveTopButton(scrollController: scrollController),
         ],
       ),
     );
@@ -321,7 +319,7 @@ class InquiryProductDetail extends ConsumerWidget {
   Widget _answerWidget(
       BuildContext context, QnaData? detailData, ProductData? product) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           // 답변 내용
@@ -330,10 +328,10 @@ class InquiryProductDetail extends ConsumerWidget {
               Container(
                   width: 50,
                   height: 50,
-                  margin: EdgeInsets.only(right: 10),
+                  margin: const EdgeInsets.only(right: 10),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: Color(0xFFDDDDDD)),
+                    border: Border.all(color: const Color(0xFFDDDDDD)),
                   ),
                   child: ClipOval(
                     child: Image.network(
@@ -367,7 +365,7 @@ class InquiryProductDetail extends ConsumerWidget {
             ],
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 20),
+            margin: const EdgeInsets.symmetric(vertical: 20),
             child: Text(
               detailData?.qtAnswer ?? "",
               style: TextStyle(
@@ -384,5 +382,19 @@ class InquiryProductDetail extends ConsumerWidget {
     );
   }
 
-  void _delete() {}
+  void _delete(BuildContext context, WidgetRef ref) async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    Map<String, dynamic> requestData = {
+      'mt_idx' : mtIdx,
+      'qt_idx' : qtIdx,
+    };
+
+    final defaultResponseDTO = await ref.read(inquiryDetailModelProvider.notifier).delete(requestData);
+    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+    if (defaultResponseDTO.result == true) {
+      Navigator.pop(context, true);
+    }
+  }
 }
