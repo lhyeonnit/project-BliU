@@ -19,8 +19,7 @@ class ProductListScreen extends ConsumerStatefulWidget {
   final CategoryData selectedCategory;
   final int? selectSubCategoryIndex;
 
-  const ProductListScreen(
-      {super.key, required this.selectedCategory, this.selectSubCategoryIndex});
+  const ProductListScreen({super.key, required this.selectedCategory, this.selectSubCategoryIndex});
 
   @override
   ConsumerState<ProductListScreen> createState() => _ProductListScreenState();

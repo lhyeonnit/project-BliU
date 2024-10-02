@@ -29,9 +29,12 @@ class StoreData {
 
   // JSON 데이터를 StoreDetailDataDTO 객체로 변환하는 factory 메서드
   factory StoreData.fromJson(Map<String, dynamic> json) {
-    final List<ProductData>? list = List<ProductData>.from((json['list'])?.map((item) {
-      return ProductData.fromJson(item as Map<String, dynamic>);
-    }).toList());
+    List<ProductData> list = [];
+    if (json['list'] != null) {
+      list = List<ProductData>.from((json['list'])?.map((item) {
+        return ProductData.fromJson(item as Map<String, dynamic>);
+      }).toList());
+    }
 
     return StoreData(
       stIdx: json['st_idx'],

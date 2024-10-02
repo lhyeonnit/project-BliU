@@ -21,9 +21,12 @@ class ProductDetailResponseDto {
 
   // JSON to Object
   factory ProductDetailResponseDto.fromJson(Map<String, dynamic> json) {
-    final List<ProductData>? list = List<ProductData>.from((json['data']['same_list'])?.map((item) {
-      return ProductData.fromJson(item as Map<String, dynamic>);
-    }).toList());
+    List<ProductData> list = [];
+    if (json['data']['same_list'] != null) {
+      list = List<ProductData>.from((json['data']['same_list'])?.map((item) {
+        return ProductData.fromJson(item as Map<String, dynamic>);
+      }).toList());
+    }
 
     return ProductDetailResponseDto(
       result: json['result'],
