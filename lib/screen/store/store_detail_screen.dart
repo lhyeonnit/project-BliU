@@ -1,4 +1,5 @@
 import 'package:BliU/data/category_data.dart';
+import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/store_data.dart';
 import 'package:BliU/dto/category_response_dto.dart';
 import 'package:BliU/dto/product_list_response_dto.dart';
@@ -33,7 +34,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
         catIdx: null,
         catName: null)
   ];
-  List<ProductListResponseDTO?> productList = [];
+  List<ProductData?> productList = [];
   StoreData? storeData;
 
   @override
@@ -112,11 +113,10 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
               controller: _tabController,
               children: List.generate(
                 categories.length, (index) {
-                  final productData = productList[index]?.list ?? [];
-                  final count = productData.length;
+                  final count = productList.length;
                   // 상품 리스트
                   return StoreCategoryItem(
-                      productData: productData, count: count);
+                      productData: productList, count: count);
                 },
               ),
             ),
@@ -137,7 +137,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
     final mtIdx = pref.getMtIdx();
 
     // TODO 페이징 처리 필요
-    Map<String, dynamic> requestData = {'category_type': '2'};
+    Map<String, dynamic> requestData = {'category_type': '1'};
     final categoryResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getCategory(requestData);
     if (categoryResponseDTO != null) {
       if (categoryResponseDTO.result == true) {
@@ -161,23 +161,13 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
           final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
           setState(() {
             storeData = storeResponseDTO?.data;
+            productList = storeResponseDTO?.data.list ?? [];
           });
-          final productListResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getProductList(requestData);
-          if (productListResponseDTO != null) {
-            if (productListResponseDTO.result == true) {
-              productList.add(productListResponseDTO);
-            } else {
-              productList.add(null);
-            }
-          } else {
-            productList.add(null);
-          }
         }
-
-        setState(() {
-          _tabController = TabController(length: categories.length, vsync: this);
-        });
       }
+      setState(() {
+        _tabController = TabController(length: categories.length, vsync: this);
+      });
     }
   }
 }

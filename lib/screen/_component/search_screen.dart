@@ -343,6 +343,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         child: TextField(
                           style: TextStyle(
                             height: 1.2,
+                              fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14)
                           ),
                           controller: _searchController,
@@ -350,6 +351,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             contentPadding: const EdgeInsets.only(left: 16, bottom: 8),
                             hintText: '검색어를 입력해 주세요',
                             hintStyle: TextStyle(
+                                fontFamily: 'Pretendard',
                               height: 1.2,
                               fontSize: Responsive.getFont(context, 14),
                               color: const Color(0xFF595959)
@@ -454,14 +456,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             child: _buildDefaultSearchPage(),
           ),
         ],
-      )
-      // body: _isSearching
-      //     ? _buildSearching() // 검색 중일 때 화면
-      //     : _searchCompleted // 검색이 완료되었을 때
-      //         ? (_searchCompleted
-      //             ? _buildSearchResults() // 검색 결과가 있을 때
-      //             : _buildNoResults()) // 검색 결과가 없을 때
-      //         : _buildDefaultSearchPage(), // 검색 전 기본 화면 (추천 검색어 등)
+      ),
     );
   }
 
