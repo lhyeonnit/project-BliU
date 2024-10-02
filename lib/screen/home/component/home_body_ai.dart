@@ -89,9 +89,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                               right: 0,
                               child: GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    // TODO 좋아요 변경
-                                  });
+                                  _like(index);
                                 },
                                 child: Image.asset(
                                   productData.likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',
@@ -129,8 +127,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Container(
-                              margin:
-                                  const EdgeInsets.only(top: 8, bottom: 5),
+                              margin: const EdgeInsets.only(top: 8, bottom: 5),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.baseline,
                                 textBaseline: TextBaseline.alphabetic,
@@ -146,8 +143,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                                     ),
                                   ),
                                   Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 2),
+                                    margin: const EdgeInsets.symmetric(horizontal: 2),
                                     child: Text(
                                       '${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원',
                                       style: TextStyle(
@@ -171,8 +167,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                                   height: Responsive.getHeight(context, 11),
                                 ),
                                 Container(
-                                  margin:
-                                      const EdgeInsets.only(left: 2, bottom: 2),
+                                  margin: const EdgeInsets.only(left: 2, bottom: 2),
                                   child: Text(
                                     '${productData.ptLike ?? ""}',
                                     style: TextStyle(
@@ -191,12 +186,10 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                                       SvgPicture.asset(
                                         'assets/images/home/item_comment.svg',
                                         width: Responsive.getWidth(context, 13),
-                                        height:
-                                            Responsive.getHeight(context, 12),
+                                        height: Responsive.getHeight(context, 12),
                                       ),
                                       Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 2, bottom: 2),
+                                        margin: const EdgeInsets.only(left: 2, bottom: 2),
                                         child: Text(
                                           '${productData.ptReview ?? ""}',
                                           style: TextStyle(
@@ -244,6 +237,33 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
         setState(() {
           _productList = productListResponseDTO.list;
         });
+      }
+    }
+  }
+
+  void _like(int index) async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx() ?? "";
+    if (mtIdx.isNotEmpty) {
+      final item = _productList[index];
+      final likeChk = item.likeChk;
+
+      Map<String, dynamic> requestData = {
+        'mt_idx' : mtIdx,
+        'pt_idx' : item.ptIdx,
+      };
+
+      final defaultResponseDTO = await ref.read(homeBodyAiViewModelProvider.notifier).productLike(requestData);
+      if(defaultResponseDTO != null) {
+        if (defaultResponseDTO.result == true) {
+          setState(() {
+            if (likeChk == "Y") {
+              _productList[index].likeChk = "N";
+            } else {
+              _productList[index].likeChk = "Y";
+            }
+          });
+        }
       }
     }
   }

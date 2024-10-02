@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:BliU/data/exhibition_data.dart';
 import 'package:BliU/screen/home/exhibition_screen.dart';
 import 'package:BliU/screen/home/viewmodel/home_body_exhibition_view_model.dart';
+import 'package:BliU/screen/payment/component/payment_iamport.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,12 +13,12 @@ class HomeBodyExhibition extends ConsumerStatefulWidget {
   const HomeBodyExhibition({super.key});
 
   @override
-  HomeBodyExhibitionState createState() => HomeBodyExhibitionState();
+  ConsumerState<HomeBodyExhibition> createState() => HomeBodyExhibitionState();
 }
 
 class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
   final PageController _pageController = PageController();
-  List<ExhibitionData> exhibitionList = [];
+  List<ExhibitionData> _exhibitionList = [];
 
   Timer? _timer;
   int _currentPage = 0;
@@ -46,9 +47,9 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
           height: 420,
           child: PageView.builder(
             controller: _pageController,
-            itemCount: exhibitionList.length,
+            itemCount: _exhibitionList.length,
             itemBuilder: (context, index) {
-              final exhibitionData = exhibitionList[index];
+              final exhibitionData = _exhibitionList[index];
               return buildPage(exhibitionData);
             },
           ),
@@ -57,7 +58,7 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
         Center(
           child: SmoothPageIndicator(
             controller: _pageController,
-            count: exhibitionList.length,
+            count: _exhibitionList.length,
             effect: const WormEffect(
               dotWidth: 6.0,
               dotHeight: 6.0,
@@ -79,12 +80,12 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
     if (exhibitionListResponseDTO != null) {
       if (exhibitionListResponseDTO.result == true) {
         setState(() {
-          exhibitionList = exhibitionListResponseDTO.list ?? [];
+          _exhibitionList = exhibitionListResponseDTO.list ?? [];
         });
 
         // 타이머를 이용한 페이지 자동 넘기기
         _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
-          if (_currentPage < exhibitionList.length - 1) {
+          if (_currentPage < _exhibitionList.length - 1) {
             _currentPage++;
           } else {
             _currentPage = 0;
@@ -183,8 +184,7 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
                             child: Image.network(
                               exhibitionData.ptImg?[1] ?? "",
                               height: Responsive.getHeight(context, 84),
-                              fit: BoxFit
-                                  .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                              fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                             ),
                           ),
                         ),
@@ -196,8 +196,7 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
                             child: Image.network(
                               exhibitionData.ptImg?[2] ?? "",
                               height: Responsive.getHeight(context, 84),
-                              fit: BoxFit
-                                  .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                              fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                             ),
                           ),
                         ),
@@ -211,8 +210,6 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
                           minimumSize: Size.zero, // 최소 사이즈를 0으로 설정하여 여백 제거
                         ),
                         onPressed: () {
-                          print("exhibitionData.etIdx ?? 0 ${exhibitionData.etIdx ?? 0}");
-
                           Navigator.push(
                             context,
                             MaterialPageRoute(

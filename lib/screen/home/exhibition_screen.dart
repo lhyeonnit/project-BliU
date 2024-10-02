@@ -6,6 +6,7 @@ import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:BliU/screen/home/viewmodel/exhibition_view_model.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,12 +18,12 @@ class ExhibitionScreen extends ConsumerStatefulWidget {
   const ExhibitionScreen({super.key, required this.etIdx});
 
   @override
-  ExhibitionScreenState createState() => ExhibitionScreenState();
+  ConsumerState<ExhibitionScreen> createState() => ExhibitionScreenState();
 }
 
 class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
   final ScrollController _scrollController = ScrollController();
-  ExhibitionData? exhibitionData;
+  ExhibitionData? _exhibitionData;
 
   @override
   void initState() {
@@ -46,7 +47,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
           },
         ),
         titleSpacing: -1.0,
-        title: Text(exhibitionData?.etTitle ?? ""),
+        title: Text(_exhibitionData?.etTitle ?? ""),
         titleTextStyle: TextStyle(
           fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
@@ -139,7 +140,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                   height: 620,
                   width: Responsive.getWidth(context, 412),
                   child: Image.network(
-                    exhibitionData?.etDetailBanner ?? "",
+                    _exhibitionData?.etDetailBanner ?? "",
                     width: Responsive.getWidth(context, 412),
                     height: 620,
                     fit: BoxFit.contain,
@@ -149,7 +150,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                 Container(
                   margin: const EdgeInsets.only(bottom: 10),
                   child: Text(
-                    exhibitionData?.etTitle ?? "",
+                    _exhibitionData?.etTitle ?? "",
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontWeight: FontWeight.bold,
@@ -159,7 +160,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                   ),
                 ),
                 Text(
-                  exhibitionData?.etSubTitle ?? "",
+                  _exhibitionData?.etSubTitle ?? "",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Pretendard',
@@ -180,10 +181,9 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                       mainAxisSpacing: 30.0,
                       childAspectRatio: 0.55,
                     ),
-                    itemCount: (exhibitionData?.product ?? []).length,
+                    itemCount: (_exhibitionData?.product ?? []).length,
                     itemBuilder: (context, index) {
-                      final item = exhibitionData?.product?[index];
-                      return buildItemCard(item);
+                      return buildItemCard(index);
                     },
                   ),
                 ),
@@ -209,13 +209,44 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
     if (exhibitionDetailResponseDTO != null) {
       if (exhibitionDetailResponseDTO.result == true) {
         setState(() {
-          exhibitionData = exhibitionDetailResponseDTO.data;
+          _exhibitionData = exhibitionDetailResponseDTO.data;
         });
       }
     }
   }
 
-  Widget buildItemCard(ProductData? productData) {
+  void _like(int index) async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx() ?? "";
+    if (mtIdx.isNotEmpty) {
+      final item = _exhibitionData?.product?[index];
+      if (item != null) {
+        final likeChk = item.likeChk;
+
+        Map<String, dynamic> requestData = {
+          'mt_idx' : mtIdx,
+          'pt_idx' : item.ptIdx,
+        };
+
+        final defaultResponseDTO = await ref.read(exhibitionViewModelProvider.notifier).productLike(requestData);
+        if(defaultResponseDTO != null) {
+          if (defaultResponseDTO.result == true) {
+            setState(() {
+              if (likeChk == "Y") {
+                _exhibitionData?.product?[index].likeChk = "N";
+              } else {
+                _exhibitionData?.product?[index].likeChk = "Y";
+              }
+            });
+          }
+        }
+      }
+    }
+  }
+
+  Widget buildItemCard(int index) {
+    final productData = _exhibitionData?.product?[index];
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -259,9 +290,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                   right: 0,
                   child: GestureDetector(
                     onTap: () {
-                      setState(() {
-                        // TODO 좋아요 작업 필요
-                      });
+                      _like(index);
                     },
                     child: Image.asset(
                       productData?.likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',

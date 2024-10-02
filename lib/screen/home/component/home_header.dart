@@ -12,14 +12,14 @@ class HomeHeader extends ConsumerStatefulWidget {
   const HomeHeader({super.key});
 
   @override
-  _HomeHeaderState createState() => _HomeHeaderState();
+  ConsumerState<HomeHeader> createState() => _HomeHeaderState();
 }
 
 class _HomeHeaderState extends ConsumerState<HomeHeader> {
   final PageController _pageController = PageController();
   Timer? _timer;
   int _currentPage = 0;
-  List<BannerData> bannerList = [];
+  List<BannerData> _bannerList = [];
 
   @override
   void initState() {
@@ -43,10 +43,10 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
         PageView(
           controller: _pageController,
           children: [
-            ...bannerList.map((banner) {
+            ..._bannerList.map((banner) {
               return Stack(
                 children: [
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     height: Responsive.getHeight(context, 625),
                     child: GestureDetector(
@@ -84,7 +84,8 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
                         ),
                       ),
                     ),
-                  ), Positioned(
+                  ),
+                  Positioned(
                     bottom: 30,
                     left: 0,
                     right: 0,
@@ -149,7 +150,7 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
           child: Center(
             child: SmoothPageIndicator(
               controller: _pageController,
-              count: bannerList.length,
+              count: _bannerList.length,
               effect: const WormEffect(
                 dotWidth: 6.0,
                 dotHeight: 6.0,
@@ -168,11 +169,11 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
     if (bannerListResponseDTO != null) {
       if (bannerListResponseDTO.result == true) {
         setState(() {
-          bannerList = bannerListResponseDTO.list ?? [];
+          _bannerList = bannerListResponseDTO.list ?? [];
         });
 
         _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
-          if (_currentPage < bannerList.length - 1) {
+          if (_currentPage < _bannerList.length - 1) {
             _currentPage++;
           } else {
             _currentPage = 0;

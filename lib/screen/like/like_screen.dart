@@ -13,22 +13,21 @@ class LikeScreen extends ConsumerStatefulWidget {
   const LikeScreen({super.key});
 
   @override
-  _LikeScreenState createState() => _LikeScreenState();
+  ConsumerState<LikeScreen> createState() => _LikeScreenState();
 }
 
-class _LikeScreenState extends ConsumerState<LikeScreen>
-    with TickerProviderStateMixin {
+class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStateMixin {
   late TabController _tabController;
   final ScrollController _scrollController = ScrollController();
-  final List<CategoryData> categories = [
+  final List<CategoryData> _categories = [
     CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', catIdx: 0, catName: '', subList: [])
   ];
-  List<ProductListResponseDTO?> productList = [];
+  List<ProductListResponseDTO?> _productList = [];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: categories.length, vsync: this);
+    _tabController = TabController(length: _categories.length, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -107,7 +106,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
                           indicatorWeight: 2.0,
                           tabAlignment: TabAlignment.start,
                           padding: const EdgeInsets.symmetric(horizontal: 12),
-                          tabs: categories.map((category) {
+                          tabs: _categories.map((category) {
                             return Tab(text: category.ctName);
                           }).toList(),
                         ),
@@ -120,7 +119,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
             body: TabBarView(
               controller: _tabController,
               children: List.generate(
-                categories.length,
+                _categories.length,
                 (index) {
                   // 상품 리스트
                   return _buildProductGrid(index);
@@ -145,16 +144,15 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
 
     // TODO 페이징 처리 필요
     Map<String, dynamic> requestData = {'category_type': '1'};
-    final categoryResponseDTO =
-        await ref.read(likeViewModelProvider.notifier).getCategory(requestData);
+    final categoryResponseDTO = await ref.read(likeViewModelProvider.notifier).getCategory(requestData);
     if (categoryResponseDTO != null) {
       if (categoryResponseDTO.result == true) {
         final list = categoryResponseDTO.list ?? [];
         for (var item in list) {
-          categories.add(item);
+          _categories.add(item);
         }
 
-        for (var cate in categories) {
+        for (var cate in _categories) {
           String category = "all";
           if ((cate.ctIdx ?? 0) > 0) {
             category = cate.ctIdx.toString();
@@ -167,23 +165,20 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
             'pg': 1,
           };
 
-          final productListResponseDTO = await ref
-              .read(likeViewModelProvider.notifier)
-              .getList(requestData);
+          final productListResponseDTO = await ref.read(likeViewModelProvider.notifier).getList(requestData);
           if (productListResponseDTO != null) {
             if (productListResponseDTO.result == true) {
-              productList.add(productListResponseDTO);
+              _productList.add(productListResponseDTO);
             } else {
-              productList.add(null);
+              _productList.add(null);
             }
           } else {
-            productList.add(null);
+            _productList.add(null);
           }
         }
 
         setState(() {
-          _tabController =
-              TabController(length: categories.length, vsync: this);
+          _tabController = TabController(length: _categories.length, vsync: this);
         });
       }
     }
@@ -193,8 +188,8 @@ class _LikeScreenState extends ConsumerState<LikeScreen>
     List<ProductData> pList = [];
     int count = 0;
     try {
-      pList = productList[productIndex]?.list ?? [];
-      count = productList[productIndex]?.count ?? 0;
+      pList = _productList[productIndex]?.list ?? [];
+      count = _productList[productIndex]?.count ?? 0;
     } catch (e) {
       print("e = ${e.toString()}");
     }

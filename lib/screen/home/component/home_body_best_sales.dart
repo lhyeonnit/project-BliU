@@ -17,16 +17,16 @@ class HomeBodyBestSales extends ConsumerStatefulWidget {
   const HomeBodyBestSales({super.key, required this.categories, required this.ageCategories});
 
   @override
-  _HomeBodyBestSalesState createState() => _HomeBodyBestSalesState();
+  ConsumerState<HomeBodyBestSales> createState() => _HomeBodyBestSalesState();
 }
 
 class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
-  CategoryData? selectedAgeGroup;
-  int selectedCategoryIndex = 0;
-  List<CategoryData> categories = [
+  CategoryData? _selectedAgeGroup;
+  int _selectedCategoryIndex = 0;
+  final List<CategoryData> _categories = [
     CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', catIdx: 0, catName: '', subList: [])
   ];
-  List<ProductData> productList = [];
+  List<ProductData> _productList = [];
 
   void _showAgeGroupSelection() {
     showModalBottomSheet(
@@ -38,10 +38,10 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
       builder: (BuildContext context) {
         return StoreAgeGroupSelection(
           ageCategories: widget.ageCategories,
-          selectedAgeGroup: selectedAgeGroup,
+          selectedAgeGroup: _selectedAgeGroup,
           onSelectionChanged: (CategoryData? newSelection) {
             setState(() {
-              selectedAgeGroup = newSelection;
+              _selectedAgeGroup = newSelection;
               _getList();
             });
           },
@@ -51,10 +51,10 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
   }
 
   String getSelectedAgeGroupText() {
-    if (selectedAgeGroup == null) {
+    if (_selectedAgeGroup == null) {
       return '연령';
     } else {
-      return selectedAgeGroup?.catName ?? "";
+      return _selectedAgeGroup?.catName ?? "";
     }
   }
 
@@ -62,7 +62,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
   void initState() {
     super.initState();
     for (var category in widget.categories) {
-      categories.add(category);
+      _categories.add(category);
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
@@ -90,13 +90,13 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: List<Widget>.generate(categories.length, (index) {
+                children: List<Widget>.generate(_categories.length, (index) {
                   return Container(
                     padding: const EdgeInsets.only(right: 4.0),
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
-                          selectedCategoryIndex = index;
+                          _selectedCategoryIndex = index;
                           _getList();
                         });
                       },
@@ -164,9 +164,9 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                 mainAxisSpacing: 30.0,
                 childAspectRatio: 0.55,
               ),
-              itemCount: productList.length,
+              itemCount: _productList.length,
               itemBuilder: (context, index) {
-                return buildItemCard(productList[index]);
+                return buildItemCard(index);
               },
             ),
           ),
@@ -184,14 +184,14 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
-    final category = categories[selectedCategoryIndex];
+    final category = _categories[_selectedCategoryIndex];
     String categoryStr = "all";
-    if (selectedCategoryIndex > 0) {
+    if (_selectedCategoryIndex > 0) {
       categoryStr = category.ctIdx.toString();
     }
     String ageStr = "all";
-    if (selectedAgeGroup != null) {
-      ageStr = (selectedAgeGroup?.catIdx ?? 0).toString();
+    if (_selectedAgeGroup != null) {
+      ageStr = (_selectedAgeGroup?.catIdx ?? 0).toString();
     }
 
     Map<String, dynamic> requestData = {
@@ -204,8 +204,35 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
     if (productListResponseDTO != null) {
       if (productListResponseDTO.result == true) {
         setState(() {
-          productList = productListResponseDTO.list;
+          _productList = productListResponseDTO.list;
         });
+      }
+    }
+  }
+
+  void _like(int index) async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx() ?? "";
+    if (mtIdx.isNotEmpty) {
+      final item = _productList[index];
+      final likeChk = item.likeChk;
+
+      Map<String, dynamic> requestData = {
+        'mt_idx' : mtIdx,
+        'pt_idx' : item.ptIdx,
+      };
+
+      final defaultResponseDTO = await ref.read(homeBodyBestSalesViewModelProvider.notifier).productLike(requestData);
+      if(defaultResponseDTO != null) {
+        if (defaultResponseDTO.result == true) {
+          setState(() {
+            if (likeChk == "Y") {
+              _productList[index].likeChk = "N";
+            } else {
+              _productList[index].likeChk = "Y";
+            }
+          });
+        }
       }
     }
   }
@@ -214,7 +241,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
     var borderColor = const Color(0xFFDDDDDD);
     var textColor = Colors.black;
 
-    if (selectedCategoryIndex == index) {
+    if (_selectedCategoryIndex == index) {
       borderColor = const Color(0xFFFF6192);
       textColor = const Color(0xFFFF6192);
     }
@@ -231,7 +258,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
         ),
       ),
       child: Text(
-        categories[index].ctName ?? "",
+        _categories[index].ctName ?? "",
         style: TextStyle(
           fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 14),
@@ -242,7 +269,8 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
     );
   }
 
-  Widget buildItemCard(ProductData product) {
+  Widget buildItemCard(int index) {
+    final product = _productList[index];
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -286,9 +314,7 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                   right: 0,
                   child: GestureDetector(
                     onTap: () {
-                      setState(() {
-                        // TODO 좋아요 작업
-                      });
+                      _like(index);
                     },
                     child: Image.asset(
                       product.likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',
