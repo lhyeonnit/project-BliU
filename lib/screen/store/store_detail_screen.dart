@@ -34,8 +34,9 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
         catIdx: null,
         catName: null)
   ];
-  List<ProductData?> productList = [];
   StoreData? storeData;
+  List<ProductData> _productList = [];
+  int _count = 0;
 
   @override
   void initState() {
@@ -113,10 +114,9 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
               controller: _tabController,
               children: List.generate(
                 categories.length, (index) {
-                  final count = productList.length;
-                  // 상품 리스트
+                  final productData = _productList[index];
                   return StoreCategoryItem(
-                      productData: productList, count: count);
+                      productData: productData, count: _count);
                 },
               ),
             ),
@@ -158,11 +158,15 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
             'category': category,
             'pg': 1,
           };
-          final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
-          setState(() {
-            storeData = storeResponseDTO?.data;
-            productList = storeResponseDTO?.data.list ?? [];
-          });
+          // final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
+          // setState(() {
+          //   storeData = storeResponseDTO?.data;
+          // });
+          // final productListResponseDTO =  await ref.read(StoreProductViewModelProvider.notifier).getProductList(requestData);
+          // if (productListResponseDTO != null) {
+          //   _count = productListResponseDTO.list!.length;
+          //   _productList.addAll(productListResponseDTO.list ?? []);
+          // }
         }
       }
       setState(() {
