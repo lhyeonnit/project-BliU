@@ -62,6 +62,9 @@ class _ProductAiState extends State<ProductAi> {
                               child: Image.network(
                                 productData.ptImg ?? "",
                                 fit: BoxFit.cover,
+                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                  return const SizedBox();
+                                }
                               ),
                             ),
                           ),

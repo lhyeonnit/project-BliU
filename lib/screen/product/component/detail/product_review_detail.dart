@@ -136,6 +136,9 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                       return Image.network(
                         _images[index],
                         fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                          return const SizedBox();
+                        }
                       );
                     },
                   ),

@@ -417,9 +417,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       'cart_arr': json.encode(cartArr),
     };
 
-    final payOrderDetailDTO = await ref
-        .read(paymentViewModelProvider.notifier)
-        .orderDetail(requestData);
+    final payOrderDetailDTO = await ref.read(paymentViewModelProvider.notifier).orderDetail(requestData);
     if (payOrderDetailDTO != null) {
       final payOrderDetailData = payOrderDetailDTO.data;
 
@@ -460,10 +458,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
         final Map<String, String>? paymentResult = await Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => PaymentIamport(
-                    iamportPayData : iamportPayData,
-                  )),
+          MaterialPageRoute(builder: (context) => PaymentIamport(iamportPayData : iamportPayData)),
         );
         if (paymentResult != null) {
           // if (paymentResult['result'] == true) {

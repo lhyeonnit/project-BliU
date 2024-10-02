@@ -346,6 +346,9 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                     child: Image.network(
                                       cartItem.stProfile ?? "",
                                       fit: BoxFit.contain,
+                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                        return const SizedBox();
+                                      },
                                     ),
                                   ),
                                 ),

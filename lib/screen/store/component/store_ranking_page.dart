@@ -252,6 +252,9 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                               child: Image.network(
                                                 rankData.stProfile ?? "",
                                                 fit: BoxFit.contain,
+                                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                  return const SizedBox();
+                                                }
                                               ),
                                             ),
                                           ),
@@ -403,8 +406,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                           productImg ?? '',
                                           // null인 경우 빈 문자열을 처리
                                           fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
+                                          errorBuilder: (context, error, stackTrace) {
                                             return const Icon(Icons
                                                 .error); // 이미지 로딩에 실패한 경우 표시할 위젯
                                           },

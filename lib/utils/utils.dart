@@ -54,13 +54,4 @@ class Utils {
     XFile files = XFile(file.path);
     return files;
   }
-
-  Widget errorImg(double? width, double? height) {
-    return Image.asset(
-      'assets/images/start_logo.png',
-      width: width,
-      height: height,
-      fit: BoxFit.cover,
-    );
-  }
 }

@@ -226,7 +226,7 @@ class InquiryOneDetail extends ConsumerWidget {
           height: 90,
           fit: BoxFit.cover,
           errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-            return Utils.getInstance().errorImg(80, 80);
+            return const SizedBox();
           },
         ),
       ),

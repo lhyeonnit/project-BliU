@@ -85,7 +85,7 @@ class _StoreFavoriteCategoryItemState extends ConsumerState<StoreFavoriteCategor
                           ClipRRect(
                             borderRadius:
                             const BorderRadius.all(Radius.circular(5)),
-                            child: Container(
+                            child: SizedBox(
                               width: 184,
                               child: AspectRatio(
                                 aspectRatio: 1,

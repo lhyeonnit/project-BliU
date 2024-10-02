@@ -59,6 +59,9 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                         child: Image.network(
                           item.stProfile ?? "", // 스토어 로고
                           fit: BoxFit.contain,
+                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                            return const SizedBox();
+                          }
                         ),
                       ),
                     ),
@@ -98,6 +101,9 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                           child: Image.network(
                             pItem.ptImg ?? "",
                             fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              return const SizedBox();
+                            }
                           ),
                         ),
                       ),

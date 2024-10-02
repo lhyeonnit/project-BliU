@@ -674,6 +674,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         child: Image.network(
                           result.stProfile ?? '',
                           fit: BoxFit.cover,
+                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                            return const SizedBox();
+                          },
                         )
                     ),
                   ),
@@ -782,6 +785,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                               child: Image.network(
                                 productData.ptImg ?? "",
                                 fit: BoxFit.cover,
+                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                  return const SizedBox();
+                                }
                               ),
                             ),
                           ),

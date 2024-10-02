@@ -145,6 +145,9 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                     height: 620,
                     fit: BoxFit.contain,
                     alignment: Alignment.topCenter,
+                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                      return const SizedBox();
+                    },
                   ),
                 ),
                 Container(
@@ -282,6 +285,9 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                     child: Image.network(
                       productData?.ptImg ?? "",
                       fit: BoxFit.cover,
+                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                        return const SizedBox();
+                      }
                     ),
                   ),
                 ),

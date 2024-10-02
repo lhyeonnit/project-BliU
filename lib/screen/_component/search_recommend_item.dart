@@ -84,6 +84,9 @@ class _SearchRecommendItemState extends ConsumerState<SearchRecommendItem> {
                                   productData.ptImg ?? '',
                                   height: 160,
                                   fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                    return const SizedBox();
+                                  },
                                 ),
                               ),
                               Positioned(

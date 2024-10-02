@@ -119,9 +119,8 @@ class InquiryProductDetail extends ConsumerWidget {
                               width: 90,
                               height: 90,
                               fit: BoxFit.cover,
-                              errorBuilder: (BuildContext context,
-                                  Object exception, StackTrace? stackTrace) {
-                                return _errorImg(90, 90);
+                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                return const SizedBox();
                               },
                             ),
                           ),
@@ -298,21 +297,11 @@ class InquiryProductDetail extends ConsumerWidget {
           width: 90,
           height: 90,
           fit: BoxFit.cover,
-          errorBuilder:
-              (BuildContext context, Object exception, StackTrace? stackTrace) {
-            return _errorImg(80, 80);
+          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+            return const SizedBox();
           },
         ),
       ),
-    );
-  }
-
-  Widget _errorImg(double width, double height) {
-    return Image.asset(
-      'assets/images/start_logo.png',
-      width: width,
-      height: height,
-      fit: BoxFit.cover,
     );
   }
 
@@ -336,6 +325,9 @@ class InquiryProductDetail extends ConsumerWidget {
                   child: ClipOval(
                     child: Image.network(
                       detailData?.stProfile ?? "",
+                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                        return const SizedBox();
+                      }
                     ),
                   )),
               Column(

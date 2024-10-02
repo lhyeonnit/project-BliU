@@ -53,6 +53,9 @@ class _ProductBannerState extends State<ProductBanner> {
                   fit: BoxFit.cover, // 이미지가 컨테이너를 꽉 채우도록 설정
                   width: double.infinity,
                   height: double.infinity,
+                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    return const SizedBox();
+                  }
                 ),
               );
             },

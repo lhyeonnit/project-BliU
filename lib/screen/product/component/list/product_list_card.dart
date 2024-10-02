@@ -54,6 +54,9 @@ class _ProductListCardState extends ConsumerState<ProductListCard> {
                     child: Image.network(
                       productData.ptImg ?? "",
                       fit: BoxFit.cover,
+                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                        return const SizedBox();
+                      }
                     ),
                   ),
                 ),

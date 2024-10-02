@@ -90,13 +90,13 @@ class EventDetail extends ConsumerWidget {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 8, bottom: 20),
+                      margin: const EdgeInsets.only(top: 8, bottom: 20),
                       child: Text(
                         btWdate,
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
-                          color: Color(0xFF7B7B7B),
+                          color: const Color(0xFF7B7B7B),
                           height: 1.2,
                         ),
                       ),
@@ -105,7 +105,12 @@ class EventDetail extends ConsumerWidget {
                 ),
               ),
               //Image.asset('assets/images/my/event_dt.png'),
-              Image.network(btImage)
+              Image.network(
+                btImage,
+                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                  return const SizedBox();
+                }
+              )
             ],
           );
         }),

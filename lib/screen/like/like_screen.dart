@@ -307,6 +307,9 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
                         child: Image.network(
                           productData.ptImg ?? "",
                           fit: BoxFit.cover,
+                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                            return const SizedBox();
+                          }
                         ),
                       ),
                     ),

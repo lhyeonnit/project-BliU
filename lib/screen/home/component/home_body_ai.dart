@@ -80,7 +80,10 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
                                 aspectRatio: 1,  // 1:1 비율로 설정
                                 child: Image.network(
                                   productData.ptImg ?? "",
-                                  fit: BoxFit.cover,  // 이미지가 비율에 맞게 잘림
+                                  fit: BoxFit.cover,// 이미지가 비율에 맞게 잘림
+                                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                    return const SizedBox();
+                                  },
                                 ),
                               ),
                             ),

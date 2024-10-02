@@ -81,6 +81,9 @@ class _CartItemState extends State<CartItem> {
                 child: Image.network(
                   widget.item.ptImg ?? "",
                   fit: BoxFit.cover,
+                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    return const SizedBox();
+                  }
                 ),
               )
             ),

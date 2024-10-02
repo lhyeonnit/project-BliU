@@ -71,19 +71,22 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
                   width: double.infinity,
                   height: 500,
                   fit: BoxFit.cover,
+                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    return const SizedBox();
+                  }
                 ),
               ),
               Positioned(
                 bottom: -30, // 이미지 하단에 겹치도록 설정
                 left: 15,
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
                         color: Color(0x29000000),
                         blurRadius: 3.0,
-                        offset: const Offset(0, 5),
+                        offset: Offset(0, 5),
                       ),
                     ],
                   ),
@@ -93,6 +96,9 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
                       width: 70,
                       height: 70,
                       fit: BoxFit.contain,
+                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                        return const SizedBox();
+                      }
                     ),
                   ),
                 ),

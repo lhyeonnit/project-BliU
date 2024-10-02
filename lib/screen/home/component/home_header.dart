@@ -63,6 +63,9 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
                       child: Image.network(
                         banner.btImg ?? "",
                         fit: BoxFit.cover, // 이미지를 전체 화면에 맞추고 가로 여백 없이 설정
+                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                          return const SizedBox();
+                        }
                       ),
                     ),
                   ),

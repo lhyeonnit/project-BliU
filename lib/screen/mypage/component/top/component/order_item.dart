@@ -48,6 +48,9 @@ class OrderItem extends StatelessWidget {
                     width: 90,
                     height: 90,
                     fit: BoxFit.cover,
+                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                      return const SizedBox();
+                    }
                   ),
                 ),
               ),

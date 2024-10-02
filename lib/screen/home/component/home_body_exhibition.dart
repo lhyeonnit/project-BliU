@@ -42,8 +42,9 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          width: Responsive.getWidth(context, 380),
+        Container(
+          //width: Responsive.getWidth(context, 380),
+          margin: const EdgeInsets.only(left: 16, right: 16),
           height: 420,
           child: PageView.builder(
             controller: _pageController,
@@ -102,167 +103,196 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
   }
 
   Widget buildPage(ExhibitionData exhibitionData) {
-    return Stack(
-      children: [
-        SizedBox(
-          width: Responsive.getWidth(context, 380),
-          height: 420,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            child: Image.network(
-              exhibitionData.etBanner ?? "",
-              fit: BoxFit.cover, // 이미지를 부모 위젯에 맞게 설정
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ExhibitionScreen(etIdx: exhibitionData.etIdx ?? 0,),
+          ),
+        );
+      },
+      child: Stack(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: 420,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              child: Image.network(
+                exhibitionData.etBanner ?? "",
+                fit: BoxFit.cover, // 이미지를 부모 위젯에 맞게 설정
+                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                  return const SizedBox();
+                }
+              ),
             ),
           ),
-        ),
-        Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(8.0),
-                bottomRight: Radius.circular(8.0),
-              ),
-              gradient: LinearGradient(
-                colors: [Colors.black.withOpacity(0.5), Colors.transparent],
-                begin: Alignment.bottomCenter,
-                end: Alignment.center,
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(8.0),
+                  bottomRight: Radius.circular(8.0),
+                ),
+                gradient: LinearGradient(
+                  colors: [Colors.black.withOpacity(0.5), Colors.transparent],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.center,
+                ),
               ),
             ),
           ),
-        ),
-        Positioned(
-          bottom: 15,
-          left: Responsive.getWidth(context, 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                exhibitionData.etTitle ?? "",
-                style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 22),
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  height: 1.2,
+          Positioned(
+            bottom: 15,
+            left: Responsive.getWidth(context, 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  exhibitionData.etTitle ?? "",
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 22),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    height: 1.2,
+                  ),
                 ),
-              ),
-              SizedBox(height: Responsive.getHeight(context, 10)),
-              Text(
-                exhibitionData.etSubTitle ?? "",
-                style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14),
-                  color: Colors.white,
-                  height: 1.2,
+                SizedBox(height: Responsive.getHeight(context, 10)),
+                SizedBox(
+                  width: Responsive.getWidth(context, 340),
+                  child: Text(
+                    exhibitionData.etSubTitle ?? "",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      color: Colors.white,
+                      height: 1.2,
+                    ),
+                  ),
                 ),
-              ),
-              SizedBox(height: Responsive.getHeight(context, 15)),
-              SizedBox(
-                width: Responsive.getWidth(context, 340),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5.0),
-                            child: Image.network(
-                              exhibitionData.ptImg?[0] ?? "",
-                              height: Responsive.getHeight(context, 84),
-                              fit: BoxFit
-                                  .cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Flexible(
-                          flex: 1,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5.0),
-                            child: Image.network(
-                              exhibitionData.ptImg?[1] ?? "",
-                              height: Responsive.getHeight(context, 84),
-                              fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Flexible(
-                          flex: 1,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5.0),
-                            child: Image.network(
-                              exhibitionData.ptImg?[2] ?? "",
-                              height: Responsive.getHeight(context, 84),
-                              fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero, // 여백 없앰
-                          minimumSize: Size.zero, // 최소 사이즈를 0으로 설정하여 여백 제거
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ExhibitionScreen(etIdx: exhibitionData.etIdx ?? 0,),
-                            ),
-                          );
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // 원형 컨테이너 안에 텍스트
-                            Container(
-                              width: Responsive.getWidth(context, 58),
-                              height: 60,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '+${exhibitionData.etProductCount}',
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.2,
+                SizedBox(height: Responsive.getHeight(context, 15)),
+                SizedBox(
+                  width: Responsive.getWidth(context, 340),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Row(
+                            children: [
+                              Flexible(
+                                flex: 1,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Image.network(
+                                      exhibitionData.ptImg?[0] ?? "",
+                                      height: Responsive.getHeight(context, 84),
+                                      fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                        return const SizedBox();
+                                      }
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 10), // 간격을 위한 SizedBox
-                            // '자세히보기' 텍스트
-                            Text(
-                              '자세히보기',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 12),
-                                color: Colors.white,
-                                height: 1.2,
+                              const SizedBox(width: 10),
+                              Flexible(
+                                flex: 1,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Image.network(
+                                      exhibitionData.ptImg?[1] ?? "",
+                                      height: Responsive.getHeight(context, 84),
+                                      fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                        return const SizedBox();
+                                      }
+                                    ),
+                                  ),
+                                ),
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                              const SizedBox(width: 10),
+                              Flexible(
+                                flex: 1,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Image.network(
+                                      exhibitionData.ptImg?[2] ?? "",
+                                      height: Responsive.getHeight(context, 84),
+                                      fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                        return const SizedBox();
+                                      }
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                      ),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero, // 여백 없앰
+                            minimumSize: Size.zero, // 최소 사이즈를 0으로 설정하여 여백 제거
+                          ),
+                          onPressed: () {},
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // 원형 컨테이너 안에 텍스트
+                              Container(
+                                width: Responsive.getWidth(context, 58),
+                                height: 60,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '+${exhibitionData.etProductCount}',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10), // 간격을 위한 SizedBox
+                              // '자세히보기' 텍스트
+                              Text(
+                                '자세히보기',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 12),
+                                  color: Colors.white,
+                                  height: 1.2,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

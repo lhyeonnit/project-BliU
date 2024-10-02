@@ -269,6 +269,9 @@ class _ProductReviewState extends ConsumerState<ProductReview> {
                                   imagePath,
                                   height: 90,
                                   fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                    return const SizedBox();
+                                  }
                                 ),
                               ),
                             ),
