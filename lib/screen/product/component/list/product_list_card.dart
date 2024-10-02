@@ -1,26 +1,34 @@
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
+import 'package:BliU/screen/product/viewmodel/product_list_card_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ProductListCard extends StatefulWidget {
+class ProductListCard extends ConsumerStatefulWidget {
   final ProductData productData;
 
-  const ProductListCard({
-    super.key,
-    required this.productData,
-  });
+  const ProductListCard({super.key, required this.productData});
 
   @override
-  _ProductListCardState createState() => _ProductListCardState();
+  ConsumerState<ProductListCard> createState() => _ProductListCardState();
 }
 
-class _ProductListCardState extends State<ProductListCard> {
+class _ProductListCardState extends ConsumerState<ProductListCard> {
+  late ProductData productData;
+  @override
+  void initState() {
+    super.initState();
+
+    productData = widget.productData;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ProductData productData = widget.productData;
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -53,10 +61,32 @@ class _ProductListCardState extends State<ProductListCard> {
                   top: 0,
                   right: 0,
                   child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        // TODO 좋아요 관련
-                      });
+                    onTap: () async {
+
+                      final pref = await SharedPreferencesManager.getInstance();
+                      final mtIdx = pref.getMtIdx() ?? "";
+                      if (mtIdx.isNotEmpty) {
+                        final item = productData;
+                        final likeChk = item.likeChk;
+
+                        Map<String, dynamic> requestData = {
+                          'mt_idx' : mtIdx,
+                          'pt_idx' : item.ptIdx,
+                        };
+
+                        final defaultResponseDTO = await ref.read(productListCardViewModelProvider.notifier).productLike(requestData);
+                        if(defaultResponseDTO != null) {
+                          if (defaultResponseDTO.result == true) {
+                            setState(() {
+                              if (likeChk == "Y") {
+                                productData.likeChk = "N";
+                              } else {
+                                productData.likeChk = "Y";
+                              }
+                            });
+                          }
+                        }
+                      }
                     },
                     child: Image.asset(
                       productData.likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',

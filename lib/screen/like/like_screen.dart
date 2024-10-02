@@ -2,6 +2,7 @@ import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/like/component/like_product_tab_bar_view.dart';
 import 'package:BliU/screen/like/viewmodel/like_view_model.dart';
 import 'package:BliU/screen/product/component/list/product_list_card.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -17,12 +18,12 @@ class LikeScreen extends ConsumerStatefulWidget {
 }
 
 class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStateMixin {
-  late TabController _tabController;
   final ScrollController _scrollController = ScrollController();
+
+  late TabController _tabController;
   final List<CategoryData> _categories = [
     CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', catIdx: 0, catName: '', subList: [])
   ];
-  List<ProductListResponseDTO?> _productList = [];
 
   @override
   void initState() {
@@ -122,7 +123,9 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
                 _categories.length,
                 (index) {
                   // 상품 리스트
-                  return _buildProductGrid(index);
+                  final categoryData = _categories[index];
+                  //return _buildProductGrid(index);
+                  return LikeProductTabBarView(categoryData: categoryData);
                 },
               ),
             ),
@@ -134,15 +137,10 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
   }
 
   void _afterBuild(BuildContext context) {
-    _getAllList();
+    _getCategoryList();
   }
 
-  void _getAllList() async {
-    // TODO 회원 비회원 처리
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    // TODO 페이징 처리 필요
+  void _getCategoryList() async {
     Map<String, dynamic> requestData = {'category_type': '1'};
     final categoryResponseDTO = await ref.read(likeViewModelProvider.notifier).getCategory(requestData);
     if (categoryResponseDTO != null) {
@@ -152,82 +150,10 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
           _categories.add(item);
         }
 
-        for (var cate in _categories) {
-          String category = "all";
-          if ((cate.ctIdx ?? 0) > 0) {
-            category = cate.ctIdx.toString();
-          }
-
-          Map<String, dynamic> requestData = {
-            'mt_idx': mtIdx,
-            'category': category,
-            'sub_category': "all",
-            'pg': 1,
-          };
-
-          final productListResponseDTO = await ref.read(likeViewModelProvider.notifier).getList(requestData);
-          if (productListResponseDTO != null) {
-            if (productListResponseDTO.result == true) {
-              _productList.add(productListResponseDTO);
-            } else {
-              _productList.add(null);
-            }
-          } else {
-            _productList.add(null);
-          }
-        }
-
         setState(() {
           _tabController = TabController(length: _categories.length, vsync: this);
         });
       }
     }
-  }
-
-  Widget _buildProductGrid(int productIndex) {
-    List<ProductData> pList = [];
-    int count = 0;
-    try {
-      pList = _productList[productIndex]?.list ?? [];
-      count = _productList[productIndex]?.count ?? 0;
-    } catch (e) {
-      print("e = ${e.toString()}");
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16.0),
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Text(
-            '상품 $count', // 상품 수 표시
-            style: TextStyle(
-              fontFamily: 'Pretendard',
-              fontSize: Responsive.getFont(context, 14),
-              color: Colors.black,
-              height: 1.2,
-            ),
-          ),
-        ),
-        Expanded(
-          child: GridView.builder(
-            padding: const EdgeInsets.only(right: 16.0, left: 16, bottom: 20),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.5,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 30,
-            ),
-            itemCount: pList.length, // 실제 상품 수로 변경
-            itemBuilder: (context, index) {
-              return ProductListCard(
-                productData: pList[index],
-              );
-            },
-          ),
-        ),
-      ],
-    );
   }
 }
