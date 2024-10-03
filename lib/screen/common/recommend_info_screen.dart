@@ -11,17 +11,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
-class RecommendEdit extends ConsumerStatefulWidget {
-  const RecommendEdit({super.key});
+class RecommendInfoScreen extends ConsumerStatefulWidget {
+  const RecommendInfoScreen({super.key});
 
   @override
-  _RecommendEditState createState() => _RecommendEditState();
+  _RecommendInfoScreenState createState() => _RecommendInfoScreenState();
 }
 
-class _RecommendEditState extends ConsumerState<RecommendEdit> {
+class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen> {
   final ScrollController _scrollController = ScrollController();
   TextEditingController _birthController =
-      TextEditingController(text: '선택해주세요');
+  TextEditingController(text: '선택해주세요');
 
   DateTime? tempPickedDate;
   DateTime _selectedDate = DateTime.now();
@@ -36,7 +36,6 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
   @override
   void initState() {
     super.initState();
-    // _loadRecommendInfo();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -232,7 +231,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                   width: double.infinity,
                   color: Colors.white,
                   child: GestureDetector(
-                    onTap: () => _editRecommendInfo(),
+                    onTap: () => _submitRecommendInfo(),
                     child: Container(
                       height: Responsive.getHeight(context, 48),
                       margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
@@ -419,7 +418,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                             decoration: BoxDecoration(
                               border: Border.symmetric(
                                   horizontal:
-                                      BorderSide(color: Color(0xFFDDDDDD))),
+                                  BorderSide(color: Color(0xFFDDDDDD))),
                             ),
                           ),
                           squeeze: 0.9,
@@ -432,7 +431,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                           },
                           children: List<Widget>.generate(
                             DateTime.now().year - 1900 + 1,
-                            (int index) {
+                                (int index) {
                               return Center(
                                 child: Text(
                                   '${1900 + index}년', // 년도로 표시
@@ -459,7 +458,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                             decoration: BoxDecoration(
                               border: Border.symmetric(
                                   horizontal:
-                                      BorderSide(color: Color(0xFFDDDDDD))),
+                                  BorderSide(color: Color(0xFFDDDDDD))),
                             ),
                           ),
                           diameterRatio: 5.0,
@@ -495,7 +494,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                             decoration: BoxDecoration(
                               border: Border.symmetric(
                                   horizontal:
-                                      BorderSide(color: Color(0xFFDDDDDD))),
+                                  BorderSide(color: Color(0xFFDDDDDD))),
                             ),
                           ),
                           diameterRatio: 5.0,
@@ -589,15 +588,12 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
     _getStyleCategory();
   }
 
-  void _editRecommendInfo() async {
+  void _submitRecommendInfo() async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-
-    // 서버에 보낼 데이터 가공 (선택된 스타일 ID, 생년월일 등)
     String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
     List<int?> selectedStyleIds = _selectedStyles.map((style) => style.fsIdx).toList();
 
-    // 서버로 전송할 데이터
     Map<String, dynamic> requestData = {
       'idx': mtIdx,
       'birth': formattedDate,
@@ -605,13 +601,11 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
       'style': selectedStyleIds,
     };
 
-    // 서버에 데이터 전송 및 응답 처리
-    final defaultResponseDTO = await ref.read(RecommendEditInfoModelProvider.notifier).editRecommendInfo(requestData);
-
+    final defaultResponseDTO = await ref.read(RecommendInfoModelProvider.notifier).saveRecommendInfo(requestData);
     if (defaultResponseDTO != null) {
       Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
       if (defaultResponseDTO.result == true) {
-        Navigator.of(context).pop();
+        Navigator.pop(context, true);
       }
     }
   }
@@ -626,35 +620,4 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
       }
     }
   }
-  // void _loadRecommendInfo() async {
-  //   final pref = await SharedPreferencesManager.getInstance();
-  //   final mtIdx = pref.getMtIdx();
-  //   Map<String, dynamic> requestData = {
-  //     'idx': mtIdx,
-  //     'birth': _birthController.text,
-  //     'gender': _selectedGender,
-  //     'style': _selectedStyles,
-  //   };
-  //   // 서버에서 추천정보를 불러오는 API 호출
-  //   final recommendInfoResponseDTO = await ref.read(RecommendInfoModelProvider.notifier).getRecommendInfo(requestData);
-  //
-  //   // 불러온 데이터가 있을 경우 화면에 반영
-  //   if (recommendInfoResponseDTO != null && recommendInfoResponseDTO.result) {
-  //     setState(() {
-  //       // 서버에서 받은 데이터를 각각의 필드에 반영
-  //       final savedData = recommendInfoResponseDTO.data;
-  //       _selectedDate = DateTime.parse(savedData?['birth']); // 출생일
-  //       _birthController.text =
-  //           convertDateTimeDisplay(_selectedDate.toString()); // 출생일 텍스트 표시
-  //       _selectedGender = savedData?['gender']; // 성별
-  //       _selectedStyles = (savedData?['style'] as List).map((styleId) {
-  //         return styleCategories.firstWhere((style) => style.fsIdx == styleId);
-  //       }).toList(); // 스타일 목록
-  //     });
-  //   } else {
-  //     // 오류 발생 시 처리
-  //     Utils.getInstance().showSnackBar(
-  //         context, "Failed to load recommend info");
-  //   }
-  // }
 }

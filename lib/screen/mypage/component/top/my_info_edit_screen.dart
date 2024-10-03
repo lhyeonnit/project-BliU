@@ -1,20 +1,23 @@
 //내정보 수정
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/my_screen.dart';
+import 'package:BliU/screen/mypage/viewmodel/my_info_edit_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
-class MyInfoEditScreen extends StatefulWidget {
+class MyInfoEditScreen extends ConsumerStatefulWidget {
   const MyInfoEditScreen({super.key});
 
   @override
   _MyInfoEditScreenState createState() => _MyInfoEditScreenState();
 }
 
-class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
+class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   final ScrollController _scrollController = ScrollController();
   bool _isChange = false;
 
@@ -42,12 +45,15 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
   @override
   void initState() {
     super.initState();
-    _idController.addListener(_checkIfAllFieldsFilled);
-    _passwordController.addListener(_checkIfAllFieldsFilled);
-    _confirmPasswordController.addListener(_checkIfAllFieldsFilled);
-    _nameController.addListener(_checkIfAllFieldsFilled);
-    _phoneController.addListener(_checkIfAllFieldsFilled);
-    _authCodeController.addListener(_checkIfAllFieldsFilled);
+    // _idController.addListener(_checkIfAllFieldsFilled);
+    // _passwordController.addListener(_checkIfAllFieldsFilled);
+    // _confirmPasswordController.addListener(_checkIfAllFieldsFilled);
+    // _nameController.addListener(_checkIfAllFieldsFilled);
+    // _phoneController.addListener(_checkIfAllFieldsFilled);
+    // _authCodeController.addListener(_checkIfAllFieldsFilled);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getMyInfo();
+    });
   }
 
   void _checkIfAllFieldsFilled() {
@@ -1051,5 +1057,15 @@ class _MyInfoEditScreenState extends State<MyInfoEditScreen> {
     final DateFormat serverFormatter = DateFormat('yyyy년 MM월 dd일');
     final DateTime displayDate = displayFormatter.parse(date);
     return serverFormatter.format(displayDate);
+  }
+  void _getMyInfo() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    Map<String, dynamic> requestData = {
+      'mt_idx' : mtIdx,
+      'auth_token' : pref.getToken(),
+    };
+
+    await ref.read(myInfoEditViewModelProvider.notifier).getMyInfo(requestData);
   }
 }
