@@ -20,11 +20,11 @@ class SmartLensResult extends ConsumerStatefulWidget {
   ConsumerState<SmartLensResult> createState() => _SmartLensResultState();
 }
 
-class _SmartLensResultState extends ConsumerState<SmartLensResult>{
+class _SmartLensResultState extends ConsumerState<SmartLensResult> {
   final ScrollController _scrollController = ScrollController();
 
   final bool result = true;
-  List<ProductData> _productList = [];
+  List<ProductData>? _productList;
 
   @override
   void initState() {
@@ -39,10 +39,8 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
     return WillPopScope(
       onWillPop: () async {
         // 뒤로가기 버튼이 눌렸을 때 실행할 동작 정의
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => SmartLensScreen()),
-        );
+        Navigator.pop(context);
+        Navigator.pop(context);
         return false; // 뒤로가기 동작을 취소하고 직접 정의한 동작만 실행
       },
       child: Scaffold(
@@ -61,12 +59,8 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
           leading: IconButton(
             icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SmartLensScreen(),
-                ),
-              );
+              Navigator.pop(context);
+              Navigator.pop(context);
             },
           ),
           titleSpacing: -1.0,
@@ -105,29 +99,34 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
                 ),
               ],
             ),
-            if (result == true)
-              Align(
+            Visibility(
+              visible: result == true,
+              child: Align(
                 alignment: Alignment.bottomCenter,
                 child: DraggableScrollableSheet(
-                  initialChildSize: 0.5, // 처음 열렸을 때 차지할 화면 비율 (0.4는 40%)
-                  minChildSize: 0.5, // 최소 확장 크기
-                  maxChildSize: 0.95, // 최대 확장 크기
-                  builder: (BuildContext context,
-                      ScrollController scrollController) {
+                  initialChildSize: 0.5,
+                  minChildSize: 0.5,
+                  maxChildSize: 0.95,
+                  builder: (BuildContext context, ScrollController scrollController) {
                     return Container(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       decoration: const BoxDecoration(
                         color: Colors.white,
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(8)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xFFF4F4F4),
+                            blurRadius: 6.0,
+                            spreadRadius: 1.0,
+                          ),
+                        ],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Center(
                             child: Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: 17, top: 15),
+                              margin: const EdgeInsets.only(bottom: 17, top: 15),
                               width: 40,
                               height: 4,
                               decoration: BoxDecoration(
@@ -148,76 +147,84 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
                               ),
                             ),
                           ),
-                          buildItemCard(),
+                          buildItemCard(), // 기존에 있는 메서드 호출
                         ],
                       ),
                     );
                   },
                 ),
               ),
-            if (result == false)
-              Align(
+            ),
+            Visibility(
+              visible: result == false,
+              child: Align(
                 alignment: Alignment.bottomCenter,
                 child: DraggableScrollableSheet(
-                  initialChildSize: 0.5, // 처음 열렸을 때 차지할 화면 비율 (0.4는 40%)
-                  minChildSize: 0.5, // 최소 확장 크기
-                  maxChildSize: 0.5, // 최대 확장 크기
-                  builder: (BuildContext context,
-                      ScrollController scrollController) {
+                  initialChildSize: 0.5,
+                  minChildSize: 0.5,
+                  maxChildSize: 0.5,
+                  builder: (BuildContext context, ScrollController scrollController) {
                     return Container(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       decoration: const BoxDecoration(
                         color: Colors.white,
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(8)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Center(
                             child: Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: 17, top: 15),
+                              margin: const EdgeInsets.only(bottom: 17, top: 15),
                               width: 40,
                               height: 4,
                               decoration: BoxDecoration(
                                 color: Color(0xFFDDDDDD),
                                 borderRadius: BorderRadius.circular(3),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(0xFFF4F4F4),
+                                    blurRadius: 6.0,
+                                    spreadRadius: 1.0,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                           Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: 25, top: 23),
-                              width: 90,
-                              height: 90,
-                              padding: const EdgeInsets.all(20),
-                              decoration: const BoxDecoration(
-                                color: Color(0xFFF5F9F9),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(70)),
-                              ),
-                              child: SvgPicture.asset(
-                                'assets/images/product/ic_top_sch.svg',
-                                height: 50,
-                                width: 50,
-                              )),
+                            margin: const EdgeInsets.only(bottom: 25, top: 23),
+                            width: 90,
+                            height: 90,
+                            padding: const EdgeInsets.all(20),
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFF5F9F9),
+                              borderRadius: BorderRadius.all(Radius.circular(70)),
+                            ),
+                            child: SvgPicture.asset(
+                              'assets/images/product/ic_top_sch.svg',
+                              height: 50,
+                              width: 50,
+                            ),
+                          ),
                           Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: Text('비슷한 상품을 찾지 못했어요',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 18),
-                                    fontWeight: FontWeight.bold,
-                                    height: 1.2,
-                                  ))),
-                          Text('다른 이미지로 찾아보세요.',
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: Text('비슷한 상품을 찾지 못했어요',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: const Color(0xFFA4A4A4),
+                                fontSize: Responsive.getFont(context, 18),
+                                fontWeight: FontWeight.bold,
                                 height: 1.2,
-                              )),
+                              ),
+                            ),
+                          ),
+                          Text('다른 이미지로 찾아보세요.',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: const Color(0xFFA4A4A4),
+                              height: 1.2,
+                            ),
+                          ),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -228,22 +235,24 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
                               );
                             },
                             child: Container(
-                                margin: const EdgeInsets.only(top: 20),
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                width: 150,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(22),
-                                  border: Border.all(color: const Color(0xFFDDDDDD)),
+                              margin: const EdgeInsets.only(top: 20),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              width: 150,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(22),
+                                border: Border.all(color: const Color(0xFFDDDDDD)),
+                              ),
+                              child: Center(
+                                child: Text('다시 검색하기',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    fontWeight: FontWeight.bold,
+                                    height: 1.2,
+                                  ),
                                 ),
-                                child: Center(
-                                  child: Text('다시 검색하기',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        fontWeight: FontWeight.bold,
-                                        height: 1.2,
-                                      )),
-                                )),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -251,6 +260,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
                   },
                 ),
               ),
+            ),
           ],
         ),
       ),
@@ -262,23 +272,25 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(right: 16.0, left: 16, bottom: 20),
+        padding: const EdgeInsets.only(bottom: 20),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.55,
           crossAxisSpacing: 12,
           mainAxisSpacing: 30,
         ),
-        itemCount: _productList.length, // 실제 상품 수로 변경
+        itemCount: _productList?.length,
+        // 실제 상품 수로 변경
         itemBuilder: (context, index) {
-          final productData = _productList[index];
+          final productData = _productList?[index];
 
           return GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProductDetailScreen(ptIdx: productData.ptIdx),
+                  builder: (context) =>
+                      ProductDetailScreen(ptIdx: productData?.ptIdx),
                 ),
               );
             },
@@ -292,11 +304,12 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
                   Stack(
                     children: [
                       ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
                         child: AspectRatio(
-                          aspectRatio: 1/1,
+                          aspectRatio: 1 / 1,
                           child: Image.network(
-                            productData.ptImg ?? "",
+                            productData?.ptImg ?? "",
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -306,27 +319,31 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
                         right: 0,
                         child: GestureDetector(
                           onTap: () async {
-
-                            final pref = await SharedPreferencesManager.getInstance();
+                            final pref =
+                                await SharedPreferencesManager.getInstance();
                             final mtIdx = pref.getMtIdx() ?? "";
                             if (mtIdx.isNotEmpty) {
                               Map<String, dynamic> requestData = {
-                                'mt_idx' : mtIdx,
-                                'pt_idx' : productData.ptIdx,
+                                'mt_idx': mtIdx,
+                                'pt_idx': productData?.ptIdx,
                               };
 
-                              final defaultResponseDTO = await ref.read(smartLensModelProvider.notifier).productLike(requestData);
-                              if(defaultResponseDTO != null) {
+                              final defaultResponseDTO = await ref
+                                  .read(smartLensModelProvider.notifier)
+                                  .productLike(requestData);
+                              if (defaultResponseDTO != null) {
                                 if (defaultResponseDTO.result == true) {
                                   setState(() {
-                                    _productList.removeAt(index);
+                                    _productList?.removeAt(index);
                                   });
                                 }
                               }
                             }
                           },
                           child: Image.asset(
-                            productData.likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',
+                            productData?.likeChk == "Y"
+                                ? 'assets/images/home/like_btn_fill.png'
+                                : 'assets/images/home/like_btn.png',
                             height: Responsive.getHeight(context, 34),
                             width: Responsive.getWidth(context, 34),
                             // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
@@ -341,7 +358,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
                       Container(
                         margin: const EdgeInsets.only(top: 12, bottom: 4),
                         child: Text(
-                          productData.stName ?? "",
+                          productData?.stName ?? "",
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 12),
@@ -351,7 +368,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
                         ),
                       ),
                       Text(
-                        productData.ptName ?? "",
+                        productData?.ptName ?? "",
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
@@ -367,7 +384,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
                           textBaseline: TextBaseline.alphabetic,
                           children: [
                             Text(
-                              '${productData.ptDiscountPer ?? 0}%',
+                              '${productData?.ptDiscountPer ?? 0}%',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
@@ -379,7 +396,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
                             Container(
                               margin: const EdgeInsets.symmetric(horizontal: 2),
                               child: Text(
-                                "${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원",
+                                "${Utils.getInstance().priceString(productData?.ptPrice ?? 0)}원",
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
@@ -402,7 +419,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
                           Container(
                             margin: const EdgeInsets.only(left: 2, bottom: 2),
                             child: Text(
-                              '${productData.ptLike ?? ""}',
+                              '${productData?.ptLike ?? ""}',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 12),
@@ -421,9 +438,10 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
                                   height: Responsive.getHeight(context, 12),
                                 ),
                                 Container(
-                                  margin: const EdgeInsets.only(left: 2, bottom: 2),
+                                  margin:
+                                      const EdgeInsets.only(left: 2, bottom: 2),
                                   child: Text(
-                                    '${productData.ptReview ?? ""}',
+                                    '${productData?.ptReview ?? ""}',
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
@@ -447,12 +465,12 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult>{
       ),
     );
   }
+
   void _afterBuild(BuildContext context) {
     _getList();
   }
 
   void _getList() async {
-
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
