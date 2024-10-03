@@ -140,10 +140,10 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
               children: [
                 Container(
                   margin: EdgeInsets.only(bottom: 20),
-                  child: _buildSmartLensInfo(0x24000000, '이미지 검색 기능',
+                  child: _buildSmartLensInfo("assets/images/home/그룹 37779.png", '이미지 검색 기능',
                       '사용자가 사진을 찍거나 이미지를 업로드하면, \n해당 이미지와 유사한 패션 아이템을 찾아줍니다.'),
                 ),
-                _buildSmartLensInfo(0xFFF5F9F9, '인공지능 기반 추천',
+                _buildSmartLensInfo("assets/images/home/그룹 37234.png", '인공지능 기반 추천',
                     '인공지능(AI)을 활용해 사용자의 취향을 분석하고, \n관련된 패션 아이템을 추천')
               ],
             ),
@@ -181,7 +181,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
   }
 
   Widget _buildSmartLensInfo(
-    int color,
+    String image,
     String title,
     String content,
   ) {
@@ -191,10 +191,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
           width: 84,
           height: 84,
           margin: EdgeInsets.only(right: 15),
-          decoration: BoxDecoration(
-            color: Color(color),
-            borderRadius: BorderRadius.circular(5),
-          ),
+          child: Image.asset(image),
         ),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 8),
