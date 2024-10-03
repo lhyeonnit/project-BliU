@@ -13,10 +13,14 @@ class StyleCategoryResponseDTO {
 
   // JSON to Object
   factory StyleCategoryResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<StyleCategoryData>.from((json['data']['list'])?.map((item) {
+      return StyleCategoryData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return StyleCategoryResponseDTO(
       result: json['result'],
       message: json['data']['message'],
-      list: (json['data']['list'] as List<StyleCategoryData>),
+      list: list,
     );
   }
 
