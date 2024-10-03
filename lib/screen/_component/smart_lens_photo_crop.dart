@@ -1,23 +1,27 @@
 import 'dart:io';
+import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/_component/smart_lens_result.dart';
 import 'package:BliU/screen/_component/smart_lens_screen.dart';
+import 'package:BliU/screen/_component/viewmodel/smart_lens_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-class SmartLensPhotoCrop extends StatefulWidget {
+class SmartLensPhotoCrop extends ConsumerStatefulWidget {
   final AssetEntity imageEntity;
-
-  const SmartLensPhotoCrop({required this.imageEntity, Key? key})
-      : super(key: key);
+  const SmartLensPhotoCrop({super.key, required this.imageEntity});
 
   @override
-  _SmartLensPhotoCropState createState() => _SmartLensPhotoCropState();
+  ConsumerState<SmartLensPhotoCrop> createState() => _SmartLensPhotoCropState();
 }
 
-class _SmartLensPhotoCropState extends State<SmartLensPhotoCrop> {
+class _SmartLensPhotoCropState extends ConsumerState<SmartLensPhotoCrop> {
   bool _isLoading = true;
   File? _imageFile;
 
@@ -79,19 +83,12 @@ class _SmartLensPhotoCropState extends State<SmartLensPhotoCrop> {
 
       if (croppedFile == null) {
         // 원하는 동작을 여기에 정의 (예: 특정 페이지로 이동)
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => SmartLensScreen()), // 취소 시 보여줄 페이지
-        );
+        Navigator.pop(context);
       } else {
         File croppedImageFile = File(croppedFile.path);
         // 크롭이 완료된 경우 다음 화면으로 이동
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SmartLensResult(imagePath: croppedImageFile),
-          ),
-        );
+        _uploadFile(croppedImageFile);
+
       }
     }
   }
@@ -148,5 +145,35 @@ class _SmartLensPhotoCropState extends State<SmartLensPhotoCrop> {
         ],
       ),
     );
+  }
+
+  void _uploadFile(File croppedImageFile) async {
+    SharedPreferencesManager.getInstance().then((pref) {
+      final mtIdx = pref.getMtIdx();
+
+      final MultipartFile file = MultipartFile.fromFileSync(
+        croppedImageFile.path,
+        contentType: DioMediaType("image", "jpg"),
+      );
+      final formData = FormData.fromMap({
+        'mt_idx': mtIdx,
+        'search_img': file,
+      });
+
+      ref.read(smartLensModelProvider.notifier).photoUpload(formData).then((resultData) {
+        if (resultData != null) {
+          if (resultData.result == true) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SmartLensResult(imagePath: croppedImageFile),
+              ),
+            );
+          }
+        } else {
+          Utils.getInstance().showSnackBar(context, "Network Or Data Error");
+        }
+      });
+    });
   }
 }
