@@ -1,11 +1,10 @@
-import 'package:BliU/data/member_info_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'find_password_screen.dart';
-import 'login_screen.dart';
 
 class FindIdCompleteScreen extends ConsumerStatefulWidget {
   final String? id;
@@ -16,11 +15,11 @@ class FindIdCompleteScreen extends ConsumerStatefulWidget {
 }
 
 class _FindIdCompleteScreenState extends ConsumerState<FindIdCompleteScreen> {
-
+  String? userId;
   @override
   void initState() {
     super.initState();
-
+    userId = widget.id;
   }
   @override
   Widget build(BuildContext context) {
