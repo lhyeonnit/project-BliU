@@ -258,7 +258,7 @@ class LoginScreen extends ConsumerWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => FindIdCompleteScreen(userId: result,),
+                                builder: (context) => FindIdCompleteScreen(id: result,),
                               ),
                             );
                           }

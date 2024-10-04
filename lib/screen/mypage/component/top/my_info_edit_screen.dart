@@ -4,6 +4,7 @@ import 'package:BliU/screen/mypage/my_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/my_info_edit_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,11 +20,13 @@ class MyInfoEditScreen extends ConsumerStatefulWidget {
 
 class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   final ScrollController _scrollController = ScrollController();
-  bool _isChange = false;
 
   final _formKey = GlobalKey<FormState>();
   final bool _isIdChecked = false;
   bool _isAllFieldsFilled = false;
+  bool _phoneAuthCodeVisible = false;
+  bool _phoneAuthChecked = false;
+
   String? _selectedGender; // 성별을 저장하는 변수
   TextEditingController _birthController =
       TextEditingController(text: '생년월일입력');
@@ -45,12 +48,12 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   @override
   void initState() {
     super.initState();
-    // _idController.addListener(_checkIfAllFieldsFilled);
-    // _passwordController.addListener(_checkIfAllFieldsFilled);
-    // _confirmPasswordController.addListener(_checkIfAllFieldsFilled);
-    // _nameController.addListener(_checkIfAllFieldsFilled);
-    // _phoneController.addListener(_checkIfAllFieldsFilled);
-    // _authCodeController.addListener(_checkIfAllFieldsFilled);
+    _idController.addListener(_checkIfAllFieldsFilled);
+    _passwordController.addListener(_checkIfAllFieldsFilled);
+    _confirmPasswordController.addListener(_checkIfAllFieldsFilled);
+    _nameController.addListener(_checkIfAllFieldsFilled);
+    _phoneController.addListener(_checkIfAllFieldsFilled);
+    _authCodeController.addListener(_checkIfAllFieldsFilled);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getMyInfo();
     });
@@ -146,7 +149,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                       ),
                     ),
                     _buildIdPasswordField('아이디', _idController, 'id1234',
-                        isChange: _isChange),
+                        isChange: _isIdChecked),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 20),
                       child: Column(
@@ -156,10 +159,10 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                               obscureText: true, isChange: true),
                           _buildCheckField(
                               '비밀번호', _confirmPasswordController, '비밀번호 재입력',
-                              obscureText: true),
+                              obscureText: true, isEnable: true),
                           GestureDetector(
                             onTap: () {
-                              // TODO 변경 버튼 동작 추가
+                              _editMyPassword();
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 14),
@@ -194,66 +197,149 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                           child: _buildPhoneField(
                               '휴대폰번호', _phoneController, '01012345678',
                               keyboardType: TextInputType.phone,
-                              isChange: _isChange),
+                              isEnable: _phoneAuthChecked ? true : false),
                         ),
-                        Expanded(
-                          flex: 3,
-                          child: GestureDetector(
-                            onTap: () async {
-                              // TODO 변경 버튼 동작 추가
-
-                              setState(() {
-                                _isChange = !_isChange;
-                              });
-                            },
-                            child: Container(
-                                margin: EdgeInsets.only(top: 50, left: 8),
-                                padding: EdgeInsets.symmetric(vertical: 14),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  border: Border.all(color: Color(0xFFDDDDDD)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    _isChange == false ? '변경' : '인증요청',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
-                                    ),
+                        Visibility(
+                          visible: !_phoneAuthChecked,
+                          child: Expanded(
+                            flex: 3,
+                            child: GestureDetector(
+                              onTap: () async {
+                                setState(() {
+                                  _phoneAuthChecked = true;
+                                });
+                              },
+                              child: Container(
+                                  margin: EdgeInsets.only(top: 45, left: 8),
+                                  padding: EdgeInsets.symmetric(vertical: 14),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(color: Color(0xFFDDDDDD)),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '변경',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
+                                      ),
+                                    )
                                   )
-                                )
+                              ),
+                            ),
+                          ),
+                        ),
+                        Visibility(
+                          visible: _phoneAuthChecked,
+                          child: Expanded(
+                            flex: 3,
+                            child: GestureDetector(
+                              onTap: () async {
+                                _editMyPh();
+                                if (_phoneController.text.isEmpty ||
+                                    _phoneAuthChecked) {
+                                  return;
+                                }
+
+                                final pref =
+                                await SharedPreferencesManager.getInstance();
+                                final phoneNumber = _phoneController.text;
+
+                                Map<String, dynamic> requestData = {
+                                  'app_token': pref.getToken(),
+                                  'phone_num': phoneNumber,
+                                  'code_type': 4,
+                                };
+                                final resultDTO = await ref
+                                    .read(myInfoEditViewModelProvider.notifier)
+                                    .reqPhoneAuthCode(requestData);
+                                if (resultDTO.result == true) {
+                                  setState(() {
+                                    _phoneAuthCodeVisible = true;
+                                    // TODO 타이머 로직 추가
+                                  });
+                                } else {
+                                  if (!context.mounted) return;
+                                  Utils.getInstance().showSnackBar(
+                                      context, resultDTO.message.toString());
+                                }
+                              },
+                              child: Container(
+                                  margin: EdgeInsets.only(top: 45, left: 8),
+                                  padding: EdgeInsets.symmetric(vertical: 14),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(color: Color(0xFFDDDDDD)),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '인증요청',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
+                                      ),
+                                    )
+                                  )
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
                     Visibility(
-                      // visible: _phoneAuthCodeVisible,
+                      visible: _phoneAuthCodeVisible,
                       child: Row(
                         children: [
                           Expanded(
                             flex: 7,
                             child: _buildCheckField(
                               '휴대폰번호', _authCodeController, '인증번호 입력',
-                              // isEnable: _phoneAuthChecked ? false : true
+                                isEnable: _phoneAuthChecked ? true : false
                             ),
                           ),
                           Expanded(
                             flex: 3,
                             child: GestureDetector(
                               onTap: () async {
-                                // TODO 번호 변경 시 인증코드 동작 추가
+                                if (_authCodeController.text.isEmpty ||
+                                    _phoneAuthChecked) {
+                                  return;
+                                }
+                                // TODO 타이머 체크필요
+
+                                final pref = await SharedPreferencesManager
+                                    .getInstance();
+                                final phoneNumber = _phoneController.text;
+                                final authCode = _authCodeController.text;
+
+                                Map<String, dynamic> requestData = {
+                                  'app_token': pref.getToken(),
+                                  'phone_num': phoneNumber,
+                                  'code_num': authCode,
+                                  'code_type': 4,
+                                };
+
+                                final resultDTO = await ref
+                                    .read(myInfoEditViewModelProvider.notifier)
+                                    .checkCode(requestData);
+                                if (!context.mounted) return;
+                                Utils.getInstance().showSnackBar(
+                                    context, resultDTO.message.toString());
+                                if (resultDTO.result == true) {
+                                  setState(() {
+                                    _phoneAuthChecked = true;
+                                    _checkIfAllFieldsFilled();
+                                  });
+                                }
                               },
                               child: Container(
-                                margin: EdgeInsets.only(top: 10, left: 8),
-                                padding: EdgeInsets.symmetric(vertical: 14),
+                                margin: const EdgeInsets.only(top: 10, left: 8),
+                                padding: const EdgeInsets.symmetric(vertical: 14),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6),
-                                  // color: _phoneAuthChecked
-                                  //     ? Color(0xFFDDDDDD)
-                                  //     : Colors.black,
-                                  color: Colors.black,
+                                  color: _phoneAuthChecked ?  Colors.black : const Color(0xFFDDDDDD),
                                 ),
                                 child: Center(
                                   child: Text(
@@ -261,10 +347,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
-                                      // color: _phoneAuthChecked
-                                      //     ? Color(0xFF7B7B7B)
-                                      //     : Colors.white),
-                                      color: Colors.white,
+                                      color: _phoneAuthChecked ? Colors.white : const Color(0xFF7B7B7B) ,
                                       height: 1.2,
                                     ),
                                   ),
@@ -280,19 +363,17 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                         Expanded(
                           flex: 7,
                           child: _buildTextField(
-                            '이름',
-                            _nameController,
-                            '김이름',
+                            '이름', _nameController, '김이름', keyboardType: TextInputType.name
                           ),
                         ),
                         Expanded(
                           flex: 3,
                           child: GestureDetector(
                             onTap: () async {
-                              // TODO 변경 버튼 동작 추가
+                              _editMyName();
                             },
                             child: Container(
-                              margin: EdgeInsets.only(top: 50, left: 8),
+                              margin: EdgeInsets.only(top: 45, left: 8),
                               padding: EdgeInsets.symmetric(vertical: 14),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(6),
@@ -441,7 +522,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                       child: Center(
                         child: TextButton(
                           onPressed: () {
-                            // TODO 회원탈퇴 동작 추가
+                            _retire();
                           },
                           child: Text(
                             '회원탈퇴',
@@ -475,14 +556,8 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                     onTap: () {
                       _isAllFieldsFilled
                           ? () {
-                              // 확인 로직 추가
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MyScreen(),
-                                ),
-                              );
-                            }
+                        _editMyInfo();
+                      }
                           : null;
                     },
                     child: Container(
@@ -658,7 +733,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       {bool obscureText = false,
       TextInputType keyboardType = TextInputType.text,
       Widget? suffixIcon,
-      required bool isChange}) {
+      required bool isEnable}) {
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: Column(
@@ -701,20 +776,19 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
               controller: controller,
               obscureText: obscureText,
               keyboardType: keyboardType,
-              enabled: isChange,
+              enabled: isEnable,
               decoration: InputDecoration(
                 hintStyle: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
-                    color: isChange ? Colors.white : Color(0xFFA4A4A4)),
+                    color: isEnable ? Colors.white : Color(0xFFA4A4A4)),
                 filled: true,
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 border: UnderlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(6)),
                 hintText: hintText,
-                fillColor: isChange ? Colors.white : Color(0xFFF5F9F9),
+                fillColor: isEnable ? Colors.white : Color(0xFFF5F9F9),
                 // 배경색 설정
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -737,7 +811,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       {bool obscureText = false,
       TextInputType keyboardType = TextInputType.text,
       Widget? suffixIcon,
-      bool isEnable = true}) {
+        required bool isEnable}) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: Column(
@@ -1067,5 +1141,92 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
     };
 
     await ref.read(myInfoEditViewModelProvider.notifier).getMyInfo(requestData);
+  }
+  void _editMyInfo() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    String birthDay = "";
+    try {
+      if (_selectedDate != null) {
+        birthDay = DateFormat("yyyy-MM-dd").format(_selectedDate!);
+      }
+    } catch (e) {
+      print("DateError $e");
+    }
+    String gender = "";
+    if (_selectedGender == "남자") {
+      gender = "M";
+    } else if (_selectedGender == "여자") {
+      gender = "F";
+    }
+    Map<String, dynamic> requestData = {
+      'mt_idx' : mtIdx,
+      'mt_birth' : birthDay,
+      'mt_gender' : gender,
+    };
+    final resultDTO = await ref.read(myInfoEditViewModelProvider.notifier).editMyInfo(requestData);
+    if (resultDTO.result == true) {
+      if (!context.mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MyScreen(),
+        ),
+      );
+    } else {
+      if (!context.mounted) return;
+      Utils.getInstance().showSnackBar(
+          context, resultDTO.message.toString());
+    }
+  }
+  void _editMyName() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    final name = _nameController.text;
+    Map<String, dynamic> requestData = {
+      'mt_idx' : mtIdx,
+      'mt_name' : name,
+    };
+    await ref.read(myInfoEditViewModelProvider.notifier).editMyName(requestData);
+  }
+  void _editMyPh() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    final phone = _phoneController.text;
+
+    Map<String, dynamic> requestData = {
+      'mt_idx' : mtIdx,
+      'mt_hp' :phone,
+    };
+    await ref.read(myInfoEditViewModelProvider.notifier).editMyPh(requestData);
+
+  }
+  void _editMyPassword() async {
+    if (_passwordController.text !=
+        _confirmPasswordController.text) {
+      Utils.getInstance()
+          .showSnackBar(context, "비밀번호가 서로 다릅니다 다시 입력해 주세요.");
+      return;
+    }
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    final password = _passwordController.text;
+    final confirmPassword = _confirmPasswordController.text;
+    Map<String, dynamic> requestData = {
+      'mt_idx' : mtIdx,
+      'pwd' :password,
+      'pwd_chk' :confirmPassword,
+      'pwd_token' :pref.getToken(),
+    };
+    await ref.read(myInfoEditViewModelProvider.notifier).editMyPassword(requestData);
+  }
+  void _retire() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    Map<String, dynamic> requestData = {
+      'mt_idx' : mtIdx,
+    };
+    final resultDTO = await ref.read(myInfoEditViewModelProvider.notifier).retire(requestData);
+    Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
   }
 }

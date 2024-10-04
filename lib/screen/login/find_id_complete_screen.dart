@@ -1,15 +1,26 @@
-import 'package:BliU/screen/login/find_password_screen.dart';
-import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class FindIdCompleteScreen extends StatelessWidget {
-  final String userId;
+import 'find_password_screen.dart';
 
-  const FindIdCompleteScreen({super.key, required this.userId}); // 찾은 아이디를 여기에 넣습니다.
+class FindIdCompleteScreen extends ConsumerStatefulWidget {
+  final String? id;
 
+  const FindIdCompleteScreen({super.key, required this.id}); // 찾은 아이디를 여기에 넣습니다.
+  @override
+  _FindIdCompleteScreenState createState() => _FindIdCompleteScreenState();
+}
+
+class _FindIdCompleteScreenState extends ConsumerState<FindIdCompleteScreen> {
+  String? userId;
+  @override
+  void initState() {
+    super.initState();
+    userId = widget.id;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
