@@ -1,6 +1,3 @@
-import 'package:BliU/data/member_info_data.dart';
-import 'package:BliU/dto/find_id_response_dto.dart';
-import 'package:BliU/screen/login/viewmodel/find_id_screen_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -14,7 +11,7 @@ class FindIdScreen extends ConsumerStatefulWidget {
   const FindIdScreen({super.key});
 
   @override
-  _FindIdScreenState createState() => _FindIdScreenState();
+  ConsumerState<FindIdScreen> createState() => _FindIdScreenState();
 }
 
 class _FindIdScreenState extends ConsumerState<FindIdScreen> {
@@ -38,8 +35,42 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
 
   void _checkIfAllFieldsFilled() {
     setState(() {
-      _isAllFieldsFilled =
-          _nameController.text.isNotEmpty && _phoneController.text.isNotEmpty;
+      _isAllFieldsFilled = _nameController.text.isNotEmpty && _phoneController.text.isNotEmpty;
+    });
+  }
+
+  int _authSeconds = 180;
+  String _timerStr = "00:00";
+  Timer? _timer;
+
+  void _authTimerStart() {
+    if (_timer != null) {
+      _timer?.cancel();
+    }
+
+    setState(() {
+      _authSeconds = 180;
+      _timerStr = "03:00";
+    });
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      setState(() {
+        if (_authSeconds == 0) {
+          t.cancel();
+        } else {
+          _authSeconds--;
+
+          int min = _authSeconds~/60;
+          int sec = _authSeconds%60;
+          String secStr = "";
+          if (sec < 10) {
+            secStr = "0$sec";
+          } else {
+            secStr = sec.toString();
+          }
+
+          _timerStr = "0$min:$secStr";
+        }
+      });
     });
   }
 
@@ -121,7 +152,7 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
                                 if (resultDTO?.result == true) {
                                   setState(() {
                                     _phoneAuthCodeVisible = true;
-                                    // TODO 타이머 로직 추가
+                                    _authTimerStart();
                                   });
                                 }
                               },
@@ -142,6 +173,47 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
                                         ),
                                       )
                                   )
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Visibility(
+                                    visible: _phoneAuthCodeVisible && !_phoneAuthChecked,
+                                    maintainSize: true,
+                                    maintainAnimation: true,
+                                    maintainState: true,
+                                    child: Container(
+                                      margin: const EdgeInsets.only(top: 20, left: 8),
+                                      child: Text(
+                                        _timerStr,
+                                        style: TextStyle(
+                                          color: const Color(0xFFFF6192),
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 13),
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    )
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 10, left: 8),
+                                    padding: const EdgeInsets.symmetric(vertical: 14),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      border:
+                                      Border.all(color: const Color(0xFFDDDDDD)),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '인증요청',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          height: 1.2,
+                                        ),
+                                      )
+                                    )
+                                  )
+                                ],
                               ),
                             ),
                           ),
@@ -283,7 +355,7 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
       Widget? suffixIcon,
       bool isEnable = true}) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -326,18 +398,22 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
               obscureText: obscureText,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF595959)),
-                enabledBorder: OutlineInputBorder(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: const Color(0xFF595959)
+                ),
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
-                focusedBorder: OutlineInputBorder(
+                disabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                ),
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),
@@ -356,7 +432,7 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
       Widget? suffixIcon,
       bool isEnable = true}) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -371,18 +447,21 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
               obscureText: obscureText,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF595959)),
-                enabledBorder: OutlineInputBorder(
+                    color: const Color(0xFF595959)),
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
-                focusedBorder: OutlineInputBorder(
+                disabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                ),
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),

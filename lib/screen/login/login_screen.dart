@@ -1,4 +1,5 @@
 import 'package:BliU/screen/join/join_agree_screen.dart';
+import 'package:BliU/screen/login/find_id_complete_screen.dart';
 import 'package:BliU/screen/login/viewmodel/login_screen_view_model.dart';
 import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -85,7 +86,7 @@ class LoginScreen extends ConsumerWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 25, horizontal: 16),
+                  margin: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
                   child: Column(
                     children: [
                       TextField(
@@ -95,25 +96,24 @@ class LoginScreen extends ConsumerWidget {
                         ),
                         controller: _idController,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 15),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                           hintText: '아이디 입력',
                           hintStyle: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
-                              color: Color(0xFF595959)),
-                          enabledBorder: OutlineInputBorder(
+                              color: const Color(0xFF595959)),
+                          enabledBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(6)),
                             borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                           ),
-                          focusedBorder: OutlineInputBorder(
+                          focusedBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(6)),
                             borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                           ),
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: const EdgeInsets.symmetric(vertical: 10),
                         child: TextField(
                           style: TextStyle(
                             fontFamily: 'Pretendard',
@@ -122,22 +122,21 @@ class LoginScreen extends ConsumerWidget {
                           controller: _passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 14, horizontal: 15),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                             hintText: '비밀번호 입력',
                             hintStyle: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: Color(0xFF595959)),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(6)),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: const Color(0xFF595959)
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
                               borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(6)),
-                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Color(0xFFE1E1E1)
+                              ),
                             ),
                           ),
                         ),
@@ -151,13 +150,12 @@ class LoginScreen extends ConsumerWidget {
                               //   _isAutoLogin = !_isAutoLogin;);
                             },
                             child: Container(
-                              margin: EdgeInsets.only(right: 10),
+                              margin: const EdgeInsets.only(right: 10),
                               padding: const EdgeInsets.all(6),
                               height: 22,
                               width: 22,
                               decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(6)),
+                                borderRadius: const BorderRadius.all(Radius.circular(6)),
                                 border: Border.all(
                                   color: _isAutoLogin
                                       ? const Color(0xFFFF6191)
@@ -239,20 +237,31 @@ class LoginScreen extends ConsumerWidget {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      margin: EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                          border: Border.symmetric(
-                              vertical: BorderSide(color: Color(0xFFDDDDDD)))),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      decoration: const BoxDecoration(
+                        border: Border.symmetric(
+                          vertical: BorderSide(color: Color(0xFFDDDDDD))
+                        )
+                      ),
                       child: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           // 아이디찾기 버튼 동작
-                          Navigator.push(
+                          final result = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const FindIdScreen(),
                             ),
                           );
+
+                          if (result != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FindIdCompleteScreen(userId: result,),
+                              ),
+                            );
+                          }
                         },
                         child: Text(
                           '아이디찾기',
@@ -286,11 +295,11 @@ class LoginScreen extends ConsumerWidget {
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 50),
+                  margin: const EdgeInsets.symmetric(vertical: 50),
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(bottom: 25),
+                        margin: const EdgeInsets.only(bottom: 25),
                         child: Center(
                           child: Text(
                             'SNS 로그인',

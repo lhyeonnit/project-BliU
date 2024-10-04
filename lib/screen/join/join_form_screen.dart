@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:BliU/screen/join/join_complete_screen.dart';
 import 'package:BliU/screen/join/viewmodel/join_form_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -13,7 +14,7 @@ class JoinFormScreen extends ConsumerStatefulWidget {
   const JoinFormScreen({super.key});
 
   @override
-  _JoinFormScreenState createState() => _JoinFormScreenState();
+  ConsumerState<JoinFormScreen> createState() => _JoinFormScreenState();
 }
 
 class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
@@ -26,12 +27,15 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
 
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _authCodeController = TextEditingController();
   DateTime? _selectedDate;
+
+  int _authSeconds = 180;
+  String _timerStr = "00:00";
+  Timer? _timer;
 
   @override
   void initState() {
@@ -72,6 +76,37 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
         _checkIfAllFieldsFilled();
       });
     }
+  }
+
+  void _authTimerStart() {
+    if (_timer != null) {
+      _timer?.cancel();
+    }
+
+    setState(() {
+      _authSeconds = 180;
+      _timerStr = "03:00";
+    });
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      setState(() {
+        if (_authSeconds == 0) {
+          t.cancel();
+        } else {
+          _authSeconds--;
+
+          int min = _authSeconds~/60;
+          int sec = _authSeconds%60;
+          String secStr = "";
+          if (sec < 10) {
+            secStr = "0$sec";
+          } else {
+            secStr = sec.toString();
+          }
+
+          _timerStr = "0$min:$secStr";
+        }
+      });
+    });
   }
 
   @override
@@ -140,12 +175,9 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                               final id = _idController.text;
                               Map<String, dynamic> requestData = {'id': id};
 
-                              final resultDTO = await ref
-                                  .read(joinFormModelProvider.notifier)
-                                  .checkId(requestData);
+                              final resultDTO = await ref.read(joinFormModelProvider.notifier).checkId(requestData);
                               if (!context.mounted) return;
-                              Utils.getInstance().showSnackBar(
-                                  context, resultDTO.message.toString());
+                              Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                               if (resultDTO.result == true) {
                                 setState(() {
                                   setState(() {
@@ -189,73 +221,88 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         ),
                       ),
                     ),
-                    _buildTextField('비밀번호', _passwordController,
-                        '비밀번호 입력(숫자, 특수기호 포함한 7~15자)',
-                        obscureText: true),
-                    _buildCheckField(
-                        '비밀번호', _confirmPasswordController, '비밀번호 재입력',
-                        obscureText: true),
-                    _buildTextField('이름', _nameController, '이름 입력',
-                        keyboardType: TextInputType.name),
+                    _buildTextField('비밀번호', _passwordController, '비밀번호 입력(숫자, 특수기호 포함한 7~15자)', obscureText: true),
+                    _buildCheckField('비밀번호', _confirmPasswordController, '비밀번호 재입력', obscureText: true),
+                    _buildTextField('이름', _nameController, '이름 입력', keyboardType: TextInputType.name),
                     Row(
                       children: [
                         Expanded(
                           flex: 7,
                           child: _buildTextField(
-                              '휴대폰번호', _phoneController, '-없이 숫자만 입력',
-                              keyboardType: TextInputType.phone,
-                              isEnable: _phoneAuthChecked ? false : true),
+                            '휴대폰번호', _phoneController, '-없이 숫자만 입력',
+                            keyboardType: TextInputType.phone,
+                            isEnable: _phoneAuthChecked ? false : true
+                          ),
                         ),
                         Expanded(
                           flex: 3,
-                          child: GestureDetector(
-                            onTap: () async {
-                              if (_phoneController.text.isEmpty ||
-                                  _phoneAuthChecked) {
-                                return;
-                              }
-
-                              final pref =
-                                  await SharedPreferencesManager.getInstance();
-                              final phoneNumber = _phoneController.text;
-
-                              Map<String, dynamic> requestData = {
-                                'app_token': pref.getToken(),
-                                'phone_num': phoneNumber,
-                                'code_type': 1,
-                              };
-                              final resultDTO = await ref
-                                  .read(joinFormModelProvider.notifier)
-                                  .reqPhoneAuthCode(requestData);
-                              if (resultDTO.result == true) {
-                                setState(() {
-                                  _phoneAuthCodeVisible = true;
-                                  // TODO 타이머 로직 추가
-                                });
-                              } else {
-                                if (!context.mounted) return;
-                                Utils.getInstance().showSnackBar(
-                                    context, resultDTO.message.toString());
-                              }
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(top: 50, left: 8),
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: const Color(0xFFDDDDDD)),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '인증요청',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    height: 1.2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Visibility(
+                                visible: _phoneAuthCodeVisible && !_phoneAuthChecked,
+                                maintainSize: true,
+                                maintainAnimation: true,
+                                maintainState: true,
+                                child: Container(
+                                  margin: const EdgeInsets.only(top: 20, left: 8),
+                                  child: Text(
+                                    _timerStr,
+                                    style: TextStyle(
+                                      color: const Color(0xFFFF6192),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 13),
+                                      height: 1.2,
+                                    ),
                                   ),
                                 )
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  if (_phoneController.text.isEmpty || _phoneAuthChecked) {
+                                    return;
+                                  }
+
+                                  final pref = await SharedPreferencesManager.getInstance();
+                                  final phoneNumber = _phoneController.text;
+
+                                  Map<String, dynamic> requestData = {
+                                    'app_token': pref.getToken(),
+                                    'phone_num': phoneNumber,
+                                    'code_type': 1,
+                                  };
+                                  final resultDTO = await ref.read(joinFormModelProvider.notifier).reqPhoneAuthCode(requestData);
+                                  if (resultDTO.result == true) {
+                                    setState(() {
+                                      _phoneAuthChecked = false;
+                                      _phoneAuthCodeVisible = true;
+                                      _authTimerStart();
+                                    });
+                                  } else {
+                                    if (!context.mounted) return;
+                                    Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
+                                  }
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(top: 10, left: 8),
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '인증요청',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
+                                      ),
+                                    )
+                                  )
+                                ),
                               )
-                            ),
+                            ],
                           ),
                         ),
                       ],
@@ -274,14 +321,14 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                             flex: 3,
                             child: GestureDetector(
                               onTap: () async {
-                                if (_authCodeController.text.isEmpty ||
-                                    _phoneAuthChecked) {
+                                if (_authCodeController.text.isEmpty || _phoneAuthChecked) {
                                   return;
                                 }
-                                // TODO 타이머 체크필요
+                                if (_authSeconds <= 0) {
+                                  return;
+                                }
 
-                                final pref = await SharedPreferencesManager
-                                    .getInstance();
+                                final pref = await SharedPreferencesManager.getInstance();
                                 final phoneNumber = _phoneController.text;
                                 final authCode = _authCodeController.text;
 
@@ -292,12 +339,9 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                   'code_type': 1,
                                 };
 
-                                final resultDTO = await ref
-                                    .read(joinFormModelProvider.notifier)
-                                    .checkCode(requestData);
+                                final resultDTO = await ref.read(joinFormModelProvider.notifier).checkCode(requestData);
                                 if (!context.mounted) return;
-                                Utils.getInstance().showSnackBar(
-                                    context, resultDTO.message.toString());
+                                Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                                 if (resultDTO.result == true) {
                                   setState(() {
                                     _phoneAuthChecked = true;
@@ -335,8 +379,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         child: _buildOrTextField(
                             '생년월일',
                             TextEditingController(
-                                text: _selectedDate == null
-                                    ? '생년월일 선택'
+                                text: _selectedDate == null ? '생년월일 선택'
                                     : '${_selectedDate!.year}-${_selectedDate!.month}-${_selectedDate!.day}'),
                             ''),
                       ),
@@ -349,8 +392,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                             margin: const EdgeInsets.only(top: 10, bottom: 20),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(6),
-                              child: Image.asset(
-                                  'assets/images/login/coupon_banner.png'),
+                              child: Image.asset('assets/images/login/coupon_banner.png'),
                             ),
                           ),
                           Positioned(
@@ -415,13 +457,15 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         children: [
                           Expanded(
                             child: Container(
-                                margin: const EdgeInsets.only(right: 4),
-                                child: _buildGenderButton('남자')),
+                              margin: const EdgeInsets.only(right: 4),
+                              child: _buildGenderButton('남자')
+                            ),
                           ),
                           Expanded(
                             child: Container(
-                                margin: const EdgeInsets.only(left: 4),
-                                child: _buildGenderButton('여자')),
+                              margin: const EdgeInsets.only(left: 4),
+                              child: _buildGenderButton('여자')
+                            ),
                           ),
                         ],
                       ),
@@ -439,10 +483,8 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
               onTap: _isAllFieldsFilled
                   ? () async {
                       // TODO 회원가입 확인 로직 추가
-                      if (_passwordController.text !=
-                          _confirmPasswordController.text) {
-                        Utils.getInstance()
-                            .showSnackBar(context, "비밀번호가 서로 다릅니다 다시 입력해 주세요.");
+                      if (_passwordController.text != _confirmPasswordController.text) {
+                        Utils.getInstance().showSnackBar(context, "비밀번호가 서로 다릅니다 다시 입력해 주세요.");
                         return;
                       }
 
@@ -455,8 +497,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                       String birthDay = "";
                       try {
                         if (_selectedDate != null) {
-                          birthDay =
-                              DateFormat("yyyy-MM-dd").format(_selectedDate!);
+                          birthDay = DateFormat("yyyy-MM-dd").format(_selectedDate!);
                         }
                       } catch (e) {
                         print("DateError $e");
@@ -482,21 +523,13 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         'app_token': pref.getToken(),
                       };
 
-                      final resultDTO = await ref
-                          .read(joinFormModelProvider.notifier)
-                          .join(requestData);
+                      final resultDTO = await ref.read(joinFormModelProvider.notifier).join(requestData);
                       if (resultDTO.result == true) {
                         if (!context.mounted) return;
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const JoinCompleteScreen(),
-                          ),
-                        );
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const JoinCompleteScreen(),),);
                       } else {
                         if (!context.mounted) return;
-                        Utils.getInstance().showSnackBar(
-                            context, resultDTO.message.toString());
+                        Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                       }
                     }
                   : null,
@@ -536,7 +569,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
       Widget? suffixIcon,
       bool isEnable = true}) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -590,6 +623,10 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
+                disabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                ),
                 focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
@@ -609,7 +646,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
       Widget? suffixIcon,
       bool isEnable = true}) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -624,18 +661,17 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
               obscureText: obscureText,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF595959)),
-                enabledBorder: OutlineInputBorder(
+                    color: const Color(0xFF595959)),
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),
@@ -695,18 +731,18 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
             obscureText: obscureText,
             keyboardType: keyboardType,
             decoration: InputDecoration(
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+              contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
               hintText: hintText,
               hintStyle: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14),
-                  color: Color(0xFF595959)),
-              enabledBorder: OutlineInputBorder(
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 14),
+                color:const Color(0xFF595959)
+              ),
+              enabledBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6)),
                 borderSide: BorderSide(color: Color(0xFFE1E1E1)),
               ),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6)),
                 borderSide: BorderSide(color: Color(0xFFE1E1E1)),
               ),
@@ -732,7 +768,8 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
-              color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+            color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)
+          ),
         ),
         child: Center(
           child: Text(

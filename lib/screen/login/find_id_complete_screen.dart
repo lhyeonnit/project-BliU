@@ -1,7 +1,7 @@
 import 'package:BliU/data/member_info_data.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'find_password_screen.dart';
@@ -40,15 +40,15 @@ class _FindIdCompleteScreenState extends ConsumerState<FindIdCompleteScreen> {
         children: [
           Container(
             width: double.infinity,
-            margin: EdgeInsets.only(top: 155),
+            margin: const EdgeInsets.only(top: 155),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   width: 90,
                   height: 90,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(20),
+                  decoration: const BoxDecoration(
                     color: Color(0xFFF5F9F9),
                     shape: BoxShape.circle,
                   ),
@@ -59,14 +59,38 @@ class _FindIdCompleteScreenState extends ConsumerState<FindIdCompleteScreen> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 25, bottom: 10),
-                  child: Text(
-                    '회원님의 아이디는 ID_${widget.id}입니다.',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 18),
-                      fontWeight: FontWeight.bold,
-                      height: 1.2,
-                    ),
+                  child: EasyRichText(
+                    "회원님의 아이디는 $userId 입니다.",
+                    patternList: [
+                      EasyRichTextPattern(
+                        targetString: "회원님의 아이디는 ",
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 18),
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                        ),
+                      ),
+                      EasyRichTextPattern(
+                        targetString: userId,
+                        style: TextStyle(
+                          color: const Color(0xFFFF6192),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 18),
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                        ),
+                      ),
+                      EasyRichTextPattern(
+                        targetString: " 입니다.",
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 18),
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Text(
@@ -87,14 +111,14 @@ class _FindIdCompleteScreenState extends ConsumerState<FindIdCompleteScreen> {
             child: Container(
               width: double.infinity,
               height: Responsive.getHeight(context, 48),
-              margin: EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+              margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const FindPasswordScreen(),
@@ -127,12 +151,7 @@ class _FindIdCompleteScreenState extends ConsumerState<FindIdCompleteScreen> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
-                          ),
-                        );
+                        Navigator.pop(context);
                       },
                       child: Container(
                         decoration: const BoxDecoration(
