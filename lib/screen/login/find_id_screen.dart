@@ -1,19 +1,25 @@
+import 'dart:async';
+import 'package:BliU/screen/login/find_id_complete_screen.dart';
+import 'package:BliU/screen/login/viewmodel/find_id_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'find_id_complete_screen.dart';
-
-class FindIdScreen extends StatefulWidget {
+class FindIdScreen extends ConsumerStatefulWidget {
   const FindIdScreen({super.key});
 
   @override
-  _FindIdScreenState createState() => _FindIdScreenState();
+  ConsumerState<FindIdScreen> createState() => _FindIdScreenState();
 }
 
-class _FindIdScreenState extends State<FindIdScreen> {
+class _FindIdScreenState extends ConsumerState<FindIdScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isAllFieldsFilled = false;
+  bool _phoneAuthCodeVisible = false;
+  bool _phoneAuthChecked = false;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -29,8 +35,42 @@ class _FindIdScreenState extends State<FindIdScreen> {
 
   void _checkIfAllFieldsFilled() {
     setState(() {
-      _isAllFieldsFilled =
-          _nameController.text.isNotEmpty && _phoneController.text.isNotEmpty;
+      _isAllFieldsFilled = _nameController.text.isNotEmpty && _phoneController.text.isNotEmpty;
+    });
+  }
+
+  int _authSeconds = 180;
+  String _timerStr = "00:00";
+  Timer? _timer;
+
+  void _authTimerStart() {
+    if (_timer != null) {
+      _timer?.cancel();
+    }
+
+    setState(() {
+      _authSeconds = 180;
+      _timerStr = "03:00";
+    });
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      setState(() {
+        if (_authSeconds == 0) {
+          t.cancel();
+        } else {
+          _authSeconds--;
+
+          int min = _authSeconds~/60;
+          int sec = _authSeconds%60;
+          String secStr = "";
+          if (sec < 10) {
+            secStr = "0$sec";
+          } else {
+            secStr = sec.toString();
+          }
+
+          _timerStr = "0$min:$secStr";
+        }
+      });
     });
   }
 
@@ -90,109 +130,125 @@ class _FindIdScreenState extends State<FindIdScreen> {
                             child: _buildTextField(
                               '휴대폰번호', _phoneController, '-없이 숫자만 입력',
                               keyboardType: TextInputType.phone,
-                              // isEnable: _phoneAuthChecked ? false : true
+                              isEnable: _phoneAuthChecked ? false : true
                             ),
                           ),
                           Expanded(
                             flex: 3,
                             child: GestureDetector(
                               onTap: () async {
-                                // if (_phoneController.text.isEmpty ||
-                                //     _phoneAuthChecked) {
-                                //   return;
-                                // }
-                                //
-                                // final pref =
-                                // await SharedPreferencesManager.getInstance();
-                                // final phoneNumber = _phoneController.text;
-                                //
-                                // Map<String, dynamic> requestData = {
-                                //   'app_token': pref.getToken(),
-                                //   'phone_num': phoneNumber,
-                                //   'code_type': 1,
-                                // };
-                                // final resultDTO = await ref
-                                //     .read(joinFormModelProvider.notifier)
-                                //     .reqPhoneAuthCode(requestData);
-                                // if (resultDTO.result == true) {
-                                //   setState(() {
-                                //     _phoneAuthCodeVisible = true;
-                                //     // TODO 타이머 로직 추가
-                                //   });
-                                // } else {
-                                //   if (!context.mounted) return;
-                                //   Utils.getInstance().showSnackBar(
-                                //       context, resultDTO.message.toString());
-                                // }
+                                if (_phoneController.text.isEmpty || _phoneAuthChecked) {
+                                  return;
+                                }
+
+                                final pref = await SharedPreferencesManager.getInstance();
+                                final phoneNumber = _phoneController.text;
+
+                                Map<String, dynamic> requestData = {
+                                  'app_token': pref.getToken(),
+                                  'phone_num': phoneNumber,
+                                  'code_type': 1,
+                                };
+                                final resultDTO = await ref.read(findIdViewModelProvider.notifier).reqPhoneAuthCode(requestData);
+                                if (resultDTO.result == true) {
+                                  setState(() {
+                                    _phoneAuthCodeVisible = true;
+                                    _authTimerStart();
+                                  });
+                                } else {
+                                  if (!context.mounted) return;
+                                  Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
+                                }
                               },
-                              child: Container(
-                                margin: const EdgeInsets.only(top: 50, left: 8),
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  border:
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Visibility(
+                                    visible: _phoneAuthCodeVisible && !_phoneAuthChecked,
+                                    maintainSize: true,
+                                    maintainAnimation: true,
+                                    maintainState: true,
+                                    child: Container(
+                                      margin: const EdgeInsets.only(top: 20, left: 8),
+                                      child: Text(
+                                        _timerStr,
+                                        style: TextStyle(
+                                          color: const Color(0xFFFF6192),
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 13),
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    )
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 10, left: 8),
+                                    padding: const EdgeInsets.symmetric(vertical: 14),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      border:
                                       Border.all(color: const Color(0xFFDDDDDD)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '인증요청',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
                                     ),
+                                    child: Center(
+                                      child: Text(
+                                        '인증요청',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          height: 1.2,
+                                        ),
+                                      )
+                                    )
                                   )
-                                )
+                                ],
                               ),
                             ),
                           ),
                         ],
                       ),
                       Visibility(
-                        // visible: _phoneAuthCodeVisible,
+                        visible: _phoneAuthCodeVisible,
                         child: Row(
                           children: [
                             Expanded(
                               flex: 7,
                               child: _buildCheckField(
                                 '휴대폰번호', _authCodeController, '인증번호 입력',
-                                // isEnable: _phoneAuthChecked ? false : true
+                                isEnable: _phoneAuthChecked ? false : true
                               ),
                             ),
                             Expanded(
                               flex: 3,
                               child: GestureDetector(
                                 onTap: () async {
-                                  // if (_authCodeController.text.isEmpty ||
-                                  //     _phoneAuthChecked) {
-                                  //   return;
-                                  // }
-                                  // // TODO 타이머 체크필요
-                                  //
-                                  // final pref = await SharedPreferencesManager
-                                  //     .getInstance();
-                                  // final phoneNumber = _phoneController.text;
-                                  // final authCode = _authCodeController.text;
-                                  //
-                                  // Map<String, dynamic> requestData = {
-                                  //   'app_token': pref.getToken(),
-                                  //   'phone_num': phoneNumber,
-                                  //   'code_num': authCode,
-                                  //   'code_type': 1,
-                                  // };
-                                  //
-                                  // final resultDTO = await ref
-                                  //     .read(joinFormModelProvider.notifier)
-                                  //     .checkCode(requestData);
-                                  // if (!context.mounted) return;
-                                  // Utils.getInstance().showSnackBar(
-                                  //     context, resultDTO.message.toString());
-                                  // if (resultDTO.result == true) {
-                                  //   setState(() {
-                                  //     _phoneAuthChecked = true;
-                                  //     _checkIfAllFieldsFilled();
-                                  //   });
-                                  // }
+                                  if (_authCodeController.text.isEmpty || _phoneAuthChecked) {
+                                    return;
+                                  }
+
+                                  if (_authSeconds <= 0) {
+                                    return;
+                                  }
+
+                                  final pref = await SharedPreferencesManager.getInstance();
+                                  final phoneNumber = _phoneController.text;
+                                  final authCode = _authCodeController.text;
+
+                                  Map<String, dynamic> requestData = {
+                                    'app_token': pref.getToken(),
+                                    'phone_num': phoneNumber,
+                                    'code_num': authCode,
+                                    'code_type': 1,
+                                  };
+
+                                  final resultDTO = await ref.read(findIdViewModelProvider.notifier).checkCode(requestData);
+                                  if (!context.mounted) return;
+                                  Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
+                                  if (resultDTO.result == true) {
+                                    setState(() {
+                                      _phoneAuthChecked = true;
+                                      _checkIfAllFieldsFilled();
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.only(top: 10, left: 8),
@@ -229,17 +285,31 @@ class _FindIdScreenState extends State<FindIdScreen> {
             left: 0,
             right: 0,
             child: GestureDetector(
-              onTap: _isAllFieldsFilled
-                  ? () {
-                      // 아이디 확인 로직 추가
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const FindIdCompleteScreen(),
-                        ),
-                      );
-                    }
-                  : null,
+              onTap:() async {
+                if (!_isAllFieldsFilled) {
+                  return;
+                }
+
+                if (!_phoneAuthChecked) {
+                  return;
+                }
+
+                final phoneNumber = _phoneController.text;
+
+                Map<String, dynamic> requestData = {
+                  'name': _nameController.text,
+                  'phone_num': phoneNumber,
+                  'phone_num_chk': "Y",
+                };
+
+                final resultDTO = await ref.read(findIdViewModelProvider.notifier).findId(requestData);
+                if (resultDTO.result == true) {
+                  Navigator.pop(context, resultDTO.id ?? "");
+                } else {
+                  if (!context.mounted) return;
+                  Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
+                }
+              },
               child: Container(
                 width: double.infinity,
                 height: Responsive.getHeight(context, 48),
@@ -276,7 +346,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
       Widget? suffixIcon,
       bool isEnable = true}) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -319,18 +389,22 @@ class _FindIdScreenState extends State<FindIdScreen> {
               obscureText: obscureText,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF595959)),
-                enabledBorder: OutlineInputBorder(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: const Color(0xFF595959)
+                ),
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
-                focusedBorder: OutlineInputBorder(
+                disabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                ),
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),
@@ -349,7 +423,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
       Widget? suffixIcon,
       bool isEnable = true}) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -364,18 +438,21 @@ class _FindIdScreenState extends State<FindIdScreen> {
               obscureText: obscureText,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF595959)),
-                enabledBorder: OutlineInputBorder(
+                    color: const Color(0xFF595959)),
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
-                focusedBorder: OutlineInputBorder(
+                disabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                ),
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),

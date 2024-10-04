@@ -92,7 +92,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const TermsDetail(type: 0),
@@ -107,7 +107,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 24),
+                  margin: const EdgeInsets.symmetric(vertical: 24),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -123,7 +123,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const TermsDetail(type: 1),
@@ -164,7 +164,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
               children: [
                 Container(
                   height: 1,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       top: BorderSide(
                         color: Color(0x0D000000),
@@ -226,17 +226,17 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
     required bool value,
     required Function(bool?) onChanged,
   }) {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              value = !value;
-              onChanged(value);
-            });
-          },
-          child: Container(
-            margin: EdgeInsets.only(right: 10),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          value = !value;
+          onChanged(value);
+        });
+      },
+      child: Row(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(right: 10),
             padding: const EdgeInsets.all(6),
             height: 22,
             width: 22,
@@ -244,7 +244,7 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
               borderRadius: const BorderRadius.all(Radius.circular(6)),
               border: Border.all(
                 color:
-                    value ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                value ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
               ),
               color: value ? const Color(0xFFFF6191) : Colors.white,
             ),
@@ -256,16 +256,16 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
               fit: BoxFit.contain,
             ),
           ),
-        ),
-        Text(
-          title,
-          style: TextStyle(
-            fontFamily: 'Pretendard',
-            fontSize: Responsive.getFont(context, 14),
-            height: 1.2,
+          Text(
+            title,
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 14),
+              height: 1.2,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -274,32 +274,31 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
     required bool value,
     required Function(bool?) onChanged,
   }) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 24),
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: Color(0xFFDDDDDD)),
-      ),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                value = !value;
-                onChanged(value);
-              });
-            },
-            child: Container(
-              margin: EdgeInsets.only(right: 10),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          value = !value;
+          onChanged(value);
+        });
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 24),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: const Color(0xFFDDDDDD)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(right: 10),
               padding: const EdgeInsets.all(6),
               height: 22,
               width: 22,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(6)),
                 border: Border.all(
-                  color:
-                      value ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                  color: value ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                 ),
                 color: value ? const Color(0xFFFF6191) : Colors.white,
               ),
@@ -311,16 +310,16 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                 fit: BoxFit.contain,
               ),
             ),
-          ),
-          Text(
-            title,
-            style: TextStyle(
-              fontFamily: 'Pretendard',
-              fontSize: Responsive.getFont(context, 16),
-              height: 1.2,
+            Text(
+              title,
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 16),
+                height: 1.2,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

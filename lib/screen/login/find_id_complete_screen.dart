@@ -1,14 +1,14 @@
+import 'package:BliU/screen/login/find_password_screen.dart';
+import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'find_password_screen.dart';
-import 'login_screen.dart';
-
 class FindIdCompleteScreen extends StatelessWidget {
-  final String userId = "ID_1234";
+  final String userId;
 
-  const FindIdCompleteScreen({super.key}); // 찾은 아이디를 여기에 넣습니다.
+  const FindIdCompleteScreen({super.key, required this.userId}); // 찾은 아이디를 여기에 넣습니다.
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +28,15 @@ class FindIdCompleteScreen extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            margin: EdgeInsets.only(top: 155),
+            margin: const EdgeInsets.only(top: 155),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   width: 90,
                   height: 90,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(20),
+                  decoration: const BoxDecoration(
                     color: Color(0xFFF5F9F9),
                     shape: BoxShape.circle,
                   ),
@@ -47,14 +47,38 @@ class FindIdCompleteScreen extends StatelessWidget {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 25, bottom: 10),
-                  child: Text(
-                    '회원님의 아이디는 ID_1234입니다.',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 18),
-                      fontWeight: FontWeight.bold,
-                      height: 1.2,
-                    ),
+                  child: EasyRichText(
+                    "회원님의 아이디는 $userId 입니다.",
+                    patternList: [
+                      EasyRichTextPattern(
+                        targetString: "회원님의 아이디는 ",
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 18),
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                        ),
+                      ),
+                      EasyRichTextPattern(
+                        targetString: userId,
+                        style: TextStyle(
+                          color: const Color(0xFFFF6192),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 18),
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                        ),
+                      ),
+                      EasyRichTextPattern(
+                        targetString: " 입니다.",
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 18),
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Text(
@@ -75,14 +99,14 @@ class FindIdCompleteScreen extends StatelessWidget {
             child: Container(
               width: double.infinity,
               height: Responsive.getHeight(context, 48),
-              margin: EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+              margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const FindPasswordScreen(),
@@ -115,12 +139,7 @@ class FindIdCompleteScreen extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
-                          ),
-                        );
+                        Navigator.pop(context);
                       },
                       child: Container(
                         decoration: const BoxDecoration(
