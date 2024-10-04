@@ -7,13 +7,13 @@ import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SmartLensResult extends ConsumerStatefulWidget {
   final File imagePath;
-
   const SmartLensResult({super.key, required this.imagePath});
 
   @override
@@ -22,10 +22,8 @@ class SmartLensResult extends ConsumerStatefulWidget {
 
 class _SmartLensResultState extends ConsumerState<SmartLensResult> {
   final ScrollController _scrollController = ScrollController();
-
+  List<ProductData> _productList = [];
   final bool result = true;
-  List<ProductData>? _productList;
-
   @override
   void initState() {
     super.initState();
@@ -33,7 +31,6 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
       _afterBuild(context);
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -270,8 +267,8 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
   Widget buildItemCard() {
     return Expanded(
       child: GridView.builder(
+        controller: _scrollController,
         shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.only(bottom: 20),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -279,10 +276,10 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
           crossAxisSpacing: 12,
           mainAxisSpacing: 30,
         ),
-        itemCount: _productList?.length,
+        itemCount: _productList.length,
         // 실제 상품 수로 변경
         itemBuilder: (context, index) {
-          final productData = _productList?[index];
+          final productData = _productList[index];
 
           return GestureDetector(
             onTap: () {
@@ -290,7 +287,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      ProductDetailScreen(ptIdx: productData?.ptIdx),
+                      ProductDetailScreen(ptIdx: productData.ptIdx),
                 ),
               );
             },
@@ -309,8 +306,24 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
                         child: AspectRatio(
                           aspectRatio: 1 / 1,
                           child: Image.network(
-                            productData?.ptImg ?? "",
+                            productData.ptImg ?? "",
                             fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              return Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                color: Colors.yellow,
+                                child: const Center(
+                                  child: Text(
+                                    'No Image',
+                                    style: TextStyle(fontFamily: 'Pretendard',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              );
+                              },
                           ),
                         ),
                       ),
@@ -325,7 +338,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
                             if (mtIdx.isNotEmpty) {
                               Map<String, dynamic> requestData = {
                                 'mt_idx': mtIdx,
-                                'pt_idx': productData?.ptIdx,
+                                'pt_idx': productData.ptIdx,
                               };
 
                               final defaultResponseDTO = await ref
@@ -334,14 +347,14 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
                               if (defaultResponseDTO != null) {
                                 if (defaultResponseDTO.result == true) {
                                   setState(() {
-                                    _productList?.removeAt(index);
+                                    _productList.removeAt(index);
                                   });
                                 }
                               }
                             }
                           },
                           child: Image.asset(
-                            productData?.likeChk == "Y"
+                            productData.likeChk == "Y"
                                 ? 'assets/images/home/like_btn_fill.png'
                                 : 'assets/images/home/like_btn.png',
                             height: Responsive.getHeight(context, 34),
@@ -358,7 +371,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
                       Container(
                         margin: const EdgeInsets.only(top: 12, bottom: 4),
                         child: Text(
-                          productData?.stName ?? "",
+                          productData.stName ?? "",
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 12),
@@ -368,7 +381,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
                         ),
                       ),
                       Text(
-                        productData?.ptName ?? "",
+                        productData.ptName ?? "",
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
@@ -384,7 +397,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
                           textBaseline: TextBaseline.alphabetic,
                           children: [
                             Text(
-                              '${productData?.ptDiscountPer ?? 0}%',
+                              '${productData.ptDiscountPer ?? 0}%',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
@@ -396,7 +409,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
                             Container(
                               margin: const EdgeInsets.symmetric(horizontal: 2),
                               child: Text(
-                                "${Utils.getInstance().priceString(productData?.ptPrice ?? 0)}원",
+                                "${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원",
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
@@ -419,7 +432,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
                           Container(
                             margin: const EdgeInsets.only(left: 2, bottom: 2),
                             child: Text(
-                              '${productData?.ptLike ?? ""}',
+                              '${productData.ptLike ?? ""}',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 12),
@@ -441,7 +454,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
                                   margin:
                                       const EdgeInsets.only(left: 2, bottom: 2),
                                   child: Text(
-                                    '${productData?.ptReview ?? ""}',
+                                    '${productData.ptReview ?? ""}',
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 12),
@@ -465,21 +478,24 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
       ),
     );
   }
-
   void _afterBuild(BuildContext context) {
     _getList();
   }
-
   void _getList() async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-
-    Map<String, dynamic> requestData = {
+    final MultipartFile file = MultipartFile.fromFileSync(
+      widget.imagePath.path,
+      contentType: DioMediaType("image", "jpg"),
+    );
+    final formData = FormData.fromMap({
       'mt_idx': mtIdx,
-      'search_img': widget.imagePath,
-    };
+      'search_img': file,
+    });
 
-    final productListResponseDTO = await ref.read(smartLensModelProvider.notifier).getList(requestData);
-    _productList = productListResponseDTO?.list ?? [];
+    final productListResponseDTO = await ref.read(smartLensModelProvider.notifier).getList(formData);
+    setState(() {
+      _productList = productListResponseDTO?.list ?? [];
+    });
   }
 }
