@@ -1,15 +1,27 @@
+import 'package:BliU/data/member_info_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'find_password_screen.dart';
 import 'login_screen.dart';
 
-class FindIdCompleteScreen extends StatelessWidget {
-  final String userId = "ID_1234";
+class FindIdCompleteScreen extends ConsumerStatefulWidget {
+  final String? id;
 
-  const FindIdCompleteScreen({super.key}); // 찾은 아이디를 여기에 넣습니다.
+  const FindIdCompleteScreen({super.key, required this.id}); // 찾은 아이디를 여기에 넣습니다.
+  @override
+  _FindIdCompleteScreenState createState() => _FindIdCompleteScreenState();
+}
 
+class _FindIdCompleteScreenState extends ConsumerState<FindIdCompleteScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +60,7 @@ class FindIdCompleteScreen extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(top: 25, bottom: 10),
                   child: Text(
-                    '회원님의 아이디는 ID_1234입니다.',
+                    '회원님의 아이디는 ID_${widget.id}입니다.',
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 18),

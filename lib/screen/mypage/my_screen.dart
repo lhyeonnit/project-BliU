@@ -25,7 +25,7 @@ class MyScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final model = ref.watch(myModelProvider);
     String mtIdx = ref.watch(sharedPreferencesProvider).getString('mtIdx') ?? "";
-    mtIdx = "2";
+    // mtIdx = "2";
     // TODO 테스트용
     return FocusDetector(
       onFocusGained: () {

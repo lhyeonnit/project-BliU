@@ -1,19 +1,28 @@
+import 'package:BliU/data/member_info_data.dart';
+import 'package:BliU/dto/find_id_response_dto.dart';
+import 'package:BliU/screen/login/viewmodel/find_id_screen_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'find_id_complete_screen.dart';
 
-class FindIdScreen extends StatefulWidget {
+class FindIdScreen extends ConsumerStatefulWidget {
   const FindIdScreen({super.key});
 
   @override
   _FindIdScreenState createState() => _FindIdScreenState();
 }
 
-class _FindIdScreenState extends State<FindIdScreen> {
+class _FindIdScreenState extends ConsumerState<FindIdScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isAllFieldsFilled = false;
+  bool _phoneAuthCodeVisible = false;
+  bool _phoneAuthChecked = false;
+  String? id;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -88,118 +97,102 @@ class _FindIdScreenState extends State<FindIdScreen> {
                           Expanded(
                             flex: 7,
                             child: _buildTextField(
-                              '휴대폰번호', _phoneController, '-없이 숫자만 입력',
-                              keyboardType: TextInputType.phone,
-                              // isEnable: _phoneAuthChecked ? false : true
-                            ),
+                                '휴대폰번호', _phoneController, '-없이 숫자만 입력',
+                                keyboardType: TextInputType.phone,
+                                isEnable: _phoneAuthChecked ? false : true),
                           ),
                           Expanded(
                             flex: 3,
                             child: GestureDetector(
                               onTap: () async {
-                                // if (_phoneController.text.isEmpty ||
-                                //     _phoneAuthChecked) {
-                                //   return;
-                                // }
-                                //
-                                // final pref =
-                                // await SharedPreferencesManager.getInstance();
-                                // final phoneNumber = _phoneController.text;
-                                //
-                                // Map<String, dynamic> requestData = {
-                                //   'app_token': pref.getToken(),
-                                //   'phone_num': phoneNumber,
-                                //   'code_type': 1,
-                                // };
-                                // final resultDTO = await ref
-                                //     .read(joinFormModelProvider.notifier)
-                                //     .reqPhoneAuthCode(requestData);
-                                // if (resultDTO.result == true) {
-                                //   setState(() {
-                                //     _phoneAuthCodeVisible = true;
-                                //     // TODO 타이머 로직 추가
-                                //   });
-                                // } else {
-                                //   if (!context.mounted) return;
-                                //   Utils.getInstance().showSnackBar(
-                                //       context, resultDTO.message.toString());
-                                // }
+                                if (_phoneController.text.isEmpty || _phoneAuthChecked) {
+                                  return;
+                                }
+
+                                final pref = await SharedPreferencesManager.getInstance();
+                                final phoneNumber = _phoneController.text;
+
+                                Map<String, dynamic> requestData = {
+                                  'app_token': pref.getToken(),
+                                  'phone_num': phoneNumber,
+                                  'code_type': 2,
+                                };
+                                final resultDTO = await ref.read(findIdScreenModelProvider.notifier).reqPhoneAuthCode(requestData);
+                                if (resultDTO?.result == true) {
+                                  setState(() {
+                                    _phoneAuthCodeVisible = true;
+                                    // TODO 타이머 로직 추가
+                                  });
+                                }
                               },
                               child: Container(
-                                margin: const EdgeInsets.only(top: 50, left: 8),
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  border:
-                                      Border.all(color: const Color(0xFFDDDDDD)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '인증요청',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
-                                    ),
+                                  margin: const EdgeInsets.only(top: 50, left: 8),
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                                  ),
+                                  child: Center(
+                                      child: Text(
+                                        '인증요청',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          height: 1.2,
+                                        ),
+                                      )
                                   )
-                                )
                               ),
                             ),
                           ),
                         ],
                       ),
                       Visibility(
-                        // visible: _phoneAuthCodeVisible,
+                        visible: _phoneAuthCodeVisible,
                         child: Row(
                           children: [
                             Expanded(
                               flex: 7,
                               child: _buildCheckField(
-                                '휴대폰번호', _authCodeController, '인증번호 입력',
-                                // isEnable: _phoneAuthChecked ? false : true
-                              ),
+                                  '휴대폰번호', _authCodeController, '인증번호 입력',keyboardType: TextInputType.number,
+                                  isEnable: _phoneAuthChecked ? false : true),
                             ),
                             Expanded(
                               flex: 3,
                               child: GestureDetector(
                                 onTap: () async {
-                                  // if (_authCodeController.text.isEmpty ||
-                                  //     _phoneAuthChecked) {
-                                  //   return;
-                                  // }
-                                  // // TODO 타이머 체크필요
-                                  //
-                                  // final pref = await SharedPreferencesManager
-                                  //     .getInstance();
-                                  // final phoneNumber = _phoneController.text;
-                                  // final authCode = _authCodeController.text;
-                                  //
-                                  // Map<String, dynamic> requestData = {
-                                  //   'app_token': pref.getToken(),
-                                  //   'phone_num': phoneNumber,
-                                  //   'code_num': authCode,
-                                  //   'code_type': 1,
-                                  // };
-                                  //
-                                  // final resultDTO = await ref
-                                  //     .read(joinFormModelProvider.notifier)
-                                  //     .checkCode(requestData);
-                                  // if (!context.mounted) return;
-                                  // Utils.getInstance().showSnackBar(
-                                  //     context, resultDTO.message.toString());
-                                  // if (resultDTO.result == true) {
-                                  //   setState(() {
-                                  //     _phoneAuthChecked = true;
-                                  //     _checkIfAllFieldsFilled();
-                                  //   });
-                                  // }
+                                  if (_authCodeController.text.isEmpty || _phoneAuthChecked) {
+                                    return;
+                                  }
+                                  // TODO 타이머 체크필요
+
+                                  final pref = await SharedPreferencesManager.getInstance();
+                                  final phoneNumber = _phoneController.text;
+                                  final authCode = _authCodeController.text;
+
+                                  Map<String, dynamic> requestData = {
+                                    'app_token': pref.getToken(),
+                                    'phone_num': phoneNumber,
+                                    'code_num': authCode,
+                                    'code_type': 2,
+                                  };
+
+                                  final resultDTO = await ref.read(findIdScreenModelProvider.notifier).checkCode(requestData);
+                                  if (!context.mounted) return;
+                                  Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
+                                  if (resultDTO.result == true) {
+                                    setState(() {
+                                      _phoneAuthChecked = true;
+                                      _checkIfAllFieldsFilled();
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.only(top: 10, left: 8),
                                   padding: const EdgeInsets.symmetric(vertical: 14),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(6),
-                                    color: Colors.black,
+                                    color: _phoneAuthChecked ? const Color(0xFFDDDDDD) : Colors.black,
                                   ),
                                   child: Center(
                                     child: Text(
@@ -207,7 +200,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(context, 14),
-                                        color: Colors.white,
+                                        color: _phoneAuthChecked ? const Color(0xFF7B7B7B) : Colors.white,
                                         height: 1.2,
                                       ),
                                     ),
@@ -230,15 +223,29 @@ class _FindIdScreenState extends State<FindIdScreen> {
             right: 0,
             child: GestureDetector(
               onTap: _isAllFieldsFilled
-                  ? () {
-                      // 아이디 확인 로직 추가
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const FindIdCompleteScreen(),
-                        ),
-                      );
-                    }
+                  ? () async {
+                final name = _nameController.text;
+                final phoneNum = _phoneController.text;
+                final phoneNumChk = _phoneAuthChecked ? "Y" : "N";
+
+                Map<String, dynamic> requestData = {
+                  'name': name,
+                  'phone_num': phoneNum,
+                  'phone_num_chk': phoneNumChk,
+                };
+
+                final findIdResponseDTO = await ref.read(findIdScreenModelProvider.notifier).findId(requestData);
+                if (findIdResponseDTO?.result == true) {
+                  id = findIdResponseDTO?.id;
+                  if (!context.mounted) return;
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FindIdCompleteScreen(id: id),
+                    ),
+                  );
+                }
+              }
                   : null,
               child: Container(
                 width: double.infinity,

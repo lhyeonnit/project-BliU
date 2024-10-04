@@ -48,12 +48,12 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   @override
   void initState() {
     super.initState();
-    // _idController.addListener(_checkIfAllFieldsFilled);
-    // _passwordController.addListener(_checkIfAllFieldsFilled);
-    // _confirmPasswordController.addListener(_checkIfAllFieldsFilled);
-    // _nameController.addListener(_checkIfAllFieldsFilled);
-    // _phoneController.addListener(_checkIfAllFieldsFilled);
-    // _authCodeController.addListener(_checkIfAllFieldsFilled);
+    _idController.addListener(_checkIfAllFieldsFilled);
+    _passwordController.addListener(_checkIfAllFieldsFilled);
+    _confirmPasswordController.addListener(_checkIfAllFieldsFilled);
+    _nameController.addListener(_checkIfAllFieldsFilled);
+    _phoneController.addListener(_checkIfAllFieldsFilled);
+    _authCodeController.addListener(_checkIfAllFieldsFilled);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getMyInfo();
     });
@@ -249,7 +249,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                 Map<String, dynamic> requestData = {
                                   'app_token': pref.getToken(),
                                   'phone_num': phoneNumber,
-                                  'code_type': 3,
+                                  'code_type': 4,
                                 };
                                 final resultDTO = await ref
                                     .read(myInfoEditViewModelProvider.notifier)
@@ -318,7 +318,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                   'app_token': pref.getToken(),
                                   'phone_num': phoneNumber,
                                   'code_num': authCode,
-                                  'code_type': 3,
+                                  'code_type': 4,
                                 };
 
                                 final resultDTO = await ref
