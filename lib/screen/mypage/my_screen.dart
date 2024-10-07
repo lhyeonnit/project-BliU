@@ -7,8 +7,12 @@ import 'package:BliU/screen/mypage/component/bottom/recommend_edit.dart';
 import 'package:BliU/screen/mypage/component/bottom/service_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/setting_screen.dart';
 import 'package:BliU/screen/mypage/component/top/alarm_screen.dart';
+import 'package:BliU/screen/mypage/component/top/component/my_info.dart';
+import 'package:BliU/screen/mypage/component/top/my_coupon_screen.dart';
+import 'package:BliU/screen/mypage/component/top/my_review_screen.dart';
+import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
+import 'package:BliU/screen/mypage/component/top/point_screen.dart';
 import 'package:BliU/screen/mypage/non_top_screen.dart';
-import 'package:BliU/screen/mypage/top_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/my_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -18,17 +22,27 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:focus_detector_v2/focus_detector_v2.dart';
 
-class MyScreen extends ConsumerWidget {
+class MyScreen extends ConsumerStatefulWidget {
   const MyScreen({super.key});
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final model = ref.watch(myModelProvider);
-    String? mtIdx = ref.watch(sharedPreferencesProvider).getString('mt_idx') ?? "";
-    mtIdx = "2";
+  ConsumerState<MyScreen> createState() => _MyScreenState();
+}
+
+class _MyScreenState extends ConsumerState<MyScreen> {
+  String? userId;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+
     return FocusDetector(
       onFocusGained: () {
-        _viewWillAppear(ref, context);
+        _viewWillAppear(context);
       },
       onFocusLost: _viewWillDisappear,
       child: Scaffold(
@@ -115,11 +129,82 @@ class MyScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Visibility(
-                visible: mtIdx != null && mtIdx.isNotEmpty,
-                child: TopScreen()),
+              visible: userId != null,
+              child: Consumer(
+                builder: (context, ref, widget) {
+                  int myRevieCount = 0;
+                  int myCouponCount = 0;
+                  int myPoint = 0;
+                  final model = ref.watch(myModelProvider);
+                  if (model != null) {
+                    if (model.memberInfoResponseDTO?.result == true) {
+                      myRevieCount =
+                          model.memberInfoResponseDTO?.data?.myRevieCount ?? 0;
+                      myCouponCount =
+                          model.memberInfoResponseDTO?.data?.myCouponCount ?? 0;
+                      myPoint = model.memberInfoResponseDTO?.data?.myPoint ?? 0;
+                    }
+                  }
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 16),
+                          child: MyInfo(
+                            memberInfoData: model?.memberInfoResponseDTO?.data,
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            _buildIconButton(context, '주문·배송',
+                                'assets/images/my/mypage_ic01.svg', () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const OrderListScreen()),
+                              );
+                            }, ''),
+                            _buildIconButton(context, '나의리뷰',
+                                'assets/images/my/mypage_ic02.svg', () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const MyReviewScreen()),
+                              );
+                            }, '$myRevieCount'),
+                            _buildIconButton(context, '쿠폰함',
+                                'assets/images/my/mypage_ic03_1.svg', () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const MyCouponScreen()),
+                              );
+                            }, '$myCouponCount'),
+                            _buildIconButton(context, '포인트',
+                                'assets/images/my/mypage_ic04.svg', () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const PointScreen()),
+                              );
+                            }, '$myPoint'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
             Visibility(
-                visible: mtIdx == null || mtIdx.isEmpty,
-                child: NonTopScreen()),
+                visible: userId == null, child: NonTopScreen()),
             Container(
               margin: const EdgeInsets.only(top: 20, bottom: 30),
               width: double.infinity,
@@ -127,24 +212,33 @@ class MyScreen extends ConsumerWidget {
               height: 10,
             ),
             _buildSection(context, '쇼핑정보'),
-             mtIdx != null && mtIdx.isNotEmpty
-                ? _buildSectionItem(context, '추천정보관리', () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RecommendEdit()
-                      ),
-                    );
-                  })
-                : _buildSectionItem(context, '주문 내역 보기', () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const NonOrderPage()), // 비회원일 때의 화면
-                    );
-                  }),
-            const SizedBox(height: 10,),
+            Visibility(
+              visible: userId != null,
+              child: _buildSectionItem(
+                context,
+                '추천정보관리',
+                () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RecommendEdit()),
+                  );
+                },
+              ),
+            ),
+            Visibility(
+              visible: userId == null,
+              child: _buildSectionItem(context, '주문 내역 보기', () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NonOrderPage()), // 비회원일 때의 화면
+                );
+              }),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
             _buildSection(context, '고객서비스'),
             _buildSectionItem(context, 'FAQ', () {
               Navigator.push(
@@ -170,8 +264,9 @@ class MyScreen extends ConsumerWidget {
                 MaterialPageRoute(builder: (context) => const SettingScreen()),
               );
             }),
-            if (mtIdx != null && mtIdx.isNotEmpty)
-              GestureDetector(
+            Visibility(
+              visible: userId != null,
+              child: GestureDetector(
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
@@ -197,13 +292,14 @@ class MyScreen extends ConsumerWidget {
                   });
                 },
               ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  void _viewWillAppear(WidgetRef ref, BuildContext context) {
+  void _viewWillAppear(BuildContext context)  {
     SharedPreferencesManager.getInstance().then((pref) {
       final mtIdx = pref.getMtIdx();
       if (mtIdx != null && mtIdx.isNotEmpty) {
@@ -217,6 +313,16 @@ class MyScreen extends ConsumerWidget {
 
   void _viewWillDisappear() {
     print("viewWillDisappear");
+  }
+
+  void _afterBuild(BuildContext context) async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    Map<String, dynamic> requestData = {
+      'mt_idx': mtIdx,
+    };
+    final myResponseDTO = await ref.read(myModelProvider.notifier).getMy(requestData);
+    userId = myResponseDTO?.data?.mtIdx.toString();
   }
 
   Widget _buildSection(BuildContext context, String title) {
@@ -264,6 +370,38 @@ class MyScreen extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildIconButton(BuildContext context, String label, String icon,
+      VoidCallback onPressed, String num) {
+    return Column(
+      children: [
+        IconButton(
+          icon: SvgPicture.asset(
+            icon,
+            width: 40,
+            height: 40,
+          ),
+          onPressed: onPressed,
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 16),
+            height: 1.2,
+          ),
+        ),
+        Text(
+          num,
+          style: const TextStyle(
+            fontFamily: 'Pretendard',
+            fontWeight: FontWeight.bold,
+            height: 1.2,
+          ),
+        ),
+      ],
     );
   }
 }

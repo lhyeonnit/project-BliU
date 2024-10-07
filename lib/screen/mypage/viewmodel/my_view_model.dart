@@ -17,34 +17,21 @@ class MyViewModel extends StateNotifier<MyModel?>{
 
   MyViewModel(super.state, this.ref);
 
-  Future<void> getMy(Map<String, dynamic> requestData) async {
+  Future<MemberInfoResponseDTO?> getMy(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiMyPageUrl, data: requestData);
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
           MemberInfoResponseDTO memberInfoResponseDTO = MemberInfoResponseDTO.fromJson(responseData);
-          state = MyModel(memberInfoResponseDTO: memberInfoResponseDTO);
-          return;
+          return memberInfoResponseDTO;
         }
       }
-      state = MyModel(
-          memberInfoResponseDTO: MemberInfoResponseDTO(
-              result: false,
-              message: "Network Or Data Error",
-              data: null
-          )
-      );
+      return null;
     } catch (e) {
       // Catch and log any exceptions
       print('Error fetching : $e');
-      state = MyModel(
-          memberInfoResponseDTO: MemberInfoResponseDTO(
-              result: false,
-              message: e.toString(),
-              data: null
-          )
-      );
+      return null;
     }
   }
 }
