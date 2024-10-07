@@ -24,9 +24,8 @@ class MyScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final model = ref.watch(myModelProvider);
-    String mtIdx = ref.watch(sharedPreferencesProvider).getString('mtIdx') ?? "";
-    // mtIdx = "2";
-    // TODO 테스트용
+    String? mtIdx = ref.watch(sharedPreferencesProvider).getString('mt_idx') ?? "";
+
     return FocusDetector(
       onFocusGained: () {
         _viewWillAppear(ref, context);
@@ -115,9 +114,12 @@ class MyScreen extends ConsumerWidget {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            mtIdx != null && mtIdx.isNotEmpty
-                ? TopScreen() // 로그인된 상태
-                : NonTopScreen(), // 비회원/비로그인 상태
+            Visibility(
+                visible: mtIdx != null && mtIdx.isNotEmpty,
+                child: TopScreen()),
+            Visibility(
+                visible: mtIdx == null || mtIdx.isEmpty,
+                child: NonTopScreen()),
             Container(
               margin: const EdgeInsets.only(top: 20, bottom: 30),
               width: double.infinity,
@@ -125,7 +127,7 @@ class MyScreen extends ConsumerWidget {
               height: 10,
             ),
             _buildSection(context, '쇼핑정보'),
-            mtIdx != null && mtIdx.isNotEmpty
+             mtIdx != null && mtIdx.isNotEmpty
                 ? _buildSectionItem(context, '추천정보관리', () {
                     Navigator.push(
                       context,
@@ -209,12 +211,6 @@ class MyScreen extends ConsumerWidget {
           'mt_idx': mtIdx,
         };
         ref.read(myModelProvider.notifier).getMy(requestData);
-      } else {
-        // 비회원 상태이면 NonTopScreen으로 전환
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const NonTopScreen()),
-        );
       }
     });
   }
