@@ -492,13 +492,19 @@ class LoginScreen extends ConsumerWidget {
       Utils.getInstance().showSnackBar(context, "비밇번호를 입력해 주세요");
       return;
     }
-
+    final autoLogin = _isAutoLogin ? "Y" : "N";
     Map<String, dynamic> data = {
       'id': _idController.text,
       'pwd': _passwordController.text,
-      'auto_login': _isAutoLogin,
+      'auto_login': autoLogin,
     };
 
     _loginScreenViewModel?.authLogin(data);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MainScreen(),
+      ),
+    );
   }
 }
