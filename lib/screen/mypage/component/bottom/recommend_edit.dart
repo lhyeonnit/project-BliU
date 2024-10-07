@@ -15,13 +15,12 @@ class RecommendEdit extends ConsumerStatefulWidget {
   const RecommendEdit({super.key});
 
   @override
-  _RecommendEditState createState() => _RecommendEditState();
+  ConsumerState<RecommendEdit> createState() => _RecommendEditState();
 }
 
 class _RecommendEditState extends ConsumerState<RecommendEdit> {
   final ScrollController _scrollController = ScrollController();
-  TextEditingController _birthController =
-      TextEditingController(text: '선택해주세요');
+  final TextEditingController _birthController = TextEditingController(text: '선택해주세요');
 
   DateTime? tempPickedDate;
   DateTime _selectedDate = DateTime.now();
@@ -79,38 +78,36 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
             controller: _scrollController,
             children: [
               Container(
-                margin: EdgeInsets.only(top: 40, bottom: 80),
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                margin: const EdgeInsets.only(top: 40, bottom: 80),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '자녀의 출생년도',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 15),
-                              fontWeight: FontWeight.w600,
-                              height: 1.2,
-                            ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '자녀의 출생년도',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 15),
+                            fontWeight: FontWeight.w600,
+                            height: 1.2,
                           ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 15),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: const BorderRadius.all(Radius.circular(6)),
-                              border: Border.all(color: const Color(0xFFDDDDDD)),
-                            ),
-                            child: BirthdayText(),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: const BorderRadius.all(Radius.circular(6)),
+                            border: Border.all(color: const Color(0xFFDDDDDD)),
                           ),
-                        ],
-                      ),
+                          child: BirthdayText(),
+                        ),
+                      ],
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: 30),
+                      margin: const EdgeInsets.symmetric(vertical: 30),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -124,19 +121,19 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 15),
+                            margin: const EdgeInsets.only(top: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 _genderSelect(
-                                    'assets/images/gender_select_boy.png',
-                                    'Boy'),
-                                SizedBox(
-                                  width: 10,
+                                  'assets/images/gender_select_boy.png',
+                                  'Boy'
                                 ),
+                                const SizedBox(width: 10,),
                                 _genderSelect(
-                                    'assets/images/gender_select_girl.png',
-                                    'Girl'),
+                                  'assets/images/gender_select_girl.png',
+                                  'Girl'
+                                ),
                               ],
                             ),
                           ),
@@ -148,7 +145,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.only(bottom: 15),
+                            margin: const EdgeInsets.only(bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -175,7 +172,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                           ),
                           Wrap(
                             spacing: 4.0,
-                            runSpacing: 10.0,
+                            runSpacing: 5.0,
                             children: styleCategories.map((style) {
                               final isSelected = _selectedStyles.any((selected) => selected.fsIdx == style.fsIdx);
 
@@ -194,6 +191,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                                 child: Chip(
                                   label: Text(style.cstName ?? '',
                                     style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 14),
                                       fontFamily: 'Pretendard',
                                       color: isSelected ? const Color(0xFFFF6192) : Colors.black,
                                       height: 1.2,
@@ -203,9 +201,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                                   ),
                                   shape: StadiumBorder(
                                     side: BorderSide(
-                                      color: isSelected
-                                          ? const Color(0xFFFF6192)
-                                          : const Color(0xFFDDDDDD),
+                                      color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
                                     ),
                                   ),
                                   backgroundColor: Colors.white,
@@ -274,12 +270,12 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
           });
         },
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 15),
+          padding: const EdgeInsets.symmetric(vertical: 15),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(6)),
+            borderRadius: const BorderRadius.all(Radius.circular(6)),
             border: Border.all(
-                color: isSelected ? Color(0xFFFF6192) : Color(0xFFDDDDDD)),
+                color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -287,19 +283,20 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
               Container(
                 height: 70,
                 width: 70,
-                margin: EdgeInsets.only(bottom: 8),
+                margin: const EdgeInsets.only(bottom: 8),
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40),
-                  color: Color(0xFFF5F9F9),
+                  color: const Color(0xFFF5F9F9),
                 ),
                 child: ColorFiltered(
                   colorFilter: ColorFilter.mode(
-                    Color(0xFFF5F9F9),
+                    const Color(0xFFF5F9F9),
                     isSelected ? BlendMode.dst : BlendMode.color, // 흑백 필터 적용
                   ),
                   child: Image.asset(
                     imgPath,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -343,7 +340,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
             TextFormField(
               textAlign: TextAlign.center,
               enabled: false,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 isDense: true,
                 border: InputBorder.none,
               ),

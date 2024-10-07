@@ -117,7 +117,6 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                         itemCount: _ptOption.length,
                         // 리스트의 길이를 사용
                         itemBuilder: (context, index) {
-                          //print("test ${_ptOption[index]}");
                           return _buildExpansionTile(
                             title: _ptOption[index].title ?? "",
                             options: _ptOption[index].children ?? [],
@@ -838,10 +837,10 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
+                    SvgPicture.asset(
+                      'assets/images/product/complete_img.svg',
                       width: 90,
                       height: 90,
-                      decoration: const BoxDecoration(color: Color(0xFFF5F9F9), shape: BoxShape.circle),
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 30),

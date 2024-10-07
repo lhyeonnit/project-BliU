@@ -987,46 +987,15 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 상단 배너
-          Stack(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 16, right: 16),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(
-                    'assets/images/product/check_before@2x.png',
-                    height: 80,
-                  ),
-                ),
+          Container(
+            margin: const EdgeInsets.only(left: 16, right: 16),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset(
+                'assets/images/product/check_before@2x.png',
+                height: 80,
               ),
-              Positioned(
-                left: 110,
-                top: 15,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '구매 전 필수 확인',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 16),
-                        fontWeight: FontWeight.bold,
-                        height: 1.2,
-                      ),
-                    ),
-                    Text(
-                      '만족스러운 쇼핑을 위해 구매 전에 꼼꼼히 \n살펴보세요.',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 12),
-                        color: const Color(0xFF6A5B54),
-                        height: 1.2,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+            ),
           ),
           // 배송 안내 섹션
           Container(
