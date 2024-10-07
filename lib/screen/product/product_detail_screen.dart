@@ -57,7 +57,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   void initState() {
     super.initState();
     ptIdx = widget.ptIdx ?? 0;
-    //ptIdx = 1;
+    ptIdx = 1;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -127,6 +127,30 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     }
   }
 
+  void _productLike() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx() ?? "";
+    if (mtIdx.isNotEmpty) {
+      Map<String, dynamic> requestData = {
+        'mt_idx': mtIdx,
+        'pt_idx': _productData?.ptIdx,
+      };
+
+      final defaultResponseDTO = await ref.read(productDetailModelProvider.notifier).productLike(requestData);
+      if (defaultResponseDTO != null) {
+        if (defaultResponseDTO.result == true) {
+          setState(() {
+            if (_productData?.likeChk == "Y") {
+              _productData?.likeChk = "N";
+            } else {
+              _productData?.likeChk = "Y";
+            }
+          });
+        }
+      }
+    }
+  }
+
   void _toggleDeliveryInfo() {
     setState(() {
       _isDeliveryInfoVisible = !_isDeliveryInfoVisible;
@@ -166,7 +190,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const CartScreen()),
+                      builder: (context) => const CartScreen()
+                    ),
                   );
                 },
               ),
@@ -237,6 +262,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           margin: const EdgeInsets.only(bottom: 50),
                           child: SingleChildScrollView(
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 _productInfoContent(_productData?.ptContent ?? ""),
                                 _productAi(_sameList),
@@ -263,22 +289,27 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               children: [
                 MoveTopButton(scrollController: _scrollController),
                 Container(
-                  padding: const EdgeInsets.only(
-                      top: 9, bottom: 8, left: 11, right: 10),
+                  padding: const EdgeInsets.only(top: 9, bottom: 8, left: 11, right: 10),
                   color: Colors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
+                        onTap: () {
+                          _productLike();
+                        },
                         child: Container(
                           height: 48,
                           width: 48,
                           margin: const EdgeInsets.only(right: 9),
                           decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.all(Radius.circular(6)),
-                              border: Border.all(color: const Color(0xFFDDDDDD))
+                            borderRadius: const BorderRadius.all(Radius.circular(6)),
+                            border: Border.all(color: const Color(0xFFDDDDDD))
                           ),
-                          child: SvgPicture.asset('assets/images/product/like_lg_off.svg'),
+                          //child: SvgPicture.asset('assets/images/product/like_lg_off.svg'),
+                          child: SvgPicture.asset(
+                              _productData?.likeChk == "Y" ? 'assets/images/product/like_lg_on.svg' : 'assets/images/product/like_lg_off.svg'
+                          ),
                         ),
                       ),
                       Expanded(
@@ -432,6 +463,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   children: [
                     // 첫 번째 줄: 브랜드명, 공유 버튼
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         // 브랜드명 및 화살표 버튼
                         GestureDetector(
@@ -465,7 +497,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         const Spacer(), // 공간을 채워서 오른쪽 정렬
                         // 공유 버튼
                         GestureDetector(
-                          child: SvgPicture.asset('assets/images/product/ic_share.svg'),
+                          child: SvgPicture.asset(
+                            'assets/images/product/ic_share.svg',
+                            width: 24,
+                            height: 24,
+                          ),
                           onTap: () {
                             // TODO 공유 버튼 동작
                           },
@@ -488,9 +524,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     // 가격 정보
                     Row(
                       children: [
-                        (productData?.ptDiscountPer ?? 0) > 0
-                            ? Row(
-                          children: [
+                        (productData?.ptDiscountPer ?? 0) > 0 ?
                             Text(
                               "${productData?.ptDiscountPer ?? 0}%",
                               // 할인률
@@ -501,10 +535,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                 fontWeight: FontWeight.bold,
                                 height: 1.2,
                               ),
-                            ),
-                          ],
-                        )
-                            : const SizedBox(),
+                            ) : const SizedBox(),
                         Container(
                           margin: const EdgeInsets.only(left: 8, right: 5),
                           child: Text(
@@ -1174,12 +1205,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                               ),
                             ),
                             Text('${qnaData.qtWdate}',
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  color: const Color(0xFF7B7B7B),
-                                  fontSize: Responsive.getFont(context, 12),
-                                  height: 1.2,
-                                )
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                color: const Color(0xFF7B7B7B),
+                                fontSize: Responsive.getFont(context, 12),
+                                height: 1.2,
+                              )
                             ),
                           ],
                         ),
@@ -1191,7 +1222,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             myQna == "N" ? SvgPicture.asset('assets/images/product/ic_lock.svg') : const SizedBox(),
                             Expanded(
                               child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 8),
+                                margin: myQna == "N" ? const EdgeInsets.symmetric(horizontal: 8) : null,
                                 child: Text(
                                   qnaData.qtTitle ?? "",
                                   style: TextStyle(
@@ -1451,15 +1482,17 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   // 사진 목록 - 가로 사이즈에 맞게 배치
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: reviewImages.map((imagePath) {
-                        return Expanded(
-                          child: Padding(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: reviewImages.map((imagePath) {
+                          return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 4.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
                               child: Image.network(
                                   imagePath,
+                                  width: 90,
                                   height: 90,
                                   fit: BoxFit.cover,
                                   errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
@@ -1467,14 +1500,14 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                   }
                               ),
                             ),
-                          ),
-                        );
-                      }).toList(),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
                   Container(
-                      margin: const EdgeInsets.symmetric(vertical: 20),
-                      child: const Divider(thickness: 1, color: Color(0xFFEEEEEE))
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    child: const Divider(thickness: 1, color: Color(0xFFEEEEEE))
                   ),
                 ],
               ),

@@ -1,4 +1,6 @@
 import 'package:BliU/screen/home/viewmodel/home_footer_view_model.dart';
+import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
+import 'package:BliU/screen/mypage/component/bottom/notice_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +72,12 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const NoticeScreen()),
+                  );
+                },
                 child: Text(
                   '공지사항',
                   style: TextStyle(
@@ -90,7 +97,14 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
                   )
                 ),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const TermsDetail(type: 0),
+                      ),
+                    );
+                  },
                   child: Text(
                     '이용약관',
                     style: TextStyle(
@@ -103,7 +117,14 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TermsDetail(type: 1),
+                    ),
+                  );
+                },
                 child: Text(
                   '개인정보처리방침',
                   style: TextStyle(
