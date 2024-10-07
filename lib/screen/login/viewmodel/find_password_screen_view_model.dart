@@ -2,20 +2,21 @@ import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/default_response_dto.dart';
 import 'package:BliU/dto/find_id_pwd_response_dto.dart';
+import 'package:BliU/dto/find_id_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FindIdScreenModel {
+class FindPasswordScreenModel {
 }
 
-class FindIdScreenViewModel extends StateNotifier<FindIdScreenModel?> {
+class FindPasswordScreenViewModel extends StateNotifier<FindPasswordScreenModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  FindIdScreenViewModel(super.state, this.ref);
+  FindPasswordScreenViewModel(super.state, this.ref);
 
-  Future<FindIdPwdResponseDTO?> findId(Map<String, dynamic> requestData) async {
+  Future<FindIdPwdResponseDTO?> findPassword(Map<String, dynamic> requestData) async {
     try {
-      final response = await repository.reqPost(url: Constant.apiAuthFindIdUrl, data: requestData);
+      final response = await repository.reqPost(url: Constant.apiAuthFindPwdUrl, data: requestData);
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
@@ -75,7 +76,7 @@ class FindIdScreenViewModel extends StateNotifier<FindIdScreenModel?> {
 }
 
 // ViewModel Provider 정의
-final findIdScreenModelProvider =
-StateNotifierProvider<FindIdScreenViewModel, FindIdScreenModel?>((ref) {
-  return FindIdScreenViewModel(null, ref);
+final findPasswordScreenModelProvider =
+StateNotifierProvider<FindPasswordScreenViewModel, FindPasswordScreenModel?>((ref) {
+  return FindPasswordScreenViewModel(null, ref);
 });

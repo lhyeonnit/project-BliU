@@ -145,8 +145,7 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
                                   return;
                                 }
 
-                                final pref = await SharedPreferencesManager
-                                    .getInstance();
+                                final pref = await SharedPreferencesManager.getInstance();
                                 final phoneNumber = _phoneController.text;
 
                                 Map<String, dynamic> requestData = {
@@ -232,10 +231,10 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
                               flex: 3,
                               child: GestureDetector(
                                 onTap: () async {
-                                  if (_authCodeController.text.isEmpty ||
-                                      _phoneAuthChecked) {
+                                  if (_authCodeController.text.isEmpty || _phoneAuthChecked) {
                                     return;
                                   }
+                                  FocusScope.of(context).unfocus();
                                   // TODO 타이머 체크필요
 
                                   final pref = await SharedPreferencesManager
@@ -251,11 +250,9 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
                                   };
 
                                   final resultDTO = await ref.read(
-                                      findIdScreenModelProvider.notifier)
-                                      .checkCode(requestData);
+                                      findIdScreenModelProvider.notifier).checkCode(requestData);
                                   if (!context.mounted) return;
-                                  Utils.getInstance().showSnackBar(
-                                      context, resultDTO.message.toString());
+                                  Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                                   if (resultDTO.result == true) {
                                     setState(() {
                                       _phoneAuthChecked = true;
@@ -264,14 +261,11 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
                                   }
                                 },
                                 child: Container(
-                                  margin: const EdgeInsets.only(
-                                      top: 10, left: 8),
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 14),
+                                  margin: const EdgeInsets.only(top: 10, left: 8),
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(6),
-                                    color: _phoneAuthChecked ? const Color(
-                                        0xFFDDDDDD) : Colors.black,
+                                    color: _phoneAuthChecked ? const Color(0xFFDDDDDD) : Colors.black,
                                   ),
                                   child: Center(
                                     child: Text(
@@ -280,8 +274,7 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
                                         fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(
                                             context, 14),
-                                        color: _phoneAuthChecked ? const Color(
-                                            0xFF7B7B7B) : Colors.white,
+                                        color: _phoneAuthChecked ? const Color(0xFF7B7B7B) : Colors.white,
                                         height: 1.2,
                                       ),
                                     ),
@@ -315,8 +308,7 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
                   'phone_num_chk': phoneNumChk,
                 };
 
-                final findIdResponseDTO = await ref.read(
-                    findIdScreenModelProvider.notifier).findId(requestData);
+                final findIdResponseDTO = await ref.read(findIdScreenModelProvider.notifier).findId(requestData);
                 if (findIdResponseDTO?.result == true) {
                   id = findIdResponseDTO?.id;
                   if (!context.mounted) return;
@@ -335,10 +327,8 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
                 margin: const EdgeInsets.only(
                     right: 16.0, left: 16, top: 8, bottom: 9),
                 decoration: BoxDecoration(
-                  color: _isAllFieldsFilled ? Colors.black : const Color(
-                      0xFFDDDDDD),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(6),
+                  color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                  borderRadius: const BorderRadius.all(Radius.circular(6),
                   ),
                 ),
                 child: Center(
@@ -347,8 +337,7 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
-                      color: _isAllFieldsFilled ? Colors.white : const Color(
-                          0xFF7B7B7B),
+                      color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
                       height: 1.2,
                     ),
                   ),
@@ -456,27 +445,31 @@ class _FindIdScreenState extends ConsumerState<FindIdScreen> {
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
-              enabled: isEnable,
               controller: controller,
               obscureText: obscureText,
               keyboardType: keyboardType,
+              enabled: isEnable,
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(
-                    vertical: 14, horizontal: 15),
-                hintText: hintText,
                 hintStyle: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
-                    color: const Color(0xFF595959)),
-                enabledBorder: const OutlineInputBorder(
+                    color: isEnable ? Color(0xFF595959) : Color(0xFFA4A4A4)),
+                filled: true,
+                contentPadding:
+                EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                border: UnderlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(6)),
+                hintText: hintText,
+                fillColor: isEnable ? Colors.white : Color(0xFFF5F9F9),
+                // 배경색 설정
+                enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                  borderSide: isEnable
+                      ? BorderSide(color: Color(0xFFE1E1E1))
+                      : BorderSide(color: Colors.transparent),
                 ),
-                disabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                ),
-                focusedBorder: const OutlineInputBorder(
+                focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),

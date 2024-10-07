@@ -1,22 +1,25 @@
 //새 비밀번호 설정
+import 'package:BliU/screen/login/viewmodel/new_password_screen_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'login_screen.dart';
 
-class NewPasswordScreen extends StatefulWidget {
-  const NewPasswordScreen({super.key});
+class NewPasswordScreen extends ConsumerStatefulWidget {
+  final int? idx;
+  const NewPasswordScreen({super.key, required this.idx});
 
   @override
-  _NewPasswordScreenState createState() => _NewPasswordScreenState();
+  ConsumerState<NewPasswordScreen> createState() => _NewPasswordScreenState();
 }
 
-class _NewPasswordScreenState extends State<NewPasswordScreen> {
+class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   bool _isPasswordValid = true;
   bool _isConfirmPasswordValid = true;
@@ -139,19 +142,31 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
             left: 0,
             right: 0,
             child: GestureDetector(
-              onTap: () {
+              onTap: () async {
                 _validatePassword();
-                if (_formKey.currentState!.validate() &&
-                    _isPasswordValid &&
-                    _isConfirmPasswordValid) {
-                  // 비밀번호 변경 로직 추가
+                if (_formKey.currentState!.validate() && _isPasswordValid && _isConfirmPasswordValid) {
+                  final pref = await SharedPreferencesManager.getInstance();
+                  final idx = widget.idx;
+                  final newPassword = _passwordController.text;
+                  final newPasswordCheck = _confirmPasswordController.text;
+                  final pwdToken = await pref.getPasswordToken();
+                  Map<String, dynamic> requestData = {
+                    'idx': idx,
+                    'pwd': newPassword,
+                    'pwd_chk': newPasswordCheck,
+                    'pwd_token': pwdToken,
+                  };
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginScreen(),
-                    ),
-                  );
+                  final findIdResponseDTO = await ref.read(newPasswordScreenModelProvider.notifier).changePassword(requestData);
+                  if (findIdResponseDTO?.result == true) {
+                    if (!context.mounted) return;
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginScreen(),
+                      ),
+                    );
+                  }
                 }
               },
               child: Container(

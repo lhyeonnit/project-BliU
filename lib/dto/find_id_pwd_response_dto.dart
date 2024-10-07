@@ -1,11 +1,11 @@
-class FindIdPwdResponseDto {
+class FindIdPwdResponseDTO {
   final bool result;
   final String? message;
   final String? id;
   final int? idx;
   final String? pwdToken;
 
-  FindIdPwdResponseDto({
+  FindIdPwdResponseDTO({
     required this.result,
     required this.message,
     this.id,
@@ -13,8 +13,8 @@ class FindIdPwdResponseDto {
     this.pwdToken,
   });
 
-  factory FindIdPwdResponseDto.fromJson(Map<String, dynamic> json) {
-    return FindIdPwdResponseDto(
+  factory FindIdPwdResponseDTO.fromJson(Map<String, dynamic> json) {
+    return FindIdPwdResponseDTO(
       result: json['result'],
       message: json['data']['message'],
       id: json['data']['id'],
