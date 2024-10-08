@@ -2,12 +2,24 @@ import 'package:BliU/data/member_info_data.dart';
 import 'package:BliU/screen/mypage/component/top/component/my_info_edit_check.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MyInfo extends StatelessWidget {
+class MyInfo extends ConsumerStatefulWidget {
   final MemberInfoData? memberInfoData;
 
   const MyInfo({super.key, required this.memberInfoData});
 
+  @override
+  ConsumerState<MyInfo> createState() => _MyInfoState();
+}
+
+class _MyInfoState extends ConsumerState<MyInfo> {
+  MemberInfoData? memberInfoData;
+  @override
+  void initState() {
+    super.initState();
+    memberInfoData = widget.memberInfoData;
+  }
   @override
   Widget build(BuildContext context) {
     return Row(

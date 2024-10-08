@@ -7,7 +7,7 @@ class ExhibitionData {
   final String? etBanner;
   final String? etDetailBanner;
   final int? etProductCount;
-  final List<ProductData>? product;
+  final List<ProductData> product;
   final List<String>? ptImg;
 
   ExhibitionData({

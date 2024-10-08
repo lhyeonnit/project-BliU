@@ -1,3 +1,4 @@
+import 'package:BliU/data/member_info_data.dart';
 import 'package:BliU/main.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/faq_screen.dart';
@@ -30,6 +31,11 @@ class MyScreen extends ConsumerStatefulWidget {
 
 class _MyScreenState extends ConsumerState<MyScreen> {
   String? userId;
+  MemberInfoData? memberInfoData;
+  int? myReviewCount;
+  int? myCouponCount;
+  int? myPoint;
+
   @override
   void initState() {
     super.initState();
@@ -130,77 +136,59 @@ class _MyScreenState extends ConsumerState<MyScreen> {
           children: [
             Visibility(
               visible: userId != null,
-              child: Consumer(
-                builder: (context, ref, widget) {
-                  int myRevieCount = 0;
-                  int myCouponCount = 0;
-                  int myPoint = 0;
-                  final model = ref.watch(myModelProvider);
-                  if (model != null) {
-                    if (model.memberInfoResponseDTO?.result == true) {
-                      myRevieCount =
-                          model.memberInfoResponseDTO?.data?.myRevieCount ?? 0;
-                      myCouponCount =
-                          model.memberInfoResponseDTO?.data?.myCouponCount ?? 0;
-                      myPoint = model.memberInfoResponseDTO?.data?.myPoint ?? 0;
-                    }
-                  }
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 16),
-                          child: MyInfo(
-                            memberInfoData: model?.memberInfoResponseDTO?.data,
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            _buildIconButton(context, '주문·배송',
-                                'assets/images/my/mypage_ic01.svg', () {
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 16),
+                      child: MyInfo(
+                        memberInfoData: memberInfoData,
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _buildIconButton(context, '주문·배송',
+                            'assets/images/my/mypage_ic01.svg', () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const OrderListScreen()),
+                                    const OrderListScreen()),
                               );
                             }, ''),
-                            _buildIconButton(context, '나의리뷰',
-                                'assets/images/my/mypage_ic02.svg', () {
+                        _buildIconButton(context, '나의리뷰',
+                            'assets/images/my/mypage_ic02.svg', () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const MyReviewScreen()),
+                                    const MyReviewScreen()),
                               );
-                            }, '$myRevieCount'),
-                            _buildIconButton(context, '쿠폰함',
-                                'assets/images/my/mypage_ic03_1.svg', () {
+                            }, '$myReviewCount'),
+                        _buildIconButton(context, '쿠폰함',
+                            'assets/images/my/mypage_ic03_1.svg', () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const MyCouponScreen()),
+                                    const MyCouponScreen()),
                               );
                             }, '$myCouponCount'),
-                            _buildIconButton(context, '포인트',
-                                'assets/images/my/mypage_ic04.svg', () {
+                        _buildIconButton(context, '포인트',
+                            'assets/images/my/mypage_ic04.svg', () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const PointScreen()),
                               );
                             }, '$myPoint'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                },
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
             Visibility(
@@ -321,8 +309,12 @@ class _MyScreenState extends ConsumerState<MyScreen> {
     Map<String, dynamic> requestData = {
       'mt_idx': mtIdx,
     };
-    final myResponseDTO = await ref.read(myModelProvider.notifier).getMy(requestData);
-    userId = myResponseDTO?.data?.mtIdx.toString();
+    final memberInfoDTO = await ref.read(myModelProvider.notifier).getMy(requestData);
+    memberInfoData = memberInfoDTO?.data;
+    myCouponCount = memberInfoDTO?.data?.myCouponCount;
+    myPoint = memberInfoDTO?.data?.myPoint;
+    myReviewCount = memberInfoDTO?.data?.myRevieCount;
+    userId = mtIdx;
   }
 
   Widget _buildSection(BuildContext context, String title) {

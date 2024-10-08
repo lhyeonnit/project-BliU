@@ -24,6 +24,23 @@ class LoginScreenViewModel extends StateNotifier<LoginScreenModel?> {
         memberInfoResponseDTO: memberInfoResponseDTO,
     );
   }
+  Future<MemberInfoResponseDTO?> login(Map<String, dynamic> requestData) async {
+    final response = await repository.reqPost(url: Constant.apiAuthLoginUrl, data: requestData);
+    try {
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseData = response.data;
+          MemberInfoResponseDTO memberInfoResponseDTO = MemberInfoResponseDTO.fromJson(responseData);
+          return memberInfoResponseDTO;
+        }
+      }
+      return null;
+    } catch(e) {
+      // Catch and log any exceptions
+      print('Error request Api: $e');
+      return null;
+    }
+  }
 
   Future<void> authLogin(Map<String, dynamic> requestData) async {
     final response = await repository.reqPost(url: Constant.apiAuthLoginUrl, data: requestData);
