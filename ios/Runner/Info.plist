@@ -196,6 +196,6 @@
 			<!-- 네이버페이 앱 로그인 -->
 		</array>
 		<key>UIStatusBarHidden</key>
-		<true/>
+		<false/>
 	</dict>
 </plist>
