@@ -2,6 +2,7 @@ import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/store_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/product/component/list/product_list_card.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/component/detail/store_info.dart';
 import 'package:BliU/screen/store/viewmodel/store_product_view_model.dart';
@@ -111,7 +112,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                        padding: const EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 20),
                         child: Text(
                           '상품 $_count', // 상품 수 표시
                           style: TextStyle(
@@ -160,176 +161,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
       itemBuilder: (context, index) {
         final productData = _productList[index];
 
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProductDetailScreen(ptIdx: productData.ptIdx),
-              ),
-            );
-          },
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      child: AspectRatio(
-                        aspectRatio: 1/1,
-                        child: Image.network(
-                          productData.ptImg ?? "",
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: () async {
-
-                          final pref = await SharedPreferencesManager.getInstance();
-                          final mtIdx = pref.getMtIdx() ?? "";
-                          if (mtIdx.isNotEmpty) {
-                            Map<String, dynamic> requestData = {
-                              'mt_idx' : mtIdx,
-                              'pt_idx' : productData.ptIdx,
-                            };
-
-                            final defaultResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).productLike(requestData);
-                            if(defaultResponseDTO != null) {
-                              if (defaultResponseDTO.result == true) {
-                                setState(() {
-                                  _productList.removeAt(index);
-                                });
-                              }
-                            }
-                          }
-                        },
-                        child: Image.asset(
-                          productData.likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',
-                          height: Responsive.getHeight(context, 34),
-                          width: Responsive.getWidth(context, 34),
-                          // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 12, bottom: 4),
-                      child: Text(
-                        productData.stName ?? "",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 12),
-                          color: Colors.grey,
-                          height: 1.2,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      productData.ptName ?? "",
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        height: 1.2,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 12, bottom: 10),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
-                        children: [
-                          Text(
-                            '${productData.ptDiscountPer ?? 0}%',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: const Color(0xFFFF6192),
-                              fontWeight: FontWeight.bold,
-                              height: 1.2,
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 2),
-                            child: Text(
-                              "${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원",
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                fontWeight: FontWeight.bold,
-                                height: 1.2,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/images/home/item_like.svg',
-                          width: Responsive.getWidth(context, 13),
-                          height: Responsive.getHeight(context, 11),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 2, bottom: 2),
-                          child: Text(
-                            '${productData.ptLike ?? ""}',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 12),
-                              color: Colors.grey,
-                              height: 1.2,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/images/home/item_comment.svg',
-                                width: Responsive.getWidth(context, 13),
-                                height: Responsive.getHeight(context, 12),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 2, bottom: 2),
-                                child: Text(
-                                  '${productData.ptReview ?? ""}',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 12),
-                                    color: Colors.grey,
-                                    height: 1.2,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
+        return ProductListCard(productData: productData);
       },
     );
   }
@@ -383,10 +215,8 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
 
     final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
     storeData = storeResponseDTO?.data;
-
-    final productListResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getProductList(requestData);
-    _count = productListResponseDTO?.list.length ?? 0;
-    _productList = productListResponseDTO?.list ?? [];
+    _productList = storeResponseDTO?.data.list ?? [];
+    _count = storeResponseDTO?.data.list?.length ?? 0;
 
     setState(() {
       _isFirstLoadRunning = false;
@@ -412,16 +242,15 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
       Map<String, dynamic> requestData = {
         'mt_idx': mtIdx,
         'category': category,
-        'sub_category': "all",
+        'st_idx': widget.stIdx,
         'pg': _page,
       };
 
-      final productListResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getProductList(requestData);
-      if (productListResponseDTO != null) {
-        _count = productListResponseDTO.list.length;
-        if (productListResponseDTO.list.isNotEmpty) {
+      final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
+      if (storeResponseDTO != null) {
+        if (storeResponseDTO.data.list.isNotEmpty) {
           setState(() {
-            _productList.addAll(productListResponseDTO.list);
+            _productList.addAll(storeResponseDTO.data.list);
           });
         } else {
           setState(() {

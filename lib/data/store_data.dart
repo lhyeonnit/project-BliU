@@ -11,7 +11,7 @@ class StoreData {
   final String? stAge;
   final String? stAgeTxt;
   final String? stTxt2;
-  List<ProductData>? list;
+  List<ProductData> list;
 
   StoreData({
     required this.stIdx,

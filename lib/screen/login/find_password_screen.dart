@@ -298,7 +298,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
             right: 0,
             child: GestureDetector(
               onTap: () async {
-                if (_isAllFieldsFilled) {
+                if (!_isAllFieldsFilled) {
                   return;
                 }
 

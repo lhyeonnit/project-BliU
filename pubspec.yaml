@@ -113,8 +113,8 @@ flutter:
   #   - images/a_dot_ham.jpeg
 
 flutter_native_splash:
-  color: '#000000' # 스플래시 화면의 배경색
-  image: 'assets/images/BliU.jpeg' # 스플래시 화면에 표시할 이미지
+  image: assets/images/BliU.png
+  background_image: assets/images/BliU_back.png
   android: true # 안드로이드에서 스플래시 화면 활성화
   ios: true # iOS에서 스플래시 화면 활성화
   web: false # 웹에서 스플래시 화면 비활성화
@@ -159,5 +159,8 @@ flutter_launcher_icons:
           weight: 800
         - asset: assets/fonts/Pretendard-Black.ttf
           weight: 900
+    - family: PretendardVariable
+      fonts:
+        - asset: assets/fonts/Pretendard-Variable.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -198,7 +198,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        fontFamily: "Pretendard"
+        fontFamily: 'PretendardVariable'
       ),
       navigatorKey: NavigationService.navigatorKey,
       debugShowCheckedModeBanner: false,
