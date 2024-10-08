@@ -1,11 +1,10 @@
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/home/viewmodel/home_body_best_sales_view_model.dart';
-import 'package:BliU/screen/product/product_detail_screen.dart';
+import 'package:BliU/screen/product/component/list/product_list_card.dart';
 import 'package:BliU/screen/store/component/store_age_group_selection.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
-import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -166,7 +165,8 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
               ),
               itemCount: _productList.length,
               itemBuilder: (context, index) {
-                return buildItemCard(index);
+                final productData = _productList[index];
+                return ProductListCard(productData: productData);
               },
             ),
           ),
@@ -210,33 +210,6 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
     }
   }
 
-  void _like(int index) async {
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx() ?? "";
-    if (mtIdx.isNotEmpty) {
-      final item = _productList[index];
-      final likeChk = item.likeChk;
-
-      Map<String, dynamic> requestData = {
-        'mt_idx' : mtIdx,
-        'pt_idx' : item.ptIdx,
-      };
-
-      final defaultResponseDTO = await ref.read(homeBodyBestSalesViewModelProvider.notifier).productLike(requestData);
-      if(defaultResponseDTO != null) {
-        if (defaultResponseDTO.result == true) {
-          setState(() {
-            if (likeChk == "Y") {
-              _productList[index].likeChk = "N";
-            } else {
-              _productList[index].likeChk = "Y";
-            }
-          });
-        }
-      }
-    }
-  }
-
   Widget categoryTab(int index) {
     var borderColor = const Color(0xFFDDDDDD);
     var textColor = Colors.black;
@@ -264,170 +237,6 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
           fontSize: Responsive.getFont(context, 14),
           color: textColor,
           height: 1.2,
-        ),
-      ),
-    );
-  }
-
-  Widget buildItemCard(int index) {
-    final product = _productList[index];
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductDetailScreen(ptIdx: product.ptIdx),
-          ),
-        );
-      },
-      child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                Container(
-                  foregroundDecoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
-                    border: Border.all(
-                      width: 1,
-                      color: const Color(0X00000005),
-                    ),
-                  ),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  child: AspectRatio(
-                    aspectRatio: 1/1,
-                    child: Image.network(
-                      product.ptImg ?? "",
-                      fit: BoxFit.cover,
-                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                        return const SizedBox();
-                      }
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    onTap: () {
-                      _like(index);
-                    },
-                    child: Image.asset(
-                      product.likeChk == "Y" ? 'assets/images/home/like_btn_fill.png' : 'assets/images/home/like_btn.png',
-                      height: Responsive.getHeight(context, 34),
-                      width: Responsive.getWidth(context, 34),
-                      // 하트 내부를 채울 때만 색상 채우기, 채워지지 않은 상태는 투명 처리
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 12, bottom: 4),
-                  child: Text(
-                    product.stName ?? "",
-                    style: TextStyle(
-                      fontSize: Responsive.getFont(context, 12),
-                      color: Colors.grey,
-                      height: 1.2,
-                    ),
-                  ),
-                ),
-                Text(
-                  product.ptName ?? "",
-                  style: TextStyle(
-                    fontSize: Responsive.getFont(context, 14),
-                    height: 1.2,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 12, bottom: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Text(
-                        "${product.ptDiscountPer}%",
-                        style: TextStyle(
-                          fontSize: Responsive.getFont(context, 14),
-                          color: const Color(0xFFFF6192),
-                          fontWeight: FontWeight.bold,
-                          height: 1.2,
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 2),
-                        child: Text(
-                          "${Utils.getInstance().priceString(product.ptPrice ?? 0)}원",
-                          style: TextStyle(
-                            fontSize: Responsive.getFont(context, 14),
-                            fontWeight: FontWeight.bold,
-                            height: 1.2,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/home/item_like.svg',
-                      width: Responsive.getWidth(context, 13),
-                      height: Responsive.getHeight(context, 11),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 2, bottom: 2),
-                      child: Text(
-                        "${product.ptLike ?? ""}",
-                        style: TextStyle(
-                          fontSize: Responsive.getFont(context, 12),
-                          color: Colors.grey,
-                          height: 1.2,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/images/home/item_comment.svg',
-                            width: Responsive.getWidth(context, 13),
-                            height: Responsive.getHeight(context, 12),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 2, bottom: 2),
-                            child: Text(
-                              "${product.ptReview ?? ""}",
-                              style: TextStyle(
-                                fontSize: Responsive.getFont(context, 12),
-                                color: Colors.grey,
-                                height: 1.2,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
         ),
       ),
     );

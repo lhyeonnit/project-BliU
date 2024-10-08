@@ -3,17 +3,16 @@ import 'package:BliU/data/product_data.dart';
 import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
+import 'package:BliU/screen/product/component/list/product_category_bottom.dart';
+import 'package:BliU/screen/product/component/list/product_filter_bottom.dart';
+import 'package:BliU/screen/product/component/list/product_list_card.dart';
+import 'package:BliU/screen/product/component/list/product_sort_bottom.dart';
 import 'package:BliU/screen/product/viewmodel/product_list_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import 'component/list/product_category_bottom.dart';
-import 'component/list/product_filter_bottom.dart';
-import 'component/list/product_list_card.dart';
-import 'component/list/product_sort_bottom.dart';
 
 class ProductListScreen extends ConsumerStatefulWidget {
   final CategoryData selectedCategory;
