@@ -48,7 +48,7 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
                 children: [
                   SizedBox(
                     width: double.infinity,
-                    height: Responsive.getHeight(context, 625),
+                    height: double.infinity,
                     child: GestureDetector(
                       onTap: () {
                         if (banner.btContentType == "Y") {
@@ -89,7 +89,7 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
                     ),
                   ),
                   Positioned(
-                    bottom: 30,
+                    bottom: 0,
                     left: 0,
                     right: 0,
                     height: 270, // 상단 그림자의 높이

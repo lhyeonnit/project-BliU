@@ -239,6 +239,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               },
               body: Column(
                 children: [
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    height: 10,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFF5F9F9),
+                    ),
+                  ),
                   TabBar(
                     overlayColor: WidgetStateColor.transparent,
                     indicatorColor: Colors.black,
@@ -732,6 +739,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   ],
                 ),
               ),
+
+
             ],
           )
         ],
@@ -1001,9 +1010,24 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           Container(
             margin: const EdgeInsets.only(top: 20),
             child: Theme(
-              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              data: ThemeData(
+                /// Prevents to splash effect when clicking.
+                splashColor: Colors.transparent,
+                /// Prevents the mouse cursor to highlight the tile when hovering on web.
+                hoverColor: Colors.transparent,
+                /// Hides the highlight color when the tile is pressed.
+                highlightColor: Colors.transparent,
+                /// Makes the top and bottom dividers invisible when expanded.
+                dividerColor: Colors.transparent,
+                /// Make background transparent.
+                expansionTileTheme: const ExpansionTileThemeData(
+                  backgroundColor: Colors.transparent,
+                  collapsedBackgroundColor: Colors.transparent,
+                ),
+              ),
               // 선 제거
               child: ExpansionTile(
+                initiallyExpanded: true,
                 title: Text(
                   '배송안내',
                   style: TextStyle(
@@ -1043,9 +1067,25 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
           // 교환/반품 안내 섹션
           Theme(
-            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            //data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            data: ThemeData(
+              /// Prevents to splash effect when clicking.
+              splashColor: Colors.transparent,
+              /// Prevents the mouse cursor to highlight the tile when hovering on web.
+              hoverColor: Colors.transparent,
+              /// Hides the highlight color when the tile is pressed.
+              highlightColor: Colors.transparent,
+              /// Makes the top and bottom dividers invisible when expanded.
+              dividerColor: Colors.transparent,
+              /// Make background transparent.
+              expansionTileTheme: const ExpansionTileThemeData(
+                backgroundColor: Colors.transparent,
+                collapsedBackgroundColor: Colors.transparent,
+              ),
+            ),
             // 선 제거
             child: ExpansionTile(
+              initiallyExpanded: true,
               title: Text(
                 '교환/반품 안내',
                 style: TextStyle(
