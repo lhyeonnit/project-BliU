@@ -17,16 +17,20 @@ import 'find_id_screen.dart';
 import 'find_password_screen.dart';
 
 //로그인
-class LoginScreen extends ConsumerWidget {
-  LoginScreen({super.key});
+class LoginScreen extends ConsumerStatefulWidget {
+  const LoginScreen({super.key});
+  @override
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   LoginScreenViewModel? _loginScreenViewModel;
   var _isAutoLogin = true;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     _loginScreenViewModel = ref.read(loginViewModelProvider.notifier);
     ref.listen(
       loginViewModelProvider,
@@ -482,7 +486,9 @@ class LoginScreen extends ConsumerWidget {
     }
   }
 
-  void _login(BuildContext context) {
+  void _login(BuildContext context) async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final appToken = pref.getToken();
     if (_idController.text.isEmpty) {
       Utils.getInstance().showSnackBar(context, "아이디를 입력해 주세요");
       return;
@@ -498,8 +504,14 @@ class LoginScreen extends ConsumerWidget {
       'pwd': _passwordController.text,
       'auto_login': autoLogin,
     };
+    Map<String, dynamic> tokenData = {
+      'app_token': appToken,
+    };
 
-    _loginScreenViewModel?.authLogin(data);
+    _loginScreenViewModel?.authLogin(tokenData);
+    final loginResponseDTO = await ref.read(loginViewModelProvider.notifier).login(data);
+    final mtIdx = loginResponseDTO?.data?.mtIdx.toString();  // 서버에서 받은 비밀번호 토큰
+    pref.setMtIdx(mtIdx!);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

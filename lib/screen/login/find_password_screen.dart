@@ -297,8 +297,11 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
             left: 0,
             right: 0,
             child: GestureDetector(
-              onTap: _isAllFieldsFilled
-                  ? () async {
+              onTap: () async {
+                if (_isAllFieldsFilled) {
+                  return;
+                }
+
                 final id = _idController.text;
                 final name = _nameController.text;
                 final phoneNum = _phoneController.text;
@@ -325,8 +328,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                     ),
                   );
                 }
-              }
-                  : null,
+              },
               child: Container(
                 width: double.infinity,
                 height: Responsive.getHeight(context, 48),
