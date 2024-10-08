@@ -57,7 +57,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   void initState() {
     super.initState();
     ptIdx = widget.ptIdx ?? 0;
-    ptIdx = 1;
+    //ptIdx = 1;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
