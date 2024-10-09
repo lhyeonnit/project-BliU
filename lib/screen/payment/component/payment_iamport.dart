@@ -39,7 +39,7 @@ class PaymentIamport extends StatelessWidget {
       userCode: 'iamport',
       /* [필수입력] 결제 데이터 */
       data: PaymentData(
-        pg: 'html5_inicis', // PG사
+        pg: 'tosspayments', // PG사
         payMethod: 'card', // 결제수단
         name: iamportPayData.name, // 주문명
         merchantUid: iamportPayData.merchantUid, // 주문번호

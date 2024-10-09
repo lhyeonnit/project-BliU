@@ -27,17 +27,30 @@ class ProductListScreen extends ConsumerStatefulWidget {
 class _ProductListScreenState extends ConsumerState<ProductListScreen> with TickerProviderStateMixin {
   late TabController _tabController;
   late CategoryData _selectedCategory;
-  late List<CategoryData> _subList;
+  late List<CategoryData> _categories;
+
+  bool isTodayStart = true;
   String sortOption = '인기순';
   String sortOptionSelected = '';
-  List<ProductListResponseDTO?> productList = [];
+
+  int _count = 0;
+  List<ProductData> _productList = [];
+
+  double _maxScrollHeight = 0;// NestedScrollView 사용시 최대 높이를 저장하기 위한 변수
+
+  int _page = 1;
+  bool _hasNextPage = true;
+  bool _isFirstLoadRunning = false;
+  bool _isLoadMoreRunning = false;
 
   @override
   void initState() {
     super.initState();
     _selectedCategory = widget.selectedCategory;
-    _subList = _selectedCategory.subList ?? [];
-    _tabController = TabController(length: _subList.length, vsync: this);
+    _categories = _selectedCategory.subList ?? [];
+    _tabController = TabController(length: _categories.length, vsync: this);
+    _tabController.addListener(_tabChangeCallBack);
+
     if (widget.selectSubCategoryIndex != null) {
       _tabController.animateTo(widget.selectSubCategoryIndex ?? 0);
     }
@@ -48,8 +61,109 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
 
   @override
   void dispose() {
+    _tabController.removeListener(_tabChangeCallBack);
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getList();
+  }
+
+  void _tabChangeCallBack() {
+    _hasNextPage = true;
+    _isLoadMoreRunning = false;
+
+    _getList();
+  }
+
+  void _getList() async {
+    setState(() {
+      _isFirstLoadRunning = true;
+    });
+    _page = 1;
+    _maxScrollHeight = 0;
+
+    // TODO 회원 비회원 처리
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    String subCategory = "all";
+    final categoryData = _categories[_tabController.index];
+    if ((categoryData.ctIdx ?? 0) > 0) {
+      subCategory = categoryData.ctIdx.toString();
+    }
+
+    // TODO 정렬 및 검색 결과 파라매터 넣어야 함
+    Map<String, dynamic> requestData = {
+      'mt_idx': mtIdx,
+      'category': _selectedCategory.ctIdx,
+      'sub_category': subCategory,
+      'sort': 1,
+      'age': 1,
+      'styles': '',
+      'min_price': 0,
+      'max_price': 99999,
+      'pg': _page,
+    };
+
+    final productListResponseDTO = await ref.read(productListViewModelProvider.notifier).getList(requestData);
+    _count = productListResponseDTO?.count ?? 0;
+    _productList = productListResponseDTO?.list ?? [];
+
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+  }
+
+  void _nextLoad() async {
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+      _page += 1;
+
+      // TODO 회원 비회원 처리
+      final pref = await SharedPreferencesManager.getInstance();
+      final mtIdx = pref.getMtIdx();
+
+      String subCategory = "all";
+      final categoryData = _categories[_tabController.index];
+      if ((categoryData.ctIdx ?? 0) > 0) {
+        subCategory = categoryData.ctIdx.toString();
+      }
+
+      // TODO 정렬 및 검색 결과 파라매터 넣어야 함
+      Map<String, dynamic> requestData = {
+        'mt_idx': mtIdx,
+        'category': _selectedCategory.ctIdx,
+        'sub_category': subCategory,
+        'sort': 1,
+        'age': 1,
+        'styles': '',
+        'min_price': 0,
+        'max_price': 99999,
+        'pg': _page,
+      };
+
+      final productListResponseDTO = await ref.read(productListViewModelProvider.notifier).getList(requestData);
+      if (productListResponseDTO != null) {
+        _count = productListResponseDTO.count;
+        if (productListResponseDTO.list.isNotEmpty) {
+          setState(() {
+            _productList.addAll(productListResponseDTO.list);
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
+      });
+    }
   }
 
   String selectedAgeGroup = '';
@@ -112,10 +226,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
           onCategorySelected: (category) {
             setState(() {
               _selectedCategory = category;
-              _subList = _selectedCategory.subList ?? [];
-              _tabController =
-                  TabController(length: _subList.length, vsync: this);
-              _getAllList();
+              _categories = _selectedCategory.subList ?? [];
+              _tabController = TabController(length: _categories.length, vsync: this);
+              _getList();
             });
           },
         );
@@ -136,7 +249,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         return ProductFilterBottom(
           selectedStyleOption: selectedStyles,
           selectedAgeOption: selectedAgeGroup,
-          selectedRangeValuesOption: selectedRangeValues!,
+          selectedRangeValuesOption: selectedRangeValues,
           onAgeOptionSelected: (String newSelectedAge) {
             setState(() {
               selectedAgeGroup = newSelectedAge;
@@ -188,8 +301,10 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                   ),
                 ),
               ),
-              SvgPicture.asset('assets/images/product/ic_select.svg',
-                  color: Colors.black),
+              SvgPicture.asset(
+                'assets/images/product/ic_select.svg',
+                color: Colors.black
+              ),
             ],
           ),
         ),
@@ -267,133 +382,129 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
           ),
         ],
       ),
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 60.0,
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: TabBar(
-                      controller: _tabController,
-                      labelStyle: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        fontWeight: FontWeight.w600,
+      body: NotificationListener(
+        onNotification: (scrollNotification){
+          if (scrollNotification is ScrollEndNotification) {
+            var metrics = scrollNotification.metrics;
+            if (metrics.axisDirection != AxisDirection.down) return false;
+            if (_maxScrollHeight < metrics.maxScrollExtent) {
+              _maxScrollHeight = metrics.maxScrollExtent;
+            }
+            if (_maxScrollHeight - metrics.pixels < 50) {
+              _nextLoad();
+            }
+          }
+          return false;
+        },
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 60.0,
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: TabBar(
+                        controller: _tabController,
+                        labelStyle: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          fontWeight: FontWeight.w600,
+                        ),
+                        overlayColor: WidgetStateColor.transparent,
+                        indicatorColor: Colors.black,
+                        dividerColor: const Color(0xFFDDDDDD),
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        labelColor: Colors.black,
+                        unselectedLabelColor: const Color(0xFF7B7B7B),
+                        isScrollable: true,
+                        indicatorWeight: 2.0,
+                        tabAlignment: TabAlignment.start,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        tabs: (_categories).map((subCategory) {
+                          return Tab(text: subCategory.ctName);
+                        }).toList(),
                       ),
-                      overlayColor: WidgetStateColor.transparent,
-                      indicatorColor: Colors.black,
-                      dividerColor: const Color(0xFFDDDDDD),
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      labelColor: Colors.black,
-                      unselectedLabelColor: const Color(0xFF7B7B7B),
-                      isScrollable: true,
-                      indicatorWeight: 2.0,
-                      tabAlignment: TabAlignment.start,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      tabs: (_subList ?? []).map((subCategory) {
-                        return Tab(text: subCategory.ctName);
-                      }).toList(),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                    padding: const EdgeInsets.only(top: 15, bottom: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: _openSortBottomSheet, // 정렬 옵션 선택 창 열기
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                  'assets/images/product/ic_filter02.svg'),
-                              Container(
-                                margin: const EdgeInsets.only(left: 5),
-                                child: Text(
-                                  sortOptionSelected.isNotEmpty ? sortOptionSelected : '인기순', // 선택된 정렬 옵션 표시
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    height: 1.2,
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                      padding: const EdgeInsets.only(top: 15, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              // TODO API 연동 필요
+                              setState(() {
+                                isTodayStart = !isTodayStart;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  padding: const EdgeInsets.all(6),
+                                  height: 22,
+                                  width: 22,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                    border: Border.all(
+                                      color: isTodayStart ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                    ),
+                                    color: isTodayStart ? const Color(0xFFFF6191) : Colors.white,
+                                  ),
+                                  child: SvgPicture.asset(
+                                    'assets/images/check01_off.svg', // 체크박스 아이콘
+                                    color: isTodayStart ? Colors.white : const Color(0xFFCCCCCC),
+                                    height: 10,
+                                    width: 10,
+                                    fit: BoxFit.contain,
                                   ),
                                 ),
+                                SvgPicture.asset(
+                                    'assets/images/product/today_start.svg'
+                                )
+                              ],
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              _buildFilterButton(getSelectedAgeGroupText()),
+                              Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                                  child: _buildFilterButton(getSelectedStyleText())
                               ),
+                              _buildFilterButton(getSelectedRangeValues()),
                             ],
                           ),
-                        ),
-                        Row(
-                          children: [
-                            _buildFilterButton(getSelectedAgeGroupText()),
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 4),
-                              child: _buildFilterButton(getSelectedStyleText())
-                            ),
-                            _buildFilterButton(getSelectedRangeValues()),
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ), // 상단 고정된 컨텐츠
-            )
-          ];
-        },
-        body: TabBarView(
-          controller: _tabController,
-          children: List.generate(
-            _subList.length,
-            (index) {
-              // 상품 리스트
-              return _buildProductGrid(index);
-            },
+                  ],
+                ), // 상단 고정된 컨텐츠
+              )
+            ];
+          },
+          body: TabBarView(
+            controller: _tabController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: List.generate(
+              _categories.length,
+                  (index) {
+                // 상품 리스트
+                if (index == _tabController.index) {
+                  return _buildProductGrid();
+                } else {
+                  return Container();
+                }
+              },
+            ),
           ),
         ),
       ),
     );
-  }
-
-  void _afterBuild(BuildContext context) {
-    _getAllList();
-  }
-
-  void _getAllList() async {
-    // TODO 회원 비회원 처리
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    // TODO 정렬 및 검색 결과 파라매터 넣어야 함
-    for (int i = 0; i < _subList.length; i++) {
-      Map<String, dynamic> requestData = {
-        'mt_idx': mtIdx,
-        'category': _selectedCategory.ctIdx,
-        'sub_category': _subList[i].ctIdx,
-        'sort': 1,
-        'age': 1,
-        'styles': '',
-        'min_price': 0,
-        'max_price': 99999,
-        'pg': 1,
-      };
-
-      final productListResponseDTO = await ref
-          .read(productListViewModelProvider.notifier)
-          .getList(requestData);
-      if (productListResponseDTO != null) {
-        if (productListResponseDTO.result == true) {
-          productList.add(productListResponseDTO);
-        } else {
-          productList.add(null);
-        }
-      } else {
-        productList.add(null);
-      }
-    }
-    setState(() {});
   }
 
   Widget _buildFilterButton(String label) {
@@ -405,14 +516,12 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         side: const BorderSide(
           color: Color(0xFFDDDDDD),
         ),
-        padding:
-            const EdgeInsets.only(top: 11.0, bottom: 11, left: 15.0, right: 12),
+        padding: const EdgeInsets.only(top: 11.0, bottom: 11, left: 15.0, right: 12),
       ),
       onPressed: _openFilterBottomSheet,
       child: Row(
         children: [
           Container(
-            width: 28,
             margin: const EdgeInsets.only(right: 5),
             child: Text(
               label,
@@ -432,33 +541,51 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
     );
   }
 
-  Widget _buildProductGrid(int productIndex) {
-    List<ProductData> pList = [];
-    int count = 0;
-    try {
-      pList = productList[productIndex]?.list ?? [];
-      count = productList[productIndex]?.count ?? 0;
-    } catch (e) {
-      print("e = ${e.toString()}");
-    }
+  Widget _buildProductGrid() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16.0),
           padding: const EdgeInsets.only(bottom: 20),
-          child: Text(
-            '상품 $count', // 상품 수 표시
-            style: const TextStyle(
-              fontFamily: 'Pretendard',
-              fontSize: 14,
-              color: Colors.black,
-              height: 1.2,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '상품 $_count', // 상품 수 표시
+                style: const TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: 14,
+                  color: Colors.black,
+                  height: 1.2,
+                ),
+              ),
+              GestureDetector(
+                onTap: _openSortBottomSheet, // 정렬 옵션 선택 창 열기
+                child: Row(
+                  children: [
+                    SvgPicture.asset('assets/images/product/ic_filter02.svg'),
+                    Container(
+                      margin: const EdgeInsets.only(left: 5),
+                      child: Text(
+                        sortOptionSelected.isNotEmpty ? sortOptionSelected : '인기순', // 선택된 정렬 옵션 표시
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
         Expanded(
           child: GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -466,10 +593,10 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
               crossAxisSpacing: 12,
               mainAxisSpacing: 30,
             ),
-            itemCount: pList.length, // 실제 상품 수로 변경
+            itemCount: _productList.length, // 실제 상품 수로 변경
             itemBuilder: (context, index) {
               return ProductListCard(
-                productData: pList[index],
+                productData: _productList[index],
               );
             },
           ),

@@ -19,7 +19,6 @@ class LikeScreen extends ConsumerStatefulWidget {
 
 class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
-
   late TabController _tabController;
   final List<CategoryData> _categories = [
     CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', catIdx: 0, catName: '', subList: [])
@@ -27,6 +26,8 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
 
   int _count = 0;
   List<ProductData> _productList = [];
+
+  double _maxScrollHeight = 0;// NestedScrollView 사용시 최대 높이를 저장하기 위한 변수
 
   int _page = 1;
   bool _hasNextPage = true;
@@ -36,7 +37,6 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_nextLoad);
     _tabController = TabController(length: _categories.length, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
@@ -45,7 +45,6 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
 
   @override
   void dispose() {
-    _scrollController.removeListener(_nextLoad);
     _tabController.removeListener(_tabChangeCallBack);
     _tabController.dispose();
     super.dispose();
@@ -86,6 +85,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
       _isFirstLoadRunning = true;
     });
     _page = 1;
+    _maxScrollHeight = 0;
 
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
@@ -114,7 +114,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
 
   void _nextLoad() async {
 
-    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning){
       setState(() {
         _isLoadMoreRunning = true;
       });
@@ -195,69 +195,84 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
       ),
       body: Stack(
         children: [
-          NestedScrollView(
-            controller: _scrollController,
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 60.0,
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: TabBar(
-                          controller: _tabController,
-                          labelStyle: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            fontWeight: FontWeight.w600,
-                          ),
-                          overlayColor: WidgetStateColor.transparent,
-                          indicatorColor: Colors.black,
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          dividerColor: const Color(0xFFDDDDDD),
-                          labelColor: Colors.black,
-                          unselectedLabelColor: const Color(0xFF7B7B7B),
-                          isScrollable: true,
-                          indicatorWeight: 2.0,
-                          tabAlignment: TabAlignment.start,
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          tabs: _categories.map((category) {
-                            return Tab(text: category.ctName);
-                          }).toList(),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: Text(
-                          '상품 $_count', // 상품 수 표시
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Colors.black,
-                            height: 1.2,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ), // 상단 고정된 컨텐츠
-                )
-              ];
+          NotificationListener(
+            onNotification: (scrollNotification){
+              if (scrollNotification is ScrollEndNotification) {
+                var metrics = scrollNotification.metrics;
+                if (metrics.axisDirection != AxisDirection.down) return false;
+                if (_maxScrollHeight < metrics.maxScrollExtent) {
+                  _maxScrollHeight = metrics.maxScrollExtent;
+                }
+                if (_maxScrollHeight - metrics.pixels < 50) {
+                  _nextLoad();
+                }
+              }
+              return false;
             },
-            body: TabBarView(
-              controller: _tabController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: List.generate(
-                _categories.length,
-                (index) {
-                  if (index == _tabController.index) {
-                    return _buildProductGrid();
-                  } else {
-                    return Container();
-                  }
-                },
+            child: NestedScrollView(
+              controller: _scrollController,
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 60.0,
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: TabBar(
+                            controller: _tabController,
+                            labelStyle: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              fontWeight: FontWeight.w600,
+                            ),
+                            overlayColor: WidgetStateColor.transparent,
+                            indicatorColor: Colors.black,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            dividerColor: const Color(0xFFDDDDDD),
+                            labelColor: Colors.black,
+                            unselectedLabelColor: const Color(0xFF7B7B7B),
+                            isScrollable: true,
+                            indicatorWeight: 2.0,
+                            tabAlignment: TabAlignment.start,
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            tabs: _categories.map((category) {
+                              return Tab(text: category.ctName);
+                            }).toList(),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Text(
+                            '상품 $_count', // 상품 수 표시
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.black,
+                              height: 1.2,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ), // 상단 고정된 컨텐츠
+                  )
+                ];
+              },
+              body: TabBarView(
+                controller: _tabController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: List.generate(
+                  _categories.length,
+                      (index) {
+                    if (index == _tabController.index) {
+                      return _buildProductGrid();
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
               ),
             ),
           ),
