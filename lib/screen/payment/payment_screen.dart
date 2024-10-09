@@ -6,6 +6,7 @@ import 'package:BliU/data/iamport_pay_data.dart';
 import 'package:BliU/data/pay_order_detail_data.dart';
 import 'package:BliU/dto/pay_order_result_detail_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
 import 'package:BliU/screen/payment/component/payment_address_info.dart';
 import 'package:BliU/screen/payment/component/payment_discount.dart';
 import 'package:BliU/screen/payment/component/payment_iamport.dart';
@@ -32,6 +33,13 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   int totalPrice = 0;
   CouponData? selectedCouponData;
   int discountPoint = 0;
+  // TODO 결제수단에 따라 보내는값 변경
+  int payType = 0;//1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
+
+  bool allAgree = false;
+  bool agree1 = false;
+  bool agree2 = false;
+  bool agree3 = false;
 
   void onResultTotalPrice(int totalPrice) {
     this.totalPrice = totalPrice;
@@ -69,6 +77,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       savedAddressDetail = detail;
       savedMemo = memo;
     });
+  }
+
+  void _agreeCheck() {
+    if (agree1 && agree2 && agree3) {
+      allAgree = true;
+    } else {
+      allAgree = false;
+    }
   }
 
   @override
@@ -134,6 +150,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                   horizontalTitleGap: 0,
                   child: ExpansionTile(
                     initiallyExpanded: true,
+                    shape: const Border(
+                      top: BorderSide(color: Colors.transparent, width: 0),
+                      bottom: BorderSide(color: Colors.transparent, width: 0),
+                    ),
                     title: Container(
                       padding: const EdgeInsets.symmetric(vertical: 19.5),
                       child: Row(
@@ -224,6 +244,156 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                   color: const Color(0xFFF5F9F9),
                 ),
                 CustomExpansionTile(
+                  title: '결제수단',
+                  content: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 19.5, horizontal: 16),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 4),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        payType = 1;
+                                      });
+                                    },
+                                    child: Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 14.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(6),
+                                          border: Border.all(
+                                              color: payType == 1 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                        ),
+                                        child: Center(
+                                            child: Text(
+                                              '카드결제',
+                                              style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  color: payType == 1 ? const Color(0xFFFF6192) : Colors.black,
+                                                  fontSize: Responsive.getFont(context, 14)
+                                              ),
+                                            )
+                                        )
+                                    ),
+                                  ),
+                                )
+                            ),
+                            Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 4),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        payType = 2;
+                                      });
+                                    },
+                                    child: Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 14.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(6),
+                                          border: Border.all(
+                                              color: payType == 2 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                        ),
+                                        child: Center(
+                                            child: Text(
+                                              '휴대폰',
+                                              style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  color: payType == 2 ? const Color(0xFFFF6192) : Colors.black,
+                                                  fontSize: Responsive.getFont(context, 14)
+                                              ),
+                                            )
+                                        )
+                                    ),
+                                  ),
+                                )
+                            )
+                          ],
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 4),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        payType = 3;
+                                      });
+                                    },
+                                    child: Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 14.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(6),
+                                          border: Border.all(
+                                              color: payType == 3 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                        ),
+                                        child: Center(
+                                            child: Text(
+                                              '계좌이체',
+                                              style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  color: payType == 3 ? const Color(0xFFFF6192) : Colors.black,
+                                                  fontSize: Responsive.getFont(context, 14)
+                                              ),
+                                            )
+                                        )
+                                    ),
+                                  ),
+                                )
+                              ),
+                              Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 4),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        payType = 4;
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(vertical: 14.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(6),
+                                        border: Border.all(
+                                            color: payType == 4 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                      ),
+                                      child: Center(
+                                          child: Text(
+                                            '네이버페이',
+                                            style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                color: payType == 4 ? const Color(0xFFFF6192) : Colors.black,
+                                                fontSize: Responsive.getFont(context, 14)
+                                            ),
+                                          )
+                                      )
+                                    ),
+                                  ),
+                                )
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 10,
+                  width: double.infinity,
+                  color: const Color(0xFFF5F9F9),
+                ),
+                CustomExpansionTile(
                   title: '할인적용',
                   content: PaymentDiscount(
                     onCouponSelected: onCouponSelected,
@@ -245,6 +415,288 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                     discountPoint: discountPoint,
                   ),
                 ),
+                Container(
+                  height: 10,
+                  width: double.infinity,
+                  color: const Color(0xFFF5F9F9),
+                ),
+                Theme(
+                  data: Theme.of(context).copyWith(splashColor: Colors.transparent),
+                  child: ListTileTheme(
+                    //data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                    horizontalTitleGap: 0,
+                    //data: ListTileTheme.of(context),
+                    child: ExpansionTile(
+                      initiallyExpanded: true,
+                      shape: const Border(
+                        top: BorderSide(color: Colors.transparent, width: 0),
+                        bottom: BorderSide(color: Colors.transparent, width: 0),
+                      ),
+                      leading: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            allAgree = !allAgree;
+                            agree1 = allAgree;
+                            agree2 = allAgree;
+                            agree3 = allAgree;
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            height: 22,
+                            width: 22,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                              border: Border.all(
+                                color: allAgree ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                              ),
+                              color: allAgree ? const Color(0xFFFF6191) : Colors.white,
+                            ),
+                            child: SvgPicture.asset(
+                              'assets/images/check01_off.svg', // 체크박스 아이콘
+                              color: allAgree ? Colors.white : const Color(0xFFCCCCCC),
+                              height: 10,
+                              width: 10,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                      title: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 19.5),
+                        child: Text(
+                          "주문내용 확인 및 결제동의",
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 18),
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
+                        ),
+                      ),
+                      collapsedBackgroundColor: Colors.white,
+                      backgroundColor: Colors.white,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(left: 16, top: 20, right: 16, bottom: 7.5),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          agree1 = !agree1;
+                                          _agreeCheck();
+                                        });
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(6),
+                                            height: 22,
+                                            width: 22,
+                                            decoration: BoxDecoration(
+                                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                              border: Border.all(
+                                                color: agree1 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                              ),
+                                              color: agree1 ? const Color(0xFFFF6191) : Colors.white,
+                                            ),
+                                            child: SvgPicture.asset(
+                                              'assets/images/check01_off.svg', // 체크박스 아이콘
+                                              color: agree1 ? Colors.white : const Color(0xFFCCCCCC),
+                                              height: 10,
+                                              width: 10,
+                                              fit: BoxFit.contain,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Text(
+                                            '개인정보 수집 이용 동의',
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              height: 1.2,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const TermsDetail(type: 0),
+                                        ),
+                                      );
+                                    },
+                                    child:Container(
+                                      width: 50,
+                                      alignment: Alignment.centerRight,
+                                      child: SvgPicture.asset(
+                                        'assets/images/ic_link.svg',
+                                        color: Colors.black,
+                                      ),
+                                    )
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 16),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          agree2 = !agree2;
+                                          _agreeCheck();
+                                        });
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(6),
+                                            height: 22,
+                                            width: 22,
+                                            decoration: BoxDecoration(
+                                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                              border: Border.all(
+                                                color: agree2 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                              ),
+                                              color: agree2 ? const Color(0xFFFF6191) : Colors.white,
+                                            ),
+                                            child: SvgPicture.asset(
+                                              'assets/images/check01_off.svg', // 체크박스 아이콘
+                                              color: agree2 ? Colors.white : const Color(0xFFCCCCCC),
+                                              height: 10,
+                                              width: 10,
+                                              fit: BoxFit.contain,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Text(
+                                            '개인정보 제 3자 정보 제공 동의',
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              height: 1.2,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const TermsDetail(type: 0),
+                                          ),
+                                        );
+                                      },
+                                      child:Container(
+                                        width: 50,
+                                        alignment: Alignment.centerRight,
+                                        child: SvgPicture.asset(
+                                          'assets/images/ic_link.svg',
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(left: 16, top: 7.5, right: 16, bottom: 20),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          agree3 = !agree3;
+                                          _agreeCheck();
+                                        });
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(6),
+                                            height: 22,
+                                            width: 22,
+                                            decoration: BoxDecoration(
+                                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                              border: Border.all(
+                                                color: agree3 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                              ),
+                                              color: agree3 ? const Color(0xFFFF6191) : Colors.white,
+                                            ),
+                                            child: SvgPicture.asset(
+                                              'assets/images/check01_off.svg', // 체크박스 아이콘
+                                              color: agree3 ? Colors.white : const Color(0xFFCCCCCC),
+                                              height: 10,
+                                              width: 10,
+                                              fit: BoxFit.contain,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Text(
+                                            '결제대행 서비스 이용약관 동의',
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              height: 1.2,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const TermsDetail(type: 0),
+                                          ),
+                                        );
+                                      },
+                                      child:Container(
+                                        width: 50,
+                                        alignment: Alignment.centerRight,
+                                        child: SvgPicture.asset(
+                                          'assets/images/ic_link.svg',
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 40)
               ],
             ),
           ),
@@ -533,14 +985,16 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => PaymentCompleteScreen(
-                      payOrderResultDetailData: payOrderResultDetailData,
-                      savedAddressDetail: savedAddressDetail,
-                      savedAddressRoad: savedAddressRoad,
-                      savedMemo: savedMemo,
-                      savedRecipientName: savedRecipientName,
-                      savedRecipientPhone: savedRecipientPhone,
-                    )),
+              builder: (context) =>
+                PaymentCompleteScreen(
+                  payOrderResultDetailData: payOrderResultDetailData,
+                  savedAddressDetail: savedAddressDetail,
+                  savedAddressRoad: savedAddressRoad,
+                  savedMemo: savedMemo,
+                  savedRecipientName: savedRecipientName,
+                  savedRecipientPhone: savedRecipientPhone,
+                )
+            ),
           );
         }
       }

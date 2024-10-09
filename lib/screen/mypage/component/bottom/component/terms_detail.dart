@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 //약관 or 개인정보 처리방치등
 class TermsDetail extends ConsumerWidget {
   final int type; //0 - 이용약관 1 - 개인정보 처리 방침
+  // TODO 결제관련 동의 필요
 
   const TermsDetail({super.key, required this.type});
 
