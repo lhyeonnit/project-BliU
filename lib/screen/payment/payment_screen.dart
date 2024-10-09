@@ -908,6 +908,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
             buyerPostcode: ""
         );
 
+        if (!mounted) return;
+
         final Map<String, String>? paymentResult = await Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => PaymentIamport(iamportPayData : iamportPayData)),
@@ -953,7 +955,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       'memo': savedMemo,
     };
 
-    print("requestData == $requestData1");
+    //print("requestData == $requestData1");
     final Map<String, dynamic>? response = await ref
         .read(paymentViewModelProvider.notifier)
         .reqOrder(requestData1);
@@ -982,6 +984,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       if (payOrderResult != null) {
         if (payOrderResult.result == true) {
           final payOrderResultDetailData = payOrderResult.data;
+          if(!mounted) return;
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -1010,8 +1013,8 @@ class CustomExpansionTile extends StatelessWidget {
   const CustomExpansionTile({
     required this.title,
     required this.content,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
