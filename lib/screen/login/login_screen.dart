@@ -42,8 +42,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             // TODO 로그인 후 처리
           } else {
             Future.delayed(Duration.zero, () {
-              Utils.getInstance().showSnackBar(
-                  context, next?.memberInfoResponseDTO?.message ?? "");
+              Utils.getInstance().showSnackBar(context, next?.memberInfoResponseDTO?.message ?? "");
             });
           }
         }

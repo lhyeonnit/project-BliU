@@ -315,8 +315,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             border: Border.all(color: const Color(0xFFDDDDDD))
                           ),
                           //child: SvgPicture.asset('assets/images/product/like_lg_off.svg'),
-                          child: SvgPicture.asset(
-                              _productData?.likeChk == "Y" ? 'assets/images/product/like_lg_on.svg' : 'assets/images/product/like_lg_off.svg'
+                          child: SvgPicture.asset(_productData?.likeChk == "Y" ? 'assets/images/product/like_lg_on.svg' : 'assets/images/product/like_lg_off.svg'
                           ),
                         ),
                       ),

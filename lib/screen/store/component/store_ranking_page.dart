@@ -330,7 +330,6 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: rankData.productList?.length ?? 0,
-                                // 리스트가 null인 경우 안전하게 처리
                                 itemBuilder: (context, imageIndex) {
                                   final productData = rankData.productList?[imageIndex];
 
