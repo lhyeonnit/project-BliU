@@ -129,7 +129,7 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                     children: [
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 16),
-                        padding: EdgeInsets.only(top: 20, bottom: 17),
+                        padding: const EdgeInsets.only(top: 20, bottom: 17),
                         child: Text('즐겨찾기 ${bookmarkList.length}',
                           style: TextStyle(
                             fontFamily: 'Pretendard',
@@ -156,9 +156,7 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                             final endIndex = startIndex + itemsPerPage;
                             final bookmarkDataList = bookmarkList.sublist(
                               startIndex,
-                              endIndex > bookmarkList.length
-                                  ? bookmarkList.length
-                                  : endIndex,
+                              endIndex > bookmarkList.length ? bookmarkList.length : endIndex,
                             );
 
                             return ListView.builder(
@@ -197,14 +195,14 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                                                 width: 1.0),
                                           ),
                                           child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            child: (store.stProfile ?? "").isNotEmpty
-                                                ? Image.network(
-                                                    store.stProfile ?? "",
-                                                    fit: BoxFit.contain)
-                                                : Image.asset(
-                                                    'assets/images/home/exhi.png'),
+                                            borderRadius: BorderRadius.circular(20),
+                                            child:Image.network(
+                                              store.stProfile ?? "",
+                                              fit: BoxFit.contain,
+                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                return Image.asset('assets/images/home/exhi.png');
+                                              },
+                                            ),
                                           ),
                                         ),
                                         Expanded(
@@ -426,7 +424,7 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                           ),
                           overlayColor: WidgetStateColor.transparent,
                           indicatorColor: Colors.black,
-                          dividerColor: Color(0xFFDDDDDD),
+                          dividerColor: const Color(0xFFDDDDDD),
                           indicatorSize: TabBarIndicatorSize.tab,
                           labelColor: Colors.black,
                           unselectedLabelColor: const Color(0xFF7B7B7B),
@@ -453,9 +451,7 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                                   Container(
                                     margin: const EdgeInsets.only(left: 5),
                                     child: Text(
-                                      sortOptionSelected.isNotEmpty
-                                          ? sortOptionSelected
-                                          : '인기순', // 선택된 정렬 옵션 표시
+                                      sortOptionSelected.isNotEmpty ? sortOptionSelected : '인기순', // 선택된 정렬 옵션 표시
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(context, 14),
@@ -469,16 +465,16 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                             GestureDetector(
                               onTap: _showAgeGroupSelection,
                               child: Container(
-                                padding: EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
+                                padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(22),
-                                  border: Border.all(color: Color(0xFFDDDDDD)),
+                                  border: Border.all(color: const Color(0xFFDDDDDD)),
                                 ),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(right: 5),
+                                      margin: const EdgeInsets.only(right: 5),
                                       child: Text(
                                         getSelectedAgeGroupText(), // 선택된 연령대 표시
                                         overflow: TextOverflow.ellipsis,

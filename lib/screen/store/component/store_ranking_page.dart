@@ -20,6 +20,17 @@ class StoreRakingPage extends ConsumerStatefulWidget {
 }
 
 class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
+  final ScrollController _scrollController = ScrollController();
+
+  late List<CategoryData> ageCategories;
+  CategoryData? selectedAgeGroup;
+  String selectedStyle = '';
+
+  int _page = 1;
+  bool _hasNextPage = true;
+  bool _isFirstLoadRunning = false;
+  bool _isLoadMoreRunning = false;
+
   @override
   void initState() {
     super.initState();
@@ -27,11 +38,6 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
       _afterBuild(context);
     });
   }
-
-  late List<CategoryData> ageCategories;
-  CategoryData? selectedAgeGroup;
-  String selectedStyle = '';
-  final ScrollController _scrollController = ScrollController();
 
   void _showAgeGroupSelection() {
     showModalBottomSheet(
@@ -47,7 +53,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
           onSelectionChanged: (CategoryData? newSelection) {
             setState(() {
               selectedAgeGroup = newSelection;
-              _getList(true);
+              _getList();
             });
           },
         );
@@ -89,6 +95,41 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
     } else {
       return selectedStyle;
     }
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getList();
+  }
+
+  void _getList() async {
+    // TODO 회원 비회원 처리
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    // 회원 여부에 따라 처리 (비회원도 처리 가능)
+    if (mtIdx == null || mtIdx.isEmpty) {
+      // 비회원 처리 (예: 비회원용 메시지나 기본값 설정)
+      print('비회원');
+    } else {
+      print('회원 mtIdx: $mtIdx');
+    }
+
+    // TODO 페이징 처리도 추가
+    // TODO 검색 파라미터 추가
+    Map<String, dynamic> requestData = {
+      'mt_idx': mtIdx,
+      'style': "all",
+      'age': "all",
+      'pg': 1,
+    };
+    final ageCategoryResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getAgeCategory();
+    if (ageCategoryResponseDTO != null) {
+      if (ageCategoryResponseDTO.result == true) {
+        ageCategories = ageCategoryResponseDTO.list ?? [];
+      }
+    }
+    await ref.read(storeLankListViewModelProvider.notifier).getRank(requestData); // 서버에서 데이터 가져오기
   }
 
   @override
@@ -328,45 +369,52 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              height: 120,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: rankData.productList?.length ?? 0,
-                                itemBuilder: (context, imageIndex) {
-                                  final productData = rankData.productList?[imageIndex];
-
-                                  return GestureDetector(
-                                    onTap: () {
-                                      // Navigate to store_detail page when item is tapped
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ProductDetailScreen(ptIdx: productData?.ptIdx),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      width: 120,
+                            Visibility(
+                              visible: (rankData.productList?.length ?? 0) > 0,
+                                child: Column(
+                                  children: [
+                                    const SizedBox(height: 20),
+                                    SizedBox(
                                       height: 120,
-                                      margin: const EdgeInsets.only(right: 5),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(6),
-                                        // 모서리 둥글게 설정
-                                        child: Image.network(
-                                          productData?.ptImg ?? '',
-                                          // null인 경우 빈 문자열을 처리
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return const Icon(Icons.error); // 이미지 로딩에 실패한 경우 표시할 위젯
-                                          },
-                                        ),
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: rankData.productList?.length ?? 0,
+                                        itemBuilder: (context, imageIndex) {
+                                          final productData = rankData.productList?[imageIndex];
+
+                                          return GestureDetector(
+                                            onTap: () {
+                                              // Navigate to store_detail page when item is tapped
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => ProductDetailScreen(ptIdx: productData?.ptIdx),
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 120,
+                                              height: 120,
+                                              margin: const EdgeInsets.only(right: 5),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(6),
+                                                // 모서리 둥글게 설정
+                                                child: Image.network(
+                                                  productData?.ptImg ?? '',
+                                                  // null인 경우 빈 문자열을 처리
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (context, error, stackTrace) {
+                                                    return const Icon(Icons.error); // 이미지 로딩에 실패한 경우 표시할 위젯
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
+                                  ],
+                                ),
                             ),
                           ],
                         ),
@@ -381,38 +429,5 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
         ],
       ),
     );
-  }
-
-  void _afterBuild(BuildContext context) {
-    _getList(true);
-  }
-
-  void _getList(bool isNew) async {
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    // 회원 여부에 따라 처리 (비회원도 처리 가능)
-    if (mtIdx == null || mtIdx.isEmpty) {
-      // 비회원 처리 (예: 비회원용 메시지나 기본값 설정)
-      print('비회원');
-    } else {
-      print('회원 mtIdx: $mtIdx');
-    }
-
-    // TODO 페이징 처리도 추가
-    // TODO 검색 파라미터 추가
-    Map<String, dynamic> requestData = {
-      'mt_idx': mtIdx,
-      'style': "all", // 예시로 스타일을 1로 설정
-      'age': "all", // 예시로 연령대를 1로 설정
-      'pg': 1, // 첫 페이지
-    };
-    final ageCategoryResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getAgeCategory();
-    if (ageCategoryResponseDTO != null) {
-      if (ageCategoryResponseDTO.result == true) {
-        ageCategories = ageCategoryResponseDTO.list ?? [];
-      }
-    }
-    await ref.read(storeLankListViewModelProvider.notifier).getRank(requestData); // 서버에서 데이터 가져오기
   }
 }
