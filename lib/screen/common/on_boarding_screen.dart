@@ -59,12 +59,13 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                           child: Image.asset(
                             imagePath,
                             width: double.infinity,
+                            fit: BoxFit.cover,
                           ),
                         );
                       },
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: Responsive.getHeight(context, 150),
 
                     child: Column(

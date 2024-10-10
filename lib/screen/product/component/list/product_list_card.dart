@@ -10,8 +10,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ProductListCard extends ConsumerStatefulWidget {
   final ProductData productData;
-
-  const ProductListCard({super.key, required this.productData});
+  final bool? bottomVisible;
+  const ProductListCard({super.key, required this.productData, this.bottomVisible});
 
   @override
   ConsumerState<ProductListCard> createState() => _ProductListCardState();
@@ -157,51 +157,57 @@ class _ProductListCardState extends ConsumerState<ProductListCard> {
                     ],
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/home/item_like.svg',
-                      width: Responsive.getWidth(context, 13),
-                      height: Responsive.getHeight(context, 11),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 2, bottom: 2),
-                      child: Text(
-                        '${productData.ptLike ?? ""}',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 12),
-                          color: Colors.grey,
-                          height: 1.2,
+                Visibility(
+                  visible: widget.bottomVisible ?? true,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/home/item_like.svg',
+                        width: Responsive.getWidth(context, 13),
+                        height: Responsive.getHeight(context, 11),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(left: 2, bottom: 2),
+                        child: Text(
+                          '${productData.ptLike ?? ""}',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 12),
+                            color: Colors.grey,
+                            height: 1.2,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/images/home/item_comment.svg',
-                            width: Responsive.getWidth(context, 13),
-                            height: Responsive.getHeight(context, 12),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 2, bottom: 2),
-                            child: Text(
-                              '${productData.ptReview ?? ""}',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 12),
-                                color: Colors.grey,
-                                height: 1.2,
+                      Visibility(
+                        visible: (productData.ptReview ?? 0) == 0 ? false : true,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/images/home/item_comment.svg',
+                                width: Responsive.getWidth(context, 13),
+                                height: Responsive.getHeight(context, 12),
                               ),
-                            ),
+                              Container(
+                                margin: const EdgeInsets.only(left: 2, bottom: 2),
+                                child: Text(
+                                  '${productData.ptReview ?? ""}',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 12),
+                                    color: Colors.grey,
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),

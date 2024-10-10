@@ -22,7 +22,7 @@ class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
 
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  ConsumerState<SearchScreen> createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
@@ -291,8 +291,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       print('Error during search: $e');
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -627,9 +625,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     Text(
                       popularData.sltTxt ?? "",
                       style: TextStyle(
-                          height: 1.2,
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 15)),
+                        height: 1.2,
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 15)
+                      ),
                     ),
                   ],
                 ),
@@ -643,89 +642,90 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   Widget _buildSearching() {
     return Stack(
-      children:[ GestureDetector(
-        onTap: () {
-          // 검색 화면 외부를 터치하면 검색 종료
-          _searchController.clear();
-          setState(() {
-            _isSearching = false;
-          });
-        },
-        child: Container(
-          color: Colors.white,
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.only(top: 20),
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: _filteredResults.length,
-            itemBuilder: (context, index) {
-              final result = _filteredResults[index];
-              if (result is SearchStoreData) {
-                return ListTile(
-                  leading: Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: const Color(0xFFDDDDDD)),
-                    ),
-                    child: ClipOval(
-                        child: Image.network(
-                          result.stProfile ?? '',
-                          fit: BoxFit.cover,
-                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                            return const SizedBox();
-                          },
-                        )
-                    ),
-                  ),
-                  title: Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    child: _buildHighlightedText(result.stName ?? '', _searchController.text),),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => StoreDetailScreen(stIdx: result.stIdx ?? 0,),
+      children:[
+        GestureDetector(
+          onTap: () {
+            // 검색 화면 외부를 터치하면 검색 종료
+            _searchController.clear();
+            setState(() {
+              _isSearching = false;
+            });
+          },
+          child: Container(
+            color: Colors.white,
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.only(top: 20),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: _filteredResults.length,
+              itemBuilder: (context, index) {
+                final result = _filteredResults[index];
+                if (result is SearchStoreData) {
+                  return ListTile(
+                    leading: Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: const Color(0xFFDDDDDD)),
                       ),
-                    );
-                  },
-                );
-              } else {
-                return ListTile(
-                  leading: Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: const Color(0xFFDDDDDD)),
-                    ),
-                    child: ClipOval(
-                      child: Image.asset('assets/images/home/sch_front.png'),
-                    ),
-                  ),
-                  title: Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    child: _buildHighlightedText(result.ptName ?? '', _searchController.text),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProductDetailScreen(ptIdx: result.ptIdx ?? 0),
+                      child: ClipOval(
+                          child: Image.network(
+                            result.stProfile ?? '',
+                            fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              return const SizedBox();
+                            },
+                          )
                       ),
-                    );
-                  },
-                );
-              }
-            },
+                    ),
+                    title: Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      child: _buildHighlightedText(result.stName ?? '', _searchController.text),),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StoreDetailScreen(stIdx: result.stIdx ?? 0,),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return ListTile(
+                    leading: Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: const Color(0xFFDDDDDD)),
+                      ),
+                      child: ClipOval(
+                        child: Image.asset('assets/images/home/sch_front.png'),
+                      ),
+                    ),
+                    title: Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      child: _buildHighlightedText(result.ptName ?? '', _searchController.text),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetailScreen(ptIdx: result.ptIdx ?? 0),
+                        ),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
           ),
         ),
-      ),
-    ],
+      ],
     );
   }
 
