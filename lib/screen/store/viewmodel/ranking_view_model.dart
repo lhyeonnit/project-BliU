@@ -29,7 +29,6 @@ class RankingViewModel extends StateNotifier<RankingModel?> {
 
           List<StoreRankData> list = storeRankResponseDTO.list ?? [];
 
-
           storeRankResponseDTO.list = list;
 
           state = RankingModel(storeRankResponseDTO: storeRankResponseDTO);

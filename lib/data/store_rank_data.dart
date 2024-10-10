@@ -1,3 +1,5 @@
+import 'package:BliU/data/product_data.dart';
+
 class StoreRankData {
   int? stIdx;
   String? stName;
@@ -7,7 +9,7 @@ class StoreRankData {
   String? stAge;
   String? stAgeTxt;
   String? checkMark;
-  List<String>? productList;
+  List<ProductData>? productList;
 
   StoreRankData({
     required this.stIdx,
@@ -22,6 +24,10 @@ class StoreRankData {
   });
 
   factory StoreRankData.fromJson(Map<String, dynamic> json) {
+    final productList = List<ProductData>.from((json['product_list'])?.map((item) {
+      return ProductData.fromJson(item as Map<String, dynamic>);
+    }).toList());
+
     return StoreRankData(
       stIdx: json['st_idx'],
       stName: json['st_name'],
@@ -31,7 +37,7 @@ class StoreRankData {
       stAge: json['st_age'],
       stAgeTxt: json['st_age_txt'],
       checkMark: json['check_mark'],
-      productList: List<String>.from(json['product_list']),
+      productList: productList,
     );
   }
 

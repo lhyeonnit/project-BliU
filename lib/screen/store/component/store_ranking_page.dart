@@ -16,7 +16,7 @@ class StoreRakingPage extends ConsumerStatefulWidget {
   const StoreRakingPage({super.key});
 
   @override
-  _StoreRakingPageState createState() => _StoreRakingPageState();
+  ConsumerState<StoreRakingPage> createState() => _StoreRakingPageState();
 }
 
 class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
@@ -166,8 +166,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                 ),
                               ),
                             ),
-                            SvgPicture.asset(
-                                'assets/images/product/filter_select.svg'),
+                            SvgPicture.asset('assets/images/product/filter_select.svg'),
                           ],
                         ),
                       ),
@@ -203,6 +202,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                   );
                                 },
                                 child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
                                       margin: const EdgeInsets.only(right: 10),
@@ -236,11 +236,11 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                         borderRadius: const BorderRadius.all(Radius.circular(20)),
                                         // 사진의 모서리만 둥글게 설정
                                         child: Image.network(
-                                            rankData.stProfile ?? "",
-                                            fit: BoxFit.contain,
-                                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                              return const SizedBox();
-                                            }
+                                          rankData.stProfile ?? "",
+                                          fit: BoxFit.contain,
+                                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                            return const SizedBox();
+                                          }
                                         ),
                                       ),
                                     ),
@@ -324,31 +324,27 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                // Navigate to store_detail page when item is tapped
-                                // TODO 이동 수정
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ProductDetailScreen(ptIdx: 3),
-                                  ),
-                                );
-                              },
-                              child: SizedBox(
-                                height: 120,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: rankData.productList?.length ?? 0,
-                                  // 리스트가 null인 경우 안전하게 처리
-                                  itemBuilder: (context, imageIndex) {
-                                    final productImg = rankData.productList?[
-                                        imageIndex]; // 각 이미지 URL을 가져옴
-                                    return Container(
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 120,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: rankData.productList?.length ?? 0,
+                                // 리스트가 null인 경우 안전하게 처리
+                                itemBuilder: (context, imageIndex) {
+                                  final productData = rankData.productList?[imageIndex];
+
+                                  return GestureDetector(
+                                    onTap: () {
+                                      // Navigate to store_detail page when item is tapped
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ProductDetailScreen(ptIdx: productData?.ptIdx),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
                                       width: 120,
                                       height: 120,
                                       margin: const EdgeInsets.only(right: 5),
@@ -356,18 +352,17 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                         borderRadius: BorderRadius.circular(6),
                                         // 모서리 둥글게 설정
                                         child: Image.network(
-                                          productImg ?? '',
+                                          productData?.ptImg ?? '',
                                           // null인 경우 빈 문자열을 처리
                                           fit: BoxFit.cover,
                                           errorBuilder: (context, error, stackTrace) {
-                                            return const Icon(Icons
-                                                .error); // 이미지 로딩에 실패한 경우 표시할 위젯
+                                            return const Icon(Icons.error); // 이미지 로딩에 실패한 경우 표시할 위젯
                                           },
                                         ),
                                       ),
-                                    );
-                                  },
-                                ),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ],
@@ -415,8 +410,6 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
         ageCategories = ageCategoryResponseDTO.list ?? [];
       }
     }
-    await ref
-        .read(storeLankListViewModelProvider.notifier)
-        .getRank(requestData); // 서버에서 데이터 가져오기
+    await ref.read(storeLankListViewModelProvider.notifier).getRank(requestData); // 서버에서 데이터 가져오기
   }
 }
