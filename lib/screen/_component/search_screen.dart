@@ -407,7 +407,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           },
                           child: SvgPicture.asset(
                             'assets/images/home/ic_top_sch_w.svg',
-                            color: Colors.black,
+                            colorFilter: const ColorFilter.mode(
+                              Colors.black,
+                              BlendMode.srcIn,
+                            ),
                             fit: BoxFit.contain,
                           ),
                         ),
@@ -532,7 +535,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   backgroundColor: Colors.white,
                   deleteIcon: SvgPicture.asset(
                     'assets/images/product/filter_del.svg',
-                    color: const Color(0xFFACACAC)
+                    colorFilter: const ColorFilter.mode(
+                      Color(0xFFACACAC),
+                      BlendMode.srcIn,
+                    ),
                   ),
                   onDeleted: () {
                     setState(() {
@@ -563,7 +569,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   _buildSearchHistory(), // 검색 기록을 표시하는 위젯
                 ],
                 _buildPopularSearches(),
-                SearchRecommendItem(),
+                const SearchRecommendItem(),
               ],
             ),
           ),

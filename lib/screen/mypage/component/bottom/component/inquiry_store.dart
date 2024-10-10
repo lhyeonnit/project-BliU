@@ -135,8 +135,7 @@ class _InquiryStoreState extends ConsumerState<InquiryStore> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              SvgPicture.asset(
-                                  'assets/images/my/btn_add_img.svg'),
+                              SvgPicture.asset('assets/images/my/btn_add_img.svg'),
                               Text(
                                 '사진선택',
                                 style: TextStyle(

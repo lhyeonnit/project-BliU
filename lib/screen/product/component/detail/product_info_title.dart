@@ -212,11 +212,15 @@ class _ProductInfoTitleState extends State<ProductInfoTitle> {
                             ),
                           ),
                           Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 5),
-                              child: SvgPicture.asset(
-                                'assets/images/product/ic_more_arrow.svg',
-                                color: const Color(0xFF7B7B7B),
-                              )),
+                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                            child: SvgPicture.asset(
+                              'assets/images/product/ic_more_arrow.svg',
+                              colorFilter: const ColorFilter.mode(
+                                Color(0xFF7B7B7B),
+                                BlendMode.srcIn,
+                              ),
+                            )
+                          ),
                         ],
                       ),
                     ),

@@ -172,9 +172,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ),
                               child: SvgPicture.asset(
                                 'assets/images/check01_off.svg', // 체크박스 아이콘
-                                color: _isAutoLogin
-                                    ? Colors.white
-                                    : const Color(0xFFCCCCCC),
+                                colorFilter: ColorFilter.mode(
+                                  _isAutoLogin ? Colors.white : const Color(0xFFCCCCCC),
+                                  BlendMode.srcIn,
+                                ),
                                 height: 10,
                                 width: 10,
                                 fit: BoxFit.contain,
@@ -322,8 +323,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         children: [
                           IconButton(
                             icon: ClipOval(
-                                child: SvgPicture.asset(
-                                    'assets/images/login/sns_k.svg')),
+                              child: SvgPicture.asset('assets/images/login/sns_k.svg')
+                            ),
                             iconSize: 60,
                             onPressed: () {
                               _kakaoLogin();
@@ -331,8 +332,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                           IconButton(
                             icon: ClipOval(
-                                child: SvgPicture.asset(
-                                    'assets/images/login/sns_n.svg')),
+                              child: SvgPicture.asset('assets/images/login/sns_n.svg')
+                            ),
                             iconSize: 60,
                             onPressed: () {
                               _naverLogin();
@@ -340,8 +341,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                           IconButton(
                             icon: ClipOval(
-                                child: SvgPicture.asset(
-                                    'assets/images/login/sns_a.svg')),
+                              child: SvgPicture.asset('assets/images/login/sns_a.svg')
+                            ),
                             iconSize: 60,
                             onPressed: () {
                               _appleLogin();

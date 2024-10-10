@@ -179,7 +179,7 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 12.0),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Color(0xFFDDDDDD)),
+                          border: Border.all(color: const Color(0xFFDDDDDD)),
                           borderRadius: BorderRadius.circular(19.0),
                         ),
                         child: Row(
@@ -194,14 +194,14 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
                               ),
                             ),
                             const SizedBox(width: 8), // 텍스트와 아이콘 사이의 간격
-                            Container(
-                              child: SvgPicture.asset(
-                                'assets/images/store/book_mark.svg',
-                                color: isSelected == true
-                                    ? const Color(0xFFFF6192)
-                                    : null,
+
+                            isSelected == true ? SvgPicture.asset(
+                              'assets/images/store/book_mark.svg',
+                              colorFilter: const ColorFilter.mode(
+                                Color(0xFFFF6192),
+                                BlendMode.srcIn,
                               ),
-                            ),
+                            ) : SvgPicture.asset('assets/images/store/book_mark.svg'),
                           ],
                         ),
                       ),

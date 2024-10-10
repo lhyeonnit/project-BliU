@@ -1,5 +1,6 @@
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
+import 'package:BliU/data/style_category_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:BliU/screen/product/component/list/product_category_bottom.dart';
@@ -28,9 +29,16 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
   late CategoryData _selectedCategory;
   late List<CategoryData> _categories;
 
-  bool isTodayStart = true;
+  List<CategoryData> _ageCategories = [];
+  List<StyleCategoryData> _styleCategories = [];
+
+  bool _isTodayStart = true;
   String _sortOption = '최신순';
   String _sortOptionSelected = '';
+
+  CategoryData? selectedAgeGroup;
+  List<StyleCategoryData> selectedStyles = [];
+  RangeValues selectedRangeValues = const RangeValues(0, 100000);
 
   int _count = 0;
   List<ProductData> _productList = [];
@@ -67,6 +75,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
 
   void _afterBuild(BuildContext context) {
     _getList();
+    _getFilterCategory();
   }
 
   void _tabChangeCallBack() {
@@ -113,32 +122,22 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         break;
     }
 
-    String age = '';
-    // 연령 1: 베이비 2: 키즈 3: 주니어
-    switch (selectedAgeGroup) {
-      case "베이비(0-24개월)":
-        age = '1';
-        break;
-      case "키즈(3-8세)":
-        age = '2';
-        break;
-      case "주니어(9세이상)":
-        age = '3';
-        break;
-    }
+    String age = '${selectedAgeGroup?.catIdx ?? ""}';
 
     String styles = '';
     // 없을시 빈값으로 전달해주세요 1 캐주얼, 2 스포티 3: 포멀/클래식, 4:베이직 5:프린세스/페어리 6: 힙스터 7:럭셔리 8: 어반 스트릿 9: 로맨틱
     // ex) [1, 2]
     for (var style in selectedStyles) {
       if(styles.isEmpty) {
-        styles = style;
+        styles = (style.fsIdx ?? 0).toString();
       } else {
-        styles = "$styles,$style";
+        styles = "$styles,${(style.fsIdx ?? 0).toString()}";
       }
     }
 
-    // TODO 정렬 및 검색 결과 파라매터 넣어야 함
+    int minPrice = selectedRangeValues.start.toInt();
+    int maxPrice = selectedRangeValues.end.toInt();
+
     Map<String, dynamic> requestData = {
       'mt_idx': mtIdx,
       'category': _selectedCategory.ctIdx,
@@ -146,8 +145,8 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
       'sort': sort,
       'age': age,
       'styles': styles,
-      'min_price': 0,
-      'max_price': 99999,
+      'min_price': minPrice,
+      'max_price': maxPrice,
       'pg': _page,
     };
 
@@ -197,32 +196,22 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
           break;
       }
 
-      String age = '';
-      // 연령 1: 베이비 2: 키즈 3: 주니어
-      switch (selectedAgeGroup) {
-        case "베이비(0-24개월)":
-          age = '1';
-          break;
-        case "키즈(3-8세)":
-          age = '2';
-          break;
-        case "주니어(9세이상)":
-          age = '3';
-          break;
-      }
+      String age = '${selectedAgeGroup?.catIdx ?? ""}';
 
       String styles = '';
       // 없을시 빈값으로 전달해주세요 1 캐주얼, 2 스포티 3: 포멀/클래식, 4:베이직 5:프린세스/페어리 6: 힙스터 7:럭셔리 8: 어반 스트릿 9: 로맨틱
       // ex) [1, 2]
       for (var style in selectedStyles) {
         if(styles.isEmpty) {
-          styles = style;
+          styles = (style.fsIdx ?? 0).toString();
         } else {
-          styles = "$styles,$style";
+          styles = "$styles,${(style.fsIdx ?? 0).toString()}";
         }
       }
 
-      // TODO 정렬 및 검색 결과 파라매터 넣어야 함
+      int minPrice = selectedRangeValues.start.toInt();
+      int maxPrice = selectedRangeValues.end.toInt();
+
       Map<String, dynamic> requestData = {
         'mt_idx': mtIdx,
         'category': _selectedCategory.ctIdx,
@@ -230,8 +219,8 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         'sort': sort,
         'age': age,
         'styles': styles,
-        'min_price': 0,
-        'max_price': 99999,
+        'min_price': minPrice,
+        'max_price': maxPrice,
         'pg': _page,
       };
 
@@ -255,23 +244,31 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
     }
   }
 
-  String selectedAgeGroup = '';
-  List<String> selectedStyles = [];
-  RangeValues selectedRangeValues = const RangeValues(0, 100000);
+  void _getFilterCategory() async {
+    final categoryResponseDTO = await ref.read(productListViewModelProvider.notifier).getAgeCategory();
+    _ageCategories = categoryResponseDTO?.list ?? [];
+
+    final styleCategoryResponseDTO = await ref.read(productListViewModelProvider.notifier).getStyleCategory();
+    _styleCategories = styleCategoryResponseDTO?.list ?? [];
+  }
 
   String getSelectedAgeGroupText() {
-    if (selectedAgeGroup.isEmpty) {
-      return '연령';
-    } else {
-      return selectedAgeGroup;
-    }
+    return selectedAgeGroup?.catName ?? '연령';
   }
 
   String getSelectedStyleText() {
     if (selectedStyles.isEmpty) {
       return '스타일';
     } else {
-      return selectedStyles.join(', ');
+      String styleStr = '';
+      for (var style in selectedStyles) {
+        if(styleStr.isEmpty) {
+          styleStr = style.cstName ?? "";
+        } else {
+          styleStr = "$styleStr,${style.cstName ?? ""}";
+        }
+      }
+      return styleStr;
     }
   }
 
@@ -326,7 +323,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
     );
   }
 
-  void _openFilterBottomSheet() {
+  void _openFilterBottomSheet(bool isMoveBottom) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
@@ -337,6 +334,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
         return ProductFilterBottom(
+          isMoveBottom: isMoveBottom,
+          ageCategories: _ageCategories,
+          styleCategories: _styleCategories,
           selectedStyleOption: selectedStyles,
           selectedAgeOption: selectedAgeGroup,
           selectedRangeValuesOption: selectedRangeValues,
@@ -386,7 +386,10 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
               ),
               SvgPicture.asset(
                 'assets/images/product/ic_select.svg',
-                color: Colors.black
+                colorFilter: const ColorFilter.mode(
+                  Colors.black,
+                  BlendMode.srcIn,
+                ),
               ),
             ],
           ),
@@ -521,7 +524,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                             onTap: () {
                               // TODO API 연동 필요
                               setState(() {
-                                isTodayStart = !isTodayStart;
+                                _isTodayStart = !_isTodayStart;
                               });
                             },
                             child: Row(
@@ -534,13 +537,16 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                                   decoration: BoxDecoration(
                                     borderRadius: const BorderRadius.all(Radius.circular(6)),
                                     border: Border.all(
-                                      color: isTodayStart ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                      color: _isTodayStart ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                                     ),
-                                    color: isTodayStart ? const Color(0xFFFF6191) : Colors.white,
+                                    color: _isTodayStart ? const Color(0xFFFF6191) : Colors.white,
                                   ),
                                   child: SvgPicture.asset(
                                     'assets/images/check01_off.svg', // 체크박스 아이콘
-                                    color: isTodayStart ? Colors.white : const Color(0xFFCCCCCC),
+                                    colorFilter: ColorFilter.mode(
+                                      _isTodayStart ? Colors.white : const Color(0xFFCCCCCC),
+                                      BlendMode.srcIn,
+                                    ),
                                     height: 10,
                                     width: 10,
                                     fit: BoxFit.contain,
@@ -561,12 +567,12 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                               scrollDirection: Axis.horizontal,
                               child: Row(
                                 children: [
-                                  _buildFilterButton(getSelectedAgeGroupText()),
+                                  _buildFilterButton(getSelectedAgeGroupText(), false),
                                   Container(
                                       margin: const EdgeInsets.symmetric(horizontal: 4),
-                                      child: _buildFilterButton(getSelectedStyleText())
+                                      child: _buildFilterButton(getSelectedStyleText(), false)
                                   ),
-                                  _buildFilterButton(getSelectedRangeValues()),
+                                  _buildFilterButton(getSelectedRangeValues(), true),
                                 ],
                               ),
                             )
@@ -599,7 +605,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
     );
   }
 
-  Widget _buildFilterButton(String label) {
+  Widget _buildFilterButton(String label, bool isMoveBottom) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -610,7 +616,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         ),
         padding: const EdgeInsets.only(top: 11.0, bottom: 11, left: 20.0, right: 17),
       ),
-      onPressed: _openFilterBottomSheet,
+      onPressed: () {
+        _openFilterBottomSheet(isMoveBottom);
+      },
       child: Row(
         children: [
           Container(

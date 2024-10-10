@@ -218,19 +218,16 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                   padding: const EdgeInsets.all(20),
                                   decoration: const BoxDecoration(
                                     color: Color(0xFFF5F9F9),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(6)),
+                                    borderRadius: BorderRadius.all(Radius.circular(6)),
                                   ),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin:
-                                            const EdgeInsets.only(bottom: 12),
+                                        margin: const EdgeInsets.only(bottom: 12),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               _addPtOptionArr[index].option ?? "",
@@ -243,61 +240,46 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                             GestureDetector(
                                               onTap: () {
                                                 setState(() {
-                                                  _addPtOptionArr
-                                                      .removeAt(index);
+                                                  _addPtOptionArr.removeAt(index);
                                                 });
                                               },
-                                              child: SvgPicture.asset(
-                                                  'assets/images/ic_del.svg'),
+                                              child: SvgPicture.asset('assets/images/ic_del.svg'),
                                             ),
                                           ],
                                         ),
                                       ),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-                                            width: Responsive.getWidth(
-                                                context, 96),
+                                            width: Responsive.getWidth(context, 96),
                                             padding: const EdgeInsets.symmetric(
                                               vertical: 6,
                                               horizontal: 8,
                                             ),
                                             decoration: BoxDecoration(
                                               color: Colors.white,
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(22)),
+                                              borderRadius: const BorderRadius.all(Radius.circular(22)),
                                               border: Border.all(
-                                                  color:
-                                                      const Color(0xFFE3E3E3)),
+                                                color: const Color(0xFFE3E3E3)
+                                              ),
                                             ),
                                             child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 GestureDetector(
-                                                  child: const Icon(
-                                                      CupertinoIcons.minus,
-                                                      size: 20),
+                                                  child: const Icon(CupertinoIcons.minus, size: 20),
                                                   onTap: () {
-                                                    if (_addPtOptionArr[index]
-                                                            .count >
-                                                        1) {
+                                                    if (_addPtOptionArr[index].count > 1) {
                                                       setState(() {
-                                                        _addPtOptionArr[index]
-                                                            .count -= 1;
+                                                        _addPtOptionArr[index].count -= 1;
                                                       });
                                                     }
                                                   },
                                                 ),
                                                 Container(
-                                                  margin: const EdgeInsets
-                                                      .symmetric(horizontal: 5),
+                                                  margin: const EdgeInsets.symmetric(horizontal: 5),
                                                   child: Text(
                                                     '${_addPtOptionArr[index].count}',
                                                     style: TextStyle(
@@ -309,25 +291,19 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                                 ),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    if ((_addPtOptionArr[index]
-                                                                .potJaego ??
-                                                            0) >
-                                                        _addPtOptionArr[index]
-                                                            .count) {
+                                                    if ((_addPtOptionArr[index].potJaego ?? 0) > _addPtOptionArr[index].count) {
                                                       setState(() {
-                                                        _addPtOptionArr[index]
-                                                            .count += 1;
+                                                        _addPtOptionArr[index].count += 1;
                                                       });
                                                     }
                                                   },
-                                                  child: const Icon(Icons.add,
-                                                      size: 20),
+                                                  child: const Icon(Icons.add, size: 20),
                                                 ),
                                               ],
                                             ),
                                           ),
                                           Text(
-                                            '${Utils.getInstance().priceString(_addPtOptionArr[index].count * (_addPtOptionArr[index].potPrice ?? 0))}원',
+                                            '${Utils.getInstance().priceString(_addPtOptionArr[index].count * ((_addPtOptionArr[index].potPrice ?? 0) + (_productData.ptPrice ?? 0)))}원',
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
                                               fontSize: Responsive.getFont(context, 14),
@@ -360,8 +336,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                 padding: const EdgeInsets.all(20),
                                 decoration: const BoxDecoration(
                                   color: Color(0xFFF5F9F9),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(6)),
+                                  borderRadius: BorderRadius.all(Radius.circular(6)),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -369,8 +344,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                     Container(
                                       margin: const EdgeInsets.only(bottom: 12),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             _addPtAddArr[index].option ?? "",
@@ -387,7 +361,8 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                               });
                                             },
                                             child: SvgPicture.asset(
-                                                'assets/images/ic_del.svg'),
+                                              'assets/images/ic_del.svg'
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -448,12 +423,10 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                               GestureDetector(
                                                 onTap: () {
                                                   setState(() {
-                                                    _addPtAddArr[index].count +=
-                                                        1;
+                                                    _addPtAddArr[index].count += 1;
                                                   });
                                                 },
-                                                child: const Icon(Icons.add,
-                                                    size: 20),
+                                                child: const Icon(Icons.add, size: 20),
                                               ),
                                             ],
                                           ),
@@ -559,28 +532,24 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
               _isExpanded = expanded; // 타일이 열리고 닫힐 때 상태 변경
             });
           },
-          children: options.map(
-            (option) {
-              return ListTile(
-                title: Text(
-                  option,
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    height: 1.2,
-                  ),
+          children: options.map((option) {
+            return ListTile(
+              title: Text(
+                option,
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
                 ),
-                onTap: () {
-                  onSelected(option); // 항목이 선택되면 콜백 실행
-                  setState(
-                    () {
-                      _isExpanded = false; // 선택 시 타일을 닫음
-                    },
-                  );
-                },
-              );
-            },
-          ).toList(),
+              ),
+              onTap: () {
+                onSelected(option); // 항목이 선택되면 콜백 실행
+                setState(() {
+                  _isExpanded = false; // 선택 시 타일을 닫음
+                });
+              },
+            );
+          }).toList(),
         ),
       ),
     );
@@ -592,25 +561,20 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
     int optionProductPrice = 0;
     int additionalProductPrice = 0;
     for (int i = 0; i < _addPtOptionArr.length; i++) {
-      optionProductPrice +=
-          (_addPtOptionArr[i].potPrice ?? 0 * _addPtOptionArr[i].count) +
-              (productPrice * _addPtOptionArr[i].count);
+      optionProductPrice += (_addPtOptionArr[i].potPrice ?? 0 * _addPtOptionArr[i].count) + (productPrice * _addPtOptionArr[i].count);
     }
     for (int i = 0; i < _addPtAddArr.length; i++) {
       additionalProductPrice += (_addPtAddArr[i].patPrice ?? 0);
     }
     int totalPrice = optionProductPrice + additionalProductPrice;
     String deliveryPriceStr = "";
-    if (totalPrice <
-        (_productData.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0)) {
-      deliveryPriceStr =
-          "${Utils.getInstance().priceString((_productData.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0))}원";
+    if (totalPrice < (_productData.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0)) {
+      deliveryPriceStr = "${Utils.getInstance().priceString((_productData.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0))}원";
     } else {
       if ((_productData.deliveryInfo?.deliveryPrice ?? 0) == 0) {
         deliveryPriceStr = "무료";
       } else {
-        deliveryPriceStr =
-            "${Utils.getInstance().priceString((_productData.deliveryInfo?.deliveryPrice ?? 0))}원";
+        deliveryPriceStr = "${Utils.getInstance().priceString((_productData.deliveryInfo?.deliveryPrice ?? 0))}원";
       }
     }
     return Container(

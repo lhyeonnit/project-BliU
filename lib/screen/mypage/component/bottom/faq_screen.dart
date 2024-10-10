@@ -241,7 +241,10 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                           },
                           child: SvgPicture.asset(
                             'assets/images/home/ic_top_sch_w.svg',
-                            color: Colors.black,
+                            colorFilter: const ColorFilter.mode(
+                              Colors.black,
+                              BlendMode.srcIn,
+                            ),
                             fit: BoxFit.contain,
                           ),
                         ),

@@ -101,7 +101,10 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                       },
                       child: SvgPicture.asset(
                         'assets/images/ic_link.svg',
-                        color: Colors.black,
+                        colorFilter: const ColorFilter.mode(
+                          Colors.black,
+                          BlendMode.srcIn,
+                        ),
                       ),
                     ),
                   ],
@@ -132,7 +135,10 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
                         },
                         child: SvgPicture.asset(
                           'assets/images/ic_link.svg',
-                          color: Colors.black,
+                          colorFilter: const ColorFilter.mode(
+                            Colors.black,
+                            BlendMode.srcIn,
+                          ),
                         ),
                       ),
                     ],
@@ -250,7 +256,10 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
             ),
             child: SvgPicture.asset(
               'assets/images/check01_off.svg', // 체크박스 아이콘
-              color: value ? Colors.white : const Color(0xFFCCCCCC),
+              colorFilter: ColorFilter.mode(
+                value ? Colors.white : const Color(0xFFCCCCCC),
+                BlendMode.srcIn,
+              ),
               height: 10,
               width: 10,
               fit: BoxFit.contain,
@@ -304,7 +313,10 @@ class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
               ),
               child: SvgPicture.asset(
                 'assets/images/check01_off.svg', // 체크박스 아이콘
-                color: value ? Colors.white : const Color(0xFFCCCCCC),
+                colorFilter: ColorFilter.mode(
+                  value ? Colors.white : const Color(0xFFCCCCCC),
+                  BlendMode.srcIn,
+                ),
                 height: 10,
                 width: 10,
                 fit: BoxFit.contain,

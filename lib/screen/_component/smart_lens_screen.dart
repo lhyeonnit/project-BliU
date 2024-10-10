@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class SmartLensScreen extends StatefulWidget {
-  const SmartLensScreen({Key? key}) : super(key: key);
+  const SmartLensScreen({super.key});
 
   @override
   State<SmartLensScreen> createState() => _SmartLensScreenState();
@@ -124,7 +124,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
               Navigator.pop(context);
             },
             child: Container(
-                margin: EdgeInsets.only(right: 16),
+                margin: const EdgeInsets.only(right: 16),
                 child: SvgPicture.asset('assets/images/product/ic_close.svg')),
           ),
         ],
@@ -133,13 +133,13 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.symmetric(vertical: 40),
-            padding: EdgeInsets.only(left: 16,),
+            margin: const EdgeInsets.symmetric(vertical: 40),
+            padding: const EdgeInsets.only(left: 16,),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.only(bottom: 20),
+                  margin: const EdgeInsets.only(bottom: 20),
                   child: _buildSmartLensInfo("assets/images/home/그룹 37779.png", '이미지 검색 기능',
                       '사용자가 사진을 찍거나 이미지를 업로드하면, \n해당 이미지와 유사한 패션 아이템을 찾아줍니다.'),
                 ),
@@ -149,7 +149,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 16),
+            margin: const EdgeInsets.only(left: 16),
               child: _albums.isNotEmpty
                   ? DropdownButton(
                       value: _currentAlbum,
@@ -190,7 +190,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
         Container(
           width: 84,
           height: 84,
-          margin: EdgeInsets.only(right: 15),
+          margin: const EdgeInsets.only(right: 15),
           child: Image.asset(image),
         ),
         Container(

@@ -156,7 +156,10 @@ class AlarmScreenState extends ConsumerState<AlarmScreen> {
                             width: Responsive.getWidth(context, 14),
                             height: Responsive.getHeight(context, 14),
                             fit: BoxFit.contain,
-                            color: const Color(0xFF7B7B7B),
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFF7B7B7B),
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ),
                       ],

@@ -182,8 +182,7 @@ class _ReturnItemState extends State<ReturnItem> {
                                 color: Colors.black,
                               ),
                             ),
-                            SvgPicture.asset(
-                                'assets/images/product/ic_select.svg'),
+                            SvgPicture.asset('assets/images/product/ic_select.svg'),
                           ],
                         ),
                       ),
@@ -309,8 +308,7 @@ class _ReturnItemState extends State<ReturnItem> {
                                     color: Colors.black,
                                   ),
                                 ),
-                                SvgPicture.asset(
-                                    'assets/images/product/ic_select.svg'),
+                                SvgPicture.asset('assets/images/product/ic_select.svg'),
                               ],
                             ),
                           ),
@@ -442,8 +440,7 @@ class _ReturnItemState extends State<ReturnItem> {
                                       _selectedImages.removeAt(index);
                                     });
                                   },
-                                  child: SvgPicture.asset(
-                                      'assets/images/ic_del.svg'),
+                                  child: SvgPicture.asset('assets/images/ic_del.svg'),
                                 ),
                               ),
                             ],

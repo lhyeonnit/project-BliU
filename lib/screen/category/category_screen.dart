@@ -249,7 +249,10 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                       'assets/images/ic_link.svg',
                                       width: 15,
                                       height: 15,
-                                      color: Colors.black,
+                                      colorFilter: const ColorFilter.mode(
+                                        Colors.black,
+                                        BlendMode.srcIn,
+                                      ),
                                     ),
                                   ],
                                 ),

@@ -299,11 +299,15 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                               width: Responsive.getWidth(context, 14),
                                               height: Responsive.getHeight(context, 17),
                                               margin: const EdgeInsets.only(bottom: 3),
-                                              child: SvgPicture.asset(
+                                              child: rankData.checkMark == "Y" ? SvgPicture.asset(
                                                 'assets/images/store/book_mark.svg',
-                                                color: rankData.checkMark == "Y" // 북마크가 활성화된 경우 색상 설정
-                                                    ? const Color(0xFFFF6192)
-                                                    : null, // 비활성화된 경우 기본 색상
+                                                colorFilter: const ColorFilter.mode(
+                                                  Color(0xFFFF6192),
+                                                  BlendMode.srcIn,
+                                                ),
+                                                fit: BoxFit.contain,
+                                              ) : SvgPicture.asset(
+                                                'assets/images/store/book_mark.svg',
                                                 fit: BoxFit.contain,
                                               ),
                                             ),

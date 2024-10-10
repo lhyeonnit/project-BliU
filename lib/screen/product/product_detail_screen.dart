@@ -58,7 +58,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   void initState() {
     super.initState();
     ptIdx = widget.ptIdx ?? 0;
-    //ptIdx = 1;
+    ptIdx = 4;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -314,9 +314,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             borderRadius: const BorderRadius.all(Radius.circular(6)),
                             border: Border.all(color: const Color(0xFFDDDDDD))
                           ),
-                          //child: SvgPicture.asset('assets/images/product/like_lg_off.svg'),
-                          child: SvgPicture.asset(_productData?.likeChk == "Y" ? 'assets/images/product/like_lg_on.svg' : 'assets/images/product/like_lg_off.svg'
-                          ),
+                          child: SvgPicture.asset(_productData?.likeChk == "Y" ? 'assets/images/product/like_lg_on.svg' : 'assets/images/product/like_lg_off.svg'),
                         ),
                       ),
                       Expanded(
@@ -626,7 +624,10 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             margin: const EdgeInsets.symmetric(horizontal: 5),
                             child: SvgPicture.asset(
                               'assets/images/product/ic_more_arrow.svg',
-                              color: const Color(0xFF7B7B7B),
+                              colorFilter: const ColorFilter.mode(
+                                Color(0xFF7B7B7B),
+                                BlendMode.srcIn,
+                              ),
                             )
                           ),
                         ],
@@ -827,7 +828,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           ),
         ),
         Container(
-          height: 290,
+          height: 320,
           margin: const EdgeInsets.only(top: 20),
           child: ListView.builder(
             shrinkWrap: true,

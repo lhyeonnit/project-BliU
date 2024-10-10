@@ -158,8 +158,11 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
                   Container(
                     margin: const EdgeInsets.only(left: 5),
                     child: SvgPicture.asset(
-                        isExpand ? 'assets/images/home/ft_collapse.svg' : 'assets/images/home/filter_select.svg',
-                        color: const Color(0xFF7B7B7B)
+                      isExpand ? 'assets/images/home/ft_collapse.svg' : 'assets/images/home/filter_select.svg',
+                      colorFilter: const ColorFilter.mode(
+                        Color(0xFF7B7B7B),
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                 ],

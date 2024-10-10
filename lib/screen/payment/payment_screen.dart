@@ -189,7 +189,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                   ),
                                   child: SvgPicture.asset(
                                     'assets/images/check01_off.svg', // 체크박스 아이콘
-                                    color: isUseAddress ? Colors.white : const Color(0xFFCCCCCC),
+                                    colorFilter: ColorFilter.mode(
+                                      isUseAddress ? Colors.white : const Color(0xFFCCCCCC),
+                                      BlendMode.srcIn,
+                                    ),
                                     height: 10,
                                     width: 10,
                                     fit: BoxFit.contain,
@@ -450,7 +453,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                             ),
                             child: SvgPicture.asset(
                               'assets/images/check01_off.svg', // 체크박스 아이콘
-                              color: allAgree ? Colors.white : const Color(0xFFCCCCCC),
+                              colorFilter: ColorFilter.mode(
+                                allAgree ? Colors.white : const Color(0xFFCCCCCC),
+                                BlendMode.srcIn,
+                              ),
                               height: 10,
                               width: 10,
                               fit: BoxFit.contain,
@@ -502,7 +508,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             ),
                                             child: SvgPicture.asset(
                                               'assets/images/check01_off.svg', // 체크박스 아이콘
-                                              color: agree1 ? Colors.white : const Color(0xFFCCCCCC),
+                                              colorFilter: ColorFilter.mode(
+                                                agree1 ? Colors.white : const Color(0xFFCCCCCC),
+                                                BlendMode.srcIn,
+                                              ),
                                               height: 10,
                                               width: 10,
                                               fit: BoxFit.contain,
@@ -535,7 +544,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                       alignment: Alignment.centerRight,
                                       child: SvgPicture.asset(
                                         'assets/images/ic_link.svg',
-                                        color: Colors.black,
+                                        colorFilter: const ColorFilter.mode(
+                                          Colors.black,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
                                     )
                                   ),
@@ -573,7 +585,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             ),
                                             child: SvgPicture.asset(
                                               'assets/images/check01_off.svg', // 체크박스 아이콘
-                                              color: agree2 ? Colors.white : const Color(0xFFCCCCCC),
+                                              colorFilter: ColorFilter.mode(
+                                                agree2 ? Colors.white : const Color(0xFFCCCCCC),
+                                                BlendMode.srcIn,
+                                              ),
                                               height: 10,
                                               width: 10,
                                               fit: BoxFit.contain,
@@ -606,7 +621,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                         alignment: Alignment.centerRight,
                                         child: SvgPicture.asset(
                                           'assets/images/ic_link.svg',
-                                          color: Colors.black,
+                                          colorFilter: const ColorFilter.mode(
+                                            Colors.black,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       )
                                   ),
@@ -644,7 +662,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             ),
                                             child: SvgPicture.asset(
                                               'assets/images/check01_off.svg', // 체크박스 아이콘
-                                              color: agree3 ? Colors.white : const Color(0xFFCCCCCC),
+                                              colorFilter: ColorFilter.mode(
+                                                agree3 ? Colors.white : const Color(0xFFCCCCCC),
+                                                BlendMode.srcIn,
+                                              ),
                                               height: 10,
                                               width: 10,
                                               fit: BoxFit.contain,
@@ -677,7 +698,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                         alignment: Alignment.centerRight,
                                         child: SvgPicture.asset(
                                           'assets/images/ic_link.svg',
-                                          color: Colors.black,
+                                          colorFilter: const ColorFilter.mode(
+                                            Colors.black,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       )
                                   ),

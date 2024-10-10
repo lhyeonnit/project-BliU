@@ -24,8 +24,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
-  List<CategoryData> categories = [];
-  List<CategoryData> ageCategories = [];
+  List<CategoryData> _categories = [];
+  List<CategoryData> _ageCategories = [];
   bool _isScrolled = false;
 
   @override
@@ -63,13 +63,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final ageCategoryResponseDTO = await ref.read(homeViewModelProvider.notifier).getAgeCategory();
     if (categoryResponseDTO != null) {
       if (categoryResponseDTO.result == true) {
-        categories = categoryResponseDTO.list ?? [];
+        _categories = categoryResponseDTO.list ?? [];
       }
     }
 
     if (ageCategoryResponseDTO != null) {
       if (ageCategoryResponseDTO.result == true) {
-        ageCategories = ageCategoryResponseDTO.list ?? [];
+        _ageCategories = ageCategoryResponseDTO.list ?? [];
       }
     }
     setState(() {});
@@ -96,7 +96,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       expandedHeight: Responsive.getHeight(context, 625),
                       title: SvgPicture.asset(
                         'assets/images/home/bottom_home.svg', // SVG 파일 경로
-                        color: _isScrolled ? Colors.black : Colors.white,
+                        colorFilter: ColorFilter.mode(
+                          _isScrolled ? Colors.black : Colors.white,
+                          BlendMode.srcIn,
+                        ),
                         // 색상 조건부 변경
                         height: Responsive.getHeight(context, 40),
                       ),
@@ -112,7 +115,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               IconButton(
                                 icon: SvgPicture.asset(
                                   "assets/images/home/ic_top_sch_w.svg",
-                                  color: _isScrolled ? Colors.black : Colors.white,
+                                  colorFilter: ColorFilter.mode(
+                                    _isScrolled ? Colors.black : Colors.white,
+                                    BlendMode.srcIn,
+                                  ),
                                   height: Responsive.getHeight(context, 30),
                                   width: Responsive.getWidth(context, 30),
                                 ),
@@ -146,7 +152,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   IconButton(
                                     icon: SvgPicture.asset(
                                       "assets/images/product/ic_cart.svg",
-                                      color: _isScrolled ? Colors.black : Colors.white,
+                                      colorFilter: ColorFilter.mode(
+                                        _isScrolled ? Colors.black : Colors.white,
+                                        BlendMode.srcIn,
+                                      ),
                                       height: Responsive.getHeight(context, 30),
                                       width: Responsive.getWidth(context, 30),
                                     ),
@@ -190,7 +199,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
-                          HomeBodyCategory(categories: categories,),
+                          HomeBodyCategory(categories: _categories,),
                           const HomeBodyAi(),
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 30.0),
@@ -199,7 +208,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               child: HomeBodyExhibition(),
                             ),
                           ),
-                          HomeBodyBestSales(categories: categories, ageCategories: ageCategories,),
+                          HomeBodyBestSales(categories: _categories, ageCategories: _ageCategories,),
                           const HomeFooter(),
                         ],
                       ),

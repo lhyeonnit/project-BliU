@@ -430,7 +430,10 @@ class _MyScreenState extends ConsumerState<MyScreen> {
             ),
             SvgPicture.asset(
               'assets/images/ic_link.svg',
-              color: Colors.black,
+              colorFilter: const ColorFilter.mode(
+                Colors.black,
+                BlendMode.srcIn,
+              ),
             ),
           ],
         ),

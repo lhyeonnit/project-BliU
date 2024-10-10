@@ -269,23 +269,22 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
                           child: Container(
                             width: 100,
                             height: 100,
-                            margin: EdgeInsets.only(right: 10),
+                            margin: const EdgeInsets.only(right: 10),
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(6)),
-                                border: Border.all(color: Color(0xFFE7EAEF))),
+                                borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                border: Border.all(color: const Color(0xFFE7EAEF))
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SvgPicture.asset(
-                                    'assets/images/my/btn_add_img.svg'),
+                                SvgPicture.asset('assets/images/my/btn_add_img.svg'),
                                 Text(
                                   '사진선택',
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
-                                    color: Color(0xFF707070),
+                                    color: const Color(0xFF707070),
                                     fontSize: Responsive.getFont(context, 14),
                                     height: 1.2,
                                   ),
@@ -336,8 +335,7 @@ class _ReviewWriteScreenState extends State<ReviewWriteScreen> {
                                                 _selectedImages.removeAt(index);
                                               });
                                             },
-                                            child: SvgPicture.asset(
-                                                'assets/images/ic_del.svg'),
+                                            child: SvgPicture.asset('assets/images/ic_del.svg'),
                                           ),
                                         ),
                                       ],

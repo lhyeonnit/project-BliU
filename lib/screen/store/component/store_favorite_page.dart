@@ -268,11 +268,15 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                                                   };
                                                   await ref.read(storeFavoriteViewModelProvider.notifier).toggleLike(requestData);
                                                 },
-                                                child: SvgPicture.asset(
+                                                child: store.stLike == 1 ? SvgPicture.asset(
                                                   'assets/images/store/book_mark.svg',
-                                                  color: store.stLike == 1
-                                                      ? const Color(0xFFFF6192)
-                                                      : null,
+                                                  colorFilter: const ColorFilter.mode(
+                                                    Color(0xFFFF6192),
+                                                    BlendMode.srcIn,
+                                                  ),
+                                                  fit: BoxFit.contain,
+                                                ) : SvgPicture.asset(
+                                                  'assets/images/store/book_mark.svg',
                                                   fit: BoxFit.contain,
                                                 ),
                                               ),
@@ -392,7 +396,10 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                                 },
                                 child: SvgPicture.asset(
                                   'assets/images/home/ic_top_sch_w.svg',
-                                  color: Colors.black,
+                                  colorFilter: const ColorFilter.mode(
+                                    Colors.black,
+                                    BlendMode.srcIn,
+                                  ),
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -442,8 +449,7 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                               onTap: _openSortBottomSheet, // 정렬 옵션 선택 창 열기
                               child: Row(
                                 children: [
-                                  SvgPicture.asset(
-                                      'assets/images/product/ic_filter02.svg'),
+                                  SvgPicture.asset('assets/images/product/ic_filter02.svg'),
                                   Container(
                                     margin: const EdgeInsets.only(left: 5),
                                     child: Text(
@@ -485,8 +491,7 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                                         ),
                                       ),
                                     ),
-                                    SvgPicture.asset(
-                                        'assets/images/product/filter_select.svg'),
+                                    SvgPicture.asset('assets/images/product/filter_select.svg'),
                                   ],
                                 ),
                               ),

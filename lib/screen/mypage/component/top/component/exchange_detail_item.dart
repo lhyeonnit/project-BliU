@@ -141,10 +141,8 @@ class _ExchangeItemState extends State<ExchangeItem> {
                                 height: 1.2,
                               ),
                             ),
-
                             // 아이콘.
-                            SvgPicture.asset(
-                                'assets/images/product/ic_select.svg'),
+                            SvgPicture.asset('assets/images/product/ic_select.svg'),
                           ],
                         ),
                       ),
@@ -289,8 +287,7 @@ class _ExchangeItemState extends State<ExchangeItem> {
                                       _selectedImages.removeAt(index);
                                     });
                                   },
-                                  child: SvgPicture.asset(
-                                      'assets/images/ic_del.svg'),
+                                  child: SvgPicture.asset('assets/images/ic_del.svg'),
                                 ),
                               ),
                             ],

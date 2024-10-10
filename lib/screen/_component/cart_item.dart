@@ -60,9 +60,10 @@ class _CartItemState extends State<CartItem> {
                 ),
                 child: SvgPicture.asset(
                   'assets/images/check01_off.svg', // 체크박스 아이콘 경로
-                  color: widget.isSelected
-                      ? Colors.white
-                      : const Color(0xFFCCCCCC), // 체크 여부에 따라 색상 변경
+                  colorFilter: ColorFilter.mode(
+                    widget.isSelected ? Colors.white : const Color(0xFFCCCCCC),
+                    BlendMode.srcIn,
+                  ),
                   height: 10, // 아이콘의 높이
                   width: 10, // 아이콘의 너비
                   fit: BoxFit.contain,

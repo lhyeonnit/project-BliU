@@ -67,8 +67,9 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
               Navigator.of(context).pop();
             },
             child: Container(
-                margin: const EdgeInsets.only(right: 16),
-                child: SvgPicture.asset('assets/images/product/ic_close.svg')),
+              margin: const EdgeInsets.only(right: 16),
+              child: SvgPicture.asset('assets/images/product/ic_close.svg')
+            ),
           ),
         ],
         bottom: PreferredSize(

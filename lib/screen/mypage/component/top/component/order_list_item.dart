@@ -81,9 +81,7 @@ class OrderListItem extends StatelessWidget {
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 2, top: 2),
-                      child: SvgPicture.asset(
-                        'assets/images/my/ic_link_p.svg',
-                      ),
+                      child: SvgPicture.asset('assets/images/my/ic_link_p.svg'),
                     ),
                   ],
                 ),

@@ -264,9 +264,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                   ),
                                   child: SvgPicture.asset(
                                     'assets/images/check01_off.svg', // 체크박스 아이콘
-                                    color: _isAllSelected
-                                        ? Colors.white
-                                        : const Color(0xFFCCCCCC),
+                                    colorFilter: ColorFilter.mode(
+                                      _isAllSelected ? Colors.white : const Color(0xFFCCCCCC),
+                                      BlendMode.srcIn,
+                                    ),
                                     height: 10, // 아이콘의 높이
                                     width: 10, // 아이콘의 너비
                                     fit: BoxFit.contain,
@@ -690,9 +691,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       if (defaultResponseDTO.result == true) {
         _getList();
       } else {
-        if (!context.mounted) return;
-        Utils.getInstance()
-            .showSnackBar(context, defaultResponseDTO.message ?? "");
+        if (!mounted) return;
+        Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
       }
     }
   }
@@ -716,7 +716,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
         _getList();
       }
 
-      if (!context.mounted) return;
+      if (!mounted) return;
       Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     }
   }
@@ -757,6 +757,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       final payOrderDetailData = payOrderDetailDTO.data;
 
       if (payOrderDetailData != null) {
+        if(!mounted) return;
         Navigator.push(
           context,
           MaterialPageRoute(

@@ -52,7 +52,7 @@ class _ProductBottomOptionAdditionState
                 children: [
                   Container(
                     width: Responsive.getWidth(context, 96),
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       vertical: 6,
                       horizontal: 8,
                     ),

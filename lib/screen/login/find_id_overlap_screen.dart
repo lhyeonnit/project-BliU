@@ -34,14 +34,17 @@ class FindIdOverlapScreen extends StatelessWidget {
                 Container(
                   width: 90,
                   height: 90,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(20),
+                  decoration: const BoxDecoration(
                     color: Color(0xFFF5F9F9),
                     shape: BoxShape.circle,
                   ),
                   child: SvgPicture.asset(
                     'assets/images/check01_off.svg',
-                    color: Colors.black,
+                    colorFilter: const ColorFilter.mode(
+                      Colors.black,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
                 Container(

@@ -113,7 +113,10 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
                     'assets/images/ic_link.svg',
                     width: 14,
                     height: 14,
-                    color: const Color(0xFF7B7B7B),
+                    colorFilter: const ColorFilter.mode(
+                      Color(0xFF7B7B7B),
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ],
               ),

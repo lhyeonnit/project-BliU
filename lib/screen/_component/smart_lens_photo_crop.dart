@@ -82,6 +82,7 @@ class _SmartLensPhotoCropState extends ConsumerState<SmartLensPhotoCrop> {
 
       if (croppedFile == null) {
         // 원하는 동작을 여기에 정의 (예: 특정 페이지로 이동)
+        if(!mounted) return;
         Navigator.pop(context);
       } else {
         File croppedImageFile = File(croppedFile.path);
@@ -98,8 +99,13 @@ class _SmartLensPhotoCropState extends ConsumerState<SmartLensPhotoCrop> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
-          icon: SvgPicture.asset("assets/images/exhibition/ic_back.svg",
-              color: Colors.white),
+          icon: SvgPicture.asset(
+            "assets/images/exhibition/ic_back.svg",
+            colorFilter: const ColorFilter.mode(
+              Colors.white,
+              BlendMode.srcIn,
+            ),
+          ),
           onPressed: () {
             Navigator.pop(context); // 뒤로가기 동작
           },

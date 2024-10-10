@@ -163,10 +163,8 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                                             height: 1.2,
                                           ),
                                         ),
-
                                         // 아이콘.
-                                        SvgPicture.asset(
-                                            'assets/images/product/ic_select.svg'),
+                                        SvgPicture.asset('assets/images/product/ic_select.svg'),
                                       ],
                                     ),
                                   ),

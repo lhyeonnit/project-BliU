@@ -157,9 +157,7 @@ class _MyCouponCardState extends State<MyCouponCard> {
                     GestureDetector(
                       onTap: isDownloaded == true ? null : _handleDownload,
                       child: SvgPicture.asset(
-                        isDownloaded
-                            ? 'assets/images/store/ic_cu_down_end.svg'
-                            : 'assets/images/store/ic_cu_down.svg',
+                        isDownloaded ? 'assets/images/store/ic_cu_down_end.svg' : 'assets/images/store/ic_cu_down.svg',
                       ),
                     ),
                     if (isDownloaded == true) // 다운로드된 경우에만 텍스트 표시

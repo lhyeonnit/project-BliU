@@ -53,7 +53,10 @@ class _FindIdCompleteScreenState extends ConsumerState<FindIdCompleteScreen> {
                   ),
                   child: SvgPicture.asset(
                     'assets/images/check01_off.svg',
-                    color: Colors.black,
+                    colorFilter: const ColorFilter.mode(
+                      Colors.black,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
                 Container(
