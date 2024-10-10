@@ -11,7 +11,7 @@ class FindIdCompleteScreen extends ConsumerStatefulWidget {
 
   const FindIdCompleteScreen({super.key, required this.id}); // 찾은 아이디를 여기에 넣습니다.
   @override
-  _FindIdCompleteScreenState createState() => _FindIdCompleteScreenState();
+  ConsumerState<FindIdCompleteScreen> createState() => _FindIdCompleteScreenState();
 }
 
 class _FindIdCompleteScreenState extends ConsumerState<FindIdCompleteScreen> {

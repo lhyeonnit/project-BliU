@@ -10,7 +10,7 @@ class HomeBodyAi extends ConsumerStatefulWidget {
   const HomeBodyAi({super.key});
 
   @override
-  _HomeBodyAiState createState() => _HomeBodyAiState();
+  ConsumerState<HomeBodyAi> createState() => _HomeBodyAiState();
 }
 
 class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
@@ -42,7 +42,7 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
             ),
           ),
           Container(
-            height: 277,
+            height: 310,
             margin: const EdgeInsets.only(top: 20),
             child: ListView.builder(
               shrinkWrap: true,
@@ -87,31 +87,4 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
       }
     }
   }
-
-  // void _like(int index) async {
-  //   final pref = await SharedPreferencesManager.getInstance();
-  //   final mtIdx = pref.getMtIdx() ?? "";
-  //   if (mtIdx.isNotEmpty) {
-  //     final item = _productList[index];
-  //     final likeChk = item.likeChk;
-  //
-  //     Map<String, dynamic> requestData = {
-  //       'mt_idx' : mtIdx,
-  //       'pt_idx' : item.ptIdx,
-  //     };
-  //
-  //     final defaultResponseDTO = await ref.read(homeBodyAiViewModelProvider.notifier).productLike(requestData);
-  //     if(defaultResponseDTO != null) {
-  //       if (defaultResponseDTO.result == true) {
-  //         setState(() {
-  //           if (likeChk == "Y") {
-  //             _productList[index].likeChk = "N";
-  //           } else {
-  //             _productList[index].likeChk = "Y";
-  //           }
-  //         });
-  //       }
-  //     }
-  //   }
-  // }
 }

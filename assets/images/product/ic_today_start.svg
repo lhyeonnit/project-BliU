@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="65" height="22" viewBox="0 0 65 22">
-  <g id="그룹_37782" data-name="그룹 37782" transform="translate(-45 -141.729)">
-    <rect id="사각형_16973" data-name="사각형 16973" width="65" height="22" rx="7" transform="translate(45 141.729)" fill="rgba(255,97,146,0.11)"/>
-    <g id="그룹_37783" data-name="그룹 37783" transform="translate(4 -1)">
-      <text id="오늘출발" transform="translate(46 156.729)" fill="#ff6192" font-size="11" font-family="GmarketSansBold, Gmarket Sans"><tspan x="0" y="0">오늘출발</tspan></text>
-      <path id="패스_39178" data-name="패스 39178" d="M9.84,6.316H6.372L6.225,1,1,8.018H4.467l.147,5.323Z" transform="translate(90.802 146.73)" fill="#ff6192"/>
-    </g>
-  </g>
-</svg>

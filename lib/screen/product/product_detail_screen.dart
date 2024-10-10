@@ -571,8 +571,10 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       visible: true,// TODO 오늘출발 수정 필요
                       child: Container(
                         margin: const EdgeInsets.only(top: 10),
-                        child: SvgPicture.asset(
-                          'assets/images/product/ic_today_start.svg'
+                        child: Image.asset(
+                          'assets/images/product/ic_today_start.png',
+                          width: 65,
+                          height: 22,
                         ),
                       ),
                     )

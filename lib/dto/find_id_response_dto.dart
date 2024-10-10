@@ -1,4 +1,4 @@
-import 'package:BliU/data/faq_data.dart';
+
 
 class FindIdResponseDTO {
   final bool? result;

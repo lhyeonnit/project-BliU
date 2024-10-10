@@ -5,8 +5,7 @@ class HomeBodyBestSalesCategory extends StatefulWidget {
   const HomeBodyBestSalesCategory({super.key});
 
   @override
-  _HomeBodyBestSalesCategoryState createState() =>
-      _HomeBodyBestSalesCategoryState();
+  State<HomeBodyBestSalesCategory> createState() => _HomeBodyBestSalesCategoryState();
 }
 
 class _HomeBodyBestSalesCategoryState extends State<HomeBodyBestSalesCategory>

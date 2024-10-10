@@ -17,7 +17,7 @@ class NonInquiryService extends ConsumerStatefulWidget {
   const NonInquiryService({super.key, required this.qnaType, this.ptIdx});
 
   @override
-  _NonInquiryServiceState createState() => _NonInquiryServiceState();
+  ConsumerState<NonInquiryService> createState() => _NonInquiryServiceState();
 }
 
 class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {

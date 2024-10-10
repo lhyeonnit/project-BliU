@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:BliU/data/exhibition_data.dart';
 import 'package:BliU/screen/home/exhibition_screen.dart';
 import 'package:BliU/screen/home/viewmodel/home_body_exhibition_view_model.dart';
-import 'package:BliU/screen/payment/component/payment_iamport.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

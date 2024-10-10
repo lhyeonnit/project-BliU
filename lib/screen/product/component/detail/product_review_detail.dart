@@ -13,7 +13,7 @@ class ProductReviewDetail extends ConsumerStatefulWidget {
   const ProductReviewDetail({super.key, required this.rtIdx});
 
   @override
-  _ProductReviewDetailState createState() => _ProductReviewDetailState();
+  ConsumerState<ProductReviewDetail> createState() => _ProductReviewDetailState();
 }
 
 class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {

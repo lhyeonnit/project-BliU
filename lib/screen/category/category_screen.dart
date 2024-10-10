@@ -16,14 +16,40 @@ class CategoryScreen extends ConsumerStatefulWidget {
 
 class _CategoryScreenState extends ConsumerState<CategoryScreen> {
   final ItemScrollController _scrollController = ItemScrollController();
+  final ItemPositionsListener _itemPositionsListener = ItemPositionsListener.create();
   int _selectedCategoryIndex = 0; // 선택된 카테고리의 인덱스
 
   @override
   void initState() {
     super.initState();
+    _itemPositionsListener.itemPositions.addListener(_itemPositionListener);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
+  }
+
+  void _itemPositionListener() {
+    final last = _itemPositionsListener.itemPositions.value.last;
+    final categories = ref.watch(categoryModelProvider)?.categoryResponseDTO?.list ?? [];
+    if (last.index == (categories.length - 1)) {
+      if (last.itemTrailingEdge < 1.001) {
+        if (_selectedCategoryIndex != last.index) {
+          setState(() {
+            _selectedCategoryIndex = last.index;
+          });
+        }
+        return;
+      }
+    }
+
+    ItemPosition position = _itemPositionsListener.itemPositions.value
+        .firstWhere((element) => element.itemLeadingEdge <= 0);
+    final itemIndex = position.index;
+    if (_selectedCategoryIndex != itemIndex) {
+      setState(() {
+        _selectedCategoryIndex = itemIndex;
+      });
+    }
   }
 
   @override
@@ -92,10 +118,10 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                     final bool isSelectCategory = _selectedCategoryIndex == index;
                     return GestureDetector(
                       onTap: () {
-                        setState(() {
-                          _selectedCategoryIndex = index;
-                        });
-                        _scrollController.scrollTo(index: index, duration: const Duration(milliseconds: 500));
+                        // setState(() {
+                        //   _selectedCategoryIndex = index;
+                        // });
+                        _scrollController.scrollTo(index: index, duration: const Duration(milliseconds: 1));
                       },
                       child: Container(
                           padding: const EdgeInsets.only(left: 16),
@@ -125,6 +151,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                   margin: const EdgeInsets.only(top: 21),
                   child: ScrollablePositionedList.builder(
                     itemScrollController: _scrollController,
+                    itemPositionsListener: _itemPositionsListener,
                     itemCount: categories.length,
                     itemBuilder: (context, index) {
                       final category = categories[index];

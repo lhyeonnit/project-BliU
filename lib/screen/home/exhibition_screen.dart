@@ -6,7 +6,6 @@ import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:BliU/screen/home/viewmodel/exhibition_view_model.dart';
 import 'package:BliU/screen/product/component/list/product_list_card.dart';
 import 'package:BliU/utils/responsive.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -182,7 +181,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 12.0,
                       mainAxisSpacing: 30.0,
-                      childAspectRatio: 0.55,
+                      childAspectRatio: 0.5,
                     ),
                     itemCount: _productList.length,
                     itemBuilder: (context, index) {

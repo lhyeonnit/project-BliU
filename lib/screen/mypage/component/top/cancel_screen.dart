@@ -25,7 +25,7 @@ class CancelScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  _CancelScreenState createState() => _CancelScreenState();
+  ConsumerState<CancelScreen> createState() => _CancelScreenState();
 }
 
 class _CancelScreenState extends ConsumerState<CancelScreen> {

@@ -12,7 +12,7 @@ class PaymentOrderItem extends StatefulWidget {
   });
 
   @override
-  _PaymentOrderItemState createState() => _PaymentOrderItemState();
+  State<PaymentOrderItem> createState() => _PaymentOrderItemState();
 }
 
 class _PaymentOrderItemState extends State<PaymentOrderItem> {

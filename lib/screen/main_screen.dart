@@ -1,3 +1,4 @@
+import 'package:BliU/screen/_component/custom_bottom_navigation_bar.dart';
 import 'package:BliU/screen/category/category_screen.dart';
 import 'package:BliU/screen/home/home_screen.dart';
 import 'package:BliU/screen/like/like_screen.dart';
@@ -6,13 +7,11 @@ import 'package:BliU/screen/store/store_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '_component/custom_bottom_navigation_bar.dart';
-
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  ConsumerState<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends ConsumerState<MainScreen> {

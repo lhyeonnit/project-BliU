@@ -1,13 +1,10 @@
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/home/viewmodel/home_body_ai_view_model.dart';
 import 'package:BliU/screen/product/component/list/product_list_card.dart';
-import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
-import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SearchRecommendItem extends ConsumerStatefulWidget {
   const SearchRecommendItem({super.key});

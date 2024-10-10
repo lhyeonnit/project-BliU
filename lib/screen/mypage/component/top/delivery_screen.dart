@@ -14,7 +14,7 @@ class DeliveryScreen extends ConsumerStatefulWidget {
   const DeliveryScreen({super.key, required this.odtCode});
 
   @override
-  _DeliveryScreenState createState() => _DeliveryScreenState();
+  ConsumerState<DeliveryScreen> createState() => _DeliveryScreenState();
 }
 
 class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {

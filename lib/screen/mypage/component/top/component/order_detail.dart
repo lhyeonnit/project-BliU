@@ -20,12 +20,11 @@ class OrderDetail extends ConsumerStatefulWidget {
   });
 
   @override
-  _OrderDetailState createState() => _OrderDetailState();
+  ConsumerState<OrderDetail> createState() => _OrderDetailState();
 }
 
-final ScrollController _scrollController = ScrollController();
-
 class _OrderDetailState extends ConsumerState<OrderDetail> {
+  final ScrollController _scrollController = ScrollController();
   OrderDetailInfoData? orderDetailInfoData;
 
   @override

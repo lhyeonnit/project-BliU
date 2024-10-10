@@ -17,7 +17,7 @@ class MyReviewEdit extends ConsumerStatefulWidget {
   const MyReviewEdit({super.key, required this.reviewData,});
 
   @override
-  _MyReviewEditState createState() => _MyReviewEditState();
+  ConsumerState<MyReviewEdit> createState() => _MyReviewEditState();
 }
 
 class _MyReviewEditState extends ConsumerState<MyReviewEdit> {

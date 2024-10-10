@@ -13,7 +13,7 @@ class StyleSelectionSheet extends StatefulWidget {
   });
 
   @override
-  _StyleSelectionSheetState createState() => _StyleSelectionSheetState();
+  State<StyleSelectionSheet> createState() => _StyleSelectionSheetState();
 }
 
 class _StyleSelectionSheetState extends State<StyleSelectionSheet> {

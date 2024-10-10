@@ -21,7 +21,7 @@ class ProductFilterBottom extends StatefulWidget {
   });
 
   @override
-  _ProductFilterBottomState createState() => _ProductFilterBottomState();
+  State<ProductFilterBottom> createState() => _ProductFilterBottomState();
 }
 
 class _ProductFilterBottomState extends State<ProductFilterBottom> {
@@ -62,7 +62,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
     return Stack(
       children: [
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
           ),
@@ -75,21 +75,21 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Color(0xFFDDDDDD),
+                    color: const Color(0xFFDDDDDD),
                     borderRadius: BorderRadius.circular(3),
                   ),
                 ),
               ),
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(bottom: 80),
+                  margin: const EdgeInsets.only(bottom: 80),
                   child: SingleChildScrollView(
                     controller: ScrollController(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
                             '연령',
@@ -103,7 +103,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
-                          padding: EdgeInsets.only(bottom: 10),
+                          padding: const EdgeInsets.only(bottom: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -114,15 +114,13 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 30),
+                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(width: 1, color: Color(0xFFEEEEEE)),
+                            border: Border.all(width: 1, color: const Color(0xFFEEEEEE)),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
                             '스타일',
@@ -136,7 +134,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
-                          padding: EdgeInsets.only(bottom: 10),
+                          padding: const EdgeInsets.only(bottom: 10),
                           child: Wrap(
                             spacing: 4.0,
                             children: [
@@ -153,15 +151,14 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 30),
+                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
                           decoration: BoxDecoration(
                             border:
-                                Border.all(width: 1, color: Color(0xFFEEEEEE)),
+                                Border.all(width: 1, color: const Color(0xFFEEEEEE)),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
                             '가격',
@@ -174,13 +171,13 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 10),
+                          margin: const EdgeInsets.only(top: 10),
                           child: Center(
                             child: Text(
                               '${_tempSelectedRange.start.toInt()}원 ~ ${_tempSelectedRange.end.toInt()}원',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
-                                fontSize: 18,
+                                fontSize: Responsive.getFont(context, 18),
                                 fontWeight: FontWeight.bold,
                                 height: 1.2,
                               ),
@@ -193,9 +190,9 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           min: 0,
                           max: 100000,
                           divisions: 100,
-                          activeColor: Color(0xFFFF6192),
+                          activeColor: const Color(0xFFFF6192),
                           // 슬라이더의 활성 부분 색상
-                          inactiveColor: Color(0xFFEEEEEE),
+                          inactiveColor: const Color(0xFFEEEEEE),
                           // 슬라이더의 비활성 부분 색상
                           labels: RangeLabels(
                             _tempSelectedRange.start.round().toString(),
@@ -221,7 +218,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
           left: 0,
           child: Container(
             color: Colors.white,
-            padding: EdgeInsets.only(left: 11, right: 10, top: 9, bottom: 8),
+            padding: const EdgeInsets.only(left: 11, right: 10, top: 9, bottom: 8),
             child: Row(
               children: [
                 Container(
@@ -237,38 +234,39 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                       setState(() {
                         _tempSelectedAgeGroup = "";
                         _tempSelectedStyle.clear();
-                        _tempSelectedRange = RangeValues(0, 0);
+                        _tempSelectedRange = const RangeValues(0, 0);
                       });
                     },
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(left: 9),
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                        color: Colors.black),
-                    width: double.infinity,
-                    height: 48,
-                    child: GestureDetector(
-                      child: const Center(
-                        child: Text(
-                          '상품보기',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            color: Colors.white,
-                            height: 1.2,
-                          ),
-                        )
+                  child: GestureDetector(
+                    onTap: () {
+                      widget.onAgeOptionSelected(_tempSelectedAgeGroup);
+                      widget.onStyleOptionSelected(_tempSelectedStyle);
+                      widget.onRangeValuesSelected(_tempSelectedRange);
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 9),
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                          color: Colors.black
                       ),
-                      onTap: () {
-                        widget.onAgeOptionSelected(_tempSelectedAgeGroup);
-                        widget.onStyleOptionSelected(_tempSelectedStyle);
-                        widget.onRangeValuesSelected(_tempSelectedRange);
-                        Navigator.pop(context);
-                      },
+                      width: double.infinity,
+                      height: 48,
+                      child: const Center(
+                          child: Text(
+                            '상품보기',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              color: Colors.white,
+                              height: 1.2,
+                            ),
+                          )
+                      ),
                     ),
-                  ),
+                  )
                 ),
               ],
             ),

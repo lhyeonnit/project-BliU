@@ -1,7 +1,6 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/data/faq_category_data.dart';
-import 'package:BliU/data/faq_data.dart';
 import 'package:BliU/dto/faq_category_response_dto.dart';
 import 'package:BliU/dto/faq_response_dto.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

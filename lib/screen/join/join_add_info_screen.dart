@@ -8,7 +8,7 @@ class JoinAddInfoScreen extends StatefulWidget {
   const JoinAddInfoScreen({super.key});
 
   @override
-  _JoinAddInfoScreenState createState() => _JoinAddInfoScreenState();
+  State<JoinAddInfoScreen> createState() => _JoinAddInfoScreenState();
 }
 
 class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
@@ -214,8 +214,8 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                                 // }
                               },
                               child: Container(
-                                margin: EdgeInsets.only(top: 10, left: 8),
-                                padding: EdgeInsets.symmetric(vertical: 14),
+                                margin: const EdgeInsets.only(top: 10, left: 8),
+                                padding: const EdgeInsets.symmetric(vertical: 14),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6),
                                   color: Colors.black,
@@ -255,7 +255,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                       child: Stack(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 10, bottom: 20),
+                            margin: const EdgeInsets.only(top: 10, bottom: 20),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(6),
                               child: Image.asset(
@@ -266,7 +266,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                             left: 25,
                             top: 10,
                             child: Container(
-                              margin: EdgeInsets.only(top: 15),
+                              margin: const EdgeInsets.only(top: 15),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -393,7 +393,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
       Widget? suffixIcon,
       bool isEnable = true}) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -436,18 +436,18 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
               obscureText: obscureText,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF595959)),
-                enabledBorder: OutlineInputBorder(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: const Color(0xFF595959)
+                ),
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),
@@ -466,7 +466,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
       Widget? suffixIcon,
       bool isEnable = true}) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -481,18 +481,18 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
               obscureText: obscureText,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF595959)),
-                enabledBorder: OutlineInputBorder(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: const Color(0xFF595959)
+                ),
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),
@@ -510,13 +510,13 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
       TextInputType keyboardType = TextInputType.text,
       bool isEnable = true}) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // if (label.isNotEmpty)
           Container(
-            margin: EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 10),
             child: Row(
               children: [
                 Text(label,
@@ -552,18 +552,18 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
             obscureText: obscureText,
             keyboardType: keyboardType,
             decoration: InputDecoration(
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+              contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
               hintText: hintText,
               hintStyle: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14),
-                  color: Color(0xFF595959)),
-              enabledBorder: OutlineInputBorder(
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 14),
+                color: const Color(0xFF595959)
+              ),
+              enabledBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6)),
                 borderSide: BorderSide(color: Color(0xFFE1E1E1)),
               ),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6)),
                 borderSide: BorderSide(color: Color(0xFFE1E1E1)),
               ),

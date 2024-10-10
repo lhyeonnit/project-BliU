@@ -1,6 +1,5 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
-import 'package:BliU/data/event_data.dart';
 import 'package:BliU/dto/event_list_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

@@ -1,6 +1,5 @@
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
-import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:BliU/screen/product/component/list/product_category_bottom.dart';
@@ -463,22 +462,31 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                                     fit: BoxFit.contain,
                                   ),
                                 ),
-                                SvgPicture.asset(
-                                    'assets/images/product/today_start.svg'
+                                Image.asset(
+                                  'assets/images/product/today_start.png',
+                                  width: 70,
+                                  height: 18,
                                 )
                               ],
                             ),
                           ),
-                          Row(
-                            children: [
-                              _buildFilterButton(getSelectedAgeGroupText()),
-                              Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                                  child: _buildFilterButton(getSelectedStyleText())
+                          const SizedBox(width: 20),
+                          Expanded(
+                            flex: 1,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  _buildFilterButton(getSelectedAgeGroupText()),
+                                  Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                                      child: _buildFilterButton(getSelectedStyleText())
+                                  ),
+                                  _buildFilterButton(getSelectedRangeValues()),
+                                ],
                               ),
-                              _buildFilterButton(getSelectedRangeValues()),
-                            ],
-                          ),
+                            )
+                          )
                         ],
                       ),
                     ),
@@ -516,7 +524,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         side: const BorderSide(
           color: Color(0xFFDDDDDD),
         ),
-        padding: const EdgeInsets.only(top: 11.0, bottom: 11, left: 15.0, right: 12),
+        padding: const EdgeInsets.only(top: 11.0, bottom: 11, left: 20.0, right: 17),
       ),
       onPressed: _openFilterBottomSheet,
       child: Row(
@@ -589,7 +597,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.55,
+              childAspectRatio: 0.5,
               crossAxisSpacing: 12,
               mainAxisSpacing: 30,
             ),

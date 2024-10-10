@@ -2,7 +2,6 @@ import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/default_response_dto.dart';
 import 'package:BliU/dto/find_id_pwd_response_dto.dart';
-import 'package:BliU/dto/find_id_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FindPasswordScreenModel {

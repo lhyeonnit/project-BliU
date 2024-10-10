@@ -12,7 +12,7 @@ class MyReviewDetail extends StatefulWidget {
   });
 
   @override
-  _MyReviewDetailState createState() => _MyReviewDetailState();
+  State<MyReviewDetail> createState() => _MyReviewDetailState();
 }
 
 class _MyReviewDetailState extends State<MyReviewDetail> {

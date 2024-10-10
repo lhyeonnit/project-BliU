@@ -15,7 +15,7 @@ class MyInfoEditScreen extends ConsumerStatefulWidget {
   const MyInfoEditScreen({super.key});
 
   @override
-  _MyInfoEditScreenState createState() => _MyInfoEditScreenState();
+  ConsumerState<MyInfoEditScreen> createState() => _MyInfoEditScreenState();
 }
 
 class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {

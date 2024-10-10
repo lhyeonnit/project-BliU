@@ -14,7 +14,7 @@ class ProductSortBottom extends StatefulWidget {
   });
 
   @override
-  _ProductSortBottomState createState() => _ProductSortBottomState();
+  State<ProductSortBottom> createState() => _ProductSortBottomState();
 }
 
 class _ProductSortBottomState extends State<ProductSortBottom> {

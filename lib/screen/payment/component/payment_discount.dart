@@ -25,7 +25,7 @@ class PaymentDiscount extends ConsumerStatefulWidget {
   });
 
   @override
-  _PaymentDiscountState createState() => _PaymentDiscountState();
+  ConsumerState<PaymentDiscount> createState() => _PaymentDiscountState();
 }
 
 class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {

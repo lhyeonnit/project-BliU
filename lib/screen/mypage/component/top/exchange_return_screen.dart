@@ -26,7 +26,7 @@ class ExchangeReturnScreen extends ConsumerStatefulWidget {
       {super.key, required this.orderData, required this.orderDetailData});
 
   @override
-  _ExchangeReturnScreenState createState() => _ExchangeReturnScreenState();
+  ConsumerState<ExchangeReturnScreen> createState() => _ExchangeReturnScreenState();
 }
 
 class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {

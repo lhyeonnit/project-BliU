@@ -7,7 +7,7 @@ class PointScreen extends StatefulWidget {
   const PointScreen({super.key});
 
   @override
-  _PointScreenState createState() => _PointScreenState();
+  State<PointScreen> createState() => _PointScreenState();
 }
 
 class _PointScreenState extends State<PointScreen> {

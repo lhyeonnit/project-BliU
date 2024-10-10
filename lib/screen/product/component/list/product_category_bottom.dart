@@ -14,7 +14,7 @@ class ProductCategoryBottom extends StatefulWidget {
   });
 
   @override
-  _ProductCategoryBottomState createState() => _ProductCategoryBottomState();
+  State<ProductCategoryBottom> createState() => _ProductCategoryBottomState();
 }
 
 class _ProductCategoryBottomState extends State<ProductCategoryBottom> {

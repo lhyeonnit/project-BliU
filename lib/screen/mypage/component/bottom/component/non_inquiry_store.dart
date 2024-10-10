@@ -14,7 +14,7 @@ class NonInquiryStore extends ConsumerStatefulWidget {
   const NonInquiryStore({super.key});
 
   @override
-  _NonInquiryStoreState createState() => _NonInquiryStoreState();
+  ConsumerState<NonInquiryStore> createState() => _NonInquiryStoreState();
 }
 
 class _NonInquiryStoreState extends ConsumerState<NonInquiryStore> {

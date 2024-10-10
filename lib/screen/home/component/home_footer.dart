@@ -11,7 +11,7 @@ class HomeFooter extends ConsumerStatefulWidget {
   const HomeFooter({ super.key });
 
   @override
-  HomeFooterState createState() => HomeFooterState();
+  ConsumerState<HomeFooter> createState() => HomeFooterState();
 }
 
 class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderStateMixin {

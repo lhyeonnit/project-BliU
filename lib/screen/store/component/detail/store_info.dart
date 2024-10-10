@@ -13,7 +13,7 @@ class StoreInfoPage extends ConsumerStatefulWidget {
   StoreInfoPage({super.key, required this.storeData});
 
   @override
-  _StoreInfoPageState createState() => _StoreInfoPageState();
+  ConsumerState<StoreInfoPage> createState() => _StoreInfoPageState();
 }
 
 class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {

@@ -24,7 +24,7 @@ class MyCouponCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MyCouponCardState createState() => _MyCouponCardState();
+  State<MyCouponCard> createState() => _MyCouponCardState();
 }
 
 class _MyCouponCardState extends State<MyCouponCard> {

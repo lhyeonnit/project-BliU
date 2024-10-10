@@ -14,7 +14,7 @@ class InquiryStore extends ConsumerStatefulWidget {
   const InquiryStore({super.key});
 
   @override
-  _InquiryStoreState createState() => _InquiryStoreState();
+  ConsumerState<InquiryStore> createState() => _InquiryStoreState();
 }
 
 class _InquiryStoreState extends ConsumerState<InquiryStore> {

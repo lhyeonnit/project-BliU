@@ -10,7 +10,7 @@ class JoinAgreeScreen extends StatefulWidget {
   const JoinAgreeScreen({super.key});
 
   @override
-  _JoinAgreeScreenState createState() => _JoinAgreeScreenState();
+  State<JoinAgreeScreen> createState() => _JoinAgreeScreenState();
 }
 
 class _JoinAgreeScreenState extends State<JoinAgreeScreen> {

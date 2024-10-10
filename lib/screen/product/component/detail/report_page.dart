@@ -12,7 +12,7 @@ class ReportPage extends ConsumerStatefulWidget {
   const ReportPage({super.key, required this.rtIdx});
 
   @override
-  _ReportPageState createState() => _ReportPageState();
+  ConsumerState<ReportPage> createState() => _ReportPageState();
 }
 
 class _ReportPageState extends ConsumerState<ReportPage> {

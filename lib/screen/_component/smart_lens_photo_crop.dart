@@ -1,7 +1,6 @@
 import 'dart:io';
-import 'package:BliU/data/product_data.dart';
+
 import 'package:BliU/screen/_component/smart_lens_result.dart';
-import 'package:BliU/screen/_component/smart_lens_screen.dart';
 import 'package:BliU/screen/_component/viewmodel/smart_lens_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';

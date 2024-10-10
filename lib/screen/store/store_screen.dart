@@ -1,14 +1,13 @@
 import 'package:BliU/screen/store/component/store_favorite_page.dart';
 import 'package:BliU/screen/store/component/store_ranking_page.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
-
-import '../../utils/responsive.dart';
 
 class StoreScreen extends StatefulWidget {
   const StoreScreen({super.key});
 
   @override
-  _StoreScreenState createState() => _StoreScreenState();
+  State<StoreScreen> createState() => _StoreScreenState();
 }
 
 class _StoreScreenState extends State<StoreScreen>
