@@ -148,6 +148,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
       'min_price': minPrice,
       'max_price': maxPrice,
       'pg': _page,
+      'delivery_now' : _isTodayStart ? "Y" : "",
     };
 
     final productListResponseDTO = await ref.read(productListViewModelProvider.notifier).getList(requestData);
@@ -222,6 +223,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         'min_price': minPrice,
         'max_price': maxPrice,
         'pg': _page,
+        'delivery_now' : _isTodayStart ? "Y" : "",
       };
 
       final productListResponseDTO = await ref.read(productListViewModelProvider.notifier).getList(requestData);
@@ -522,9 +524,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                         children: [
                           GestureDetector(
                             onTap: () {
-                              // TODO API 연동 필요
                               setState(() {
                                 _isTodayStart = !_isTodayStart;
+                                _getList();
                               });
                             },
                             child: Row(

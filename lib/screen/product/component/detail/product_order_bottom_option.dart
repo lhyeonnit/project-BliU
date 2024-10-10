@@ -71,8 +71,8 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
   List<ProductOptionTypeDetailData> _ptOptionArr = [];
   List<AddOptionData> _ptAddArr = [];
 
-  List<ProductOptionTypeDetailData> _addPtOptionArr = [];
-  List<AddOptionData> _addPtAddArr = [];
+  final List<ProductOptionTypeDetailData> _addPtOptionArr = [];
+  final List<AddOptionData> _addPtAddArr = [];
   bool _isExpanded = false;
   bool _isOptionSelected = false;
 
@@ -135,18 +135,18 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                             child: Theme(
                               data: Theme.of(context).copyWith(
                                 disabledColor: Colors.transparent,
+                                dividerColor: Colors.transparent,
                                 listTileTheme: ListTileTheme.of(context).copyWith(
-                                    dense: true, minVerticalPadding: 14
+                                  dense: true,
+                                  minVerticalPadding: 14
                                 ),
                               ),
                               child: Container(
                                 margin: const EdgeInsets.only(bottom: 15),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(6)),
-                                  border: Border.all(
-                                      color: const Color(0xFFE1E1E1)),
+                                  borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                  border: Border.all(color: const Color(0xFFE1E1E1)),
                                 ),
                                 child: ExpansionTile(
                                   title: Text(
@@ -168,7 +168,6 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                         ),
                                       ),
                                       onTap: () {
-                                        // TODO 선택시
                                         if (_addPtAddArr.isEmpty) {
                                           setState(() {
                                             _addPtAddArr.add(ptAdd);
@@ -189,8 +188,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                               _addPtAddArr.add(ptAdd);
                                             });
                                           } else {
-                                            Utils.getInstance()
-                                                .showToast('이미 추가한 상품 입니다.');
+                                            Utils.getInstance().showToast('이미 추가한 상품 입니다.');
                                           }
                                         }
                                       },
@@ -205,120 +203,120 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: _addPtOptionArr.length,
-                          // 리스트의 길이를 사용
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 15),
-                                  padding: const EdgeInsets.all(20),
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFFF5F9F9),
-                                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(bottom: 12),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              _addPtOptionArr[index].option ?? "",
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 14),
-                                                height: 1.2,
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  _addPtOptionArr.removeAt(index);
-                                                });
-                                              },
-                                              child: SvgPicture.asset('assets/images/ic_del.svg'),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _addPtOptionArr.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 15),
+                                padding: const EdgeInsets.all(20),
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFFF5F9F9),
+                                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(bottom: 12),
+                                      child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Container(
-                                            width: Responsive.getWidth(context, 96),
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 6,
-                                              horizontal: 8,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: const BorderRadius.all(Radius.circular(22)),
-                                              border: Border.all(
-                                                color: const Color(0xFFE3E3E3)
-                                              ),
-                                            ),
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                GestureDetector(
-                                                  child: const Icon(CupertinoIcons.minus, size: 20),
-                                                  onTap: () {
-                                                    if (_addPtOptionArr[index].count > 1) {
-                                                      setState(() {
-                                                        _addPtOptionArr[index].count -= 1;
-                                                      });
-                                                    }
-                                                  },
-                                                ),
-                                                Container(
-                                                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                                                  child: Text(
-                                                    '${_addPtOptionArr[index].count}',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Pretendard',
-                                                      fontSize: Responsive.getFont(context, 14),
-                                                      height: 1.2,
-                                                    ),
-                                                  ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    if ((_addPtOptionArr[index].potJaego ?? 0) > _addPtOptionArr[index].count) {
-                                                      setState(() {
-                                                        _addPtOptionArr[index].count += 1;
-                                                      });
-                                                    }
-                                                  },
-                                                  child: const Icon(Icons.add, size: 20),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
                                           Text(
-                                            '${Utils.getInstance().priceString(_addPtOptionArr[index].count * ((_addPtOptionArr[index].potPrice ?? 0) + (_productData.ptPrice ?? 0)))}원',
+                                            _addPtOptionArr[index].option ?? "",
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
                                               fontSize: Responsive.getFont(context, 14),
-                                              fontWeight: FontWeight.bold,
                                               height: 1.2,
                                             ),
                                           ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                _addPtOptionArr.removeAt(index);
+                                              });
+                                            },
+                                            child: SvgPicture.asset('assets/images/ic_del.svg'),
+                                          ),
                                         ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          width: Responsive.getWidth(context, 96),
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 6,
+                                            horizontal: 8,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: const BorderRadius.all(Radius.circular(22)),
+                                            border: Border.all(
+                                              color: const Color(0xFFE3E3E3)
+                                            ),
+                                          ),
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              GestureDetector(
+                                                child: const Icon(CupertinoIcons.minus, size: 20),
+                                                onTap: () {
+                                                  if (_addPtOptionArr[index].count > 1) {
+                                                    setState(() {
+                                                      _addPtOptionArr[index].count -= 1;
+                                                    });
+                                                  }
+                                                },
+                                              ),
+                                              Container(
+                                                margin: const EdgeInsets.symmetric(horizontal: 5),
+                                                child: Text(
+                                                  '${_addPtOptionArr[index].count}',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pretendard',
+                                                    fontSize: Responsive.getFont(context, 14),
+                                                    height: 1.2,
+                                                  ),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  if ((_addPtOptionArr[index].potJaego ?? 0) > _addPtOptionArr[index].count) {
+                                                    setState(() {
+                                                      _addPtOptionArr[index].count += 1;
+                                                    });
+                                                  }
+                                                },
+                                                child: const Icon(Icons.add, size: 20),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Text(
+                                          '${Utils.getInstance().priceString(_addPtOptionArr[index].count * ((_addPtOptionArr[index].potPrice ?? 0) + (_productData.ptPrice ?? 0)))}원',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            fontWeight: FontWeight.bold,
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            );
-                          }),
+                              ),
+                            ],
+                          );
+                        }
+                      ),
                     ),
                     // 추가상품
                     Container(
@@ -503,6 +501,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
     return Theme(
       data: Theme.of(context).copyWith(
         disabledColor: Colors.transparent,
+        dividerColor: Colors.transparent,
         listTileTheme: ListTileTheme.of(context).copyWith(
           dense: true, minVerticalPadding: 14
         ),
@@ -519,6 +518,8 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
           // 각각의 타일이 고유한 상태를 갖도록 함
           initiallyExpanded: _isExpanded,
           // 타일의 초기 상태 설정
+          iconColor: Colors.black,
+          collapsedIconColor: Colors.black,
           title: Text(
             title,
             style: TextStyle(
@@ -544,9 +545,6 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
               ),
               onTap: () {
                 onSelected(option); // 항목이 선택되면 콜백 실행
-                setState(() {
-                  _isExpanded = false; // 선택 시 타일을 닫음
-                });
               },
             );
           }).toList(),

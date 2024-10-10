@@ -566,7 +566,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       ],
                     ),
                     Visibility(
-                      visible: true,// TODO 오늘출발 수정 필요
+                      visible: (_productData?.ptDeliveryNow ?? "") == "Y",
                       child: Container(
                         margin: const EdgeInsets.only(top: 10),
                         child: Image.asset(
