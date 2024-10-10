@@ -180,22 +180,15 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                   height: 22,
                                   width: 22,
                                   decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(6)),
+                                    borderRadius: const BorderRadius.all(Radius.circular(6)),
                                     border: Border.all(
-                                      color: isUseAddress
-                                          ? const Color(0xFFFF6191)
-                                          : const Color(0xFFCCCCCC),
+                                      color: isUseAddress ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                                     ),
-                                    color: isUseAddress
-                                        ? const Color(0xFFFF6191)
-                                        : Colors.white,
+                                    color: isUseAddress ? const Color(0xFFFF6191) : Colors.white,
                                   ),
                                   child: SvgPicture.asset(
                                     'assets/images/check01_off.svg', // 체크박스 아이콘
-                                    color: isUseAddress
-                                        ? Colors.white
-                                        : const Color(0xFFCCCCCC),
+                                    color: isUseAddress ? Colors.white : const Color(0xFFCCCCCC),
                                     height: 10,
                                     width: 10,
                                     fit: BoxFit.contain,

@@ -11,29 +11,119 @@ class FAQScreen extends ConsumerStatefulWidget {
   const FAQScreen({super.key});
 
   @override
-  _FAQScreenState createState() => _FAQScreenState();
+  ConsumerState<FAQScreen> createState() => _FAQScreenState();
 }
 
 class _FAQScreenState extends ConsumerState<FAQScreen> {
-  List<FaqCategoryData> faqCategories = [
-    FaqCategoryData(fcIdx: -1, cftName: "전체")
-  ];
-  List<FaqData> faqDataList = [];
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
 
-  int pg = 0;
+  List<FaqCategoryData> faqCategories = [
+    FaqCategoryData(fcIdx: -1, cftName: "전체")
+  ];
+  List<FaqData> _faqList = [];
 
-  int selectedCategoryIndex = 0;
-  String searchQuery = "";
+  int _page = 1;
+  bool _hasNextPage = true;
+  bool _isFirstLoadRunning = false;
+  bool _isLoadMoreRunning = false;
+
+  int _selectedCategoryIndex = 0;
+  String _searchTxt = "";
 
   @override
   void initState() {
     super.initState();
-
+    _scrollController.addListener(_nextLoad);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.removeListener(_nextLoad);
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getCategory();
+  }
+
+  void _getCategory() {
+    ref.read(faqViewModelProvider.notifier).getCategory().then((list) {
+      if (list != null) {
+        for (var data in list) {
+          faqCategories.add(data);
+        }
+
+        setState(() {
+          _getList();
+        });
+      }
+    });
+  }
+
+  void _getList() async {
+    setState(() {
+      _isFirstLoadRunning = true;
+    });
+    _page = 1;
+
+    var faqCategory = "all";
+    if (_selectedCategoryIndex > 0) {
+      faqCategory = faqCategories[_selectedCategoryIndex].fcIdx.toString();
+    }
+
+    Map<String, dynamic> requestData = {
+      'search_txt': _searchTxt,
+      'faq_category': faqCategory,
+      'pg': _page
+    };
+
+    final faqResponseDTO = await ref.read(faqViewModelProvider.notifier).getList(requestData);
+    _faqList = faqResponseDTO?.list ?? [];
+
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+  }
+
+  void _nextLoad() async {
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+      _page += 1;
+
+      var faqCategory = "all";
+      if (_selectedCategoryIndex > 0) {
+        faqCategory = faqCategories[_selectedCategoryIndex].fcIdx.toString();
+      }
+
+      Map<String, dynamic> requestData = {
+        'search_txt': _searchTxt,
+        'faq_category': faqCategory,
+        'pg': _page
+      };
+
+      final faqResponseDTO = await ref.read(faqViewModelProvider.notifier).getList(requestData);
+      if (faqResponseDTO != null) {
+        if ((faqResponseDTO.list ?? []).isNotEmpty) {
+          setState(() {
+            _faqList.addAll(faqResponseDTO.list ?? []);
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
+      });
+    }
   }
 
   @override
@@ -86,33 +176,34 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
             children: [
               SingleChildScrollView(
                 child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                  margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                   height: 56,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: Color(0xFFE1E1E1))),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: const Color(0xFFE1E1E1))
+                  ),
                   child: Row(
                     children: [
                       Expanded(
                         child: TextField(
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              decorationThickness: 0,
-                              fontSize: Responsive.getFont(context, 14)),
+                            fontFamily: 'Pretendard',
+                            decorationThickness: 0,
+                            fontSize: Responsive.getFont(context, 14)
+                          ),
                           controller: _searchController,
                           decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 14, horizontal: 15),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                             labelStyle: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
                             ),
                             hintText: '내용을 입력해 주세요.',
                             hintStyle: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: Color(0xFF595959)),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: const Color(0xFF595959)
+                            ),
                             border: InputBorder.none,
                             suffixIcon: _searchController.text.isNotEmpty
                                 ? GestureDetector(
@@ -126,25 +217,26 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                                     ),
                                   )
                                 : null,
-                            suffixIconConstraints:
-                                BoxConstraints.tight(const Size(24, 24)),
+                            suffixIconConstraints: BoxConstraints.tight(const Size(24, 24)),
                           ),
                           onSubmitted: (value) {
                             if (value.isNotEmpty) {
                               _searchController.clear();
-                              // TODO 검색기능
+                              _searchTxt = value;
+                              _getList();
                             }
                           },
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            top: 8, left: 10, bottom: 8, right: 15),
+                        padding: const EdgeInsets.only(top: 8, left: 10, bottom: 8, right: 15),
                         child: GestureDetector(
                           onTap: () {
                             String search = _searchController.text;
                             if (search.isNotEmpty) {
                               _searchController.clear();
+                              _searchTxt = search;
+                              _getList();
                             }
                           },
                           child: SvgPicture.asset(
@@ -165,7 +257,7 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                   scrollDirection: Axis.horizontal,
                   itemCount: faqCategories.length,
                   itemBuilder: (context, index) {
-                    final bool isSelected = selectedCategoryIndex == index;
+                    final bool isSelected = _selectedCategoryIndex == index;
                     final faqCategoryData = faqCategories[index];
 
                     return Padding(
@@ -182,17 +274,15 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                         selected: isSelected,
                         onSelected: (bool selected) {
                           setState(() {
-                            selectedCategoryIndex = index;
-                            _getList(true);
+                            _selectedCategoryIndex = index;
+                            _getList();
                           });
                         },
                         backgroundColor: Colors.white,
                         selectedColor: Colors.white,
                         shape: StadiumBorder(
                           side: BorderSide(
-                            color: isSelected
-                                ? Color(0xFFFF6192)
-                                : Color(0xFFDDDDDD), // 테두리 색상
+                            color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD), // 테두리 색상
                             width: 1.0,
                           ),
                         ),
@@ -203,103 +293,98 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
+                margin: const EdgeInsets.symmetric(vertical: 20),
                 width: double.infinity,
                 color: const Color(0xFFF5F9F9), // 색상 적용
                 height: 10,
               ),
               Expanded(
-                child: Consumer(builder: (context, ref, widget) {
-                  final model = ref.watch(faqModelProvider);
-                  faqDataList = model?.faqResponseDTO?.list ?? [];
-
-                  return ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    itemCount: faqDataList.length,
-                    itemBuilder: (context, index) {
-                      final faq = faqDataList[index];
-                      String cateName = "";
-                      for (var cate in faqCategories) {
-                        if (cate.fcIdx == faq.cftIdx) {
-                          cateName = cate.cftName ?? "";
-                        }
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  itemCount: _faqList.length,
+                  itemBuilder: (context, index) {
+                    final faq = _faqList[index];
+                    String cateName = "";
+                    for (var cate in faqCategories) {
+                      if (cate.fcIdx == faq.cftIdx) {
+                        cateName = cate.cftName ?? "";
                       }
-                      return Theme(
-                        data: Theme.of(context)
-                            .copyWith(dividerColor: Colors.transparent), // 선 제거
-                        child: ExpansionTile(
-                          tilePadding: EdgeInsets.zero,
-                          collapsedBackgroundColor: Colors.white,
-                          // 펼쳐지기 전 배경
-                          backgroundColor: Colors.white,
-                          // 펼쳐진 후 배경
-                          title: Row(
-                            children: [
-                              Text(
-                                cateName,
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: Responsive.getFont(context, 14),
-                                  height: 1.2,
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                                  child: Text(
-                                    faq.ftSubject ?? "",
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                    }
+                    return Theme(
+                      data: Theme.of(context)
+                          .copyWith(dividerColor: Colors.transparent), // 선 제거
+                      child: ExpansionTile(
+                        tilePadding: EdgeInsets.zero,
+                        collapsedBackgroundColor: Colors.white,
+                        // 펼쳐지기 전 배경
+                        backgroundColor: Colors.white,
+                        // 펼쳐진 후 배경
+                        title: Row(
                           children: [
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Color(0xFFF5F9F9),
-                                borderRadius: BorderRadius.circular(6.0),
+                            Text(
+                              cateName,
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.bold,
+                                fontSize: Responsive.getFont(context, 14),
+                                height: 1.2,
                               ),
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    faq.ftSubject ?? "",
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
-                                    ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 5),
+                                child: Text(
+                                  faq.ftSubject ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
                                   ),
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 15),
-                                    child: Text(
-                                      faq.ftContent ?? "",
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      );
-                    },
-                  );
-                }),
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF5F9F9),
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  faq.ftSubject ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 15),
+                                  child: Text(
+                                    faq.ftContent ?? "",
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
@@ -307,44 +392,5 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
         ],
       ),
     );
-  }
-
-  void _afterBuild(BuildContext context) {
-    _getCategory();
-  }
-
-  void _getCategory() {
-    ref.read(faqModelProvider.notifier).getCategory().then((list) {
-      if (list != null) {
-        for (var data in list) {
-          faqCategories.add(data);
-        }
-
-        setState(() {
-          _getList(true);
-        });
-      }
-    });
-  }
-
-  // TODO 페이징
-  void _getList(bool isNew) {
-    if (isNew) {
-      ref.read(faqModelProvider)?.faqResponseDTO?.list?.clear();
-      pg = 0;
-    }
-
-    var faqCategory = "all";
-    if (selectedCategoryIndex > 0) {
-      faqCategory = faqCategories[selectedCategoryIndex].fcIdx.toString();
-    }
-
-    Map<String, dynamic> requestData = {
-      'search_txt': searchQuery,
-      'faq_category': faqCategory,
-      'pg': pg
-    };
-
-    ref.read(faqModelProvider.notifier).getList(requestData);
   }
 }

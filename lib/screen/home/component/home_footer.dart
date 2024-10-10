@@ -35,8 +35,6 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_){
       ref.read(footerViewModelProvider.notifier).getFoot().then((model) {
-        //final model = ref.watch(footerViewModelProvider);
-
         if (model?.footResponseDTO != null) {
           if (model?.footResponseDTO?.result == true) {
             var data = model?.footResponseDTO?.data;
@@ -64,7 +62,7 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
 
     return Container(
       color: const Color(0xFFF5F9F9), // 배경 색상
-      padding: const EdgeInsets.only(top: 40, bottom: 102.5),
+      padding: const EdgeInsets.only(top: 40, bottom: 37),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

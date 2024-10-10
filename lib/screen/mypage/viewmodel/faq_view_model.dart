@@ -6,13 +6,7 @@ import 'package:BliU/dto/faq_category_response_dto.dart';
 import 'package:BliU/dto/faq_response_dto.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class FaqModel {
-  FaqResponseDTO? faqResponseDTO;
-
-  FaqModel({
-    this.faqResponseDTO,
-  });
-}
+class FaqModel {}
 
 class FaqViewModel extends StateNotifier<FaqModel?> {
   final Ref ref;
@@ -38,36 +32,26 @@ class FaqViewModel extends StateNotifier<FaqModel?> {
     }
   }
 
-  Future<void> getList(Map<String, dynamic> requestData) async {
+  Future<FaqResponseDTO?> getList(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiMyPageFaqUrl, data: requestData);
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
           FaqResponseDTO faqResponseDTO = FaqResponseDTO.fromJson(responseData);
-
-          var list = state?.faqResponseDTO?.list ?? [];
-          List<FaqData> addList = faqResponseDTO.list ?? [];
-          for (var item in  addList) {
-            list.add(item);
-          }
-
-          faqResponseDTO.list = list;
-
-          state = FaqModel(faqResponseDTO: faqResponseDTO);
-          return;
+          return faqResponseDTO;
         }
       }
-      state = state;
+      return null;
     } catch (e) {
       // Catch and log any exceptions
       print('Error fetching : $e');
-      state = state;
+      return null;
     }
   }
 }
 
-final faqModelProvider =
+final faqViewModelProvider =
 StateNotifierProvider<FaqViewModel, FaqModel?>((req) {
   return FaqViewModel(null, req);
 });
