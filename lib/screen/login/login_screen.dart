@@ -6,6 +6,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
@@ -149,9 +150,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              // TODO 자동로그인 체크박스 활성화
-                              // setState(() {
-                              //   _isAutoLogin = !_isAutoLogin;);
+                              setState(() {
+                                _isAutoLogin = !_isAutoLogin;
+                                },
+                              );
                             },
                             child: Container(
                               margin: const EdgeInsets.only(right: 10),
@@ -487,8 +489,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   void _login(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+
     final pref = await SharedPreferencesManager.getInstance();
-    final appToken = pref.getToken();
+    String? appToken = await FirebaseMessaging.instance.getToken();
     if (_idController.text.isEmpty) {
       Utils.getInstance().showSnackBar(context, "아이디를 입력해 주세요");
       return;
@@ -508,15 +512,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       'app_token': appToken,
     };
 
-    _loginScreenViewModel?.authLogin(tokenData);
+    await ref.read(loginViewModelProvider.notifier).authLogin(tokenData);
     final loginResponseDTO = await ref.read(loginViewModelProvider.notifier).login(data);
+
     final mtIdx = loginResponseDTO?.data?.mtIdx.toString();  // 서버에서 받은 비밀번호 토큰
-    pref.setMtIdx(mtIdx!);
+    if (mtIdx != null && mtIdx.isNotEmpty) {
+      await pref.setMtIdx(mtIdx);
+    }
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: (context) => const MainScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => const MainScreen()),
     );
+    setState(() {
+      ref.read(mainScreenProvider.notifier).selectNavigation(2);
+    });
   }
 }

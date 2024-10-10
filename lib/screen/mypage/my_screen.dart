@@ -1,6 +1,6 @@
 import 'package:BliU/data/member_info_data.dart';
-import 'package:BliU/main.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
+import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/faq_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/non_order_page.dart';
 import 'package:BliU/screen/mypage/component/bottom/notice_screen.dart';
@@ -8,7 +8,7 @@ import 'package:BliU/screen/mypage/component/bottom/recommend_edit.dart';
 import 'package:BliU/screen/mypage/component/bottom/service_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/setting_screen.dart';
 import 'package:BliU/screen/mypage/component/top/alarm_screen.dart';
-import 'package:BliU/screen/mypage/component/top/component/my_info.dart';
+import 'package:BliU/screen/mypage/component/top/component/my_info_edit_check.dart';
 import 'package:BliU/screen/mypage/component/top/my_coupon_screen.dart';
 import 'package:BliU/screen/mypage/component/top/my_review_screen.dart';
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
@@ -30,7 +30,7 @@ class MyScreen extends ConsumerStatefulWidget {
 }
 
 class _MyScreenState extends ConsumerState<MyScreen> {
-  String? userId;
+  String userId = '';
   MemberInfoData? memberInfoData;
   int? myReviewCount;
   int? myCouponCount;
@@ -135,16 +135,85 @@ class _MyScreenState extends ConsumerState<MyScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Visibility(
-              visible: userId != null,
+              visible: userId.isNotEmpty,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: 20, horizontal: 16),
-                      child: MyInfo(
-                        memberInfoData: memberInfoData,
-                      )),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipOval(
+                              child: Container(
+                                width: 70,
+                                height: 70,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xFFFFE4DF),
+                                ),
+                                child: Image.asset('assets/images/my/gender_select_boy.png'),
+                              )),
+                          Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: const EdgeInsets.only(top: 15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${memberInfoData?.mtName ?? ""}님 안녕하세요',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 18),
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                  Text(
+                                    memberInfoData?.mtId ?? "",
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: const Color(0xFF7B7B7B),
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MyInfoEditCheck(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                                margin: const EdgeInsets.only(top: 20),
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(color: const Color(0xFFDDDDDD)),
+                                ),
+                                child: Text(
+                                  '내정보수정',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    color: Colors.black,
+                                    fontSize: Responsive.getFont(context, 12),
+                                    height: 1.2,
+                                  ),
+                                )
+                            ),
+                          ),
+                        ],
+                      ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Row(
@@ -192,7 +261,7 @@ class _MyScreenState extends ConsumerState<MyScreen> {
               ),
             ),
             Visibility(
-                visible: userId == null, child: NonTopScreen()),
+                visible: userId.isEmpty, child: NonTopScreen()),
             Container(
               margin: const EdgeInsets.only(top: 20, bottom: 30),
               width: double.infinity,
@@ -201,7 +270,7 @@ class _MyScreenState extends ConsumerState<MyScreen> {
             ),
             _buildSection(context, '쇼핑정보'),
             Visibility(
-              visible: userId != null,
+              visible: userId.isNotEmpty,
               child: _buildSectionItem(
                 context,
                 '추천정보관리',
@@ -215,7 +284,7 @@ class _MyScreenState extends ConsumerState<MyScreen> {
               ),
             ),
             Visibility(
-              visible: userId == null,
+              visible: userId.isEmpty,
               child: _buildSectionItem(context, '주문 내역 보기', () {
                 Navigator.push(
                   context,
@@ -253,7 +322,7 @@ class _MyScreenState extends ConsumerState<MyScreen> {
               );
             }),
             Visibility(
-              visible: userId != null,
+              visible: userId.isNotEmpty,
               child: GestureDetector(
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -269,15 +338,7 @@ class _MyScreenState extends ConsumerState<MyScreen> {
                   ),
                 ),
                 onTap: () {
-                  // TODO 로그아웃 동작 처리
-                  SharedPreferencesManager.getInstance().then((pref) {
-                    // pref.clear(); // 저장된 사용자 정보 삭제
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MyApp()), // 로그아웃 후 메인화면으로
-                    );
-                  });
+                  logout();
                 },
               ),
             ),
@@ -306,16 +367,28 @@ class _MyScreenState extends ConsumerState<MyScreen> {
   void _afterBuild(BuildContext context) async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-    Map<String, dynamic> requestData = {
-      'mt_idx': mtIdx,
-    };
-    final memberInfoDTO = await ref.read(myModelProvider.notifier).getMy(requestData);
-    memberInfoData = memberInfoDTO?.data;
-    myCouponCount = memberInfoDTO?.data?.myCouponCount;
-    myPoint = memberInfoDTO?.data?.myPoint;
-    myReviewCount = memberInfoDTO?.data?.myRevieCount;
-    userId = mtIdx;
+    if (mtIdx != null && mtIdx.isNotEmpty) {
+      Map<String, dynamic> requestData = {
+        'mt_idx': mtIdx,
+      };
+      final memberInfoDTO = await ref.read(myModelProvider.notifier).getMy(requestData);
+      setState(() {  // 상태 변경 후 UI 업데이트
+        memberInfoData = memberInfoDTO?.data;
+        myCouponCount = memberInfoDTO?.data?.myCouponCount;
+        myPoint = memberInfoDTO?.data?.myPoint;
+        myReviewCount = memberInfoDTO?.data?.myRevieCount;
+        userId = memberInfoDTO?.data?.mtIdx.toString() ?? '';  // userId 업데이트
+      });
+    }
   }
+  void logout() async {
+    SharedPreferencesManager prefs = await SharedPreferencesManager.getInstance();
+    await prefs.clearAll();  // 저장된 모든 데이터를 삭제
+
+    // 로그아웃 후 로그인 화면으로 전환
+    ref.read(mainScreenProvider.notifier).selectNavigation(2);
+  }
+
 
   Widget _buildSection(BuildContext context, String title) {
     return Container(
