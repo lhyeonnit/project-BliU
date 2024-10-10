@@ -46,7 +46,7 @@ class _SearchRecommendItemState extends ConsumerState<SearchRecommendItem> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0),
             child: SizedBox(
-              height: 290,
+              height: 300,
               child: ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,

@@ -29,8 +29,8 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
   late List<CategoryData> _categories;
 
   bool isTodayStart = true;
-  String sortOption = '인기순';
-  String sortOptionSelected = '';
+  String _sortOption = '최신순';
+  String _sortOptionSelected = '';
 
   int _count = 0;
   List<ProductData> _productList = [];
@@ -93,14 +93,59 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
       subCategory = categoryData.ctIdx.toString();
     }
 
+    int sort = 1;
+    // 1 최신순 2 인기순 3: 추천수, 4: 가격 낮은수, 5: 가격 높은수
+    switch (_sortOptionSelected) {
+      case "최신순":
+        sort = 1;
+        break;
+      case "인기순":
+        sort = 2;
+        break;
+      case "추천순":
+        sort = 3;
+        break;
+      case "가격 낮은 순":
+        sort = 4;
+        break;
+      case "가격 높은 순":
+        sort = 5;
+        break;
+    }
+
+    String age = '';
+    // 연령 1: 베이비 2: 키즈 3: 주니어
+    switch (selectedAgeGroup) {
+      case "베이비(0-24개월)":
+        age = '1';
+        break;
+      case "키즈(3-8세)":
+        age = '2';
+        break;
+      case "주니어(9세이상)":
+        age = '3';
+        break;
+    }
+
+    String styles = '';
+    // 없을시 빈값으로 전달해주세요 1 캐주얼, 2 스포티 3: 포멀/클래식, 4:베이직 5:프린세스/페어리 6: 힙스터 7:럭셔리 8: 어반 스트릿 9: 로맨틱
+    // ex) [1, 2]
+    for (var style in selectedStyles) {
+      if(styles.isEmpty) {
+        styles = style;
+      } else {
+        styles = "$styles,$style";
+      }
+    }
+
     // TODO 정렬 및 검색 결과 파라매터 넣어야 함
     Map<String, dynamic> requestData = {
       'mt_idx': mtIdx,
       'category': _selectedCategory.ctIdx,
       'sub_category': subCategory,
-      'sort': 1,
-      'age': 1,
-      'styles': '',
+      'sort': sort,
+      'age': age,
+      'styles': styles,
       'min_price': 0,
       'max_price': 99999,
       'pg': _page,
@@ -132,14 +177,59 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         subCategory = categoryData.ctIdx.toString();
       }
 
+      int sort = 1;
+      // 1 최신순 2 인기순 3: 추천수, 4: 가격 낮은수, 5: 가격 높은수
+      switch (_sortOptionSelected) {
+        case "최신순":
+          sort = 1;
+          break;
+        case "인기순":
+          sort = 2;
+          break;
+        case "추천순":
+          sort = 3;
+          break;
+        case "가격 낮은 순":
+          sort = 4;
+          break;
+        case "가격 높은 순":
+          sort = 5;
+          break;
+      }
+
+      String age = '';
+      // 연령 1: 베이비 2: 키즈 3: 주니어
+      switch (selectedAgeGroup) {
+        case "베이비(0-24개월)":
+          age = '1';
+          break;
+        case "키즈(3-8세)":
+          age = '2';
+          break;
+        case "주니어(9세이상)":
+          age = '3';
+          break;
+      }
+
+      String styles = '';
+      // 없을시 빈값으로 전달해주세요 1 캐주얼, 2 스포티 3: 포멀/클래식, 4:베이직 5:프린세스/페어리 6: 힙스터 7:럭셔리 8: 어반 스트릿 9: 로맨틱
+      // ex) [1, 2]
+      for (var style in selectedStyles) {
+        if(styles.isEmpty) {
+          styles = style;
+        } else {
+          styles = "$styles,$style";
+        }
+      }
+
       // TODO 정렬 및 검색 결과 파라매터 넣어야 함
       Map<String, dynamic> requestData = {
         'mt_idx': mtIdx,
         'category': _selectedCategory.ctIdx,
         'sub_category': subCategory,
-        'sort': 1,
-        'age': 1,
-        'styles': '',
+        'sort': sort,
+        'age': age,
+        'styles': styles,
         'min_price': 0,
         'max_price': 99999,
         'pg': _page,
@@ -202,11 +292,12 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
       context: context,
       builder: (context) {
         return ProductSortBottom(
-          sortOption: sortOption,
+          sortOption: _sortOption,
           onSortOptionSelected: (selectedOption) {
             setState(() {
-              sortOptionSelected = selectedOption;
-              sortOption = selectedOption; // 선택된 정렬 옵션으로 업데이트
+              _sortOptionSelected = selectedOption;
+              _sortOption = selectedOption; // 선택된 정렬 옵션으로 업데이트
+              _getList();
             });
           },
         );
@@ -249,19 +340,12 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
           selectedStyleOption: selectedStyles,
           selectedAgeOption: selectedAgeGroup,
           selectedRangeValuesOption: selectedRangeValues,
-          onAgeOptionSelected: (String newSelectedAge) {
+          onValueSelected: (Map<String, dynamic> selectedValue) {
             setState(() {
-              selectedAgeGroup = newSelectedAge;
-            });
-          },
-          onStyleOptionSelected: (List<String> newSelectedStyle) {
-            setState(() {
-              selectedStyles = newSelectedStyle;
-            });
-          },
-          onRangeValuesSelected: (RangeValues newSelectedRangeValues) {
-            setState(() {
-              selectedRangeValues = newSelectedRangeValues;
+              selectedAgeGroup = selectedValue['age'];
+              selectedStyles = selectedValue['style'];
+              selectedRangeValues = selectedValue['range'];
+              _getList();
             });
           },
         );
@@ -576,7 +660,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                     Container(
                       margin: const EdgeInsets.only(left: 5),
                       child: Text(
-                        sortOptionSelected.isNotEmpty ? sortOptionSelected : '인기순', // 선택된 정렬 옵션 표시
+                        _sortOptionSelected.isNotEmpty ? _sortOptionSelected : '최신순', // 선택된 정렬 옵션 표시
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
@@ -613,15 +697,3 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
     );
   }
 }
-
-class FilterOption {
-  final String label;
-
-  FilterOption({required this.label});
-}
-
-List<FilterOption> ageOptions = [
-  FilterOption(label: '베이비(0-24개월)'),
-  FilterOption(label: '키즈(3-8세)'),
-  FilterOption(label: '주니어(9세 이상)'),
-];

@@ -107,7 +107,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                 child: SizedBox(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MainScreen(),

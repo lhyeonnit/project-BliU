@@ -1,5 +1,3 @@
-// product_sort_bottom.dart
-
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +38,7 @@ class _ProductSortBottomState extends State<ProductSortBottom> {
   Widget build(BuildContext context) {
     return Container(
       height: 300,
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
@@ -54,14 +52,14 @@ class _ProductSortBottomState extends State<ProductSortBottom> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Color(0xFFDDDDDD),
+                color: const Color(0xFFDDDDDD),
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
           ),
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: const EdgeInsets.only(top: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -88,7 +86,7 @@ class _ProductSortBottomState extends State<ProductSortBottom> {
         Navigator.pop(context);
       },
       child: Container(
-        margin: EdgeInsets.only(bottom: 24),
+        margin: const EdgeInsets.only(bottom: 24),
         child: Text(
           sortOption,
           style: TextStyle(

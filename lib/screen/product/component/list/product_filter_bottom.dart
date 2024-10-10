@@ -6,18 +6,14 @@ class ProductFilterBottom extends StatefulWidget {
   final String selectedAgeOption;
   final List<String> selectedStyleOption;
   final RangeValues selectedRangeValuesOption;
-  final ValueChanged<String> onAgeOptionSelected;
-  final ValueChanged<List<String>> onStyleOptionSelected;
-  final ValueChanged<RangeValues> onRangeValuesSelected;
+  final ValueChanged<Map<String, dynamic>> onValueSelected;
 
   const ProductFilterBottom({
     super.key,
     required this.selectedAgeOption,
     required this.selectedStyleOption,
     required this.selectedRangeValuesOption,
-    required this.onAgeOptionSelected,
-    required this.onStyleOptionSelected,
-    required this.onRangeValuesSelected,
+    required this.onValueSelected,
   });
 
   @override
@@ -234,7 +230,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                       setState(() {
                         _tempSelectedAgeGroup = "";
                         _tempSelectedStyle.clear();
-                        _tempSelectedRange = const RangeValues(0, 0);
+                        _tempSelectedRange = const RangeValues(0, 100000);
                       });
                     },
                   ),
@@ -242,9 +238,13 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      widget.onAgeOptionSelected(_tempSelectedAgeGroup);
-                      widget.onStyleOptionSelected(_tempSelectedStyle);
-                      widget.onRangeValuesSelected(_tempSelectedRange);
+                      Map<String, dynamic> value = {
+                        'age' : _tempSelectedAgeGroup,
+                        'style' : _tempSelectedStyle,
+                        'range' : _tempSelectedRange,
+                      };
+                      widget.onValueSelected(value);
+
                       Navigator.pop(context);
                     },
                     child: Container(

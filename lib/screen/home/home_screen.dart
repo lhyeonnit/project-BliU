@@ -58,7 +58,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void _getCategoryList() async {
-    Map<String, dynamic> requestData = {'category_type': '1'};
+    Map<String, dynamic> requestData = {'category_type': '2'};
     final categoryResponseDTO = await ref.read(homeViewModelProvider.notifier).getCategory(requestData);
     final ageCategoryResponseDTO = await ref.read(homeViewModelProvider.notifier).getAgeCategory();
     if (categoryResponseDTO != null) {
