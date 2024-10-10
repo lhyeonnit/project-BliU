@@ -245,7 +245,14 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
                             padding: EdgeInsets.zero, // 여백 없앰
                             minimumSize: Size.zero, // 최소 사이즈를 0으로 설정하여 여백 제거
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ExhibitionScreen(etIdx: exhibitionData.etIdx ?? 0,),
+                              ),
+                            );
+                          },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

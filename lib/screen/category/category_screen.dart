@@ -68,8 +68,9 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
               ref.read(mainScreenProvider.notifier).selectNavigation(2);
             },
             child: Container(
-                margin: const EdgeInsets.only(right: 16),
-                child: SvgPicture.asset('assets/images/product/ic_close.svg')),
+              margin: const EdgeInsets.only(right: 16),
+              child: SvgPicture.asset('assets/images/product/ic_close.svg')
+            ),
           ),
         ],
       ),
@@ -89,31 +90,31 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                   itemBuilder: (context, index) {
                     final categoryData = categories[index];
                     final bool isSelectCategory = _selectedCategoryIndex == index;
-                    return Container(
-                      padding: const EdgeInsets.only(left: 16),
-                      height: 50,
-                      color: isSelectCategory ? Colors.white : const Color(0xFFF5F9F9),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _selectedCategoryIndex = index;
-                          });
-                          _scrollController.scrollTo(index: index, duration: const Duration(milliseconds: 500));
-                        },
-                        child: Row(
-                          children: [
-                            Text(
-                              categoryData.ctName ?? "",
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 15),
-                                fontWeight: FontWeight.w600,
-                                height: 1.2,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedCategoryIndex = index;
+                        });
+                        _scrollController.scrollTo(index: index, duration: const Duration(milliseconds: 500));
+                      },
+                      child: Container(
+                          padding: const EdgeInsets.only(left: 16),
+                          height: 50,
+                          color: isSelectCategory ? Colors.white : const Color(0xFFF5F9F9),
+                          child: Row(
+                            children: [
+                              Text(
+                                categoryData.ctName ?? "",
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 15),
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                ),
+                              )
+                            ],
+                          ),
+                      ),
                     );
                   },
                 ),
@@ -230,10 +231,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                           ),
                           Container(
                             margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                            child: const Divider(
-                                color: Color(
-                              0xFFEEEEEE,
-                            )),
+                            child: const Divider(color: Color(0xFFEEEEEE,)),
                           ),
                           // 상위 카테고리 구분을 위한 구분선
                         ],

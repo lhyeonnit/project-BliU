@@ -101,8 +101,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
             controller: _scrollController,
             children: [
               Container(
-                margin: const EdgeInsets.only(
-                    left: 16.0, top: 20, right: 16, bottom: 15),
+                margin: const EdgeInsets.only(left: 16.0, top: 20, right: 16, bottom: 15),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -132,8 +131,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                 ),
                               ),
                             ),
-                            SvgPicture.asset(
-                                'assets/images/product/filter_select.svg'),
+                            SvgPicture.asset('assets/images/product/filter_select.svg'),
                           ],
                         ),
                       ),
@@ -205,8 +203,6 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                   );
                                 },
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       margin: const EdgeInsets.only(right: 10),
@@ -223,112 +219,73 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                         ),
                                       ),
                                     ),
-                                    Flexible(
+                                    Container(
+                                      height: 40,
+                                      width: 40,
+                                      margin: const EdgeInsets.only(right: 10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(Radius.circular(20)),
+                                        // 사진의 모서리 둥글게 설정
+                                        border: Border.all(
+                                          color: const Color(0xFFDDDDDD),
+                                          // 테두리 색상 설정
+                                          width: 1.0, // 테두리 두께 설정
+                                        ),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: const BorderRadius.all(Radius.circular(20)),
+                                        // 사진의 모서리만 둥글게 설정
+                                        child: Image.network(
+                                            rankData.stProfile ?? "",
+                                            fit: BoxFit.contain,
+                                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                              return const SizedBox();
+                                            }
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
                                       flex: 1,
-                                      child: Row(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            height: 40,
-                                            width: 40,
-                                            margin: const EdgeInsets.only(
-                                                right: 10),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(20)),
-                                              // 사진의 모서리 둥글게 설정
-                                              border: Border.all(
-                                                color:
-                                                    const Color(0xFFDDDDDD),
-                                                // 테두리 색상 설정
-                                                width: 1.0, // 테두리 두께 설정
-                                              ),
+                                          Text(
+                                            rankData.stName ?? "",
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              height: 1.2,
                                             ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(20)),
-                                              // 사진의 모서리만 둥글게 설정
-                                              child: Image.network(
-                                                rankData.stProfile ?? "",
-                                                fit: BoxFit.contain,
-                                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                                  return const SizedBox();
-                                                }
-                                              ),
-                                            ),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                rankData.stName ?? "",
-                                                style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  fontSize: Responsive.getFont(context, 14),
-                                                  height: 1.2,
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    rankData.stStyleTxt?.split(',').first ?? "",
-                                                    // 쉼표로 분리 후 첫 번째 값만 가져옴
-                                                    style: TextStyle(
-                                                      fontFamily: 'Pretendard',
-                                                      fontSize: Responsive.getFont(context, 13),
-                                                      color: const Color(0xFF7B7B7B),
-                                                      height: 1.2,
-                                                    ),
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                  Text(
-                                                    ', ',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Pretendard',
-                                                      fontSize: Responsive.getFont(context, 13),
-                                                      color: const Color(0xFF7B7B7B),
-                                                      height: 1.2,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    rankData.stAgeTxt ?? "",
-                                                    style: TextStyle(
-                                                      fontFamily: 'Pretendard',
-                                                      fontSize: Responsive.getFont(context, 13),
-                                                      color: const Color(0xFF7B7B7B),
-                                                      height: 1.2,
-                                                    ),
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                          Text(
+                                            "${rankData.stStyleTxt?.split(',').first ?? ""}, ${rankData.stAgeTxt ?? ""}",
+                                            // 쉼표로 분리 후 첫 번째 값만 가져옴
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 13),
+                                              color: const Color(0xFF7B7B7B),
+                                              height: 1.2,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ],
                                       ),
                                     ),
                                     Container(
                                       width: 50,
-                                      margin: const EdgeInsets.only(
-                                          top: 3, right: 5),
+                                      margin: const EdgeInsets.only(top: 3, right: 5),
                                       child: Column(
                                         children: [
                                           GestureDetector(
                                             onTap: () async {
                                               // 북마크 토글을 위한 데이터 요청
-                                              final pref =
-                                                  await SharedPreferencesManager
-                                                      .getInstance();
+                                              final pref = await SharedPreferencesManager.getInstance();
                                               final mtIdx = pref
                                                   .getMtIdx(); // 사용자 mtIdx 가져오기
-                                              Map<String, dynamic> requestData =
-                                                  {
+                                              Map<String, dynamic> requestData = {
                                                 'mt_idx': mtIdx,
-                                                'st_idx': rankData.stIdx,
-                                                // 상점 인덱스 사용
+                                                'st_idx': rankData.stIdx, // 상점 인덱스 사용
                                               };
 
                                               // 북마크 토글 함수 호출
@@ -339,16 +296,12 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                               });
                                             },
                                             child: Container(
-                                              width: Responsive.getWidth(
-                                                  context, 14),
-                                              height: Responsive.getHeight(
-                                                  context, 17),
-                                              margin: const EdgeInsets.only(
-                                                  bottom: 3),
+                                              width: Responsive.getWidth(context, 14),
+                                              height: Responsive.getHeight(context, 17),
+                                              margin: const EdgeInsets.only(bottom: 3),
                                               child: SvgPicture.asset(
                                                 'assets/images/store/book_mark.svg',
-                                                color: (rankData.checkMark ==
-                                                        "Y") // 북마크가 활성화된 경우 색상 설정
+                                                color: rankData.checkMark == "Y" // 북마크가 활성화된 경우 색상 설정
                                                     ? const Color(0xFFFF6192)
                                                     : null, // 비활성화된 경우 기본 색상
                                                 fit: BoxFit.contain,
@@ -448,11 +401,12 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
       print('회원 mtIdx: $mtIdx');
     }
 
-    // 페이징 처리도 추가 가능
+    // TODO 페이징 처리도 추가
+    // TODO 검색 파라미터 추가
     Map<String, dynamic> requestData = {
       'mt_idx': mtIdx,
-      'style': 1, // 예시로 스타일을 1로 설정
-      'age': 1, // 예시로 연령대를 1로 설정
+      'style': "all", // 예시로 스타일을 1로 설정
+      'age': "all", // 예시로 연령대를 1로 설정
       'pg': 1, // 첫 페이지
     };
     final ageCategoryResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getAgeCategory();

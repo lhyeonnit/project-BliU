@@ -55,6 +55,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
   @override
   void dispose() {
     _tabController.dispose();
+    _scrollController.removeListener(_nextLoad);
     super.dispose();
   }
 
@@ -146,6 +147,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
       ),
     );
   }
+
   Widget _buildProductGrid() {
     return GridView.builder(
       shrinkWrap: true,
@@ -165,10 +167,12 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
       },
     );
   }
+
   void _afterBuild(BuildContext context) {
     _getCategoryList();
     _getList();
   }
+
   void _getCategoryList() async {
     Map<String, dynamic> requestData = {'category_type': '1'};
     final categoryResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getCategory(requestData);
