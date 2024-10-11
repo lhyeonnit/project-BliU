@@ -134,6 +134,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         styles = "$styles,${(style.fsIdx ?? 0).toString()}";
       }
     }
+    if(styles.isNotEmpty) {
+      styles = "[$styles]";
+    }
 
     int minPrice = selectedRangeValues.start.toInt();
     int maxPrice = selectedRangeValues.end.toInt();
@@ -208,6 +211,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
         } else {
           styles = "$styles,${(style.fsIdx ?? 0).toString()}";
         }
+      }
+      if(styles.isNotEmpty) {
+        styles = "[$styles]";
       }
 
       int minPrice = selectedRangeValues.start.toInt();

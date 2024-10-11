@@ -1,4 +1,6 @@
 import 'package:BliU/data/category_data.dart';
+import 'package:BliU/data/store_rank_data.dart';
+import 'package:BliU/data/style_category_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/component/store_age_group_selection.dart';
@@ -22,9 +24,15 @@ class StoreRakingPage extends ConsumerStatefulWidget {
 class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
   final ScrollController _scrollController = ScrollController();
 
-  late List<CategoryData> ageCategories;
-  CategoryData? selectedAgeGroup;
-  String selectedStyle = '';
+  late List<CategoryData> _ageCategories;
+  late List<StyleCategoryData> _styleCategories;
+
+  List<StoreRankData> storeRankList = [];
+
+  CategoryData? _selectedAgeGroup;
+  StyleCategoryData? _selectedStyle;
+
+  double _maxScrollHeight = 0;// NestedScrollView 사용시 최대 높이를 저장하기 위한 변수
 
   int _page = 1;
   bool _hasNextPage = true;
@@ -48,11 +56,11 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
         return StoreAgeGroupSelection(
-          ageCategories: ageCategories,
-          selectedAgeGroup: selectedAgeGroup,
+          ageCategories: _ageCategories,
+          selectedAgeGroup: _selectedAgeGroup,
           onSelectionChanged: (CategoryData? newSelection) {
             setState(() {
-              selectedAgeGroup = newSelection;
+              _selectedAgeGroup = newSelection;
               _getList();
             });
           },
@@ -62,10 +70,10 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
   }
 
   String getSelectedAgeGroupText() {
-    if (selectedAgeGroup == null) {
+    if (_selectedAgeGroup == null) {
       return '연령';
     } else {
-      return selectedAgeGroup?.catName ?? "";
+      return _selectedAgeGroup?.catName ?? "";
     }
   }
 
@@ -78,10 +86,11 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
         return StyleSelectionSheet(
-          selectedStyle: selectedStyle,
-          onSelectionChanged: (String newSelection) {
+          styleCategories: _styleCategories,
+          selectedStyle: _selectedStyle,
+          onSelectionChanged: (StyleCategoryData? newSelection) {
             setState(() {
-              selectedStyle = newSelection;
+              _selectedStyle = newSelection;
             });
           },
         );
@@ -90,20 +99,34 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
   }
 
   String getSelectedStyleText() {
-    if (selectedStyle.isEmpty) {
+    if (_selectedStyle == null) {
       return '스타일';
     } else {
-      return selectedStyle;
+      return _selectedStyle?.cstName ?? "";
     }
   }
 
   void _afterBuild(BuildContext context) {
+    _getFilterCategory();
     _getList();
   }
 
-  void _getList() async {
-    // TODO 회원 비회원 처리
+  void _getFilterCategory() async {
+    final ageCategoryResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getAgeCategory();
+    _ageCategories = ageCategoryResponseDTO?.list ?? [];
 
+    final styleCategoryResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getStyleCategory();
+    _styleCategories = styleCategoryResponseDTO?.list ?? [];
+  }
+
+  void _getList() async {
+    setState(() {
+      _isFirstLoadRunning = true;
+    });
+    _page = 1;
+    _maxScrollHeight = 0;
+
+    // TODO 회원 비회원 처리
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
@@ -115,21 +138,74 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
       print('회원 mtIdx: $mtIdx');
     }
 
-    // TODO 페이징 처리도 추가
-    // TODO 검색 파라미터 추가
+    String age = "all";
+    if (_selectedAgeGroup != null) {
+      age = '${_selectedAgeGroup?.catIdx ?? ""}';
+    }
+
+    String style = "all";
+    if (_selectedStyle != null) {
+      style = "${_selectedStyle?.fsIdx ?? ""}";
+    }
+
     Map<String, dynamic> requestData = {
       'mt_idx': mtIdx,
-      'style': "all",
-      'age': "all",
-      'pg': 1,
+      'style': style,
+      'age': age,
+      'pg': _page,
     };
-    final ageCategoryResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getAgeCategory();
-    if (ageCategoryResponseDTO != null) {
-      if (ageCategoryResponseDTO.result == true) {
-        ageCategories = ageCategoryResponseDTO.list ?? [];
+    final storeRankResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getRank(requestData); // 서버에서 데이터 가져오기
+    storeRankList = storeRankResponseDTO?.list ?? [];
+
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+  }
+
+  void _nextLoad() async {
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+      _page += 1;
+
+      // TODO 회원 비회원 처리
+      final pref = await SharedPreferencesManager.getInstance();
+      final mtIdx = pref.getMtIdx();
+
+      String age = "all";
+      if (_selectedAgeGroup != null) {
+        age = '${_selectedAgeGroup?.catIdx ?? ""}';
       }
+
+      String style = "all";
+      if (_selectedStyle != null) {
+        style = "${_selectedStyle?.fsIdx ?? ""}";
+      }
+
+      Map<String, dynamic> requestData = {
+        'mt_idx': mtIdx,
+        'style': style,
+        'age': age,
+        'pg': _page,
+      };
+      final storeRankResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getRank(requestData); // 서버에서 데이터 가져오기
+      if (storeRankResponseDTO != null) {
+        if ((storeRankResponseDTO.list ?? []).isNotEmpty) {
+          setState(() {
+            storeRankList.addAll(storeRankResponseDTO.list ?? []);
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
+      });
     }
-    await ref.read(storeLankListViewModelProvider.notifier).getRank(requestData); // 서버에서 데이터 가져오기
   }
 
   @override
@@ -138,91 +214,101 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          ListView(
-            controller: _scrollController,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 16.0, top: 20, right: 16, bottom: 15),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // 연령 버튼
-                    GestureDetector(
-                      onTap: _showAgeGroupSelection,
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(22),
-                          border: Border.all(color: const Color(0xFFDDDDDD)),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(right: 5),
-                              child: Text(
-                                getSelectedAgeGroupText(), // 선택된 연령대 표시
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: Colors.black,
-                                  height: 1.2,
+          NotificationListener(
+            onNotification: (scrollNotification) {
+              if (scrollNotification is ScrollEndNotification) {
+                var metrics = scrollNotification.metrics;
+                if (metrics.axisDirection != AxisDirection.down) return false;
+                if (_maxScrollHeight < metrics.maxScrollExtent) {
+                  _maxScrollHeight = metrics.maxScrollExtent;
+                }
+                if (_maxScrollHeight - metrics.pixels < 50) {
+                  _nextLoad();
+                }
+              }
+              return false;
+            },
+            child: ListView(
+              controller: _scrollController,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 16.0, top: 20, right: 16, bottom: 15),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 연령 버튼
+                      GestureDetector(
+                        onTap: _showAgeGroupSelection,
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(22),
+                            border: Border.all(color: const Color(0xFFDDDDDD)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(right: 5),
+                                child: Text(
+                                  getSelectedAgeGroupText(), // 선택된 연령대 표시
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: Colors.black,
+                                    height: 1.2,
+                                  ),
                                 ),
                               ),
-                            ),
-                            SvgPicture.asset('assets/images/product/filter_select.svg'),
-                          ],
+                              SvgPicture.asset('assets/images/product/filter_select.svg'),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 4.0),
-                    // 스타일 버튼
-                    GestureDetector(
-                      onTap: _showStyleSelection,
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(22),
-                          border: Border.all(color: const Color(0xFFDDDDDD)),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              constraints: const BoxConstraints(
-                                minWidth: 0, // 최소 너비를 0으로 설정 (자유롭게 확장)
-                                maxWidth: 93, // 최대 너비를 93으로 설정
-                              ),
-                              margin: const EdgeInsets.only(right: 5),
-                              child: Text(
-                                getSelectedStyleText(), // 선택된 연령대 표시
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: Colors.black,
-                                  height: 1.2,
+                      const SizedBox(width: 4.0),
+                      // 스타일 버튼
+                      GestureDetector(
+                        onTap: _showStyleSelection,
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(22),
+                            border: Border.all(color: const Color(0xFFDDDDDD)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                constraints: const BoxConstraints(
+                                  minWidth: 0, // 최소 너비를 0으로 설정 (자유롭게 확장)
+                                  maxWidth: 93, // 최대 너비를 93으로 설정
+                                ),
+                                margin: const EdgeInsets.only(right: 5),
+                                child: Text(
+                                  getSelectedStyleText(), // 선택된 연령대 표시
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: Colors.black,
+                                    height: 1.2,
+                                  ),
                                 ),
                               ),
-                            ),
-                            SvgPicture.asset('assets/images/product/filter_select.svg'),
-                          ],
+                              SvgPicture.asset('assets/images/product/filter_select.svg'),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Consumer(builder: (context, ref, widget) {
-                final model = ref.watch(storeLankListViewModelProvider);
-                final list = model?.storeRankResponseDTO?.list ?? [];
-
-                return Column(
+                Column(
                   children: [
-                    ...List.generate(list.length, (index) {
-                      final rankData = list[index];
+                    ...List.generate(storeRankList.length, (index) {
+                      final rankData = storeRankList[index];
 
                       return Container(
                         margin: const EdgeInsets.symmetric(vertical: 15),
@@ -247,7 +333,9 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                   children: [
                                     Container(
                                       margin: const EdgeInsets.only(right: 10),
-                                      width: Responsive.getWidth(context, 30),
+                                      constraints: BoxConstraints(
+                                        minWidth: Responsive.getWidth(context, 30),
+                                      ),
                                       child: Center(
                                         child: Text(
                                           '${rankData.stIdx}',
@@ -277,11 +365,11 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                         borderRadius: const BorderRadius.all(Radius.circular(20)),
                                         // 사진의 모서리만 둥글게 설정
                                         child: Image.network(
-                                          rankData.stProfile ?? "",
-                                          fit: BoxFit.contain,
-                                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                            return const SizedBox();
-                                          }
+                                            rankData.stProfile ?? "",
+                                            fit: BoxFit.contain,
+                                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                              return const SizedBox();
+                                            }
                                         ),
                                       ),
                                     ),
@@ -371,59 +459,59 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                             ),
                             Visibility(
                               visible: (rankData.productList?.length ?? 0) > 0,
-                                child: Column(
-                                  children: [
-                                    const SizedBox(height: 20),
-                                    SizedBox(
-                                      height: 120,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: rankData.productList?.length ?? 0,
-                                        itemBuilder: (context, imageIndex) {
-                                          final productData = rankData.productList?[imageIndex];
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 120,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: rankData.productList?.length ?? 0,
+                                      itemBuilder: (context, imageIndex) {
+                                        final productData = rankData.productList?[imageIndex];
 
-                                          return GestureDetector(
-                                            onTap: () {
-                                              // Navigate to store_detail page when item is tapped
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => ProductDetailScreen(ptIdx: productData?.ptIdx),
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              width: 120,
-                                              height: 120,
-                                              margin: const EdgeInsets.only(right: 5),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(6),
-                                                // 모서리 둥글게 설정
-                                                child: Image.network(
-                                                  productData?.ptImg ?? '',
-                                                  // null인 경우 빈 문자열을 처리
-                                                  fit: BoxFit.cover,
-                                                  errorBuilder: (context, error, stackTrace) {
-                                                    return const Icon(Icons.error); // 이미지 로딩에 실패한 경우 표시할 위젯
-                                                  },
-                                                ),
+                                        return GestureDetector(
+                                          onTap: () {
+                                            // Navigate to store_detail page when item is tapped
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => ProductDetailScreen(ptIdx: productData?.ptIdx),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 120,
+                                            height: 120,
+                                            margin: const EdgeInsets.only(right: 5),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(6),
+                                              // 모서리 둥글게 설정
+                                              child: Image.network(
+                                                productData?.ptImg ?? '',
+                                                // null인 경우 빈 문자열을 처리
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error, stackTrace) {
+                                                  return const Icon(Icons.error); // 이미지 로딩에 실패한 경우 표시할 위젯
+                                                },
                                               ),
                                             ),
-                                          );
-                                        },
-                                      ),
+                                          ),
+                                        );
+                                      },
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       );
                     }),
                   ],
-                );
-              }),
-            ],
+                ),
+              ],
+            ),
           ),
           MoveTopButton(scrollController: _scrollController),
         ],

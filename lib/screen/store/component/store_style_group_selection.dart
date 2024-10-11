@@ -1,12 +1,15 @@
+import 'package:BliU/data/style_category_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class StyleSelectionSheet extends StatefulWidget {
-  final String selectedStyle;
-  final ValueChanged<String> onSelectionChanged;
+  final List<StyleCategoryData> styleCategories;
+  final StyleCategoryData? selectedStyle;
+  final ValueChanged<StyleCategoryData?> onSelectionChanged;
 
   const StyleSelectionSheet({
+    required this.styleCategories,
     required this.selectedStyle,
     required this.onSelectionChanged,
     super.key,
@@ -17,20 +20,22 @@ class StyleSelectionSheet extends StatefulWidget {
 }
 
 class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
-  late String _tempSelectedStyle;
+  late List<StyleCategoryData> _styleCategories;
+  late StyleCategoryData? _tempSelectedStyle;
 
   @override
   void initState() {
     super.initState();
+    _styleCategories = widget.styleCategories;
     _tempSelectedStyle = widget.selectedStyle;
   }
 
-  void _toggleSelection(String style) {
+  void _toggleSelection(StyleCategoryData styleCategoryData) {
     setState(() {
-      if (_tempSelectedStyle == style) {
-        _tempSelectedStyle = "";
+      if (_tempSelectedStyle == styleCategoryData) {
+        _tempSelectedStyle = null;
       } else {
-        _tempSelectedStyle = style;
+        _tempSelectedStyle = styleCategoryData;
       }
     });
   }
@@ -43,17 +48,17 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
       children: [
         Center(
           child: Container(
-            margin: EdgeInsets.only(top: 15, bottom: 17),
+            margin: const EdgeInsets.only(top: 15, bottom: 17),
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Color(0xFFDDDDDD),
+              color: const Color(0xFFDDDDDD),
               borderRadius: BorderRadius.circular(3),
             ),
           ),
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
+          margin: const EdgeInsets.symmetric(vertical: 10),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             '스타일',
@@ -67,29 +72,25 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
         ),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
-          padding: EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: 10),
           child: Wrap(
             spacing: 4.0,
-            children: [
-              _buildStyleChip('캐주얼 (Casual)'),
-              _buildStyleChip('스포티 (Sporty)'),
-              _buildStyleChip('포멀 / 클래식 (Formal/Classic)'),
-              _buildStyleChip('베이직 (Basic)'),
-              _buildStyleChip('프린세스 / 페어리 (Princess/Fairy)'),
-              _buildStyleChip('힙스터 (Hipster)'),
-              _buildStyleChip('럭셔리 (Luxury)'),
-              _buildStyleChip('어반 스트릿 (Urban Street)'),
-              _buildStyleChip('로맨틱 (Romantic)'),
-            ],
+            children: List.generate(
+                _styleCategories.length, (index){
+                  final styleCategory = _styleCategories[index];
+                  return _buildStyleChip(styleCategory);
+            }),
           ),
         ),
         Container(
-          padding: EdgeInsets.only(left: 11, right: 10, top: 9, bottom: 8),
-          decoration: BoxDecoration(
-              border: Border(
-                  top: BorderSide(
-            color: Color(0xD000000),
-          ))),
+          padding: const EdgeInsets.only(left: 11, right: 10, top: 9, bottom: 8),
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Color(0xD000000)
+              )
+            )
+          ),
           child: Row(
             children: [
               Container(
@@ -97,22 +98,24 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
                 height: 48,
                 decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(6)),
-                    border: Border.all(color: const Color(0xFFDDDDDD))),
+                    border: Border.all(color: const Color(0xFFDDDDDD))
+                ),
                 child: GestureDetector(
                   child: SvgPicture.asset('assets/images/store/ic_release.svg'),
                   onTap: () {
                     setState(() {
-                      _tempSelectedStyle = "";
+                      _tempSelectedStyle = null;
                     });
                   },
                 ),
               ),
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(left: 9),
+                  margin: const EdgeInsets.only(left: 9),
                   decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                      color: Colors.black),
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    color: Colors.black,
+                  ),
                   width: double.infinity,
                   height: 48,
                   child: GestureDetector(
@@ -140,13 +143,13 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
     );
   }
 
-  Widget _buildStyleChip(String style) {
-    final isSelected = _tempSelectedStyle.contains(style);
+  Widget _buildStyleChip(StyleCategoryData styleCategoryData) {
+    final isSelected = _tempSelectedStyle == styleCategoryData ? true : false;
     return GestureDetector(
-      onTap: () => _toggleSelection(style),
+      onTap: () => _toggleSelection(styleCategoryData),
       child: Chip(
         label: Text(
-          style,
+          styleCategoryData.cstName ?? "",
           style: TextStyle(
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
@@ -158,8 +161,7 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
         ),
         shape: StadiumBorder(
           side: BorderSide(
-            color:
-                isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+            color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
           ),
         ),
         backgroundColor: Colors.white,
