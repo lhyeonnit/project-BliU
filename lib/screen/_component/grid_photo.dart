@@ -6,10 +6,7 @@ import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
 class GridPhoto extends StatefulWidget {
   final List<AssetEntity> images;
 
-  GridPhoto({
-    required this.images,
-    Key? key,
-  }) : super(key: key);
+  const GridPhoto({required this.images, super.key,});
 
   @override
   State<GridPhoto> createState() => _GridPhotoState();
@@ -20,8 +17,10 @@ class _GridPhotoState extends State<GridPhoto> {
   Widget build(BuildContext context) {
     return GridView(
       physics: const BouncingScrollPhysics(),
-      gridDelegate:
-      const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        crossAxisSpacing: 0.5,
+      ),
       children: widget.images.map((e) {
         return GestureDetector(
           onTap: () {

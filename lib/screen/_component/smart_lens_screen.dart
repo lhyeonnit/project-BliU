@@ -82,7 +82,6 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,8 +123,9 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
               Navigator.pop(context);
             },
             child: Container(
-                margin: const EdgeInsets.only(right: 16),
-                child: SvgPicture.asset('assets/images/product/ic_close.svg')),
+              margin: const EdgeInsets.only(right: 16),
+              child: SvgPicture.asset('assets/images/product/ic_close.svg')
+            ),
           ),
         ],
       ),

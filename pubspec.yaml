@@ -72,6 +72,7 @@ dependencies:
   scrollable_positioned_list: ^0.3.8
   dotted_line: ^3.2.2
   easy_rich_text: ^2.2.0
+  device_info_plus: ^11.0.0
 
 dependency_overrides:
   webview_flutter: 4.8.0
