@@ -27,28 +27,10 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  LoginScreenViewModel? _loginScreenViewModel;
   var _isAutoLogin = true;
 
   @override
   Widget build(BuildContext context) {
-    _loginScreenViewModel = ref.read(loginViewModelProvider.notifier);
-    ref.listen(
-      loginViewModelProvider,
-      ((previous, next) {
-        if (next?.memberInfoResponseDTO != null) {
-          if (next?.memberInfoResponseDTO?.result == true) {
-            print('로그인 성공 == ${next?.memberInfoResponseDTO?.data?.toJson()}');
-            // TODO 로그인 후 처리
-          } else {
-            Future.delayed(Duration.zero, () {
-              Utils.getInstance().showSnackBar(context, next?.memberInfoResponseDTO?.message ?? "");
-            });
-          }
-        }
-      }),
-    );
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
@@ -427,11 +409,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         'app_token': shared.getToken(),
         'login_type': '3'
       };
-
-      _loginScreenViewModel?.authSnsLogin(data);
+      String? appToken = await FirebaseMessaging.instance.getToken();
+      Map<String, dynamic> tokenData = {
+        'app_token': appToken,
+      };
+      await ref.read(loginViewModelProvider.notifier).authAutoLogin(tokenData);
+      await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
     }
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const MainScreen()),
+    );
+    setState(() {
+      ref.read(mainScreenProvider.notifier).selectNavigation(2);
+    });
   }
 
   //네이버 로그인
@@ -453,12 +446,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           'app_token': shared.getToken(),
           'login_type': '2'
         };
-
-        _loginScreenViewModel?.authSnsLogin(data);
+        String? appToken = await FirebaseMessaging.instance.getToken();
+        Map<String, dynamic> tokenData = {
+          'app_token': appToken,
+        };
+        await ref.read(loginViewModelProvider.notifier).authAutoLogin(tokenData);
+        await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
       }
     } catch (error) {
       print(error);
     }
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const MainScreen()),
+    );
+    setState(() {
+      ref.read(mainScreenProvider.notifier).selectNavigation(2);
+    });
   }
 
   //애플 로그인
@@ -483,9 +487,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         'app_token': shared.getToken(),
         'login_type': '4'
       };
-
-      _loginScreenViewModel?.authSnsLogin(data);
+      String? appToken = await FirebaseMessaging.instance.getToken();
+      Map<String, dynamic> tokenData = {
+        'app_token': appToken,
+      };
+      await ref.read(loginViewModelProvider.notifier).authAutoLogin(tokenData);
+      await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
     }
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const MainScreen()),
+    );
+    setState(() {
+      ref.read(mainScreenProvider.notifier).selectNavigation(2);
+    });
   }
 
   void _login(BuildContext context) async {
@@ -512,7 +527,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       'app_token': appToken,
     };
 
-    await ref.read(loginViewModelProvider.notifier).authLogin(tokenData);
+    await ref.read(loginViewModelProvider.notifier).authAutoLogin(tokenData);
     final loginResponseDTO = await ref.read(loginViewModelProvider.notifier).login(data);
 
     final mtIdx = loginResponseDTO?.data?.mtIdx.toString();  // 서버에서 받은 비밀번호 토큰

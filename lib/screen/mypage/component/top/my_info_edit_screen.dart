@@ -1,5 +1,6 @@
 //내정보 수정
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/screen/mypage/my_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/my_info_edit_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -1228,5 +1229,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
     };
     final resultDTO = await ref.read(myInfoEditViewModelProvider.notifier).retire(requestData);
     Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
+    await pref.clearAll();
+    ref.read(mainScreenProvider.notifier).selectNavigation(2);
   }
 }

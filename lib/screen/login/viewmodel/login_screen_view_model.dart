@@ -42,8 +42,8 @@ class LoginScreenViewModel extends StateNotifier<LoginScreenModel?> {
     }
   }
 
-  Future<void> authLogin(Map<String, dynamic> requestData) async {
-    final response = await repository.reqPost(url: Constant.apiAuthLoginUrl, data: requestData);
+  Future<void> authAutoLogin(Map<String, dynamic> requestData) async {
+    final response = await repository.reqPost(url: Constant.apiAuthAutoLoginUrl, data: requestData);
     try {
       if (response != null) {
         if (response.statusCode == 200) {
