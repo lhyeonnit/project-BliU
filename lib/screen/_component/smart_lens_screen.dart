@@ -36,13 +36,17 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
   }
 
   Future<void> checkPermission() async {
-    final PermissionState ps = await PhotoManager.requestPermissionExtend();
+    final permissionState = await PhotoManager.requestPermissionExtend(
+      requestOption: const PermissionRequestOption(
+        androidPermission:
+        AndroidPermission(type: RequestType.image, mediaLocation: true),
+      ),
+    );
+    final hasPhotoPermission = permissionState.isAuth;
 
-    if (ps.isAuth) {
-      // 권한 수락
+    if (hasPhotoPermission) {
       await getAlbum();
     } else {
-      // 권한 거절
       await PhotoManager.openSetting();
     }
   }

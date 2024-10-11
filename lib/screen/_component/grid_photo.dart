@@ -20,6 +20,7 @@ class _GridPhotoState extends State<GridPhoto> {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
         crossAxisSpacing: 0.5,
+        mainAxisSpacing: 0.5,
       ),
       children: widget.images.map((e) {
         return GestureDetector(
