@@ -1,5 +1,6 @@
 //가입완료
 import 'package:BliU/screen/common/recommend_info_screen.dart';
+import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -75,7 +76,7 @@ class JoinCompleteScreen extends StatelessWidget {
               onTap: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
                 );
               },
               child: Container(
