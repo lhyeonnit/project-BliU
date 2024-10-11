@@ -1,4 +1,3 @@
-import 'package:BliU/screen/common/recommend_info_screen.dart';
 import 'package:BliU/screen/join/join_agree_screen.dart';
 import 'package:BliU/screen/login/find_id_complete_screen.dart';
 import 'package:BliU/screen/login/find_id_screen.dart';

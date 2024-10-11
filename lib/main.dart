@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
@@ -143,7 +142,7 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError();  // ProviderScope에서 값을 주입하기 전까지 에러를 던지도록 설정
 });
 
-// TODO 자동 로그인 확인
+// 자동 로그인
 Future<MemberInfoResponseDTO?> _authAutoLogin(Map<String, dynamic> requestData) async {
   final repository = DefaultRepository();
   final response = await repository.reqPost(url: Constant.apiAuthAutoLoginUrl, data: requestData);
