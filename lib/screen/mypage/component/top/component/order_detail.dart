@@ -7,6 +7,7 @@ import 'package:BliU/screen/mypage/viewmodel/order_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -174,15 +175,15 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
   }
 
   void _getOrderDetail() async {
-    // TODO 회원 비회원 처리 필요
 
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-
+    String? appToken = await FirebaseMessaging.instance.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData = {
-      'type': 1,
+      'type': memberType,
       'mt_idx': mtIdx,
-      'temp_mt_id': '',
+      'temp_mt_id': appToken,
       'ot_code': widget.orderData.detailList?[0].otCode,
     };
 

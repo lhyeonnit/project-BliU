@@ -10,6 +10,7 @@ import 'package:BliU/screen/product/viewmodel/product_order_bottom_option_view_m
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -746,9 +747,10 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
   }
 
   void _buyAndCartProduct(int addType) async {
-    // TODO 회원 비회원 구분 필요
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
+    String? appToken = await FirebaseMessaging.instance.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
     List<Map<String, dynamic>> products = [];
     List<Map<String, dynamic>> addProducts = [];
     for (int i = 0; i < _addPtOptionArr.length; i++) {
@@ -770,10 +772,10 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
     }
 
     Map<String, dynamic> requestData = {
-      'type': 1, //회원 1 비회원2
+      'type': memberType, //회원 1 비회원2
       'add_type': addType, //장바구니 0  구매하기 1
       'mt_idx': mtIdx,
-      'temp_mt_id': '', //비회원아이디 [앱 토큰]
+      'temp_mt_id': appToken, //비회원아이디 [앱 토큰]
       'pt_idx': _productData.ptIdx,
       'products': json.encode(products),
       'addProducts': json.encode(addProducts),

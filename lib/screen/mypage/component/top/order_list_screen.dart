@@ -5,6 +5,7 @@ import 'package:BliU/screen/mypage/component/top/component/order_list_item.dart'
 import 'package:BliU/screen/mypage/viewmodel/order_list_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -73,12 +74,12 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
         ctStatus = "99";
         break;
     }
-
-    // TODO 회원 비회원
+    String? appToken = await FirebaseMessaging.instance.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData = {
-      'type': 1,
+      'type': memberType,
       'mt_idx': mtIdx,
-      'temp_mt_id': '',
+      'temp_mt_id': appToken,
       'ot_code': '', // 비회원 주문조회의 경우에만 전달해주세요.
       'ct_status': ctStatus,
       'pg': _page,

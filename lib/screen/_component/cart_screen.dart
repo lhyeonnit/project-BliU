@@ -50,7 +50,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   }
 
   void _getList() async {
-    // TODO 회원 비회원 구분 필요
     setState(() {
       _isFirstLoadRunning = true;
     });
@@ -59,10 +58,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
+    String? appToken = await FirebaseMessaging.instance.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData = {
-      'type': 1,
+      'type': memberType,
       'mt_idx': mtIdx,
-      'temp_mt_id': '', // 앱토큰 비회원
+      'temp_mt_id': appToken, // 앱토큰 비회원
       'pg': _page,
     };
 
@@ -91,7 +92,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   }
 
   void _nextLoad() async {
-    // TODO 회원 비회원 구분 필요
     if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
       setState(() {
         _isLoadMoreRunning = true;
@@ -101,10 +101,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
       final pref = await SharedPreferencesManager.getInstance();
       final mtIdx = pref.getMtIdx();
+      String? appToken = await FirebaseMessaging.instance.getToken();
+      int memberType = (mtIdx != null) ? 1 : 2;
       Map<String, dynamic> requestData = {
-        'type': 1,
+        'type': memberType,
         'mt_idx': mtIdx,
-        'temp_mt_id': '', // 앱토큰 비회원
+        'temp_mt_id': appToken, // 앱토큰 비회원
         'pg': _page,
       };
 
@@ -700,14 +702,14 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
   //장바구니 삭제
   void _cartDel(String ctIdx) async {
-    // TODO 회원 비회원 구분
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-
+    String? appToken = await FirebaseMessaging.instance.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData = {
-      'type': 1,
+      'type': memberType,
       'mt_idx': mtIdx,
-      'temp_mt_id': '',
+      'temp_mt_id': appToken,
       'ct_idx': ctIdx,
     };
 
@@ -723,7 +725,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   }
 
   void _goOrder() async {
-    // TODO 회원 비회원 구분
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
@@ -744,12 +745,13 @@ class _CartScreenState extends ConsumerState<CartScreen> {
         cartArr.add(cartMap);
       }
     }
-
+    String? appToken = await FirebaseMessaging.instance.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData = {
-      'type': 1,
+      'type': memberType,
       'ot_idx': '',
       'mt_idx': mtIdx,
-      'temp_mt_id': '',
+      'temp_mt_id': appToken,
       'cart_arr': json.encode(cartArr),
     };
 
