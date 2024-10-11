@@ -2,6 +2,7 @@ import 'package:BliU/data/style_category_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/common/viewmodel/recommend_info_view_model.dart';
 import 'package:BliU/screen/login/login_screen.dart';
+import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -15,12 +16,16 @@ class RecommendInfoScreen extends ConsumerStatefulWidget {
   const RecommendInfoScreen({super.key});
 
   @override
-  ConsumerState<RecommendInfoScreen> createState() => _RecommendInfoScreenState();
+  ConsumerState<RecommendInfoScreen> createState() =>
+      _RecommendInfoScreenState();
 }
 
 class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen> {
+  bool _isBottomSheetVisible = false;
+  bool _isAppBarVisible = false;
   final ScrollController _scrollController = ScrollController();
-  TextEditingController _birthController = TextEditingController(text: '선택해주세요');
+  TextEditingController _birthController =
+      TextEditingController(text: '선택해주세요');
 
   DateTime? tempPickedDate;
   DateTime _selectedDate = DateTime.now();
@@ -38,14 +43,22 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
+    Future.delayed(Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          _isBottomSheetVisible = true;
+          _isAppBarVisible = true;
+        });
+      }
+    });
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
+      appBar:  _isAppBarVisible ?
+      AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: const Text('추천정보'),
@@ -70,191 +83,304 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen> {
             height: 1.0, // 구분선의 두께 설정
           ),
         ),
-      ),
+      ) : null,
       body: Stack(
         children: [
-          ListView(
-            controller: _scrollController,
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 40, bottom: 80),
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '자녀의 출생년도',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 15),
-                              fontWeight: FontWeight.w600,
-                              height: 1.2,
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 15),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: const BorderRadius.all(Radius.circular(6)),
-                              border: Border.all(color: const Color(0xFFDDDDDD)),
-                            ),
-                            child: BirthdayText(),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 30),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '자녀의 성별',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 15),
-                              fontWeight: FontWeight.w600,
-                              height: 1.2,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                _genderSelect(
-                                    'assets/images/gender_select_boy.png',
-                                    'Boy'),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                _genderSelect(
-                                    'assets/images/gender_select_girl.png',
-                                    'Girl'),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '선호 스타일',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 15),
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.2,
-                                  ),
-                                ),
-                                Text(
-                                  '* 다중선택가능',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 13),
-                                    color: const Color(0xFFFF6192),
-                                    height: 1.2,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Wrap(
-                            spacing: 4.0,
-                            runSpacing: 10.0,
-                            children: styleCategories.map((style) {
-                              final isSelected = _selectedStyles.any((selected) => selected.fsIdx == style.fsIdx);
-
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (isSelected) {
-                                      // 이미 선택된 경우 선택 해제
-                                      _selectedStyles.removeWhere((selected) => selected.fsIdx == style.fsIdx);
-                                    } else {
-                                      // 선택되지 않은 경우 추가
-                                      _selectedStyles.add(style);
-                                    }
-                                  });
-                                },
-                                child: Chip(
-                                  label: Text(style.cstName ?? '',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      color: isSelected ? const Color(0xFFFF6192) : Colors.black,
-                                      height: 1.2,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                  shape: StadiumBorder(
-                                    side: BorderSide(
-                                      color: isSelected
-                                          ? const Color(0xFFFF6192)
-                                          : const Color(0xFFDDDDDD),
-                                    ),
-                                  ),
-                                  backgroundColor: Colors.white,
-                                ),
-                              );
-                            }).toList(),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          Center(
+            child: Image.asset(
+              'assets/images/마스크 그룹14.png',
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Column(
-              children: [
-                MoveTopButton(scrollController: _scrollController),
-                Container(
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: GestureDetector(
-                    onTap: () => _submitRecommendInfo(),
-                    child: Container(
-                      height: Responsive.getHeight(context, 48),
-                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(6),
+          Visibility(
+            visible: _isBottomSheetVisible,
+            child: DraggableScrollableSheet(
+              initialChildSize: 0.6, // 바텀 시트가 처음 열릴 때 높이
+              minChildSize: 0.5,
+              maxChildSize: 1.0,
+              builder: (context, scrollController) {
+                return SingleChildScrollView(
+                  controller: scrollController, // 스크롤 가능하도록 설정
+                  child: Stack(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(8)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFFF4F4F4),
+                              blurRadius: 6.0,
+                              spreadRadius: 1.0,
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.only(top: 20, bottom: 17),
+                                width: 40,
+                                height: 4,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFDDDDDD),
+                                  borderRadius: BorderRadius.circular(3),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 12.5, bottom: 80),
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '자녀의 정보를 입력해주세요',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize:
+                                                Responsive.getFont(context, 20),
+                                            fontWeight: FontWeight.bold,
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              top: 8, bottom: 30),
+                                          child: Text(
+                                            '입력해주신 정보를 토대로 상품을 추천해드립니다.',
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(
+                                                  context, 14),
+                                              color: Color(0xFF7B7B7B),
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '자녀의 출생년도',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize:
+                                                Responsive.getFont(context, 15),
+                                            fontWeight: FontWeight.w600,
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(top: 15),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(6)),
+                                            border: Border.all(
+                                                color: const Color(0xFFDDDDDD)),
+                                          ),
+                                          child: BirthdayText(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(vertical: 30),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '자녀의 성별',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize:
+                                                Responsive.getFont(context, 15),
+                                            fontWeight: FontWeight.w600,
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: 15),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              _genderSelect(
+                                                  'assets/images/gender_select_boy.png',
+                                                  'Boy'),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              _genderSelect(
+                                                  'assets/images/gender_select_girl.png',
+                                                  'Girl'),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(bottom: 15),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                '선호 스타일',
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(
+                                                      context, 15),
+                                                  fontWeight: FontWeight.w600,
+                                                  height: 1.2,
+                                                ),
+                                              ),
+                                              Text(
+                                                '* 다중선택가능',
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(
+                                                      context, 13),
+                                                  color:
+                                                      const Color(0xFFFF6192),
+                                                  height: 1.2,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Wrap(
+                                          spacing: 4.0,
+                                          runSpacing: 10.0,
+                                          children:
+                                              styleCategories.map((style) {
+                                            final isSelected = _selectedStyles
+                                                .any((selected) =>
+                                                    selected.fsIdx ==
+                                                    style.fsIdx);
+
+                                            return GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  if (isSelected) {
+                                                    // 이미 선택된 경우 선택 해제
+                                                    _selectedStyles.removeWhere(
+                                                        (selected) =>
+                                                            selected.fsIdx ==
+                                                            style.fsIdx);
+                                                  } else {
+                                                    // 선택되지 않은 경우 추가
+                                                    _selectedStyles.add(style);
+                                                  }
+                                                });
+                                              },
+                                              child: Chip(
+                                                label: Text(
+                                                  style.cstName ?? '',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pretendard',
+                                                    color: isSelected
+                                                        ? const Color(
+                                                            0xFFFF6192)
+                                                        : Colors.black,
+                                                    height: 1.2,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                ),
+                                                shape: StadiumBorder(
+                                                  side: BorderSide(
+                                                    color: isSelected
+                                                        ? const Color(
+                                                            0xFFFF6192)
+                                                        : const Color(
+                                                            0xFFDDDDDD),
+                                                  ),
+                                                ),
+                                                backgroundColor: Colors.white,
+                                              ),
+                                            );
+                                          }).toList(),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      child: Center(
-                        child: Text(
-                          '확인',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Colors.white,
-                            height: 1.2,
-                          ),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Column(
+                          children: [
+                            MoveTopButton(scrollController: _scrollController),
+                            Container(
+                              width: double.infinity,
+                              color: Colors.white,
+                              child: GestureDetector(
+                                onTap: () => _submitRecommendInfo(),
+                                child: Container(
+                                  height: Responsive.getHeight(context, 48),
+                                  margin: const EdgeInsets.only(
+                                      right: 16.0, left: 16, top: 9, bottom: 8),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(6),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '확인',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize:
+                                            Responsive.getFont(context, 14),
+                                        color: Colors.white,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         ],
@@ -417,7 +543,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen> {
                             decoration: BoxDecoration(
                               border: Border.symmetric(
                                   horizontal:
-                                  BorderSide(color: Color(0xFFDDDDDD))),
+                                      BorderSide(color: Color(0xFFDDDDDD))),
                             ),
                           ),
                           squeeze: 0.9,
@@ -430,7 +556,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen> {
                           },
                           children: List<Widget>.generate(
                             DateTime.now().year - 1900 + 1,
-                                (int index) {
+                            (int index) {
                               return Center(
                                 child: Text(
                                   '${1900 + index}년', // 년도로 표시
@@ -457,7 +583,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen> {
                             decoration: BoxDecoration(
                               border: Border.symmetric(
                                   horizontal:
-                                  BorderSide(color: Color(0xFFDDDDDD))),
+                                      BorderSide(color: Color(0xFFDDDDDD))),
                             ),
                           ),
                           diameterRatio: 5.0,
@@ -493,7 +619,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen> {
                             decoration: BoxDecoration(
                               border: Border.symmetric(
                                   horizontal:
-                                  BorderSide(color: Color(0xFFDDDDDD))),
+                                      BorderSide(color: Color(0xFFDDDDDD))),
                             ),
                           ),
                           diameterRatio: 5.0,
@@ -533,8 +659,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen> {
                       selectedMonth,
                       selectedDay,
                     );
-                    _birthController.text =
-                        convertDateTimeDisplay(_selectedDate.toString());
+                    _birthController.text = convertDateTimeDisplay(_selectedDate.toString());
                   });
                   Navigator.of(context).pop();
                   FocusScope.of(context).unfocus();
@@ -542,7 +667,8 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen> {
                 child: Container(
                   width: double.infinity,
                   height: Responsive.getHeight(context, 48),
-                  margin: EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                  margin:
+                      EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.all(
@@ -591,7 +717,8 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen> {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
     String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
-    List<int?> selectedStyleIds = _selectedStyles.map((style) => style.fsIdx).toList();
+    List<int?> selectedStyleIds =
+        _selectedStyles.map((style) => style.fsIdx).toList();
 
     Map<String, dynamic> requestData = {
       'idx': mtIdx,
@@ -606,13 +733,18 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen> {
       if (defaultResponseDTO.result == true) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          MaterialPageRoute(builder: (context) => const MainScreen()),
         );
+        setState(() {
+          ref.read(mainScreenProvider.notifier).selectNavigation(2);
+        });
       }
     }
   }
+
   void _getStyleCategory() async {
-    final styleCategoriesResponseDTO = await ref.read(RecommendInfoModelProvider.notifier).getStyleCategory();
+    final styleCategoriesResponseDTO =
+        await ref.read(RecommendInfoModelProvider.notifier).getStyleCategory();
 
     if (styleCategoriesResponseDTO != null) {
       if (styleCategoriesResponseDTO.result == true) {
