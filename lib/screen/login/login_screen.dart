@@ -1,3 +1,4 @@
+import 'package:BliU/screen/common/recommend_info_screen.dart';
 import 'package:BliU/screen/join/join_agree_screen.dart';
 import 'package:BliU/screen/login/find_id_complete_screen.dart';
 import 'package:BliU/screen/login/viewmodel/login_screen_view_model.dart';
@@ -526,10 +527,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if(!context.mounted) return;
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
+      MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
     );
-    setState(() {
-      ref.read(mainScreenProvider.notifier).selectNavigation(2);
-    });
   }
 }
