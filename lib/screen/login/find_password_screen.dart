@@ -42,9 +42,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
 
   void _checkIfAllFieldsFilled() {
     setState(() {
-      _isAllFieldsFilled = _idController.text.isNotEmpty &&
-          _nameController.text.isNotEmpty &&
-          _phoneController.text.isNotEmpty;
+      _isAllFieldsFilled = _idController.text.isNotEmpty && _nameController.text.isNotEmpty && _phoneController.text.isNotEmpty;
     });
   }
   int _authSeconds = 180;
@@ -134,16 +132,16 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                       Expanded(
                         flex: 7,
                         child: _buildTextField(
-                            '휴대폰번호', _phoneController, '-없이 숫자만 입력',
-                            keyboardType: TextInputType.phone,
-                            isEnable: _phoneAuthChecked ? false : true),
+                          '휴대폰번호', _phoneController, '-없이 숫자만 입력',
+                          keyboardType: TextInputType.phone,
+                          isEnable: _phoneAuthChecked ? false : true
+                        ),
                       ),
                       Expanded(
                         flex: 3,
                         child: GestureDetector(
                           onTap: () async {
-                            if (_phoneController.text.isEmpty ||
-                                _phoneAuthChecked) {
+                            if (_phoneController.text.isEmpty || _phoneAuthChecked) {
                               return;
                             }
 
@@ -170,21 +168,18 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Visibility(
-                                  visible: _phoneAuthCodeVisible &&
-                                      !_phoneAuthChecked,
+                                  visible: _phoneAuthCodeVisible && !_phoneAuthChecked,
                                   maintainSize: true,
                                   maintainAnimation: true,
                                   maintainState: true,
                                   child: Container(
-                                    margin: const EdgeInsets.only(
-                                        top: 20, left: 8),
+                                    margin: const EdgeInsets.only(top: 20, left: 8),
                                     child: Text(
                                       _timerStr,
                                       style: TextStyle(
                                         color: const Color(0xFFFF6192),
                                         fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(
-                                            context, 13),
+                                        fontSize: Responsive.getFont(context, 13),
                                         height: 1.2,
                                       ),
                                     ),

@@ -17,28 +17,35 @@ class LoginScreenViewModel extends StateNotifier<LoginScreenModel?> {
 
   LoginScreenViewModel(super.state, this.ref);
 
-  void setState(
-      MemberInfoResponseDTO? memberInfoResponseDTO,
-  ) {
-    state = LoginScreenModel(
-        memberInfoResponseDTO: memberInfoResponseDTO,
-    );
+  void setState(MemberInfoResponseDTO? memberInfoResponseDTO) {
+    state = LoginScreenModel(memberInfoResponseDTO: memberInfoResponseDTO);
   }
-  Future<MemberInfoResponseDTO?> login(Map<String, dynamic> requestData) async {
+  Future<void> login(Map<String, dynamic> requestData) async {
     final response = await repository.reqPost(url: Constant.apiAuthLoginUrl, data: requestData);
     try {
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
           MemberInfoResponseDTO memberInfoResponseDTO = MemberInfoResponseDTO.fromJson(responseData);
-          return memberInfoResponseDTO;
+          setState(memberInfoResponseDTO);
+          return;
         }
       }
-      return null;
+      setState(
+        MemberInfoResponseDTO(
+          result: false,
+          message: "Network Or Data Error"
+        )
+      );
     } catch(e) {
       // Catch and log any exceptions
       print('Error request Api: $e');
-      return null;
+      setState(
+        MemberInfoResponseDTO(
+          result: false,
+          message: e.toString()
+        )
+      );
     }
   }
 

@@ -136,10 +136,10 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     if (mtIdx.isEmpty) {
       if(!mounted) return;
       showDialog(
-          context: context,
-          builder: (context) {
-            return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
-          }
+        context: context,
+        builder: (context) {
+          return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
+        }
       );
       return;
     }
@@ -388,13 +388,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             itemBuilder: (context, index) {
               return ClipRRect(
                 child: Image.network(
-                    imgArr[index],
-                    fit: BoxFit.cover, // 이미지가 컨테이너를 꽉 채우도록 설정
-                    width: double.infinity,
-                    height: double.infinity,
-                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                      return const SizedBox();
-                    }
+                  imgArr[index],
+                  fit: BoxFit.cover, // 이미지가 컨테이너를 꽉 채우도록 설정
+                  width: double.infinity,
+                  height: double.infinity,
+                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    return const SizedBox();
+                  }
                 ),
               );
             },

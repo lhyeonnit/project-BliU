@@ -180,6 +180,8 @@ Future<void> main() async {
 
   await PermissionManager().requestPermission();
 
+  // TODO 자동 로그인 확인 처리 await로 결과 받아서 처리
+
   // runApp(const ProviderScope(child: MyApp()));
   runApp(
     ProviderScope(

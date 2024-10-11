@@ -1,22 +1,20 @@
 import 'package:BliU/screen/common/recommend_info_screen.dart';
 import 'package:BliU/screen/join/join_agree_screen.dart';
 import 'package:BliU/screen/login/find_id_complete_screen.dart';
+import 'package:BliU/screen/login/find_id_screen.dart';
+import 'package:BliU/screen/login/find_password_screen.dart';
 import 'package:BliU/screen/login/viewmodel/login_screen_view_model.dart';
 import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-
-import 'find_id_screen.dart';
-import 'find_password_screen.dart';
 
 //로그인
 class LoginScreen extends ConsumerStatefulWidget {
@@ -32,318 +30,220 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(
+      loginViewModelProvider,
+      ((previous, next) {
+        if (next?.memberInfoResponseDTO != null) {
+          if (next?.memberInfoResponseDTO?.result == true) {
+            //print('로그인 성공 == ${next?.memberInfoResponseDTO?.data?.toJson()}');
+            SharedPreferencesManager.getInstance().then((pref) {
+              final mtIdx = next?.memberInfoResponseDTO?.data?.mtIdx.toString();  // 서버에서 받은 비밀번호 토큰
+              if (mtIdx != null && mtIdx.isNotEmpty) {
+                pref.setMtIdx(mtIdx).then((_) {
+                  // TODO 뷰 이동 처리
+                  // if(!context.mounted) return;
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
+                  // );
+                });
+              }
+            });
+          } else {
+            Future.delayed(Duration.zero, () {
+              Utils.getInstance().showSnackBar(context, next?.memberInfoResponseDTO?.message ?? "");
+            });
+          }
+        }
+      }),
+    );
+
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          scrolledUnderElevation: 0,
-          elevation: 0,
-          leading: IconButton(
-            icon: SvgPicture.asset("assets/images/login/ic_back.svg"),
+        scrolledUnderElevation: 0,
+        elevation: 0,
+        leading: IconButton(
+          icon: SvgPicture.asset("assets/images/login/ic_back.svg"),
+          onPressed: () {
+            Navigator.pop(context); // 뒤로가기 동작
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: SvgPicture.asset("assets/images/login/ic_home.svg"),
             onPressed: () {
-              Navigator.pop(context); // 뒤로가기 동작
+              // 홈 버튼 눌렀을 때 동작
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MainScreen(),
+                ),
+              );
             },
           ),
-          actions: [
-            IconButton(
-              icon: SvgPicture.asset("assets/images/login/ic_home.svg"),
-              onPressed: () {
-                // 홈 버튼 눌렀을 때 동작
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.only(top: 40.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: SvgPicture.asset(
-                    "assets/images/home/bottom_home.svg",
-                    width: 90,
-                  ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.only(top: 40.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: SvgPicture.asset(
+                  "assets/images/home/bottom_home.svg",
+                  width: 90,
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
-                  child: Column(
-                    children: [
-                      TextField(
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
+                child: Column(
+                  children: [
+                    TextField(
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                      ),
+                      controller: _idController,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                        hintText: '아이디 입력',
+                        hintStyle: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            color: const Color(0xFF595959)),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: TextField(
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
                         ),
-                        controller: _idController,
+                        controller: _passwordController,
+                        obscureText: true,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                          hintText: '아이디 입력',
+                          hintText: '비밀번호 입력',
                           hintStyle: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: const Color(0xFF595959)),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            color: const Color(0xFF595959)
+                          ),
                           enabledBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(6)),
                             borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                           ),
                           focusedBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(6)),
-                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        child: TextField(
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                          ),
-                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                            hintText: '비밀번호 입력',
-                            hintStyle: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: const Color(0xFF595959)
-                            ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(6)),
-                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(6)),
-                              borderSide: BorderSide(color: Color(0xFFE1E1E1)
-                              ),
+                            borderSide: BorderSide(color: Color(0xFFE1E1E1)
                             ),
                           ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _isAutoLogin = !_isAutoLogin;
-                                },
-                              );
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(right: 10),
-                              padding: const EdgeInsets.all(6),
-                              height: 22,
-                              width: 22,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                border: Border.all(
-                                  color: _isAutoLogin
-                                      ? const Color(0xFFFF6191)
-                                      : const Color(0xFFCCCCCC),
-                                ),
-                                color: _isAutoLogin
-                                    ? const Color(0xFFFF6191)
-                                    : Colors.white,
-                              ),
-                              child: SvgPicture.asset(
-                                'assets/images/check01_off.svg', // 체크박스 아이콘
-                                colorFilter: ColorFilter.mode(
-                                  _isAutoLogin ? Colors.white : const Color(0xFFCCCCCC),
-                                  BlendMode.srcIn,
-                                ),
-                                height: 10,
-                                width: 10,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            '자동로그인',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              height: 1.2,
-                            ),
-                          ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // 로그인 버튼 동작
-                          _login(context);
-                        },
-                        child: Container(
-                          height: 48,
-                          margin: const EdgeInsets.only(top: 15),
-                          decoration: const BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.all(Radius.circular(6)),
-                          ),
-                          child: Center(
-                            child: Text(
-                              '로그인',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                color: Colors.white,
-                                fontSize: Responsive.getFont(context, 14),
-                                height: 1.2,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        // 회원가입 버튼 동작
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const JoinAgreeScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        '회원가입',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          height: 1.2,
                         ),
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      margin: const EdgeInsets.symmetric(horizontal: 15),
-                      decoration: const BoxDecoration(
-                        border: Border.symmetric(
-                          vertical: BorderSide(color: Color(0xFFDDDDDD))
-                        )
-                      ),
-                      child: GestureDetector(
-                        onTap: () async {
-                          // 아이디찾기 버튼 동작
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const FindIdScreen(),
-                            ),
-                          );
-
-                          if (result != null) {
-                            if(!context.mounted) return;
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => FindIdCompleteScreen(id: result,),
-                              ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isAutoLogin = !_isAutoLogin;
+                              },
                             );
-                          }
-                        },
-                        child: Text(
-                          '아이디찾기',
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.all(6),
+                            height: 22,
+                            width: 22,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                              border: Border.all(
+                                color: _isAutoLogin
+                                    ? const Color(0xFFFF6191)
+                                    : const Color(0xFFCCCCCC),
+                              ),
+                              color: _isAutoLogin
+                                  ? const Color(0xFFFF6191)
+                                  : Colors.white,
+                            ),
+                            child: SvgPicture.asset(
+                              'assets/images/check01_off.svg', // 체크박스 아이콘
+                              colorFilter: ColorFilter.mode(
+                                _isAutoLogin ? Colors.white : const Color(0xFFCCCCCC),
+                                BlendMode.srcIn,
+                              ),
+                              height: 10,
+                              width: 10,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '자동로그인',
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
                             height: 1.2,
                           ),
                         ),
-                      ),
+                      ],
                     ),
                     GestureDetector(
                       onTap: () {
-                        // 비밀번호찾기 버튼 동작
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const FindPasswordScreen(),
-                          ),
-                        );
+                        // 로그인 버튼 동작
+                        _login(context);
                       },
-                      child: Text(
-                        '비밀번호찾기',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          height: 1.2,
+                      child: Container(
+                        height: 48,
+                        margin: const EdgeInsets.only(top: 15),
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 50),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 25),
                         child: Center(
                           child: Text(
-                            'SNS 로그인',
+                            '로그인',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.bold,
-                              fontSize: Responsive.getFont(context, 15),
+                              color: Colors.white,
+                              fontSize: Responsive.getFont(context, 14),
                               height: 1.2,
                             ),
                           ),
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            icon: ClipOval(
-                              child: SvgPicture.asset('assets/images/login/sns_k.svg')
-                            ),
-                            iconSize: 60,
-                            onPressed: () {
-                              _kakaoLogin();
-                            },
-                          ),
-                          IconButton(
-                            icon: ClipOval(
-                              child: SvgPicture.asset('assets/images/login/sns_n.svg')
-                            ),
-                            iconSize: 60,
-                            onPressed: () {
-                              _naverLogin();
-                            },
-                          ),
-                          IconButton(
-                            icon: ClipOval(
-                              child: SvgPicture.asset('assets/images/login/sns_a.svg')
-                            ),
-                            iconSize: 60,
-                            onPressed: () {
-                              _appleLogin();
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Center(
-                  child: GestureDetector(
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
                     onTap: () {
-                      // TODO 비회원 배송조회 동작
+                      // 회원가입 버튼 동작
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const JoinAgreeScreen(),
+                        ),
+                      );
                     },
                     child: Text(
-                      '비회원 배송조회',
+                      '회원가입',
                       style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
@@ -351,11 +251,138 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                   ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                    decoration: const BoxDecoration(
+                      border: Border.symmetric(
+                        vertical: BorderSide(color: Color(0xFFDDDDDD))
+                      )
+                    ),
+                    child: GestureDetector(
+                      onTap: () async {
+                        // 아이디찾기 버튼 동작
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FindIdScreen(),
+                          ),
+                        );
+
+                        if (result != null) {
+                          if(!context.mounted) return;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FindIdCompleteScreen(id: result,),
+                            ),
+                          );
+                        }
+                      },
+                      child: Text(
+                        '아이디찾기',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // 비밀번호찾기 버튼 동작
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FindPasswordScreen(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      '비밀번호찾기',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 50),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 25),
+                      child: Center(
+                        child: Text(
+                          'SNS 로그인',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.bold,
+                            fontSize: Responsive.getFont(context, 15),
+                            height: 1.2,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: ClipOval(
+                            child: SvgPicture.asset('assets/images/login/sns_k.svg')
+                          ),
+                          iconSize: 60,
+                          onPressed: () {
+                            _kakaoLogin();
+                          },
+                        ),
+                        IconButton(
+                          icon: ClipOval(
+                            child: SvgPicture.asset('assets/images/login/sns_n.svg')
+                          ),
+                          iconSize: 60,
+                          onPressed: () {
+                            _naverLogin();
+                          },
+                        ),
+                        IconButton(
+                          icon: ClipOval(
+                            child: SvgPicture.asset('assets/images/login/sns_a.svg')
+                          ),
+                          iconSize: 60,
+                          onPressed: () {
+                            _appleLogin();
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    // TODO 비회원 배송조회 동작
+                  },
+                  child: Text(
+                    '비회원 배송조회',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      height: 1.2,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ));
+        ),
+      )
+    );
   }
 
   Future<void> _kakaoLogin() async {
@@ -499,7 +526,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     FocusScope.of(context).unfocus();
 
     final pref = await SharedPreferencesManager.getInstance();
-    String? appToken = await FirebaseMessaging.instance.getToken();
+    String? appToken = pref.getToken();
     if (_idController.text.isEmpty) {
       if(!context.mounted) return;
       Utils.getInstance().showSnackBar(context, "아이디를 입력해 주세요");
@@ -511,23 +538,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       Utils.getInstance().showSnackBar(context, "비밇번호를 입력해 주세요");
       return;
     }
+
     final autoLogin = _isAutoLogin ? "Y" : "N";
     Map<String, dynamic> data = {
       'id': _idController.text,
       'pwd': _passwordController.text,
+      'mt_app_token': appToken,
       'auto_login': autoLogin,
     };
 
-    final loginResponseDTO = await ref.read(loginViewModelProvider.notifier).login(data);
-
-    final mtIdx = loginResponseDTO?.data?.mtIdx.toString();  // 서버에서 받은 비밀번호 토큰
-    if (mtIdx != null && mtIdx.isNotEmpty) {
-      await pref.setMtIdx(mtIdx);
-    }
-    if(!context.mounted) return;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
-    );
+    await ref.read(loginViewModelProvider.notifier).login(data);
   }
 }
