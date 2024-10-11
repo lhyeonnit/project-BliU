@@ -1,4 +1,5 @@
 import 'package:BliU/data/store_data.dart';
+import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/store/viewmodel/coupon_download_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -38,16 +39,18 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
       final storeDownloadResponse = ref.read(couponDownloadModelProvider)?.storeDownloadResponseDTO;
       if (storeDownloadResponse != null && storeDownloadResponse.result == true) {
         // 다운로드 성공 시 알림
+        if (!mounted) return;
         Utils.getInstance().showSnackBar(context, "쿠폰이 성공적으로 다운로드되었습니다.");
       } else {
         // 다운로드 실패 시 알림
-        if (!context.mounted) return;
+        if (!mounted) return;
         Utils.getInstance().showSnackBar(
             context, storeDownloadResponse!.data.toString());
       }
     } catch (e) {
       // 오류 발생 시 로그 및 사용자에게 알림
       print("쿠폰 다운로드 중 오류 발생: $e");
+      if (!mounted) return;
       Utils.getInstance().showSnackBar(context, "쿠폰 다운로드 중 오류가 발생했습니다.");
     }
   }
@@ -168,14 +171,29 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
 
                 // 즐겨찾기 및 아이콘
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
+                    final pref = await SharedPreferencesManager.getInstance();
+                    final mtIdx = pref.getMtIdx() ?? "";
+
+                    if (mtIdx.isEmpty) {
+                      if(!context.mounted) return;
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
+                          }
+                      );
+                      return;
+                    }
+
                     // TODO 즐겨찾기 버튼 활성화
+
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(top: 5),
+                        margin: const EdgeInsets.only(top: 5),
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 12.0),
                         decoration: BoxDecoration(

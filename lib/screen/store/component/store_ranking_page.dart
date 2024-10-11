@@ -1,6 +1,7 @@
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/store_rank_data.dart';
 import 'package:BliU/data/style_category_data.dart';
+import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/component/store_age_group_selection.dart';
@@ -411,7 +412,19 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                             onTap: () async {
                                               // 북마크 토글을 위한 데이터 요청
                                               final pref = await SharedPreferencesManager.getInstance();
-                                              final mtIdx = pref.getMtIdx(); // 사용자 mtIdx 가져오기
+                                              final mtIdx = pref.getMtIdx() ?? ""; // 사용자 mtIdx 가져오기
+
+                                              if (mtIdx.isEmpty) {
+                                                if(!context.mounted) return;
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
+                                                    }
+                                                );
+                                                return;
+                                              }
+
                                               Map<String, dynamic> requestData = {
                                                 'mt_idx': mtIdx,
                                                 'st_idx': rankData.stIdx, // 상점 인덱스 사용

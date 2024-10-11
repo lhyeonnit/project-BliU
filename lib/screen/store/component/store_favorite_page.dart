@@ -1,6 +1,7 @@
 import 'package:BliU/data/bookmark_data.dart';
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
+import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/product/component/list/product_list_card.dart';
 import 'package:BliU/screen/product/component/list/product_sort_bottom.dart';
@@ -259,7 +260,19 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                                               child: GestureDetector(
                                                 onTap: () async {
                                                   final pref = await SharedPreferencesManager.getInstance();
-                                                  final mtIdx = pref.getMtIdx(); // 사용자 mtIdx 가져오기
+                                                  final mtIdx = pref.getMtIdx() ?? ""; // 사용자 mtIdx 가져오기
+
+                                                  if (mtIdx.isEmpty) {
+                                                    if(!context.mounted) return;
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
+                                                        }
+                                                    );
+                                                    return;
+                                                  }
+
                                                   Map<String, dynamic> requestData = {
                                                     'mt_idx': mtIdx,
                                                     'st_idx': store.stIdx,

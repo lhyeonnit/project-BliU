@@ -4,6 +4,7 @@ import 'package:BliU/data/qna_data.dart';
 import 'package:BliU/data/review_data.dart';
 import 'package:BliU/data/store_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
+import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:BliU/screen/product/component/detail/product_order_bottom_option.dart';
@@ -131,6 +132,18 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   void _productLike() async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx() ?? "";
+
+    if (mtIdx.isEmpty) {
+      if(!mounted) return;
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
+          }
+      );
+      return;
+    }
+
     if (mtIdx.isNotEmpty) {
       Map<String, dynamic> requestData = {
         'mt_idx': mtIdx,

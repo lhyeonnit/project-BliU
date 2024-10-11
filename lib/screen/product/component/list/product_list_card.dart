@@ -1,4 +1,5 @@
 import 'package:BliU/data/product_data.dart';
+import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/product/viewmodel/product_list_card_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -68,6 +69,18 @@ class _ProductListCardState extends ConsumerState<ProductListCard> {
 
                       final pref = await SharedPreferencesManager.getInstance();
                       final mtIdx = pref.getMtIdx() ?? "";
+
+                      if (mtIdx.isEmpty) {
+                        if(!context.mounted) return;
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
+                            }
+                        );
+                        return;
+                      }
+
                       if (mtIdx.isNotEmpty) {
                         final item = productData;
                         final likeChk = item.likeChk;

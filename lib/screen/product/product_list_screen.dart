@@ -268,14 +268,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
     if (selectedStyles.isEmpty) {
       return '스타일';
     } else {
-      String styleStr = '';
-      for (var style in selectedStyles) {
-        if(styleStr.isEmpty) {
-          styleStr = style.cstName ?? "";
-        } else {
-          styleStr = "$styleStr,${style.cstName ?? ""}";
-        }
-      }
+      String styleStr = '스타일 ${selectedStyles.length}';
       return styleStr;
     }
   }
@@ -564,6 +557,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                                   'assets/images/product/today_start.png',
                                   width: 70,
                                   height: 18,
+                                  fit: BoxFit.cover,
                                 )
                               ],
                             ),
