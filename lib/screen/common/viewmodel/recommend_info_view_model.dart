@@ -48,27 +48,6 @@ class RecommendInfoViewModel extends StateNotifier<RecommendInfoModel?>{
       return RecommendInfoResponseDTO(result: false, message: e.toString(), data: null);
     }
   }
-  Future<RecommendInfoResponseDTO?> getRecommendInfo(Map<String, dynamic> requestData) async {
-    try {
-      // 서버 API 호출
-      final response = await repository.reqPost(url: Constant.apiAuthChildInfoUrl, data: requestData);
-
-      // 성공적으로 응답을 받은 경우
-      if (response != null && response.statusCode == 200) {
-        Map<String, dynamic> responseData = response.data;
-        // 응답 데이터를 DTO로 변환
-        RecommendInfoResponseDTO recommendInfoResponseDTO = RecommendInfoResponseDTO.fromJson(responseData);
-        return recommendInfoResponseDTO; // 추천 정보 반환
-      }
-
-      return null; // 오류가 발생했을 때
-    } catch (e) {
-      // 예외 처리 (로그 등)
-      print('Error fetching recommend info: $e');
-      return RecommendInfoResponseDTO(result: false, message: e.toString(), data: null);
-    }
-  }
-
 }
 
 
