@@ -1,7 +1,11 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:BliU/api/default_repository.dart';
+import 'package:BliU/const/constant.dart';
 import 'package:BliU/data/fcm_data.dart';
+import 'package:BliU/dto/member_info_response_dto.dart';
 import 'package:BliU/screen/common/on_boarding_screen.dart';
 import 'package:BliU/utils/navigation_service.dart';
 import 'package:BliU/utils/permission_manager.dart';
@@ -139,6 +143,26 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError();  // ProviderScope에서 값을 주입하기 전까지 에러를 던지도록 설정
 });
 
+// TODO 자동 로그인 확인
+Future<MemberInfoResponseDTO?> _authAutoLogin(Map<String, dynamic> requestData) async {
+  final repository = DefaultRepository();
+  final response = await repository.reqPost(url: Constant.apiAuthAutoLoginUrl, data: requestData);
+  try {
+    if (response != null) {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        MemberInfoResponseDTO memberInfoResponseDTO = MemberInfoResponseDTO.fromJson(responseData);
+        return memberInfoResponseDTO;
+      }
+    }
+    return null;
+  } catch(e) {
+    // Catch and log any exceptions
+    print('Error request Api: $e');
+    return null;
+  }
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPreferences = await SharedPreferences.getInstance();
@@ -173,14 +197,32 @@ Future<void> main() async {
     _fcmToken = await FirebaseMessaging.instance.getToken();
   }
 
-  SharedPreferencesManager.getInstance().then((pref) {
-    print("fcmToken ====> $_fcmToken");
-    pref.setToken(_fcmToken ?? "");
-  });
+  print("fcmToken ====> $_fcmToken");
+  final pref = await SharedPreferencesManager.getInstance();
+  pref.setToken(_fcmToken ?? "");
 
   await PermissionManager().requestPermission();
 
-  // TODO 자동 로그인 확인 처리 await로 결과 받아서 처리
+  Map<String, dynamic> requestData = {
+    'app_token': _fcmToken,
+  };
+
+  final memberInfoResponseDTO = await _authAutoLogin(requestData);
+  if (memberInfoResponseDTO != null) {
+    if (memberInfoResponseDTO.result == true) {
+      if(memberInfoResponseDTO.data != null) {
+        final data = memberInfoResponseDTO.data!;
+        pref.setMtId(data.mtId ?? "");
+        pref.setMtId((data.mtIdx ?? 0).toString());
+      } else {
+        pref.logOut();
+      }
+    } else {
+      pref.logOut();
+    }
+  } else {
+    pref.logOut();
+  }
 
   // runApp(const ProviderScope(child: MyApp()));
   runApp(

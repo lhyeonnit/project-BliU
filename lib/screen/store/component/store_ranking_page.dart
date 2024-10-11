@@ -92,6 +92,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
           onSelectionChanged: (StyleCategoryData? newSelection) {
             setState(() {
               _selectedStyle = newSelection;
+              _getList();
             });
           },
         );
@@ -232,78 +233,80 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
             child: ListView(
               controller: _scrollController,
               children: [
-                Container(
-                  margin: const EdgeInsets.only(left: 16.0, top: 20, right: 16, bottom: 15),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 연령 버튼
-                      GestureDetector(
-                        onTap: _showAgeGroupSelection,
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(22),
-                            border: Border.all(color: const Color(0xFFDDDDDD)),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(right: 5),
-                                child: Text(
-                                  getSelectedAgeGroupText(), // 선택된 연령대 표시
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    color: Colors.black,
-                                    height: 1.2,
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 16.0, top: 20, right: 16, bottom: 15),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 연령 버튼
+                        GestureDetector(
+                          onTap: _showAgeGroupSelection,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(22),
+                              border: Border.all(color: const Color(0xFFDDDDDD)),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(right: 5),
+                                  child: Text(
+                                    getSelectedAgeGroupText(), // 선택된 연령대 표시
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: Colors.black,
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SvgPicture.asset('assets/images/product/filter_select.svg'),
-                            ],
+                                SvgPicture.asset('assets/images/product/filter_select.svg'),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 4.0),
-                      // 스타일 버튼
-                      GestureDetector(
-                        onTap: _showStyleSelection,
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(22),
-                            border: Border.all(color: const Color(0xFFDDDDDD)),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                constraints: const BoxConstraints(
-                                  minWidth: 0, // 최소 너비를 0으로 설정 (자유롭게 확장)
-                                  maxWidth: 93, // 최대 너비를 93으로 설정
-                                ),
-                                margin: const EdgeInsets.only(right: 5),
-                                child: Text(
-                                  getSelectedStyleText(), // 선택된 연령대 표시
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    color: Colors.black,
-                                    height: 1.2,
+                        const SizedBox(width: 4.0),
+                        // 스타일 버튼
+                        GestureDetector(
+                          onTap: _showStyleSelection,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(22),
+                              border: Border.all(color: const Color(0xFFDDDDDD)),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  constraints: const BoxConstraints(
+                                    minWidth: 0, // 최소 너비를 0으로 설정 (자유롭게 확장)
+                                  ),
+                                  margin: const EdgeInsets.only(right: 5),
+                                  child: Text(
+                                    getSelectedStyleText(), // 선택된 연령대 표시
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: Colors.black,
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SvgPicture.asset('assets/images/product/filter_select.svg'),
-                            ],
+                                SvgPicture.asset('assets/images/product/filter_select.svg'),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Column(

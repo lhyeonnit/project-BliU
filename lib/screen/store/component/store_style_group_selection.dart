@@ -93,32 +93,36 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
           ),
           child: Row(
             children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(6)),
-                    border: Border.all(color: const Color(0xFFDDDDDD))
-                ),
-                child: GestureDetector(
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _tempSelectedStyle = null;
+                  });
+                },
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(color: const Color(0xFFDDDDDD))
+                  ),
                   child: SvgPicture.asset('assets/images/store/ic_release.svg'),
-                  onTap: () {
-                    setState(() {
-                      _tempSelectedStyle = null;
-                    });
-                  },
                 ),
               ),
               Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(left: 9),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                    color: Colors.black,
-                  ),
-                  width: double.infinity,
-                  height: 48,
-                  child: GestureDetector(
+                child: GestureDetector(
+                  onTap: () {
+                    widget.onSelectionChanged(_tempSelectedStyle);
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 9),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      color: Colors.black,
+                    ),
+                    width: double.infinity,
+                    height: 48,
                     child: const Center(
                       child: Text(
                         '선택완료',
@@ -129,10 +133,6 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
                         ),
                       )
                     ),
-                    onTap: () {
-                      widget.onSelectionChanged(_tempSelectedStyle);
-                      Navigator.pop(context);
-                    },
                   ),
                 ),
               ),

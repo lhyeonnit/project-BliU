@@ -59,7 +59,13 @@ class SharedPreferencesManager {
     await _prefs.remove(key);
   }
 
-  // 전체 데이터 삭제 함수 (회원 로그아웃 시 사용 가능)
+  //사용자 데이터 삭제 & 로그아웃 - 추후 데이터 추가될경우 항목추가 할것
+  Future<void> logOut() async {
+    await _prefs.remove("mt_idx");
+    await _prefs.remove("mt_id");
+  }
+
+  // 전체 데이터 삭제 함수 - 추후 주석 처리
   Future<void> clearAll() async {
     await _prefs.clear();
   }

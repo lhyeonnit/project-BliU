@@ -83,37 +83,44 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
         Container(
           padding: const EdgeInsets.only(left: 11, right: 10, top: 9, bottom: 8),
           decoration: const BoxDecoration(
-              border: Border(
-                  top: BorderSide(
-            color: Color(0xD000000),
-          ))),
+            border: Border(
+              top: BorderSide(
+                color: Color(0xD000000)
+              )
+            )
+          ),
           child: Row(
             children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _tempSelectedAgeGroup = null;
+                  });
+                },
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(6)),
-                    border: Border.all(color: const Color(0xFFDDDDDD))),
-                child: GestureDetector(
+                    border: Border.all(color: const Color(0xFFDDDDDD))
+                  ),
                   child: SvgPicture.asset('assets/images/store/ic_release.svg'),
-                  onTap: () {
-                    setState(() {
-                      _tempSelectedAgeGroup = null;
-                    });
-                  },
                 ),
               ),
               Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(left: 9),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                    color: Colors.black
-                  ),
-                  width: double.infinity,
-                  height: 48,
-                  child: GestureDetector(
+                child: GestureDetector(
+                  onTap: () {
+                    widget.onSelectionChanged(_tempSelectedAgeGroup);
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 9),
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        color: Colors.black
+                    ),
+                    width: double.infinity,
+                    height: 48,
                     child: const Center(
                       child: Text(
                         '선택완료',
@@ -124,10 +131,6 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
                         ),
                       ),
                     ),
-                    onTap: () {
-                      widget.onSelectionChanged(_tempSelectedAgeGroup);
-                      Navigator.pop(context);
-                    },
                   ),
                 ),
               ),
@@ -156,8 +159,7 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
         ),
         shape: StadiumBorder(
           side: BorderSide(
-            color:
-                isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+            color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
           ),
         ),
         backgroundColor: Colors.white,
