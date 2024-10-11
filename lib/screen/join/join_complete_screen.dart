@@ -1,4 +1,5 @@
 //가입완료
+import 'package:BliU/screen/common/recommend_info_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -72,8 +73,10 @@ class JoinCompleteScreen extends StatelessWidget {
             right: 0,
             child: GestureDetector(
               onTap: () {
-                // 로그인 화면으로 이동
-                Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
+                );
               },
               child: Container(
                 width: double.infinity,
