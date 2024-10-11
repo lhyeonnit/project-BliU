@@ -13,6 +13,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -209,15 +210,15 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
   }
 
   void _getOrderDetail() async {
-    // TODO 회원 비회원 처리 필요
 
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-
+    String? appToken = await FirebaseMessaging.instance.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData1 = {
-      'type': 1,
+      'type': memberType,
       'mt_idx': mtIdx,
-      'temp_mt_id': '',
+      'temp_mt_id': appToken,
       'ot_code': widget.orderDetailData.otCode,
     };
 
@@ -271,7 +272,6 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
   }
 
   void _orderReturn() async {
-    // TODO 회원 비회원 처리
     if (reasonIdx == 0) {
       Utils.getInstance().showSnackBar(context, "사유를 선택해 주세요");
       return;
@@ -284,7 +284,8 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
 
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-
+    String? appToken = await FirebaseMessaging.instance.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
     String ctType = selectedIndex == 0 ? 'X' : 'R';
     String ortReturnInfo = "";
     if (ctType == "X") {
@@ -295,7 +296,7 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
         images.map((img) => MultipartFile.fromFileSync(img.path)).toList();
 
     final formData = FormData.fromMap({
-      'type': 1,
+      'type': memberType,
       'mt_idx': mtIdx,
       'odt_code': widget.orderDetailData.odtCode,
       'ct_type': ctType,
@@ -304,6 +305,7 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
       'ort_return_info': ortReturnInfo,
       'ct_img': files,
       'ort_return_bank_info': "$returnBank $returnAccount",
+      'temp_mt_id': appToken,
     });
 
     final defaultResponseDTO = await ref
