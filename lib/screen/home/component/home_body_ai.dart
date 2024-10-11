@@ -27,42 +27,40 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'AI 추천 상품',
-            style: TextStyle(
-              fontFamily: 'Pretendard',
-              fontSize: Responsive.getFont(context, 20),
-              fontWeight: FontWeight.bold,
-              height: 1.2,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'AI 추천 상품',
+          style: TextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 20),
+            fontWeight: FontWeight.bold,
+            height: 1.2,
           ),
-          Container(
-            height: 310,
-            margin: const EdgeInsets.only(top: 20),
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: _productList.length, // 리스트의 길이를 사용
-              itemBuilder: (context, index) {
-                final productData = _productList[index];
-                return Container(
-                  width: 160,
-                  padding: const EdgeInsets.only(right: 12),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: ProductListCard(productData: productData),
-                );
-              },
-            ),
+        ),
+        Container(
+          height: 310,
+          margin: const EdgeInsets.only(top: 20),
+          child: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: _productList.length, // 리스트의 길이를 사용
+            itemBuilder: (context, index) {
+              final productData = _productList[index];
+              return Container(
+                width: 160,
+                margin: EdgeInsets.only(left: index == 0 ? 16 : 0),
+                padding: const EdgeInsets.only(right: 12),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: ProductListCard(productData: productData),
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

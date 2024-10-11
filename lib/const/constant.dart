@@ -123,4 +123,9 @@ class Constant {
 
   //카테고리
   static const apiCategoryAgeUrl = "category/age";
+
+  static const iamportUserCode = "iamport";// 테스트용
+  static const iamportPg = "tosspayments";// 테스트용
+  //static const iamportUserCode = "imp56882344";// 실서비스
+
 }

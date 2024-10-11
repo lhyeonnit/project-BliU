@@ -1,3 +1,4 @@
+import 'package:BliU/const/constant.dart';
 import 'package:BliU/data/iamport_pay_data.dart';
 import 'package:flutter/material.dart';
 import 'package:iamport_flutter/iamport_payment.dart';
@@ -36,10 +37,10 @@ class PaymentIamport extends StatelessWidget {
         ),
       ),
       /* [필수입력] 가맹점 식별코드 */
-      userCode: 'iamport',
+      userCode: Constant.iamportUserCode,
       /* [필수입력] 결제 데이터 */
       data: PaymentData(
-        pg: 'tosspayments', // PG사
+        pg: Constant.iamportPg, // PG사
         payMethod: 'card', // 결제수단
         name: iamportPayData.name, // 주문명
         merchantUid: iamportPayData.merchantUid, // 주문번호
