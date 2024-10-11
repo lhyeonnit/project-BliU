@@ -243,6 +243,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           );
 
                           if (result != null) {
+                            if(!context.mounted) return;
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -409,15 +410,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         'app_token': shared.getToken(),
         'login_type': '3'
       };
-      String? appToken = await FirebaseMessaging.instance.getToken();
-      Map<String, dynamic> tokenData = {
-        'app_token': appToken,
-      };
-      await ref.read(loginViewModelProvider.notifier).authAutoLogin(tokenData);
       await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
     }
+    if(!mounted) return;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const MainScreen()),
@@ -446,16 +443,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           'app_token': shared.getToken(),
           'login_type': '2'
         };
-        String? appToken = await FirebaseMessaging.instance.getToken();
-        Map<String, dynamic> tokenData = {
-          'app_token': appToken,
-        };
-        await ref.read(loginViewModelProvider.notifier).authAutoLogin(tokenData);
         await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
       }
     } catch (error) {
       print(error);
     }
+    if(!mounted) return;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const MainScreen()),
@@ -487,13 +480,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         'app_token': shared.getToken(),
         'login_type': '4'
       };
-      String? appToken = await FirebaseMessaging.instance.getToken();
-      Map<String, dynamic> tokenData = {
-        'app_token': appToken,
-      };
-      await ref.read(loginViewModelProvider.notifier).authAutoLogin(tokenData);
+
       await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
     }
+
+    if(!mounted) return;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const MainScreen()),
@@ -509,11 +500,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final pref = await SharedPreferencesManager.getInstance();
     String? appToken = await FirebaseMessaging.instance.getToken();
     if (_idController.text.isEmpty) {
+      if(!context.mounted) return;
       Utils.getInstance().showSnackBar(context, "아이디를 입력해 주세요");
       return;
     }
 
     if (_passwordController.text.isEmpty) {
+      if(!context.mounted) return;
       Utils.getInstance().showSnackBar(context, "비밇번호를 입력해 주세요");
       return;
     }
@@ -523,17 +516,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       'pwd': _passwordController.text,
       'auto_login': autoLogin,
     };
-    Map<String, dynamic> tokenData = {
-      'app_token': appToken,
-    };
 
-    await ref.read(loginViewModelProvider.notifier).authAutoLogin(tokenData);
     final loginResponseDTO = await ref.read(loginViewModelProvider.notifier).login(data);
 
     final mtIdx = loginResponseDTO?.data?.mtIdx.toString();  // 서버에서 받은 비밀번호 토큰
     if (mtIdx != null && mtIdx.isNotEmpty) {
       await pref.setMtIdx(mtIdx);
     }
+    if(!context.mounted) return;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const MainScreen()),
