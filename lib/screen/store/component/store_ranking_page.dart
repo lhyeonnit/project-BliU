@@ -338,7 +338,8 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                       ),
                                       child: Center(
                                         child: Text(
-                                          '${rankData.stIdx}',
+                                          // '${rankData.stIdx}',
+                                          '${index + 1}',
                                           style: TextStyle(
                                             fontFamily: 'Pretendard',
                                             fontSize: Responsive.getFont(context, 24),
@@ -410,8 +411,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                             onTap: () async {
                                               // 북마크 토글을 위한 데이터 요청
                                               final pref = await SharedPreferencesManager.getInstance();
-                                              final mtIdx = pref
-                                                  .getMtIdx(); // 사용자 mtIdx 가져오기
+                                              final mtIdx = pref.getMtIdx(); // 사용자 mtIdx 가져오기
                                               Map<String, dynamic> requestData = {
                                                 'mt_idx': mtIdx,
                                                 'st_idx': rankData.stIdx, // 상점 인덱스 사용
@@ -442,7 +442,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                             ),
                                           ),
                                           Text(
-                                            '${rankData.stAge}',
+                                            '${rankData.stMark ?? 0}',
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
                                               color: const Color(0xFFA4A4A4),

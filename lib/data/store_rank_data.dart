@@ -8,6 +8,7 @@ class StoreRankData {
   String? stStyleTxt;
   String? stAge;
   String? stAgeTxt;
+  int? stMark;
   String? checkMark;
   List<ProductData>? productList;
 
@@ -19,6 +20,7 @@ class StoreRankData {
     required this.stStyleTxt,
     required this.stAge,
     required this.stAgeTxt,
+    required this.stMark,
     required this.checkMark,
     required this.productList,
   });
@@ -36,6 +38,7 @@ class StoreRankData {
       stStyleTxt: json['st_style_txt'],
       stAge: json['st_age'],
       stAgeTxt: json['st_age_txt'],
+      stMark: json['st_mark'],
       checkMark: json['check_mark'],
       productList: productList,
     );
@@ -50,6 +53,7 @@ class StoreRankData {
       'st_style_txt': stStyleTxt,
       'st_age': stAge,
       'st_age_txt': stAgeTxt,
+      'st_mark': stMark,
       'check_mark': checkMark,
       'product_list': productList,
     };

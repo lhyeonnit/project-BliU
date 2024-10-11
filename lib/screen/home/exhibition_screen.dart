@@ -135,14 +135,11 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
-                SizedBox(
-                  height: 620,
-                  width: Responsive.getWidth(context, 412),
+                AspectRatio(
+                  aspectRatio: 1/1.5,
                   child: Image.network(
                     _exhibitionData?.etDetailBanner ?? "",
-                    width: Responsive.getWidth(context, 412),
-                    height: 620,
-                    fit: BoxFit.contain,
+                    fit: BoxFit.cover,
                     alignment: Alignment.topCenter,
                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                       return const SizedBox();
