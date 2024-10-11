@@ -9,6 +9,7 @@ import 'package:BliU/screen/payment/payment_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -674,14 +675,14 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
   // 수량 조정
   void _cartUpdate(int ctIdx, int ctCount) async {
-    // TODO 회원 비회원 구분
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-
+    String? appToken = await FirebaseMessaging.instance.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData = {
-      'type': 1,
+      'type': memberType,
       'mt_idx': mtIdx,
-      'temp_mt_id': '',
+      'temp_mt_id': appToken,
       'ct_idx': ctIdx,
       'ct_count': ctCount
     };
