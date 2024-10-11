@@ -99,7 +99,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
       body: Stack(
         children: [
           Container(
-            margin: EdgeInsets.only(top: 40, bottom: 80, right: 16, left: 16),
+            margin: const EdgeInsets.only(top: 40, bottom: 80, right: 16, left: 16),
             child: Form(
               key: _formKey,
               child: Column(
@@ -364,7 +364,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
       Widget? suffixIcon,
       bool isEnable = true}) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -401,6 +401,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
               style: TextStyle(
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
+                height: 1.2
               ),
               enabled: isEnable,
               controller: controller,
@@ -411,9 +412,10 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                     vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: const Color(0xFF595959)
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: const Color(0xFF595959),
+                  height: 1.2
                 ),
                 enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -451,6 +453,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
               style: TextStyle(
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
+                height: 1.2,
               ),
               controller: controller,
               obscureText: obscureText,
@@ -458,25 +461,25 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
               enabled: isEnable,
               decoration: InputDecoration(
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: isEnable ? Color(0xFF595959) : Color(0xFFA4A4A4)),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: isEnable ? const Color(0xFF595959) : const Color(0xFFA4A4A4),
+                  height: 1.2,
+                ),
                 filled: true,
-                contentPadding:
-                EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 border: UnderlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(6)),
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(6)
+                ),
                 hintText: hintText,
-                fillColor: isEnable ? Colors.white : Color(0xFFF5F9F9),
+                fillColor: isEnable ? Colors.white : const Color(0xFFF5F9F9),
                 // 배경색 설정
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: isEnable
-                      ? BorderSide(color: Color(0xFFE1E1E1))
-                      : BorderSide(color: Colors.transparent),
+                  borderRadius: const BorderRadius.all(Radius.circular(6)),
+                  borderSide: isEnable ? const BorderSide(color: Color(0xFFE1E1E1)) : const BorderSide(color: Colors.transparent),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),

@@ -1,8 +1,8 @@
+import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/search_my_data.dart';
 import 'package:BliU/data/search_popular_data.dart';
 import 'package:BliU/data/search_product_data.dart';
 import 'package:BliU/data/search_store_data.dart';
-import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:BliU/dto/search_response_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_recommend_item.dart';
@@ -37,7 +37,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   List<SearchProductData> searchProductData = [];
   SearchResponseDTO? searchResponseDTO;
   List<dynamic> _filteredResults = [];
-  List<ProductListResponseDTO?> productList = [];
+  List<ProductData> productList = [];
 
   @override
   void initState() {
@@ -75,15 +75,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       'search_txt' :searchTxt,
     };
     final productListResponseDTO = await ref.read(searchModelProvider.notifier).getProductList(requestProductData);
-    if (productListResponseDTO != null) {
-      if (productListResponseDTO.result == true) {
-        productList.add(productListResponseDTO);
-      } else {
-        productList.add(null);
-      }
-    } else {
-      productList.add(null);
-    }
+    productList = productListResponseDTO?.list ?? [];
 
     final searchList = await ref.read(searchModelProvider.notifier).getSearchList(requestSearchData);
     setState(() {
@@ -401,8 +393,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           onTap: () {
                             String search = _searchController.text;
                             if (search.isNotEmpty) {
-                              _searchMyList();
-                              _searchController.clear();
+                              _searchAction(search); // 검색어를 입력하고 검색을 실행
                             }
                           },
                           child: SvgPicture.asset(
@@ -478,10 +469,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 Text(
                   '최근 검색어',
                   style: TextStyle(
-                      height: 1.2,
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 18),
-                      fontWeight: FontWeight.bold),
+                    height: 1.2,
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 18),
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
                 GestureDetector(
                   onTap: _searchAllDel,
@@ -562,15 +554,18 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           visible: !_isSearching,
           child: SingleChildScrollView(
             controller: _scrollController,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (searchMyList.isNotEmpty) ...[
-                  _buildSearchHistory(), // 검색 기록을 표시하는 위젯
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (searchMyList.isNotEmpty) ...[
+                    _buildSearchHistory(), // 검색 기록을 표시하는 위젯
+                  ],
+                  _buildPopularSearches(),
+                  const SearchRecommendItem(),
                 ],
-                _buildPopularSearches(),
-                const SearchRecommendItem(),
-              ],
+              ),
             ),
           ),
         ),
@@ -591,10 +586,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             child: Text(
               '인기 검색어',
               style: TextStyle(
-                  height: 1.2,
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 18),
-                  fontWeight: FontWeight.bold),
+                height: 1.2,
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 18),
+                fontWeight: FontWeight.bold
+              ),
             ),
           ),
           GridView.builder(
@@ -621,11 +617,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     SizedBox(
                       width: 25,
                       child: Text('${popularData.sltRank}',
-                          style: TextStyle(
-                              height: 1.2,
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 15),
-                              fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                          height: 1.2,
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 15),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                     Text(
                       popularData.sltTxt ?? "",
@@ -737,37 +735,39 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget _buildSearchResults() {
     return SingleChildScrollView(
       controller: _scrollController,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '상품 ${productList.length}',
-            style: TextStyle(
-              height: 1.2,
-              fontFamily: 'Pretendard',
-              fontSize: Responsive.getFont(context, 14)
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 40),
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '상품 ${productList.length}',
+              style: TextStyle(
+                  height: 1.2,
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14)
+              ),
             ),
-          ),
-          GridView.builder(
-            controller: _scrollController,
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(top: 15.0),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 30,
-              childAspectRatio: 0.55,
+            GridView.builder(
+              controller: _scrollController,
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(top: 15.0),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 30,
+                childAspectRatio: 0.5,
+              ),
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: productList.length,
+              itemBuilder: (context, index) {
+                final productData = productList[index];
+                return ProductListCard(productData: productData);
+              },
             ),
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: productList.length,
-            itemBuilder: (context, index) {
-              final productDataList = productList[index]?.list ?? [];
-              final productData = productDataList[index];
-              return ProductListCard(productData: productData);
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -775,6 +775,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget _buildNoResults() {
     return Center(
       child: Container(
+        color: Colors.white,
         margin: const EdgeInsets.only(top: 130),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
