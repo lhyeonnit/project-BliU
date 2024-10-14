@@ -1,6 +1,7 @@
 import 'package:BliU/data/style_category_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/common/viewmodel/recommend_info_view_model.dart';
+import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/recommend_edit_info_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -586,42 +587,35 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
     _getStyleCategory();
   }
   void _getRecommendInfo() async {
+    // SharedPreferences에서 사용자 정보 가져오기
     final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx(); // mtIdx 가져오기
+    final memberInfo = pref.getMemberInfo(); // 사용자의 전체 정보
 
-    Map<String, dynamic> requestData = {
-      'idx': mtIdx, // 사용자 식별을 위한 idx
-    };
+    if (memberInfo != null) {
+        // 저장된 출생일 정보 설정
+        if (memberInfo.mctBirth != null && memberInfo.mctBirth!.isNotEmpty) {
+          _selectedDate = DateTime.parse(memberInfo.mctBirth!); // 출생일 데이터를 DateTime으로 변환
+        }
+        // 저장된 성별 정보 설정
+        _selectedGender = memberInfo.mctGender; // 성별 데이터
 
-    // 서버에서 추천 정보를 불러오는 API 호출
-    // final recommendInfoResponseDTO = await ref.read(RecommendEditInfoModelProvider.notifier).getRecommendInfo(requestData);
-    //
-    // // 불러온 데이터가 있을 경우 화면에 반영
-    // if (recommendInfoResponseDTO != null && recommendInfoResponseDTO.result) {
-    //   setState(() {
-    //     // 서버에서 받은 데이터를 각각의 필드에 반영
-    //     final savedData = recommendInfoResponseDTO.data;
-    //     _selectedDate = DateTime.parse(savedData?['birth']); // 출생일 데이터
-    //     _birthController.text = convertDateTimeDisplay(_selectedDate.toString()); // 출생일 텍스트 표시
-    //     _selectedGender = savedData?['gender']; // 성별 데이터
-    //     _selectedStyles = (savedData?['style'] as List).map((styleId) {
-    //       return styleCategories.firstWhere((style) => style.fsIdx == styleId); // 스타일 목록을 필터링
-    //     }).toList();
-    //   });
-    // } else {
-    //   // 데이터 불러오기 실패 시 스낵바로 알림 표시
-    //   Utils.getInstance().showSnackBar(
-    //       context, "추천 정보를 불러오는 데 실패했습니다.");
-    // }
+        // 저장된 스타일 정보 설정
+        List<String> styleIds = memberInfo.mctStyle ?? [];
+        _selectedStyles = styleIds.map((styleId) {
+          return styleCategories.firstWhere((style) => style.fsIdx.toString() == styleId);
+        }).toList();
+    } else {
+      if(!mounted) return;
+      Utils.getInstance().showSnackBar(context, "저장된 사용자 정보를 불러오는 데 실패했습니다.");
+    }
   }
 
   void _editRecommendInfo() async {
     final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    // 서버에 보낼 데이터 가공 (선택된 스타일 ID, 생년월일 등)
+    final memberInfo = pref.getMemberInfo();
+    String? mtIdx = memberInfo?.mtIdx.toString();
     String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
-    List<int?> selectedStyleIds = _selectedStyles.map((style) => style.fsIdx).toList();
+    List<String?> selectedStyleIds = _selectedStyles.map((style) => style.fsIdx.toString()).toList();
 
     // 서버로 전송할 데이터
     Map<String, dynamic> requestData = {
@@ -632,13 +626,33 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
     };
 
     // 서버에 데이터 전송 및 응답 처리
-    final defaultResponseDTO = await ref.read(RecommendEditInfoModelProvider.notifier).editRecommendInfo(requestData);
+    final memberInfoResponseDTO = await ref.read(RecommendEditInfoModelProvider.notifier).editRecommendInfo(requestData);
 
-    if (defaultResponseDTO != null) {
-      Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
-      if (defaultResponseDTO.result == true) {
-        Navigator.of(context).pop();
+    if (memberInfoResponseDTO != null && memberInfoResponseDTO.result == true) {
+      // memberInfo가 null이 아닌지 확인 후 처리
+      if (memberInfo != null) {
+        formattedDate = memberInfo.mctBirth ?? '';
+        _selectedGender = memberInfo.mctGender ?? '';
+        selectedStyleIds = memberInfo.mctStyle ?? [];
+
+        pref.login(memberInfo);  // memberInfo가 null이 아닌 경우에만 로그인 처리
+
+        if(!mounted) return;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const MainScreen()),
+        );
+
+        setState(() {
+          ref.read(mainScreenProvider.notifier).selectNavigation(2);
+        });
+      } else {
+        if(!mounted) return;
+        Utils.getInstance().showSnackBar(context, "회원 정보를 불러오지 못했습니다.");
       }
+    } else {
+      // 적절한 데이터 타입이 아닌 경우 처리
+      print("Unexpected data type: ${memberInfoResponseDTO?.data.runtimeType}");
     }
   }
   void _getStyleCategory() async {

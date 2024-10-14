@@ -1,3 +1,4 @@
+import 'package:BliU/data/member_info_data.dart';
 import 'package:BliU/data/style_category_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/common/viewmodel/recommend_info_view_model.dart';
@@ -748,9 +749,10 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
 
   void _submitRecommendInfo() async {
     final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
+    final memberInfo = pref.getMemberInfo();
+    String? mtIdx = memberInfo?.mtIdx.toString();
     String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
-    List<int?> selectedStyleIds = _selectedStyles.map((style) => style.fsIdx).toList();
+    List<String?> selectedStyleIds = _selectedStyles.map((style) => style.fsIdx.toString()).toList();
 
     Map<String, dynamic> requestData = {
       'idx': mtIdx,
@@ -759,18 +761,33 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
       'style': selectedStyleIds,
     };
 
-    final defaultResponseDTO = await ref.read(RecommendInfoModelProvider.notifier).saveRecommendInfo(requestData);
-    if (defaultResponseDTO != null) {
-      Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
-      if (defaultResponseDTO.result == true) {
+    final memberInfoResponseDTO = await ref.read(RecommendInfoModelProvider.notifier).saveRecommendInfo(requestData);
+
+    if (memberInfoResponseDTO != null && memberInfoResponseDTO.result == true) {
+      // memberInfo가 null이 아닌지 확인 후 처리
+      if (memberInfo != null) {
+        formattedDate = memberInfo.mctBirth ?? '';
+        _selectedGender = memberInfo.mctGender ?? '';
+        selectedStyleIds = memberInfo.mctStyle ?? [];
+
+        pref.login(memberInfo);  // memberInfo가 null이 아닌 경우에만 로그인 처리
+
+        if(!mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const MainScreen()),
         );
+
         setState(() {
           ref.read(mainScreenProvider.notifier).selectNavigation(2);
         });
+      } else {
+        if(!mounted) return;
+        Utils.getInstance().showSnackBar(context, "회원 정보를 불러오지 못했습니다.");
       }
+    } else {
+      // 적절한 데이터 타입이 아닌 경우 처리
+      print("Unexpected data type: ${memberInfoResponseDTO?.data.runtimeType}");
     }
   }
 
