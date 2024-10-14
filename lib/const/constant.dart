@@ -117,7 +117,7 @@ class Constant {
   static const apiMyPagePushUrl = "mypage/push";//알림 설정
   static const apiMyPageTermsUrl = "mypage/terms";//이용약관
   static const apiMyPagePrivacyUrl = "mypage/privacy";//개인정보 처리방침
-
+  static const apiMyPageChildInfoUrl = "mypage/child_info";//추천 정보
   //비회원
   //static const apiMyPageUrl = "${USER_URL}mypage";
 
