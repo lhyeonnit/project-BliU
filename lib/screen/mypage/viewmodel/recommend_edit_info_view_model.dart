@@ -34,21 +34,21 @@ class RecommendEditInfoViewModel extends StateNotifier<RecommendEditInfoModel?>{
   }
 
 
-  Future<MemberInfoResponseDTO?> editRecommendInfo(Map<String, dynamic> requestData) async {
+  Future<DefaultResponseDTO?> editRecommendInfo(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiAuthChildInfoUrl, data: requestData);
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
-          MemberInfoResponseDTO memberInfoResponseDTO = MemberInfoResponseDTO.fromJson(responseData);
-          return memberInfoResponseDTO;
+          DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+          return defaultResponseDTO;
         }
       }
       return null;
     } catch (e) {
       // Catch and log any exceptions
       print('Error fetching : $e');
-      return MemberInfoResponseDTO(result: false, message: e.toString(), data: null);
+      return DefaultResponseDTO(result: false, message: e.toString());
     }
   }
 }

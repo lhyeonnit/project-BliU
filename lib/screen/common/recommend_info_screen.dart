@@ -1,4 +1,3 @@
-import 'package:BliU/data/member_info_data.dart';
 import 'package:BliU/data/style_category_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/common/viewmodel/recommend_info_view_model.dart';
@@ -761,16 +760,14 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
       'style': selectedStyleIds,
     };
 
-    final memberInfoResponseDTO = await ref.read(RecommendInfoModelProvider.notifier).saveRecommendInfo(requestData);
+    final defaultResponseDTO = await ref.read(RecommendInfoModelProvider.notifier).saveRecommendInfo(requestData);
 
-    if (memberInfoResponseDTO != null && memberInfoResponseDTO.result == true) {
-      // memberInfo가 null이 아닌지 확인 후 처리
+    if (defaultResponseDTO != null && defaultResponseDTO.result == true) {
       if (memberInfo != null) {
         formattedDate = memberInfo.mctBirth ?? '';
         _selectedGender = memberInfo.mctGender ?? '';
         selectedStyleIds = memberInfo.mctStyle ?? [];
-
-        pref.login(memberInfo);  // memberInfo가 null이 아닌 경우에만 로그인 처리
+        pref.login(memberInfo);
 
         if(!mounted) return;
         Navigator.pushReplacement(
@@ -787,7 +784,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
       }
     } else {
       // 적절한 데이터 타입이 아닌 경우 처리
-      print("Unexpected data type: ${memberInfoResponseDTO?.data.runtimeType}");
+      print("Unexpected data type: ${defaultResponseDTO?.runtimeType}");
     }
   }
 

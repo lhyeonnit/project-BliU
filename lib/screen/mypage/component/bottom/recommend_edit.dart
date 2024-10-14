@@ -36,7 +36,6 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
   @override
   void initState() {
     super.initState();
-    _getRecommendInfo();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -601,8 +600,8 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
 
         // 저장된 스타일 정보 설정
         List<String> styleIds = memberInfo.mctStyle ?? [];
-        _selectedStyles = styleIds.map((styleId) {
-          return styleCategories.firstWhere((style) => style.fsIdx.toString() == styleId);
+        _selectedStyles = styleCategories.where((style) {
+          return styleIds.contains(style.fsIdx.toString());
         }).toList();
     } else {
       if(!mounted) return;
@@ -626,16 +625,15 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
     };
 
     // 서버에 데이터 전송 및 응답 처리
-    final memberInfoResponseDTO = await ref.read(RecommendEditInfoModelProvider.notifier).editRecommendInfo(requestData);
+    final defaultResponseDTO = await ref.read(RecommendEditInfoModelProvider.notifier).editRecommendInfo(requestData);
 
-    if (memberInfoResponseDTO != null && memberInfoResponseDTO.result == true) {
-      // memberInfo가 null이 아닌지 확인 후 처리
+    if (defaultResponseDTO != null && defaultResponseDTO.result == true) {
       if (memberInfo != null) {
         formattedDate = memberInfo.mctBirth ?? '';
         _selectedGender = memberInfo.mctGender ?? '';
         selectedStyleIds = memberInfo.mctStyle ?? [];
 
-        pref.login(memberInfo);  // memberInfo가 null이 아닌 경우에만 로그인 처리
+        pref.login(memberInfo);
 
         if(!mounted) return;
         Navigator.pushReplacement(
@@ -652,18 +650,22 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
       }
     } else {
       // 적절한 데이터 타입이 아닌 경우 처리
-      print("Unexpected data type: ${memberInfoResponseDTO?.data.runtimeType}");
+      print("Unexpected data type: ${defaultResponseDTO?.runtimeType}");
     }
   }
   void _getStyleCategory() async {
     final styleCategoriesResponseDTO = await ref.read(RecommendInfoModelProvider.notifier).getStyleCategory();
 
-    if (styleCategoriesResponseDTO != null) {
-      if (styleCategoriesResponseDTO.result == true) {
-        setState(() {
-          styleCategories = styleCategoriesResponseDTO.list ?? [];
-        });
-      }
+    if (styleCategoriesResponseDTO != null && styleCategoriesResponseDTO.result == true) {
+      setState(() {
+        styleCategories = styleCategoriesResponseDTO.list ?? [];
+      });
+
+      // 스타일 카테고리 로드 후에 추천 정보를 불러옴
+      _getRecommendInfo();
+    } else {
+      if(!mounted) return;
+      Utils.getInstance().showSnackBar(context, "스타일 카테고리를 불러오는 데 실패했습니다.");
     }
   }
 }
