@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class MemberInfoData {
   final int? mtIdx;
   final String? mtId;
@@ -48,7 +50,7 @@ class MemberInfoData {
       'mt_idx': mtIdx,
       'mt_id': mtId,
       'mt_name': mtName,
-      'mct_style': mctStyle,
+      'mct_style': json.encode(mctStyle),
       'cart': cart,
       'child_ck': childCk,
       'my_revie_count': myRevieCount,

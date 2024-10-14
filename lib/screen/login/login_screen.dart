@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:BliU/screen/common/recommend_info_screen.dart';
 import 'package:BliU/screen/join/join_agree_screen.dart';
 import 'package:BliU/screen/login/find_id_complete_screen.dart';
@@ -37,31 +39,35 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         if (next?.memberInfoResponseDTO != null) {
           if (next?.memberInfoResponseDTO?.result == true) {
             // 로그인 성공 시 처리
-            SharedPreferencesManager.getInstance().then((pref) {
-              final mtIdx = next?.memberInfoResponseDTO?.data?.mtIdx.toString();  // 서버에서 받은 mtIdx
-              final childCk = next?.memberInfoResponseDTO?.data?.childCk ?? "N"; // childCk 값 가져오기
+            final loginData = next?.memberInfoResponseDTO?.data;
+            if (loginData != null) {
+              SharedPreferencesManager.getInstance().then((pref) {
 
-              if (mtIdx != null && mtIdx.isNotEmpty) {
-                pref.setMtIdx(mtIdx).then((_) {
-                  if (context.mounted) {
-                    if (childCk == "Y") {
-                      // childCk가 "Y"인 경우 메인 화면으로 이동
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MainScreen()),
-                      );
-                      ref.read(mainScreenProvider.notifier).selectNavigation(2); // 네비게이션 선택
-                    } else {
-                      // childCk가 "N"인 경우 RecommendInfoScreen으로 이동
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
-                      );
+                final mtIdx = loginData.mtIdx.toString();  // 서버에서 받은 mtIdx
+                final childCk = loginData.childCk ?? "N"; // childCk 값 가져오기
+
+                if (mtIdx.isNotEmpty) {
+                  pref.login(loginData).then((_) {
+                    if (context.mounted) {
+                      if (childCk == "Y") {
+                        // childCk가 "Y"인 경우 메인 화면으로 이동
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const MainScreen()),
+                        );
+                        ref.read(mainScreenProvider.notifier).selectNavigation(2); // 네비게이션 선택
+                      } else {
+                        // childCk가 "N"인 경우 RecommendInfoScreen으로 이동
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
+                        );
+                      }
                     }
-                  }
-                });
-              }
-            });
+                  });
+                }
+              });
+            }
           } else {
             // 로그인 실패 시 처리
             Future.delayed(Duration.zero, () {
@@ -494,7 +500,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   void _login(BuildContext context) async {
     FocusScope.of(context).unfocus();
-    String? appToken = await FirebaseMessaging.instance.getToken();
+
+    final pref = await SharedPreferencesManager.getInstance();
+    String? appToken = pref.getToken();
+    //String? appToken = await FirebaseMessaging.instance.getToken();
     if (_idController.text.isEmpty) {
       if (!context.mounted) return;
       Utils.getInstance().showSnackBar(context, "아이디를 입력해 주세요");

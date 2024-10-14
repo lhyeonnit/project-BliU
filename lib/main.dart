@@ -198,7 +198,7 @@ Future<void> main() async {
 
   print("fcmToken ====> $_fcmToken");
   final pref = await SharedPreferencesManager.getInstance();
-  pref.setToken(_fcmToken ?? "");
+  await pref.setToken(_fcmToken ?? "");
 
   await PermissionManager().requestPermission();
 
@@ -211,8 +211,7 @@ Future<void> main() async {
     if (memberInfoResponseDTO.result == true) {
       if(memberInfoResponseDTO.data != null) {
         final data = memberInfoResponseDTO.data!;
-        pref.setMtId(data.mtId ?? "");
-        pref.setMtId((data.mtIdx ?? 0).toString());
+        pref.login(data);
       } else {
         pref.logOut();
       }
@@ -240,9 +239,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Pretendard'
-      ),
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.light(),
+      // theme: ThemeData(
+      //   fontFamily: 'Pretendard'
+      // ),
       navigatorKey: NavigationService.navigatorKey,
       debugShowCheckedModeBanner: false,
       home: const OnBoardingScreen(), // OnBoardingScreen을 초기 화면으로 설정

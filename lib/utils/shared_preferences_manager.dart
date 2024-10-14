@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:BliU/data/member_info_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesManager {
@@ -14,20 +17,20 @@ class SharedPreferencesManager {
 
   SharedPreferencesManager._(SharedPreferences prefs) : _prefs = prefs;
 
-  // 데이터를 저장하는 함수
-  Future<void> saveData(String key, String value) async {
-    await _prefs.setString(key, value);
-  }
-
-  // 데이터를 로드하는 함수
-  String? loadData(String key) {
-    return _prefs.getString(key);
-  }
+  // // 데이터를 저장하는 함수
+  // Future<void> saveData(String key, String value) async {
+  //   await _prefs.setString(key, value);
+  // }
+  //
+  // // 데이터를 로드하는 함수
+  // String? loadData(String key) {
+  //   return _prefs.getString(key);
+  // }
 
   // 회원별로 mtId를 저장하는 함수
-  Future<void> setMtId(String mtId) async {
-    await _prefs.setString('mt_id', mtId);
-  }
+  // Future<void> setMtId(String mtId) async {
+  //   await _prefs.setString('mt_id', mtId);
+  // }
 
   // mtId를 불러오는 함수
   String? getMtId() {
@@ -35,9 +38,9 @@ class SharedPreferencesManager {
   }
 
   // 회원별로 mtIdx를 저장하는 함수
-  Future<void> setMtIdx(String mtIdx) async {
-    await _prefs.setString('mt_idx', mtIdx);
-  }
+  // Future<void> setMtIdx(String mtIdx) async {
+  //   await _prefs.setString('mt_idx', mtIdx);
+  // }
 
   // mtIdx를 불러오는 함수
   String? getMtIdx() {
@@ -57,6 +60,27 @@ class SharedPreferencesManager {
   // 데이터 삭제하는 함수
   Future<void> deleteData(String key) async {
     await _prefs.remove(key);
+  }
+
+  Future<void> login(MemberInfoData data) async {
+    await _prefs.setString('mt_id', (data.mtId ?? ""));
+    await _prefs.setString('mt_idx', (data.mtIdx ?? "").toString());
+    await _prefs.setString('member_info', jsonEncode(data.toJson()));
+  }
+
+  MemberInfoData? getMemberInfo() {
+    MemberInfoData? memberInfoData;
+    final memberInfoJsonString = _prefs.getString('member_info') ?? "";
+    try {
+      if (memberInfoJsonString.isNotEmpty) {
+        Map<String,dynamic> memberInfoJsonData = jsonDecode(memberInfoJsonString);
+        memberInfoData = MemberInfoData.fromJson(memberInfoJsonData);
+      }
+    } catch (e) {
+     print("getMemberInfo error $e");
+    }
+
+    return memberInfoData;
   }
 
   //사용자 데이터 삭제 & 로그아웃 - 추후 데이터 추가될경우 항목추가 할것
@@ -79,6 +103,4 @@ class SharedPreferencesManager {
     SharedPreferencesManager prefs = await SharedPreferencesManager.getInstance();
     return prefs._prefs.getString('pwd_token');  // 저장된 pwd_token 불러오기
   }
-
-
 }
