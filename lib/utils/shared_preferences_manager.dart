@@ -27,6 +27,14 @@ class SharedPreferencesManager {
     return _prefs.getString('mt_idx');
   }
 
+  Future<void> setAutoLogin(bool autoLogin) async {
+    await _prefs.setBool("auto_login", autoLogin);
+  }
+
+  bool getAutoLogin() {
+    return _prefs.getBool('auto_login') ?? false;
+  }
+
   // 토큰을 저장하는 함수
   Future<void> setToken(String value) async {
     await _prefs.setString('token', value);
@@ -68,6 +76,7 @@ class SharedPreferencesManager {
     await _prefs.remove("mt_idx");
     await _prefs.remove("mt_id");
     await _prefs.remove("member_info");
+    setAutoLogin(false);
   }
 
   void savePasswordToken(String token) async {

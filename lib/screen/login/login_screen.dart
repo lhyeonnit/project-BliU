@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:BliU/screen/common/recommend_info_screen.dart';
 import 'package:BliU/screen/join/join_agree_screen.dart';
 import 'package:BliU/screen/login/find_id_complete_screen.dart';
@@ -11,7 +9,6 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
@@ -36,48 +33,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     ref.listen(
       loginViewModelProvider,
       ((previous, next) {
-        if (next?.memberInfoResponseDTO != null) {
-          if (next?.memberInfoResponseDTO?.result == true) {
-            // 로그인 성공 시 처리
-            final loginData = next?.memberInfoResponseDTO?.data;
-            if (loginData != null) {
-              SharedPreferencesManager.getInstance().then((pref) {
-
-                final mtIdx = loginData.mtIdx.toString();  // 서버에서 받은 mtIdx
-                final childCk = loginData.childCk ?? "N"; // childCk 값 가져오기
-
-                if (mtIdx.isNotEmpty) {
-                  pref.login(loginData).then((_) {
-                    if (context.mounted) {
-                      if (childCk == "Y") {
-                        // childCk가 "Y"인 경우 메인 화면으로 이동
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => const MainScreen()),
-                        );
-                        ref.read(mainScreenProvider.notifier).selectNavigation(2); // 네비게이션 선택
-                      } else {
-                        // childCk가 "N"인 경우 RecommendInfoScreen으로 이동
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
-                        );
-                      }
-                    }
-                  });
-                }
-              });
-            }
-          } else {
-            // 로그인 실패 시 처리
-            Future.delayed(Duration.zero, () {
-              Utils.getInstance().showSnackBar(context, next?.memberInfoResponseDTO?.message ?? "로그인 실패");
-            });
-          }
+        if (next != null) {
+          _loginResult(next);
         }
       }),
     );
-
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -445,13 +405,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Future<void> _kakaoGetInfo() async {
     try {
       var user = await UserApi.instance.me();
-      var shared = await SharedPreferencesManager.getInstance();
+      final pref = await SharedPreferencesManager.getInstance();
       Map<String, dynamic> data = {
         'id': user.id.toString(),
         'name': user.kakaoAccount?.profile?.nickname ?? "",
-        'app_token': shared.getToken(),
+        'app_token': pref.getToken(),
         'login_type': '3'
       };
+
+      await pref.setAutoLogin(true);
+
       await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
@@ -463,20 +426,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     try {
       final NaverLoginResult result = await FlutterNaverLogin.logIn();
       if (result.status == NaverLoginStatus.loggedIn) {
-        var shared = await SharedPreferencesManager.getInstance();
+        final pref = await SharedPreferencesManager.getInstance();
         Map<String, dynamic> data = {
           'id': result.account.id,
           'name': result.account.name,
-          'app_token': shared.getToken(),
+          'app_token': pref.getToken(),
           'login_type': '2'
         };
+
+        await pref.setAutoLogin(true);
+
         await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
       }
     } catch (error) {
       print(error);
     }
   }
-
 
   //애플 로그인
   Future<void> _appleLogin() async {
@@ -486,24 +451,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final userCredential = await FirebaseAuth.instance.signInWithProvider(appleProvider);
     var user = userCredential.user;
     if (user != null) {
-      var shared = await SharedPreferencesManager.getInstance();
+      final pref = await SharedPreferencesManager.getInstance();
       Map<String, dynamic> data = {
         'id': user.uid,
         'name': user.displayName,
-        'app_token': shared.getToken(),
+        'app_token': pref.getToken(),
         'login_type': '4'
       };
+      await pref.setAutoLogin(true);
+
       await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
     }
   }
-
 
   void _login(BuildContext context) async {
     FocusScope.of(context).unfocus();
 
     final pref = await SharedPreferencesManager.getInstance();
     String? appToken = pref.getToken();
-    //String? appToken = await FirebaseMessaging.instance.getToken();
     if (_idController.text.isEmpty) {
       if (!context.mounted) return;
       Utils.getInstance().showSnackBar(context, "아이디를 입력해 주세요");
@@ -524,6 +489,46 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       'auto_login': autoLogin,
     };
 
+    await pref.setAutoLogin(_isAutoLogin);
+
     await ref.read(loginViewModelProvider.notifier).login(data);
+  }
+
+  void _loginResult(LoginScreenModel model) async {
+    if (model.memberInfoResponseDTO != null) {
+      final pref = await SharedPreferencesManager.getInstance();
+      if (model.memberInfoResponseDTO?.result == true) {
+        // 로그인 성공 시 처리
+        final loginData = model.memberInfoResponseDTO?.data;
+        if (loginData != null) {
+          await pref.login(loginData);
+          final childCk = loginData.childCk ?? "N"; // childCk 값 가져오기
+
+          if (mounted) {
+            if (childCk == "Y") {
+              // childCk가 "Y"인 경우 메인 화면으로 이동
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const MainScreen()),
+              );
+              ref.read(mainScreenProvider.notifier).selectNavigation(2); // 네비게이션 선택
+            } else {
+              // childCk가 "N"인 경우 RecommendInfoScreen으로 이동
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
+              );
+            }
+            return;
+          }
+        }
+      }
+
+      // 로그인 실패 시 처리
+      pref.setAutoLogin(false);
+      Future.delayed(Duration.zero, () {
+        Utils.getInstance().showSnackBar(context, model.memberInfoResponseDTO?.message ?? "로그인 실패");
+      });
+    }
   }
 }

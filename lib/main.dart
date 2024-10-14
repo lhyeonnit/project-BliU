@@ -201,25 +201,26 @@ Future<void> main() async {
   await pref.setToken(_fcmToken ?? "");
 
   await PermissionManager().requestPermission();
+  if (pref.getAutoLogin()) {
+    Map<String, dynamic> requestData = {
+      'app_token': _fcmToken,
+    };
 
-  Map<String, dynamic> requestData = {
-    'app_token': _fcmToken,
-  };
-
-  final memberInfoResponseDTO = await _authAutoLogin(requestData);
-  if (memberInfoResponseDTO != null) {
-    if (memberInfoResponseDTO.result == true) {
-      if(memberInfoResponseDTO.data != null) {
-        final data = memberInfoResponseDTO.data!;
-        pref.login(data);
+    final memberInfoResponseDTO = await _authAutoLogin(requestData);
+    if (memberInfoResponseDTO != null) {
+      if (memberInfoResponseDTO.result == true) {
+        if(memberInfoResponseDTO.data != null) {
+          final data = memberInfoResponseDTO.data!;
+          pref.login(data);
+        } else {
+          pref.logOut();
+        }
       } else {
         pref.logOut();
       }
     } else {
       pref.logOut();
     }
-  } else {
-    pref.logOut();
   }
 
   // runApp(const ProviderScope(child: MyApp()));
