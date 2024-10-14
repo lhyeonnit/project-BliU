@@ -1,3 +1,4 @@
+import 'package:BliU/screen/common/recommend_info_screen.dart';
 import 'package:BliU/screen/join/join_agree_screen.dart';
 import 'package:BliU/screen/login/find_id_complete_screen.dart';
 import 'package:BliU/screen/login/find_id_screen.dart';
@@ -8,6 +9,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
@@ -34,28 +36,42 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ((previous, next) {
         if (next?.memberInfoResponseDTO != null) {
           if (next?.memberInfoResponseDTO?.result == true) {
-            //print('로그인 성공 == ${next?.memberInfoResponseDTO?.data?.toJson()}');
+            // 로그인 성공 시 처리
             SharedPreferencesManager.getInstance().then((pref) {
-              final mtIdx = next?.memberInfoResponseDTO?.data?.mtIdx.toString();  // 서버에서 받은 비밀번호 토큰
+              final mtIdx = next?.memberInfoResponseDTO?.data?.mtIdx.toString();  // 서버에서 받은 mtIdx
+              final childCk = next?.memberInfoResponseDTO?.data?.childCk ?? "N"; // childCk 값 가져오기
+
               if (mtIdx != null && mtIdx.isNotEmpty) {
                 pref.setMtIdx(mtIdx).then((_) {
-                  // TODO 뷰 이동 처리
-                  // if(!context.mounted) return;
-                  // Navigator.pushReplacement(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
-                  // );
+                  if (context.mounted) {
+                    if (childCk == "Y") {
+                      // childCk가 "Y"인 경우 메인 화면으로 이동
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const MainScreen()),
+                      );
+                      ref.read(mainScreenProvider.notifier).selectNavigation(2); // 네비게이션 선택
+                    } else {
+                      // childCk가 "N"인 경우 RecommendInfoScreen으로 이동
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
+                      );
+                    }
+                  }
                 });
               }
             });
           } else {
+            // 로그인 실패 시 처리
             Future.delayed(Duration.zero, () {
-              Utils.getInstance().showSnackBar(context, next?.memberInfoResponseDTO?.message ?? "");
+              Utils.getInstance().showSnackBar(context, next?.memberInfoResponseDTO?.message ?? "로그인 실패");
             });
           }
         }
       }),
     );
+
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -421,15 +437,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<void> _kakaoGetInfo() async {
-    // 사용자 정보 재요청
     try {
       var user = await UserApi.instance.me();
-      // print('사용자 정보 요청 성공'
-      //     '\n회원번호: ${user.id}'
-      //     '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
-      //     '\n이메일: ${user.kakaoAccount?.email}'
-      //     '\n폰번호: ${user.kakaoAccount?.phoneNumber}');
-
       var shared = await SharedPreferencesManager.getInstance();
       Map<String, dynamic> data = {
         'id': user.id.toString(),
@@ -441,14 +450,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
     }
-    if(!mounted) return;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-    );
-    setState(() {
-      ref.read(mainScreenProvider.notifier).selectNavigation(2);
-    });
   }
 
   //네이버 로그인
@@ -456,13 +457,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     try {
       final NaverLoginResult result = await FlutterNaverLogin.logIn();
       if (result.status == NaverLoginStatus.loggedIn) {
-        // print('accessToken = ${result.accessToken}');
-        // print('id = ${result.account.id}');
-        // print('name = ${result.account.name}');
-        // print('nickname = ${result.account.nickname}');
-        // print('email = ${result.account.email}');
-        // print('mobile = ${result.account.mobile}');
-
         var shared = await SharedPreferencesManager.getInstance();
         Map<String, dynamic> data = {
           'id': result.account.id,
@@ -475,31 +469,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     } catch (error) {
       print(error);
     }
-    if(!mounted) return;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-    );
-    setState(() {
-      ref.read(mainScreenProvider.notifier).selectNavigation(2);
-    });
   }
 
-  //애플 로그인
 
+  //애플 로그인
   Future<void> _appleLogin() async {
     AppleAuthProvider appleProvider = AppleAuthProvider();
     appleProvider = appleProvider.addScope('email');
     appleProvider = appleProvider.addScope('name');
-    // the line below will start the Apple sign in flow for your platform
-    final userCredential =
-        await FirebaseAuth.instance.signInWithProvider(appleProvider);
+    final userCredential = await FirebaseAuth.instance.signInWithProvider(appleProvider);
     var user = userCredential.user;
     if (user != null) {
-      // print("user.uid == ${user.uid}");
-      // print("user.displayName == ${user.displayName}");
-      // print("user.email == ${user.email}");
-
       var shared = await SharedPreferencesManager.getInstance();
       Map<String, dynamic> data = {
         'id': user.uid,
@@ -507,34 +487,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         'app_token': shared.getToken(),
         'login_type': '4'
       };
-
       await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
     }
-
-    if(!mounted) return;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-    );
-    setState(() {
-      ref.read(mainScreenProvider.notifier).selectNavigation(2);
-    });
   }
+
 
   void _login(BuildContext context) async {
     FocusScope.of(context).unfocus();
-
-    final pref = await SharedPreferencesManager.getInstance();
-    String? appToken = pref.getToken();
+    String? appToken = await FirebaseMessaging.instance.getToken();
     if (_idController.text.isEmpty) {
-      if(!context.mounted) return;
+      if (!context.mounted) return;
       Utils.getInstance().showSnackBar(context, "아이디를 입력해 주세요");
       return;
     }
 
     if (_passwordController.text.isEmpty) {
-      if(!context.mounted) return;
-      Utils.getInstance().showSnackBar(context, "비밇번호를 입력해 주세요");
+      if (!context.mounted) return;
+      Utils.getInstance().showSnackBar(context, "비밀번호를 입력해 주세요");
       return;
     }
 

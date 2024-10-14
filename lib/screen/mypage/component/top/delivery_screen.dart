@@ -274,7 +274,7 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
-    String? appToken = await FirebaseMessaging.instance.getToken();
+    String? appToken = pref.getToken();
     int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData = {
       'type': memberType,

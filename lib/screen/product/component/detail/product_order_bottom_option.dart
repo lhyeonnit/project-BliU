@@ -749,7 +749,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
   void _buyAndCartProduct(int addType) async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-    String? appToken = await FirebaseMessaging.instance.getToken();
+    String? appToken = pref.getToken();
     int memberType = (mtIdx != null) ? 1 : 2;
     List<Map<String, dynamic>> products = [];
     List<Map<String, dynamic>> addProducts = [];
