@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class MemberInfoData {
   final int? mtIdx;
   final String? mtId;
@@ -31,9 +29,7 @@ class MemberInfoData {
   factory MemberInfoData.fromJson(Map<String, dynamic> json) {
     List<String> mctStyle = [];
     try {
-      if (json['mct_style'] is List) {
-        mctStyle = List<String>.from(json['mct_style']);
-      }
+      mctStyle = List<String>.from(json['mct_style']);
     } catch (e) {
       print('memberInfoData.fromJson E - ${e.toString()}');
     }
@@ -58,7 +54,7 @@ class MemberInfoData {
       'mt_idx': mtIdx,
       'mt_id': mtId,
       'mt_name': mtName,
-      'mct_style': json.encode(mctStyle),
+      'mct_style': mctStyle,
       'mct_birth': mctBirth,
       'mct_gender': mctGender,
       'cart': cart,

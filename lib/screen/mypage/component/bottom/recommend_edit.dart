@@ -41,7 +41,6 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +101,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                             borderRadius: const BorderRadius.all(Radius.circular(6)),
                             border: Border.all(color: const Color(0xFFDDDDDD)),
                           ),
-                          child: BirthdayText(),
+                          child: birthdayText(),
                         ),
                       ],
                     ),
@@ -261,12 +260,19 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
   }
 
   Widget _genderSelect(String imgPath, String gender) {
-    bool isSelected = _selectedGender == gender;
+    String genderValue = 'M';
+    if (gender == 'Boy') {
+      genderValue = 'M';
+    } else if(gender == 'Girl') {
+      genderValue = 'F';
+    }
+
+    bool isSelected = _selectedGender == genderValue;
     return Expanded(
       child: GestureDetector(
         onTap: () {
           setState(() {
-            _selectedGender = gender;
+            _selectedGender = genderValue;
           });
         },
         child: Container(
@@ -316,7 +322,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
     );
   }
 
-  Widget BirthdayText() {
+  Widget birthdayText() {
     return GestureDetector(
       onTap: () {
         _selectDate();
@@ -532,8 +538,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                       selectedMonth,
                       selectedDay,
                     );
-                    _birthController.text =
-                        convertDateTimeDisplay(_selectedDate.toString());
+                    _birthController.text = convertDateTimeDisplay(_selectedDate.toString());
                   });
                   Navigator.of(context).pop();
                   FocusScope.of(context).unfocus();
@@ -590,10 +595,13 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
     final pref = await SharedPreferencesManager.getInstance();
     final memberInfo = pref.getMemberInfo(); // 사용자의 전체 정보
 
+    print("_getRecommendInfo ${memberInfo?.toJson()}");
     if (memberInfo != null) {
+      setState(() {
         // 저장된 출생일 정보 설정
         if (memberInfo.mctBirth != null && memberInfo.mctBirth!.isNotEmpty) {
           _selectedDate = DateTime.parse(memberInfo.mctBirth!); // 출생일 데이터를 DateTime으로 변환
+          _birthController.text = convertDateTimeDisplay(_selectedDate.toString());
         }
         // 저장된 성별 정보 설정
         _selectedGender = memberInfo.mctGender; // 성별 데이터
@@ -603,6 +611,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
         _selectedStyles = styleCategories.where((style) {
           return styleIds.contains(style.fsIdx.toString());
         }).toList();
+      });
     } else {
       if(!mounted) return;
       Utils.getInstance().showSnackBar(context, "저장된 사용자 정보를 불러오는 데 실패했습니다.");
@@ -614,14 +623,23 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
     final memberInfo = pref.getMemberInfo();
     String? mtIdx = memberInfo?.mtIdx.toString();
     String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
-    List<String?> selectedStyleIds = _selectedStyles.map((style) => style.fsIdx.toString()).toList();
+    List<String> selectedStyleIds = _selectedStyles.map((style) => style.fsIdx.toString()).toList();
+
+    String styleValue = "";
+    for (var selectedStyle in selectedStyleIds) {
+      if(styleValue.isEmpty) {
+        styleValue = selectedStyle;
+      } else {
+        styleValue += ",$selectedStyle";
+      }
+    }
 
     // 서버로 전송할 데이터
     Map<String, dynamic> requestData = {
       'idx': mtIdx,
       'birth': formattedDate,
       'gender': _selectedGender,
-      'style': selectedStyleIds,
+      'style': styleValue,
     };
 
     // 서버에 데이터 전송 및 응답 처리
@@ -629,9 +647,9 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
 
     if (defaultResponseDTO != null && defaultResponseDTO.result == true) {
       if (memberInfo != null) {
-        formattedDate = memberInfo.mctBirth ?? '';
-        _selectedGender = memberInfo.mctGender ?? '';
-        selectedStyleIds = memberInfo.mctStyle ?? [];
+        memberInfo.mctBirth = formattedDate;
+        memberInfo.mctGender = _selectedGender;
+        memberInfo.mctStyle = selectedStyleIds;
 
         pref.login(memberInfo);
 
