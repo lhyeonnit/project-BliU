@@ -1,6 +1,7 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/default_response_dto.dart';
+import 'package:BliU/dto/member_info_response_dto.dart';
 import 'package:BliU/dto/style_category_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,14 +32,14 @@ class RecommendInfoViewModel extends StateNotifier<RecommendInfoModel?>{
     }
   }
 
-  Future<DefaultResponseDTO?> saveRecommendInfo(Map<String, dynamic> requestData) async {
+  Future<MemberInfoResponseDTO?> saveRecommendInfo(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiAuthChildInfoUrl, data: requestData);
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
-          DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
-          return defaultResponseDTO;
+          MemberInfoResponseDTO memberInfoResponseDTO = MemberInfoResponseDTO.fromJson(responseData);
+          return memberInfoResponseDTO;
         }
       }
       return null;
@@ -46,7 +47,6 @@ class RecommendInfoViewModel extends StateNotifier<RecommendInfoModel?>{
       // Catch and log any exceptions
       print('Error fetching : $e');
       return null;
-        // DefaultResponseDTO(result: false, message: e.toString(), data: null);
     }
   }
 }

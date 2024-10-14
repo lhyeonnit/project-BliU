@@ -4,7 +4,9 @@ class MemberInfoData {
   final int? mtIdx;
   final String? mtId;
   final String? mtName;
-  final List<String>? mctStyle;
+  List<String>? mctStyle;
+  String? mctBirth;
+  String? mctGender;
   final int? cart;
   final String? childCk;
   final int? myRevieCount;
@@ -16,6 +18,8 @@ class MemberInfoData {
     required this.mtId,
     required this.mtName,
     required this.mctStyle,
+    required this.mctBirth,
+    required this.mctGender,
     required this.cart,
     required this.childCk,
     required this.myRevieCount,
@@ -27,7 +31,9 @@ class MemberInfoData {
   factory MemberInfoData.fromJson(Map<String, dynamic> json) {
     List<String> mctStyle = [];
     try {
-      mctStyle = List<String>.from(json['mct_style'] ?? []);
+      if (json['mct_style'] is String) {
+        mctStyle = (json['mct_style'] as String).split(',');
+      }
     } catch (e) {
       print('memberInfoData.fromJson E - ${e.toString()}');
     }
@@ -36,6 +42,8 @@ class MemberInfoData {
       mtId: json['mt_id'],
       mtName: json['mt_name'],
       mctStyle: mctStyle,
+      mctBirth: json['mct_birth'],
+      mctGender: json['mct_gender'],
       cart: json['cart'],
       childCk: json['child_ck'],
       myRevieCount: json['my_revie_count'],
@@ -51,6 +59,8 @@ class MemberInfoData {
       'mt_id': mtId,
       'mt_name': mtName,
       'mct_style': json.encode(mctStyle),
+      'mct_birth': mctBirth,
+      'mct_gender': mctGender,
       'cart': cart,
       'child_ck': childCk,
       'my_revie_count': myRevieCount,
