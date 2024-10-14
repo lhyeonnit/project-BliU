@@ -4,8 +4,6 @@ import 'package:BliU/dto/default_response_dto.dart';
 import 'package:BliU/dto/style_category_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../dto/recommend_info_response_dto.dart';
-
 class RecommendEditInfoModel {
 
 }
@@ -52,21 +50,6 @@ class RecommendEditInfoViewModel extends StateNotifier<RecommendEditInfoModel?>{
       return DefaultResponseDTO(result: false, message: e.toString());
     }
   }
-  Future<RecommendInfoResponseDTO?> getRecommendInfo(Map<String, dynamic> requestData) async {
-    try {
-      final response = await repository.reqPost(url: Constant.apiAuthChildInfoUrl, data: requestData);
-      if (response != null && response.statusCode == 200) {
-        Map<String, dynamic> responseData = response.data;
-        RecommendInfoResponseDTO recommendInfoResponseDTO = RecommendInfoResponseDTO.fromJson(responseData);
-        return recommendInfoResponseDTO;
-      }
-      return null;
-    } catch (e) {
-      print('Error fetching with POST: $e');
-      return RecommendInfoResponseDTO(result: false, message: e.toString(), data: null);
-    }
-  }
-
 }
 
 

@@ -594,25 +594,25 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
     };
 
     // 서버에서 추천 정보를 불러오는 API 호출
-    final recommendInfoResponseDTO = await ref.read(RecommendEditInfoModelProvider.notifier).getRecommendInfo(requestData);
-
-    // 불러온 데이터가 있을 경우 화면에 반영
-    if (recommendInfoResponseDTO != null && recommendInfoResponseDTO.result) {
-      setState(() {
-        // 서버에서 받은 데이터를 각각의 필드에 반영
-        final savedData = recommendInfoResponseDTO.data;
-        _selectedDate = DateTime.parse(savedData?['birth']); // 출생일 데이터
-        _birthController.text = convertDateTimeDisplay(_selectedDate.toString()); // 출생일 텍스트 표시
-        _selectedGender = savedData?['gender']; // 성별 데이터
-        _selectedStyles = (savedData?['style'] as List).map((styleId) {
-          return styleCategories.firstWhere((style) => style.fsIdx == styleId); // 스타일 목록을 필터링
-        }).toList();
-      });
-    } else {
-      // 데이터 불러오기 실패 시 스낵바로 알림 표시
-      Utils.getInstance().showSnackBar(
-          context, "추천 정보를 불러오는 데 실패했습니다.");
-    }
+    // final recommendInfoResponseDTO = await ref.read(RecommendEditInfoModelProvider.notifier).getRecommendInfo(requestData);
+    //
+    // // 불러온 데이터가 있을 경우 화면에 반영
+    // if (recommendInfoResponseDTO != null && recommendInfoResponseDTO.result) {
+    //   setState(() {
+    //     // 서버에서 받은 데이터를 각각의 필드에 반영
+    //     final savedData = recommendInfoResponseDTO.data;
+    //     _selectedDate = DateTime.parse(savedData?['birth']); // 출생일 데이터
+    //     _birthController.text = convertDateTimeDisplay(_selectedDate.toString()); // 출생일 텍스트 표시
+    //     _selectedGender = savedData?['gender']; // 성별 데이터
+    //     _selectedStyles = (savedData?['style'] as List).map((styleId) {
+    //       return styleCategories.firstWhere((style) => style.fsIdx == styleId); // 스타일 목록을 필터링
+    //     }).toList();
+    //   });
+    // } else {
+    //   // 데이터 불러오기 실패 시 스낵바로 알림 표시
+    //   Utils.getInstance().showSnackBar(
+    //       context, "추천 정보를 불러오는 데 실패했습니다.");
+    // }
   }
 
   void _editRecommendInfo() async {
