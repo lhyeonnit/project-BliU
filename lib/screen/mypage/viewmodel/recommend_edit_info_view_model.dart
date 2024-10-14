@@ -36,7 +36,7 @@ class RecommendEditInfoViewModel extends StateNotifier<RecommendEditInfoModel?>{
 
   Future<DefaultResponseDTO?> editRecommendInfo(Map<String, dynamic> requestData) async {
     try {
-      final response = await repository.reqPost(url: Constant.apiAuthChildInfoUrl, data: requestData);
+      final response = await repository.reqPost(url: Constant.apiMyPageChildInfoUrl, data: requestData);
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;

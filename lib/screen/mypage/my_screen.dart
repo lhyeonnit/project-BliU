@@ -1,5 +1,6 @@
 import 'package:BliU/data/member_info_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
+import 'package:BliU/screen/common/recommend_info_screen.dart';
 import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/faq_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/non_order_page.dart';
@@ -366,7 +367,8 @@ class _MyScreenState extends ConsumerState<MyScreen> {
 
   void _afterBuild(BuildContext context) async {
     final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
+    final memberInfo = pref.getMemberInfo();
+    final mtIdx = memberInfo?.mtIdx.toString();
     if (mtIdx != null && mtIdx.isNotEmpty) {
       Map<String, dynamic> requestData = {
         'mt_idx': mtIdx,
@@ -379,6 +381,14 @@ class _MyScreenState extends ConsumerState<MyScreen> {
         myReviewCount = memberInfoDTO?.data?.myRevieCount;
         userId = memberInfoDTO?.data?.mtIdx.toString() ?? '';  // userId 업데이트
       });
+      String? childCk = memberInfo?.childCk;
+      if (!context.mounted) return;
+      if (childCk == "N") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
+        );
+      }
     }
   }
   void logout() async {

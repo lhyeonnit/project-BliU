@@ -262,7 +262,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                                                   color: const Color(0xFFDDDDDD),
                                                 ),
                                               ),
-                                              child: BirthdayText(),
+                                              child: _birthdayText(),
                                             ),
                                           ],
                                         ),
@@ -431,12 +431,19 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
   }
 
   Widget _genderSelect(String imgPath, String gender) {
-    bool isSelected = _selectedGender == gender;
+    String genderValue = 'M';
+    if (gender == 'Boy') {
+      genderValue = 'M';
+    } else if(gender == 'Girl') {
+      genderValue = 'F';
+    }
+
+    bool isSelected = _selectedGender == genderValue;
     return Expanded(
       child: GestureDetector(
         onTap: () {
           setState(() {
-            _selectedGender = gender;
+            _selectedGender = genderValue;
           });
         },
         child: Container(
@@ -485,7 +492,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
     );
   }
 
-  Widget BirthdayText() {
+  Widget _birthdayText() {
     return GestureDetector(
       onTap: () {
         _selectDate();
@@ -751,13 +758,20 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
     final memberInfo = pref.getMemberInfo();
     String? mtIdx = memberInfo?.mtIdx.toString();
     String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
-    List<String?> selectedStyleIds = _selectedStyles.map((style) => style.fsIdx.toString()).toList();
-
+    List<String> selectedStyleIds = _selectedStyles.map((style) => style.fsIdx.toString()).toList();
+    String styleValue = "";
+    for (var selectedStyle in selectedStyleIds) {
+      if(styleValue.isEmpty) {
+        styleValue = selectedStyle;
+      } else {
+        styleValue += ",$selectedStyle";
+      }
+    }
     Map<String, dynamic> requestData = {
       'idx': mtIdx,
       'birth': formattedDate,
       'gender': _selectedGender,
-      'style': selectedStyleIds,
+      'style': styleValue,
     };
 
     final defaultResponseDTO = await ref.read(RecommendInfoModelProvider.notifier).saveRecommendInfo(requestData);

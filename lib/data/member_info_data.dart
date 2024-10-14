@@ -29,7 +29,9 @@ class MemberInfoData {
   factory MemberInfoData.fromJson(Map<String, dynamic> json) {
     List<String> mctStyle = [];
     try {
-      mctStyle = List<String>.from(json['mct_style']);
+      if (json['mct_style'] != null) {
+        mctStyle = List<String>.from(json['mct_style'] as Iterable<dynamic>);
+      }
     } catch (e) {
       print('memberInfoData.fromJson E - ${e.toString()}');
     }
