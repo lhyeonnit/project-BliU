@@ -58,7 +58,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-    String? appToken = await FirebaseMessaging.instance.getToken();
+    String? appToken = pref.getToken();
     int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData = {
       'type': memberType,
@@ -101,7 +101,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
       final pref = await SharedPreferencesManager.getInstance();
       final mtIdx = pref.getMtIdx();
-      String? appToken = await FirebaseMessaging.instance.getToken();
+      String? appToken = pref.getToken();
       int memberType = (mtIdx != null) ? 1 : 2;
       Map<String, dynamic> requestData = {
         'type': memberType,
@@ -679,7 +679,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   void _cartUpdate(int ctIdx, int ctCount) async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-    String? appToken = await FirebaseMessaging.instance.getToken();
+    String? appToken = pref.getToken();
     int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData = {
       'type': memberType,
@@ -704,7 +704,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   void _cartDel(String ctIdx) async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-    String? appToken = await FirebaseMessaging.instance.getToken();
+    String? appToken = pref.getToken();
     int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData = {
       'type': memberType,
@@ -745,7 +745,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
         cartArr.add(cartMap);
       }
     }
-    String? appToken = await FirebaseMessaging.instance.getToken();
+    String? appToken = pref.getToken();
     int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData = {
       'type': memberType,

@@ -35,7 +35,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
   @override
   void initState() {
     super.initState();
-    // _loadRecommendInfo();
+    _getRecommendInfo();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -585,6 +585,35 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
   void _afterBuild(BuildContext context) {
     _getStyleCategory();
   }
+  void _getRecommendInfo() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx(); // mtIdx 가져오기
+
+    Map<String, dynamic> requestData = {
+      'idx': mtIdx, // 사용자 식별을 위한 idx
+    };
+
+    // 서버에서 추천 정보를 불러오는 API 호출
+    final recommendInfoResponseDTO = await ref.read(RecommendEditInfoModelProvider.notifier).getRecommendInfo(requestData);
+
+    // 불러온 데이터가 있을 경우 화면에 반영
+    if (recommendInfoResponseDTO != null && recommendInfoResponseDTO.result) {
+      setState(() {
+        // 서버에서 받은 데이터를 각각의 필드에 반영
+        final savedData = recommendInfoResponseDTO.data;
+        _selectedDate = DateTime.parse(savedData?['birth']); // 출생일 데이터
+        _birthController.text = convertDateTimeDisplay(_selectedDate.toString()); // 출생일 텍스트 표시
+        _selectedGender = savedData?['gender']; // 성별 데이터
+        _selectedStyles = (savedData?['style'] as List).map((styleId) {
+          return styleCategories.firstWhere((style) => style.fsIdx == styleId); // 스타일 목록을 필터링
+        }).toList();
+      });
+    } else {
+      // 데이터 불러오기 실패 시 스낵바로 알림 표시
+      Utils.getInstance().showSnackBar(
+          context, "추천 정보를 불러오는 데 실패했습니다.");
+    }
+  }
 
   void _editRecommendInfo() async {
     final pref = await SharedPreferencesManager.getInstance();
@@ -623,35 +652,4 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
       }
     }
   }
-  // void _loadRecommendInfo() async {
-  //   final pref = await SharedPreferencesManager.getInstance();
-  //   final mtIdx = pref.getMtIdx();
-  //   Map<String, dynamic> requestData = {
-  //     'idx': mtIdx,
-  //     'birth': _birthController.text,
-  //     'gender': _selectedGender,
-  //     'style': _selectedStyles,
-  //   };
-  //   // 서버에서 추천정보를 불러오는 API 호출
-  //   final recommendInfoResponseDTO = await ref.read(RecommendInfoModelProvider.notifier).getRecommendInfo(requestData);
-  //
-  //   // 불러온 데이터가 있을 경우 화면에 반영
-  //   if (recommendInfoResponseDTO != null && recommendInfoResponseDTO.result) {
-  //     setState(() {
-  //       // 서버에서 받은 데이터를 각각의 필드에 반영
-  //       final savedData = recommendInfoResponseDTO.data;
-  //       _selectedDate = DateTime.parse(savedData?['birth']); // 출생일
-  //       _birthController.text =
-  //           convertDateTimeDisplay(_selectedDate.toString()); // 출생일 텍스트 표시
-  //       _selectedGender = savedData?['gender']; // 성별
-  //       _selectedStyles = (savedData?['style'] as List).map((styleId) {
-  //         return styleCategories.firstWhere((style) => style.fsIdx == styleId);
-  //       }).toList(); // 스타일 목록
-  //     });
-  //   } else {
-  //     // 오류 발생 시 처리
-  //     Utils.getInstance().showSnackBar(
-  //         context, "Failed to load recommend info");
-  //   }
-  // }
 }

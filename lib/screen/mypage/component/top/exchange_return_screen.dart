@@ -213,7 +213,7 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
 
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-    String? appToken = await FirebaseMessaging.instance.getToken();
+    String? appToken = pref.getToken();
     int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData1 = {
       'type': memberType,
@@ -284,7 +284,7 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
 
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-    String? appToken = await FirebaseMessaging.instance.getToken();
+    String? appToken = pref.getToken();
     int memberType = (mtIdx != null) ? 1 : 2;
     String ctType = selectedIndex == 0 ? 'X' : 'R';
     String ortReturnInfo = "";

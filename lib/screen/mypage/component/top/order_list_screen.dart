@@ -74,7 +74,7 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
         ctStatus = "99";
         break;
     }
-    String? appToken = await FirebaseMessaging.instance.getToken();
+    String? appToken = pref.getToken();
     int memberType = (mtIdx != null) ? 1 : 2;
     Map<String, dynamic> requestData = {
       'type': memberType,
