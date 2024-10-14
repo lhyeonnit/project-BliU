@@ -383,7 +383,7 @@ class _MyScreenState extends ConsumerState<MyScreen> {
   }
   void logout() async {
     SharedPreferencesManager prefs = await SharedPreferencesManager.getInstance();
-    await prefs.clearAll();  // 저장된 모든 데이터를 삭제
+    await prefs.logOut();  // 저장된 모든 데이터를 삭제
 
     // 로그아웃 후 로그인 화면으로 전환
     ref.read(mainScreenProvider.notifier).selectNavigation(2);

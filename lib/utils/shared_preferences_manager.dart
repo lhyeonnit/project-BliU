@@ -17,30 +17,10 @@ class SharedPreferencesManager {
 
   SharedPreferencesManager._(SharedPreferences prefs) : _prefs = prefs;
 
-  // // 데이터를 저장하는 함수
-  // Future<void> saveData(String key, String value) async {
-  //   await _prefs.setString(key, value);
-  // }
-  //
-  // // 데이터를 로드하는 함수
-  // String? loadData(String key) {
-  //   return _prefs.getString(key);
-  // }
-
-  // 회원별로 mtId를 저장하는 함수
-  // Future<void> setMtId(String mtId) async {
-  //   await _prefs.setString('mt_id', mtId);
-  // }
-
   // mtId를 불러오는 함수
   String? getMtId() {
     return _prefs.getString('mt_id');
   }
-
-  // 회원별로 mtIdx를 저장하는 함수
-  // Future<void> setMtIdx(String mtIdx) async {
-  //   await _prefs.setString('mt_idx', mtIdx);
-  // }
 
   // mtIdx를 불러오는 함수
   String? getMtIdx() {
@@ -87,11 +67,7 @@ class SharedPreferencesManager {
   Future<void> logOut() async {
     await _prefs.remove("mt_idx");
     await _prefs.remove("mt_id");
-  }
-
-  // 전체 데이터 삭제 함수 - 추후 주석 처리
-  Future<void> clearAll() async {
-    await _prefs.clear();
+    await _prefs.remove("member_info");
   }
 
   void savePasswordToken(String token) async {

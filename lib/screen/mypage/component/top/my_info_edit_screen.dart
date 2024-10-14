@@ -1229,7 +1229,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
     };
     final resultDTO = await ref.read(myInfoEditViewModelProvider.notifier).retire(requestData);
     Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
-    await pref.clearAll();
+    await pref.logOut();
     ref.read(mainScreenProvider.notifier).selectNavigation(2);
   }
 }
