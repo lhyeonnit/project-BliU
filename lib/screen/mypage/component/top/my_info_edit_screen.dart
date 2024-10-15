@@ -1,4 +1,5 @@
 //내정보 수정
+import 'package:BliU/data/my_page_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/screen/mypage/my_screen.dart';
@@ -13,7 +14,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 class MyInfoEditScreen extends ConsumerStatefulWidget {
-  const MyInfoEditScreen({super.key});
+  final String? authToken;
+  const MyInfoEditScreen({super.key, required this.authToken});
 
   @override
   ConsumerState<MyInfoEditScreen> createState() => _MyInfoEditScreenState();
@@ -27,21 +29,19 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   bool _isAllFieldsFilled = false;
   bool _phoneAuthCodeVisible = false;
   bool _phoneAuthChecked = false;
-
-  String? _selectedGender; // 성별을 저장하는 변수
-  TextEditingController _birthController =
-      TextEditingController(text: '생년월일입력');
-
+  MyPageInfoData? myPageInfoData;
   DateTime? tempPickedDate;
   DateTime _selectedDate = DateTime.now();
   int selectedYear = DateTime.now().year;
   int selectedMonth = DateTime.now().month;
   int selectedDay = DateTime.now().day;
 
+  String? _selectedGender; // 성별을 저장하는 변수
+  final TextEditingController _birthController = TextEditingController(text: '생년월일입력');
+
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _authCodeController = TextEditingController();
@@ -49,15 +49,16 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getMyInfo();
+    });
     _idController.addListener(_checkIfAllFieldsFilled);
     _passwordController.addListener(_checkIfAllFieldsFilled);
     _confirmPasswordController.addListener(_checkIfAllFieldsFilled);
     _nameController.addListener(_checkIfAllFieldsFilled);
     _phoneController.addListener(_checkIfAllFieldsFilled);
     _authCodeController.addListener(_checkIfAllFieldsFilled);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _getMyInfo();
-    });
+
   }
 
   void _checkIfAllFieldsFilled() {
@@ -67,8 +68,8 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
           _confirmPasswordController.text.isNotEmpty &&
           _nameController.text.isNotEmpty &&
           _phoneController.text.isNotEmpty &&
-          _selectedDate != null &&
-          _selectedGender != null && // 성별이 선택되었는지 확인
+          // _selectedDate != null &&
+          // _selectedGender != null && // 성별이 선택되었는지 확인
           _isIdChecked;
     });
   }
@@ -149,7 +150,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                         ),
                       ),
                     ),
-                    _buildIdPasswordField('아이디', _idController, 'id1234',
+                    _buildIdPasswordField('아이디', _idController, myPageInfoData?.mtId ?? '',
                         isChange: _isIdChecked),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 20),
@@ -196,7 +197,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                         Expanded(
                           flex: 7,
                           child: _buildPhoneField(
-                              '휴대폰번호', _phoneController, '01012345678',
+                              '휴대폰번호', _phoneController, myPageInfoData?.mtHp ?? '',
                               keyboardType: TextInputType.phone,
                               isEnable: _phoneAuthChecked ? true : false),
                         ),
@@ -364,7 +365,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                         Expanded(
                           flex: 7,
                           child: _buildTextField(
-                            '이름', _nameController, '김이름', keyboardType: TextInputType.name
+                            '이름', _nameController, myPageInfoData?.mtName ?? '', keyboardType: TextInputType.name
                           ),
                         ),
                         Expanded(
@@ -428,7 +429,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         border: Border.all(color: Color(0xFFDDDDDD)),
                       ),
-                      child: BirthdayText(),
+                      child: _birthdayText(),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -853,12 +854,17 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   }
 
   Widget _buildGenderButton(String gender) {
-    bool isSelected = _selectedGender == gender;
+    String genderValue = 'M';
+    if (gender == '남자') {
+      genderValue = 'M';
+    } else if(gender == '여자') {
+      genderValue = 'F';
+    }
+    bool isSelected = _selectedGender == genderValue;
     return GestureDetector(
       onTap: () {
         setState(() {
-          _selectedGender = gender;
-          _checkIfAllFieldsFilled();
+          _selectedGender = genderValue;
         });
       },
       child: Container(
@@ -884,7 +890,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
     );
   }
 
-  Widget BirthdayText() {
+  Widget _birthdayText() {
     return GestureDetector(
       onTap: () {
         _selectDate();
@@ -1135,13 +1141,21 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   }
   void _getMyInfo() async {
     final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
+    final mtIdx = pref.getMtIdx().toString();
     Map<String, dynamic> requestData = {
       'mt_idx' : mtIdx,
-      'auth_token' : pref.getToken(),
+      'auth_token' : widget.authToken,
     };
 
-    await ref.read(myInfoEditViewModelProvider.notifier).getMyInfo(requestData);
+    final myPageInfoResponseDTO = await ref.read(myInfoEditViewModelProvider.notifier).getMyInfo(requestData);
+    setState(() {
+      myPageInfoData = myPageInfoResponseDTO?.data;
+      if (myPageInfoResponseDTO?.data?.mtBirth != null && myPageInfoResponseDTO!.data!.mtBirth!.isNotEmpty) {
+        _selectedDate = DateTime.parse(myPageInfoResponseDTO.data!.mtBirth!); // 출생일 데이터를 DateTime으로 변환
+        _birthController.text = convertDateTimeDisplay(_selectedDate.toString());
+      }
+      _selectedGender = myPageInfoResponseDTO?.data?.mtGender;
+    });
   }
   void _editMyInfo() async {
     final pref = await SharedPreferencesManager.getInstance();
@@ -1154,30 +1168,22 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
     } catch (e) {
       print("DateError $e");
     }
-    String gender = "";
-    if (_selectedGender == "남자") {
-      gender = "M";
-    } else if (_selectedGender == "여자") {
-      gender = "F";
-    }
     Map<String, dynamic> requestData = {
       'mt_idx' : mtIdx,
       'mt_birth' : birthDay,
-      'mt_gender' : gender,
+      'mt_gender' : _selectedGender,
     };
-    final resultDTO = await ref.read(myInfoEditViewModelProvider.notifier).editMyInfo(requestData);
-    if (resultDTO.result == true) {
-      if (!context.mounted) return;
+    final defaultResponseDTO = await ref.read(myInfoEditViewModelProvider.notifier).editMyInfo(requestData);
+    if (defaultResponseDTO.result == true) {
+
+      if (!mounted) return;
       Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const MyScreen(),
+        context, MaterialPageRoute(builder: (context) => const MyScreen(),
         ),
       );
     } else {
-      if (!context.mounted) return;
-      Utils.getInstance().showSnackBar(
-          context, resultDTO.message.toString());
+      if (!mounted) return;
+      Utils.getInstance().showSnackBar(context, defaultResponseDTO.message.toString());
     }
   }
   void _editMyName() async {
@@ -1203,10 +1209,8 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
 
   }
   void _editMyPassword() async {
-    if (_passwordController.text !=
-        _confirmPasswordController.text) {
-      Utils.getInstance()
-          .showSnackBar(context, "비밀번호가 서로 다릅니다 다시 입력해 주세요.");
+    if (_passwordController.text != _confirmPasswordController.text) {
+      Utils.getInstance().showSnackBar(context, "비밀번호가 서로 다릅니다 다시 입력해 주세요.");
       return;
     }
     final pref = await SharedPreferencesManager.getInstance();

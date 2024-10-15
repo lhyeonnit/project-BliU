@@ -489,11 +489,11 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         return;
                       }
 
-                      final id = _idController.text;
+                      String id = _idController.text;
                       final pwd = _passwordController.text;
                       final pwdChk = _confirmPasswordController.text;
-                      final name = _nameController.text;
-                      final phoneNum = _phoneController.text;
+                      String name = _nameController.text;
+                      String phoneNum = _phoneController.text;
                       final phoneNumChk = _phoneAuthChecked ? "Y" : "N";
                       String birthDay = "";
                       try {
@@ -511,7 +511,6 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                       }
 
                       final pref = await SharedPreferencesManager.getInstance();
-
                       Map<String, dynamic> requestData = {
                         'id': id,
                         'pwd': pwd,
@@ -524,16 +523,22 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         'app_token': pref.getToken(),
                       };
 
-                      final resultDTO = await ref.read(joinFormModelProvider.notifier).join(requestData);
-                      if (resultDTO.result == true) {
+                      final myPageInfoDTO = await ref.read(joinFormModelProvider.notifier).join(requestData);
+                      if (myPageInfoDTO != null && myPageInfoDTO.result == true) {
+                        id = myPageInfoDTO.data?.mtId ?? '';
+                        name = myPageInfoDTO.data?.mtName ?? '';
+                        phoneNum = myPageInfoDTO.data?.mtHp ?? '';
+                        birthDay = myPageInfoDTO.data?.mtBirth ?? '';
+                        gender = myPageInfoDTO.data?.mtGender ?? '';
+
                         if (!context.mounted) return;
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const JoinCompleteScreen(),),);
                       } else {
                         if (!context.mounted) return;
-                        Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
+                        Utils.getInstance().showSnackBar(context, "회원 가입에 실패했습니다.");
                       }
-                    }
-                  : null,
+              }
+              : null,
               child: Container(
                 width: double.infinity,
                 height: Responsive.getHeight(context, 48),

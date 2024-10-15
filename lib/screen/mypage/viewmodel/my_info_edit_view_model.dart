@@ -1,6 +1,7 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/default_response_dto.dart';
+import 'package:BliU/dto/mypage_info_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MyInfoEditModel {}
@@ -11,14 +12,14 @@ class MyInfoEditViewModel extends StateNotifier<MyInfoEditModel?> {
 
   MyInfoEditViewModel(super.state, this.ref);
 
-  Future<DefaultResponseDTO?> getMyInfo(Map<String, dynamic> requestData) async {
+  Future<MyPageInfoResponseDTO?> getMyInfo(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiMyPageInfoUrl, data: requestData);
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
-          DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
-          return defaultResponseDTO;
+          MyPageInfoResponseDTO myPageInfoResponseDTO = MyPageInfoResponseDTO.fromJson(responseData);
+          return myPageInfoResponseDTO;
         }
       }
       return null;
