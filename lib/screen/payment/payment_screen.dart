@@ -35,7 +35,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   int totalPrice = 0;
   CouponData? selectedCouponData;
   int discountPoint = 0;
-  // TODO 결제수단에 따라 보내는값 변경
+
   int payType = 0;//1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
 
   bool allAgree = false;
@@ -686,25 +686,25 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     ),
                                   ),
                                   GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => const TermsDetail(type: 0),
-                                          ),
-                                        );
-                                      },
-                                      child:Container(
-                                        width: 50,
-                                        alignment: Alignment.centerRight,
-                                        child: SvgPicture.asset(
-                                          'assets/images/ic_link.svg',
-                                          colorFilter: const ColorFilter.mode(
-                                            Colors.black,
-                                            BlendMode.srcIn,
-                                          ),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const TermsDetail(type: 0),
                                         ),
-                                      )
+                                      );
+                                    },
+                                    child:Container(
+                                      width: 50,
+                                      alignment: Alignment.centerRight,
+                                      child: SvgPicture.asset(
+                                        'assets/images/ic_link.svg',
+                                        colorFilter: const ColorFilter.mode(
+                                          Colors.black,
+                                          BlendMode.srcIn,
+                                        ),
+                                      ),
+                                    )
                                   ),
                                 ],
                               )

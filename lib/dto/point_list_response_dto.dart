@@ -1,31 +1,31 @@
-import 'package:BliU/data/product_coupon_data.dart';
+import 'package:BliU/data/point_data.dart';
 
-class ProductCouponResponseDTO {
+class PointListResponseDTO {
   final bool? result;
   final String? message;
   final int? count;
-  final int? downAbleCount;
-  final List<ProductCouponData>? list;
+  final int? mtPoint;
+  final List<PointData>? list;
 
-  ProductCouponResponseDTO({
+  PointListResponseDTO({
     required this.result,
     required this.message,
     required this.count,
-    required this.downAbleCount,
+    required this.mtPoint,
     required this.list
   });
 
   // JSON to Object
-  factory ProductCouponResponseDTO.fromJson(Map<String, dynamic> json) {
-    final list = List<ProductCouponData>.from((json['data']['list'])?.map((item) {
-      return ProductCouponData.fromJson(item as Map<String, dynamic>);
+  factory PointListResponseDTO.fromJson(Map<String, dynamic> json) {
+    final list = List<PointData>.from((json['data']['list'])?.map((item) {
+      return PointData.fromJson(item as Map<String, dynamic>);
     }).toList());
 
-    return ProductCouponResponseDTO(
+    return PointListResponseDTO(
       result: json['result'],
       message: json['data']['message'],
       count: json['data']['count'],
-      downAbleCount: json['downAbleCount'],
+      mtPoint: json['data']['mt_point'],
       list: list,
     );
   }
@@ -37,7 +37,7 @@ class ProductCouponResponseDTO {
       'message': message,
       'data': {
         'count': count,
-        'downAbleCount': downAbleCount,
+        'mt_point': mtPoint,
         'list': list?.map((it) => it.toJson()).toList(),
       },
     };

@@ -1,4 +1,8 @@
+// TODO 쿠폰데이터 통합 필요
 class ProductCouponData {
+  final int? couponIdx;
+  final String? couponStatus;
+  final String? couponName;
   final String? ctName;
   final String? ctCode;
   final String? couponDiscount;
@@ -9,6 +13,9 @@ class ProductCouponData {
   String? down;
 
   ProductCouponData({
+    required this.couponIdx,
+    required this.couponStatus,
+    required this.couponName,
     required this.ctName,
     required this.ctCode,
     required this.couponDiscount,
@@ -22,6 +29,9 @@ class ProductCouponData {
   // JSON to Object
   factory ProductCouponData.fromJson(Map<String, dynamic> json) {
     return ProductCouponData(
+      couponIdx: json['coupon_idx'],
+      couponStatus: json['coupon_status'],
+      couponName: json['coupon_name'],
       ctName: json['ct_name'],
       ctCode: json['ct_code'],
       couponDiscount: json['coupon_discount'],
@@ -36,6 +46,9 @@ class ProductCouponData {
   // Object to JSOn
   Map<String, dynamic> toJson() {
     return {
+      'coupon_idx': couponIdx,
+      'coupon_status': couponStatus,
+      'coupon_name': couponName,
       'ct_name': ctName,
       'ct_code': ctCode,
       'coupon_discount': couponDiscount,
@@ -44,7 +57,6 @@ class ProductCouponData {
       'ct_max_price': ctMaxPrice,
       'ct_date': ctDate,
       'down': down,
-
     };
   }
 }

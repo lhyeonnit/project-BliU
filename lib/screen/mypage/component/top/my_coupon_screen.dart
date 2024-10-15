@@ -1,73 +1,118 @@
+import 'package:BliU/data/product_coupon_data.dart';
+import 'package:BliU/screen/mypage/viewmodel/my_coupon_view_model.dart';
+import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../utils/responsive.dart';
-import 'component/my_coupon_card.dart';
-
-// 쿠폰 데이터 정의
-const List<Map<String, String>> couponData = [
-  {
-    "discount": "10%",
-    "title": "키즈스타일 여름 특별 할인 쿠폰",
-    "expiryDate": "~ 24.05.05까지 사용 가능",
-    "discountDetails":
-        "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
-  },
-  {
-    "discount": "30%",
-    "title": "꼬마옷장 첫 구매 30% 할인권",
-    "expiryDate": "~ 24.05.05까지 사용 가능",
-    "discountDetails":
-        "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
-  },
-  {
-    "discount": "5%",
-    "title": "패션 키즈 VIP 할인 쿠폰",
-    "expiryDate": "~ 24.05.05까지 사용 가능",
-    "discountDetails":
-        "최대 40,000원 할인 가능\n구매금액 10,000원 이상인 경우 사용 가능\n다른 쿠폰과 중복 사용불가",
-  },
-];
-
-class MyCouponScreen extends StatefulWidget {
+class MyCouponScreen extends ConsumerStatefulWidget {
   const MyCouponScreen({super.key});
 
   @override
-  State<MyCouponScreen> createState() => _MyCouponScreenState();
+  ConsumerState<MyCouponScreen> createState() => _MyCouponScreenState();
 }
 
-class _MyCouponScreenState extends State<MyCouponScreen> {
-  List<String> categories = ['사용가능', '완료/만료'];
-  int selectedCategoryIndex = 0;
-  List<Map<String, String>> availableCoupons = [];
-  List<Map<String, String>> issuedCoupons = [];
+class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
+  final ScrollController _scrollController = ScrollController();
+  final List<String> _categories = ['사용가능', '완료/만료'];
+  int _selectedCategoryIndex = 0;
+
+  List<ProductCouponData> _couponList = [];
+  int _couponCount = 0;
+
+  int _page = 1;
+  bool _hasNextPage = true;
+  bool _isFirstLoadRunning = false;
+  bool _isLoadMoreRunning = false;
 
   @override
   void initState() {
     super.initState();
-    _filterCoupons(); // 쿠폰 필터링 로직을 초기화 시점에서 호출
-  }
-
-  Future<void> _filterCoupons() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      availableCoupons = couponData.where((data) {
-        bool? isDownloaded = prefs.getBool(data["title"]!); // 쿠폰 제목을 키로 사용
-        return !(isDownloaded ?? false); // 다운로드되지 않은 쿠폰만 필터링
-      }).toList();
-
-      issuedCoupons = couponData.where((data) {
-        bool? isDownloaded = prefs.getBool(data["title"]!); // 쿠폰 제목을 키로 사용
-        return isDownloaded == true; // 다운로드된 쿠폰만 필터링
-      }).toList();
+    _scrollController.addListener(_nextLoad);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
     });
   }
 
-  Future<void> _markCouponAsDownloaded(String couponKey) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(couponKey, true);
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.removeListener(_nextLoad);
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getList();
+  }
+
+  void _getList() async {
+    setState(() {
+      _isFirstLoadRunning = true;
+    });
+    _page = 1;
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    String couponStatus = "Y";
+    if (_selectedCategoryIndex == 1) {
+      couponStatus = "N";
+    }
+
+    final Map<String, dynamic> requestData = {
+      'mt_idx': mtIdx,
+      'coupon_status': couponStatus,
+      'pg': _page
+    };
+
+    final productCouponResponseDTO = await ref.read(myCouponViewModelProvider.notifier).getList(requestData);
+    _couponCount = productCouponResponseDTO?.count ?? 0;
+    _couponList = productCouponResponseDTO?.list ?? [];
+
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+  }
+
+  void _nextLoad() async {
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+      _page += 1;
+
+      final pref = await SharedPreferencesManager.getInstance();
+      final mtIdx = pref.getMtIdx();
+
+      String couponStatus = "Y";
+      if (_selectedCategoryIndex == 1) {
+        couponStatus = "N";
+      }
+
+      final Map<String, dynamic> requestData = {
+        'mt_idx': mtIdx,
+        'coupon_status': couponStatus,
+        'pg': _page
+      };
+
+      final productCouponResponseDTO = await ref.read(myCouponViewModelProvider.notifier).getList(requestData);
+      if (productCouponResponseDTO != null) {
+        if ((productCouponResponseDTO.list ?? []).isNotEmpty) {
+          setState(() {
+            _couponList.addAll(productCouponResponseDTO.list ?? []);
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
+      });
+    }
   }
 
   @override
@@ -121,16 +166,17 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
               height: 40,
               padding: const EdgeInsets.symmetric(horizontal: 13.0),
               child: ListView.builder(
+                controller: _scrollController,
                 scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
+                itemCount: _categories.length,
                 itemBuilder: (context, index) {
-                  final bool isSelected = selectedCategoryIndex == index;
+                  final bool isSelected = _selectedCategoryIndex == index;
 
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3.0),
                     child: FilterChip(
                       label: Text(
-                        categories[index],
+                        _categories[index],
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           color: isSelected ? const Color(0xFFFF6192) : Colors.black, // 텍스트 색상
@@ -140,16 +186,15 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                       selected: isSelected,
                       onSelected: (bool selected) {
                         setState(() {
-                          selectedCategoryIndex = index;
+                          _selectedCategoryIndex = index;
+                          _getList();
                         });
                       },
                       backgroundColor: Colors.white,
                       selectedColor: Colors.white,
                       shape: StadiumBorder(
                         side: BorderSide(
-                          color: isSelected
-                              ? Color(0xFFFF6192)
-                              : Color(0xFFDDDDDD),
+                          color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
                           // 테두리 색상
                           width: 1.0,
                         ),
@@ -164,7 +209,7 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                '쿠폰 ${selectedCategoryIndex == 0 ? availableCoupons.length : issuedCoupons.length}',
+                '쿠폰 $_couponCount',
                 style: const TextStyle(
                   height: 1.2,
                 ),
@@ -173,31 +218,123 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
             const SizedBox(height: 10),
             ListView.builder(
               shrinkWrap: true,
-              itemCount: selectedCategoryIndex == 0
-                  ? availableCoupons.length
-                  : issuedCoupons.length,
+              itemCount: _couponList.length,
               itemBuilder: (context, index) {
-                final coupon = selectedCategoryIndex == 0
-                    ? availableCoupons[index]
-                    : issuedCoupons[index];
+
+                final productCouponData = _couponList[index];
+
+                final couponDiscount = productCouponData.couponDiscount ?? "0";
+                final ctName = productCouponData.ctName ?? "";
+                final couponName = productCouponData.couponName ?? "";
+                final ctDate = "${productCouponData.ctDate ?? ""}까지 사용가능";
+                final couponStatus = productCouponData.couponStatus ?? "";
+
+                String detailMessage = "구매금액 ${Utils.getInstance().priceString(productCouponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
+                if (productCouponData.ctMaxPrice != null) {
+                  detailMessage = "최대 ${Utils.getInstance().priceString(productCouponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
+                }
+
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: MyCouponCard(
-                    discount: coupon["discount"]!,
-                    title: coupon["title"]!,
-                    expiryDate: coupon["expiryDate"]!,
-                    discountDetails: coupon["discountDetails"]!,
-                    isDownloaded: selectedCategoryIndex == 1 ||
-                        issuedCoupons.contains(coupon),
-                    // 상태 전달
-                    onDownload: () {
-                      setState(() {
-                        _markCouponAsDownloaded(coupon["title"]!); // 다운로드 상태 저장
-                        availableCoupons.removeAt(index);
-                        _filterCoupons(); // 쿠폰 리스트 업데이트
-                      });
-                    },
-                    couponKey: coupon["title"]!, // 고유한 키 전달
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 15.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(style: BorderStyle.solid, color: const Color(0xFFDDDDDD)),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 8,
+                            child: Container(
+                              margin:
+                              const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        couponDiscount,
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 16),
+                                          fontWeight: FontWeight.bold,
+                                          color: couponStatus == "사용가능" ? const Color(0xFFFF6192) : const Color(0xFFA4A4A4),
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          margin: const EdgeInsets.only(left: 6),
+                                          child: Text(
+                                            ctName.isEmpty ? couponName : ctName,
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 16),
+                                              fontWeight: FontWeight.bold,
+                                              color: couponStatus == "사용가능" ? Colors.black : const Color(0xFFA4A4A4),
+                                              height: 1.2,
+                                            ),
+                                            softWrap: true,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 10),
+                                    child: Text(
+                                      ctDate,
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        color: couponStatus == "사용가능" ? Colors.black : const Color(0xFFA4A4A4),
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    detailMessage,
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 12),
+                                      color: const Color(0xFFA4A4A4),
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  if (couponStatus != "사용가능") // 다운로드된 경우에만 텍스트 표시
+                                    SizedBox(
+                                      child: Text(
+                                        productCouponData.couponStatus ?? "",
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 12),
+                                          color: Colors.grey,
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 );
               },

@@ -78,10 +78,7 @@ class _PaymentDiscountState extends ConsumerState<PaymentDiscount> {
               if (_couponList.isNotEmpty) {
                 CouponData? selectedCoupon = await Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => PaymentCoupon(
-                            couponList: _couponList,
-                          )),
+                  MaterialPageRoute(builder: (context) => PaymentCoupon(couponList: _couponList,)),
                 );
                 if (selectedCoupon != null) {
                   setState(() {
