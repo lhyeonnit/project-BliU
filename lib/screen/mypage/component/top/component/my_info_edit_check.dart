@@ -193,15 +193,18 @@ class MyInfoEditCheck extends ConsumerWidget {
       'password' : password,
     };
 
-    final defaultResponseDTO = await ref.read(myInfoEditCheckViewModelProvider.notifier).passwordCheck(requestData);
-    if (defaultResponseDTO != null) {
-      if (defaultResponseDTO.result == true) {
+    final myInfoResponseDTO = await ref.read(myInfoEditCheckViewModelProvider.notifier).passwordCheck(requestData);
+    if (myInfoResponseDTO != null) {
+      if (myInfoResponseDTO.result == true) {
+        final authToken = myInfoResponseDTO.data?.authToken;  // 서버에서 받은 비밀번호 토큰
+        if (!context.mounted) return;
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MyInfoEditScreen()),
+          MaterialPageRoute(builder: (context) => MyInfoEditScreen(authToken: authToken,)),
         );
       } else {
-          Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+        if (!context.mounted) return;
+          Utils.getInstance().showSnackBar(context, myInfoResponseDTO.message ?? "");
       }
     }
   }
