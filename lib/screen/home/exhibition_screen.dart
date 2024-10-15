@@ -3,6 +3,7 @@ import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
+import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/home/viewmodel/exhibition_view_model.dart';
 import 'package:BliU/screen/product/component/list/product_list_card.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -85,47 +86,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
               );
             },
           ),
-          Stack(
-            children: [
-              IconButton(
-                icon: SvgPicture.asset("assets/images/exhibition/ic_cart.svg"),
-                onPressed: () {
-                  // 장바구니 버튼 동작
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CartScreen(),
-                    ),
-                  );
-                },
-              ),
-              Positioned(
-                right: 8,
-                top: 28,
-                child: Container(
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF6191),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  constraints: BoxConstraints(
-                    minWidth: Responsive.getWidth(context, 15),
-                    minHeight: Responsive.getHeight(context, 14),
-                  ),
-                  child: Text(
-                    '2',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      color: Colors.white,
-                      fontSize: Responsive.getFont(context, 9),
-                      height: 1.2,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ],
-          ),
+          const TopCartButton(),
         ],
       ),
       body: Stack(

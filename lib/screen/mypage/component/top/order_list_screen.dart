@@ -1,6 +1,7 @@
 import 'package:BliU/data/order_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_list_item.dart';
 import 'package:BliU/screen/mypage/viewmodel/order_list_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -144,41 +145,8 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
           },
         ),
         titleSpacing: -1.0,
-        actions: [
-          Stack(
-            children: [
-              IconButton(
-                padding: const EdgeInsets.only(right: 10),
-                icon: SvgPicture.asset("assets/images/product/ic_cart.svg"),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const CartScreen()),
-                  );
-                },
-              ),
-              Positioned(
-                right: 10,
-                top: 20,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                    color: Colors.pinkAccent,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Text(
-                    '2',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      color: Colors.white,
-                      fontSize: 12,
-                      height: 1.2,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+        actions: const [
+          TopCartButton(),
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정

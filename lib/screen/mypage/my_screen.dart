@@ -1,5 +1,6 @@
 import 'package:BliU/data/member_info_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
+import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/common/recommend_info_screen.dart';
 import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/faq_screen.dart';
@@ -95,41 +96,7 @@ class _MyScreenState extends ConsumerState<MyScreen> {
                 );
               },
             ),
-            Stack(
-              children: [
-                IconButton(
-                  padding: const EdgeInsets.only(right: 10),
-                  icon: SvgPicture.asset("assets/images/product/ic_cart.svg"),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CartScreen()),
-                    );
-                  },
-                ),
-                Positioned(
-                  right: 10,
-                  top: 20,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
-                      color: Colors.pinkAccent,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      '2',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        color: Colors.white,
-                        fontSize: Responsive.getFont(context, 12),
-                        height: 1.2,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            const TopCartButton(),
           ],
         ),
         body: Column(

@@ -3,6 +3,7 @@ import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/style_category_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
+import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/product/component/list/product_category_bottom.dart';
 import 'package:BliU/screen/product/component/list/product_filter_bottom.dart';
 import 'package:BliU/screen/product/component/list/product_list_card.dart';
@@ -427,45 +428,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
           ),
           Container(
             margin: const EdgeInsets.only(right: 6),
-            child: Stack(
-              children: [
-                IconButton(
-                  icon: SvgPicture.asset(
-                    "assets/images/product/ic_cart.svg",
-                    height: Responsive.getHeight(context, 30),
-                    width: Responsive.getWidth(context, 30),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CartScreen(),
-                      ),
-                    );
-                  },
-                ),
-                Positioned(
-                  right: 4,
-                  top: 20,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
-                      color: Colors.pinkAccent,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Text(
-                      '2',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        color: Colors.white,
-                        fontSize: 12,
-                        height: 1.2,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: const TopCartButton(),
           ),
         ],
       ),

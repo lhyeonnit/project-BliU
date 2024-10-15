@@ -7,6 +7,7 @@ import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
+import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/product/component/detail/product_order_bottom_option.dart';
 import 'package:BliU/screen/product/component/detail/product_review_detail.dart';
 import 'package:BliU/screen/product/component/detail/report_page.dart';
@@ -196,41 +197,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               );
             },
           ),
-          Stack(
-            children: [
-              IconButton(
-                icon: SvgPicture.asset("assets/images/product/ic_cart.svg"),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CartScreen()
-                    ),
-                  );
-                },
-              ),
-              Positioned(
-                right: 4,
-                top: 20,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                    color: Colors.pinkAccent,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    '2', // TODO 장바구니 수
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      color: Colors.white,
-                      fontSize: Responsive.getFont(context, 12),
-                      height: 1.2,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          const TopCartButton(),
         ],
       ),
       body: Stack(
