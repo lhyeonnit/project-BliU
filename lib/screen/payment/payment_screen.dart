@@ -421,9 +421,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 Theme(
                   data: Theme.of(context).copyWith(splashColor: Colors.transparent),
                   child: ListTileTheme(
-                    //data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                     horizontalTitleGap: 0,
-                    //data: ListTileTheme.of(context),
                     child: ExpansionTile(
                       initiallyExpanded: true,
                       shape: const Border(

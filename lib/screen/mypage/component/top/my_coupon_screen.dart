@@ -52,19 +52,7 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
     });
     _page = 1;
 
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    String couponStatus = "Y";
-    if (_selectedCategoryIndex == 1) {
-      couponStatus = "N";
-    }
-
-    final Map<String, dynamic> requestData = {
-      'mt_idx': mtIdx,
-      'coupon_status': couponStatus,
-      'pg': _page
-    };
+    final requestData = await _makeRequestData();
 
     final productCouponResponseDTO = await ref.read(myCouponViewModelProvider.notifier).getList(requestData);
     _couponCount = productCouponResponseDTO?.count ?? 0;
@@ -82,19 +70,7 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
       });
       _page += 1;
 
-      final pref = await SharedPreferencesManager.getInstance();
-      final mtIdx = pref.getMtIdx();
-
-      String couponStatus = "Y";
-      if (_selectedCategoryIndex == 1) {
-        couponStatus = "N";
-      }
-
-      final Map<String, dynamic> requestData = {
-        'mt_idx': mtIdx,
-        'coupon_status': couponStatus,
-        'pg': _page
-      };
+      final requestData = await _makeRequestData();
 
       final productCouponResponseDTO = await ref.read(myCouponViewModelProvider.notifier).getList(requestData);
       if (productCouponResponseDTO != null) {
@@ -113,6 +89,24 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
         _isLoadMoreRunning = false;
       });
     }
+  }
+
+  Future<Map<String, dynamic>> _makeRequestData() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    String couponStatus = "Y";
+    if (_selectedCategoryIndex == 1) {
+      couponStatus = "N";
+    }
+
+    final Map<String, dynamic> requestData = {
+      'mt_idx': mtIdx,
+      'coupon_status': couponStatus,
+      'pg': _page
+    };
+
+    return requestData;
   }
 
   @override

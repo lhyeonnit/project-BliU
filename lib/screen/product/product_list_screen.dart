@@ -1,7 +1,8 @@
+import 'dart:convert';
+
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/style_category_data.dart';
-import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/product/component/list/product_category_bottom.dart';
@@ -93,9 +94,49 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
     _page = 1;
     _maxScrollHeight = 0;
 
-    // TODO 회원 비회원 처리
+    final requestData = await _makeRequestData();
+
+    final productListResponseDTO = await ref.read(productListViewModelProvider.notifier).getList(requestData);
+    _count = productListResponseDTO?.count ?? 0;
+    _productList = productListResponseDTO?.list ?? [];
+
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+  }
+
+  void _nextLoad() async {
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+      _page += 1;
+
+      final requestData = await _makeRequestData();
+
+      final productListResponseDTO = await ref.read(productListViewModelProvider.notifier).getList(requestData);
+      if (productListResponseDTO != null) {
+        _count = productListResponseDTO.count;
+        if (productListResponseDTO.list.isNotEmpty) {
+          setState(() {
+            _productList.addAll(productListResponseDTO.list);
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
+      });
+    }
+  }
+
+  Future<Map<String, dynamic>> _makeRequestData() async {
     final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
+    final mtIdx = pref.getMtIdx() ?? "";
 
     String subCategory = "all";
     final categoryData = _categories[_tabController.index];
@@ -126,17 +167,13 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
     String age = '${selectedAgeGroup?.catIdx ?? ""}';
 
     String styles = '';
-    // 없을시 빈값으로 전달해주세요 1 캐주얼, 2 스포티 3: 포멀/클래식, 4:베이직 5:프린세스/페어리 6: 힙스터 7:럭셔리 8: 어반 스트릿 9: 로맨틱
-    // ex) [1, 2]
+    List<int> stylesList = [];
+    // 없을시 빈값으로 전달해주세요 1 캐주얼, 2 스포티 3: 포멀/클래식, 4:베이직 5:프린세스/페어리 6: 힙스터 7:럭셔리 8: 어반 스트릿 9: 로맨틱 -> ex) [1, 2]
     for (var style in selectedStyles) {
-      if(styles.isEmpty) {
-        styles = (style.fsIdx ?? 0).toString();
-      } else {
-        styles = "$styles,${(style.fsIdx ?? 0).toString()}";
-      }
+      stylesList.add(style.fsIdx ?? 0);
     }
-    if(styles.isNotEmpty) {
-      styles = "[$styles]";
+    if(stylesList.isNotEmpty) {
+      styles = json.encode(stylesList);
     }
 
     int minPrice = selectedRangeValues.start.toInt();
@@ -155,102 +192,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
       'delivery_now' : _isTodayStart ? "Y" : "",
     };
 
-    final productListResponseDTO = await ref.read(productListViewModelProvider.notifier).getList(requestData);
-    _count = productListResponseDTO?.count ?? 0;
-    _productList = productListResponseDTO?.list ?? [];
-
-    setState(() {
-      _isFirstLoadRunning = false;
-    });
-  }
-
-  void _nextLoad() async {
-    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning){
-      setState(() {
-        _isLoadMoreRunning = true;
-      });
-      _page += 1;
-
-      // TODO 회원 비회원 처리
-      final pref = await SharedPreferencesManager.getInstance();
-      final mtIdx = pref.getMtIdx();
-
-      String subCategory = "all";
-      final categoryData = _categories[_tabController.index];
-      if ((categoryData.ctIdx ?? 0) > 0) {
-        subCategory = categoryData.ctIdx.toString();
-      }
-
-      int sort = 1;
-      // 1 최신순 2 인기순 3: 추천수, 4: 가격 낮은수, 5: 가격 높은수
-      switch (_sortOptionSelected) {
-        case "최신순":
-          sort = 1;
-          break;
-        case "인기순":
-          sort = 2;
-          break;
-        case "추천순":
-          sort = 3;
-          break;
-        case "가격 낮은 순":
-          sort = 4;
-          break;
-        case "가격 높은 순":
-          sort = 5;
-          break;
-      }
-
-      String age = '${selectedAgeGroup?.catIdx ?? ""}';
-
-      String styles = '';
-      // 없을시 빈값으로 전달해주세요 1 캐주얼, 2 스포티 3: 포멀/클래식, 4:베이직 5:프린세스/페어리 6: 힙스터 7:럭셔리 8: 어반 스트릿 9: 로맨틱
-      // ex) [1, 2]
-      for (var style in selectedStyles) {
-        if(styles.isEmpty) {
-          styles = (style.fsIdx ?? 0).toString();
-        } else {
-          styles = "$styles,${(style.fsIdx ?? 0).toString()}";
-        }
-      }
-      if(styles.isNotEmpty) {
-        styles = "[$styles]";
-      }
-
-      int minPrice = selectedRangeValues.start.toInt();
-      int maxPrice = selectedRangeValues.end.toInt();
-
-      Map<String, dynamic> requestData = {
-        'mt_idx': mtIdx,
-        'category': _selectedCategory.ctIdx,
-        'sub_category': subCategory,
-        'sort': sort,
-        'age': age,
-        'styles': styles,
-        'min_price': minPrice,
-        'max_price': maxPrice,
-        'pg': _page,
-        'delivery_now' : _isTodayStart ? "Y" : "",
-      };
-
-      final productListResponseDTO = await ref.read(productListViewModelProvider.notifier).getList(requestData);
-      if (productListResponseDTO != null) {
-        _count = productListResponseDTO.count;
-        if (productListResponseDTO.list.isNotEmpty) {
-          setState(() {
-            _productList.addAll(productListResponseDTO.list);
-          });
-        } else {
-          setState(() {
-            _hasNextPage = false;
-          });
-        }
-      }
-
-      setState(() {
-        _isLoadMoreRunning = false;
-      });
-    }
+    return requestData;
   }
 
   void _getFilterCategory() async {

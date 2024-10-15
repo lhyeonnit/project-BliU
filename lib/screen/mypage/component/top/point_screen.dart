@@ -53,21 +53,7 @@ class _PointScreenState extends ConsumerState<PointScreen> {
     });
     _page = 1;
 
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    String pointStatus = "all";
-    if (_selectedCategoryIndex == 1) {
-      pointStatus = "P";
-    } else if (_selectedCategoryIndex == 2) {
-      pointStatus = "M";
-    }
-
-    final Map<String, dynamic> requestData = {
-      'mt_idx': mtIdx,
-      'point_status': pointStatus,
-      'pg': _page
-    };
+    final requestData = await _makeRequestData();
 
     final pointListResponseDTO = await ref.read(pointViewModelProvider.notifier).getList(requestData);
     _mtPoint = pointListResponseDTO?.mtPoint ?? 0;
@@ -85,21 +71,7 @@ class _PointScreenState extends ConsumerState<PointScreen> {
       });
       _page += 1;
 
-      final pref = await SharedPreferencesManager.getInstance();
-      final mtIdx = pref.getMtIdx();
-
-      String pointStatus = "all";
-      if (_selectedCategoryIndex == 1) {
-        pointStatus = "P";
-      } else if (_selectedCategoryIndex == 2) {
-        pointStatus = "M";
-      }
-
-      final Map<String, dynamic> requestData = {
-        'mt_idx': mtIdx,
-        'point_status': pointStatus,
-        'pg': _page
-      };
+      final requestData = await _makeRequestData();
 
       final pointListResponseDTO = await ref.read(pointViewModelProvider.notifier).getList(requestData);
       if (pointListResponseDTO != null) {
@@ -118,6 +90,26 @@ class _PointScreenState extends ConsumerState<PointScreen> {
         _isLoadMoreRunning = false;
       });
     }
+  }
+
+  Future<Map<String, dynamic>> _makeRequestData() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    String pointStatus = "all";
+    if (_selectedCategoryIndex == 1) {
+      pointStatus = "P";
+    } else if (_selectedCategoryIndex == 2) {
+      pointStatus = "M";
+    }
+
+    final Map<String, dynamic> requestData = {
+      'mt_idx': mtIdx,
+      'point_status': pointStatus,
+      'pg': _page
+    };
+
+    return requestData;
   }
 
   @override
