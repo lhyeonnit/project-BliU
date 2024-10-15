@@ -10,7 +10,7 @@ class JoinAddInfoScreen extends StatefulWidget {
   @override
   State<JoinAddInfoScreen> createState() => _JoinAddInfoScreenState();
 }
-
+ // TODO 전체 수정 필요
 class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isAllFieldsFilled = false;

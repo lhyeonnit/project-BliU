@@ -54,7 +54,7 @@ class MyInfoEditViewModel extends StateNotifier<MyInfoEditModel?> {
     }
   }
 
-  Future<DefaultResponseDTO?> editMyName(Map<String, dynamic> requestData) async {
+  Future<DefaultResponseDTO> editMyName(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiMyPageChangeNameUrl, data: requestData);
       if (response != null) {
@@ -64,15 +64,21 @@ class MyInfoEditViewModel extends StateNotifier<MyInfoEditModel?> {
           return defaultResponseDTO;
         }
       }
-      return null;
+      return DefaultResponseDTO(
+        result: false,
+        message: "Network Or Data Error",
+      );
     } catch (e) {
       // Catch and log any exceptions
       print('Error fetching : $e');
-      return null;
+      return DefaultResponseDTO(
+        result: false,
+        message: e.toString(),
+      );
     }
   }
 
-  Future<DefaultResponseDTO?> editMyPh(Map<String, dynamic> requestData) async {
+  Future<DefaultResponseDTO> editMyPh(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiMyPageChangeHpUrl, data: requestData);
       if (response != null) {
@@ -82,15 +88,21 @@ class MyInfoEditViewModel extends StateNotifier<MyInfoEditModel?> {
           return defaultResponseDTO;
         }
       }
-      return null;
+      return DefaultResponseDTO(
+        result: false,
+        message: "Network Or Data Error",
+      );
     } catch (e) {
       // Catch and log any exceptions
       print('Error fetching : $e');
-      return null;
+      return DefaultResponseDTO(
+        result: false,
+        message: e.toString(),
+      );
     }
   }
 
-  Future<DefaultResponseDTO?> editMyPassword(Map<String, dynamic> requestData) async {
+  Future<DefaultResponseDTO> editMyPassword(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiAuthChangePwdUrl, data: requestData);
       if (response != null) {
@@ -100,11 +112,17 @@ class MyInfoEditViewModel extends StateNotifier<MyInfoEditModel?> {
           return defaultResponseDTO;
         }
       }
-      return null;
+      return DefaultResponseDTO(
+        result: false,
+        message: "Network Or Data Error",
+      );
     } catch (e) {
       // Catch and log any exceptions
       print('Error fetching : $e');
-      return null;
+      return DefaultResponseDTO(
+        result: false,
+        message: e.toString(),
+      );
     }
   }
 

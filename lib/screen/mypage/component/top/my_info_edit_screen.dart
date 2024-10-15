@@ -164,6 +164,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                               obscureText: true, isEnable: true),
                           GestureDetector(
                             onTap: () {
+                              // TODO 이전 비밀번호 재사용 방지 처리 필요
                               _editMyPassword();
                             },
                             child: Container(
@@ -561,7 +562,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                         _editMyInfo();
                       }
                           : null;
-                    },
+                    }, // TODO 필드 입력에 따른 버튼 색상 수정
                     child: Container(
                       width: double.infinity,
                       height: Responsive.getHeight(context, 48),
@@ -1163,7 +1164,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
     String birthDay = "";
     try {
       if (_selectedDate != null) {
-        birthDay = DateFormat("yyyy-MM-dd").format(_selectedDate!);
+        birthDay = DateFormat("yyyy-MM-dd").format(_selectedDate);
       }
     } catch (e) {
       print("DateError $e");
@@ -1175,16 +1176,16 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
     };
     final defaultResponseDTO = await ref.read(myInfoEditViewModelProvider.notifier).editMyInfo(requestData);
     if (defaultResponseDTO.result == true) {
-
-      if (!mounted) return;
-      Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const MyScreen(),
-        ),
-      );
+      myPageInfoData?.mtBirth = birthDay;
+      myPageInfoData?.mtGender = _selectedGender;
     } else {
       if (!mounted) return;
       Utils.getInstance().showSnackBar(context, defaultResponseDTO.message.toString());
     }
+    if(!mounted) return;
+    Navigator.pushReplacement(
+      context, MaterialPageRoute(builder: (context) => const MyScreen()),
+    );
   }
   void _editMyName() async {
     final pref = await SharedPreferencesManager.getInstance();
@@ -1194,7 +1195,13 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       'mt_idx' : mtIdx,
       'mt_name' : name,
     };
-    await ref.read(myInfoEditViewModelProvider.notifier).editMyName(requestData);
+    final defaultResponseDTO = await ref.read(myInfoEditViewModelProvider.notifier).editMyName(requestData);
+    if (defaultResponseDTO.result == true) {
+      myPageInfoData?.mtName = name;
+    } else {
+      if (!mounted) return;
+      Utils.getInstance().showSnackBar(context, defaultResponseDTO.message.toString());
+    }
   }
   void _editMyPh() async {
     final pref = await SharedPreferencesManager.getInstance();
@@ -1205,8 +1212,13 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       'mt_idx' : mtIdx,
       'mt_hp' :phone,
     };
-    await ref.read(myInfoEditViewModelProvider.notifier).editMyPh(requestData);
-
+    final defaultResponseDTO = await ref.read(myInfoEditViewModelProvider.notifier).editMyPh(requestData);
+    if (defaultResponseDTO.result == true) {
+      myPageInfoData?.mtHp = phone;
+    } else {
+      if (!mounted) return;
+      Utils.getInstance().showSnackBar(context, defaultResponseDTO.message.toString());
+    }
   }
   void _editMyPassword() async {
     if (_passwordController.text != _confirmPasswordController.text) {
@@ -1232,8 +1244,17 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       'mt_idx' : mtIdx,
     };
     final resultDTO = await ref.read(myInfoEditViewModelProvider.notifier).retire(requestData);
+    if(!mounted) return;
     Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
     await pref.logOut();
-    ref.read(mainScreenProvider.notifier).selectNavigation(2);
+    if(!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const MainScreen()),
+    );
+
+    setState(() {
+      ref.read(mainScreenProvider.notifier).selectNavigation(2);
+    });
   }
 }
