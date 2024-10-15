@@ -11,6 +11,7 @@ import 'package:BliU/screen/home/component/home_footer.dart';
 import 'package:BliU/screen/home/component/home_header.dart';
 import 'package:BliU/screen/home/viewmodel/home_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,6 +25,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
+  String _cartCount = "0";
   List<CategoryData> _categories = [];
   List<CategoryData> _ageCategories = [];
   bool _isScrolled = false;
@@ -55,6 +57,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   void _afterBuild(BuildContext context) {
     _getCategoryList();
+    _getCartCount();
   }
 
   void _getCategoryList() async {
@@ -72,6 +75,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         _ageCategories = ageCategoryResponseDTO.list ?? [];
       }
     }
+    setState(() {});
+  }
+
+  void _getCartCount() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx() ?? "";
+    int type = 1;
+    if (mtIdx.isEmpty) {
+      type = 2;
+    }
+
+    Map<String, dynamic> requestData = {
+      'type': type,
+      'mt_idx': mtIdx,
+      'temp_mt_id': pref.getToken(),
+    };
+
+    _cartCount = await ref.read(homeViewModelProvider.notifier).getCartCount(requestData) ?? "0";
     setState(() {});
   }
 
@@ -172,19 +193,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   Positioned(
                                     right: 4,
                                     top: 20,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: const BoxDecoration(
-                                        color: Colors.pinkAccent,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Text(
-                                        '2',
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          color: Colors.white,
-                                          fontSize: Responsive.getFont(context, 12),
-                                          height: 1.2,
+                                    child: Visibility(
+                                      visible: _cartCount == "0" ? false : true,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: const BoxDecoration(
+                                          color: Colors.pinkAccent,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Text(
+                                          _cartCount,
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            color: Colors.white,
+                                            fontSize: Responsive.getFont(context, 12),
+                                            height: 1.2,
+                                          ),
                                         ),
                                       ),
                                     ),

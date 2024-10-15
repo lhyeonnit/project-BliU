@@ -47,6 +47,24 @@ class HomeViewModel extends StateNotifier<HomeModel?> {
       return null;
     }
   }
+
+  Future<String?> getCartCount(Map<String, dynamic> requestData) async {
+    final response = await repository.reqPost(url: Constant.apiCartCountUrl, data: requestData);
+    try {
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseData = response.data;
+          int cartCount = responseData['data']['count'];
+          return cartCount.toString();
+        }
+      }
+      return null;
+    } catch(e) {
+      // Catch and log any exceptions
+      print('Error request Api: $e');
+      return null;
+    }
+  }
 }
 
 // ViewModel Provider 정의

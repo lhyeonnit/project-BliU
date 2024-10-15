@@ -50,25 +50,28 @@ class TopCartButton extends ConsumerWidget {
             Positioned(
               right: 8,
               top: 28,
-              child: Container(
-                padding: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFF6191),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                constraints: BoxConstraints(
-                  minWidth: Responsive.getWidth(context, 15),
-                  minHeight: Responsive.getHeight(context, 14),
-                ),
-                child: Text(
-                  cartCount,
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    color: Colors.white,
-                    fontSize: Responsive.getFont(context, 9),
-                    height: 1.2,
+              child: Visibility(
+                visible: cartCount == "0" ? false : true,
+                child: Container(
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFF6191),
+                    borderRadius: BorderRadius.circular(6),
                   ),
-                  textAlign: TextAlign.center,
+                  constraints: BoxConstraints(
+                    minWidth: Responsive.getWidth(context, 15),
+                    minHeight: Responsive.getHeight(context, 14),
+                  ),
+                  child: Text(
+                    cartCount,
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      color: Colors.white,
+                      fontSize: Responsive.getFont(context, 9),
+                      height: 1.2,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
             ),
