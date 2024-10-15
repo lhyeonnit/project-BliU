@@ -30,13 +30,16 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'AI 추천 상품',
-          style: TextStyle(
-            fontFamily: 'Pretendard',
-            fontSize: Responsive.getFont(context, 20),
-            fontWeight: FontWeight.bold,
-            height: 1.2,
+        Container(
+          margin: const EdgeInsets.only(left: 16),
+          child: Text(
+            'AI 추천 상품',
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 20),
+              fontWeight: FontWeight.bold,
+              height: 1.2,
+            ),
           ),
         ),
         Container(

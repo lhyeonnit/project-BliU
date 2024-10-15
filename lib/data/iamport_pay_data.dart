@@ -1,4 +1,5 @@
 class IamportPayData {
+  final String payMethod;
   final String name;
   final String merchantUid;
   final int amount;
@@ -9,6 +10,7 @@ class IamportPayData {
   final String? buyerPostcode;
 
   IamportPayData({
+    required this.payMethod,
     required this.name,
     required this.merchantUid,
     required this.amount,
@@ -20,6 +22,7 @@ class IamportPayData {
   });
 
   IamportPayData.fromJson(Map<String, dynamic> json):
+        payMethod = json['payMethod'],
         name = json['name'],
         merchantUid = json['merchantUid'],
         amount = json['amount'],
@@ -30,6 +33,7 @@ class IamportPayData {
         buyerPostcode = json['buyerPostcode'];
 
   Map<String, dynamic> toJson() => {
+    'payMethod' : payMethod,
     'name' : name,
     'merchantUid' : merchantUid,
     'amount' : amount,

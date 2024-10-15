@@ -41,7 +41,7 @@ class PaymentIamport extends StatelessWidget {
       /* [필수입력] 결제 데이터 */
       data: PaymentData(
         pg: Constant.iamportPg, // PG사
-        payMethod: 'card', // 결제수단
+        payMethod: iamportPayData.payMethod, // 결제수단
         name: iamportPayData.name, // 주문명
         merchantUid: iamportPayData.merchantUid, // 주문번호
         amount: iamportPayData.amount, // 결제금액
@@ -55,7 +55,7 @@ class PaymentIamport extends StatelessWidget {
       ),
       /* [필수입력] 콜백 함수 */
       callback: (Map<String, String> result) {
-        //print("result $result");
+        print("result $result");
         Navigator.pop(context, result);
       },
     );
