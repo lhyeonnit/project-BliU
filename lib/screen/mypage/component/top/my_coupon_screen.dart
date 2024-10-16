@@ -196,33 +196,6 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
                         ),
                       ),
                     ),
-                    // child: FilterChip(
-                    //   label: Text(
-                    //     _categories[index],
-                    //     style: TextStyle(
-                    //       fontFamily: 'Pretendard',
-                    //       color: isSelected ? const Color(0xFFFF6192) : Colors.black, // 텍스트 색상
-                    //       height: 1.2,
-                    //     ),
-                    //   ),
-                    //   selected: isSelected,
-                    //   onSelected: (bool selected) {
-                    //     setState(() {
-                    //       _selectedCategoryIndex = index;
-                    //       _getList();
-                    //     });
-                    //   },
-                    //   backgroundColor: Colors.white,
-                    //   selectedColor: Colors.white,
-                    //   shape: StadiumBorder(
-                    //     side: BorderSide(
-                    //       color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-                    //       // 테두리 색상
-                    //       width: 1.0,
-                    //     ),
-                    //   ),
-                    //   showCheckmark: false, // 체크 표시 없애기
-                    // ),
                   );
                 },
               ),

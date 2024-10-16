@@ -516,7 +516,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(22.0),
+          borderRadius: BorderRadius.circular(19.0),
         ),
         side: const BorderSide(
           color: Color(0xFFDDDDDD),

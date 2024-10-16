@@ -103,7 +103,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.only(top: 7, bottom: 10),
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
                             '연령',
@@ -117,13 +117,14 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
-                          padding: const EdgeInsets.only(bottom: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: List.generate(
                               _ageCategories.length, (index) {
                                 final ageCategory = _ageCategories[index];
-                                return _buildAgeGroupChip(ageCategory);
+                                return Container(
+                                    margin: const EdgeInsets.only(top: 10),
+                                    child: _buildAgeGroupChip(ageCategory));
                               }
                             ),
                           ),
@@ -135,7 +136,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.only(bottom: 20),
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
                             '스타일',
@@ -149,13 +150,13 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
-                          padding: const EdgeInsets.only(bottom: 10),
                           child: Wrap(
                             spacing: 4.0,
+                            runSpacing: 10.0,
                             children: List.generate(
                               _styleCategories.length, (index) {
                                 final styleCategory = _styleCategories[index];
-                                return _buildStyleChip(styleCategory);
+                                return  _buildStyleChip(styleCategory);
                               }
                             ),
                           ),
@@ -168,7 +169,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.only(bottom: 20),
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
                             '가격',
@@ -294,8 +295,17 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
     final isSelected = _tempSelectedAgeGroup?.catIdx == ageCategory.catIdx ? true : false;
     return GestureDetector(
       onTap: () => _toggleAgeSelection(ageCategory),
-      child: Chip(
-        label: Text(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(19),
+          border: Border.all(
+            color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+            width: 1.0,
+          ),
+          color: Colors.white,
+        ),
+        child: Text(
           ageCategory.catName ?? "",
           style: TextStyle(
             fontFamily: 'Pretendard',
@@ -303,15 +313,7 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
             height: 1.2,
           ),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
         ),
-        shape: StadiumBorder(
-          side: BorderSide(
-            color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-          ),
-        ),
-        backgroundColor: Colors.white,
       ),
     );
   }
@@ -320,23 +322,25 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
     final isSelected = _tempSelectedStyle.contains(styleCategory);
     return GestureDetector(
       onTap: () => _toggleStyleSelection(styleCategory),
-      child: Chip(
-        label: Text(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(19),
+          border: Border.all(
+            color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+            width: 1.0,
+          ),
+          color: Colors.white,
+        ),
+        child: Text(
           styleCategory.cstName ?? "",
           style: TextStyle(
             fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 14),
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
             height: 1.2,
           ),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
         ),
-        shape: StadiumBorder(
-          side: BorderSide(
-            color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-          ),
-        ),
-        backgroundColor: Colors.white,
       ),
     );
   }
