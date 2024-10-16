@@ -159,6 +159,23 @@ class PaymentViewModel extends StateNotifier<PaymentModel?> {
       return null;
     }
   }
+  //제주/도서산간 추가비용
+  Future<Map<String, dynamic>?> orderLocal(Map<String, dynamic> requestData) async {
+    try {
+      final response = await repository.reqPost(url: Constant.apiOrderLocalUrl, data: requestData);
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseData = response.data;
+          return responseData;
+        }
+      }
+      return null;
+    } catch (e) {
+      // Catch and log any exceptions
+      print('Error fetching : $e');
+      return null;
+    }
+  }
 }
 
 // ViewModel Provider 정의

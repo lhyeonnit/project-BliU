@@ -11,11 +11,11 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
 import 'package:BliU/screen/payment/component/payment_coupon.dart';
 import 'package:BliU/screen/payment/component/payment_iamport.dart';
-import 'package:BliU/screen/payment/component/payment_money.dart';
 import 'package:BliU/screen/payment/component/payment_order_item.dart';
 import 'package:BliU/screen/payment/component/webview_with_daum_post_webivew.dart';
 import 'package:BliU/screen/payment/payment_complete_screen.dart';
 import 'package:BliU/screen/payment/viewmodel/payment_view_model.dart';
+import 'package:BliU/utils/custom_expansion_tile.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -33,20 +33,20 @@ class PaymentScreen extends ConsumerStatefulWidget {
 }
 
 class PaymentScreenState extends ConsumerState<PaymentScreen> {
-  int totalPrice = 0;
-  CouponData? selectedCouponData;
-  int discountPoint = 0;
+  int _totalPrice = 0;
+  CouponData? _selectedCouponData;
+  int _discountPoint = 0;
 
-  int payType = 0;//1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
+  int _payType = 0;//1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
 
-  bool allAgree = false;
-  bool agree1 = false;
-  bool agree2 = false;
-  bool agree3 = false;
+  bool _allAgree = false;
+  bool _agree1 = false;
+  bool _agree2 = false;
+  bool _agree3 = false;
 
   final ScrollController _scrollController = ScrollController();
 
-  late bool isUseAddress = false;
+  late bool _isUseAddress = false;
 
   final TextEditingController _recipientNameController = TextEditingController();
   final TextEditingController _recipientPhoneController = TextEditingController();
@@ -61,43 +61,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   String _couponText = "0원 할인 적용";
   int _point = 0;
 
+  int _userDeliveryPrice = 0;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
-  }
-
-  void addressChange() {
-    List<CartData> cartList = widget.payOrderDetailData.list ?? [];
-    List<Map<String, dynamic>> cartArr = [];
-
-    for (var cartItem in cartList) {
-      Map<String, dynamic> cartMap = {
-        'st_idx': cartItem.stIdx,
-      };
-      List<int> ctIdxs = [];
-      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
-        ctIdxs.add(product.ctIdx ?? 0);
-      }
-
-      if (ctIdxs.isNotEmpty) {
-        cartMap['ct_idxs'] = ctIdxs;
-        cartArr.add(cartMap);
-      }
-    }
-
-    Map<String, dynamic> requestData = {
-      'ot_code' : widget.payOrderDetailData.otCode,
-      'cart_arr' : json.encode(cartArr),
-      'mt_zip' : _savedZip,
-      'mt_add1' : _addressRoadController.text,
-      'all_delivery_price' : widget.payOrderDetailData.allDeliveryPrice,
-    };
-
-
-
   }
 
   void _afterBuild(BuildContext context) {
@@ -147,6 +118,41 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     _couponList = couponResponseDTO?.list ?? [];
   }
 
+  void _addressChange() async {
+    List<CartData> cartList = widget.payOrderDetailData.list ?? [];
+    List<Map<String, dynamic>> cartArr = [];
+
+    for (var cartItem in cartList) {
+      Map<String, dynamic> cartMap = {
+        'st_idx': cartItem.stIdx,
+      };
+      List<int> ctIdxs = [];
+      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
+        ctIdxs.add(product.ctIdx ?? 0);
+      }
+
+      if (ctIdxs.isNotEmpty) {
+        cartMap['ct_idxs'] = ctIdxs;
+        cartArr.add(cartMap);
+      }
+    }
+
+    Map<String, dynamic> requestData = {
+      'ot_idx' : widget.payOrderDetailData.otIdx,
+      'cart_arr' : json.encode(cartArr),
+      'mt_zip' : _savedZip,
+      'mt_add1' : _addressRoadController.text,
+      'all_delivery_price' : widget.payOrderDetailData.allDeliveryPrice,
+    };
+
+    final responseData = await ref.read(paymentViewModelProvider.notifier).orderLocal(requestData);
+    if (responseData != null) {
+      setState(() {
+        _userDeliveryPrice = responseData['data']['user_delivey_add'] ?? 0;
+      });
+    }
+  }
+
   int _getTotalProductPrice() {
     // 선택된 기준으로 가격 가져오기
     int totalProductPrice = 0;
@@ -159,6 +165,17 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     return totalProductPrice;
   }
 
+  int _getTotalDeliveryPrice() {
+    int totalDeliveryPrice = 0;
+    final cartList = widget.payOrderDetailData.list ?? [];
+    for (var cartItem in cartList) {
+      totalDeliveryPrice += cartItem.stDeliveryPrice ?? 0;
+    }
+
+    totalDeliveryPrice += _userDeliveryPrice;
+    return totalDeliveryPrice;
+  }
+
   void _pointCheck(String point) {
     if (point.isNotEmpty) {
       int pointValue = int.parse(point);
@@ -167,33 +184,22 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
         pointValue = totalProductPrice;
       }
       _pointController.text = pointValue.toString();
-      onPointChanged(pointValue);
+
+      setState(() {
+        _discountPoint = pointValue;
+      });
     } else {
-      onPointChanged(0);
+      setState(() {
+        _discountPoint = 0;
+      });
     }
   }
 
-  void onResultTotalPrice(int totalPrice) {
-    this.totalPrice = totalPrice;
-  }
-
-  void onCouponSelected(CouponData couponData) {
-    setState(() {
-      selectedCouponData = couponData;
-    });
-  }
-
-  void onPointChanged(int point) {
-    setState(() {
-      discountPoint = point;
-    });
-  }
-
   void _agreeCheck() {
-    if (agree1 && agree2 && agree3) {
-      allAgree = true;
+    if (_agree1 && _agree2 && _agree3) {
+      _allAgree = true;
     } else {
-      allAgree = false;
+      _allAgree = false;
     }
   }
 
@@ -288,12 +294,12 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
      * 결제 상세 -> 결제 요청(이전에 쿠폰 사용 포인트 사용 요청) -> 결제 모듈에서 결제 완료후 -> 결제 검증 -> 결제 완료
      *
      */
-    if (!allAgree) {
+    if (!_allAgree) {
       Utils.getInstance().showSnackBar(context, '결제동의해 주세요.');
       return;
     }
 
-    if (payType == 0) {
+    if (_payType == 0) {
       Utils.getInstance().showSnackBar(context, '결제수단을 선택해 주세요.');
       return;
     }
@@ -314,7 +320,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     }
 
     String payMethod = "card";
-    switch (payType) { //1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
+    switch (_payType) { //1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
       case 1:
         payMethod = "card";
         break;
@@ -366,7 +372,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
       if (payOrderDetailData != null) {
         // 총 결제 금액
-        int totalAmount = totalPrice;
+        int totalAmount = _totalPrice;
         // 주문 이름 생성 (상품 이름을 연결)
         String orderName = "";
         int itemCount = 0;
@@ -383,24 +389,24 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
         }
 
         String mtSaveAdd = "N";
-        if (isUseAddress) {
+        if (_isUseAddress) {
           mtSaveAdd = "Y";
         }
 
-        if (selectedCouponData != null) {
+        if (_selectedCouponData != null) {
           Map<String, dynamic> requestCouponData = {
             'ot_code' : payOrderDetailData.otCode,
-            'coupon_idx' : selectedCouponData?.couponIdx,
+            'coupon_idx' : _selectedCouponData?.couponIdx,
             'mt_idx': mtIdx,
           };
 
           await ref.read(paymentViewModelProvider.notifier).couponUse(requestCouponData);
         }
 
-        if (discountPoint > 0) {
+        if (_discountPoint > 0) {
           Map<String, dynamic> requestPointData = {
             'ot_code' : payOrderDetailData.otCode,
-            'use_point' : discountPoint,
+            'use_point' : _discountPoint,
             'mt_idx': mtIdx,
           };
 
@@ -517,6 +523,29 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final totalAmount = _getTotalProductPrice();
+    final shippingCost = _getTotalDeliveryPrice();
+
+    int couponDiscount = 0;
+    if (_selectedCouponData != null) {
+      String couponDiscountStr = _selectedCouponData!.couponDiscount ?? "";
+      int couponDiscountValue = _selectedCouponData!.couponPrice ?? 0;
+      if (couponDiscountStr.contains("%")) {
+        //할인율
+        if (couponDiscountValue > 0) {
+          double couponDiscountDouble = (couponDiscountValue / 100);
+          couponDiscount = (totalAmount * couponDiscountDouble).toInt();
+        }
+      } else {
+        couponDiscount = couponDiscountValue;
+      }
+    }
+    final pointsDiscount = _discountPoint; // 포인트 할인
+    final total = totalAmount + shippingCost - couponDiscount - pointsDiscount;
+
+    _totalPrice = total;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -600,7 +629,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    isUseAddress = !isUseAddress;
+                                    _isUseAddress = !_isUseAddress;
                                   });
                                 },
                                 child: Container(
@@ -610,14 +639,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                   decoration: BoxDecoration(
                                     borderRadius: const BorderRadius.all(Radius.circular(6)),
                                     border: Border.all(
-                                      color: isUseAddress ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                      color: _isUseAddress ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                                     ),
-                                    color: isUseAddress ? const Color(0xFFFF6191) : Colors.white,
+                                    color: _isUseAddress ? const Color(0xFFFF6191) : Colors.white,
                                   ),
                                   child: SvgPicture.asset(
                                     'assets/images/check01_off.svg', // 체크박스 아이콘
                                     colorFilter: ColorFilter.mode(
-                                      isUseAddress ? Colors.white : const Color(0xFFCCCCCC),
+                                      _isUseAddress ? Colors.white : const Color(0xFFCCCCCC),
                                       BlendMode.srcIn,
                                     ),
                                     height: 10,
@@ -866,7 +895,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                     setState(() {
                                                       _addressRoadController.text = result.roadAddress;
                                                       _savedZip = result.zonecode;
-                                                      addressChange();
+                                                      _addressChange();
                                                     });
                                                   }
                                                 },
@@ -980,7 +1009,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                 child: GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      payType = 1;
+                                      _payType = 1;
                                     });
                                   },
                                   child: Container(
@@ -989,14 +1018,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(6),
                                       border: Border.all(
-                                          color: payType == 1 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                          color: _payType == 1 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
                                     ),
                                     child: Center(
                                       child: Text(
                                         '카드결제',
                                         style: TextStyle(
                                           fontFamily: 'Pretendard',
-                                          color: payType == 1 ? const Color(0xFFFF6192) : Colors.black,
+                                          color: _payType == 1 ? const Color(0xFFFF6192) : Colors.black,
                                           fontSize: Responsive.getFont(context, 14)
                                         ),
                                       )
@@ -1011,7 +1040,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                 child: GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      payType = 2;
+                                      _payType = 2;
                                     });
                                   },
                                   child: Container(
@@ -1020,14 +1049,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(6),
                                       border: Border.all(
-                                          color: payType == 2 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                          color: _payType == 2 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
                                     ),
                                     child: Center(
                                       child: Text(
                                         '휴대폰',
                                         style: TextStyle(
                                           fontFamily: 'Pretendard',
-                                          color: payType == 2 ? const Color(0xFFFF6192) : Colors.black,
+                                          color: _payType == 2 ? const Color(0xFFFF6192) : Colors.black,
                                           fontSize: Responsive.getFont(context, 14)
                                         ),
                                       ),
@@ -1048,7 +1077,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        payType = 3;
+                                        _payType = 3;
                                       });
                                     },
                                     child: Container(
@@ -1056,14 +1085,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(6),
-                                        border: Border.all(color: payType == 3 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                        border: Border.all(color: _payType == 3 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
                                       ),
                                       child: Center(
                                         child: Text(
                                           '계좌이체',
                                           style: TextStyle(
                                             fontFamily: 'Pretendard',
-                                            color: payType == 3 ? const Color(0xFFFF6192) : Colors.black,
+                                            color: _payType == 3 ? const Color(0xFFFF6192) : Colors.black,
                                             fontSize: Responsive.getFont(context, 14)
                                           ),
                                         )
@@ -1078,7 +1107,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        payType = 4;
+                                        _payType = 4;
                                       });
                                     },
                                     child: Container(
@@ -1087,14 +1116,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(6),
                                         border: Border.all(
-                                            color: payType == 4 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                            color: _payType == 4 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
                                       ),
                                       child: Center(
                                         child: Text(
                                           '네이버페이',
                                           style: TextStyle(
                                             fontFamily: 'Pretendard',
-                                            color: payType == 4 ? const Color(0xFFFF6192) : Colors.black,
+                                            color: _payType == 4 ? const Color(0xFFFF6192) : Colors.black,
                                             fontSize: Responsive.getFont(context, 14)
                                           ),
                                         ),
@@ -1156,8 +1185,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                               if (selectedCoupon != null) {
                                 setState(() {
                                   _couponText = "${selectedCoupon.couponDiscount} 할인 적용";
+                                  _selectedCouponData = selectedCoupon;
                                 });
-                                onCouponSelected(selectedCoupon); // 부모로 할인율 전달
                               }
                             }
                           },
@@ -1327,11 +1356,72 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 ),
                 CustomExpansionTile(
                   title: '결제 금액',
-                  content: PaymentMoney(
-                    onResultTotalPrice: onResultTotalPrice,
-                    cartList: widget.payOrderDetailData.list ?? [],
-                    discountCouponData: selectedCouponData,
-                    discountPoint: discountPoint,
+                  content: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildInfoRow('상품 금액', '${Utils.getInstance().priceString(totalAmount)}원', context),
+                        Container(
+                            margin: const EdgeInsets.symmetric(vertical: 15),
+                            child: _buildInfoRow(
+                                '배송비',
+                                '${Utils.getInstance().priceString(shippingCost)}원',
+                                context
+                            )
+                        ),
+                        Container(
+                            margin: const EdgeInsets.only(bottom: 15),
+                            child: _buildInfoRow(
+                                '할인금액',
+                                couponDiscount != 0
+                                    ? '- ${Utils.getInstance().priceString(couponDiscount)}원'
+                                    : '${Utils.getInstance().priceString(couponDiscount)}원', // 0이 아니면 '-' 추가
+                                context
+                            )
+                        ),
+                        _buildInfoRow(
+                            '포인트할인',
+                            pointsDiscount != 0
+                                ? '- ${Utils.getInstance().priceString(pointsDiscount)}원'
+                                : '${Utils.getInstance().priceString(pointsDiscount)}원', // 0이 아니면 '-' 추가
+                            context
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                          child: const Divider(
+                            color: Color(0xFFEEEEEE),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '결제 금액',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black,
+                                  height: 1.2,
+                                ),
+                              ),
+                              Text(
+                                '${Utils.getInstance().priceString(total)}원',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  height: 1.2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Container(
@@ -1352,10 +1442,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                       leading: GestureDetector(
                         onTap: () {
                           setState(() {
-                            allAgree = !allAgree;
-                            agree1 = allAgree;
-                            agree2 = allAgree;
-                            agree3 = allAgree;
+                            _allAgree = !_allAgree;
+                            _agree1 = _allAgree;
+                            _agree2 = _allAgree;
+                            _agree3 = _allAgree;
                           });
                         },
                         child: Container(
@@ -1367,14 +1457,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                             decoration: BoxDecoration(
                               borderRadius: const BorderRadius.all(Radius.circular(6)),
                               border: Border.all(
-                                color: allAgree ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                color: _allAgree ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                               ),
-                              color: allAgree ? const Color(0xFFFF6191) : Colors.white,
+                              color: _allAgree ? const Color(0xFFFF6191) : Colors.white,
                             ),
                             child: SvgPicture.asset(
                               'assets/images/check01_off.svg', // 체크박스 아이콘
                               colorFilter: ColorFilter.mode(
-                                allAgree ? Colors.white : const Color(0xFFCCCCCC),
+                                _allAgree ? Colors.white : const Color(0xFFCCCCCC),
                                 BlendMode.srcIn,
                               ),
                               height: 10,
@@ -1409,7 +1499,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     child: GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          agree1 = !agree1;
+                                          _agree1 = !_agree1;
                                           _agreeCheck();
                                         });
                                       },
@@ -1422,14 +1512,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             decoration: BoxDecoration(
                                               borderRadius: const BorderRadius.all(Radius.circular(6)),
                                               border: Border.all(
-                                                color: agree1 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                                color: _agree1 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                                               ),
-                                              color: agree1 ? const Color(0xFFFF6191) : Colors.white,
+                                              color: _agree1 ? const Color(0xFFFF6191) : Colors.white,
                                             ),
                                             child: SvgPicture.asset(
                                               'assets/images/check01_off.svg', // 체크박스 아이콘
                                               colorFilter: ColorFilter.mode(
-                                                agree1 ? Colors.white : const Color(0xFFCCCCCC),
+                                                _agree1 ? Colors.white : const Color(0xFFCCCCCC),
                                                 BlendMode.srcIn,
                                               ),
                                               height: 10,
@@ -1486,7 +1576,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     child: GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          agree2 = !agree2;
+                                          _agree2 = !_agree2;
                                           _agreeCheck();
                                         });
                                       },
@@ -1499,14 +1589,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             decoration: BoxDecoration(
                                               borderRadius: const BorderRadius.all(Radius.circular(6)),
                                               border: Border.all(
-                                                color: agree2 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                                color: _agree2 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                                               ),
-                                              color: agree2 ? const Color(0xFFFF6191) : Colors.white,
+                                              color: _agree2 ? const Color(0xFFFF6191) : Colors.white,
                                             ),
                                             child: SvgPicture.asset(
                                               'assets/images/check01_off.svg', // 체크박스 아이콘
                                               colorFilter: ColorFilter.mode(
-                                                agree2 ? Colors.white : const Color(0xFFCCCCCC),
+                                                _agree2 ? Colors.white : const Color(0xFFCCCCCC),
                                                 BlendMode.srcIn,
                                               ),
                                               height: 10,
@@ -1563,7 +1653,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     child: GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          agree3 = !agree3;
+                                          _agree3 = !_agree3;
                                           _agreeCheck();
                                         });
                                       },
@@ -1576,14 +1666,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             decoration: BoxDecoration(
                                               borderRadius: const BorderRadius.all(Radius.circular(6)),
                                               border: Border.all(
-                                                color: agree3 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                                color: _agree3 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                                               ),
-                                              color: agree3 ? const Color(0xFFFF6191) : Colors.white,
+                                              color: _agree3 ? const Color(0xFFFF6191) : Colors.white,
                                             ),
                                             child: SvgPicture.asset(
                                               'assets/images/check01_off.svg', // 체크박스 아이콘
                                               colorFilter: ColorFilter.mode(
-                                                agree3 ? Colors.white : const Color(0xFFCCCCCC),
+                                                _agree3 ? Colors.white : const Color(0xFFCCCCCC),
                                                 BlendMode.srcIn,
                                               ),
                                               height: 10,
@@ -1679,49 +1769,30 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       ),
     );
   }
-}
 
-// Custom ExpansionTile Widget
-class CustomExpansionTile extends StatelessWidget {
-  final String title;
-  final Widget content;
-
-  const CustomExpansionTile({
-    required this.title,
-    required this.content,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-      child: ExpansionTile(
-        initiallyExpanded: true,
-        title: Container(
-          padding: const EdgeInsets.symmetric(vertical: 19.5),
-          child: Text(
+  Widget _buildInfoRow(String title, String value, BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
             title,
             style: TextStyle(
               fontFamily: 'Pretendard',
-              fontSize: Responsive.getFont(context, 18),
-              fontWeight: FontWeight.bold,
+              fontSize: Responsive.getFont(context, 14),
+              color: Colors.black,
               height: 1.2,
             ),
           ),
-        ),
-        collapsedBackgroundColor: Colors.white,
-        backgroundColor: Colors.white,
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: Color(0xFFEEEEEE),
-                ),
-              ),
+          Text(
+            value,
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 14),
+              color: Colors.black,
+              height: 1.2,
             ),
-            child: content,
           ),
         ],
       ),

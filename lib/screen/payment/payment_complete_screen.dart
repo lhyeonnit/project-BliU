@@ -62,9 +62,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
         actions: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
+              // TODO 홈으로
             },
             child: Container(
               margin: const EdgeInsets.only(right: 16),
@@ -101,18 +99,15 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 40, horizontal: 16),
+                    margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
                     child: Column(
                       children: [
                         Center(
-                          child: Image.asset(
-                              'assets/images/product/order_complet.png'),
+                          child: Image.asset('assets/images/product/order_complet.png'),
                         ),
                         Center(
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 25.0, bottom: 29.55),
+                            padding: const EdgeInsets.only(top: 25.0, bottom: 29.55),
                             child: Text('주문이 완료되었습니다!',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
@@ -132,19 +127,17 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            OrderListScreen()),
+                                      builder: (context) => const OrderListScreen()
+                                    ),
                                   );
                                 },
                                 child: Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 14),
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
                                   margin: const EdgeInsets.only(right: 4),
                                   decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(6)),
-                                      border: Border.all(
-                                          color: const Color(0xFFDDDDDD))),
+                                    borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                    border: Border.all(color: const Color(0xFFDDDDDD))
+                                  ),
                                   child: Center(
                                     child: Text(
                                       '주문상세보기',
@@ -161,18 +154,14 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
+                                  //TODO 홈으로
                                 },
                                 child: Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 14),
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
                                   margin: const EdgeInsets.only(left: 4),
                                   decoration: const BoxDecoration(
                                     color: Colors.black,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(6)),
+                                    borderRadius: BorderRadius.all(Radius.circular(6)),
                                   ),
                                   child: Center(
                                     child: Text(
@@ -233,8 +222,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                     color: const Color(0xFFF5F9F9),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -282,8 +270,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                     decoration: const BoxDecoration(
                       border: Border(
                         top: BorderSide(
@@ -295,15 +282,16 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildPaymentCompleteRow(
-                            '총 상품 금액',
-                            '${Utils.getInstance().priceString(payOrderResultDetailData?.otPrice ?? 0)}원',
-                            context),
+                          '총 상품 금액',
+                          '${Utils.getInstance().priceString(payOrderResultDetailData?.otPrice ?? 0)}원',
+                        ),
                         Container(
-                            margin: const EdgeInsets.symmetric(vertical: 15),
-                            child: _buildPaymentCompleteRow(
-                                '총 배송비',
-                                '${Utils.getInstance().priceString(payOrderResultDetailData?.allDeliveryPrice ?? 0)}원',
-                                context)),
+                          margin: const EdgeInsets.symmetric(vertical: 15),
+                          child: _buildPaymentCompleteRow(
+                            '총 배송비',
+                            '${Utils.getInstance().priceString(payOrderResultDetailData?.allDeliveryPrice ?? 0)}원',
+                          )
+                        ),
                         const Divider(
                           color: Color(0xFFEEEEEE),
                         ),
@@ -312,9 +300,9 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                           child: Column(
                             children: [
                               _buildPaymentCompleteRow(
-                                  '할인금액',
-                                  '${Utils.getInstance().priceString(payOrderResultDetailData?.otUseCoupon ?? 0)}원',
-                                  context),
+                                '할인금액',
+                                '${Utils.getInstance().priceString(payOrderResultDetailData?.otUseCoupon ?? 0)}원',
+                              ),
                               // TODO 할인 쿠폰 사용처 확인
                               // Padding(
                               //   padding: const EdgeInsets.only(left: 10.0),
@@ -346,9 +334,9 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                           ),
                         ),
                         _buildPaymentCompleteRow(
-                            '포인트할인',
-                            '${payOrderResultDetailData?.otUsePoint ?? 0}원',
-                            context),
+                          '포인트할인',
+                          '${payOrderResultDetailData?.otUsePoint ?? 0}원',
+                        ),
                       ],
                     ),
                   ),
@@ -358,8 +346,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                     color: const Color(0xFFF5F9F9),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                     child: Text(
                       '배송지 정보',
                       style: TextStyle(
@@ -434,14 +421,15 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                  flex: 5,
-                                  child: Text(
-                                    '배송지 주소',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                    ),
-                                  )),
+                                flex: 5,
+                                child: Text(
+                                  '배송지 주소',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                  ),
+                                )
+                              ),
                               Expanded(
                                 flex: 5,
                                 child: Column(
@@ -470,12 +458,13 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                           ),
                         ),
                         // 예시에서 productPrice를 배송메모로 가정하겠습니다.
-                        if (widget.savedMemo != null &&
-                            widget.savedMemo!.isNotEmpty)
+                        if (widget.savedMemo != null && widget.savedMemo!.isNotEmpty)
                           Container(
                             padding: const EdgeInsets.only(top: 15),
                             child: _buildPaymentCompleteRow(
-                                '배송메모', '${widget.savedMemo}', context),
+                              '배송메모',
+                              '${widget.savedMemo}',
+                            ),
                           ),
                       ],
                     ),
@@ -486,8 +475,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                     color: const Color(0xFFF5F9F9),
                   ),
                   Theme(
-                    data: Theme.of(context)
-                        .copyWith(dividerColor: Colors.transparent),
+                    data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                     child: ExpansionTile(
                       title: Container(
                         padding: const EdgeInsets.symmetric(vertical: 20),
@@ -513,8 +501,8 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                             ),
                           ),
                           child: PaymentOrderItem(
-                              cartList:
-                                  payOrderResultDetailData?.product ?? []),
+                            cartList: payOrderResultDetailData?.product ?? []
+                          ),
                         ),
                       ],
                     ),
@@ -529,8 +517,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
     );
   }
 
-  Widget _buildPaymentCompleteRow(
-      String title, String value, BuildContext context) {
+  Widget _buildPaymentCompleteRow(String title, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
