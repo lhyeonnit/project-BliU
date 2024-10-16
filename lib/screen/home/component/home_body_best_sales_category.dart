@@ -51,10 +51,9 @@ class _HomeBodyBestSalesCategoryState extends State<HomeBodyBestSalesCategory>
             tabs: categories.map((category) {
               return Tab(
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(19),
                     border: Border.all(
                       color:
                           _tabController.index == categories.indexOf(category)

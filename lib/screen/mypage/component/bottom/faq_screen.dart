@@ -264,32 +264,34 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                     final faqCategoryData = faqCategories[index];
 
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                      child: FilterChip(
-                        label: Text(
-                          faqCategoryData.cftName ?? "",
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            color: isSelected ? const Color(0xFFFF6192) : Colors.black, // 텍스트 색상
-                            height: 1.2,
-                          ),
-                        ),
-                        selected: isSelected,
-                        onSelected: (bool selected) {
+                      padding: const EdgeInsets.only(right: 4.0),
+                      child: GestureDetector(
+                        onTap: () {
                           setState(() {
                             _selectedCategoryIndex = index;
                             _getList();
                           });
                         },
-                        backgroundColor: Colors.white,
-                        selectedColor: Colors.white,
-                        shape: StadiumBorder(
-                          side: BorderSide(
-                            color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD), // 테두리 색상
-                            width: 1.0,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(19),
+                            border: Border.all(
+                              color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                              width: 1.0,
+                            ),
+                            color: Colors.white,
+                          ),
+                          child: Text(
+                            faqCategoryData.cftName ?? "",
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                              height: 1.2,
+                            ),
                           ),
                         ),
-                        showCheckmark: false, // 체크 표시 없애기
                       ),
                     );
                   },
