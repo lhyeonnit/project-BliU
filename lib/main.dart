@@ -42,10 +42,10 @@ Future<void> fireBaseInitializeApp() async {
   // TODO IOS 작업필요
   await Firebase.initializeApp(
     options: FirebaseOptions(
-        apiKey: Platform.isAndroid ? 'AIzaSyDUoU4gKtbtj2g_-fHWN-MOhgUR36JjipY' : '',//aos: current_key, ios : API_KEY
-        appId: Platform.isAndroid ? '1:225006378443:android:6edf8cf9a844f6a1c22a4e' : '',//aos: mobilesdk_app_id, ios: GOOGLE_APP_ID
-        messagingSenderId: '225006378443',
-        projectId: 'bliu-f0068'
+        apiKey: Platform.isAndroid ? 'AIzaSyD29_ZlqFqM-bceJ4lRf5PaFa408K_iX6I' : '',//aos: current_key, ios : API_KEY
+        appId: Platform.isAndroid ? '1:1011786302073:android:0bac3f6a309e4b1663caa8' : '',//aos: mobilesdk_app_id, ios: GOOGLE_APP_ID
+        messagingSenderId: '1011786302073',
+        projectId: 'bliu-c754d'
     ),
   );
 }
