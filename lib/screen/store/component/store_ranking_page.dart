@@ -83,7 +83,9 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
       ),
+      isScrollControlled: true,
       context: context,
+      constraints: const BoxConstraints(maxHeight: 400, minHeight: 400),
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
         return StyleSelectionSheet(
@@ -92,9 +94,10 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
           onSelectionChanged: (StyleCategoryData? newSelection) {
             setState(() {
               _selectedStyle = newSelection;
-              _getList();
+              _getList(); // 스타일 선택 후 동작
             });
           },
+          scrollController: _scrollController, // 스크롤 컨트롤러 전달
         );
       },
     );
@@ -253,7 +256,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                           child: Container(
                             padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(22),
+                              borderRadius: BorderRadius.circular(19),
                               border: Border.all(color: const Color(0xFFDDDDDD)),
                             ),
                             child: Row(
@@ -278,14 +281,14 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 4.0),
+                        const SizedBox(width: 5.0),
                         // 스타일 버튼
                         GestureDetector(
                           onTap: _showStyleSelection,
                           child: Container(
                             padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(22),
+                              borderRadius: BorderRadius.circular(19),
                               border: Border.all(color: const Color(0xFFDDDDDD)),
                             ),
                             child: Row(

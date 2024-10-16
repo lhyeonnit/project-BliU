@@ -69,13 +69,15 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          padding: const EdgeInsets.only(bottom: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ...widget.ageCategories.map((category) {
-                return _buildAgeGroupChip(category);
+                return Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    child: _buildAgeGroupChip(category),
+                );
               }),
             ],
           ),
@@ -145,8 +147,17 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
     final isSelected = _tempSelectedAgeGroup?.catIdx == ageGroup.catIdx;
     return GestureDetector(
       onTap: () => _toggleSelection(ageGroup),
-      child: Chip(
-        label: Text(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(19),
+          border: Border.all(
+            color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+            width: 1.0,
+          ),
+          color: Colors.white,
+        ),
+        child: Text(
           ageGroup.catName ?? "",
           style: TextStyle(
             fontFamily: 'Pretendard',
@@ -154,15 +165,7 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
             color: isSelected ? const Color(0xFFFF6192) : Colors.black,
             height: 1.2,
           ),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
         ),
-        shape: StadiumBorder(
-          side: BorderSide(
-            color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-          ),
-        ),
-        backgroundColor: Colors.white,
       ),
     );
   }

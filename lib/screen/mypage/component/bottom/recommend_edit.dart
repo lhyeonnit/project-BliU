@@ -171,10 +171,9 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                           ),
                           Wrap(
                             spacing: 4.0,
-                            runSpacing: 5.0,
+                            runSpacing: 10.0,
                             children: styleCategories.map((style) {
                               final isSelected = _selectedStyles.any((selected) => selected.fsIdx == style.fsIdx);
-
                               return GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -187,23 +186,25 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                                     }
                                   });
                                 },
-                                child: Chip(
-                                  label: Text(style.cstName ?? '',
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(19),
+                                    border: Border.all(
+                                      color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                      width: 1.0,
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                  child: Text(
+                                    style.cstName ?? '',
                                     style: TextStyle(
-                                      fontSize: Responsive.getFont(context, 14),
                                       fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
                                       color: isSelected ? const Color(0xFFFF6192) : Colors.black,
                                       height: 1.2,
                                     ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
                                   ),
-                                  shape: StadiumBorder(
-                                    side: BorderSide(
-                                      color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-                                    ),
-                                  ),
-                                  backgroundColor: Colors.white,
                                 ),
                               );
                             }).toList(),
