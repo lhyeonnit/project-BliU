@@ -1,4 +1,6 @@
 //내정보 수정
+import 'dart:async';
+
 import 'package:BliU/data/my_page_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/main_screen.dart';
@@ -45,7 +47,9 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _authCodeController = TextEditingController();
-
+  int _authSeconds = 180;
+  String _timerStr = "00:00";
+  Timer? _timer;
   @override
   void initState() {
     super.initState();
@@ -73,7 +77,36 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
           _isIdChecked;
     });
   }
+  void _authTimerStart() {
+    if (_timer != null) {
+      _timer?.cancel();
+    }
 
+    setState(() {
+      _authSeconds = 180;
+      _timerStr = "03:00";
+    });
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      setState(() {
+        if (_authSeconds == 0) {
+          t.cancel();
+        } else {
+          _authSeconds--;
+
+          int min = _authSeconds~/60;
+          int sec = _authSeconds%60;
+          String secStr = "";
+          if (sec < 10) {
+            secStr = "0$sec";
+          } else {
+            secStr = sec.toString();
+          }
+
+          _timerStr = "0$min:$secStr";
+        }
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -210,6 +243,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                               onTap: () async {
                                 setState(() {
                                   _phoneAuthChecked = true;
+                                  _timerStr;
                                 });
                               },
                               child: Container(
@@ -260,7 +294,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                 if (resultDTO.result == true) {
                                   setState(() {
                                     _phoneAuthCodeVisible = true;
-                                    // TODO 타이머 로직 추가
+                                    _authTimerStart();
                                   });
                                 } else {
                                   if (!context.mounted) return;
