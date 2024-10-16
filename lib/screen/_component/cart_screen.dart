@@ -24,7 +24,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
   final ScrollController _scrollController = ScrollController();
 
   bool _isAllSelected = false;
-  int _selectedItemsCount = 0;
+  List<int> _cartSelectedList = [];
 
   List<CartData> _cartItems = [];
   int totalCount = 0;
@@ -72,10 +72,14 @@ class CartScreenState extends ConsumerState<CartScreen> {
         }
 
         if (_isAllSelected) {
+          _cartSelectedList = [];
           for (var item in _cartItems) {
             for (var product in (item.productList ?? [] as List<CartItemData>)) {
-              product.isSelected = true;
+              _cartSelectedList.add(product.ctIdx ?? 0);
             }
+          }
+          if (_cartSelectedList.isEmpty) {
+            _isAllSelected = false;
           }
         }
       });
@@ -107,9 +111,10 @@ class CartScreenState extends ConsumerState<CartScreen> {
             }
 
             if (_isAllSelected) {
+              _cartSelectedList = [];
               for (var item in _cartItems) {
                 for (var product in (item.productList ?? [] as List<CartItemData>)) {
-                  product.isSelected = true;
+                  _cartSelectedList.add(product.ctIdx ?? 0);
                 }
               }
             }
@@ -145,36 +150,31 @@ class CartScreenState extends ConsumerState<CartScreen> {
   void _toggleSelectAll() {
     setState(() {
       _isAllSelected = !_isAllSelected;
-      _selectedItemsCount = _isAllSelected ? totalCount : 0;
 
       // 모든 아이템의 선택 상태 업데이트
       for (var item in _cartItems) {
         for (var product in item.productList ?? [] as List<CartItemData>) {
-          product.isSelected = _isAllSelected;
+          _cartSelectedList.add(product.ctIdx ?? 0);
         }
+      }
+
+      if (!_isAllSelected) {
+        _cartSelectedList = [];
       }
     });
   }
 
   void _toggleSelection(int ctIdx, bool isSelected) {
     setState(() {
-      for (var item in _cartItems) {
-        for (var product in item.productList ?? [] as List<CartItemData>) {
-          if (product.ctIdx == ctIdx) {
-            product.isSelected = isSelected;
-          }
-        }
-      }
-
       // 선택된 항목 수 업데이트
       if (isSelected) {
-        _selectedItemsCount++;
+        _cartSelectedList.add(ctIdx);
       } else {
-        _selectedItemsCount--;
+        _cartSelectedList.remove(ctIdx);
       }
 
       // 전체 선택 상태 동기화
-      _isAllSelected = _selectedItemsCount == totalCount;
+      _isAllSelected = _cartSelectedList.length == totalCount;
     });
   }
 
@@ -183,9 +183,8 @@ class CartScreenState extends ConsumerState<CartScreen> {
     int totalProductPrice = 0;
     for (var cartItem in _cartItems) {
       for (var product in cartItem.productList ?? [] as List<CartItemData>) {
-        if (product.isSelected) {
-          totalProductPrice +=
-          ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
+        if (_cartSelectedList.contains(product.ctIdx)) {
+          totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
         }
       }
     }
@@ -196,16 +195,14 @@ class CartScreenState extends ConsumerState<CartScreen> {
     int totalDeliveryPrice = 0;
     for (var cartItem in _cartItems) {
       bool isAllCheck = true;
-      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
-        if (!product.isSelected) {
-          isAllCheck = false;
-        }
+      if (_cartSelectedList.length != totalCount) {
+        isAllCheck = false;
       }
       if (isAllCheck) {
         totalDeliveryPrice += cartItem.stDeliveryPrice ?? 0;
       } else {
         for (var product in cartItem.productList ?? [] as List<CartItemData>) {
-          if (product.isSelected) {
+          if (_cartSelectedList.contains(product.ctIdx)) {
             totalDeliveryPrice += product.ctDeliveryDefaultPrice ?? 0;
           }
         }
@@ -278,7 +275,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
       };
       List<int> ctIdxs = [];
       for (var product in cartItem.productList ?? [] as List<CartItemData>) {
-        if (product.isSelected) {
+        if (_cartSelectedList.contains(product.ctIdx)) {
           ctIdxs.add(product.ctIdx ?? 0);
         }
       }
@@ -409,7 +406,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
                                 width: 10,
                               ),
                               Text(
-                                '전체선택($_selectedItemsCount/$totalCount)',
+                                '전체선택(${_cartSelectedList.length}/$totalCount)',
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
@@ -499,7 +496,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
                             children: productList.map((product) {
                               return CartItem(
                                 item: product,
-                                isSelected: product.isSelected,
+                                isSelected: _cartSelectedList.contains(product.ctIdx),
                                 onIncrementQuantity: (index) {
                                   setState(() {
                                     final cartCount = (product.ptCount ?? 0) + 1;
@@ -733,13 +730,13 @@ class CartScreenState extends ConsumerState<CartScreen> {
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
-                    if (_selectedItemsCount > 0) {
+                    if (_cartSelectedList.isNotEmpty) {
                       _goOrder();
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 48),
-                    backgroundColor: _selectedItemsCount > 0 ? Colors.black : const Color(0xFFDDDDDD), // 선택된 항목이 없으면 회색
+                    backgroundColor: _cartSelectedList.isNotEmpty ? Colors.black : const Color(0xFFDDDDDD), // 선택된 항목이 없으면 회색
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.0),
                     ),

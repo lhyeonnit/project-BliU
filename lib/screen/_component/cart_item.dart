@@ -51,12 +51,9 @@ class _CartItemState extends State<CartItem> {
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(6)),
                   border: Border.all(
-                      color: widget.isSelected
-                          ? const Color(0xFFFF6191)
-                          : const Color(0xFFCCCCCC)),
-                  color: widget.isSelected
-                      ? const Color(0xFFFF6191)
-                      : Colors.white,
+                    color: widget.isSelected ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC)
+                  ),
+                  color: widget.isSelected ? const Color(0xFFFF6191) : Colors.white,
                 ),
                 child: SvgPicture.asset(
                   'assets/images/check01_off.svg', // 체크박스 아이콘 경로

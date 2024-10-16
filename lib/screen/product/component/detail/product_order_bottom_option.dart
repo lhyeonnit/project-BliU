@@ -6,6 +6,7 @@ import 'package:BliU/data/product_option_data.dart';
 import 'package:BliU/data/product_option_type_data.dart';
 import 'package:BliU/data/product_option_type_detail_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
+import 'package:BliU/screen/payment/payment_screen.dart';
 import 'package:BliU/screen/product/viewmodel/product_order_bottom_option_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -770,7 +771,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
       addProducts.add(addProduct);
     }
 
-    Map<String, dynamic> requestData = {
+    Map<String, dynamic> requestData1 = {
       'type': memberType, //회원 1 비회원2
       'add_type': addType, //장바구니 0  구매하기 1
       'mt_idx': mtIdx,
@@ -780,107 +781,140 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
       'addProducts': json.encode(addProducts),
     };
 
-    final responseDto = await ref.read(productOrderBottomOptionModelProvider.notifier).addCart(requestData);
-    if (responseDto != null) {
-      Utils.getInstance().showToast(responseDto.message ?? "");
-      if (responseDto.result == true) {
-        // TODO 장바구니 담을시 또는 구매일시 뷰 전환
-        Navigator.pop(context);
-        showDialog(
-          context: context,
-          builder: (context) {
-            return Dialog(
-              backgroundColor: Colors.white,
-              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 350,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/product/complete_img.svg',
-                      width: 90,
-                      height: 90,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 30),
-                      child: Text(
-                        '장바구니에 상품을 담았습니다.',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 18),
-                          fontWeight: FontWeight.bold,
-                          height: 1.2,
-                        ),
+    final responseData = await ref.read(productOrderBottomOptionModelProvider.notifier).addCart(requestData1);
+    if (responseData != null) {
+      if (responseData['result'] == true) {
+        if(!mounted) return;
+
+        if (addType == 0) {
+          Utils.getInstance().showToast(responseData['data']['message'].message ?? "");
+
+          Navigator.pop(context);
+          showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                backgroundColor: Colors.white,
+                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 350,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/product/complete_img.svg',
+                        width: 90,
+                        height: 90,
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const CartScreen()),
-                        );
-                      },
-                      child: Container(
-                        height: 44,
-                        decoration: const BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(6),
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 30),
+                        child: Text(
+                          '장바구니에 상품을 담았습니다.',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 18),
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
                           ),
                         ),
-                        child: Center(
-                          child: Text(
-                            '담은 상품 보러 가기',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.normal,
-                              color: Colors.white,
-                              height: 1.2,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CartScreen()),
+                          );
+                        },
+                        child: Container(
+                          height: 44,
+                          decoration: const BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(6),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '담은 상품 보러 가기',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 10),
-                        height: 44,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(6),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(6),
+                            ),
+                            border: Border.all(color: const Color(0xFFDDDDDD)),
                           ),
-                          border: Border.all(color: const Color(0xFFDDDDDD)),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '계속 쇼핑하기',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.normal,
-                              color: Colors.black,
-                              height: 1.2,
+                          child: Center(
+                            child: Text(
+                              '계속 쇼핑하기',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
-        );
+              );
+            },
+          );
+        } else {
+
+          Map<String, dynamic> requestData2 = {
+            'type': memberType,
+            'ot_idx': '',
+            'mt_idx': mtIdx,
+            'temp_mt_id': appToken,
+            'cart_arr': responseData['data']['cart_arr'],
+          };
+
+          final payOrderDetailDTO = await ref.read(productOrderBottomOptionModelProvider.notifier).orderDetail(requestData2);
+          if (payOrderDetailDTO != null) {
+            final payOrderDetailData = payOrderDetailDTO.data;
+
+            if (payOrderDetailData != null) {
+              if(!mounted) return;
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PaymentScreen(
+                    payOrderDetailData: payOrderDetailData,
+                  ),
+                ),
+              );
+            }
+          }
+        }
+      } else {
+        Utils.getInstance().showToast(responseData['data']['message'].message ?? "");
       }
     }
   }

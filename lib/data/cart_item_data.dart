@@ -10,7 +10,6 @@ class CartItemData {
   final int? allPtPrice;
   final String? ptOption;
   final int? ctDeliveryDefaultPrice;
-  bool isSelected = false;
 
   CartItemData({
     required this.ctIdx,
