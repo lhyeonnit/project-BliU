@@ -5,6 +5,7 @@ import 'package:BliU/screen/join/viewmodel/join_form_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -26,13 +27,18 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
   bool _phoneAuthChecked = false;
   String? _selectedGender; // 성별을 저장하는 변수
 
+  final TextEditingController _birthController = TextEditingController(text: '생년월일입력');
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _authCodeController = TextEditingController();
-  DateTime? _selectedDate;
+  DateTime? tempPickedDate;
+  DateTime _selectedDate = DateTime.now();
+  int selectedYear = DateTime.now().year;
+  int selectedMonth = DateTime.now().month;
+  int selectedDay = DateTime.now().day;
 
   int _authSeconds = 180;
   String _timerStr = "00:00";
@@ -62,21 +68,6 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
       // && _selectedDate != null
       // && _selectedGender != null; // 성별이 선택되었는지 확인
     });
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime(2000),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-        _checkIfAllFieldsFilled();
-      });
-    }
   }
 
   void _authTimerStart() {
@@ -374,16 +365,40 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         ],
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () => _selectDate(context),
-                      child: AbsorbPointer(
-                        child: _buildOrTextField(
-                            '생년월일',
-                            TextEditingController(
-                                text: _selectedDate == null ? '생년월일 선택'
-                                    : '${_selectedDate!.year}-${_selectedDate!.month}-${_selectedDate!.day}'),
-                            ''),
+                    Container(
+                      margin: EdgeInsets.only(top: 20, bottom: 10),
+                      child: Row(
+                        children: [
+                          Text('생년월일',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.bold,
+                                fontSize: Responsive.getFont(context, 13),
+                                height: 1.2,
+                              )
+                          ),
+                          Container(
+                              margin: EdgeInsets.only(left: 4),
+                              child: Text('선택',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Responsive.getFont(context, 13),
+                                    color: const Color(0xFFFF6192),
+                                    height: 1.2,
+                                  )
+                              )
+                          ),
+                        ],
                       ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        border: Border.all(color: Color(0xFFDDDDDD)),
+                      ),
+                      child: _birthdayText(),
                     ),
                     GestureDetector(
                       onTap: () {},
@@ -480,83 +495,87 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: GestureDetector(
-              onTap: _isAllFieldsFilled
-                  ? () async {
-                      // TODO 회원가입 확인 로직 추가
-                      if (_passwordController.text != _confirmPasswordController.text) {
-                        Utils.getInstance().showSnackBar(context, "비밀번호가 서로 다릅니다 다시 입력해 주세요.");
-                        return;
-                      }
-
-                      String id = _idController.text;
-                      final pwd = _passwordController.text;
-                      final pwdChk = _confirmPasswordController.text;
-                      String name = _nameController.text;
-                      String phoneNum = _phoneController.text;
-                      final phoneNumChk = _phoneAuthChecked ? "Y" : "N";
-                      String birthDay = "";
-                      try {
-                        if (_selectedDate != null) {
-                          birthDay = DateFormat("yyyy-MM-dd").format(_selectedDate!);
+            child: Container(
+              width: double.infinity,
+              color: Colors.white,
+              child: GestureDetector(
+                onTap: _isAllFieldsFilled
+                    ? () async {
+                        // TODO 회원가입 확인 로직 추가
+                        if (_passwordController.text != _confirmPasswordController.text) {
+                          Utils.getInstance().showSnackBar(context, "비밀번호가 서로 다릅니다 다시 입력해 주세요.");
+                          return;
                         }
-                      } catch (e) {
-                        print("DateError $e");
-                      }
-                      String gender = "";
-                      if (_selectedGender == "남자") {
-                        gender = "M";
-                      } else if (_selectedGender == "여자") {
-                        gender = "F";
-                      }
 
-                      final pref = await SharedPreferencesManager.getInstance();
-                      Map<String, dynamic> requestData = {
-                        'id': id,
-                        'pwd': pwd,
-                        'pwd_chk': pwdChk,
-                        'name': name,
-                        'phone_num': phoneNum,
-                        'phone_num_chk': phoneNumChk,
-                        'birth_day': birthDay,
-                        'gender': gender,
-                        'app_token': pref.getToken(),
-                      };
+                        String id = _idController.text;
+                        final pwd = _passwordController.text;
+                        final pwdChk = _confirmPasswordController.text;
+                        String name = _nameController.text;
+                        String phoneNum = _phoneController.text;
+                        final phoneNumChk = _phoneAuthChecked ? "Y" : "N";
+                        String birthDay = "";
+                        try {
+                          if (_selectedDate != null) {
+                            birthDay = DateFormat("yyyy-MM-dd").format(_selectedDate!);
+                          }
+                        } catch (e) {
+                          print("DateError $e");
+                        }
+                        String gender = "";
+                        if (_selectedGender == "남자") {
+                          gender = "M";
+                        } else if (_selectedGender == "여자") {
+                          gender = "F";
+                        }
 
-                      final myPageInfoDTO = await ref.read(joinFormModelProvider.notifier).join(requestData);
-                      if (myPageInfoDTO != null && myPageInfoDTO.result == true) {
-                        id = myPageInfoDTO.data?.mtId ?? '';
-                        name = myPageInfoDTO.data?.mtName ?? '';
-                        phoneNum = myPageInfoDTO.data?.mtHp ?? '';
-                        birthDay = myPageInfoDTO.data?.mtBirth ?? '';
-                        gender = myPageInfoDTO.data?.mtGender ?? '';
+                        final pref = await SharedPreferencesManager.getInstance();
+                        Map<String, dynamic> requestData = {
+                          'id': id,
+                          'pwd': pwd,
+                          'pwd_chk': pwdChk,
+                          'name': name,
+                          'phone_num': phoneNum,
+                          'phone_num_chk': phoneNumChk,
+                          'birth_day': birthDay,
+                          'gender': gender,
+                          'app_token': pref.getToken(),
+                        };
 
-                        if (!context.mounted) return;
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const JoinCompleteScreen(),),);
-                      } else {
-                        if (!context.mounted) return;
-                        Utils.getInstance().showSnackBar(context, "회원 가입에 실패했습니다.");
-                      }
-              }
-              : null,
-              child: Container(
-                width: double.infinity,
-                height: Responsive.getHeight(context, 48),
-                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
-                decoration: BoxDecoration(
-                  color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(6),
+                        final myPageInfoDTO = await ref.read(joinFormModelProvider.notifier).join(requestData);
+                        if (myPageInfoDTO != null && myPageInfoDTO.result == true) {
+                          id = myPageInfoDTO.data?.mtId ?? '';
+                          name = myPageInfoDTO.data?.mtName ?? '';
+                          phoneNum = myPageInfoDTO.data?.mtHp ?? '';
+                          birthDay = myPageInfoDTO.data?.mtBirth ?? '';
+                          gender = myPageInfoDTO.data?.mtGender ?? '';
+
+                          if (!context.mounted) return;
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const JoinCompleteScreen(),),);
+                        } else {
+                          if (!context.mounted) return;
+                          Utils.getInstance().showSnackBar(context, "회원 가입에 실패했습니다.");
+                        }
+                }
+                : null,
+                child: Container(
+                  width: double.infinity,
+                  height: Responsive.getHeight(context, 48),
+                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                  decoration: BoxDecoration(
+                    color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(6),
+                    ),
                   ),
-                ),
-                child: Center(
-                  child: Text(
-                    '확인',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
-                      height: 1.2,
+                  child: Center(
+                    child: Text(
+                      '확인',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
+                        height: 1.2,
+                      ),
                     ),
                   ),
                 ),
@@ -689,76 +708,6 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
     );
   }
 
-  Widget _buildOrTextField(
-      String label, TextEditingController controller, String hintText,
-      {bool obscureText = false,
-      TextInputType keyboardType = TextInputType.text,
-      bool isEnable = true}) {
-    return Container(
-      margin: const EdgeInsets.only(top: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // if (label.isNotEmpty)
-          Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            child: Row(
-              children: [
-                Text(label,
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.bold,
-                    fontSize: Responsive.getFont(context, 13),
-                    height: 1.2,
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 4),
-                  child: Text('선택',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.bold,
-                      fontSize: Responsive.getFont(context, 13),
-                      color: const Color(0xFFFF6192),
-                      height: 1.2,
-                    )
-                  )
-                ),
-              ],
-            ),
-          ),
-          TextField(
-            style: TextStyle(
-              fontFamily: 'Pretendard',
-              fontSize: Responsive.getFont(context, 14),
-            ),
-            enabled: isEnable,
-            controller: controller,
-            obscureText: obscureText,
-            keyboardType: keyboardType,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-              hintText: hintText,
-              hintStyle: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14),
-                color:const Color(0xFF595959)
-              ),
-              enabledBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(6)),
-                borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(6)),
-                borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildGenderButton(String gender) {
     bool isSelected = _selectedGender == gender;
     return GestureDetector(
@@ -790,5 +739,254 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
         )
       ),
     );
+  }
+  Widget _birthdayText() {
+    return GestureDetector(
+      onTap: () {
+        _selectDate();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+        child: TextFormField(
+          textAlign: TextAlign.start,
+          enabled: false,
+          decoration: InputDecoration(
+            isDense: true,
+            border: InputBorder.none,
+          ),
+          controller: _birthController,
+          style: TextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 14),
+            color: Color(0xFF595959),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _selectDate() async {
+    DateTime? pickedDate = await showModalBottomSheet<DateTime>(
+      backgroundColor: Colors.white,
+      context: context,
+      isScrollControlled: true, // 모달이 화면을 꽉 채우도록 설정
+      builder: (context) {
+        return Container(
+          height: 400,
+          color: Colors.white,
+          child: Column(
+            children: <Widget>[
+              // 상단 타이틀과 닫기 버튼
+              Padding(
+                padding: const EdgeInsets.only(
+                    right: 16.0, left: 16, top: 18, bottom: 17),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '출생년도',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 18),
+                        fontWeight: FontWeight.w600,
+                        height: 1.2,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Icon(Icons.close),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                height: 1,
+                thickness: 1,
+                color: Color(0xFFEEEEEE),
+              ),
+              // 날짜 선택기
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 17),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // 년도 선택 부분
+                      Expanded(
+                        child: CupertinoPicker(
+                          backgroundColor: Colors.white,
+                          diameterRatio: 5.0,
+                          itemExtent: 50,
+                          selectionOverlay: Container(
+                            margin: EdgeInsets.only(left: 17, right: 15),
+                            decoration: BoxDecoration(
+                              border: Border.symmetric(
+                                  horizontal:
+                                  BorderSide(color: Color(0xFFDDDDDD))),
+                            ),
+                          ),
+                          squeeze: 0.9,
+                          scrollController: FixedExtentScrollController(
+                              initialItem: selectedYear - 1900),
+                          onSelectedItemChanged: (int index) {
+                            setState(() {
+                              selectedYear = 1900 + index;
+                            });
+                          },
+                          children: List<Widget>.generate(
+                            DateTime.now().year - 1900 + 1,
+                                (int index) {
+                              return Center(
+                                child: Text(
+                                  '${1900 + index}년', // 년도로 표시
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 16),
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.2,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+
+                      // 월 선택 부분
+                      Expanded(
+                        child: CupertinoPicker(
+                          backgroundColor: Colors.white,
+                          itemExtent: 50,
+                          selectionOverlay: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 15),
+                            decoration: BoxDecoration(
+                              border: Border.symmetric(
+                                  horizontal:
+                                  BorderSide(color: Color(0xFFDDDDDD))),
+                            ),
+                          ),
+                          diameterRatio: 5.0,
+                          squeeze: 0.9,
+                          scrollController: FixedExtentScrollController(
+                              initialItem: selectedMonth - 1),
+                          onSelectedItemChanged: (int index) {
+                            setState(() {
+                              selectedMonth = index + 1;
+                            });
+                          },
+                          children: List<Widget>.generate(12, (int index) {
+                            return Center(
+                              child: Text(
+                                '${index + 1}월', // 월로 표시
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 16),
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ), // 일 선택 부분
+                      Expanded(
+                        child: CupertinoPicker(
+                          backgroundColor: Colors.white,
+                          itemExtent: 50,
+                          selectionOverlay: Container(
+                            margin: EdgeInsets.only(left: 15, right: 17),
+                            decoration: BoxDecoration(
+                              border: Border.symmetric(
+                                  horizontal:
+                                  BorderSide(color: Color(0xFFDDDDDD))),
+                            ),
+                          ),
+                          diameterRatio: 5.0,
+                          squeeze: 0.9,
+                          scrollController: FixedExtentScrollController(
+                              initialItem: selectedDay - 1),
+                          onSelectedItemChanged: (int index) {
+                            setState(() {
+                              selectedDay = index + 1;
+                            });
+                          },
+                          children: List<Widget>.generate(31, (int index) {
+                            return Center(
+                              child: Text(
+                                '${index + 1}일', // 일로 표시
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 16),
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // '선택하기' 버튼
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _selectedDate = DateTime(
+                      selectedYear,
+                      selectedMonth,
+                      selectedDay,
+                    );
+                    _birthController.text =
+                        convertDateTimeDisplay(_selectedDate.toString());
+                  });
+                  Navigator.of(context).pop();
+                  FocusScope.of(context).unfocus();
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: Responsive.getHeight(context, 48),
+                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(6),
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '선택하기',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        color: Colors.white,
+                        height: 1.2,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (pickedDate != null && pickedDate != _selectedDate) {
+      setState(() {
+        _selectedDate = pickedDate;
+        _birthController.text = convertDateTimeDisplay(pickedDate.toString());
+      });
+    }
+  }
+
+  String convertDateTimeDisplay(String date) {
+    final DateFormat displayFormatter = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
+    final DateFormat serverFormatter = DateFormat('yyyy년 MM월 dd일');
+    final DateTime displayDate = displayFormatter.parse(date);
+    return serverFormatter.format(displayDate);
   }
 }
