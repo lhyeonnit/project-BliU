@@ -38,8 +38,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
   Future<void> checkPermission() async {
     final permissionState = await PhotoManager.requestPermissionExtend(
       requestOption: const PermissionRequestOption(
-        androidPermission:
-        AndroidPermission(type: RequestType.image, mediaLocation: true),
+        androidPermission: AndroidPermission(type: RequestType.image, mediaLocation: true),
       ),
     );
     final hasPhotoPermission = permissionState.isAuth;
@@ -59,7 +58,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
     _albums = _paths!.map((e) {
       return Album(
         id: e.id,
-        name: e.isAll ? '모든 사진' : e.name,
+        name: e.isAll ? '최근항목' : e.name,
       );
     }).toList();
 
@@ -76,10 +75,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
 
     final loadImages = await _paths!
         .singleWhere((AssetPathEntity e) => e.id == album.id)
-        .getAssetListRange(
-      start: 0,         // 처음부터
-      end: totalAssets, // 마지막까지 (모든 사진)
-    );
+        .getAssetListRange(start: 0, end: totalAssets);
 
     setState(() {
       _images = loadImages;
@@ -127,9 +123,8 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
               Navigator.pop(context);
             },
             child: Container(
-              margin: const EdgeInsets.only(right: 16),
-              child: SvgPicture.asset('assets/images/product/ic_close.svg')
-            ),
+                margin: const EdgeInsets.only(right: 16),
+                child: SvgPicture.asset('assets/images/product/ic_close.svg')),
           ),
         ],
       ),
@@ -138,37 +133,88 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
         children: [
           Container(
             margin: const EdgeInsets.symmetric(vertical: 40),
-            padding: const EdgeInsets.only(left: 16,),
+            padding: const EdgeInsets.only(left: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   margin: const EdgeInsets.only(bottom: 20),
-                  child: _buildSmartLensInfo("assets/images/home/그룹 37779.png", '이미지 검색 기능',
+                  child: _buildSmartLensInfo(
+                      "assets/images/home/그룹 37779.png",
+                      '이미지 검색 기능',
                       '사용자가 사진을 찍거나 이미지를 업로드하면, \n해당 이미지와 유사한 패션 아이템을 찾아줍니다.'),
                 ),
-                _buildSmartLensInfo("assets/images/home/그룹 37234.png", '인공지능 기반 추천',
+                _buildSmartLensInfo(
+                    "assets/images/home/그룹 37234.png",
+                    '인공지능 기반 추천',
                     '인공지능(AI)을 활용해 사용자의 취향을 분석하고, \n관련된 패션 아이템을 추천')
               ],
             ),
           ),
           Container(
+            color: Colors.white,
             margin: const EdgeInsets.only(left: 16),
-              child: _albums.isNotEmpty
-                  ? DropdownButton(
-                      value: _currentAlbum,
-                      items: _albums.map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e.name),
-                              ),
-                      ).toList(),
-                      onChanged: (Album? value) => getPhotos(value!, albumChange: true),
-                    )
-                  : const SizedBox()),
+            child: _albums.isNotEmpty
+                ? GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        backgroundColor: Colors.white,
+
+                        builder: (BuildContext context) {
+                          return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: _albums.map((album) {
+                                return ListTile(
+                                  title: Text(
+                                    album.name,
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    getPhotos(album, albumChange: true);
+                                    Navigator.pop(context);
+                                  },
+                                );
+                              }).toList(),
+                            );
+                        },
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 20),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            _currentAlbum.name,
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black, // 텍스트 색상
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                            child: SvgPicture.asset(
+                              'assets/images/product/ic_select.svg',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : const SizedBox(),
+          ),
           Expanded(
             child: NotificationListener<ScrollNotification>(
               onNotification: (ScrollNotification scroll) {
-                final scrollPixels = scroll.metrics.pixels / scroll.metrics.maxScrollExtent;
+                final scrollPixels =
+                    scroll.metrics.pixels / scroll.metrics.maxScrollExtent;
                 if (scrollPixels > 0.7) getPhotos(_currentAlbum);
                 return false;
               },
@@ -203,17 +249,16 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 16),
-                    fontWeight: FontWeight.bold,
-                    height: 1.2,
-                  ),
-                )
-              ),
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 16),
+                      fontWeight: FontWeight.bold,
+                      height: 1.2,
+                    ),
+                  )),
               Text(
                 content,
                 style: TextStyle(

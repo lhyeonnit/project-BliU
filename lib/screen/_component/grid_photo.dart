@@ -19,8 +19,8 @@ class _GridPhotoState extends State<GridPhoto> {
       physics: const BouncingScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
-        crossAxisSpacing: 0.5,
-        mainAxisSpacing: 0.5,
+        crossAxisSpacing: 1,
+        mainAxisSpacing: 1,
       ),
       children: widget.images.map((e) {
         return GestureDetector(
