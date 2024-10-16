@@ -3,11 +3,15 @@ import 'package:BliU/data/coupon_data.dart';
 class CouponResponseDTO {
   final bool? result;
   final String? message;
+  final int? count;
+  final int? downAbleCount;
   final List<CouponData>? list;
 
   CouponResponseDTO({
     required this.result,
     required this.message,
+    required this.count,
+    required this.downAbleCount,
     required this.list
   });
 
@@ -20,6 +24,8 @@ class CouponResponseDTO {
     return CouponResponseDTO(
       result: json['result'],
       message: json['data']['message'],
+      count: json['data']['count'],
+      downAbleCount: json['data']['downAbleCount'],
       list: list,
     );
   }
@@ -30,6 +36,8 @@ class CouponResponseDTO {
       'result': result,
       'message': message,
       'data': {
+        'count': count,
+        'downAbleCount': downAbleCount,
         'list': list?.map((it) => it.toJson()).toList()
       },
     };

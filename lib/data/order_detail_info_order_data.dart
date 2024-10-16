@@ -1,4 +1,4 @@
-import 'package:BliU/data/product_coupon_data.dart';
+import 'package:BliU/data/coupon_data.dart';
 
 class OrderDetailInfoOrderData {
   final int? otDeliveryCharge;
@@ -7,7 +7,7 @@ class OrderDetailInfoOrderData {
   final int? otSprice;
   final int? otUsePoint;
   final int? otUseCoupon;
-  final ProductCouponData? otCouponInfo;
+  final CouponData? otCouponInfo;
 
   OrderDetailInfoOrderData({
     required this.otDeliveryCharge,
@@ -28,7 +28,7 @@ class OrderDetailInfoOrderData {
       otSprice: json['ot_sprice'],
       otUsePoint: json['ot_use_point'],
       otUseCoupon: json['ot_use_coupon'],
-      otCouponInfo: ProductCouponData.fromJson(json['ot_coupon_info']),
+      otCouponInfo: CouponData.fromJson(json['ot_coupon_info']),
     );
   }
 

@@ -1,4 +1,4 @@
-import 'package:BliU/data/product_coupon_data.dart';
+import 'package:BliU/data/coupon_data.dart';
 import 'package:BliU/screen/mypage/viewmodel/my_coupon_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -19,7 +19,7 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
   final List<String> _categories = ['사용가능', '완료/만료'];
   int _selectedCategoryIndex = 0;
 
-  List<ProductCouponData> _couponList = [];
+  List<CouponData> _couponList = [];
   int _couponCount = 0;
 
   int _page = 1;

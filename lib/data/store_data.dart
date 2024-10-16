@@ -64,7 +64,7 @@ class StoreData {
       'st_age': stAge,
       'st_age_txt': stAgeTxt,
       'st_txt2': stTxt2,
-      'list': list?.map((product) => product.toJson()).toList(),
+      'list': list.map((product) => product.toJson()).toList(),
     };
   }
 }

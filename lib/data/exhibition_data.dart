@@ -57,7 +57,7 @@ class ExhibitionData {
       'et_banner': etBanner,
       'et_detail_banner': etDetailBanner,
       'et_product_count': etProductCount,
-      'product': product?.map((it) => it.toJson()).toList(),
+      'product': product.map((it) => it.toJson()).toList(),
       'pt_img': ptImg,
     };
   }

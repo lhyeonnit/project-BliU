@@ -1,5 +1,4 @@
 import 'package:BliU/data/order_data.dart';
-import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_list_item.dart';

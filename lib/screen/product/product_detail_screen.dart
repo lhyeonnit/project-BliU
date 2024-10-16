@@ -3,7 +3,6 @@ import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/qna_data.dart';
 import 'package:BliU/data/review_data.dart';
 import 'package:BliU/data/store_data.dart';
-import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_screen.dart';

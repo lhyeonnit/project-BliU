@@ -1,5 +1,4 @@
 import 'package:BliU/data/member_info_data.dart';
-import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/common/recommend_info_screen.dart';
 import 'package:BliU/screen/main_screen.dart';

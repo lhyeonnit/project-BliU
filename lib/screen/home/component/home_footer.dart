@@ -21,15 +21,6 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
       '제 통신판매업신고번호 : ###############\n'
       '주소 : ####################';
 
-  late final AnimationController _controller = AnimationController(
-      duration: const Duration(milliseconds: 150),
-      vsync: this);
-
-  late final Animation<double> _animation = CurvedAnimation(
-    parent: _controller,
-    curve: Curves.easeIn,
-  );
-
   @override
   void initState() {
     super.initState();
@@ -174,8 +165,7 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
             curve: Curves.fastOutSlowIn,
             child: Container(
               child: !isExpand
-                  ? null
-                  :
+                  ? null :
               Text(
                 footInfo,
                 textAlign: TextAlign.center,

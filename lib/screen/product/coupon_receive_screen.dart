@@ -1,4 +1,6 @@
-import 'package:BliU/data/product_coupon_data.dart';
+import 'dart:convert';
+
+import 'package:BliU/data/coupon_data.dart';
 import 'package:BliU/screen/product/component/detail/coupon_card.dart';
 import 'package:BliU/screen/product/viewmodel/coupon_receive_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -18,13 +20,15 @@ class CouponReceiveScreen extends ConsumerStatefulWidget {
 }
 
 class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
-  late int ptIdx;
-  bool isAllDownload = false;
+  late int _ptIdx;
+  bool _isAllDownload = false;
+
+  List<CouponData> _couponList = [];
 
   @override
   void initState() {
     super.initState();
-    ptIdx = widget.ptIdx ?? 0;
+    _ptIdx = widget.ptIdx ?? 0;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -72,86 +76,66 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
           ),
         ),
       ),
-      body: Stack(
+      body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Consumer(builder: (context, ref, widget) {
-                    final model = ref.watch(couponReceiveModelProvider);
-                    List<ProductCouponData> list = model?.productCouponResponseDTO?.list ?? [];
-                    // TODO 전체다운 받아지는지 확인
-                    // setState(() {
-                    //   //isAllDownload = true;
-                    // });
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+              child: ListView.builder(
+                itemCount: _couponList.length,
+                itemBuilder: (context, index) {
+                  final couponData = _couponList[index];
 
-                    return ListView.builder(
-                      itemCount: list.length,
-                      itemBuilder: (context, index) {
-                        final productCouponData = list[index];
+                  final couponDiscount = couponData.couponDiscount ?? "0";
+                  final ctName = couponData.ctName ?? "";
+                  final ctDate = "${couponData.ctDate ?? ""}까지 사용가능";
 
-                        final couponDiscount = productCouponData.couponDiscount ?? "0";
-                        final ctName = productCouponData.ctName ?? "";
-                        final ctDate = "${productCouponData.ctDate ?? ""}까지 사용가능";
+                  String detailMessage = "구매금액 ${Utils.getInstance().priceString(couponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
+                  if (couponData.ctMaxPrice != null) {
+                    detailMessage = "최대 ${Utils.getInstance().priceString(couponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
+                  }
 
-                        String detailMessage = "구매금액 ${Utils.getInstance().priceString(productCouponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
-                        if (productCouponData.ctMaxPrice != null) {
-                          detailMessage = "최대 ${Utils.getInstance().priceString(productCouponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
-                        }
-
-                        return CouponCard(
-                          discount: couponDiscount,
-                          title: ctName,
-                          expiryDate: ctDate,
-                          discountDetails: detailMessage,
-                          isDownloaded: productCouponData.down == "Y" ? true : false,
-                          // 상태 전달
-                          onDownload: () {
-                            setState(() {
-                              // TODO 다운로드 로직 필요
-                              list[index].down = "Y";
-                            });
-                          },
-                          couponKey: index.toString(), // 고유한 키 전달
-                        );
-                      },
-                    );
-                  }),
-                ),
-              ],
+                  return CouponCard(
+                    discount: couponDiscount,
+                    title: ctName,
+                    expiryDate: ctDate,
+                    discountDetails: detailMessage,
+                    isDownload: couponData.down == "Y" ? true : false,
+                    onDownload: () {
+                      if ((couponData.ctCode ?? "").isNotEmpty) {
+                        _couponDownload([(couponData.ctCode ?? "")]);
+                      }
+                    },
+                    couponKey: index.toString(), // 고유한 키 전달
+                  );
+                },
+              ),
             ),
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: GestureDetector(
-              onTap: () {
-                _allCouponDownload();
-              },
-              child: Container(
-                width: double.infinity,
-                height: Responsive.getHeight(context, 48),
-                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
-                decoration: BoxDecoration(
-                  color: isAllDownload
-                      ? const Color(0xFFDDDDDD) // 모든 쿠폰이 다운로드된 경우 회색으로 비활성화
-                      : Colors.black, // 다운로드할 쿠폰이 있으면 활성화
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(6),
-                  ),
+          GestureDetector(
+            onTap: () {
+              _allCouponDownload();
+            },
+            child: Container(
+              height: Responsive.getHeight(context, 48),
+              margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+              decoration: BoxDecoration(
+                color: _isAllDownload
+                    ? Colors.black // 모든 쿠폰이 다운로드된 경우 회색으로 비활성화
+                    : const Color(0xFFDDDDDD), // 다운로드할 쿠폰이 있으면 활성화
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(6),
                 ),
-                child: Center(
-                  child: Text(
-                    '전체받기',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      color: Colors.white,
-                      height: 1.2,
-                    ),
+              ),
+              child: Center(
+                child: Text(
+                  '전체받기',
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 14),
+                    color: Colors.white,
+                    height: 1.2,
                   ),
                 ),
               ),
@@ -170,12 +154,43 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
     final pref = await SharedPreferencesManager.getInstance();
     Map<String, dynamic> requestData = {
       'mt_idx': pref.getMtIdx(),
-      'pt_idx': ptIdx,
+      'pt_idx': _ptIdx,
     };
 
-    ref.read(couponReceiveModelProvider.notifier).getList(requestData);
+    final productCouponResponseDTO = await ref.read(couponReceiveModelProvider.notifier).getList(requestData);
+    setState(() {
+      int downAbleCount = productCouponResponseDTO?.downAbleCount ?? 0;
+      _couponList = productCouponResponseDTO?.list ?? [];
+      _isAllDownload = downAbleCount == 0 ? false : true;
+    });
   }
 
   // 전체쿠폰 다운로드
-  void _allCouponDownload() async {}
+  void _allCouponDownload() async {
+    List<String> ctCodes = [];
+    for (var couponData in _couponList) {
+      if (couponData.down == "Y") {
+        ctCodes.add(couponData.ctCode ?? "");
+      }
+    }
+    if (ctCodes.isNotEmpty) {
+      _couponDownload(ctCodes);
+    }
+  }
+  
+  void _couponDownload(List<String> ctCodes) async {
+    final pref = await SharedPreferencesManager.getInstance();
+    Map<String, dynamic> requestData = {
+      'mt_idx': pref.getMtIdx(),
+      'ct_codes': json.encode(ctCodes),
+    };
+
+    final defaultResponseDTO = await ref.read(couponReceiveModelProvider.notifier).couponDown(requestData);
+    if (defaultResponseDTO != null) {
+      Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+      if (defaultResponseDTO.result == true) {
+        _getList();
+      }
+    }
+  }
 }
