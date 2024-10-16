@@ -42,6 +42,7 @@ class PaymentIamport extends StatelessWidget {
       data: PaymentData(
         pg: Constant.iamportPg, // PG사
         payMethod: iamportPayData.payMethod, // 결제수단
+        digital: true,
         name: iamportPayData.name, // 주문명
         merchantUid: iamportPayData.merchantUid, // 주문번호
         amount: iamportPayData.amount, // 결제금액

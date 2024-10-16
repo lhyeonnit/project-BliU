@@ -787,7 +787,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
         if(!mounted) return;
 
         if (addType == 0) {
-          Utils.getInstance().showToast(responseData['data']['message'].message ?? "");
+          Utils.getInstance().showToast(responseData['data']['message'] ?? "");
 
           Navigator.pop(context);
           showDialog(

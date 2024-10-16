@@ -143,7 +143,7 @@ class PaymentCouponState extends State<PaymentCoupon> {
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(context, 16),
-                                        color: const Color(0xFFFF6192),
+                                        color: coupon.couponUsealbe == "Y" ? const Color(0xFFFF6192) : const Color(0xFFA4A4A4),
                                         fontWeight: FontWeight.bold,
                                         height: 1.2,
                                       ),
@@ -156,6 +156,7 @@ class PaymentCouponState extends State<PaymentCoupon> {
                                           fontFamily: 'Pretendard',
                                           fontSize: Responsive.getFont(context, 16),
                                           fontWeight: FontWeight.bold,
+                                          color: coupon.couponUsealbe == "Y" ? Colors.black : const Color(0xFFA4A4A4),
                                           height: 1.2,
                                         ),
                                       ),
@@ -169,6 +170,7 @@ class PaymentCouponState extends State<PaymentCoupon> {
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
+                                      color: coupon.couponUsealbe == "Y" ? Colors.black : const Color(0xFFA4A4A4),
                                       height: 1.2,
                                     ),
                                   ),

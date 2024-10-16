@@ -234,7 +234,7 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
     final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
     storeData = storeResponseDTO?.data;
     _productList = storeResponseDTO?.data.list ?? [];
-    _count = storeResponseDTO?.data.list?.length ?? 0;
+    _count = storeResponseDTO?.data.list.length ?? 0;
 
     setState(() {
       _isFirstLoadRunning = false;

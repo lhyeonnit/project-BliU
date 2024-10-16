@@ -160,7 +160,6 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
               height: 40,
               padding: const EdgeInsets.symmetric(horizontal: 13.0),
               child: ListView.builder(
-                controller: _scrollController,
                 scrollDirection: Axis.horizontal,
                 itemCount: _categories.length,
                 itemBuilder: (context, index) {
@@ -211,128 +210,131 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: _couponList.length,
-              itemBuilder: (context, index) {
+            Expanded(
+              flex: 1,
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: _couponList.length,
+                itemBuilder: (context, index) {
 
-                final productCouponData = _couponList[index];
+                  final productCouponData = _couponList[index];
 
-                final couponDiscount = productCouponData.couponDiscount ?? "0";
-                final ctName = productCouponData.ctName ?? "";
-                final couponName = productCouponData.couponName ?? "";
-                final ctDate = "${productCouponData.ctDate ?? ""}까지 사용가능";
-                final couponStatus = productCouponData.couponStatus ?? "";
+                  final couponDiscount = productCouponData.couponDiscount ?? "0";
+                  final ctName = productCouponData.ctName ?? "";
+                  final couponName = productCouponData.couponName ?? "";
+                  final ctDate = "${productCouponData.ctDate ?? ""}까지 사용가능";
+                  final couponStatus = productCouponData.couponStatus ?? "";
 
-                String detailMessage = "구매금액 ${Utils.getInstance().priceString(productCouponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
-                if (productCouponData.ctMaxPrice != null) {
-                  detailMessage = "최대 ${Utils.getInstance().priceString(productCouponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
-                }
+                  String detailMessage = "구매금액 ${Utils.getInstance().priceString(productCouponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
+                  if (productCouponData.ctMaxPrice != null) {
+                    detailMessage = "최대 ${Utils.getInstance().priceString(productCouponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
+                  }
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 15.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(style: BorderStyle.solid, color: const Color(0xFFDDDDDD)),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: IntrinsicHeight(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 8,
-                            child: Container(
-                              margin:
-                              const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        couponDiscount,
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 15.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(style: BorderStyle.solid, color: const Color(0xFFDDDDDD)),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: IntrinsicHeight(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 8,
+                              child: Container(
+                                margin:
+                                const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          couponDiscount,
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 16),
+                                            fontWeight: FontWeight.bold,
+                                            color: couponStatus == "사용가능" ? const Color(0xFFFF6192) : const Color(0xFFA4A4A4),
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            margin: const EdgeInsets.only(left: 6),
+                                            child: Text(
+                                              ctName.isEmpty ? couponName : ctName,
+                                              style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                fontSize: Responsive.getFont(context, 16),
+                                                fontWeight: FontWeight.bold,
+                                                color: couponStatus == "사용가능" ? Colors.black : const Color(0xFFA4A4A4),
+                                                height: 1.2,
+                                              ),
+                                              softWrap: true,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(vertical: 10),
+                                      child: Text(
+                                        ctDate,
                                         style: TextStyle(
                                           fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 16),
-                                          fontWeight: FontWeight.bold,
-                                          color: couponStatus == "사용가능" ? const Color(0xFFFF6192) : const Color(0xFFA4A4A4),
+                                          fontSize: Responsive.getFont(context, 14),
+                                          color: couponStatus == "사용가능" ? Colors.black : const Color(0xFFA4A4A4),
                                           height: 1.2,
                                         ),
                                       ),
-                                      Expanded(
-                                        child: Container(
-                                          margin: const EdgeInsets.only(left: 6),
-                                          child: Text(
-                                            ctName.isEmpty ? couponName : ctName,
-                                            style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(context, 16),
-                                              fontWeight: FontWeight.bold,
-                                              color: couponStatus == "사용가능" ? Colors.black : const Color(0xFFA4A4A4),
-                                              height: 1.2,
-                                            ),
-                                            softWrap: true,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 10),
-                                    child: Text(
-                                      ctDate,
+                                    ),
+                                    Text(
+                                      detailMessage,
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        color: couponStatus == "사용가능" ? Colors.black : const Color(0xFFA4A4A4),
+                                        fontSize: Responsive.getFont(context, 12),
+                                        color: const Color(0xFFA4A4A4),
                                         height: 1.2,
                                       ),
                                     ),
-                                  ),
-                                  Text(
-                                    detailMessage,
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 12),
-                                      color: const Color(0xFFA4A4A4),
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  if (couponStatus != "사용가능") // 다운로드된 경우에만 텍스트 표시
-                                    SizedBox(
-                                      child: Text(
-                                        productCouponData.couponStatus ?? "",
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 12),
-                                          color: Colors.grey,
-                                          height: 1.2,
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (couponStatus != "사용가능") // 다운로드된 경우에만 텍스트 표시
+                                      SizedBox(
+                                        child: Text(
+                                          productCouponData.couponStatus ?? "",
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 12),
+                                            color: Colors.grey,
+                                            height: 1.2,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ],
         ),

@@ -3,16 +3,17 @@ import 'dart:convert';
 import 'package:BliU/data/cart_data.dart';
 import 'package:BliU/data/cart_item_data.dart';
 import 'package:BliU/data/coupon_data.dart';
+import 'package:BliU/data/daum_post_data.dart';
 import 'package:BliU/data/iamport_pay_data.dart';
 import 'package:BliU/data/pay_order_detail_data.dart';
 import 'package:BliU/dto/pay_order_result_detail_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
-import 'package:BliU/screen/payment/component/payment_address_info.dart';
-import 'package:BliU/screen/payment/component/payment_discount.dart';
+import 'package:BliU/screen/payment/component/payment_coupon.dart';
 import 'package:BliU/screen/payment/component/payment_iamport.dart';
 import 'package:BliU/screen/payment/component/payment_money.dart';
 import 'package:BliU/screen/payment/component/payment_order_item.dart';
+import 'package:BliU/screen/payment/component/webview_with_daum_post_webivew.dart';
 import 'package:BliU/screen/payment/payment_complete_screen.dart';
 import 'package:BliU/screen/payment/viewmodel/payment_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -43,6 +44,135 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   bool agree2 = false;
   bool agree3 = false;
 
+  final ScrollController _scrollController = ScrollController();
+
+  late bool isUseAddress = false;
+
+  final TextEditingController _recipientNameController = TextEditingController();
+  final TextEditingController _recipientPhoneController = TextEditingController();
+  final TextEditingController _addressRoadController = TextEditingController();
+  final TextEditingController _addressDetailController = TextEditingController();
+  final TextEditingController _memoController = TextEditingController();
+
+  String _savedZip = ""; // 저장된 우편번호
+
+  final TextEditingController _pointController = TextEditingController();
+  List<CouponData> _couponList = [];
+  String _couponText = "0원 할인 적용";
+  int _point = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
+  }
+
+  void addressChange() {
+    List<CartData> cartList = widget.payOrderDetailData.list ?? [];
+    List<Map<String, dynamic>> cartArr = [];
+
+    for (var cartItem in cartList) {
+      Map<String, dynamic> cartMap = {
+        'st_idx': cartItem.stIdx,
+      };
+      List<int> ctIdxs = [];
+      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
+        ctIdxs.add(product.ctIdx ?? 0);
+      }
+
+      if (ctIdxs.isNotEmpty) {
+        cartMap['ct_idxs'] = ctIdxs;
+        cartArr.add(cartMap);
+      }
+    }
+
+    Map<String, dynamic> requestData = {
+      'ot_code' : widget.payOrderDetailData.otCode,
+      'cart_arr' : json.encode(cartArr),
+      'mt_zip' : _savedZip,
+      'mt_add1' : _addressRoadController.text,
+      'all_delivery_price' : widget.payOrderDetailData.allDeliveryPrice,
+    };
+
+
+
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getMy();
+    _getOrderCoupon();
+  }
+
+  void _getMy() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    Map<String, dynamic> requestData = {
+      'mt_idx': pref.getMtIdx(),
+    };
+
+    final memberInfoResponseDTO = await ref.read(paymentViewModelProvider.notifier).getMy(requestData);
+    setState(() {
+      _point = memberInfoResponseDTO?.data?.myPoint ?? 0;
+    });
+  }
+
+  void _getOrderCoupon() async {
+    final pref = await SharedPreferencesManager.getInstance();
+
+    List<Map<String, dynamic>> storeArr = [];
+    final cartList = widget.payOrderDetailData.list ?? [];
+    for (var cartItem in cartList) {
+      Map<String, dynamic> storeMap = {
+        'st_idx': cartItem.stIdx,
+      };
+      int productPrice = 0;
+      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
+        productPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
+      }
+
+      if (productPrice > 0) {
+        storeMap['store_all_price'] = productPrice;
+        storeArr.add(storeMap);
+      }
+    }
+
+    Map<String, dynamic> requestData = {
+      'mt_idx': pref.getMtIdx(),
+      'store_arr': json.encode(storeArr),
+      'all_price': _getTotalProductPrice(),
+    };
+
+    final couponResponseDTO = await ref.read(paymentViewModelProvider.notifier).getOrderCoupon(requestData);
+    _couponList = couponResponseDTO?.list ?? [];
+  }
+
+  int _getTotalProductPrice() {
+    // 선택된 기준으로 가격 가져오기
+    int totalProductPrice = 0;
+    final cartList = widget.payOrderDetailData.list ?? [];
+    for (var cartItem in cartList) {
+      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
+        totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
+      }
+    }
+    return totalProductPrice;
+  }
+
+  void _pointCheck(String point) {
+    if (point.isNotEmpty) {
+      int pointValue = int.parse(point);
+      int totalProductPrice = _getTotalProductPrice();
+      if (pointValue > totalProductPrice) {
+        pointValue = totalProductPrice;
+      }
+      _pointController.text = pointValue.toString();
+      onPointChanged(pointValue);
+    } else {
+      onPointChanged(0);
+    }
+  }
+
   void onResultTotalPrice(int totalPrice) {
     this.totalPrice = totalPrice;
   }
@@ -59,33 +189,329 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     });
   }
 
-  final ScrollController _scrollController = ScrollController();
-  late bool isUseAddress = false;
-  String? savedRecipientName; // 저장된 수령인 이름
-  String? savedRecipientPhone; // 저장된 전화번호
-  String? savedZip; // 저장된 전화번호
-  String? savedAddressRoad; // 저장된 도로명 주소
-  String? savedAddressDetail; // 저장된 상세주소
-  String? savedMemo; // 저장된 메모
-
-  // 배송지 정보 저장 함수
-  void _saveAddress(String name, String phone, String zip, String road,
-      String detail, String memo) {
-    setState(() {
-      savedRecipientName = name;
-      savedRecipientPhone = phone;
-      savedZip = zip;
-      savedAddressRoad = road;
-      savedAddressDetail = detail;
-      savedMemo = memo;
-    });
-  }
-
   void _agreeCheck() {
     if (agree1 && agree2 && agree3) {
       allAgree = true;
     } else {
       allAgree = false;
+    }
+  }
+
+  void _showCancelDialog(BuildContext context) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      // 다른 영역을 클릭해도 닫힘
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black.withOpacity(0.5),
+      // 배경을 어둡게
+      transitionDuration: const Duration(milliseconds: 100),
+      // 애니메이션 시간
+      pageBuilder: (BuildContext buildContext, Animation animation,
+          Animation secondaryAnimation) {
+        return Align(
+          alignment: Alignment.topCenter, // 화면 상단 중앙에 배치
+          child: Material(
+            color: Colors.transparent, // 배경을 투명하게
+            child: Container(
+              margin: const EdgeInsets.only(top: 50), // 상단에서의 간격
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+              decoration: BoxDecoration(
+                color: const Color(0xCC000000), // 알림창 배경색
+                borderRadius: BorderRadius.circular(22), // 둥근 모서리
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, // 가로로 배치
+                mainAxisSize: MainAxisSize.min, // 알림창 크기를 내용에 맞춤
+                children: [
+                  Text(
+                    '주문을 취소하시겠습니까?',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      color: Colors.white,
+                      height: 1.2,
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 60),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop(); // 팝업 닫기
+                          },
+                          child: Text(
+                            "취소",
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              color: Colors.white,
+                              fontSize: Responsive.getFont(context, 14),
+                              height: 1.2,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 15),
+                            child: Text(
+                              "확인",
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                color: Colors.white,
+                                fontSize: Responsive.getFont(context, 14),
+                                height: 1.2,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _payment() async {
+    /***
+     *
+     * 결제 상세 -> 결제 요청(이전에 쿠폰 사용 포인트 사용 요청) -> 결제 모듈에서 결제 완료후 -> 결제 검증 -> 결제 완료
+     *
+     */
+    if (!allAgree) {
+      Utils.getInstance().showSnackBar(context, '결제동의해 주세요.');
+      return;
+    }
+
+    if (payType == 0) {
+      Utils.getInstance().showSnackBar(context, '결제수단을 선택해 주세요.');
+      return;
+    }
+
+    if (_recipientNameController.text.isEmpty) {
+      Utils.getInstance().showSnackBar(context, '수령인명을 입력해 주세요.');
+      return;
+    }
+
+    if (_recipientPhoneController.text.isEmpty) {
+      Utils.getInstance().showSnackBar(context, '수령인 휴대폰 번호를 입력해 주세요.');
+      return;
+    }
+
+    if (_addressRoadController.text.isEmpty || _addressDetailController.text.isEmpty) {
+      Utils.getInstance().showSnackBar(context, '수령인 주소를 입력해 주세요.');
+      return;
+    }
+
+    String payMethod = "card";
+    switch (payType) { //1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
+      case 1:
+        payMethod = "card";
+        break;
+      case 2:
+        payMethod = "phone";
+        break;
+      case 3:
+        payMethod = "trans";
+        break;
+      case 4:// 네이버 결제
+        break;
+    }
+
+    List<CartData> cartList = widget.payOrderDetailData.list ?? [];
+
+    // 주문 고유 번호를 취득위해서 다시조회
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    final memberInfo = pref.getMemberInfo();
+
+    List<Map<String, dynamic>> cartArr = [];
+
+    for (var cartItem in cartList) {
+      Map<String, dynamic> cartMap = {
+        'st_idx': cartItem.stIdx,
+      };
+      List<int> ctIdxs = [];
+      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
+        ctIdxs.add(product.ctIdx ?? 0);
+      }
+
+      if (ctIdxs.isNotEmpty) {
+        cartMap['ct_idxs'] = ctIdxs;
+        cartArr.add(cartMap);
+      }
+    }
+
+    Map<String, dynamic> requestData = {
+      'type': 1,
+      'ot_idx': widget.payOrderDetailData.otIdx,
+      'mt_idx': mtIdx,
+      'temp_mt_id': pref.getToken(),
+      'cart_arr': json.encode(cartArr),
+    };
+
+    final payOrderDetailDTO = await ref.read(paymentViewModelProvider.notifier).orderDetail(requestData);
+    if (payOrderDetailDTO != null) {
+      final payOrderDetailData = payOrderDetailDTO.data;
+
+      if (payOrderDetailData != null) {
+        // 총 결제 금액
+        int totalAmount = totalPrice;
+        // 주문 이름 생성 (상품 이름을 연결)
+        String orderName = "";
+        int itemCount = 0;
+        for (var cart in cartList) {
+          for (var item in cart.productList ?? []) {
+            if (orderName.isEmpty) {
+              orderName = item.ptName ?? "";
+            }
+            itemCount += 1;
+          }
+        }
+        if (itemCount > 1) {
+          orderName = "$orderName 외 ${itemCount - 1}";
+        }
+
+        String mtSaveAdd = "N";
+        if (isUseAddress) {
+          mtSaveAdd = "Y";
+        }
+
+        if (selectedCouponData != null) {
+          Map<String, dynamic> requestCouponData = {
+            'ot_code' : payOrderDetailData.otCode,
+            'coupon_idx' : selectedCouponData?.couponIdx,
+            'mt_idx': mtIdx,
+          };
+
+          await ref.read(paymentViewModelProvider.notifier).couponUse(requestCouponData);
+        }
+
+        if (discountPoint > 0) {
+          Map<String, dynamic> requestPointData = {
+            'ot_code' : payOrderDetailData.otCode,
+            'use_point' : discountPoint,
+            'mt_idx': mtIdx,
+          };
+
+          await ref.read(paymentViewModelProvider.notifier).pointUse(requestPointData);
+        }
+
+        Map<String, dynamic> requestData1 = {
+          'type': 1,
+          'ot_code': payOrderDetailData.otCode,
+          'mt_idx': mtIdx,
+          'temp_mt_id': pref.getToken(),
+          'mt_rname': _recipientNameController.text,
+          'mt_rhp': _recipientPhoneController.text,
+          'mt_zip': _savedZip,
+          'mt_add1': _addressRoadController.text,
+          'mt_add2': _addressDetailController.text,
+          'mt_save_add': mtSaveAdd,
+          'memo': _memoController.text,
+        };
+
+        final Map<String, dynamic>? response = await ref.read(paymentViewModelProvider.notifier).reqOrder(requestData1);
+        if (response != null) {
+          /*
+          *
+          "result": true,
+          "data": {
+              "ot_code": "240923G7FPKC",
+              "ot_sprice": 32520
+          }
+          * **/
+          if (response['result'] == true) {
+            if (!mounted) return;
+
+            IamportPayData iamportPayData = IamportPayData(
+                payMethod: payMethod,
+                name: orderName,
+                merchantUid: payOrderDetailData.otCode ?? "",
+                amount: totalAmount,
+                buyerName: memberInfo?.mtName ?? "",
+                buyerTel: "",
+                buyerEmail: "",
+                buyerAddr: "",
+                buyerPostcode: ""
+            );
+
+            final Map<String, String>? paymentResult = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PaymentIamport(iamportPayData : iamportPayData)),
+            );
+            if (paymentResult != null) {
+              if (paymentResult['imp_success'] == 'true' || paymentResult['success'] == 'true') {
+
+                Map<String, dynamic> orderRequestData = {
+                  'orderId': payOrderDetailData.otCode ?? "",
+                  'imp_uid': paymentResult['imp_uid'].toString(),
+                  'merchant_uid': paymentResult['merchant_uid'].toString(),
+                };
+                final defaultResponseDTO = await ref.read(paymentViewModelProvider.notifier).orderCheck(orderRequestData);
+                // 결제검증 결과값 ex)  return res.status(200).json({'result': true, 'data':{'message': '결제 완료.'}});
+                if (defaultResponseDTO?.result == true) {
+                  _paymentComplete(payOrderDetailData);
+                } else {
+                  if (!mounted) return;
+                  Utils.getInstance().showSnackBar(context, defaultResponseDTO?.message ?? "");
+                }
+              } else {
+                if (!mounted) return;
+                Utils.getInstance().showSnackBar(context, paymentResult["error_msg"].toString());
+              }
+            }
+          } else {
+            if (!mounted) return;
+            Utils.getInstance().showSnackBar(context, response['data']['message'] ?? "");
+          }
+        }
+      }
+    }
+  }
+
+  void _paymentComplete(PayOrderDetailData payOrderDetailData) async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    Map<String, dynamic> requestData2 = {
+      'type': 1,
+      'ot_code': payOrderDetailData.otCode,
+      'mt_idx': mtIdx,
+      'temp_mt_id': pref.getToken(),
+    };
+    final PayOrderResultDetailDTO? payOrderResult = await ref.read(paymentViewModelProvider.notifier).orderEnd(requestData2);
+
+    if (payOrderResult != null) {
+      if (payOrderResult.result == true) {
+        final payOrderResultDetailData = payOrderResult.data;
+        if(!mounted) return;
+        // TODO 완료시
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) =>
+        //           PaymentCompleteScreen(
+        //             payOrderResultDetailData: payOrderResultDetailData,
+        //             savedAddressDetail: savedAddressDetail,
+        //             savedAddressRoad: savedAddressRoad,
+        //             savedMemo: savedMemo,
+        //             savedRecipientName: savedRecipientName,
+        //             savedRecipientPhone: savedRecipientPhone,
+        //           )
+        //   ),
+        // );
+      }
     }
   }
 
@@ -223,14 +649,313 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                             ),
                           ),
                         ),
-                        child: PaymentAddressInfo(
-                          onSave: _saveAddress,
-                          initialName: savedRecipientName ?? '',
-                          initialPhone: savedRecipientPhone ?? '',
-                          initialZip: savedZip ?? '',
-                          initialRoadAddress: savedAddressRoad ?? '',
-                          initialDetailAddress: savedAddressDetail ?? '',
-                          initialMemo: savedMemo ?? '',
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 20),
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(right: 4),
+                                          child: Text(
+                                            '수령인',
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 13),
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          '*',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            color: const Color(0xFFFF6192),
+                                            fontSize: Responsive.getFont(context, 13),
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 8,
+                                    child: TextField(
+                                      controller: _recipientNameController,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                      ),
+                                      decoration: InputDecoration(
+                                        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                        hintText: '수령인',
+                                        hintStyle: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          color: const Color(0xFF595959)
+                                        ),
+                                        enabledBorder: const OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                        ),
+                                        focusedBorder: const OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(right: 4),
+                                          child: Text(
+                                            '휴대폰',
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 13),
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          '*',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            color: const Color(0xFFFF6192),
+                                            fontSize: Responsive.getFont(context, 13),
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 8,
+                                    child: TextField(
+                                      controller: _recipientPhoneController,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                      ),
+                                      decoration: InputDecoration(
+                                        contentPadding: const EdgeInsets.symmetric(
+                                            vertical: 14, horizontal: 15),
+                                        hintText: '‘-’ 없이 번호만 입력',
+                                        hintStyle: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            color: const Color(0xFF595959)),
+                                        enabledBorder: const OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                        ),
+                                        focusedBorder: const OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                textBaseline: TextBaseline.alphabetic,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(right: 4),
+                                          child: Text(
+                                            '주소',
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 13),
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          '*',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            color: const Color(0xFFFF6192),
+                                            fontSize: Responsive.getFont(context, 13),
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 8,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              flex: 7,
+                                              child: TextField(
+                                                controller: _addressRoadController,
+                                                enabled: false,
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(context, 14),
+                                                ),
+                                                decoration: InputDecoration(
+                                                  contentPadding: const EdgeInsets.symmetric(
+                                                      vertical: 14, horizontal: 15),
+                                                  //hintText: '주소를 검색해 주세요.',
+                                                  hintStyle: TextStyle(
+                                                      fontFamily: 'Pretendard',
+                                                      fontSize: Responsive.getFont(context, 14),
+                                                      color: const Color(0xFF595959)
+                                                  ),
+                                                  border: const OutlineInputBorder(
+                                                    borderRadius:
+                                                    BorderRadius.all(Radius.circular(6)),
+                                                    borderSide:
+                                                    BorderSide(color: Color(0xFFE1E1E1)),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: GestureDetector(
+                                                onTap: () async {
+                                                  // 주소 검색 API 호출
+                                                  DaumPostData? result = await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                      const WebviewWithDaumPostWebview(), // 주소 검색 창으로 이동
+                                                    ),
+                                                  );
+
+                                                  if (result != null) {
+                                                    setState(() {
+                                                      _addressRoadController.text = result.roadAddress;
+                                                      _savedZip = result.zonecode;
+                                                      addressChange();
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                  margin: const EdgeInsets.only(left: 8),
+                                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    const BorderRadius.all(Radius.circular(6)),
+                                                    border:
+                                                    Border.all(color: const Color(0xFFE1E1E1)),
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      '주소검색',
+                                                      style: TextStyle(
+                                                        fontFamily: 'Pretendard',
+                                                        fontSize: Responsive.getFont(context, 14),
+                                                        fontWeight: FontWeight.normal,
+                                                        height: 1.2,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(top: 10),
+                                          child: TextField(
+                                            controller: _addressDetailController,
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                            ),
+                                            decoration: InputDecoration(
+                                              contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                              hintText: '상세주소 입력',
+                                              hintStyle: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                fontSize: Responsive.getFont(context, 14),
+                                                color: const Color(0xFF595959)
+                                              ),
+                                              enabledBorder: const OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                              ),
+                                              focusedBorder: const OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 20),
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: TextField(
+                                controller: _memoController,
+                                maxLines: 4,
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                  const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                  hintText: '배송 메모 입력',
+                                  hintStyle: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: const Color(0xFF595959)
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                                    borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                                    borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -250,66 +975,66 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                         Row(
                           children: [
                             Expanded(
-                                child: Container(
-                                  margin: const EdgeInsets.only(right: 4),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        payType = 1;
-                                      });
-                                    },
-                                    child: Container(
-                                        padding: const EdgeInsets.symmetric(vertical: 14.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(6),
-                                          border: Border.all(
-                                              color: payType == 1 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
-                                        ),
-                                        child: Center(
-                                            child: Text(
-                                              '카드결제',
-                                              style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  color: payType == 1 ? const Color(0xFFFF6192) : Colors.black,
-                                                  fontSize: Responsive.getFont(context, 14)
-                                              ),
-                                            )
-                                        )
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 4),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      payType = 1;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 14.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(
+                                          color: payType == 1 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
                                     ),
+                                    child: Center(
+                                      child: Text(
+                                        '카드결제',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          color: payType == 1 ? const Color(0xFFFF6192) : Colors.black,
+                                          fontSize: Responsive.getFont(context, 14)
+                                        ),
+                                      )
+                                    )
                                   ),
-                                )
+                                ),
+                              )
                             ),
                             Expanded(
-                                child: Container(
-                                  margin: const EdgeInsets.only(left: 4),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        payType = 2;
-                                      });
-                                    },
-                                    child: Container(
-                                        padding: const EdgeInsets.symmetric(vertical: 14.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(6),
-                                          border: Border.all(
-                                              color: payType == 2 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 4),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      payType = 2;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 14.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(
+                                          color: payType == 2 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '휴대폰',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          color: payType == 2 ? const Color(0xFFFF6192) : Colors.black,
+                                          fontSize: Responsive.getFont(context, 14)
                                         ),
-                                        child: Center(
-                                            child: Text(
-                                              '휴대폰',
-                                              style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  color: payType == 2 ? const Color(0xFFFF6192) : Colors.black,
-                                                  fontSize: Responsive.getFont(context, 14)
-                                              ),
-                                            )
-                                        )
+                                      ),
                                     ),
                                   ),
-                                )
+                                ),
+                              ),
                             )
                           ],
                         ),
@@ -327,23 +1052,22 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                       });
                                     },
                                     child: Container(
-                                        padding: const EdgeInsets.symmetric(vertical: 14.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(6),
-                                          border: Border.all(
-                                              color: payType == 3 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
-                                        ),
-                                        child: Center(
-                                            child: Text(
-                                              '계좌이체',
-                                              style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  color: payType == 3 ? const Color(0xFFFF6192) : Colors.black,
-                                                  fontSize: Responsive.getFont(context, 14)
-                                              ),
-                                            )
+                                      padding: const EdgeInsets.symmetric(vertical: 14.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(6),
+                                        border: Border.all(color: payType == 3 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '계좌이체',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            color: payType == 3 ? const Color(0xFFFF6192) : Colors.black,
+                                            fontSize: Responsive.getFont(context, 14)
+                                          ),
                                         )
+                                      )
                                     ),
                                   ),
                                 )
@@ -366,14 +1090,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             color: payType == 4 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
                                       ),
                                       child: Center(
-                                          child: Text(
-                                            '네이버페이',
-                                            style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                color: payType == 4 ? const Color(0xFFFF6192) : Colors.black,
-                                                fontSize: Responsive.getFont(context, 14)
-                                            ),
-                                          )
+                                        child: Text(
+                                          '네이버페이',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            color: payType == 4 ? const Color(0xFFFF6192) : Colors.black,
+                                            fontSize: Responsive.getFont(context, 14)
+                                          ),
+                                        ),
                                       )
                                     ),
                                   ),
@@ -393,10 +1117,207 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 ),
                 CustomExpansionTile(
                   title: '할인적용',
-                  content: PaymentDiscount(
-                    onCouponSelected: onCouponSelected,
-                    onPointChanged: onPointChanged,
-                    cartList: widget.payOrderDetailData.list ?? [],
+                  content: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '쿠폰',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 13),
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                                height: 1.2,
+                              ),
+                            ),
+                            Text(
+                              '보유 쿠폰 ${_couponList.length}장',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 13),
+                                color: const Color(0xFF7B7B7B),
+                                height: 1.2,
+                              ),
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            if (_couponList.isNotEmpty) {
+                              CouponData? selectedCoupon = await Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => PaymentCoupon(couponList: _couponList,)),
+                              );
+                              if (selectedCoupon != null) {
+                                setState(() {
+                                  _couponText = "${selectedCoupon.couponDiscount} 할인 적용";
+                                });
+                                onCouponSelected(selectedCoupon); // 부모로 할인율 전달
+                              }
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                            margin: const EdgeInsets.only(top: 10, bottom: 20),
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                              border: Border.all(color: const Color(0xFFDDDDDD))
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  _couponText,
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    fontWeight: FontWeight.normal,
+                                    height: 1.2,
+                                  ),
+                                ),
+                                SvgPicture.asset(
+                                  'assets/images/ic_link.svg',
+                                  width: 14,
+                                  height: 14,
+                                  colorFilter: const ColorFilter.mode(
+                                    Color(0xFF7B7B7B),
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '포인트 사용',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 13),
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                                height: 1.2,
+                              ),
+                            ),
+                            Text(
+                              '보유 포인트 ${Utils.getInstance().priceString(_point)}P',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 13),
+                                color: const Color(0xFF7B7B7B),
+                                height: 1.2,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 7,
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                                    textBaseline: TextBaseline.alphabetic,
+                                    children: [
+                                      Expanded(
+                                        child: TextField(
+                                          controller: _pointController,
+                                          keyboardType: TextInputType.number,
+                                          // 숫자 입력만 가능하게 설정
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none, // 테두리 제거
+                                            hintText: '0',
+                                            hintStyle: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              color: const Color(0xFF707070),
+                                            ),
+                                          ),
+                                          textAlign: TextAlign.right,
+                                          // 텍스트를 오른쪽 정렬
+                                          onChanged: (text) {
+                                            final value = int.parse(text);
+                                            final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
+                                            if (value > maxUsePoint) {
+                                              _pointController.text = maxUsePoint.toString();
+                                              _pointCheck(maxUsePoint.toString());
+                                            } else {
+                                              _pointCheck(text);
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.only(right: 15, left: 10),
+                                        child: Text(
+                                          'P',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            fontWeight: FontWeight.normal,
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                      border: Border.all(color: const Color(0xFFDDDDDD))
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
+                                      if (_point > 0) {
+                                        if (_point > maxUsePoint) {
+                                          _pointController.text = maxUsePoint.toString();
+                                          _pointCheck(maxUsePoint.toString());
+                                        } else {
+                                          _pointController.text = _point.toString();
+                                          _pointCheck(_point.toString());
+                                        }
+                                      }
+                                    },
+                                    child: Center(
+                                      child: Text(
+                                        '전액사용',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          fontWeight: FontWeight.normal,
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Container(
@@ -727,8 +1648,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 Container(
                   width: double.infinity,
                   height: Responsive.getHeight(context, 48),
-                  margin: const EdgeInsets.only(
-                      right: 16.0, left: 16, top: 8, bottom: 9),
+                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
                   decoration: const BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.all(
@@ -758,317 +1678,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
         ],
       ),
     );
-  }
-
-  void _showCancelDialog(BuildContext context) {
-    showGeneralDialog(
-      context: context,
-      barrierDismissible: true,
-      // 다른 영역을 클릭해도 닫힘
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      barrierColor: Colors.black.withOpacity(0.5),
-      // 배경을 어둡게
-      transitionDuration: const Duration(milliseconds: 100),
-      // 애니메이션 시간
-      pageBuilder: (BuildContext buildContext, Animation animation,
-          Animation secondaryAnimation) {
-        return Align(
-          alignment: Alignment.topCenter, // 화면 상단 중앙에 배치
-          child: Material(
-            color: Colors.transparent, // 배경을 투명하게
-            child: Container(
-              margin: const EdgeInsets.only(top: 50), // 상단에서의 간격
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-              decoration: BoxDecoration(
-                color: const Color(0xCC000000), // 알림창 배경색
-                borderRadius: BorderRadius.circular(22), // 둥근 모서리
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween, // 가로로 배치
-                mainAxisSize: MainAxisSize.min, // 알림창 크기를 내용에 맞춤
-                children: [
-                  Text(
-                    '주문을 취소하시겠습니까?',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      color: Colors.white,
-                      height: 1.2,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 60),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pop(); // 팝업 닫기
-                          },
-                          child: Text(
-                            "취소",
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              color: Colors.white,
-                              fontSize: Responsive.getFont(context, 14),
-                              height: 1.2,
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).pop();
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "확인",
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                color: Colors.white,
-                                fontSize: Responsive.getFont(context, 14),
-                                height: 1.2,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _payment() async {
-    /***
-     *
-     * 결제 상세 -> 결제 요청(이전에 쿠폰 사용 포인트 사용 요청) -> 결제 모듈에서 결제 완료후 -> 결제 검증 -> 결제 완료
-     *
-     */
-    if (!allAgree) {
-      Utils.getInstance().showSnackBar(context, '결제동의해 주세요.');
-      return;
-    }
-
-    if (payType == 0) {
-      Utils.getInstance().showSnackBar(context, '결제수단을 선택해 주세요.');
-      return;
-    }
-
-    if (savedRecipientName == null) {
-      Utils.getInstance().showSnackBar(context, '수령인명을 입력해 주세요.');
-      return;
-    }
-
-    if (savedRecipientName!.isEmpty) {
-      Utils.getInstance().showSnackBar(context, '수령인명을 입력해 주세요.');
-      return;
-    }
-
-    if (savedRecipientPhone == null) {
-      Utils.getInstance().showSnackBar(context, '수령인 휴대폰 번호를 입력해 주세요.');
-      return;
-    }
-
-    if (savedRecipientPhone!.isEmpty) {
-      Utils.getInstance().showSnackBar(context, '수령인 휴대폰 번호를 입력해 주세요.');
-      return;
-    }
-
-    if (savedAddressRoad == null) {
-      Utils.getInstance().showSnackBar(context, '수령인 주소를 입력해 주세요.');
-      return;
-    }
-
-    if (savedAddressRoad!.isEmpty) {
-      Utils.getInstance().showSnackBar(context, '수령인 주소를 입력해 주세요.');
-      return;
-    }
-
-    String paymethod = "card";
-    switch (payType) { //1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
-      case 1:
-        paymethod = "card";
-        break;
-      case 2:
-        paymethod = "phone";
-        break;
-      case 3:
-        paymethod = "trans";
-        break;
-      case 4:// 네이버 결제
-        break;
-    }
-
-    List<CartData> cartList = widget.payOrderDetailData.list ?? [];
-
-    // TODO 포인트, 쿠폰 사용 API작업 필요
-
-    // 주문 고유 번호를 취득위해서 다시조회
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-    final memberInfo = pref.getMemberInfo();
-
-    List<Map<String, dynamic>> cartArr = [];
-
-    for (var cartItem in cartList) {
-      Map<String, dynamic> cartMap = {
-        'st_idx': cartItem.stIdx,
-      };
-      List<int> ctIdxs = [];
-      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
-        ctIdxs.add(product.ctIdx ?? 0);
-      }
-
-      if (ctIdxs.isNotEmpty) {
-        cartMap['ct_idxs'] = ctIdxs;
-        cartArr.add(cartMap);
-      }
-    }
-
-    Map<String, dynamic> requestData = {
-      'type': 1,
-      'ot_idx': widget.payOrderDetailData.otIdx,
-      'mt_idx': mtIdx,
-      'temp_mt_id': pref.getToken(),
-      'cart_arr': json.encode(cartArr),
-    };
-
-    final payOrderDetailDTO = await ref.read(paymentViewModelProvider.notifier).orderDetail(requestData);
-    if (payOrderDetailDTO != null) {
-      final payOrderDetailData = payOrderDetailDTO.data;
-
-      if (payOrderDetailData != null) {
-        // 총 결제 금액
-        int totalAmount = totalPrice;
-        // 주문 이름 생성 (상품 이름을 연결)
-        String orderName = "";
-        int itemCount = 0;
-        for (var cart in cartList) {
-          for (var item in cart.productList ?? []) {
-            if (orderName.isEmpty) {
-              orderName = item.ptName ?? "";
-            }
-            itemCount += 1;
-          }
-        }
-        if (itemCount > 1) {
-          orderName = "$orderName 외 ${itemCount - 1}";
-        }
-
-        String mtSaveAdd = "N";
-        if (isUseAddress) {
-          mtSaveAdd = "Y";
-        }
-
-        Map<String, dynamic> requestData1 = {
-          'type': 1,
-          'ot_code': payOrderDetailData.otCode,
-          'mt_idx': mtIdx,
-          'temp_mt_id': pref.getToken(),
-          'mt_rname': savedRecipientName,
-          'mt_rhp': savedRecipientPhone,
-          'mt_zip': savedZip,
-          'mt_add1': savedAddressRoad,
-          'mt_add2': savedAddressDetail,
-          'mt_save_add': mtSaveAdd,
-          'memo': savedMemo,
-        };
-
-        final Map<String, dynamic>? response = await ref.read(paymentViewModelProvider.notifier).reqOrder(requestData1);
-        if (response != null) {
-          /*
-          *
-          "result": true,
-          "data": {
-              "ot_code": "240923G7FPKC",
-              "ot_sprice": 32520
-          }
-          * **/
-          if (response['result'] == true) {
-            if (!mounted) return;
-
-            IamportPayData iamportPayData = IamportPayData(
-              payMethod: paymethod,
-              name: orderName,
-              merchantUid: payOrderDetailData.otCode ?? "",
-              amount: totalAmount,
-              buyerName: memberInfo?.mtName ?? "",
-              buyerTel: "",
-              buyerEmail: "",
-              buyerAddr: "",
-              buyerPostcode: ""
-            );
-
-            final Map<String, String>? paymentResult = await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PaymentIamport(iamportPayData : iamportPayData)),
-            );
-            if (paymentResult != null) {
-              if (paymentResult['imp_success'] == 'true' || paymentResult['success'] == 'true') {
-
-                Map<String, dynamic> orderRequestData = {
-                  'orderId': payOrderDetailData.otCode ?? "",
-                  'imp_uid': paymentResult['imp_uid'].toString(),
-                  'merchant_uid': paymentResult['merchant_uid'].toString(),
-                };
-                final defaultResponseDTO = await ref.read(paymentViewModelProvider.notifier).orderCheck(orderRequestData);
-                // 결제검증 결과값 ex)  return res.status(200).json({'result': true, 'data':{'message': '결제 완료.'}});
-                if (defaultResponseDTO?.result == true) {
-                  _paymentComplete(payOrderDetailData);
-                } else {
-                  if (!mounted) return;
-                  Utils.getInstance().showSnackBar(context, defaultResponseDTO?.message ?? "");
-                }
-              } else {
-                if (!mounted) return;
-                Utils.getInstance().showSnackBar(context, paymentResult["error_msg"].toString());
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  void _paymentComplete(PayOrderDetailData payOrderDetailData) async {
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    Map<String, dynamic> requestData2 = {
-      'type': 1,
-      'ot_code': payOrderDetailData.otCode,
-      'mt_idx': mtIdx,
-      'temp_mt_id': pref.getToken(),
-    };
-    final PayOrderResultDetailDTO? payOrderResult = await ref.read(paymentViewModelProvider.notifier).orderEnd(requestData2);
-
-    if (payOrderResult != null) {
-      if (payOrderResult.result == true) {
-        final payOrderResultDetailData = payOrderResult.data;
-        if(!mounted) return;
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  PaymentCompleteScreen(
-                    payOrderResultDetailData: payOrderResultDetailData,
-                    savedAddressDetail: savedAddressDetail,
-                    savedAddressRoad: savedAddressRoad,
-                    savedMemo: savedMemo,
-                    savedRecipientName: savedRecipientName,
-                    savedRecipientPhone: savedRecipientPhone,
-                  )
-          ),
-        );
-      }
-    }
   }
 }
 
