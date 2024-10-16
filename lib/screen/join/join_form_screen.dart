@@ -180,7 +180,8 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                               }
                             },
                             child: Container(
-                              margin: const EdgeInsets.only(top: 50, left: 8),
+                              height: 44,
+                              margin: const EdgeInsets.only(top: 43, left: 8),
                               padding: const EdgeInsets.symmetric(vertical: 14),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(6),
@@ -276,6 +277,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                   }
                                 },
                                 child: Container(
+                                  height: 44,
                                   margin: const EdgeInsets.only(top: 10, left: 8),
                                   padding: const EdgeInsets.symmetric(vertical: 14),
                                   decoration: BoxDecoration(
@@ -342,6 +344,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                 }
                               },
                               child: Container(
+                                height: 44,
                                 margin: const EdgeInsets.only(top: 10, left: 8),
                                 padding: const EdgeInsets.symmetric(vertical: 14),
                                 decoration: BoxDecoration(
@@ -378,8 +381,9 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                               )
                           ),
                           Container(
-                              margin: EdgeInsets.only(left: 4),
-                              child: Text('선택',
+                              margin: const EdgeInsets.only(left: 4),
+                              child: Text(
+                                  '선택',
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.bold,
@@ -393,6 +397,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                       ),
                     ),
                     Container(
+                      height: 44,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -593,14 +598,12 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
       TextInputType keyboardType = TextInputType.text,
       Widget? suffixIcon,
       bool isEnable = true}) {
-    return Container(
-      margin: const EdgeInsets.only(top: 20),
-      child: Column(
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // if (label.isNotEmpty)
           Container(
-            margin: const EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 10, top: 20),
             child: Row(
               children: [
                 Text(label,
@@ -627,41 +630,43 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
             ),
           ),
           if (label.isNotEmpty)
-            TextField(
-              style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14),
-              ),
-              enabled: isEnable,
-              controller: controller,
-              obscureText: obscureText,
-              keyboardType: keyboardType,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                hintText: hintText,
-                hintStyle: TextStyle(
+            Container(
+              height: 44,
+              child: TextField(
+                style: TextStyle(
                   fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14),
-                  color: const Color(0xFF595959)
                 ),
-                enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                enabled: isEnable,
+                controller: controller,
+                obscureText: obscureText,
+                keyboardType: keyboardType,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                  hintText: hintText,
+                  hintStyle: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 14),
+                    color: const Color(0xFF595959)
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                  ),
+                  disabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  suffixIcon: suffixIcon,
                 ),
-                disabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-                suffixIcon: suffixIcon,
               ),
             ),
         ],
-      ),
-    );
+      );
   }
 
   Widget _buildCheckField(
@@ -670,42 +675,43 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
       TextInputType keyboardType = TextInputType.text,
       Widget? suffixIcon,
       bool isEnable = true}) {
-    return Container(
-      margin: const EdgeInsets.only(top: 10),
-      child: Column(
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (label.isNotEmpty)
-            TextField(
-              style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14),
-              ),
-              enabled: isEnable,
-              controller: controller,
-              obscureText: obscureText,
-              keyboardType: keyboardType,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                hintText: hintText,
-                hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: const Color(0xFF595959)),
-                enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+            Container(
+              height: 44,
+              margin: const EdgeInsets.only(top: 10),
+              child: TextField(
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
                 ),
-                focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: BorderSide(color: Colors.black),
+                enabled: isEnable,
+                controller: controller,
+                obscureText: obscureText,
+                keyboardType: keyboardType,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                  hintText: hintText,
+                  hintStyle: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      color: const Color(0xFF595959)),
+                  enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  suffixIcon: suffixIcon,
                 ),
-                suffixIcon: suffixIcon,
               ),
             ),
         ],
-      ),
-    );
+      );
   }
 
   Widget _buildGenderButton(String gender) {
@@ -718,6 +724,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
         });
       },
       child: Container(
+        height: 44,
         padding: const EdgeInsets.symmetric(vertical: 14.0),
         decoration: BoxDecoration(
           color: Colors.white,
