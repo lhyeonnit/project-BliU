@@ -600,11 +600,10 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                     child: Container(
                       width: double.infinity,
                       height: Responsive.getHeight(context, 48),
-                      margin: EdgeInsets.only(
-                          right: 16.0, left: 16, top: 9, bottom: 8),
+                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
                       decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(
+                        color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                        borderRadius: const BorderRadius.all(
                           Radius.circular(6),
                         ),
                       ),
@@ -614,7 +613,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
-                            color: Colors.white,
+                            color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
                             height: 1.2,
                           ),
                         ),
