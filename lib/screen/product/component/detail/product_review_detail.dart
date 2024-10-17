@@ -13,10 +13,10 @@ class ProductReviewDetail extends ConsumerStatefulWidget {
   const ProductReviewDetail({super.key, required this.rtIdx});
 
   @override
-  ConsumerState<ProductReviewDetail> createState() => _ProductReviewDetailState();
+  ConsumerState<ProductReviewDetail> createState() => ProductReviewDetailState();
 }
 
-class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
+class ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
   final ScrollController _scrollController = ScrollController();
   PageController? _pageController;
 
@@ -69,9 +69,9 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
   @override
   Widget build(BuildContext context) {
     bool isMy = false;
-    List<String> _images = [];
+    List<String> images = [];
     if (_reviewData != null) {
-      _images = _reviewData?.imgArr ?? [];
+      images = _reviewData?.imgArr ?? [];
       isMy = _reviewData?.myReview == "Y";
     }
 
@@ -126,7 +126,7 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                   height: Responsive.getHeight(context, 412),
                   child: PageView.builder(
                     controller: _pageController,
-                    itemCount: _images.length,
+                    itemCount: images.length,
                     onPageChanged: (int page) {
                       setState(() {
                         _currentPage = page;
@@ -134,7 +134,7 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                     },
                     itemBuilder: (context, index) {
                       return Image.network(
-                        _images[index],
+                        images[index],
                         fit: BoxFit.cover,
                         errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                           return const SizedBox();
@@ -166,7 +166,7 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                           ),
                         ),
                         Text(
-                          '/${_images.length}',
+                          '/${images.length}',
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 13),
@@ -230,8 +230,7 @@ class _ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => ReportPage(rtIdx: widget.rtIdx,)),
+                            MaterialPageRoute(builder: (context) => ReportPage(rtIdx: widget.rtIdx,)),
                           );
                         },
                         child: const Text(

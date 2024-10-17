@@ -12,10 +12,10 @@ class ReportPage extends ConsumerStatefulWidget {
   const ReportPage({super.key, required this.rtIdx});
 
   @override
-  ConsumerState<ReportPage> createState() => _ReportPageState();
+  ConsumerState<ReportPage> createState() => ReportPageState();
 }
 
-class _ReportPageState extends ConsumerState<ReportPage> {
+class ReportPageState extends ConsumerState<ReportPage> {
   final TextEditingController _controller = TextEditingController();
   
   List<CategoryData> categories = [];
@@ -64,7 +64,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
           });
         });
       } else {
-        if (!context.mounted) return;
+        if (!mounted) return;
         Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
       }
     }
@@ -120,8 +120,9 @@ class _ReportPageState extends ConsumerState<ReportPage> {
               Navigator.pop(context);
             },
             child: Container(
-                margin: const EdgeInsets.only(right: 16),
-                child: SvgPicture.asset('assets/images/product/ic_close.svg')),
+              margin: const EdgeInsets.only(right: 16),
+              child: SvgPicture.asset('assets/images/product/ic_close.svg')
+            ),
           ),
         ],
       ),
@@ -155,10 +156,10 @@ class _ReportPageState extends ConsumerState<ReportPage> {
                       final name = category.ctName ?? "";
                       return _buildRadioOption(idx, name);
                     }),
-                    if (_isOtherSelected)
-                      Container(
-                        margin: const EdgeInsets.only(
-                            top: 10.0, bottom: 300, right: 16, left: 16),
+                    Visibility(
+                      visible: _isOtherSelected,
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 10.0, bottom: 300, right: 16, left: 16),
                         child: TextField(
                           style: TextStyle(
                             fontFamily: 'Pretendard',
@@ -167,26 +168,25 @@ class _ReportPageState extends ConsumerState<ReportPage> {
                           controller: _controller,
                           maxLines: 4,
                           decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 14, horizontal: 15),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                             hintText: '직접 입력해주세요',
                             hintStyle: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
-                                color: const Color(0xFF595959)),
+                                color: const Color(0xFF595959)
+                            ),
                             enabledBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(6)),
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
                               borderSide: BorderSide(color: Colors.black),
                             ),
                             focusedBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(6)),
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
                               borderSide: BorderSide(color: Colors.black),
                             ),
                           ),
                         ),
                       ),
+                    ),
                   ],
                 ),
               ),
@@ -199,8 +199,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
                 child: Material(
                   color: Colors.transparent,
                   child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                     decoration: BoxDecoration(
                       color: const Color(0xCC000000), // 알림창 배경색
                       borderRadius: BorderRadius.circular(22), // 둥근 모서리
@@ -268,12 +267,39 @@ class _ReportPageState extends ConsumerState<ReportPage> {
   }
 
   Widget _buildRadioOption(int idx, String name) {
+    // return RadioListTile(
+    //   title: Text(
+    //     name,
+    //     style: TextStyle(
+    //       fontFamily: 'Pretendard',
+    //       fontSize: Responsive.getFont(context, 14),
+    //       height: 1.2,
+    //     ),
+    //   ),
+    //   activeColor: const Color(0xFFFF6192),
+    //   fillColor: WidgetStateProperty.resolveWith((states) {
+    //     if (!states.contains(WidgetState.selected)) {
+    //       return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
+    //     }
+    //     return const Color(0xFFFF6192); // 선택된 상태의 색상
+    //   }),
+    //   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    //   value: idx,
+    //   groupValue: _selectedReason,
+    //   onChanged: (value) {
+    //     setState(() {
+    //       _selectedReason = value;
+    //     });
+    //   }
+    // );
+
     return Row(
       children: [
+
         Radio<int>(
           activeColor: const Color(0xFFFF6192),
-          fillColor: MaterialStateProperty.resolveWith((states) {
-            if (!states.contains(MaterialState.selected)) {
+          fillColor: WidgetStateProperty.resolveWith((states) {
+            if (!states.contains(WidgetState.selected)) {
               return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
             }
             return const Color(0xFFFF6192); // 선택된 상태의 색상

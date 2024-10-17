@@ -14,44 +14,45 @@ import 'package:image_picker/image_picker.dart';
 
 class MyReviewEdit extends ConsumerStatefulWidget {
   final ReviewData reviewData;
+
   const MyReviewEdit({super.key, required this.reviewData,});
 
   @override
-  ConsumerState<MyReviewEdit> createState() => _MyReviewEditState();
+  ConsumerState<MyReviewEdit> createState() => MyReviewEditState();
 }
 
-class _MyReviewEditState extends ConsumerState<MyReviewEdit> {
-  bool _isRTLMode = false;
-  bool _isVertical = false;
+class MyReviewEditState extends ConsumerState<MyReviewEdit> {
+  final bool _isRTLMode = false;
+  final bool _isVertical = false;
 
   IconData? _selectedIcon;
   late TextEditingController _reviewController;
   late double _rating;
-  List<File> _selectedImages = [];
+  final List<File> _selectedImages = [];
   final ImagePicker _picker = ImagePicker();
   final ScrollController _scrollController = ScrollController();
-  List<File> _currentImages = [];
+  final List<File> _currentImages = [];
 
   Future<void> _pickImages() async {
-    final List<XFile>? images = await _picker.pickMultiImage(
+    final List<XFile> images = await _picker.pickMultiImage(
       maxWidth: 400,
       maxHeight: 400,
       imageQuality: 80,
     );
 
-    if (images != null) {
+    if (images.isNotEmpty) {
       setState(() {
         // 현재 선택된 이미지와 새로 추가된 이미지의 개수를 합쳐 4개 이하로 제한
         int totalImagesCount = _currentImages.length + _selectedImages.length;
         if (totalImagesCount + images.length <= 4) {
-          _selectedImages
-              .addAll(images.map((image) => File(image.path)).toList());
+          _selectedImages.addAll(
+            images.map((image) => File(image.path)).toList()
+          );
         } else {
           int remainingSlots = 4 - totalImagesCount;
-          _selectedImages.addAll(images
-              .take(remainingSlots)
-              .map((image) => File(image.path))
-              .toList());
+          _selectedImages.addAll(
+            images.take(remainingSlots).map((image) => File(image.path)).toList()
+          );
         }
       });
     }
@@ -96,6 +97,7 @@ class _MyReviewEditState extends ConsumerState<MyReviewEdit> {
 
       final defaultResponseDTO = await ref.read(productReviewEditViewModelProvider.notifier).reviewUpdate(formData);
       if (defaultResponseDTO != null) {
+        if (!mounted) return;
         Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
         if (defaultResponseDTO.result == true) {
           Navigator.pop(context, true);
@@ -161,23 +163,23 @@ class _MyReviewEditState extends ConsumerState<MyReviewEdit> {
                         Text(
                           '상품은 어떠셨나요?',
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 16),
-                              fontWeight: FontWeight.bold),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 16),
+                            fontWeight: FontWeight.bold
+                          ),
                         ),
                         Directionality(
-                          textDirection: _isRTLMode
-                              ? TextDirection.rtl
-                              : TextDirection.ltr,
+                          textDirection: _isRTLMode ? TextDirection.rtl : TextDirection.ltr,
                           child: SingleChildScrollView(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 Container(
-                                    width: 250,
-                                    margin: const EdgeInsets.symmetric(vertical: 20),
-                                    child: _ratingBar(1)),
+                                  width: 250,
+                                  margin: const EdgeInsets.symmetric(vertical: 20),
+                                  child: _ratingBar(1)
+                                ),
                               ],
                             ),
                           ),
@@ -185,31 +187,27 @@ class _MyReviewEditState extends ConsumerState<MyReviewEdit> {
                         TextField(
                           controller: _reviewController,
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14)),
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14)
+                          ),
                           maxLines: 10,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                            hintText:
-                                '최소 10자 이상 입력해주세요. \n구매하신 상품에 대한 솔직한 리뷰를 남겨주세요. :)',
+                            hintText: '최소 10자 이상 입력해주세요. \n구매하신 상품에 대한 솔직한 리뷰를 남겨주세요. :)',
                             hintStyle: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: const Color(0xFF595959)),
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: const Color(0xFF595959)
+                            ),
                             enabledBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(6)),
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
                               borderSide: BorderSide(color: Colors.black),
                             ),
                             focusedBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(6)),
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
                               borderSide: BorderSide(color: Colors.black),
                             ),
                           ),
-                          onChanged: (value) {
-                            setState(() {});
-                          },
                         ),
                         Container(
                           margin: const EdgeInsets.only(bottom: 10, top: 20),
@@ -219,15 +217,17 @@ class _MyReviewEditState extends ConsumerState<MyReviewEdit> {
                               Text(
                                 '이미지',
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 13)),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 13)
+                                ),
                               ),
                               Text(
                                 '${_selectedImages.length + _currentImages.length}/4',
                                 style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 13),
-                                    color: const Color(0xFF7B7B7B)),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 13),
+                                  color: const Color(0xFF7B7B7B)
+                                ),
                               ),
                             ],
                           ),
@@ -246,9 +246,10 @@ class _MyReviewEditState extends ConsumerState<MyReviewEdit> {
                             height: 100,
                             margin: const EdgeInsets.only(right: 10),
                             decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                border: Border.all(color: const Color(0xFFE7EAEF))),
+                              color: Colors.white,
+                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                              border: Border.all(color: const Color(0xFFE7EAEF))
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -257,10 +258,10 @@ class _MyReviewEditState extends ConsumerState<MyReviewEdit> {
                                 Text(
                                   '사진선택',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      color: const Color(0xFF707070),
-                                      fontSize:
-                                          Responsive.getFont(context, 14)),
+                                    fontFamily: 'Pretendard',
+                                    color: const Color(0xFF707070),
+                                    fontSize: Responsive.getFont(context, 14)
+                                  ),
                                 )
                               ],
                             ),
@@ -273,8 +274,7 @@ class _MyReviewEditState extends ConsumerState<MyReviewEdit> {
                               child: ListView.builder(
                                 controller: _scrollController,
                                 scrollDirection: Axis.horizontal,
-                                itemCount: _currentImages.length +
-                                    _selectedImages.length,
+                                itemCount: _currentImages.length + _selectedImages.length,
                                 // 기존 + 새 이미지 개수
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
@@ -289,16 +289,13 @@ class _MyReviewEditState extends ConsumerState<MyReviewEdit> {
                                   return Container(
                                     margin: const EdgeInsets.only(right: 10),
                                     decoration: BoxDecoration(
-                                      borderRadius:
-                                          const BorderRadius.all(Radius.circular(6)),
-                                      border:
-                                          Border.all(color: const Color(0xFFE7EAEF)),
+                                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                      border: Border.all(color: const Color(0xFFE7EAEF)),
                                     ),
                                     child: Stack(
                                       children: [
                                         ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(6),
+                                          borderRadius: BorderRadius.circular(6),
                                           child: Image.file(
                                             image,
                                             width: 100,

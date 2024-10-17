@@ -165,7 +165,7 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 4),
                                       child: Text(
-                                        reviewData.ptName ?? "", // TODO
+                                        reviewData.ptName ?? "",
                                         style: TextStyle(
                                           fontFamily: 'Pretendard',
                                           fontSize: Responsive.getFont(context, 14),
@@ -176,7 +176,7 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
                                       ),
                                     ),
                                     Text(
-                                      reviewData.ctOptName ?? "", // TODO
+                                      reviewData.ctOptName ?? "",
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(context, 13),
@@ -234,16 +234,10 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
     };
 
     final reviewInfoResponseDTO = await ref.read(myReviewViewModelProvider.notifier).getList(requestData);
-    if (reviewInfoResponseDTO!= null) {
-      if(reviewInfoResponseDTO.result == true) {
-        setState(() {
-          _reviewCount = reviewInfoResponseDTO.count ?? 0;
-          _reviewList.addAll(reviewInfoResponseDTO.list ?? []);
-          if (_reviewList.isNotEmpty) {
-            _isListVisible = true;
-          }
-        });
-      }
+    _reviewCount = reviewInfoResponseDTO?.count ?? 0;
+    _reviewList = reviewInfoResponseDTO?.list ?? [];
+    if (_reviewList.isNotEmpty) {
+      _isListVisible = true;
     }
 
     setState(() {
