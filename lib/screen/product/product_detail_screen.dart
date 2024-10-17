@@ -199,6 +199,26 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           },
         ),
         titleSpacing: -1.0,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          child: Container(
+            color: const Color(0x0D000000), // 하단 구분선 색상
+            height: 1.0, // 구분선의 두께 설정
+            child: Container(
+              height: 1.0, // 그림자 부분의 높이
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x0D000000),
+                    blurRadius: 6.0,
+                    spreadRadius: 0.1,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
         actions: [
           IconButton(
             icon: SvgPicture.asset("assets/images/product/ic_top_sch.svg"),
@@ -219,8 +239,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             length: 2, // 두 개의 탭
             child: NestedScrollView(
               controller: _scrollController,
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
+              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
                   SliverToBoxAdapter(
                     child: Column(
@@ -557,17 +576,30 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             ),
                           ),
                         ),
-                        Text(
-                          '${Utils.getInstance().priceString(productData?.ptSellingPrice ?? 0)}원', // 원래 가격
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: const Color(0xFFABABAB),
-                            decoration: TextDecoration.lineThrough,
-                            // 취소선
-                            height: 1.2,
-                          ),
-                        ),
+                        Stack(
+                          children: [
+                            // 원래 텍스트 (원래 가격)
+                            Text(
+                              '${Utils.getInstance().priceString(productData?.ptSellingPrice ?? 0)}원',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: const Color(0xFFABABAB),
+                                height: 1.2,
+                              ),
+                            ),
+                            // 커스텀 취소선
+                            Positioned(
+                              top: 7, // 텍스트 가운데쯤에 맞춰서 위치
+                              left: 0,
+                              right: 0,
+                              child: Container(
+                                height: 1, // 선의 두께
+                                color: const Color(0xFFABABAB), // 취소선 색상
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                     Visibility(
