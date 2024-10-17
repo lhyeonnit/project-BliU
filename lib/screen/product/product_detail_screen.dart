@@ -20,6 +20,7 @@ import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final int? ptIdx;
@@ -246,6 +247,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       children: [
                         _productBanner(_productData?.imgArr ?? []),
                         _productInfoTitle(_storeData, _productData),
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 20),
+                          height: 10,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF5F9F9),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -253,13 +261,6 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               },
               body: Column(
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 20),
-                    height: 10,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFF5F9F9),
-                    ),
-                  ),
                   TabBar(
                     overlayColor: WidgetStateColor.transparent,
                     indicatorColor: Colors.black,
@@ -514,10 +515,10 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                 ),
                               ),
                               Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: SvgPicture.asset(
-                                      'assets/images/product/ic_more_arrow.svg')),
+                                height: 15,
+                                  width: 15,
+                                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                                  child: SvgPicture.asset('assets/images/product/ic_more_arrow.svg', color: Color(0xFF7B7B7B),)),
                             ],
                           ),
                         ),
@@ -530,14 +531,15 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             height: 24,
                           ),
                           onTap: () {
-                            // TODO 공유 버튼 동작
+                            String productUrl = "https://bground.api.dmonster.kr/api/user/product/detail/${_productData?.ptIdx ?? ''}"; // 고유한 URL 생성
+                            Share.share('${_productData?.ptName ?? ''}: $productUrl');
                           },
                         ),
                       ],
                     ),
                     // 상품 제목
                     Container(
-                      margin: const EdgeInsets.only(top: 8, bottom: 12),
+                      margin: const EdgeInsets.only(top: 6, bottom: 10),
                       child: Text(
                         productData?.ptName ?? "",
                         style: TextStyle(
@@ -565,7 +567,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                               )
                             : const SizedBox(),
                         Container(
-                          margin: const EdgeInsets.only(left: 8, right: 5),
+                          margin: const EdgeInsets.only(left: 6, right: 5),
                           child: Text(
                             '${Utils.getInstance().priceString(productData?.ptPrice ?? 0)}원', // 할인된 가격
                             style: TextStyle(
