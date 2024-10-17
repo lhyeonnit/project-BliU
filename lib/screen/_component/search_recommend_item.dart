@@ -26,13 +26,11 @@ class _SearchRecommendItemState extends ConsumerState<SearchRecommendItem> {
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(left: 16),
-      child: Column(
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: const EdgeInsets.only(top: 40),
+            margin: const EdgeInsets.only(top: 40, left: 16),
             child: Text(
               '이런 아이템은 어떠세요?',
               style: TextStyle(
@@ -53,7 +51,9 @@ class _SearchRecommendItemState extends ConsumerState<SearchRecommendItem> {
                 itemCount: _productList.length, // 리스트의 길이를 사용
                 itemBuilder: (context, index) {
                   final productData = _productList[index];
-                  return SizedBox(
+                  return Container(
+                    margin: EdgeInsets.only(left: index == 0 ? 16 : 0),
+                    padding: const EdgeInsets.only(right: 12),
                     width: 160,
                     child: ProductListCard(productData: productData, bottomVisible: false),
                   );
@@ -62,8 +62,7 @@ class _SearchRecommendItemState extends ConsumerState<SearchRecommendItem> {
             ),
           ),
         ],
-      ),
-    );
+      );
   }
   void _afterBuild(BuildContext context) {
     _getList();
