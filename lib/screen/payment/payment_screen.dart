@@ -306,40 +306,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   }
 
   void _payment() async {
-    // TODO 테스트용
-    Map<String, dynamic> requestData2 = {
-      'type': 1,
-      'ot_code': "241017FY48KU",
-      'mt_idx': 2,
-      'temp_mt_id': 'f8a612ApQVSJkHVOu61EF7:APA91bHv7o5UO4Rz_RWI6rTLhYUSZoX9jFa48usuKl_h-B-riEQhcvMmLkDUZRhoE8wkPu_yin6CNyW02EaazJ3btoTEU2ZiUaOcqcBsbygGK2TkgEqyKsbRKzHJGijDVMOh7X_XdCwU',
-    };
-    final PayOrderResultDetailDTO? payOrderResult = await ref.read(paymentViewModelProvider.notifier).orderEnd(requestData2);
-
-    if (payOrderResult != null) {
-      if (payOrderResult.result == true) {
-        final payOrderResultDetailData = payOrderResult.data;
-        if(!mounted) return;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  PaymentCompleteScreen(
-                    payType: _payType,
-                    payOrderResultDetailData: payOrderResultDetailData,
-                    savedRecipientName: _recipientNameController.text,
-                    savedRecipientPhone: _recipientPhoneController.text,
-                    savedAddressRoad: _addressRoadController.text,
-                    savedAddressDetail: _addressDetailController.text,
-                    savedMemo: _memoController.text,
-                  )
-          ),
-        );
-      }
-    }
-
-    return;
-
-
     /***
      *
      * 결제 상세 -> 결제 요청(이전에 쿠폰 사용 포인트 사용 요청) -> 결제 모듈에서 결제 완료후 -> 결제 검증 -> 결제 완료
