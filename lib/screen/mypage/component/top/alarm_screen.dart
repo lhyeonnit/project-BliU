@@ -1,5 +1,10 @@
 import 'package:BliU/data/push_data.dart';
+import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/home/exhibition_screen.dart';
+import 'package:BliU/screen/main_screen.dart';
+import 'package:BliU/screen/mypage/component/top/my_coupon_screen.dart';
+import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/alarm_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -7,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-// 알림 화면
 class AlarmScreen extends ConsumerStatefulWidget {
   const AlarmScreen({super.key});
 
@@ -81,7 +85,45 @@ class AlarmScreenState extends ConsumerState<AlarmScreen> {
 
               return GestureDetector(
                 onTap: () {
-                  // TODO 화면 이동 작업 필요
+                  /**
+                  home - 홈화면
+                  order_list - 주문 배송 페이지
+                  cart_list - 장바구니
+                  coupon_list - 쿠폰함
+                  exhibition - 기획전
+                   * */
+                  switch (pushData.ptLink) {
+                    case "home":
+                      Navigator.popUntil(context, ModalRoute.withName("/"));
+                      ref.read(mainScreenProvider.notifier).selectNavigation(2);
+                      break;
+                    case "order_list":
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const OrderListScreen()),
+                      );
+                      break;
+                    case "cart_list":
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CartScreen()),
+                      );
+                      break;
+                    case "coupon_list":
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const MyCouponScreen()),
+                      );
+                      break;
+                    case "exhibition":
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ExhibitionScreen(etIdx: pushData.etIdx ?? 0),
+                        ),
+                      );
+                      break;
+                  }
                 },
                 child: Container(
                   // 눌린 상태에 따라 색상 변경
@@ -184,16 +226,12 @@ class AlarmScreenState extends ConsumerState<AlarmScreen> {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
     Map<String, dynamic> requestData = {
-      'mt_idx': mtIdx,
+      'mt_idx': mtIdx ?? "",
     };
 
     final pushResponseDTO = await ref.read(alarmViewModelProvider.notifier).getList(requestData);
-    if (pushResponseDTO != null) {
-      if (pushResponseDTO.result == true) {
-        setState(() {
-          pushList = pushResponseDTO.list ?? [];
-        });
-      }
-    }
+    setState(() {
+      pushList = pushResponseDTO?.list ?? [];
+    });
   }
 }

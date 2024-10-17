@@ -9,11 +9,7 @@ class OrderItem extends StatelessWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
 
-  const OrderItem({
-    super.key,
-    required this.orderData,
-    required this.orderDetailData,
-  });
+  const OrderItem({super.key, required this.orderData, required this.orderDetailData});
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +56,12 @@ class OrderItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      // order['items'][0]['store'] ?? "",
                       orderDetailData.stName ?? "",
                       style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 12),
-                          color: const Color(0xFF7B7B7B)),
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 12),
+                        color: const Color(0xFF7B7B7B)
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 4, bottom: 10),

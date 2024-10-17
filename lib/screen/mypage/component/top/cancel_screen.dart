@@ -18,17 +18,13 @@ class CancelScreen extends ConsumerStatefulWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
 
-  const CancelScreen({
-    super.key,
-    required this.orderData,
-    required this.orderDetailData,
-  });
+  const CancelScreen({super.key, required this.orderData, required this.orderDetailData,});
 
   @override
-  ConsumerState<CancelScreen> createState() => _CancelScreenState();
+  ConsumerState<CancelScreen> createState() => CancelScreenState();
 }
 
-class _CancelScreenState extends ConsumerState<CancelScreen> {
+class CancelScreenState extends ConsumerState<CancelScreen> {
   OrderDetailInfoData? orderDetailInfoData;
 
   final ScrollController _scrollController = ScrollController();
@@ -194,24 +190,20 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                                 maxLines: 4,
                                 maxLength: 500,
                                 decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 14, horizontal: 15),
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                                   hintText: '세부 내용 입력',
                                   hintStyle: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: const Color(0xFF595959)),
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: const Color(0xFF595959)
+                                  ),
                                   enabledBorder: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(6)),
-                                    borderSide:
-                                        BorderSide(color: Color(0xFFE1E1E1)),
+                                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                                    borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                                   ),
                                   focusedBorder: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(6)),
-                                    borderSide:
-                                        BorderSide(color: Color(0xFFE1E1E1)),
+                                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                                    borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                                   ),
                                   counter: Align(
                                     alignment: Alignment.centerLeft, // 왼쪽 정렬
@@ -260,22 +252,19 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
                     onTap: () {
                       // 확인 버튼 눌렀을 때 처리
                       if (_dropdownValue == 0) {
-                        Utils.getInstance()
-                            .showSnackBar(context, "취소사유를 선택해 주세요");
+                        Utils.getInstance().showSnackBar(context, "취소사유를 선택해 주세요");
                         return;
                       }
 
                       if (_detailedReason.isEmpty) {
-                        Utils.getInstance()
-                            .showSnackBar(context, "세부 내용을 입력해 주세요.");
+                        Utils.getInstance().showSnackBar(context, "세부 내용을 입력해 주세요.");
                         return;
                       }
                       _orderCancel();
                     },
                     child: Container(
                       height: Responsive.getHeight(context, 48),
-                      margin: const EdgeInsets.only(
-                          right: 16.0, left: 16, top: 8, bottom: 9),
+                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
                       decoration: const BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.all(
@@ -321,19 +310,15 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
       'ot_code': widget.orderDetailData.otCode,
     };
 
-    final orderDetailInfoResponseDTO = await ref
-        .read(cancelViewModelProvider.notifier)
-        .getOrderDetail(requestData);
-    final categoryResponseDTO =
-        await ref.read(cancelViewModelProvider.notifier).getCategory();
+    final orderDetailInfoResponseDTO = await ref.read(cancelViewModelProvider.notifier).getOrderDetail(requestData);
+    final categoryResponseDTO = await ref.read(cancelViewModelProvider.notifier).getCategory();
 
     if (orderDetailInfoResponseDTO != null) {
       if (orderDetailInfoResponseDTO.result == true) {
         orderDetailInfoData = orderDetailInfoResponseDTO.data;
       } else {
-        if (!context.mounted) return;
-        Utils.getInstance()
-            .showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
+        if (!mounted) return;
+        Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
       }
     }
 
@@ -360,9 +345,8 @@ class _CancelScreenState extends ConsumerState<CancelScreen> {
       'ct_reason': _detailedReason,
     };
 
-    final defaultResponseDTO = await ref
-        .read(cancelViewModelProvider.notifier)
-        .orderCancel(requestData);
+    final defaultResponseDTO = await ref.read(cancelViewModelProvider.notifier).orderCancel(requestData);
+    if (!mounted) return;
     Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     if (defaultResponseDTO.result == true) {
       Navigator.pop(context);

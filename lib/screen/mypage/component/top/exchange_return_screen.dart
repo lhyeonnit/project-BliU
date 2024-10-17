@@ -22,14 +22,13 @@ class ExchangeReturnScreen extends ConsumerStatefulWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
 
-  const ExchangeReturnScreen(
-      {super.key, required this.orderData, required this.orderDetailData});
+  const ExchangeReturnScreen({super.key, required this.orderData, required this.orderDetailData});
 
   @override
-  ConsumerState<ExchangeReturnScreen> createState() => _ExchangeReturnScreenState();
+  ConsumerState<ExchangeReturnScreen> createState() => ExchangeReturnScreenState();
 }
 
-class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
+class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
   OrderDetailInfoData? orderDetailInfoData;
   List<CategoryData> exchangeCategory = [];
   List<CategoryData> returnCategory = [];
@@ -162,33 +161,10 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
                   child: GestureDetector(
                     onTap: () {
                       _orderReturn();
-
-                      // 교환 또는 반품/환불에 따른 타이틀 설정
-                      //String title = selectedIndex == 0 ? '교환' : '반품/환불';
-
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => ExchangeReturnDetailScreen(
-                      //       reason: reason,  // 요청사유
-                      //       details: details,  // 상세내용
-                      //       images: images, // 이미지 리스트
-                      //       returnAccount: returnAccount,
-                      //       returnBank: returnBank,
-                      //       shippingCost: shippingCost,
-                      //       title: title,  // 화면 타이틀
-                      //       date: widget.date,
-                      //       orderId: widget.orderId,
-                      //       orders: widget.orders,
-                      //       orderDetails: widget.orderDetails,  // 주문 세부 정보
-                      //     ),
-                      //   ),
-                      // );
                     },
                     child: Container(
                       height: Responsive.getHeight(context, 48),
-                      margin: const EdgeInsets.only(
-                          right: 16.0, left: 16, top: 9, bottom: 8),
+                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                       decoration: const BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.all(
@@ -304,8 +280,7 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
       ortReturnInfo = shippingCost.toString();
     }
 
-    final List<MultipartFile> files =
-        images.map((img) => MultipartFile.fromFileSync(img.path)).toList();
+    final List<MultipartFile> files = images.map((img) => MultipartFile.fromFileSync(img.path)).toList();
 
     final formData = FormData.fromMap({
       'type': memberType,
@@ -320,9 +295,8 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
       'temp_mt_id': appToken,
     });
 
-    final defaultResponseDTO = await ref
-        .read(exchangeReturnViewModelProvider.notifier)
-        .orderReturn(formData);
+    final defaultResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).orderReturn(formData);
+    if (!mounted) return;
     Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     if (defaultResponseDTO.result) {
       Navigator.pop(context);
@@ -390,9 +364,7 @@ class _ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
             border: Border.all(
-              color: isSelected
-                  ? const Color(0xFFFF6192)
-                  : const Color(0xFFDDDDDD), // 테두리 색상
+              color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD), // 테두리 색상
               width: 1.0,
             ),
             color: Colors.white, // 배경색

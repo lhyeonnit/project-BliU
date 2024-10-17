@@ -4,27 +4,86 @@ import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.da
 import 'package:BliU/screen/mypage/component/top/cancel_screen.dart';
 import 'package:BliU/screen/mypage/component/top/delivery_screen.dart';
 import 'package:BliU/screen/mypage/component/top/exchange_return_screen.dart';
+import 'package:BliU/screen/mypage/component/top/review_write_screen.dart';
+import 'package:BliU/screen/mypage/viewmodel/order_item_button_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OrderItemButton extends StatelessWidget {
+class OrderItemButton extends ConsumerStatefulWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
 
-  const OrderItemButton({
-    super.key,
-    required this.orderData,
-    required this.orderDetailData,
-  });
+  const OrderItemButton({super.key, required this.orderData, required this.orderDetailData});
+
+  @override
+  ConsumerState<OrderItemButton> createState() => OrderItemButtonState();
+}
+
+class OrderItemButtonState extends ConsumerState<OrderItemButton> {
+  late OrderData _orderData;
+  late OrderDetailData _orderDetailData;
+  late String _ctStatusTxt;
+
+  @override
+  void initState() {
+    super.initState();
+    _orderData = widget.orderData;
+    _orderDetailData = widget.orderDetailData;
+    _ctStatusTxt = _orderDetailData.ctStatusTxt ?? "";
+    _ctStatusTxt = "배송완료";// TODO 테스트용
+  }
+
+  void _requestOrderComplete() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('구매확정'),
+        content: const Text('해당 주문을 구매확정 하시겠습니까?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('취소'),
+          ),
+          TextButton(
+            onPressed: () async {
+              final pref = await SharedPreferencesManager.getInstance();
+              final mtIdx = pref.getMtIdx() ?? "";
+
+              Map<String, dynamic> requestData = {
+                'type' : mtIdx.isNotEmpty ? 1 : 2,
+                'mt_idx' : mtIdx,
+                'temp_mt_id' : pref.getToken(),
+                'ct_idx' : _orderDetailData.ctIdx,
+              };
+
+              final defaultResponseDTO = await ref.read(orderItemButtonViewModelProvider.notifier).requestOrder(requestData);
+              if (defaultResponseDTO != null) {
+                if (defaultResponseDTO.result == true) {
+                  if (!mounted) return;
+                  Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+                  Navigator.pop(context);
+                  setState(() {
+                    _ctStatusTxt = "구매확정";
+                  });
+                }
+              }
+            },
+            child: const Text('확인'),
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO 테스트
-    String ctStatusTxt = orderDetailData.ctStatusTxt ?? "";
-    //ctStatusTxt = "상품준비중";
-    //ctStatusTxt = "배송중";
 
-    if (ctStatusTxt == "상품준비중") {
+    if (_ctStatusTxt == "상품준비중") {
       return Row(
         children: [
           Expanded(
@@ -33,17 +92,13 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CancelScreen(
-                      orderData: orderData,
-                      orderDetailData: orderDetailData,
-                    ),
+                    builder: (context) => CancelScreen(orderData: _orderData, orderDetailData: _orderDetailData),
                   ),
                 );
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                 backgroundColor: Colors.white,
               ),
               child: Text(
@@ -63,17 +118,13 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InquiryService(
-                      qnaType: '3',
-                      ptIdx: orderDetailData.ptIdx,
-                    ),
+                    builder: (context) => InquiryService(qnaType: '3', ptIdx: _orderDetailData.ptIdx),
                   ),
                 );
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                 backgroundColor: Colors.white,
               ),
               child: Text(
@@ -88,7 +139,7 @@ class OrderItemButton extends StatelessWidget {
           ),
         ],
       );
-    } else if (ctStatusTxt == "배송중") {
+    } else if (_ctStatusTxt == "배송중") {
       return Row(
         children: [
           Expanded(
@@ -97,17 +148,13 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ExchangeReturnScreen(
-                      orderData: orderData,
-                      orderDetailData: orderDetailData,
-                    ),
+                    builder: (context) => ExchangeReturnScreen(orderData: _orderData, orderDetailData: _orderDetailData),
                   ),
                 );
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                 backgroundColor: Colors.white,
               ),
               child: Text(
@@ -127,16 +174,13 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DeliveryScreen(
-                      odtCode: orderDetailData.otCode ?? "",
-                    ),
+                    builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? ""),
                   ),
                 );
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                 backgroundColor: Colors.white,
               ),
               child: Text(
@@ -156,17 +200,13 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InquiryService(
-                      qnaType: '3',
-                      ptIdx: orderDetailData.ptIdx,
-                    ),
+                    builder: (context) => InquiryService(qnaType: '3', ptIdx: _orderDetailData.ptIdx),
                   ),
                 );
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                 backgroundColor: Colors.white,
               ),
               child: Text(
@@ -181,19 +221,18 @@ class OrderItemButton extends StatelessWidget {
           ),
         ],
       );
-    } else if (ctStatusTxt == "배송완료") {
+    } else if (_ctStatusTxt == "배송완료") {
       return Column(
         children: [
           SizedBox(
             width: double.infinity,
             child: TextButton(
               onPressed: () {
-                // TODO 구매 확정
+                _requestOrderComplete();
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFFF6192)),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                 backgroundColor: Colors.white,
               ),
               child: Text(
@@ -214,17 +253,13 @@ class OrderItemButton extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ExchangeReturnScreen(
-                          orderData: orderData,
-                          orderDetailData: orderDetailData,
-                        ),
+                        builder: (context) => ExchangeReturnScreen(orderData: _orderData, orderDetailData: _orderDetailData),
                       ),
                     );
                   },
                   style: TextButton.styleFrom(
                     side: const BorderSide(color: Color(0xFFDDDDDD)),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                     backgroundColor: Colors.white,
                   ),
                   child: Text(
@@ -244,15 +279,13 @@ class OrderItemButton extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DeliveryScreen(
-                            odtCode: orderDetailData.otCode ?? ""),
+                        builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? ""),
                       ),
                     );
                   },
                   style: TextButton.styleFrom(
                     side: const BorderSide(color: Color(0xFFDDDDDD)),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                     backgroundColor: Colors.white,
                   ),
                   child: Text(
@@ -272,10 +305,7 @@ class OrderItemButton extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InquiryService(
-                          qnaType: '3',
-                          ptIdx: orderDetailData.ptIdx,
-                        ),
+                        builder: (context) => InquiryService(qnaType: '3', ptIdx: _orderDetailData.ptIdx,),
                       ),
                     );
                   },
@@ -299,24 +329,22 @@ class OrderItemButton extends StatelessWidget {
           ),
         ],
       );
-    } else if (ctStatusTxt == "구매확정") {
+    } else if (_ctStatusTxt == "구매확정") {
       return Row(
         children: [
           Expanded(
             child: TextButton(
               onPressed: () {
-                // TODO 전달할 param확인
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => ReviewWriteScreen(orders: orders,),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ReviewWriteScreen(orderDetailData: _orderDetailData),
+                  ),
+                );
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFFF6192)),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                 backgroundColor: Colors.white,
               ),
               child: Text(
@@ -336,15 +364,13 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        DeliveryScreen(odtCode: orderDetailData.otCode ?? ""),
+                    builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? ""),
                   ),
                 );
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                 backgroundColor: Colors.white,
               ),
               child: Text(
@@ -364,17 +390,13 @@ class OrderItemButton extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InquiryService(
-                      qnaType: '3',
-                      ptIdx: orderDetailData.ptIdx,
-                    ),
+                    builder: (context) => InquiryService(qnaType: '3', ptIdx: _orderDetailData.ptIdx,),
                   ),
                 );
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                 backgroundColor: Colors.white,
               ),
               child: Text(

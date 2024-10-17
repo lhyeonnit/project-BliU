@@ -339,18 +339,18 @@ class MyReviewEditState extends ConsumerState<MyReviewEdit> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: Container(
-              width: double.infinity,
-              height: Responsive.getHeight(context, 48),
-              margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(6),
+            child: GestureDetector(
+              onTap: _submitReview,
+              child: Container(
+                width: double.infinity,
+                height: Responsive.getHeight(context, 48),
+                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(6),
+                  ),
                 ),
-              ),
-              child: GestureDetector(
-                onTap: _submitReview,
                 child: Center(
                   child: Text(
                     '등록',

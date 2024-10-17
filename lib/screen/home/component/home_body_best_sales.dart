@@ -41,8 +41,8 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
           onSelectionChanged: (CategoryData? newSelection) {
             setState(() {
               _selectedAgeGroup = newSelection;
-              _getList();
             });
+            _getList();
           },
         );
       },
@@ -60,11 +60,41 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
   @override
   void initState() {
     super.initState();
-    for (var category in widget.categories) {
-      _categories.add(category);
-    }
+    _categories.addAll(widget.categories);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
+    });
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getList();
+  }
+
+  void _getList() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    final category = _categories[_selectedCategoryIndex];
+
+    String categoryStr = "all";
+    if (_selectedCategoryIndex > 0) {
+      categoryStr = category.ctIdx.toString();
+    }
+
+    String ageStr = "all";
+    if (_selectedAgeGroup != null) {
+      ageStr = (_selectedAgeGroup?.catIdx ?? 0).toString();
+    }
+
+    Map<String, dynamic> requestData = {
+      'mt_idx' : mtIdx ?? "",
+      'category' : categoryStr,
+      'age' : ageStr,
+    };
+
+    final productListResponseDTO = await ref.read(homeBodyBestSalesViewModelProvider.notifier).getList(requestData);
+    setState(() {
+      _productList = productListResponseDTO?.list ?? [];
     });
   }
 
@@ -96,8 +126,8 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
                       onTap: () {
                         setState(() {
                           _selectedCategoryIndex = index;
-                          _getList();
                         });
+                        _getList();
                       },
                       child: categoryTab(index),
                     ),
@@ -173,48 +203,6 @@ class _HomeBodyBestSalesState extends ConsumerState<HomeBodyBestSales> {
         ],
       ),
     );
-  }
-
-  void _afterBuild(BuildContext context) {
-    _getList();
-  }
-
-  void _getList() async {
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-    String? memberType = (mtIdx != null) ? mtIdx : '';
-
-    // 회원 여부에 따라 처리 (비회원도 처리 가능)
-    if (mtIdx == null || mtIdx.isEmpty) {
-      // 비회원 처리 (예: 비회원용 메시지나 기본값 설정)
-      print('비회원');
-    } else {
-      print('회원 mtIdx: $mtIdx');
-    }
-    final category = _categories[_selectedCategoryIndex];
-    String categoryStr = "all";
-    if (_selectedCategoryIndex > 0) {
-      categoryStr = category.ctIdx.toString();
-    }
-    String ageStr = "all";
-    if (_selectedAgeGroup != null) {
-      ageStr = (_selectedAgeGroup?.catIdx ?? 0).toString();
-    }
-
-    Map<String, dynamic> requestData = {
-      'mt_idx' : memberType,
-      'category' : categoryStr,
-      'age' : ageStr,
-    };
-
-    final productListResponseDTO = await ref.read(homeBodyBestSalesViewModelProvider.notifier).getList(requestData);
-    if (productListResponseDTO != null) {
-      if (productListResponseDTO.result == true) {
-        setState(() {
-          _productList = productListResponseDTO.list;
-        });
-      }
-    }
   }
 
   Widget categoryTab(int index) {

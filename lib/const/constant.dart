@@ -85,6 +85,7 @@ class Constant {
   static const apiMyPageChangeNameUrl = "mypage/change_name";//이름 변경
   static const apiMyPageChangeHpUrl = "mypage/change_hp";//휴대폰 번호 변경
   static const apiMyPageRetireUrl = "mypage/retire";//탈퇴
+  static const apiMyPageOrderUrl = "mypage/order";//구매확정
   static const apiMyPageOrderListUrl = "mypage/order_list";//주문/배송 리스트
   static const apiMyPageOrderDetailUrl = "mypage/order_detail";//주문/배송 상세
   static const apiMyPageOrderDeliveryUrl = "mypage/order_delivery";//주문/배송 상세

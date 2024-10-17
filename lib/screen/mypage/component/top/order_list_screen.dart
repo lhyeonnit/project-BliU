@@ -13,10 +13,10 @@ class OrderListScreen extends ConsumerStatefulWidget {
   const OrderListScreen({super.key});
 
   @override
-  ConsumerState<OrderListScreen> createState() => _OrderListScreenState();
+  ConsumerState<OrderListScreen> createState() => OrderListScreenState();
 }
-
-class _OrderListScreenState extends ConsumerState<OrderListScreen> {
+// TODO viewwillappear으로 리스트 갱신 작업
+class OrderListScreenState extends ConsumerState<OrderListScreen> {
   final ScrollController _scrollController = ScrollController();
 
   final List<String> categories = ['전체', '배송중', '배송완료', '취소/교환반품'];
@@ -79,7 +79,7 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
       'type': memberType,
       'mt_idx': mtIdx,
       'temp_mt_id': appToken,
-      'ot_code': '', // 비회원 주문조회의 경우에만 전달해주세요.
+      'ot_code': '', // TODO 비회원 주문조회의 경우에만 전달해주세요.
       'ct_status': ctStatus,
       'pg': _page,
     };
@@ -176,8 +176,8 @@ class _OrderListScreenState extends ConsumerState<OrderListScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
+                  height: 42,
                   margin: const EdgeInsets.symmetric(vertical: 20),
-                  height: 38,
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,

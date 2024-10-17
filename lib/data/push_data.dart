@@ -5,6 +5,7 @@ class PushData {
   final String? ptLabel;
   final String? ptLink;
   final String? ptWdate;
+  final int? etIdx;
 
   PushData({
     required this.pRead,
@@ -13,6 +14,7 @@ class PushData {
     required this.ptLabel,
     required this.ptLink,
     required this.ptWdate,
+    required this.etIdx,
   });
 
   // JSON to Object
@@ -24,6 +26,7 @@ class PushData {
       ptLabel: json['pt_label'],
       ptLink: json['pt_link'],
       ptWdate: json['pt_wdate'],
+      etIdx: json['et_idx'],
     );
   }
 
@@ -36,6 +39,7 @@ class PushData {
       'pt_label': ptLabel,
       'pt_link': ptLink,
       'pt_wdate': ptWdate,
+      'et_idx': etIdx
     };
   }
 }
