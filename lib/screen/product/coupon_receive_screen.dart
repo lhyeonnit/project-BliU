@@ -77,13 +77,11 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
           ),
         ),
       ),
-      body: Column(
+      body: Stack(
         children: [
           Visibility(
             visible: _couponList.isNotEmpty,
-            child: Expanded(
-              flex: 1,
-              child: Padding(
+            child: Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
                 child: ListView.builder(
                   itemCount: _couponList.length,
@@ -116,12 +114,9 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
                 ),
               ),
             ),
-          ),
           Visibility(
             visible: _couponList.isEmpty,
-            child: Expanded(
-              flex: 1,
-              child: Center(
+            child: Center(
                 child: Column(
                   children: [
                     Container(
@@ -146,30 +141,78 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
                 ),
               ),
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              _allCouponDownload();
-            },
-            child: Container(
-              height: Responsive.getHeight(context, 48),
-              margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
-              decoration: BoxDecoration(
-                color: _isAllDownload
-                    ? Colors.black // 모든 쿠폰이 다운로드된 경우 회색으로 비활성화
-                    : const Color(0xFFDDDDDD), // 다운로드할 쿠폰이 있으면 활성화
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(6),
+
+          Visibility(
+            visible: _couponList.isNotEmpty,
+            child: Positioned(
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child: Container(
+                color: Colors.white,
+                child: GestureDetector(
+                  onTap: () {
+                    _allCouponDownload();
+                  },
+                  child: Container(
+                    height: Responsive.getHeight(context, 48),
+                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                    decoration: BoxDecoration(
+                      color: _isAllDownload
+                          ? Colors.black // 모든 쿠폰이 다운로드된 경우 회색으로 비활성화
+                          : const Color(0xFFDDDDDD), // 다운로드할 쿠폰이 있으면 활성화
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(6),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '전체받기',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: Colors.white,
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              child: Center(
-                child: Text(
-                  '전체받기',
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Colors.white,
-                    height: 1.2,
+            ),
+          ),
+          Visibility(
+            visible: _couponList.isEmpty,
+            child: Positioned(
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child: Container(
+                color: Colors.white,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    height: Responsive.getHeight(context, 48),
+                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                    decoration: const BoxDecoration(
+                      color: Colors.black, // 다운로드할 쿠폰이 있으면 활성화
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(6),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '확인',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: Colors.white,
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
