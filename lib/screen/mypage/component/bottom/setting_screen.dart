@@ -11,6 +11,7 @@ class SettingScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // TODO 비회원 구분
     var data = {'mt_idx': '2'};
     ref.read(settingModelProvider.notifier).getPushInfo(data);
 
@@ -100,8 +101,8 @@ class SettingScreen extends ConsumerWidget {
                             borderRadius: 30.0,
                             padding: 4.0,
                             showOnOff: false,
-                            activeColor: Colors.grey,
-                            inactiveColor: Colors.grey.shade300,
+                            activeColor: const Color(0xFFFF6192),
+                            inactiveColor: const Color(0xFFDDDDDD),
                             toggleColor: Colors.white,
                             onToggle: (val) {
                               String mtPushing = "";
