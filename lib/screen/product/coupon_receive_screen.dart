@@ -77,66 +77,142 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
           ),
         ),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            flex: 1,
+          Visibility(
+            visible: _couponList.isNotEmpty,
             child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
-              child: ListView.builder(
-                itemCount: _couponList.length,
-                itemBuilder: (context, index) {
-                  final couponData = _couponList[index];
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+                child: ListView.builder(
+                  itemCount: _couponList.length,
+                  itemBuilder: (context, index) {
+                    final couponData = _couponList[index];
 
-                  final couponDiscount = couponData.couponDiscount ?? "0";
-                  final ctName = couponData.ctName ?? "";
-                  final ctDate = "${couponData.ctDate ?? ""}까지 사용가능";
+                    final couponDiscount = couponData.couponDiscount ?? "0";
+                    final ctName = couponData.ctName ?? "";
+                    final ctDate = "${couponData.ctDate ?? ""}까지 사용가능";
 
-                  String detailMessage = "구매금액 ${Utils.getInstance().priceString(couponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
-                  if (couponData.ctMaxPrice != null) {
-                    detailMessage = "최대 ${Utils.getInstance().priceString(couponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
-                  }
+                    String detailMessage = "구매금액 ${Utils.getInstance().priceString(couponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
+                    if (couponData.ctMaxPrice != null) {
+                      detailMessage = "최대 ${Utils.getInstance().priceString(couponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
+                    }
 
-                  return CouponCard(
-                    discount: couponDiscount,
-                    title: ctName,
-                    expiryDate: ctDate,
-                    discountDetails: detailMessage,
-                    isDownload: couponData.down == "Y" ? true : false,
-                    onDownload: () {
-                      if ((couponData.ctCode ?? "").isNotEmpty) {
-                        _couponDownload([(couponData.ctCode ?? "")]);
-                      }
-                    },
-                    couponKey: index.toString(), // 고유한 키 전달
-                  );
-                },
+                    return CouponCard(
+                      discount: couponDiscount,
+                      title: ctName,
+                      expiryDate: ctDate,
+                      discountDetails: detailMessage,
+                      isDownload: couponData.down == "Y" ? true : false,
+                      onDownload: () {
+                        if ((couponData.ctCode ?? "").isNotEmpty) {
+                          _couponDownload([(couponData.ctCode ?? "")]);
+                        }
+                      },
+                      couponKey: index.toString(), // 고유한 키 전달
+                    );
+                  },
+                ),
+              ),
+            ),
+          Visibility(
+            visible: _couponList.isEmpty,
+            child: Center(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 130, bottom: 15),
+                      child: SvgPicture.asset('assets/images/product/no_data_img.svg',
+                        width: 90,
+                        height: 90,
+                      ),
+                    ),
+                    Text(
+                      '등록된 쿠폰이 없습니다.',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        fontWeight: FontWeight.w300,
+                        color: const Color(0xFF7B7B7B),
+                        height: 1.2,
+
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+          Visibility(
+            visible: _couponList.isNotEmpty,
+            child: Positioned(
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child: Container(
+                color: Colors.white,
+                child: GestureDetector(
+                  onTap: () {
+                    _allCouponDownload();
+                  },
+                  child: Container(
+                    height: Responsive.getHeight(context, 48),
+                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                    decoration: BoxDecoration(
+                      color: _isAllDownload
+                          ? Colors.black // 모든 쿠폰이 다운로드된 경우 회색으로 비활성화
+                          : const Color(0xFFDDDDDD), // 다운로드할 쿠폰이 있으면 활성화
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(6),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '전체받기',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: Colors.white,
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              _allCouponDownload();
-            },
-            child: Container(
-              height: Responsive.getHeight(context, 48),
-              margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
-              decoration: BoxDecoration(
-                color: _isAllDownload
-                    ? Colors.black // 모든 쿠폰이 다운로드된 경우 회색으로 비활성화
-                    : const Color(0xFFDDDDDD), // 다운로드할 쿠폰이 있으면 활성화
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(6),
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  '전체받기',
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Colors.white,
-                    height: 1.2,
+          Visibility(
+            visible: _couponList.isEmpty,
+            child: Positioned(
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child: Container(
+                color: Colors.white,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    height: Responsive.getHeight(context, 48),
+                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                    decoration: const BoxDecoration(
+                      color: Colors.black, // 다운로드할 쿠폰이 있으면 활성화
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(6),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '확인',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: Colors.white,
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),

@@ -155,33 +155,41 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
           Container(
             color: Colors.white,
             margin: const EdgeInsets.only(left: 16),
+
             child: _albums.isNotEmpty
                 ? GestureDetector(
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
                         backgroundColor: Colors.white,
-
                         builder: (BuildContext context) {
-                          return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: _albums.map((album) {
-                                return ListTile(
-                                  title: Text(
-                                    album.name,
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      fontWeight: FontWeight.w600,
+                          return SizedBox(
+                            height: 400, // 모달의 높이를 제한하여 스크롤이 가능하도록 설정
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: _albums.length,
+                              itemBuilder: (context, index) {
+                                final album = _albums[index];
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 2.0),
+                                  child: ListTile(
+                                    title: Text(
+                                      album.name,
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
+                                    onTap: () {
+                                      getPhotos(album, albumChange: true);
+                                      Navigator.pop(context);
+                                    },
                                   ),
-                                  onTap: () {
-                                    getPhotos(album, albumChange: true);
-                                    Navigator.pop(context);
-                                  },
                                 );
-                              }).toList(),
-                            );
+                              },
+                            ),
+                          );
                         },
                       );
                     },
