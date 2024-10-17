@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:BliU/data/cart_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
@@ -6,32 +8,29 @@ import 'package:flutter/material.dart';
 class PaymentOrderItem extends StatefulWidget {
   final List<CartData> cartList;
 
-  const PaymentOrderItem({
-    super.key,
-    required this.cartList,
-  });
+  const PaymentOrderItem({super.key, required this.cartList,});
 
   @override
   State<PaymentOrderItem> createState() => _PaymentOrderItemState();
 }
 
 class _PaymentOrderItemState extends State<PaymentOrderItem> {
-  List<CartData> selectedItems = [];
+  List<CartData> _selectedItems = [];
 
   @override
   void initState() {
     super.initState();
-    // 선택된 아이템들을 저장
-    selectedItems = widget.cartList;
+    _selectedItems = widget.cartList;
   }
 
   @override
   Widget build(BuildContext context) {
+    print("_selectedItems ${json.encode(_selectedItems)}");
     return Column(
       children: [
-        ...selectedItems.map((item) {
+        ..._selectedItems.map((item) {
           final productList = item.productList ?? [];
-          bool isLast = (selectedItems.length - 1) == selectedItems.indexOf(item);
+          bool isLast = (_selectedItems.length - 1) == _selectedItems.indexOf(item);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -127,7 +126,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                               child: Row(
                                 children: [
                                   Text(
-                                    pItem.ptOption ?? "", // 아이템 설명
+                                    pItem.ptOption ?? pItem.ctOptValue ?? "", // 아이템 설명
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 13),
@@ -136,7 +135,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                                     ),
                                   ),
                                   Text(
-                                    ' ${pItem.ptCount ?? 0}개', // 수량
+                                    ' ${pItem.ptCount ?? pItem.ctOptQty ?? 0}개', // 수량
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 13),
@@ -148,7 +147,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                               ),
                             ),
                             Text(
-                              '${Utils.getInstance().priceString(pItem.ptPrice ?? 0)}원', // 가격 정보
+                              '${Utils.getInstance().priceString(pItem.allPtPrice ?? pItem.ctAllPrice ?? 0)}원', // 가격 정보
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 16),

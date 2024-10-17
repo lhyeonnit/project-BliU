@@ -452,13 +452,15 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xFFDDDDDD)),
-                      shape: BoxShape.circle, // 이미지를 동그랗게 만들기
-                      image: DecorationImage(
-                          image: NetworkImage(
-                            storeData?.stProfile ?? "",
-                          ),
-                          fit: BoxFit.cover)),
+                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                    shape: BoxShape.circle, // 이미지를 동그랗게 만들기
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        storeData?.stProfile ?? "",
+                      ),
+                      fit: BoxFit.cover
+                    )
+                  ),
                 ),
               ),
               // 나머지 텍스트와 공유 버튼을 포함한 컬럼

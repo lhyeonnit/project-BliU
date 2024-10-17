@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PaymentCompleteScreen extends ConsumerStatefulWidget {
+  final int payType;//1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
   final PayOrderResultDetailData? payOrderResultDetailData;
   final String? savedRecipientName; // 저장된 수령인 이름
   final String? savedRecipientPhone; // 저장된 전화번호
@@ -18,6 +19,7 @@ class PaymentCompleteScreen extends ConsumerStatefulWidget {
 
   const PaymentCompleteScreen({
     super.key,
+    required this.payType,
     required this.payOrderResultDetailData,
     required this.savedRecipientName,
     required this.savedRecipientPhone,
@@ -44,6 +46,22 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String payTypeStr = "";
+    switch (widget.payType) {
+      case 1:
+        payTypeStr = "카드결제";
+        break;
+      case 2:
+        payTypeStr = "휴대폰";
+        break;
+      case 3:
+        payTypeStr = "계좌이체";
+        break;
+      case 4:
+        payTypeStr = "네이버페이";
+        break;
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -62,7 +80,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
         actions: [
           GestureDetector(
             onTap: () {
-              // TODO 홈으로
+              Navigator.popUntil(context, ModalRoute.withName("/"));
             },
             child: Container(
               margin: const EdgeInsets.only(right: 16),
@@ -154,7 +172,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  //TODO 홈으로
+                                  Navigator.popUntil(context, ModalRoute.withName("/"));
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(vertical: 14),
@@ -255,7 +273,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                               Container(
                                 margin: const EdgeInsets.only(left: 4),
                                 child: Text(
-                                  '네이버페이', //TODO 졀제수단 들고 오기
+                                  payTypeStr,
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
@@ -303,33 +321,39 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                 '할인금액',
                                 '${Utils.getInstance().priceString(payOrderResultDetailData?.otUseCoupon ?? 0)}원',
                               ),
-                              // TODO 할인 쿠폰 사용처 확인
-                              // Padding(
-                              //   padding: const EdgeInsets.only(left: 10.0),
-                              //   child: Container(
-                              //     margin: const EdgeInsets.only(left: 10, top: 10),
-                              //     child: Row(
-                              //       crossAxisAlignment:
-                              //           CrossAxisAlignment.start,
-                              //       mainAxisAlignment:
-                              //           MainAxisAlignment.spaceBetween,
-                              //       children: [
-                              //         Text('ㄴproductPrice',
-                              //             style: TextStyle( fontFamily: 'Pretendard',
-
-                              //                 fontSize: Responsive.getFont(
-                              //                     context, 14),
-                              //                 color: const Color(0xFFA4A4A4))),
-                              //         Text('productPrice',
-                              //             style: TextStyle( fontFamily: 'Pretendard',
-
-                              //                 fontSize: Responsive.getFont(
-                              //                     context, 14),
-                              //                 color: const Color(0xFFA4A4A4))),
-                              //       ],
-                              //     ),
-                              //   ),
-                              // ),
+                              Visibility(
+                                visible: (payOrderResultDetailData?.coupon?.coupon ?? "") == "Y" ? true : false,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 10, top: 10),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('ㄴ${payOrderResultDetailData?.coupon?.couponName}',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            color: const Color(0xFFA4A4A4),
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                        Text('${Utils.getInstance().priceString(int.parse(payOrderResultDetailData?.coupon?.couponUse ?? "0"))}원',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            color: const Color(0xFFA4A4A4),
+                                            height: 1.2,
+                                          )
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -477,6 +501,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                   Theme(
                     data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                     child: ExpansionTile(
+                      initiallyExpanded: true,
                       title: Container(
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         child: Text(
@@ -501,11 +526,15 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                             ),
                           ),
                           child: PaymentOrderItem(
-                            cartList: payOrderResultDetailData?.product ?? []
+                            cartList: payOrderResultDetailData?.productList ?? []
                           ),
                         ),
                       ],
                     ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                    width: double.infinity,
                   ),
                 ],
               ),

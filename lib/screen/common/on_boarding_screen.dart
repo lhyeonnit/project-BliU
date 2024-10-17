@@ -111,6 +111,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MainScreen(),
+                          settings: const RouteSettings(name: "/")
                         ),
                       );
                     },

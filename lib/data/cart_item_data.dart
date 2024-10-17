@@ -1,5 +1,7 @@
 class CartItemData {
   final int? ctIdx;
+  final int? ptIdx;
+  final String? ptDeliveryNow;
   final String? ptName;
   final String? ptTitle;
   final int? ptCount;
@@ -10,9 +12,16 @@ class CartItemData {
   final int? allPtPrice;
   final String? ptOption;
   final int? ctDeliveryDefaultPrice;
+  final String? ctOptName;
+  final String? ctOptValue;
+  final int? ctOptQty;
+  final int? ctPrice;
+  final int? ctAllPrice;
 
   CartItemData({
     required this.ctIdx,
+    required this.ptIdx,
+    required this.ptDeliveryNow,
     required this.ptName,
     required this.ptTitle,
     required this.ptCount,
@@ -23,12 +32,19 @@ class CartItemData {
     required this.allPtPrice,
     required this.ptOption,
     required this.ctDeliveryDefaultPrice,
+    required this.ctOptName,
+    required this.ctOptValue,
+    required this.ctOptQty,
+    required this.ctPrice,
+    required this.ctAllPrice,
   });
 
   // JSON to Object
   factory CartItemData.fromJson(Map<String, dynamic> json) {
     return CartItemData(
       ctIdx: json['ct_idx'],
+      ptIdx: json['pt_idx'],
+      ptDeliveryNow: json['pt_delivery_now'],
       ptName: json['pt_name'],
       ptTitle: json['pt_title'],
       ptCount: json['pt_count'],
@@ -39,6 +55,11 @@ class CartItemData {
       allPtPrice: json['all_pt_price'],
       ptOption: json['pt_option'],
       ctDeliveryDefaultPrice: json['ct_delivery_default_price'],
+      ctOptName: json['ct_opt_name'],
+      ctOptValue: json['ct_opt_value'],
+      ctOptQty: json['ct_opt_qty'],
+      ctPrice: json['ct_price'],
+      ctAllPrice: json['ct_all_price'],
     );
   }
 
@@ -46,6 +67,8 @@ class CartItemData {
   Map<String, dynamic> toJson() {
     return {
       'ct_idx': ctIdx,
+      'pt_idx': ptIdx,
+      'pt_delivery_now': ptDeliveryNow,
       'pt_name': ptName,
       'pt_title': ptTitle,
       'pt_count': ptCount,
@@ -56,6 +79,11 @@ class CartItemData {
       'all_pt_price': allPtPrice,
       'pt_option': ptOption,
       'ct_delivery_default_price': ctDeliveryDefaultPrice,
+      'ct_opt_name': ctOptName,
+      'ct_opt_value': ctOptValue,
+      'ct_opt_qty': ctOptQty,
+      'ct_price': ctPrice,
+      'ct_all_price': ctAllPrice,
     };
   }
 }

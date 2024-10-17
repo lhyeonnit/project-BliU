@@ -1,4 +1,5 @@
 class CouponData {
+  final String? coupon;
   final String? couponUsealbe;
   final int? couponIdx;
   final String? couponStatus;
@@ -18,6 +19,7 @@ class CouponData {
   final String? down;
 
   CouponData({
+    required this.coupon,
     required this.couponUsealbe,
     required this.couponIdx,
     required this.couponStatus,
@@ -40,6 +42,7 @@ class CouponData {
   // JSON to Object
   factory CouponData.fromJson(Map<String, dynamic> json) {
     return CouponData(
+      coupon: json['coupon'],
       couponUsealbe: json['coupon_usealbe'],
       couponIdx: json['coupon_idx'],
       couponStatus: json['coupon_status'],
@@ -63,6 +66,7 @@ class CouponData {
   // Object to JSOn
   Map<String, dynamic> toJson() {
     return {
+      'coupon': coupon,
       'coupon_usealbe': couponUsealbe,
       'coupon_idx': couponIdx,
       'coupon_status': couponStatus,

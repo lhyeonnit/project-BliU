@@ -66,6 +66,20 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   @override
   void initState() {
     super.initState();
+
+    // 주소 셋팅
+    if (widget.payOrderDetailData.userDeliveyAdd != null) {
+      final userDeliveyAdd = widget.payOrderDetailData.userDeliveyAdd!;
+      _isUseAddress = true;
+      _recipientNameController.text = userDeliveyAdd.matName ?? "";
+      _recipientPhoneController.text = userDeliveyAdd.matHp ?? "";
+
+      _savedZip = userDeliveyAdd.matZip ?? "";
+      _addressRoadController.text = userDeliveyAdd.matAdd1 ?? "";
+      _addressDetailController.text = userDeliveyAdd.matAdd2 ?? "";
+      _memoController.text = userDeliveyAdd.matMemo1 ?? "";
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -74,6 +88,9 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   void _afterBuild(BuildContext context) {
     _getMy();
     _getOrderCoupon();
+    if (widget.payOrderDetailData.userDeliveyAdd != null) {
+      _addressChange();
+    }
   }
 
   void _getMy() async {
@@ -166,11 +183,11 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   }
 
   int _getTotalDeliveryPrice() {
-    int totalDeliveryPrice = 0;
-    final cartList = widget.payOrderDetailData.list ?? [];
-    for (var cartItem in cartList) {
-      totalDeliveryPrice += cartItem.stDeliveryPrice ?? 0;
-    }
+    int totalDeliveryPrice = widget.payOrderDetailData.allDeliveryPrice ?? 0;
+    // final cartList = widget.payOrderDetailData.list ?? [];
+    // for (var cartItem in cartList) {
+    //   totalDeliveryPrice += cartItem.stDeliveryPrice ?? 0;
+    // }
 
     totalDeliveryPrice += _userDeliveryPrice;
     return totalDeliveryPrice;
@@ -289,6 +306,40 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   }
 
   void _payment() async {
+    // TODO 테스트용
+    Map<String, dynamic> requestData2 = {
+      'type': 1,
+      'ot_code': "241017FY48KU",
+      'mt_idx': 2,
+      'temp_mt_id': 'f8a612ApQVSJkHVOu61EF7:APA91bHv7o5UO4Rz_RWI6rTLhYUSZoX9jFa48usuKl_h-B-riEQhcvMmLkDUZRhoE8wkPu_yin6CNyW02EaazJ3btoTEU2ZiUaOcqcBsbygGK2TkgEqyKsbRKzHJGijDVMOh7X_XdCwU',
+    };
+    final PayOrderResultDetailDTO? payOrderResult = await ref.read(paymentViewModelProvider.notifier).orderEnd(requestData2);
+
+    if (payOrderResult != null) {
+      if (payOrderResult.result == true) {
+        final payOrderResultDetailData = payOrderResult.data;
+        if(!mounted) return;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  PaymentCompleteScreen(
+                    payType: _payType,
+                    payOrderResultDetailData: payOrderResultDetailData,
+                    savedRecipientName: _recipientNameController.text,
+                    savedRecipientPhone: _recipientPhoneController.text,
+                    savedAddressRoad: _addressRoadController.text,
+                    savedAddressDetail: _addressDetailController.text,
+                    savedMemo: _memoController.text,
+                  )
+          ),
+        );
+      }
+    }
+
+    return;
+
+
     /***
      *
      * 결제 상세 -> 결제 요청(이전에 쿠폰 사용 포인트 사용 요청) -> 결제 모듈에서 결제 완료후 -> 결제 검증 -> 결제 완료
@@ -338,7 +389,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
     // 주문 고유 번호를 취득위해서 다시조회
     final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
+    final mtIdx = pref.getMtIdx() ?? "";
     final memberInfo = pref.getMemberInfo();
 
     List<Map<String, dynamic>> cartArr = [];
@@ -359,7 +410,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     }
 
     Map<String, dynamic> requestData = {
-      'type': 1,
+      'type': mtIdx.isNotEmpty ? 1 : 2,
       'ot_idx': widget.payOrderDetailData.otIdx,
       'mt_idx': mtIdx,
       'temp_mt_id': pref.getToken(),
@@ -414,7 +465,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
         }
 
         Map<String, dynamic> requestData1 = {
-          'type': 1,
+          'type': mtIdx.isNotEmpty ? 1 : 2,
           'ot_code': payOrderDetailData.otCode,
           'mt_idx': mtIdx,
           'temp_mt_id': pref.getToken(),
@@ -488,10 +539,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
   void _paymentComplete(PayOrderDetailData payOrderDetailData) async {
     final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
+    final mtIdx = pref.getMtIdx() ?? "";
 
     Map<String, dynamic> requestData2 = {
-      'type': 1,
+      'type': mtIdx.isNotEmpty ? 1 : 2,
       'ot_code': payOrderDetailData.otCode,
       'mt_idx': mtIdx,
       'temp_mt_id': pref.getToken(),
@@ -502,21 +553,21 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       if (payOrderResult.result == true) {
         final payOrderResultDetailData = payOrderResult.data;
         if(!mounted) return;
-        // TODO 완료시
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) =>
-        //           PaymentCompleteScreen(
-        //             payOrderResultDetailData: payOrderResultDetailData,
-        //             savedAddressDetail: savedAddressDetail,
-        //             savedAddressRoad: savedAddressRoad,
-        //             savedMemo: savedMemo,
-        //             savedRecipientName: savedRecipientName,
-        //             savedRecipientPhone: savedRecipientPhone,
-        //           )
-        //   ),
-        // );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  PaymentCompleteScreen(
+                    payType: _payType,
+                    payOrderResultDetailData: payOrderResultDetailData,
+                    savedRecipientName: _recipientNameController.text,
+                    savedRecipientPhone: _recipientPhoneController.text,
+                    savedAddressRoad: _addressRoadController.text,
+                    savedAddressDetail: _addressDetailController.text,
+                    savedMemo: _memoController.text,
+                  )
+          ),
+        );
       }
     }
   }
