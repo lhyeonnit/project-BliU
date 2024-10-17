@@ -43,16 +43,17 @@ class TermsDetail extends ConsumerWidget {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
           child: Container(
-            color: const Color(0xFFF4F4F4), // 하단 구분선 색상
+            color: const Color(0x0D000000), // 하단 구분선 색상
             height: 1.0, // 구분선의 두께 설정
             child: Container(
               height: 1.0, // 그림자 부분의 높이
               decoration: const BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: Color(0xFFF4F4F4),
+                    color: Color(0x0D000000),
                     blurRadius: 6.0,
-                    spreadRadius: 1.0,
+                    spreadRadius: 0.1,
+                    offset: Offset(0, 3),
                   ),
                 ],
               ),

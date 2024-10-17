@@ -101,6 +101,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
       //         bottom: PreferredSize(
       //           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
       //           child: Container(
+      // TODO 구분선 색상 변경
       //             color: const Color(0xFFF4F4F4), // 하단 구분선 색상
       //             height: 1.0, // 구분선의 두께 설정
       //           ),
