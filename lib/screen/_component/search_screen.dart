@@ -416,7 +416,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         actions: [
           GestureDetector(
             child: Container(
-                margin: const EdgeInsets.only(right: 16),
+                margin: const EdgeInsets.only(right: 16, left: 17),
                 child: SvgPicture.asset("assets/images/product/ic_smart.svg")),
             onTap: () {
               Navigator.push(
@@ -673,15 +673,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: const Color(0xFFDDDDDD)),
-                      ),
-                      child: ClipOval(
-                          child: Image.network(
-                            result.stProfile ?? '',
-                            fit: BoxFit.cover,
-                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                              return const SizedBox();
-                            },
-                          )
+                        image: DecorationImage(
+                          image: NetworkImage(result.stProfile ?? ''),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     title: Container(
