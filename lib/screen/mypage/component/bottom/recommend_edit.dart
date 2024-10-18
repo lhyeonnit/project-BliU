@@ -342,12 +342,12 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
         _selectDate();
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 40),
+        margin: const EdgeInsets.symmetric(vertical: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              margin: const EdgeInsets.only(bottom: 8),
+              margin: const EdgeInsets.only(bottom: 5),
               child: Text(
                 '출생년도',
                 style: TextStyle(

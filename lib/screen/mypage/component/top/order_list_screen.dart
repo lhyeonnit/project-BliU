@@ -8,7 +8,6 @@ import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:focus_detector_v2/focus_detector_v2.dart';
 
 class OrderListScreen extends ConsumerStatefulWidget {
   const OrderListScreen({super.key});
@@ -16,7 +15,7 @@ class OrderListScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState<OrderListScreen> createState() => OrderListScreenState();
 }
-
+// TODO viewwillappear으로 리스트 갱신 작업
 class OrderListScreenState extends ConsumerState<OrderListScreen> {
   final ScrollController _scrollController = ScrollController();
 
@@ -54,47 +53,7 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
       _isFirstLoadRunning = true;
     });
     _page = 1;
-    _hasNextPage = true;
 
-    final requestData = await _makeRequestData();
-
-    final orderResponseDTO = await ref.read(orderListViewModelProvider.notifier).getList(requestData);
-    orderList = orderResponseDTO?.list ?? [];
-
-    setState(() {
-      _isFirstLoadRunning = false;
-    });
-  }
-
-  void _nextLoad() async {
-    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
-      setState(() {
-        _isLoadMoreRunning = true;
-      });
-      _page += 1;
-
-      final requestData = await _makeRequestData();
-
-      final orderResponseDTO = await ref.read(orderListViewModelProvider.notifier).getList(requestData);
-      if (orderResponseDTO != null) {
-        if ((orderResponseDTO.list ?? []).isNotEmpty) {
-          setState(() {
-            orderList.addAll(orderResponseDTO.list ?? []);
-          });
-        } else {
-          setState(() {
-            _hasNextPage = false;
-          });
-        }
-      }
-
-      setState(() {
-        _isLoadMoreRunning = false;
-      });
-    }
-  }
-
-  Future<Map<String, dynamic>> _makeRequestData() async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
@@ -125,87 +84,116 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
       'pg': _page,
     };
 
-    return requestData;
+    final orderResponseDTO = await ref.read(orderListViewModelProvider.notifier).getList(requestData);
+    orderList = orderResponseDTO?.list ?? [];
+
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
   }
 
-  void _viewWillAppear(BuildContext context)  {
-    _getList();
-  }
+  void _nextLoad() async {
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+      _page += 1;
 
-  void _viewWillDisappear() {
-    print("viewWillDisappear");
+      final Map<String, dynamic> requestData = {
+        'pg': _page
+      };
+
+      final orderResponseDTO = await ref.read(orderListViewModelProvider.notifier).getList(requestData);
+      if (orderResponseDTO != null) {
+        if ((orderResponseDTO.list ?? []).isNotEmpty) {
+          setState(() {
+            orderList.addAll(orderResponseDTO.list ?? []);
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FocusDetector(
-      onFocusGained: () {
-        _viewWillAppear(context);
-      },
-      onFocusLost: _viewWillDisappear,
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          scrolledUnderElevation: 0,
-          backgroundColor: Colors.white,
-          title: const Text('주문/배송'),
-          titleTextStyle: TextStyle(
-            fontFamily: 'Pretendard',
-            fontSize: Responsive.getFont(context, 18),
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-            height: 1.2,
-          ),
-          leading: IconButton(
-            icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
-            onPressed: () {
-              Navigator.pop(context); // 뒤로가기 동작
-            },
-          ),
-          titleSpacing: -1.0,
-          actions: const [
-            TopCartButton(),
-          ],
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+        title: const Text('주문/배송'),
+        titleTextStyle: TextStyle(
+          fontFamily: 'Pretendard',
+          fontSize: Responsive.getFont(context, 18),
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
+          height: 1.2,
+        ),
+        leading: IconButton(
+          icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
+          onPressed: () {
+            Navigator.pop(context); // 뒤로가기 동작
+          },
+        ),
+        titleSpacing: -1.0,
+        actions: const [
+          TopCartButton(),
+        ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+          child: Container(
+            color: const Color(0x0D000000), // 하단 구분선 색상
+            height: 1.0, // 구분선의 두께 설정
             child: Container(
-              color: const Color(0x0D000000), // 하단 구분선 색상
-              height: 1.0, // 구분선의 두께 설정
-              child: Container(
-                height: 1.0, // 그림자 부분의 높이
-                decoration: const BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0x0D000000),
-                      blurRadius: 6.0,
-                      spreadRadius: 0.1,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
+              height: 1.0, // 그림자 부분의 높이
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x0D000000),
+                    blurRadius: 6.0,
+                    spreadRadius: 0.1,
+                    offset: Offset(0, 3),
+                  ),
+                ],
               ),
             ),
           ),
         ),
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              controller: _scrollController,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 42,
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: categories.length,
-                      itemBuilder: (context, index) {
-                        final bool isSelected = selectedCategoryIndex == index;
+      ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 38,
+                  margin: const EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      final bool isSelected = selectedCategoryIndex == index;
 
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 4.0),
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 4.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedCategoryIndex = index;
+                              _getList();
+                            });
+                          },
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
                             decoration: BoxDecoration(
@@ -226,32 +214,32 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
                               ),
                             ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
-                  const Divider(
-                    height: 1,
-                    color: Color(0xFFEEEEEE),
-                  ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: orderList.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        final orderData = orderList[index];
+                ),
+                const Divider(
+                  height: 1,
+                  color: Color(0xFFEEEEEE),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: orderList.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final orderData = orderList[index];
 
-                        return OrderListItem(
-                          orderData: orderData,
-                        );
-                      }
-                  ),
-                ],
-              ),
+                    return OrderListItem(
+                      orderData: orderData,
+                    );
+                  }
+                ),
+              ],
             ),
-            MoveTopButton(scrollController: _scrollController),
-          ],
-        ),
+          ),
+          MoveTopButton(scrollController: _scrollController),
+        ],
       ),
     );
   }

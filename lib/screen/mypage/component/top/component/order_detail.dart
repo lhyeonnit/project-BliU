@@ -129,7 +129,7 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
                 ),
                 // 배송비 정보
                 Container(
-                  margin: const EdgeInsets.only(top: 20),
+                  margin: const EdgeInsets.only(top: 10),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                   decoration: const BoxDecoration(

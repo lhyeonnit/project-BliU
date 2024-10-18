@@ -5,6 +5,7 @@ import 'package:BliU/screen/mypage/component/bottom/component/non_inquiry_store.
 import 'package:BliU/screen/mypage/viewmodel/service_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -160,16 +161,26 @@ class ServiceScreen extends ConsumerWidget {
             height: 1.2,
           ),
         ),
-        Text(
-          content,
-          style: TextStyle(
-            fontFamily: 'Pretendard',
-            fontSize: Responsive.getFont(context, 14),
-            fontWeight: FontWeight.w400,
-            color: contentColor,
-            decoration: underline ? TextDecoration.underline : TextDecoration.none,
-            decorationColor: underline ? Color(0xFFFF6192) : null,
-            height: 1.2,
+        GestureDetector(
+          onTap: () {
+            // 텍스트를 클릭했을 때 클립보드에 복사
+            Clipboard.setData(ClipboardData(text: content));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('$content 복사되었습니다.')),
+            );
+          },
+          child: Text(
+            content,
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 14),
+              fontWeight: FontWeight.w400,
+              color: contentColor,
+              decoration:
+              underline ? TextDecoration.underline : TextDecoration.none,
+              decorationColor: underline ? const Color(0xFFFF6192) : null,
+              height: 1.2,
+            ),
           ),
         ),
       ],

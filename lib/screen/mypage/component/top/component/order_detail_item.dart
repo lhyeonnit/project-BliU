@@ -46,7 +46,7 @@ class OrderDetailItem extends StatelessWidget {
         ),
         // 배송지 정보
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
           child: Text(
             '배송지 정보',
             style: TextStyle(
@@ -94,7 +94,7 @@ class OrderDetailItem extends StatelessWidget {
           color: const Color(0xFFF5F9F9),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -162,7 +162,7 @@ class OrderDetailItem extends StatelessWidget {
               ),
               Container(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
                 child: Text(
                   '결제 수단',
                   style: TextStyle(
