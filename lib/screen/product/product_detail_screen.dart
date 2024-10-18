@@ -60,7 +60,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   void initState() {
     super.initState();
     _ptIdx = widget.ptIdx ?? 0;
-    _ptIdx = 4; // TODO 테스트 용도
+    //_ptIdx = 4; // TODO 테스트 용도
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });

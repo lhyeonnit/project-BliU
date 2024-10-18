@@ -28,6 +28,11 @@ class PayOrderDetailData {
       return CartData.fromJson(item as Map<String, dynamic>);
     }).toList());
 
+    UserDeliveyAddData? userDeliveyAdd;
+    if (json['user_delivey_add'] != null) {
+      userDeliveyAdd = UserDeliveyAddData.fromJson(json['user_delivey_add']);
+    }
+
     return PayOrderDetailData(
       otIdx: json['ot_idx'],
       otCode: json['ot_code'],
@@ -36,7 +41,7 @@ class PayOrderDetailData {
       maxUsePoint: json['max_use_point'],
       allPrice: json['all_price'],
       allDeliveryPrice: json['all_delivery_price'],
-      userDeliveyAdd: UserDeliveyAddData.fromJson(json['user_delivey_add']),
+      userDeliveyAdd: userDeliveyAdd,
     );
   }
 

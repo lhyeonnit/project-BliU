@@ -7,13 +7,12 @@ import 'package:BliU/screen/product/component/list/product_list_card.dart';
 import 'package:BliU/screen/product/component/list/product_sort_bottom.dart';
 import 'package:BliU/screen/store/component/store_age_group_selection.dart';
 import 'package:BliU/screen/store/store_detail_screen.dart';
+import 'package:BliU/screen/store/viewmodel/store_favorite_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../viewmodel/store_favorite_view_model.dart';
 
 class StoreFavoritePage extends ConsumerStatefulWidget {
   const StoreFavoritePage({super.key});
@@ -31,7 +30,6 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
   bool _isFirstLoadRunning = false;
   bool _isLoadMoreRunning = false;
   int _count = 0;
-  final int itemsPerPage = 5;
   final PageController pageController = PageController();
   final ScrollController _scrollController = ScrollController();
   String sortOption = '인기순';
@@ -39,7 +37,9 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
 
   late List<CategoryData> ageCategories;
   CategoryData? selectedAgeGroup;
-  List<BookmarkData> bookmarkList = [];
+  int _bookMarkCount = 0;
+  int _bookMarkVisibleCount = 0;
+  final List<List<BookmarkData>> _bookMarkList = [];
   final List<CategoryData> categories = [
     CategoryData(
         ctIdx: 0,
@@ -64,15 +64,21 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
 
   @override
   void dispose() {
+    _scrollController.removeListener(_nextLoad);
     _tabController.dispose();
     super.dispose();
   }
 
   void _afterBuild(BuildContext context) {
-    _getList();
     _getCategoryList();
+    _getList();
+    _getBookMark(1);
   }
+
   void _getCategoryList() async {
+    final ageCategoryResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getAgeCategory();
+    ageCategories = ageCategoryResponseDTO?.list ?? [];
+
     Map<String, dynamic> requestData = {'category_type': '1'};
     final categoryResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getCategory(requestData);
     if (categoryResponseDTO != null) {
@@ -97,46 +103,78 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
     _getList();
   }
 
+  void _getBookMark(int page) async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    Map<String, dynamic> requestBookmarkData = {
+      'mt_idx': mtIdx,
+      'pg': page,
+    };
+    final bookmarkResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getBookmark(requestBookmarkData);
+    setState(() {
+      _bookMarkCount = bookmarkResponseDTO?.count ?? 0;
+      final list = bookmarkResponseDTO?.list ?? [];
+      _bookMarkVisibleCount = list.length;
+
+      if (_bookMarkList.length >= page) {
+        _bookMarkList[page - 1] = list;
+      } else {
+        _bookMarkList.add([]);
+        _bookMarkList[page - 1] = list;
+      }
+    });
+  }
+
   void _getList() async {
     setState(() {
       _isFirstLoadRunning = true;
     });
     _page = 1;
+
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
+
     String category = "all";
     final categoryData = categories[_tabController.index];
     if ((categoryData.ctIdx ?? 0) > 0) {
       category = categoryData.ctIdx.toString();
-    }
-    Map<String, dynamic> requestBookmarkData = {
-      'mt_idx': mtIdx,
-      'pg': _page,
-    };
-    final bookmarkResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getBookmark(requestBookmarkData);
-    bookmarkList = bookmarkResponseDTO?.list ?? [];
-
-    final ageCategoryResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getAgeCategory();
-    if (ageCategoryResponseDTO != null) {
-      if (ageCategoryResponseDTO.result == true) {
-        ageCategories = ageCategoryResponseDTO.list ?? [];
-      }
     }
 
     String ageStr = "all";
     if (selectedAgeGroup != null) {
       ageStr = (selectedAgeGroup?.catIdx ?? 0).toString();
     }
+
+    int sort = 1;
+    // 1 최신순 2 인기순 3: 추천수, 4: 가격 낮은수, 5: 가격 높은수
+    switch (sortOptionSelected) {
+      case "최신순":
+        sort = 1;
+        break;
+      case "인기순":
+        sort = 2;
+        break;
+      case "추천순":
+        sort = 3;
+        break;
+      case "가격 낮은 순":
+        sort = 4;
+        break;
+      case "가격 높은 순":
+        sort = 5;
+        break;
+    }
+
     String searchTxt = _searchController.text.toLowerCase();
 
     Map<String, dynamic> requestProductData = {
       'mt_idx': mtIdx,
-      'st_idx': 1,
-      'category': category,
-      'pg': 1,
+      'pg': _page,
       'search_txt': searchTxt,
+      'category': category,
       'age': ageStr,
-      'sort': 2,
+      'sort': sort,
     };
 
     final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestProductData);
@@ -243,7 +281,7 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
       body: Stack(
         children: [
           Visibility(
-            visible: bookmarkList.isNotEmpty,
+            visible: _bookMarkList.isNotEmpty,
             child: NestedScrollView(
               controller: _scrollController,
               headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -255,7 +293,7 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
                           padding: const EdgeInsets.only(top: 20, bottom: 17),
-                          child: Text('즐겨찾기 ${bookmarkList.length}',
+                          child: Text('즐겨찾기 $_bookMarkCount',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
@@ -265,29 +303,28 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
-                          height: bookmarkList.length <= 5 ? (bookmarkList.length * 60.0) : 305,
-                          // 아이템 수에 따라 높이 조정
+                          height: _bookMarkVisibleCount <= 5 ? (_bookMarkVisibleCount * 60.0) : 305,
                           width: Responsive.getWidth(context, 378),
                           child: PageView.builder(
                             controller: pageController,
-                            itemCount: (bookmarkList.length / itemsPerPage).ceil(),
+                            itemCount: (_bookMarkCount / 5).ceil(),
                             onPageChanged: (int page) {
-                              _searchController.clear(); // 페이지 변경 시 검색 필드 초기화
+                              _getBookMark(page + 1);
                             },
                             itemBuilder: (context, pageIndex) {
-                              final startIndex = pageIndex * itemsPerPage;
-                              final endIndex = startIndex + itemsPerPage;
-                              final bookmarkDataList = bookmarkList.sublist(
-                                startIndex,
-                                endIndex > bookmarkList.length ? bookmarkList.length : endIndex,
-                              );
+                              List<BookmarkData> storeList = [];
+                              try {
+                                storeList = _bookMarkList[pageIndex];
+                              } catch(e) {
+                                print(e);
+                              }
 
                               return ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: bookmarkDataList.length,
+                                itemCount: storeList.length,
                                 itemBuilder: (context, index) {
-                                  final store = bookmarkDataList[index];
+                                  final store = storeList[index];
 
                                   return GestureDetector(
                                     onTap: () {
@@ -295,9 +332,7 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => StoreDetailScreen(
-                                            stIdx: store.stIdx ?? 0,
-                                          ),
+                                          builder: (context) => StoreDetailScreen(stIdx: store.stIdx ?? 0),
                                         ),
                                       );
                                     },
@@ -308,14 +343,10 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                                           Container(
                                             height: 40,
                                             width: 40,
-                                            margin:
-                                                const EdgeInsets.only(right: 10),
+                                            margin: const EdgeInsets.only(right: 10),
                                             decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              border: Border.all(
-                                                  color: const Color(0xFFDDDDDD),
-                                                  width: 1.0),
+                                              borderRadius: BorderRadius.circular(20),
+                                              border: Border.all(color: const Color(0xFFDDDDDD), width: 1.0),
                                             ),
                                             child: ClipRRect(
                                               borderRadius: BorderRadius.circular(20),
@@ -329,6 +360,7 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                                             ),
                                           ),
                                           Expanded(
+                                            flex: 14,
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
@@ -364,66 +396,73 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                                                               fontFamily: 'Pretendard',
                                                               fontSize: Responsive.getFont(context, 13),
                                                               color: const Color(0xFF7B7B7B),
-                                                              height: 1.2),
+                                                              height: 1.2
+                                                          ),
                                                           maxLines: 1,
-                                                          overflow: TextOverflow.ellipsis),
+                                                          overflow: TextOverflow.ellipsis
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
                                               ],
                                             ),
                                           ),
-                                          Column(
-                                            children: [
-                                              Container(
-                                                height: 30,
-                                                width: 30,
-                                                padding: const EdgeInsets.symmetric(vertical: 8),
-                                                child: GestureDetector(
-                                                  onTap: () async {
-                                                    final pref = await SharedPreferencesManager.getInstance();
-                                                    final mtIdx = pref.getMtIdx() ?? ""; // 사용자 mtIdx 가져오기
+                                          Expanded(
+                                            flex: 2,
+                                            child: GestureDetector(
+                                              onTap: () async {
+                                                final pref = await SharedPreferencesManager.getInstance();
+                                                final mtIdx = pref.getMtIdx() ?? ""; // 사용자 mtIdx 가져오기
 
-                                                    if (mtIdx.isEmpty) {
-                                                      if(!context.mounted) return;
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
-                                                          }
-                                                      );
-                                                      return;
-                                                    }
+                                                if (mtIdx.isEmpty) {
+                                                  if(!context.mounted) return;
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
+                                                      }
+                                                  );
+                                                  return;
+                                                }
 
-                                                    Map<String, dynamic> requestData = {
-                                                      'mt_idx': mtIdx,
-                                                      'st_idx': store.stIdx,
-                                                    };
-                                                    await ref.read(storeFavoriteViewModelProvider.notifier).toggleLike(requestData);
-                                                  },
-                                                  child: store.stLike == 1 ? SvgPicture.asset(
-                                                    'assets/images/store/book_mark.svg',
-                                                    colorFilter: const ColorFilter.mode(
-                                                      Color(0xFFFF6192),
-                                                      BlendMode.srcIn,
+                                                Map<String, dynamic> requestData = {
+                                                  'mt_idx': mtIdx,
+                                                  'st_idx': store.stIdx,
+                                                };
+                                                await ref.read(storeFavoriteViewModelProvider.notifier).toggleLike(requestData);
+                                                _getBookMark(pageIndex + 1);
+                                                _getList();
+                                              },
+                                              child: SizedBox(
+                                                width: double.infinity,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      height: 30,
+                                                      width: 30,
+                                                      padding: const EdgeInsets.symmetric(vertical: 8),
+                                                      child: SvgPicture.asset(
+                                                        'assets/images/store/book_mark.svg',
+                                                        colorFilter: const ColorFilter.mode(
+                                                          Color(0xFFFF6192),
+                                                          BlendMode.srcIn,
+                                                        ),
+                                                        fit: BoxFit.contain,
+                                                      ),
                                                     ),
-                                                    fit: BoxFit.contain,
-                                                  ) : SvgPicture.asset(
-                                                    'assets/images/store/book_mark.svg',
-                                                    fit: BoxFit.contain,
-                                                  ),
+                                                    Text(
+                                                      '${store.stLike}',
+                                                      style: TextStyle(
+                                                        fontFamily: 'Pretendard',
+                                                        color: const Color(0xFFA4A4A4),
+                                                        fontSize: Responsive.getFont(context, 12),
+                                                        height: 1.2,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              Text(
-                                                '${store.stLike}',
-                                                style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  color: const Color(0xFFA4A4A4),
-                                                  fontSize: Responsive.getFont(context, 12),
-                                                  height: 1.2,
-                                                ),
-                                              ),
-                                            ],
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -434,10 +473,11 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                             },
                           ),
                         ),
-                        if (bookmarkList.length > 5) // 5개 이상일 때만 페이지네이션 표시
-                          Row(
+                        Visibility(
+                          visible: _bookMarkCount > 5 ? true : false,
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate((bookmarkList.length / itemsPerPage).ceil(), (index) {
+                            children: List.generate((_bookMarkCount / 5).ceil(), (index) {
                               final currentPage = pageController.hasClients && pageController.page != null ? pageController.page!.round() : 0;
                               return Container(
                                 margin: const EdgeInsets.only(right: 6, top: 25),
@@ -450,6 +490,7 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                               );
                             }),
                           ),
+                        ),
                         const SizedBox(height: 30),
                         Container(
                           height: 44,
@@ -512,8 +553,7 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
+                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                                 child: GestureDetector(
                                   onTap: () {
                                     final search = _searchController.text;
@@ -656,10 +696,10 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
               ),
             ),
           ),
-          if (bookmarkList.isNotEmpty)
+          if (_bookMarkList.isNotEmpty)
           MoveTopButton(scrollController: _scrollController),
           Visibility(
-            visible: bookmarkList.isEmpty,
+            visible: _bookMarkList.isEmpty,
               child:Center(
                 child: Column(
                   children: [
