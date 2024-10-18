@@ -12,14 +12,13 @@ class ReviewWriteViewModel extends StateNotifier<ReviewWriteModel?> {
 
   ReviewWriteViewModel(super.state, this.ref);
 
-  Future<DefaultResponseDTO?> reviewWrite(FormData formData) async {
+  Future<Map<String, dynamic>?> reviewWrite(FormData formData) async {
     try {
       final response = await repository.reqPostFiles(url: Constant.apiMyPageReviewWriteUrl, data: formData);
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
-          DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
-          return defaultResponseDTO;
+          return responseData;
         }
       }
       return null;

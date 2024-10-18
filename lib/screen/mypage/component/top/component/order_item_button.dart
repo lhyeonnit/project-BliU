@@ -33,7 +33,6 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
     _orderData = widget.orderData;
     _orderDetailData = widget.orderDetailData;
     _ctStatusTxt = _orderDetailData.ctStatusTxt ?? "";
-    _ctStatusTxt = "배송완료";// TODO 테스트용
   }
 
   void _requestOrderComplete() {
@@ -311,8 +310,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
                   },
                   style: TextButton.styleFrom(
                     side: const BorderSide(color: Color(0xFFDDDDDD)),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                     backgroundColor: Colors.white,
                   ),
                   child: Text(

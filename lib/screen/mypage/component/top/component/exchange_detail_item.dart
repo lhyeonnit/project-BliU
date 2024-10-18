@@ -13,21 +13,21 @@ class ExchangeItem extends StatefulWidget {
   final OrderDetailInfoData? orderDetailInfoData;
   final List<CategoryData> exchangeCategory;
   final List<CategoryData> exchangeDeliveryCostCategory;
-  final Function(String reason, int reasonIdx, String details, int shippingCost,
-      List<File> images) onDataCollected;
+  final Function(String reason, int reasonIdx, String details, int shippingCost, List<File> images) onDataCollected;
 
-  const ExchangeItem(
-      {required this.orderDetailInfoData,
-      required this.exchangeCategory,
-      required this.exchangeDeliveryCostCategory,
-      required this.onDataCollected,
-      super.key});
+  const ExchangeItem({
+    required this.orderDetailInfoData,
+    required this.exchangeCategory,
+    required this.exchangeDeliveryCostCategory,
+    required this.onDataCollected,
+    super.key
+  });
 
   @override
-  State<ExchangeItem> createState() => _ExchangeItemState();
+  State<ExchangeItem> createState() => ExchangeItemState();
 }
 
-class _ExchangeItemState extends State<ExchangeItem> {
+class ExchangeItemState extends State<ExchangeItem> {
   OverlayEntry? _overlayEntry;
   String _dropdownText = '사유 선택';
   int _dropdownValue = 0;

@@ -54,6 +54,106 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
     });
   }
 
+  void _afterBuild(BuildContext context) {
+    _getOrderDetail();
+  }
+
+  void _getOrderDetail() async {
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    String? appToken = pref.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
+    Map<String, dynamic> requestData1 = {
+      'type': memberType,
+      'mt_idx': mtIdx,
+      'temp_mt_id': appToken,
+      'ot_code': widget.orderDetailData.otCode,
+    };
+
+    Map<String, dynamic> requestData2 = {
+      'ct_type': 1,
+    };
+
+    Map<String, dynamic> requestData3 = {
+      'ct_type': 2,
+    };
+
+    final orderDetailInfoResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getOrderDetail(requestData1);
+    final exchangeCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getCategory(requestData2);
+    final returnCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getCategory(requestData3);
+    final exchangeDeliveryCostCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getExchangeDeliveryCostCategory();
+
+    if (orderDetailInfoResponseDTO != null) {
+      if (orderDetailInfoResponseDTO.result == true) {
+        orderDetailInfoData = orderDetailInfoResponseDTO.data;
+      } else {
+        if (!mounted) return;
+        Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
+      }
+    }
+    if (exchangeCategoryResponseDTO != null) {
+      if (exchangeCategoryResponseDTO.result == true) {
+        exchangeCategory = exchangeCategoryResponseDTO.list ?? [];
+      }
+    }
+    if (returnCategoryResponseDTO != null) {
+      if (returnCategoryResponseDTO.result == true) {
+        returnCategory = returnCategoryResponseDTO.list ?? [];
+      }
+    }
+    if (exchangeDeliveryCostCategoryResponseDTO != null) {
+      if (exchangeDeliveryCostCategoryResponseDTO.result == true) {
+        exchangeDeliveryCostCategory = exchangeDeliveryCostCategoryResponseDTO.list ?? [];
+      }
+    }
+    setState(() {});
+  }
+
+  void _orderReturn() async {
+    if (reasonIdx == 0) {
+      Utils.getInstance().showSnackBar(context, "사유를 선택해 주세요");
+      return;
+    }
+
+    if (details.isEmpty) {
+      Utils.getInstance().showSnackBar(context, "세부 내용을 입력해 주세요.");
+      return;
+    }
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    String? appToken = pref.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
+    String ctType = selectedIndex == 0 ? 'X' : 'R';
+    String ortReturnInfo = "";
+    if (ctType == "X") {
+      ortReturnInfo = shippingCost.toString();
+    }
+
+    final List<MultipartFile> files = images.map((img) => MultipartFile.fromFileSync(img.path)).toList();
+
+    final formData = FormData.fromMap({
+      'type': memberType,
+      'mt_idx': mtIdx,
+      'odt_code': widget.orderDetailData.odtCode,
+      'ct_type': ctType,
+      'ct_idx': reasonIdx,
+      'ct_reason': details,
+      'ort_return_info': ortReturnInfo,
+      'ct_img': files,
+      'ort_return_bank_info': "$returnBank $returnAccount",
+      'temp_mt_id': appToken,
+    });
+
+    final defaultResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).orderReturn(formData);
+    if (!mounted) return;
+    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+    if (defaultResponseDTO.result) {
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,116 +291,6 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
         ],
       ),
     );
-  }
-
-  void _afterBuild(BuildContext context) {
-    _getOrderDetail();
-  }
-
-  void _getOrderDetail() async {
-
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-    String? appToken = pref.getToken();
-    int memberType = (mtIdx != null) ? 1 : 2;
-    Map<String, dynamic> requestData1 = {
-      'type': memberType,
-      'mt_idx': mtIdx,
-      'temp_mt_id': appToken,
-      'ot_code': widget.orderDetailData.otCode,
-    };
-
-    Map<String, dynamic> requestData2 = {
-      'ct_type': 1,
-    };
-
-    Map<String, dynamic> requestData3 = {
-      'ct_type': 2,
-    };
-
-    final orderDetailInfoResponseDTO = await ref
-        .read(exchangeReturnViewModelProvider.notifier)
-        .getOrderDetail(requestData1);
-    final exchangeCategoryResponseDTO = await ref
-        .read(exchangeReturnViewModelProvider.notifier)
-        .getCategory(requestData2);
-    final returnCategoryResponseDTO = await ref
-        .read(exchangeReturnViewModelProvider.notifier)
-        .getCategory(requestData3);
-    final exchangeDeliveryCostCategoryResponseDTO = await ref
-        .read(exchangeReturnViewModelProvider.notifier)
-        .getExchangeDeliveryCostCategory();
-
-    if (orderDetailInfoResponseDTO != null) {
-      if (orderDetailInfoResponseDTO.result == true) {
-        orderDetailInfoData = orderDetailInfoResponseDTO.data;
-      } else {
-        if (!context.mounted) return;
-        Utils.getInstance()
-            .showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
-      }
-    }
-    if (exchangeCategoryResponseDTO != null) {
-      if (exchangeCategoryResponseDTO.result == true) {
-        exchangeCategory = exchangeCategoryResponseDTO.list ?? [];
-      }
-    }
-    if (returnCategoryResponseDTO != null) {
-      if (returnCategoryResponseDTO.result == true) {
-        returnCategory = returnCategoryResponseDTO.list ?? [];
-      }
-    }
-    if (exchangeDeliveryCostCategoryResponseDTO != null) {
-      if (exchangeDeliveryCostCategoryResponseDTO.result == true) {
-        exchangeDeliveryCostCategory =
-            exchangeDeliveryCostCategoryResponseDTO.list ?? [];
-      }
-    }
-    setState(() {});
-  }
-
-  void _orderReturn() async {
-    if (reasonIdx == 0) {
-      Utils.getInstance().showSnackBar(context, "사유를 선택해 주세요");
-      return;
-    }
-
-    if (details.isEmpty) {
-      Utils.getInstance().showSnackBar(context, "세부 내용을 입력해 주세요.");
-      return;
-    }
-
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-    String? appToken = pref.getToken();
-    int memberType = (mtIdx != null) ? 1 : 2;
-    String ctType = selectedIndex == 0 ? 'X' : 'R';
-    String ortReturnInfo = "";
-    if (ctType == "X") {
-      ortReturnInfo = shippingCost.toString();
-    }
-
-    final List<MultipartFile> files = images.map((img) => MultipartFile.fromFileSync(img.path)).toList();
-
-    final formData = FormData.fromMap({
-      'type': memberType,
-      'mt_idx': mtIdx,
-      'odt_code': widget.orderDetailData.odtCode,
-      'ct_type': ctType,
-      'ct_idx': reasonIdx,
-      'ct_reason': details,
-      'ort_return_info': ortReturnInfo,
-      'ct_img': files,
-      'ort_return_bank_info': "$returnBank $returnAccount",
-      'temp_mt_id': appToken,
-    });
-
-    final defaultResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).orderReturn(formData);
-    if (!mounted) return;
-    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
-    if (defaultResponseDTO.result) {
-      Navigator.pop(context);
-    }
   }
 
   Widget _buildSelectedPage() {

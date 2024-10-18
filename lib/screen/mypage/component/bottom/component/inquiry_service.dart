@@ -17,15 +17,15 @@ class InquiryService extends ConsumerStatefulWidget {
   const InquiryService({super.key, required this.qnaType, this.ptIdx});
 
   @override
-  ConsumerState<InquiryService> createState() => _InquiryServiceState();
+  ConsumerState<InquiryService> createState() => InquiryServiceState();
 }
 
-class _InquiryServiceState extends ConsumerState<InquiryService> {
+class InquiryServiceState extends ConsumerState<InquiryService> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
   int _imageCnt = 0;
-  List<Widget> _addImagesWidget = [];
+  final List<Widget> _addImagesWidget = [];
   List<XFile> _fileList = [];
 
   @override
@@ -82,11 +82,8 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
               children: [
                 // 문의 제목 입력
                 _buildTitleTextField(_titleController, '문의 제목 입력'),
-
                 // 문의 내용 입력
-                _buildContentTextField(
-                    _contentController, '문의 내용을 최소 10자 이상 입력해주세요.'),
-
+                _buildContentTextField(_contentController, '문의 내용을 최소 10자 이상 입력해주세요.'),
                 // 이미지 선택 영역
                 Container(
                   margin: const EdgeInsets.only(bottom: 10),
@@ -132,10 +129,8 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                           margin: const EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(6)),
-                              border:
-                                  Border.all(color: const Color(0xFFE7EAEF))),
+                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                              border: Border.all(color: const Color(0xFFE7EAEF))),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -156,9 +151,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                       ),
 
                       //추가함 이미지들
-                      Row(
-                        children: _addImagesWidget,
-                      ),
+                      Row(children: _addImagesWidget,),
                     ],
                   ),
                 ),
@@ -169,21 +162,20 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: Container(
-              width: double.infinity,
-              height: Responsive.getHeight(context, 48),
-              margin: const EdgeInsets.only(
-                  right: 16.0, left: 16, top: 9, bottom: 8),
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(6),
+            child: GestureDetector(
+              onTap: () {
+                _qnaWrite(ref);
+              },
+              child: Container(
+                width: double.infinity,
+                height: Responsive.getHeight(context, 48),
+                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(6),
+                  ),
                 ),
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  _qnaWrite(ref);
-                },
                 child: Center(
                   child: Text(
                     '등록',
@@ -196,7 +188,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
                   ),
                 ),
               ),
-            ),
+            )
           ),
         ],
       ),
@@ -283,10 +275,7 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
       Utils.getInstance().showSnackBar(context, "문의 내용은 10자 이상 입력해 주세요.");
       return;
     }
-    final List<MultipartFile> files = _fileList
-        .map((img) => MultipartFile.fromFileSync(img.path,
-            contentType: DioMediaType("image", "jpg")))
-        .toList();
+    final List<MultipartFile> files = _fileList.map((img) => MultipartFile.fromFileSync(img.path, contentType: DioMediaType("image", "jpg"))).toList();
 
     SharedPreferencesManager.getInstance().then((pref) {
       final mtIdx = pref.getMtIdx();
@@ -311,13 +300,9 @@ class _InquiryServiceState extends ConsumerState<InquiryService> {
         'temp_mt_hp': tempMtHp,
       });
 
-      ref
-          .read(inquiryWriteModelProvider.notifier)
-          .qnaWrite(formData)
-          .then((resultData) {
+      ref.read(inquiryWriteModelProvider.notifier).qnaWrite(formData).then((resultData) {
         if (resultData != null) {
-          Utils.getInstance()
-              .showSnackBar(context, resultData.message.toString());
+          Utils.getInstance().showSnackBar(context, resultData.message.toString());
           if (resultData.result == true) {
             Navigator.pop(context);
           }

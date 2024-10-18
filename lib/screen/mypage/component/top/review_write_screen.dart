@@ -62,7 +62,6 @@ class ReviewWriteScreenState extends ConsumerState<ReviewWriteScreen> {
 
   void _submitReview() async {
     if (_reviewController.text.length >= 10) {
-      // TODO 리뷰 데이터를 전달하며 MyReviewScreen으로 이동
       final pref = await SharedPreferencesManager.getInstance();
       final mtIdx = pref.getMtIdx();
 
@@ -77,17 +76,21 @@ class ReviewWriteScreenState extends ConsumerState<ReviewWriteScreen> {
         'rt_img': files,
       });
 
-      final defaultResponseDTO = await ref.read(reviewWriteViewModelProvider.notifier).reviewWrite(formData);
-      if (defaultResponseDTO != null) {
-        if (!mounted) return;
-        Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
-        if (defaultResponseDTO.result == true) {
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => ProductReviewDetail(rtIdx: 0,),
-          //   ),
-          // );
+      final responseData = await ref.read(reviewWriteViewModelProvider.notifier).reviewWrite(formData);
+      if (responseData != null) {
+        if (responseData['result'] == true) {
+          if (!mounted) return;
+          Utils.getInstance().showSnackBar(context, "등록 되었습니다");
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductReviewDetail(rtIdx: (responseData['data']['rt_idx'] ?? 0)),
+            ),
+          );
+        } else {
+          if (!mounted) return;
+          Utils.getInstance().showSnackBar(context, responseData['data']['message'] ?? "");
         }
       }
     } else {

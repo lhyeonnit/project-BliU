@@ -14,10 +14,10 @@ class DeliveryScreen extends ConsumerStatefulWidget {
   const DeliveryScreen({super.key, required this.odtCode});
 
   @override
-  ConsumerState<DeliveryScreen> createState() => _DeliveryScreenState();
+  ConsumerState<DeliveryScreen> createState() => DeliveryScreenState();
 }
 
-class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
+class DeliveryScreenState extends ConsumerState<DeliveryScreen> {
   final ScrollController _scrollController = ScrollController();
   OrderDeliveryData? orderDeliveryData;
 
@@ -27,6 +27,44 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
+  }
+
+  void _afterBuild(BuildContext context) {
+    orderDelivery();
+  }
+
+  void orderDelivery() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    String? appToken = pref.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
+    Map<String, dynamic> requestData = {
+      'type': memberType,
+      'mt_idx': mtIdx,
+      'temp_mt_id': appToken,
+      'odt_code': widget.odtCode,
+    };
+
+    // // 테스트용
+    // Map<String, dynamic> requestData = {
+    //   'type': 1,
+    //   'mt_idx': 2,
+    //   'temp_mt_id': appToken,
+    //   'odt_code': 'P240819032421A26T',
+    // };
+
+    final orderDeliveryResponseDTO = await ref.read(deliveryViewModelProvider.notifier).getList(requestData);
+    if (orderDeliveryResponseDTO != null) {
+      if (orderDeliveryResponseDTO.result == true) {
+        setState(() {
+          orderDeliveryData = orderDeliveryResponseDTO.data;
+        });
+      } else {
+        if (!mounted) return;
+        Utils.getInstance().showSnackBar(context, orderDeliveryResponseDTO.message ?? "");
+      }
+    }
   }
 
   @override
@@ -81,8 +119,7 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                     child: Text(
                       '스마트택배 배송현황',
                       style: TextStyle(
@@ -110,7 +147,8 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('운송장번호',
+                              Text(
+                                '운송장번호',
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
@@ -118,7 +156,8 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                                   height: 1.2,
                                 ),
                               ),
-                              Text(orderDeliveryData?.ctDeliveryNumber ?? "",
+                              Text(
+                                orderDeliveryData?.ctDeliveryNumber ?? "",
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
@@ -135,7 +174,8 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('택배사',
+                              Text(
+                                '택배사',
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
@@ -143,7 +183,8 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                                   height: 1.2,
                                 )
                               ),
-                              Text(orderDeliveryData?.ctDeliveryCom ?? "",
+                              Text(
+                                orderDeliveryData?.ctDeliveryCom ?? "",
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
@@ -164,11 +205,9 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                     width: double.infinity,
                     color: const Color(0xFFF5F9F9),
                   ),
-
                   // 테이블 헤더
                   Padding(
-                    padding: const EdgeInsets.only(
-                        right: 16.0, left: 16, bottom: 20),
+                    padding: const EdgeInsets.only(right: 16.0, left: 16, bottom: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -215,17 +254,13 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: (orderDeliveryData?.delivery ?? []).map((item) {
-                        int index =
-                            (orderDeliveryData?.delivery ?? []).indexOf(item);
-                        Color rowColor = index % 2 == 1
-                            ? Colors.white // 짝수 행 색상
-                            : const Color(0xFFF5F9F9); // 홀수 행 색상
+                        int index = (orderDeliveryData?.delivery ?? []).indexOf(item);
+                        Color rowColor = index % 2 == 1 ? Colors.white : const Color(0xFFF5F9F9);
 
                         return Container(
                           color: rowColor,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 15),
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 15),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.baseline,
                               textBaseline: TextBaseline.alphabetic,
@@ -276,37 +311,5 @@ class _DeliveryScreenState extends ConsumerState<DeliveryScreen> {
         ],
       ),
     );
-  }
-
-  void _afterBuild(BuildContext context) {
-    orderDelivery();
-  }
-
-  void orderDelivery() async {
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    String? appToken = pref.getToken();
-    int memberType = (mtIdx != null) ? 1 : 2;
-    Map<String, dynamic> requestData = {
-      'type': memberType,
-      'mt_idx': mtIdx,
-      'temp_mt_id': appToken,
-      'odt_code': widget.odtCode,
-    };
-
-    final orderDeliveryResponseDTO =
-        await ref.read(deliveryViewModelProvider.notifier).getList(requestData);
-    if (orderDeliveryResponseDTO != null) {
-      if (orderDeliveryResponseDTO.result == true) {
-        setState(() {
-          orderDeliveryData = orderDeliveryResponseDTO.data;
-        });
-      } else {
-        if (!context.mounted) return;
-        Utils.getInstance()
-            .showSnackBar(context, orderDeliveryResponseDTO.message ?? "");
-      }
-    }
   }
 }
