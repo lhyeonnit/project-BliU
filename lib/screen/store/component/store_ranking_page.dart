@@ -130,6 +130,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
     });
     _page = 1;
     _maxScrollHeight = 0;
+    _hasNextPage = true;
 
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();

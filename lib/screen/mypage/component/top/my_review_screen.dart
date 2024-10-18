@@ -226,6 +226,7 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
       _isFirstLoadRunning = true;
     });
     _page = 1;
+    _hasNextPage = true;
 
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();

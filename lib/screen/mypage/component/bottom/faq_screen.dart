@@ -69,6 +69,7 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
       _isFirstLoadRunning = true;
     });
     _page = 1;
+    _hasNextPage = true;
 
     var faqCategory = "all";
     if (_selectedCategoryIndex > 0) {

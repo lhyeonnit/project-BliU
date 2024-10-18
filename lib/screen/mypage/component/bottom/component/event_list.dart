@@ -47,6 +47,7 @@ class _EventListState extends ConsumerState<EventList> {
       _isFirstLoadRunning = true;
     });
     _page = 1;
+    _hasNextPage = true;
 
     final Map<String, dynamic> requestData = {
       'pg': _page

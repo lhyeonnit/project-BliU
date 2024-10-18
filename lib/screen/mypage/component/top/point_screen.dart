@@ -52,6 +52,7 @@ class _PointScreenState extends ConsumerState<PointScreen> {
       _isFirstLoadRunning = true;
     });
     _page = 1;
+    _hasNextPage = true;
 
     final requestData = await _makeRequestData();
 
