@@ -176,8 +176,8 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: 42,
-                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  height: 38,
+                  margin: const EdgeInsets.symmetric(vertical: 15),
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -187,23 +187,31 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
 
                       return Padding(
                         padding: const EdgeInsets.only(right: 4.0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(19),
-                            border: Border.all(
-                              color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-                              width: 1.0,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedCategoryIndex = index;
+                              _getList();
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(19),
+                              border: Border.all(
+                                color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                width: 1.0,
+                              ),
+                              color: Colors.white,
                             ),
-                            color: Colors.white,
-                          ),
-                          child: Text(
-                            categories[index],
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: isSelected ? const Color(0xFFFF6192) : Colors.black,
-                              height: 1.2,
+                            child: Text(
+                              categories[index],
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ),

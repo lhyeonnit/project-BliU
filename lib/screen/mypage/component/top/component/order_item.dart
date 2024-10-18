@@ -17,7 +17,7 @@ class OrderItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 15),
+          margin: const EdgeInsets.only(top: 10),
           child: Text(
             orderDetailData.ctStatusTxt ?? "",
             style: TextStyle(
@@ -64,7 +64,7 @@ class OrderItem extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 4, bottom: 10),
+                      padding: const EdgeInsets.only(top: 4, bottom: 8),
                       child: Text(
                         orderDetailData.ptName ?? "",
                         style: TextStyle(
@@ -84,7 +84,7 @@ class OrderItem extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 15),
+                      padding: const EdgeInsets.only(top: 10),
                       child: Text(
                         "${Utils.getInstance().priceString(orderDetailData.ptPrice ?? 0)}원",
                         style: TextStyle(

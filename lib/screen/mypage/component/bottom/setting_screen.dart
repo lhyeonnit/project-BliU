@@ -1,20 +1,38 @@
 import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
 import 'package:BliU/screen/mypage/viewmodel/setting_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
-class SettingScreen extends ConsumerWidget {
+class SettingScreen extends ConsumerStatefulWidget {
   const SettingScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // TODO 비회원 구분
-    var data = {'mt_idx': '2'};
-    ref.read(settingModelProvider.notifier).getPushInfo(data);
+  ConsumerState<SettingScreen> createState() => _SettingScreenState();
+}
 
+class _SettingScreenState extends ConsumerState<SettingScreen> {
+  void _getList() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    Map<String, dynamic> requestData = {
+      'mt_idx': pref.getMtIdx(),
+    };
+    await ref.read(settingModelProvider.notifier).getPushInfo(requestData);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -105,7 +123,9 @@ class SettingScreen extends ConsumerWidget {
                             activeColor: const Color(0xFFFF6192),
                             inactiveColor: const Color(0xFFDDDDDD),
                             toggleColor: Colors.white,
-                            onToggle: (val) {
+                            onToggle: (val) async {
+                              final pref = await SharedPreferencesManager.getInstance();
+
                               String mtPushing = "";
                               if (val) {
                                 mtPushing = "Y";
@@ -114,14 +134,12 @@ class SettingScreen extends ConsumerWidget {
                               }
 
                               var data = {
-                                'mt_idx': '2',
+                                'mt_idx': pref.getMtIdx(),
                                 'mt_pushing': mtPushing
                               };
                               var model = ref.read(settingModelProvider);
                               model?.mtPushing = mtPushing;
-                              ref
-                                  .read(settingModelProvider.notifier)
-                                  .setPush(data);
+                              ref.read(settingModelProvider.notifier).setPush(data);
                             },
                           ),
                         ],
