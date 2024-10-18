@@ -19,11 +19,10 @@ class StoreFavoritePage extends ConsumerStatefulWidget {
   const StoreFavoritePage({super.key});
 
   @override
-  ConsumerState<StoreFavoritePage> createState() => _StoreFavoritePageState();
+  ConsumerState<StoreFavoritePage> createState() => StoreFavoritePageState();
 }
 
-class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
-    with TickerProviderStateMixin {
+class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   late TabController _tabController;
   bool _isSearching = false;
@@ -67,6 +66,129 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getList();
+    _getCategoryList();
+  }
+  void _getCategoryList() async {
+    Map<String, dynamic> requestData = {'category_type': '1'};
+    final categoryResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getCategory(requestData);
+    if (categoryResponseDTO != null) {
+      if (categoryResponseDTO.result == true) {
+        final list = categoryResponseDTO.list ?? [];
+        for (var item in list) {
+          categories.add(item);
+        }
+
+        setState(() {
+          _tabController = TabController(length: categories.length, vsync: this);
+          _tabController.addListener(_tabChangeCallBack);
+        });
+      }
+    }
+  }
+
+  void _tabChangeCallBack() {
+    _hasNextPage = true;
+    _isLoadMoreRunning = false;
+
+    _getList();
+  }
+
+  void _getList() async {
+    setState(() {
+      _isFirstLoadRunning = true;
+    });
+    _page = 1;
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    String category = "all";
+    final categoryData = categories[_tabController.index];
+    if ((categoryData.ctIdx ?? 0) > 0) {
+      category = categoryData.ctIdx.toString();
+    }
+    Map<String, dynamic> requestBookmarkData = {
+      'mt_idx': mtIdx,
+      'pg': _page,
+    };
+    final bookmarkResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getBookmark(requestBookmarkData);
+    bookmarkList = bookmarkResponseDTO?.list ?? [];
+
+    final ageCategoryResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getAgeCategory();
+    if (ageCategoryResponseDTO != null) {
+      if (ageCategoryResponseDTO.result == true) {
+        ageCategories = ageCategoryResponseDTO.list ?? [];
+      }
+    }
+
+    String ageStr = "all";
+    if (selectedAgeGroup != null) {
+      ageStr = (selectedAgeGroup?.catIdx ?? 0).toString();
+    }
+    String searchTxt = _searchController.text.toLowerCase();
+
+    Map<String, dynamic> requestProductData = {
+      'mt_idx': mtIdx,
+      'st_idx': 1,
+      'category': category,
+      'pg': 1,
+      'search_txt': searchTxt,
+      'age': ageStr,
+      'sort': 2,
+    };
+
+    final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestProductData);
+    _count = productListResponseDTO?.count ?? 0;
+    _productList = productListResponseDTO?.list ?? [];
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+  }
+
+  void _nextLoad() async {
+
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+      _page += 1;
+
+      final pref = await SharedPreferencesManager.getInstance();
+      final mtIdx = pref.getMtIdx();
+
+      String category = "all";
+      final categoryData = categories[_tabController.index];
+      if ((categoryData.ctIdx ?? 0) > 0) {
+        category = categoryData.ctIdx.toString();
+      }
+
+      Map<String, dynamic> requestData = {
+        'mt_idx': mtIdx,
+        'category': category,
+        'sub_category': "all",
+        'pg': _page,
+      };
+
+      final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestData);
+      if (productListResponseDTO != null) {
+        _count = productListResponseDTO.list.length;
+        if (productListResponseDTO.list.isNotEmpty) {
+          setState(() {
+            _productList.addAll(productListResponseDTO.list);
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
+      });
+    }
   }
 
   void _openSortBottomSheet() {
@@ -143,9 +265,7 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
-                          height: bookmarkList.length <= 5
-                              ? (bookmarkList.length * 60.0)
-                              : 305,
+                          height: bookmarkList.length <= 5 ? (bookmarkList.length * 60.0) : 305,
                           // 아이템 수에 따라 높이 조정
                           width: Responsive.getWidth(context, 378),
                           child: PageView.builder(
@@ -317,20 +437,14 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                         if (bookmarkList.length > 5) // 5개 이상일 때만 페이지네이션 표시
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(
-                                (bookmarkList.length / itemsPerPage).ceil(), (index) {
-                                 final currentPage = pageController.hasClients && pageController.page != null
-                                  ? pageController.page!.round()
-                                  : 0;
-
+                            children: List.generate((bookmarkList.length / itemsPerPage).ceil(), (index) {
+                              final currentPage = pageController.hasClients && pageController.page != null ? pageController.page!.round() : 0;
                               return Container(
                                 margin: const EdgeInsets.only(right: 6, top: 25),
                                 width: 6.0,
                                 height: 6.0,
                                 decoration: BoxDecoration(
-                                  color: currentPage == index
-                                      ? Colors.black
-                                      : const Color(0xFFDDDDDD),
+                                  color: currentPage == index ? Colors.black : const Color(0xFFDDDDDD),
                                   shape: BoxShape.circle,
                                 ),
                               );
@@ -350,10 +464,10 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
                               Expanded(
                                 child: TextField(
                                   style: TextStyle(
-                                      height: 1.2,
-                                      fontSize: Responsive.getFont(context, 14),
-                                      fontFamily: 'Pretendard',
-                                      decorationThickness: 0,
+                                    height: 1.2,
+                                    fontSize: Responsive.getFont(context, 14),
+                                    fontFamily: 'Pretendard',
+                                    decorationThickness: 0,
                                   ),
                                   controller: _searchController,
                                   decoration: InputDecoration(
@@ -575,6 +689,7 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
       ),
     );
   }
+
   Widget _buildProductGrid() {
     return GridView.builder(
       shrinkWrap: true,
@@ -593,125 +708,5 @@ class _StoreFavoritePageState extends ConsumerState<StoreFavoritePage>
         return ProductListCard(productData: productData);
       },
     );
-  }
-  void _afterBuild(BuildContext context) {
-    _getList();
-    _getCategoryList();
-  }
-  void _getCategoryList() async {
-    Map<String, dynamic> requestData = {'category_type': '1'};
-    final categoryResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getCategory(requestData);
-    if (categoryResponseDTO != null) {
-      if (categoryResponseDTO.result == true) {
-        final list = categoryResponseDTO.list ?? [];
-        for (var item in list) {
-          categories.add(item);
-        }
-
-        setState(() {
-          _tabController = TabController(length: categories.length, vsync: this);
-          _tabController.addListener(_tabChangeCallBack);
-        });
-      }
-    }
-  }
-  void _tabChangeCallBack() {
-    _hasNextPage = true;
-    _isLoadMoreRunning = false;
-
-    _getList();
-  }
-  void _getList() async {
-    setState(() {
-      _isFirstLoadRunning = true;
-    });
-    _page = 1;
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-    String category = "all";
-    final categoryData = categories[_tabController.index];
-    if ((categoryData.ctIdx ?? 0) > 0) {
-      category = categoryData.ctIdx.toString();
-    }
-    Map<String, dynamic> requestBookmarkData = {
-      'mt_idx': mtIdx,
-      'pg': _page,
-    };
-    final bookmarkResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getBookmark(requestBookmarkData);
-    bookmarkList = bookmarkResponseDTO?.list ?? [];
-
-    final ageCategoryResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getAgeCategory();
-    if (ageCategoryResponseDTO != null) {
-      if (ageCategoryResponseDTO.result == true) {
-        ageCategories = ageCategoryResponseDTO.list ?? [];
-      }
-    }
-
-    String ageStr = "all";
-    if (selectedAgeGroup != null) {
-      ageStr = (selectedAgeGroup?.catIdx ?? 0).toString();
-    }
-    String searchTxt = _searchController.text.toLowerCase();
-
-    Map<String, dynamic> requestProductData = {
-      'mt_idx': mtIdx,
-      'st_idx': 1,
-      'category': category,
-      'pg': 1,
-      'search_txt': searchTxt,
-      'age': ageStr,
-      'sort': 2,
-    };
-
-    final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestProductData);
-    _count = productListResponseDTO?.count ?? 0;
-    _productList = productListResponseDTO?.list ?? [];
-    setState(() {
-      _isFirstLoadRunning = false;
-    });
-  }
-
-  void _nextLoad() async {
-
-    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
-      setState(() {
-        _isLoadMoreRunning = true;
-      });
-      _page += 1;
-
-      final pref = await SharedPreferencesManager.getInstance();
-      final mtIdx = pref.getMtIdx();
-
-      String category = "all";
-      final categoryData = categories[_tabController.index];
-      if ((categoryData.ctIdx ?? 0) > 0) {
-        category = categoryData.ctIdx.toString();
-      }
-
-      Map<String, dynamic> requestData = {
-        'mt_idx': mtIdx,
-        'category': category,
-        'sub_category': "all",
-        'pg': _page,
-      };
-
-      final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestData);
-      if (productListResponseDTO != null) {
-        _count = productListResponseDTO.list.length;
-        if (productListResponseDTO.list.isNotEmpty) {
-          setState(() {
-            _productList.addAll(productListResponseDTO.list);
-          });
-        } else {
-          setState(() {
-            _hasNextPage = false;
-          });
-        }
-      }
-
-      setState(() {
-        _isLoadMoreRunning = false;
-      });
-    }
   }
 }
