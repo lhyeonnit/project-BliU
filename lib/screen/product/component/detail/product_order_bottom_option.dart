@@ -74,14 +74,12 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
 
   final List<ProductOptionTypeDetailData> _addPtOptionArr = [];
   final List<AddOptionData> _addPtAddArr = [];
-  List<bool> _expandedStates = [];
+  bool _isExpanded = false;
   bool _isOptionSelected = false;
 
   @override
   void initState() {
     super.initState();
-    int numberOfTiles = _productOptionData?.ptOptionInputNum ?? 0;
-    _expandedStates = List.generate(numberOfTiles, (_) => false); // 타일의 개수만큼 확장 상태 리스트 초기화
     _productData = widget.productData;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
@@ -117,7 +115,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,
-                        itemCount: _productOptionData?.ptOptionInputNum,
+                        itemCount: _ptOption.length,
                         // 리스트의 길이를 사용
                         itemBuilder: (context, index) {
                           return _buildExpansionTile(
@@ -128,198 +126,197 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                               _selectOptionCheck();
                               _isOptionSelected = true;
                             },
-                            index: index,
                           );
                         },
                       ),
                     ),
                     _ptAddArr.isNotEmpty
                         ? Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Theme(
-                              data: Theme.of(context).copyWith(
-                                disabledColor: Colors.transparent,
-                                dividerColor: Colors.transparent,
-                                listTileTheme: ListTileTheme.of(context).copyWith(
-                                  dense: true,
-                                  minVerticalPadding: 14
-                                ),
-                              ),
-                              child: Container(
-                                margin: const EdgeInsets.only(bottom: 15),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                  border: Border.all(color: const Color(0xFFE1E1E1)),
-                                ),
-                                child: ExpansionTile(
-                                  title: Text(
-                                    '추가상품',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                  children: _ptAddArr.map((ptAdd) {
-                                    return ListTile(
-                                      title: Text(
-                                        ptAdd.option ?? "",
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 14),
-                                          height: 1.2,
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        if (_addPtAddArr.isEmpty) {
-                                          setState(() {
-                                            _addPtAddArr.add(ptAdd);
-                                          });
-                                        } else {
-                                          bool isAdd = true;
-                                          for (int i = 0;
-                                              i < _addPtAddArr.length;
-                                              i++) {
-                                            if (_addPtAddArr[i].idx ==
-                                                ptAdd.idx) {
-                                              isAdd = false;
-                                            }
-                                          }
-
-                                          if (isAdd) {
-                                            setState(() {
-                                              _addPtAddArr.add(ptAdd);
-                                            });
-                                          } else {
-                                            Utils.getInstance().showToast('이미 추가한 상품 입니다.');
-                                          }
-                                        }
-                                      },
-                                    );
-                                  }).toList(),
-                                ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+                          disabledColor: Colors.transparent,
+                          dividerColor: Colors.transparent,
+                          listTileTheme: ListTileTheme.of(context).copyWith(
+                              dense: true,
+                              minVerticalPadding: 14
+                          ),
+                        ),
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: const BorderRadius.all(Radius.circular(6)),
+                            border: Border.all(color: const Color(0xFFE1E1E1)),
+                          ),
+                          child: ExpansionTile(
+                            title: Text(
+                              '추가상품',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                height: 1.2,
                               ),
                             ),
-                          )
+                            children: _ptAddArr.map((ptAdd) {
+                              return ListTile(
+                                title: Text(
+                                  ptAdd.option ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                ),
+                                onTap: () {
+                                  if (_addPtAddArr.isEmpty) {
+                                    setState(() {
+                                      _addPtAddArr.add(ptAdd);
+                                    });
+                                  } else {
+                                    bool isAdd = true;
+                                    for (int i = 0;
+                                    i < _addPtAddArr.length;
+                                    i++) {
+                                      if (_addPtAddArr[i].idx ==
+                                          ptAdd.idx) {
+                                        isAdd = false;
+                                      }
+                                    }
+
+                                    if (isAdd) {
+                                      setState(() {
+                                        _addPtAddArr.add(ptAdd);
+                                      });
+                                    } else {
+                                      Utils.getInstance().showToast('이미 추가한 상품 입니다.');
+                                    }
+                                  }
+                                },
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    )
                         : const SizedBox(),
                     //옵션
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _addPtOptionArr.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 15),
-                                padding: const EdgeInsets.all(20),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFFF5F9F9),
-                                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(bottom: 12),
-                                      child: Row(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: _addPtOptionArr.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(bottom: 15),
+                                  padding: const EdgeInsets.all(20),
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFFF5F9F9),
+                                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(bottom: 12),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              _addPtOptionArr[index].option ?? "",
+                                              style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                fontSize: Responsive.getFont(context, 14),
+                                                height: 1.2,
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _addPtOptionArr.removeAt(index);
+                                                });
+                                              },
+                                              child: SvgPicture.asset('assets/images/ic_del.svg'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
+                                          Container(
+                                            width: Responsive.getWidth(context, 96),
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 6,
+                                              horizontal: 8,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: const BorderRadius.all(Radius.circular(22)),
+                                              border: Border.all(
+                                                  color: const Color(0xFFE3E3E3)
+                                              ),
+                                            ),
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                GestureDetector(
+                                                  child: const Icon(CupertinoIcons.minus, size: 20),
+                                                  onTap: () {
+                                                    if (_addPtOptionArr[index].count > 1) {
+                                                      setState(() {
+                                                        _addPtOptionArr[index].count -= 1;
+                                                      });
+                                                    }
+                                                  },
+                                                ),
+                                                Container(
+                                                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                                                  child: Text(
+                                                    '${_addPtOptionArr[index].count}',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Pretendard',
+                                                      fontSize: Responsive.getFont(context, 14),
+                                                      height: 1.2,
+                                                    ),
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    if ((_addPtOptionArr[index].potJaego ?? 0) > _addPtOptionArr[index].count) {
+                                                      setState(() {
+                                                        _addPtOptionArr[index].count += 1;
+                                                      });
+                                                    }
+                                                  },
+                                                  child: const Icon(Icons.add, size: 20),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           Text(
-                                            _addPtOptionArr[index].option ?? "",
+                                            '${Utils.getInstance().priceString(_addPtOptionArr[index].count * ((_addPtOptionArr[index].potPrice ?? 0) + (_productData.ptPrice ?? 0)))}원',
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
                                               fontSize: Responsive.getFont(context, 14),
+                                              fontWeight: FontWeight.bold,
                                               height: 1.2,
                                             ),
                                           ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _addPtOptionArr.removeAt(index);
-                                              });
-                                            },
-                                            child: SvgPicture.asset('assets/images/ic_del.svg'),
-                                          ),
                                         ],
                                       ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          width: Responsive.getWidth(context, 96),
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 6,
-                                            horizontal: 8,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: const BorderRadius.all(Radius.circular(22)),
-                                            border: Border.all(
-                                              color: const Color(0xFFE3E3E3)
-                                            ),
-                                          ),
-                                          child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              GestureDetector(
-                                                child: const Icon(CupertinoIcons.minus, size: 20),
-                                                onTap: () {
-                                                  if (_addPtOptionArr[index].count > 1) {
-                                                    setState(() {
-                                                      _addPtOptionArr[index].count -= 1;
-                                                    });
-                                                  }
-                                                },
-                                              ),
-                                              Container(
-                                                margin: const EdgeInsets.symmetric(horizontal: 5),
-                                                child: Text(
-                                                  '${_addPtOptionArr[index].count}',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Pretendard',
-                                                    fontSize: Responsive.getFont(context, 14),
-                                                    height: 1.2,
-                                                  ),
-                                                ),
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  if ((_addPtOptionArr[index].potJaego ?? 0) > _addPtOptionArr[index].count) {
-                                                    setState(() {
-                                                      _addPtOptionArr[index].count += 1;
-                                                    });
-                                                  }
-                                                },
-                                                child: const Icon(Icons.add, size: 20),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Text(
-                                          '${Utils.getInstance().priceString(_addPtOptionArr[index].count * ((_addPtOptionArr[index].potPrice ?? 0) + (_productData.ptPrice ?? 0)))}원',
-                                          style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(context, 14),
-                                            fontWeight: FontWeight.bold,
-                                            height: 1.2,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          );
-                        }
+                              ],
+                            );
+                          }
                       ),
                     ),
                     // 추가상품
@@ -363,7 +360,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                               });
                                             },
                                             child: SvgPicture.asset(
-                                              'assets/images/ic_del.svg'
+                                                'assets/images/ic_del.svg'
                                             ),
                                           ),
                                         ],
@@ -371,11 +368,11 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
                                           width:
-                                              Responsive.getWidth(context, 96),
+                                          Responsive.getWidth(context, 96),
                                           padding: const EdgeInsets.symmetric(
                                             vertical: 6,
                                             horizontal: 8,
@@ -383,16 +380,16 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(22)),
+                                            const BorderRadius.all(
+                                                Radius.circular(22)),
                                             border: Border.all(
                                                 color: const Color(0xFFE3E3E3)),
                                           ),
                                           child: Row(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                            CrossAxisAlignment.center,
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                             children: [
                                               GestureDetector(
                                                 child: const Icon(
@@ -400,7 +397,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                                     size: 20),
                                                 onTap: () {
                                                   if (_addPtAddArr[index]
-                                                          .count >
+                                                      .count >
                                                       1) {
                                                     setState(() {
                                                       _addPtAddArr[index]
@@ -411,8 +408,8 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                               ),
                                               Container(
                                                 margin:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 5),
+                                                const EdgeInsets.symmetric(
+                                                    horizontal: 5),
                                                 child: Text(
                                                   '${_addPtAddArr[index].count}',
                                                   style: TextStyle(
@@ -501,7 +498,6 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
     required String title,
     required List<String> options,
     required Function(String) onSelected,
-    required int index, // 각 타일의 인덱스를 받아옵니다.
   }) {
     return Theme(
       data: Theme.of(context).copyWith(
@@ -520,7 +516,9 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
         ),
         child: ExpansionTile(
           key: UniqueKey(),
-          initiallyExpanded: _expandedStates[index], // 각 타일의 확장 상태를 관리
+          // 각각의 타일이 고유한 상태를 갖도록 함
+          initiallyExpanded: _isExpanded,
+          // 타일의 초기 상태 설정
           iconColor: Colors.black,
           collapsedIconColor: Colors.black,
           title: Text(
@@ -533,7 +531,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
           ),
           onExpansionChanged: (bool expanded) {
             setState(() {
-              _expandedStates[index] = expanded; // 타일이 열리고 닫힐 때 상태 변경
+              _isExpanded = expanded; // 타일이 열리고 닫힐 때 상태 변경
             });
           },
           children: options.map((option) {
@@ -548,9 +546,6 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
               ),
               onTap: () {
                 onSelected(option); // 항목이 선택되면 콜백 실행
-                setState(() {
-                  _expandedStates[index] = false; // 선택 후 타일 닫힘
-                });
               },
             );
           }).toList(),
@@ -558,7 +553,6 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
       ),
     );
   }
-
 
   // 상품 및 가격 정보 표시
   Widget _buildPriceSummary(BuildContext context) {
