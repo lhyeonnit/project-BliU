@@ -19,10 +19,10 @@ class StoreRakingPage extends ConsumerStatefulWidget {
   const StoreRakingPage({super.key});
 
   @override
-  ConsumerState<StoreRakingPage> createState() => _StoreRakingPageState();
+  ConsumerState<StoreRakingPage> createState() => StoreRakingPageState();
 }
 
-class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
+class StoreRakingPageState extends ConsumerState<StoreRakingPage> {
   final ScrollController _scrollController = ScrollController();
 
   late List<CategoryData> _ageCategories;
@@ -130,18 +130,10 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
     });
     _page = 1;
     _maxScrollHeight = 0;
+    _hasNextPage = true;
 
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
-    String? memberType = (mtIdx != null) ? mtIdx : '';
-
-    // 회원 여부에 따라 처리 (비회원도 처리 가능)
-    if (mtIdx == null || mtIdx.isEmpty) {
-      // 비회원 처리 (예: 비회원용 메시지나 기본값 설정)
-      print('비회원');
-    } else {
-      print('회원 mtIdx: $mtIdx');
-    }
 
     String age = "all";
     if (_selectedAgeGroup != null) {
@@ -154,7 +146,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
     }
 
     Map<String, dynamic> requestData = {
-      'mt_idx': memberType,
+      'mt_idx': mtIdx ?? "",
       'style': style,
       'age': age,
       'pg': _page,
@@ -176,15 +168,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
 
       final pref = await SharedPreferencesManager.getInstance();
       final mtIdx = pref.getMtIdx();
-      String? memberType = (mtIdx != null) ? mtIdx : '';
 
-      // 회원 여부에 따라 처리 (비회원도 처리 가능)
-      if (mtIdx == null || mtIdx.isEmpty) {
-        // 비회원 처리 (예: 비회원용 메시지나 기본값 설정)
-        print('비회원');
-      } else {
-        print('회원 mtIdx: $mtIdx');
-      }
       String age = "all";
       if (_selectedAgeGroup != null) {
         age = '${_selectedAgeGroup?.catIdx ?? ""}';
@@ -196,7 +180,7 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
       }
 
       Map<String, dynamic> requestData = {
-        'mt_idx': memberType,
+        'mt_idx': mtIdx ?? "",
         'style': style,
         'age': age,
         'pg': _page,
@@ -416,41 +400,47 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                         ],
                                       ),
                                     ),
-                                    Container(
-                                      width: 50,
-                                      margin: const EdgeInsets.only(top: 3, right: 5),
-                                      child: Column(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () async {
-                                              // 북마크 토글을 위한 데이터 요청
-                                              final pref = await SharedPreferencesManager.getInstance();
-                                              final mtIdx = pref.getMtIdx() ?? ""; // 사용자 mtIdx 가져오기
+                                    GestureDetector(
+                                      onTap: () async {
+                                        // 북마크 토글을 위한 데이터 요청
+                                        final pref = await SharedPreferencesManager.getInstance();
+                                        final mtIdx = pref.getMtIdx() ?? ""; // 사용자 mtIdx 가져오기
 
-                                              if (mtIdx.isEmpty) {
-                                                if(!context.mounted) return;
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
-                                                    }
-                                                );
-                                                return;
+                                        if (mtIdx.isEmpty) {
+                                          if(!context.mounted) return;
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
                                               }
+                                          );
+                                          return;
+                                        }
 
-                                              Map<String, dynamic> requestData = {
-                                                'mt_idx': mtIdx,
-                                                'st_idx': rankData.stIdx, // 상점 인덱스 사용
-                                              };
+                                        Map<String, dynamic> requestData = {
+                                          'mt_idx': mtIdx,
+                                          'st_idx': rankData.stIdx, // 상점 인덱스 사용
+                                        };
 
-                                              // 북마크 토글 함수 호출
-                                              await ref.read(storeFavoriteViewModelProvider.notifier).toggleLike(requestData);
-                                              // 북마크 상태 반전 (check_mark 값 반전)
-                                              setState(() {
-                                                rankData.checkMark = rankData.checkMark == "Y" ? "N" : "Y";
-                                              });
-                                            },
-                                            child: Container(
+                                        // 북마크 토글 함수 호출
+                                        await ref.read(storeFavoriteViewModelProvider.notifier).toggleLike(requestData);
+                                        // 북마크 상태 반전 (check_mark 값 반전)
+                                        setState(() {
+                                          if (rankData.checkMark == "Y") {
+                                            rankData.checkMark = "N";
+                                            rankData.stMark = (rankData.stMark ?? 0) - 1;
+                                          } else {
+                                            rankData.checkMark = "Y";
+                                            rankData.stMark = (rankData.stMark ?? 0) + 1;
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 50,
+                                        margin: const EdgeInsets.only(top: 3, right: 5),
+                                        child: Column(
+                                          children: [
+                                            Container(
                                               width: Responsive.getWidth(context, 14),
                                               height: Responsive.getHeight(context, 17),
                                               margin: const EdgeInsets.only(bottom: 3),
@@ -466,17 +456,17 @@ class _StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                                 fit: BoxFit.contain,
                                               ),
                                             ),
-                                          ),
-                                          Text(
-                                            '${rankData.stMark ?? 0}',
-                                            style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              color: const Color(0xFFA4A4A4),
-                                              fontSize: Responsive.getFont(context, 12),
-                                              height: 1.2,
+                                            Text(
+                                              '${rankData.stMark ?? 0}',
+                                              style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                color: const Color(0xFFA4A4A4),
+                                                fontSize: Responsive.getFont(context, 12),
+                                                height: 1.2,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],

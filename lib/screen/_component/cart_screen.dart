@@ -59,6 +59,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
     });
 
     _page = 1;
+    _hasNextPage = true;
 
     final requestData = await _makeRequestData();
 

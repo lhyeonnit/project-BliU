@@ -111,10 +111,7 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
   /// 북마크 상태를 토글하는 메서드
   Future<void> toggleLike(Map<String, dynamic> requestData) async {
     try {
-      final response = await repository.reqPost(
-        url: Constant.apiStoreLikeUrl,
-        data: requestData,
-      );
+      final response = await repository.reqPost(url: Constant.apiStoreLikeUrl, data: requestData,);
 
       if (response != null && response.statusCode == 200) {
         bool result = response.data['result'];

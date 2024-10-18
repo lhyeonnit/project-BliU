@@ -51,6 +51,7 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
       _isFirstLoadRunning = true;
     });
     _page = 1;
+    _hasNextPage = true;
 
     final requestData = await _makeRequestData();
 

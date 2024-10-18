@@ -11,13 +11,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 class StoreInfoPage extends ConsumerStatefulWidget {
   final StoreData? storeData;
 
-  StoreInfoPage({super.key, required this.storeData});
+  const StoreInfoPage({super.key, required this.storeData});
 
   @override
-  ConsumerState<StoreInfoPage> createState() => _StoreInfoPageState();
+  ConsumerState<StoreInfoPage> createState() => StoreInfoPageState();
 }
 
-class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
+class StoreInfoPageState extends ConsumerState<StoreInfoPage> {
   @override
   void initState() {
     super.initState();
@@ -44,8 +44,7 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
       } else {
         // 다운로드 실패 시 알림
         if (!mounted) return;
-        Utils.getInstance().showSnackBar(
-            context, storeDownloadResponse!.data.toString());
+        Utils.getInstance().showSnackBar(context, storeDownloadResponse!.data.toString());
       }
     } catch (e) {
       // 오류 발생 시 로그 및 사용자에게 알림
@@ -108,7 +107,6 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
               ),
             ],
           ),
-
           const SizedBox(height: 45),
           // 상점 정보 부분
           Padding(
@@ -131,39 +129,16 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Text(
-                            widget.storeData?.stStyleTxt?.split(',').first ?? "",
-                            // 쉼표로 분리 후 첫 번째 값만 가져옴
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 13),
-                              color: const Color(0xFF7B7B7B),
-                              height: 1.2,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            ', ',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 13),
-                              color: const Color(0xFF7B7B7B),
-                              height: 1.2,
-                            ),
-                          ),
-                          Text(
-                            widget.storeData?.stAgeTxt ?? "",
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 13),
-                              color: const Color(0xFF7B7B7B),
-                              height: 1.2,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                      Text(
+                        '${widget.storeData?.stStyleTxt?.split(',').first ?? ""}, ${widget.storeData?.stAgeTxt ?? ""}',
+                        // 쉼표로 분리 후 첫 번째 값만 가져옴
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 13),
+                          color: const Color(0xFF7B7B7B),
+                          height: 1.2,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
@@ -194,8 +169,7 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
                     children: [
                       Container(
                         margin: const EdgeInsets.only(top: 5),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 12.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
                         decoration: BoxDecoration(
                           border: Border.all(color: const Color(0xFFDDDDDD)),
                           borderRadius: BorderRadius.circular(19.0),
@@ -231,8 +205,8 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
           ),
           // 설명 텍스트
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
-            margin: EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            margin: const EdgeInsets.symmetric(vertical: 20),
             child: Text(
               widget.storeData?.stTxt2 ?? '',
               style: TextStyle(
@@ -243,11 +217,10 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
               ),
             ),
           ),
-
           // 쿠폰 다운로드 버튼
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            margin: EdgeInsets.only(bottom: 15),
+            margin: const EdgeInsets.only(bottom: 15),
             child: GestureDetector(
               onTap: () {
                 _downloadCoupon();
@@ -257,7 +230,7 @@ class _StoreInfoPageState extends ConsumerState<StoreInfoPage> {
                 height: 44,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: Color(0xFFDDDDDD)),
+                  border: Border.all(color: const Color(0xFFDDDDDD)),
                 ),
                 child: Center(
                   child: Text(
