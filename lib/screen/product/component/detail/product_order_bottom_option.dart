@@ -74,12 +74,14 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
 
   final List<ProductOptionTypeDetailData> _addPtOptionArr = [];
   final List<AddOptionData> _addPtAddArr = [];
-  bool _isExpanded = false;
+  List<bool> _expandedStates = [];
   bool _isOptionSelected = false;
 
   @override
   void initState() {
     super.initState();
+    int numberOfTiles = _productOptionData?.ptOptionInputNum ?? 0;
+    _expandedStates = List.generate(numberOfTiles, (_) => false); // 타일의 개수만큼 확장 상태 리스트 초기화
     _productData = widget.productData;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
@@ -115,7 +117,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,
-                        itemCount: _ptOption.length,
+                        itemCount: _productOptionData?.ptOptionInputNum,
                         // 리스트의 길이를 사용
                         itemBuilder: (context, index) {
                           return _buildExpansionTile(
@@ -126,6 +128,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                               _selectOptionCheck();
                               _isOptionSelected = true;
                             },
+                            index: index,
                           );
                         },
                       ),
@@ -498,13 +501,14 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
     required String title,
     required List<String> options,
     required Function(String) onSelected,
+    required int index, // 각 타일의 인덱스를 받아옵니다.
   }) {
     return Theme(
       data: Theme.of(context).copyWith(
         disabledColor: Colors.transparent,
         dividerColor: Colors.transparent,
         listTileTheme: ListTileTheme.of(context).copyWith(
-          dense: true, minVerticalPadding: 14
+            dense: true, minVerticalPadding: 14
         ),
       ),
       child: Container(
@@ -516,9 +520,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
         ),
         child: ExpansionTile(
           key: UniqueKey(),
-          // 각각의 타일이 고유한 상태를 갖도록 함
-          initiallyExpanded: _isExpanded,
-          // 타일의 초기 상태 설정
+          initiallyExpanded: _expandedStates[index], // 각 타일의 확장 상태를 관리
           iconColor: Colors.black,
           collapsedIconColor: Colors.black,
           title: Text(
@@ -531,7 +533,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
           ),
           onExpansionChanged: (bool expanded) {
             setState(() {
-              _isExpanded = expanded; // 타일이 열리고 닫힐 때 상태 변경
+              _expandedStates[index] = expanded; // 타일이 열리고 닫힐 때 상태 변경
             });
           },
           children: options.map((option) {
@@ -546,6 +548,9 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
               ),
               onTap: () {
                 onSelected(option); // 항목이 선택되면 콜백 실행
+                setState(() {
+                  _expandedStates[index] = false; // 선택 후 타일 닫힘
+                });
               },
             );
           }).toList(),
@@ -553,6 +558,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
       ),
     );
   }
+
 
   // 상품 및 가격 정보 표시
   Widget _buildPriceSummary(BuildContext context) {
