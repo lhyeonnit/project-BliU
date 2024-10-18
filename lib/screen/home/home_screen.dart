@@ -276,8 +276,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SmartLensScreen(),
+                                      builder: (context) => const SmartLensScreen(),
                                     ),
                                   );
                                 },
@@ -298,8 +297,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const CartScreen(),
+                                          builder: (context) => const CartScreen(),
                                         ),
                                       );
                                     },
