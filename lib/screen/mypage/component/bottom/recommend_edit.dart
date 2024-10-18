@@ -382,16 +382,22 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
       backgroundColor: Colors.white,
       context: context,
       isScrollControlled: true, // 모달이 화면을 꽉 채우도록 설정
+      barrierColor: Colors.black.withOpacity(0.3),
       builder: (context) {
         return Container(
           height: 400,
-          color: Colors.white,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(12), // 상단 왼쪽, 오른쪽 12만큼 둥글게
+            ),
+          ),
           child: Column(
             children: <Widget>[
               // 상단 타이틀과 닫기 버튼
               Padding(
                 padding: const EdgeInsets.only(
-                    right: 16.0, left: 16, top: 18, bottom: 17),
+                    right: 16.0, left: 16, top: 15, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -439,7 +445,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                                       BorderSide(color: Color(0xFFDDDDDD))),
                             ),
                           ),
-                          squeeze: 0.9,
+                          squeeze: 1,
                           scrollController: FixedExtentScrollController(
                               initialItem: selectedYear - 1900),
                           onSelectedItemChanged: (int index) {
@@ -480,7 +486,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                             ),
                           ),
                           diameterRatio: 5.0,
-                          squeeze: 0.9,
+                          squeeze: 1,
                           scrollController: FixedExtentScrollController(
                               initialItem: selectedMonth - 1),
                           onSelectedItemChanged: (int index) {
@@ -516,7 +522,7 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                             ),
                           ),
                           diameterRatio: 5.0,
-                          squeeze: 0.9,
+                          squeeze: 1,
                           scrollController: FixedExtentScrollController(
                               initialItem: selectedDay - 1),
                           onSelectedItemChanged: (int index) {
