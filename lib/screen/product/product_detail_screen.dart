@@ -1,3 +1,4 @@
+import 'package:BliU/data/delivery_detail_data.dart';
 import 'package:BliU/data/info_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/qna_data.dart';
@@ -280,7 +281,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                               children: [
                                 _productInfoContent(_productData?.ptContent ?? ""),
                                 _productAi(_sameList),
-                                _productInfoBeforeOrder(_infoData),
+                                _productInfoBeforeOrder(_infoData, _productData),
                                 _productInquiry(),
                               ],
                             ),
@@ -892,7 +893,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     );
   }
 
-  Widget _productInfoBeforeOrder(InfoData? infoData) {
+  Widget _productInfoBeforeOrder(InfoData? infoData, ProductData? productData) {
     return Container(
       margin: const EdgeInsets.only(top: 30),
       child: Column(
@@ -954,14 +955,145 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     padding: const EdgeInsets.all(16.0),
                     child: SizedBox(
                       width: double.infinity,
-                      child: Text(
-                        infoData?.delivery ?? "",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          color: const Color(0xFF7B7B7B),
-                          fontSize: Responsive.getFont(context, 14),
-                          height: 1.2,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  "택배사",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    color: const Color(0xFF7B7B7B),
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child: Text(
+                                  productData?.deliveryInfo?.deliveryDetail?.deliveryCompany ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  "배송비",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    color: const Color(0xFF7B7B7B),
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child: Text(
+                                  '기본 배송비 ${Utils.getInstance().priceString(
+                                      productData?.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0
+                                  )}원 / ${Utils.getInstance().priceString(
+                                      productData?.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0
+                                  )} 이상 무료',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  "추가 배송비",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    color: const Color(0xFF7B7B7B),
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '도서산간 추가배송비 ${Utils.getInstance().priceString(
+                                          productData?.deliveryInfo?.deliveryDetail?.deliveryAddPrice1 ?? 0
+                                      )}원',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                    Text(
+                                      '제주 추가배송비 ${Utils.getInstance().priceString(
+                                          productData?.deliveryInfo?.deliveryDetail?.deliveryAddPrice2 ?? 0
+                                      )}원',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  "배송 기간",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    color: const Color(0xFF7B7B7B),
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child: Text(
+                                  '평균 2-5일 이내 발송 (영업일 기준), 재고현황에 따라 배송이 다소 지연될 수 있습니다.',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
