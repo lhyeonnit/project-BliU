@@ -119,11 +119,12 @@ class _NonTopScreenState extends State<NonTopScreen> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
                   );
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 11, horizontal: 20),
+                  height: 38,
+                  padding: const EdgeInsets.symmetric(vertical: 11, horizontal: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(22),
                     border: Border.all(color: Color(0xFFFF6192)),
@@ -144,13 +145,16 @@ class _NonTopScreenState extends State<NonTopScreen> {
         ),
         Container(
           height: 80,
-          margin: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: PageView.builder(
             controller: _pageController,
             itemCount: _totalPages,
             itemBuilder: (context, index) {
               return ClipRRect(
-                  borderRadius: BorderRadius.circular(9),
+                  borderRadius: BorderRadius.circular(6),
                   child: Image.asset(banners[index]));
             },
           ),
