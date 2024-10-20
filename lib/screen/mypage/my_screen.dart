@@ -26,6 +26,7 @@ import 'package:focus_detector_v2/focus_detector_v2.dart';
 
 class MyScreen extends ConsumerStatefulWidget {
   const MyScreen({super.key});
+
   @override
   ConsumerState<MyScreen> createState() => _MyScreenState();
 }
@@ -44,9 +45,9 @@ class _MyScreenState extends ConsumerState<MyScreen> {
       _afterBuild(context);
     });
   }
+
   @override
   Widget build(BuildContext context) {
-
     return FocusDetector(
       onFocusGained: () {
         _viewWillAppear(context);
@@ -108,79 +109,81 @@ class _MyScreenState extends ConsumerState<MyScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 16),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipOval(
-                              child: Container(
-                                width: 70,
-                                height: 70,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color(0xFFFFE4DF),
-                                ),
-                                child: Image.asset('assets/images/my/gender_select_boy.png'),
-                              )),
-                          Expanded(
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipOval(
                             child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10),
-                              padding: const EdgeInsets.only(top: 15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${memberInfoData?.mtName ?? ""}님 안녕하세요',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 18),
-                                      fontWeight: FontWeight.bold,
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                  Text(
-                                    memberInfoData?.mtId ?? "",
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: const Color(0xFF7B7B7B),
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          width: 70,
+                          height: 70,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFFFFE4DF),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MyInfoEditCheck(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                                margin: const EdgeInsets.only(top: 20),
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  border: Border.all(color: const Color(0xFFDDDDDD)),
-                                ),
-                                child: Text(
-                                  '내정보수정',
+                          child: Image.asset(
+                              'assets/images/my/gender_select_boy.png'),
+                        )),
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            padding: const EdgeInsets.only(top: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${memberInfoData?.mtName ?? ""}님 안녕하세요',
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
-                                    color: Colors.black,
-                                    fontSize: Responsive.getFont(context, 12),
+                                    fontSize: Responsive.getFont(context, 18),
+                                    fontWeight: FontWeight.bold,
                                     height: 1.2,
                                   ),
-                                )
+                                ),
+                                Text(
+                                  memberInfoData?.mtId ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: const Color(0xFF7B7B7B),
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyInfoEditCheck(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                              margin: const EdgeInsets.only(top: 20),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 7),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                border:
+                                    Border.all(color: const Color(0xFFDDDDDD)),
+                              ),
+                              child: Text(
+                                '내정보수정',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  color: Colors.black,
+                                  fontSize: Responsive.getFont(context, 12),
+                                  height: 1.2,
+                                ),
+                              )),
+                        ),
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -189,49 +192,47 @@ class _MyScreenState extends ConsumerState<MyScreen> {
                       children: [
                         _buildIconButton(context, '주문·배송',
                             'assets/images/my/mypage_ic01.svg', () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                    const OrderListScreen()),
-                              );
-                            }, ''),
-                        _buildIconButton(context, '나의리뷰',
-                            'assets/images/my/mypage_ic02.svg', () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                    const MyReviewScreen()),
-                              );
-                            }, '$myReviewCount'),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const OrderListScreen()),
+                          );
+                        }, ''),
+                        _buildIconButton(
+                            context, '나의리뷰', 'assets/images/my/mypage_ic02.svg',
+                            () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MyReviewScreen()),
+                          );
+                        }, '$myReviewCount'),
                         _buildIconButton(context, '쿠폰함',
                             'assets/images/my/mypage_ic03_1.svg', () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                    const MyCouponScreen()),
-                              );
-                            }, '$myCouponCount'),
-                        _buildIconButton(context, '포인트',
-                            'assets/images/my/mypage_ic04.svg', () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const PointScreen()),
-                              );
-                            }, '$myPoint'),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MyCouponScreen()),
+                          );
+                        }, '$myCouponCount'),
+                        _buildIconButton(
+                            context, '포인트', 'assets/images/my/mypage_ic04.svg',
+                            () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const PointScreen()),
+                          );
+                        }, '$myPoint'),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            Visibility(
-                visible: userId.isEmpty, child: NonTopScreen()),
+            Visibility(visible: userId.isEmpty, child: const NonTopScreen()),
             Container(
-              margin: const EdgeInsets.only(top: 20, bottom: 30),
+              margin: const EdgeInsets.only(top: 15, bottom: 30),
               width: double.infinity,
               color: const Color(0xFFF5F9F9), // 색상 적용
               height: 10,
@@ -253,7 +254,7 @@ class _MyScreenState extends ConsumerState<MyScreen> {
             ),
             Visibility(
               visible: userId.isEmpty,
-              child: _buildSectionItem(context, '주문 내역 보기', () {
+              child: _buildSectionItem(context, '비회원 주문조회', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -316,7 +317,7 @@ class _MyScreenState extends ConsumerState<MyScreen> {
     );
   }
 
-  void _viewWillAppear(BuildContext context)  {
+  void _viewWillAppear(BuildContext context) {
     SharedPreferencesManager.getInstance().then((pref) {
       final mtIdx = pref.getMtIdx();
       if (mtIdx != null && mtIdx.isNotEmpty) {
@@ -340,13 +341,15 @@ class _MyScreenState extends ConsumerState<MyScreen> {
       Map<String, dynamic> requestData = {
         'mt_idx': mtIdx,
       };
-      final memberInfoDTO = await ref.read(myModelProvider.notifier).getMy(requestData);
-      setState(() {  // 상태 변경 후 UI 업데이트
+      final memberInfoDTO =
+          await ref.read(myModelProvider.notifier).getMy(requestData);
+      setState(() {
+        // 상태 변경 후 UI 업데이트
         memberInfoData = memberInfoDTO?.data;
         myCouponCount = memberInfoDTO?.data?.myCouponCount;
         myPoint = memberInfoDTO?.data?.myPoint;
         myReviewCount = memberInfoDTO?.data?.myRevieCount;
-        userId = memberInfoDTO?.data?.mtIdx.toString() ?? '';  // userId 업데이트
+        userId = memberInfoDTO?.data?.mtIdx.toString() ?? ''; // userId 업데이트
       });
       String? childCk = memberInfo?.childCk;
       if (!context.mounted) return;
@@ -358,14 +361,15 @@ class _MyScreenState extends ConsumerState<MyScreen> {
       }
     }
   }
+
   void logout() async {
-    SharedPreferencesManager prefs = await SharedPreferencesManager.getInstance();
-    await prefs.logOut();  // 저장된 모든 데이터를 삭제
+    SharedPreferencesManager prefs =
+        await SharedPreferencesManager.getInstance();
+    await prefs.logOut(); // 저장된 모든 데이터를 삭제
 
     // 로그아웃 후 로그인 화면으로 전환
     ref.read(mainScreenProvider.notifier).selectNavigation(2);
   }
-
 
   Widget _buildSection(BuildContext context, String title) {
     return Container(
@@ -385,13 +389,12 @@ class _MyScreenState extends ConsumerState<MyScreen> {
 
   Widget _buildSectionItem(
       BuildContext context, String title, VoidCallback onPressed) {
-    return InkWell(
-      overlayColor: WidgetStateColor.transparent,
-      onTap: onPressed,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        margin: const EdgeInsets.only(bottom: 20),
-        // 최소한의 간격으로 조절 가능
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.only(bottom: 17),
+      child: InkWell(
+        overlayColor: WidgetStateColor.transparent,
+        onTap: onPressed,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -407,6 +410,8 @@ class _MyScreenState extends ConsumerState<MyScreen> {
             ),
             SvgPicture.asset(
               'assets/images/ic_link.svg',
+              height: 11,
+              width: 11,
               colorFilter: const ColorFilter.mode(
                 Colors.black,
                 BlendMode.srcIn,

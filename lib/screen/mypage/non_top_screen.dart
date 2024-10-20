@@ -144,10 +144,11 @@ class _NonTopScreenState extends State<NonTopScreen> {
           ),
         ),
         Container(
+          clipBehavior: Clip.antiAlias,
           height: 80,
-          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(6),
           ),
           child: PageView.builder(
             controller: _pageController,
@@ -163,11 +164,19 @@ class _NonTopScreenState extends State<NonTopScreen> {
           child: SmoothPageIndicator(
             controller: _pageController,
             count: _totalPages,
-            effect: const WormEffect(
-              dotWidth: 6.0,
-              dotHeight: 6.0,
-              activeDotColor: Colors.black,
-              dotColor: Color(0xFFDDDDDD),
+            effect: CustomizableEffect(
+              activeDotDecoration: DotDecoration(
+                width: 6.0,
+                height: 6.0,
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              dotDecoration: DotDecoration(
+                width: 5.0, // 미선택된 dot의 크기
+                height: 5.0,
+                color: const Color(0xFFDDDDDD),
+                borderRadius: BorderRadius.circular(50),
+              ),
             ),
           ),
         ),
