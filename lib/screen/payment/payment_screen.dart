@@ -10,12 +10,10 @@ import 'package:BliU/dto/pay_order_result_detail_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
 import 'package:BliU/screen/payment/component/payment_coupon.dart';
-import 'package:BliU/screen/payment/component/payment_iamport.dart';
 import 'package:BliU/screen/payment/component/payment_order_item.dart';
 import 'package:BliU/screen/payment/component/webview_with_daum_post_webivew.dart';
 import 'package:BliU/screen/payment/payment_complete_screen.dart';
 import 'package:BliU/screen/payment/viewmodel/payment_view_model.dart';
-import 'package:BliU/utils/custom_expansion_tile.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -37,7 +35,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   CouponData? _selectedCouponData;
   int _discountPoint = 0;
 
-  int _payType = 0;//1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
+  int _payType = 0; //1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
 
   bool _allAgree = false;
   bool _agree1 = false;
@@ -48,10 +46,13 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
   late bool _isUseAddress = false;
 
-  final TextEditingController _recipientNameController = TextEditingController();
-  final TextEditingController _recipientPhoneController = TextEditingController();
+  final TextEditingController _recipientNameController =
+      TextEditingController();
+  final TextEditingController _recipientPhoneController =
+      TextEditingController();
   final TextEditingController _addressRoadController = TextEditingController();
-  final TextEditingController _addressDetailController = TextEditingController();
+  final TextEditingController _addressDetailController =
+      TextEditingController();
   final TextEditingController _memoController = TextEditingController();
 
   String _savedZip = ""; // 저장된 우편번호
@@ -99,7 +100,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       'mt_idx': pref.getMtIdx(),
     };
 
-    final memberInfoResponseDTO = await ref.read(paymentViewModelProvider.notifier).getMy(requestData);
+    final memberInfoResponseDTO =
+        await ref.read(paymentViewModelProvider.notifier).getMy(requestData);
     setState(() {
       _point = memberInfoResponseDTO?.data?.myPoint ?? 0;
     });
@@ -131,7 +133,9 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       'all_price': _getTotalProductPrice(),
     };
 
-    final couponResponseDTO = await ref.read(paymentViewModelProvider.notifier).getOrderCoupon(requestData);
+    final couponResponseDTO = await ref
+        .read(paymentViewModelProvider.notifier)
+        .getOrderCoupon(requestData);
     _couponList = couponResponseDTO?.list ?? [];
   }
 
@@ -155,14 +159,16 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     }
 
     Map<String, dynamic> requestData = {
-      'ot_idx' : widget.payOrderDetailData.otIdx,
-      'cart_arr' : json.encode(cartArr),
-      'mt_zip' : _savedZip,
-      'mt_add1' : _addressRoadController.text,
-      'all_delivery_price' : widget.payOrderDetailData.allDeliveryPrice,
+      'ot_idx': widget.payOrderDetailData.otIdx,
+      'cart_arr': json.encode(cartArr),
+      'mt_zip': _savedZip,
+      'mt_add1': _addressRoadController.text,
+      'all_delivery_price': widget.payOrderDetailData.allDeliveryPrice,
     };
 
-    final responseData = await ref.read(paymentViewModelProvider.notifier).orderLocal(requestData);
+    final responseData = await ref
+        .read(paymentViewModelProvider.notifier)
+        .orderLocal(requestData);
     if (responseData != null) {
       setState(() {
         _userDeliveryPrice = responseData['data']['user_delivey_add'] ?? 0;
@@ -331,13 +337,15 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       return;
     }
 
-    if (_addressRoadController.text.isEmpty || _addressDetailController.text.isEmpty) {
+    if (_addressRoadController.text.isEmpty ||
+        _addressDetailController.text.isEmpty) {
       Utils.getInstance().showSnackBar(context, '수령인 주소를 입력해 주세요.');
       return;
     }
 
     String payMethod = "card";
-    switch (_payType) { //1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
+    switch (_payType) {
+      //1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
       case 1:
         payMethod = "card";
         break;
@@ -347,7 +355,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       case 3:
         payMethod = "trans";
         break;
-      case 4:// 네이버 결제
+      case 4: // 네이버 결제
         break;
     }
 
@@ -383,7 +391,9 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       'cart_arr': json.encode(cartArr),
     };
 
-    final payOrderDetailDTO = await ref.read(paymentViewModelProvider.notifier).orderDetail(requestData);
+    final payOrderDetailDTO = await ref
+        .read(paymentViewModelProvider.notifier)
+        .orderDetail(requestData);
     if (payOrderDetailDTO != null) {
       final payOrderDetailData = payOrderDetailDTO.data;
 
@@ -412,22 +422,26 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
         if (_selectedCouponData != null) {
           Map<String, dynamic> requestCouponData = {
-            'ot_code' : payOrderDetailData.otCode,
-            'coupon_idx' : _selectedCouponData?.couponIdx,
+            'ot_code': payOrderDetailData.otCode,
+            'coupon_idx': _selectedCouponData?.couponIdx,
             'mt_idx': mtIdx,
           };
 
-          await ref.read(paymentViewModelProvider.notifier).couponUse(requestCouponData);
+          await ref
+              .read(paymentViewModelProvider.notifier)
+              .couponUse(requestCouponData);
         }
 
         if (_discountPoint > 0) {
           Map<String, dynamic> requestPointData = {
-            'ot_code' : payOrderDetailData.otCode,
-            'use_point' : _discountPoint,
+            'ot_code': payOrderDetailData.otCode,
+            'use_point': _discountPoint,
             'mt_idx': mtIdx,
           };
 
-          await ref.read(paymentViewModelProvider.notifier).pointUse(requestPointData);
+          await ref
+              .read(paymentViewModelProvider.notifier)
+              .pointUse(requestPointData);
         }
 
         Map<String, dynamic> requestData1 = {
@@ -444,7 +458,9 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
           'memo': _memoController.text,
         };
 
-        final Map<String, dynamic>? response = await ref.read(paymentViewModelProvider.notifier).reqOrder(requestData1);
+        final Map<String, dynamic>? response = await ref
+            .read(paymentViewModelProvider.notifier)
+            .reqOrder(requestData1);
         if (response != null) {
           /*
           *
@@ -466,8 +482,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 buyerTel: "",
                 buyerEmail: "",
                 buyerAddr: "",
-                buyerPostcode: ""
-            );
+                buyerPostcode: "");
 
             // TODO 결제모듈 차후 다시 테스트
             // final Map<String, String>? paymentResult = await Navigator.push(
@@ -502,18 +517,21 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
               'imp_uid': '',
               'merchant_uid': '',
             };
-            final defaultResponseDTO = await ref.read(paymentViewModelProvider.notifier).orderCheck(orderRequestData);
+            final defaultResponseDTO = await ref
+                .read(paymentViewModelProvider.notifier)
+                .orderCheck(orderRequestData);
             // 결제검증 결과값 ex)  return res.status(200).json({'result': true, 'data':{'message': '결제 완료.'}});
             if (defaultResponseDTO?.result == true) {
               _paymentComplete(payOrderDetailData);
             } else {
               if (!mounted) return;
-              Utils.getInstance().showSnackBar(context, defaultResponseDTO?.message ?? "");
+              Utils.getInstance()
+                  .showSnackBar(context, defaultResponseDTO?.message ?? "");
             }
-
           } else {
             if (!mounted) return;
-            Utils.getInstance().showSnackBar(context, response['data']['message'] ?? "");
+            Utils.getInstance()
+                .showSnackBar(context, response['data']['message'] ?? "");
           }
         }
       }
@@ -530,17 +548,18 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       'mt_idx': mtIdx,
       'temp_mt_id': pref.getToken(),
     };
-    final PayOrderResultDetailDTO? payOrderResult = await ref.read(paymentViewModelProvider.notifier).orderEnd(requestData2);
+    final PayOrderResultDetailDTO? payOrderResult = await ref
+        .read(paymentViewModelProvider.notifier)
+        .orderEnd(requestData2);
 
     if (payOrderResult != null) {
       if (payOrderResult.result == true) {
         final payOrderResultDetailData = payOrderResult.data;
-        if(!mounted) return;
+        if (!mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  PaymentCompleteScreen(
+              builder: (context) => PaymentCompleteScreen(
                     payType: _payType,
                     payOrderResultDetailData: payOrderResultDetailData,
                     savedRecipientName: _recipientNameController.text,
@@ -548,8 +567,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                     savedAddressRoad: _addressRoadController.text,
                     savedAddressDetail: _addressDetailController.text,
                     savedMemo: _memoController.text,
-                  )
-          ),
+                  )),
         );
       }
     }
@@ -557,7 +575,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final totalAmount = _getTotalProductPrice();
     final shippingCost = _getTotalDeliveryPrice();
 
@@ -581,6 +598,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     _totalPrice = total;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -626,11 +644,41 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
           Padding(
             padding: const EdgeInsets.only(bottom: 80.0),
             child: ListView(
+              controller: _scrollController,
               children: [
-                CustomExpansionTile(
-                  title: '주문상품',
-                  content: PaymentOrderItem(
-                    cartList: widget.payOrderDetailData.list ?? [],
+                ListTileTheme(
+                  horizontalTitleGap: 0,
+                  child: ExpansionTile(
+                    initiallyExpanded: true,
+                    shape: const Border(
+                      top: BorderSide(color: Colors.transparent, width: 0),
+                      bottom: BorderSide(color: Colors.transparent, width: 0),
+                    ),
+                    title: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        '주문상품',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 18),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              color: Color(0xFFEEEEEE),
+                            ),
+                          ),
+                        ),
+                        child: PaymentOrderItem(
+                          cartList: widget.payOrderDetailData.list ?? [],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -647,7 +695,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                       bottom: BorderSide(color: Colors.transparent, width: 0),
                     ),
                     title: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 19.5),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -674,14 +722,20 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                   decoration: BoxDecoration(
                                     borderRadius: const BorderRadius.all(Radius.circular(6)),
                                     border: Border.all(
-                                      color: _isUseAddress ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                      color: _isUseAddress
+                                          ? const Color(0xFFFF6191)
+                                          : const Color(0xFFCCCCCC),
                                     ),
-                                    color: _isUseAddress ? const Color(0xFFFF6191) : Colors.white,
+                                    color: _isUseAddress
+                                        ? const Color(0xFFFF6191)
+                                        : Colors.white,
                                   ),
                                   child: SvgPicture.asset(
                                     'assets/images/check01_off.svg', // 체크박스 아이콘
                                     colorFilter: ColorFilter.mode(
-                                      _isUseAddress ? Colors.white : const Color(0xFFCCCCCC),
+                                      _isUseAddress
+                                          ? Colors.white
+                                          : const Color(0xFFCCCCCC),
                                       BlendMode.srcIn,
                                     ),
                                     height: 10,
@@ -751,28 +805,30 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                   ),
                                   Expanded(
                                     flex: 8,
-                                    child: TextField(
-                                      controller: _recipientNameController,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                      ),
-                                      decoration: InputDecoration(
-                                        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                                        hintText: '수령인',
-                                        hintStyle: TextStyle(
+                                    child: Container(
+                                      height: 44,
+                                      child: TextField(
+                                        controller: _recipientNameController,
+                                        maxLines: 1,
+                                        style: TextStyle(
                                           fontFamily: 'Pretendard',
                                           fontSize: Responsive.getFont(context, 14),
-                                          color: const Color(0xFF595959)
                                         ),
-                                        enabledBorder: const OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                        ),
-                                        focusedBorder: const OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                        decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                          hintText: '수령인',
+                                          hintStyle: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              color: const Color(0xFF595959)),
+                                          enabledBorder: const OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                          ),
+                                          focusedBorder: const OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -815,28 +871,29 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                   ),
                                   Expanded(
                                     flex: 8,
-                                    child: TextField(
-                                      controller: _recipientPhoneController,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                      ),
-                                      decoration: InputDecoration(
-                                        contentPadding: const EdgeInsets.symmetric(
-                                            vertical: 14, horizontal: 15),
-                                        hintText: '‘-’ 없이 번호만 입력',
-                                        hintStyle: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(context, 14),
-                                            color: const Color(0xFF595959)),
-                                        enabledBorder: const OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                    child: Container(
+                                      height: 44,
+                                      child: TextField(
+                                        controller: _recipientPhoneController,
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
                                         ),
-                                        focusedBorder: const OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                        decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                          hintText: '‘-’ 없이 번호만 입력',
+                                          hintStyle: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              color: const Color(0xFF595959)),
+                                          enabledBorder: const OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                                            borderSide: BorderSide(color: Color(0xFFE1E1E1))),
+                                          focusedBorder: const OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -887,28 +944,27 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                           children: [
                                             Expanded(
                                               flex: 7,
-                                              child: TextField(
-                                                controller: _addressRoadController,
-                                                enabled: false,
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  fontSize: Responsive.getFont(context, 14),
-                                                ),
-                                                decoration: InputDecoration(
-                                                  contentPadding: const EdgeInsets.symmetric(
-                                                      vertical: 14, horizontal: 15),
-                                                  //hintText: '주소를 검색해 주세요.',
-                                                  hintStyle: TextStyle(
-                                                      fontFamily: 'Pretendard',
-                                                      fontSize: Responsive.getFont(context, 14),
-                                                      color: const Color(0xFF595959)
+                                              child: Container(
+                                                height: 44,
+                                                child: TextField(
+                                                  controller: _addressRoadController,
+                                                  enabled: false,
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pretendard',
+                                                    fontSize: Responsive.getFont(context, 14),
                                                   ),
-                                                  border: const OutlineInputBorder(
-                                                    borderRadius:
-                                                    BorderRadius.all(Radius.circular(6)),
-                                                    borderSide:
-                                                    BorderSide(color: Color(0xFFE1E1E1)),
+                                                  decoration: InputDecoration(
+                                                    contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                                    //hintText: '주소를 검색해 주세요.',
+                                                    hintStyle: TextStyle(
+                                                        fontFamily: 'Pretendard',
+                                                        fontSize: Responsive.getFont(context, 14),
+                                                        color: const Color(0xFF595959)),
+                                                    border: const OutlineInputBorder(
+                                                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                      borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -921,27 +977,28 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                   DaumPostData? result = await Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                      builder: (context) =>
-                                                      const WebviewWithDaumPostWebview(), // 주소 검색 창으로 이동
+                                                      builder: (context) => const WebviewWithDaumPostWebview(), // 주소 검색 창으로 이동
                                                     ),
                                                   );
 
                                                   if (result != null) {
                                                     setState(() {
-                                                      _addressRoadController.text = result.roadAddress;
-                                                      _savedZip = result.zonecode;
+                                                      _addressRoadController
+                                                              .text =
+                                                          result.roadAddress;
+                                                      _savedZip =
+                                                          result.zonecode;
                                                       _addressChange();
                                                     });
                                                   }
                                                 },
                                                 child: Container(
+                                                  height: 44,
                                                   margin: const EdgeInsets.only(left: 8),
                                                   padding: const EdgeInsets.symmetric(vertical: 14),
                                                   decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    const BorderRadius.all(Radius.circular(6)),
-                                                    border:
-                                                    Border.all(color: const Color(0xFFE1E1E1)),
+                                                    borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                                    border: Border.all(color: const Color(0xFFE1E1E1)),
                                                   ),
                                                   child: Center(
                                                     child: Text(
@@ -960,6 +1017,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                           ],
                                         ),
                                         Container(
+                                          height: 44,
                                           margin: const EdgeInsets.only(top: 10),
                                           child: TextField(
                                             controller: _addressDetailController,
@@ -972,14 +1030,12 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                               contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                                               hintText: '상세주소 입력',
                                               hintStyle: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 14),
-                                                color: const Color(0xFF595959)
-                                              ),
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(context, 14),
+                                                  color: const Color(0xFF595959)),
                                               enabledBorder: const OutlineInputBorder(
                                                 borderRadius: BorderRadius.all(Radius.circular(6)),
-                                                borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                              ),
+                                                borderSide: BorderSide(color: Color(0xFFE1E1E1))),
                                               focusedBorder: const OutlineInputBorder(
                                                 borderRadius: BorderRadius.all(Radius.circular(6)),
                                                 borderSide: BorderSide(color: Color(0xFFE1E1E1)),
@@ -997,17 +1053,19 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                               margin: const EdgeInsets.symmetric(vertical: 20),
                               padding: const EdgeInsets.symmetric(horizontal: 16),
                               child: TextField(
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                ),
                                 controller: _memoController,
                                 maxLines: 4,
                                 decoration: InputDecoration(
-                                  contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                                   hintText: '배송 메모 입력',
                                   hintStyle: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    color: const Color(0xFF595959)
-                                  ),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: const Color(0xFF595959)),
                                   enabledBorder: const OutlineInputBorder(
                                     borderRadius: BorderRadius.all(Radius.circular(6)),
                                     borderSide: BorderSide(color: Color(0xFFE1E1E1)),
@@ -1030,148 +1088,183 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                   width: double.infinity,
                   color: const Color(0xFFF5F9F9),
                 ),
-                CustomExpansionTile(
-                  title: '결제수단',
-                  content: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 19.5, horizontal: 16),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.only(right: 4),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _payType = 1;
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 14.0),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(6),
-                                      border: Border.all(
-                                          color: _payType == 1 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        '카드결제',
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          color: _payType == 1 ? const Color(0xFFFF6192) : Colors.black,
-                                          fontSize: Responsive.getFont(context, 14)
-                                        ),
-                                      )
-                                    )
-                                  ),
-                                ),
-                              )
+                ListTileTheme(
+                  horizontalTitleGap: 0,
+                  child: ExpansionTile(
+                    initiallyExpanded: true,
+                    shape: const Border(
+                      top: BorderSide(color: Colors.transparent, width: 0),
+                      bottom: BorderSide(color: Colors.transparent, width: 0),
+                    ),
+                    title: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        '결제수단',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 18),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              color: Color(0xFFEEEEEE),
                             ),
-                            Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.only(left: 4),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _payType = 2;
-                                    });
-                                  },
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 16),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: Container(
+                                      height: 44,
+                                      margin: const EdgeInsets.only(right: 4),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _payType = 1;
+                                      });
+                                    },
+                                        child: Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 11.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(6),
+                                          border: Border.all(
+                                              color: _payType == 1
+                                                  ? const Color(0xFFFF6192)
+                                                  : const Color(0xFFDDDDDD)),
+                                        ),
+                                        child: Center(
+                                            child: Text(
+                                          '카드결제',
+                                          style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              color: _payType == 1
+                                                  ? const Color(0xFFFF6192)
+                                                  : Colors.black,
+                                              fontSize: Responsive.getFont(context, 14)),
+                                        ))),
+                                  ),
+                                )),
+                                Expanded(
                                   child: Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 14.0),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(6),
-                                      border: Border.all(
-                                          color: _payType == 2 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        '휴대폰',
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          color: _payType == 2 ? const Color(0xFFFF6192) : Colors.black,
-                                          fontSize: Responsive.getFont(context, 14)
+                                    height: 44,
+                                    margin: const EdgeInsets.only(left: 4),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _payType = 2;
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 11.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                          border: Border.all(
+                                              color: _payType == 2
+                                                  ? const Color(0xFFFF6192)
+                                                  : const Color(0xFFDDDDDD)),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            '휴대폰',
+                                            style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                color: _payType == 2
+                                                    ? const Color(0xFFFF6192)
+                                                    : Colors.black,
+                                                fontSize: Responsive.getFont(context, 14)),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
+                                )
+                              ],
+                            ),
+                            Container(
+                              height: 44,
+                              margin: const EdgeInsets.only(top: 10),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: Container(
+                                        margin: const EdgeInsets.only(right: 4),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _payType = 3;
+                                            });
+                                            },
+                                      child: Container(
+                                          padding: const EdgeInsets.symmetric(vertical: 11.0),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(6),
+                                            border: Border.all(
+                                                color: _payType == 3
+                                                    ? const Color(0xFFFF6192)
+                                                    : const Color(0xFFDDDDDD)),
+                                          ),
+                                          child: Center(
+                                              child: Text(
+                                            '계좌이체',
+                                            style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                color: _payType == 3
+                                                    ? const Color(0xFFFF6192)
+                                                    : Colors.black,
+                                                fontSize: Responsive.getFont(context, 14)),
+                                          ))),
+                                    ),
+                                  )),
+                                  Expanded(
+                                    child: Container(
+                                      height: 44,
+                                      margin: const EdgeInsets.only(left: 4),
+                                      child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _payType = 4;
+                                        });
+                                      },
+                                      child: Container(
+                                          padding: const EdgeInsets.symmetric(vertical: 11.0),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(6),
+                                            border: Border.all(
+                                                color: _payType == 4 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              '네이버페이',
+                                              style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  color: _payType == 4 ? const Color(0xFFFF6192) : Colors.black,
+                                                  fontSize: Responsive.getFont(context, 14)),
+                                            ),
+                                          )),
+                                    ),
+                                  ),
+                                  ),
+                                ],
                               ),
                             )
                           ],
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 10),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  margin: const EdgeInsets.only(right: 4),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        _payType = 3;
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(vertical: 14.0),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(6),
-                                        border: Border.all(color: _payType == 3 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          '계좌이체',
-                                          style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            color: _payType == 3 ? const Color(0xFFFF6192) : Colors.black,
-                                            fontSize: Responsive.getFont(context, 14)
-                                          ),
-                                        )
-                                      )
-                                    ),
-                                  ),
-                                )
-                              ),
-                              Expanded(
-                                child: Container(
-                                  margin: const EdgeInsets.only(left: 4),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        _payType = 4;
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(vertical: 14.0),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(6),
-                                        border: Border.all(
-                                            color: _payType == 4 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          '네이버페이',
-                                          style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            color: _payType == 4 ? const Color(0xFFFF6192) : Colors.black,
-                                            fontSize: Responsive.getFont(context, 14)
-                                          ),
-                                        ),
-                                      )
-                                    ),
-                                  ),
-                                )
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -1179,209 +1272,256 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                   width: double.infinity,
                   color: const Color(0xFFF5F9F9),
                 ),
-                CustomExpansionTile(
-                  title: '할인적용',
-                  content: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '쿠폰',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 13),
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                                height: 1.2,
-                              ),
-                            ),
-                            Text(
-                              '보유 쿠폰 ${_couponList.length}장',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 13),
-                                color: const Color(0xFF7B7B7B),
-                                height: 1.2,
-                              ),
-                            ),
-                          ],
+                ListTileTheme(
+                  horizontalTitleGap: 0,
+                  child: ExpansionTile(
+                    initiallyExpanded: true,
+                    shape: const Border(
+                      top: BorderSide(color: Colors.transparent, width: 0),
+                      bottom: BorderSide(color: Colors.transparent, width: 0),
+                    ),
+                    title: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        '할인적용',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 18),
+                          fontWeight: FontWeight.bold,
                         ),
-                        GestureDetector(
-                          onTap: () async {
-                            if (_couponList.isNotEmpty) {
-                              CouponData? selectedCoupon = await Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => PaymentCoupon(couponList: _couponList,)),
-                              );
-                              if (selectedCoupon != null) {
-                                setState(() {
-                                  _couponText = "${selectedCoupon.couponDiscount} 할인 적용";
-                                  _selectedCouponData = selectedCoupon;
-                                });
-                              }
-                            }
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                            margin: const EdgeInsets.only(top: 10, bottom: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.all(Radius.circular(6)),
-                              border: Border.all(color: const Color(0xFFDDDDDD))
+                      ),
+                    ),
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              color: Color(0xFFEEEEEE),
                             ),
-                            child: Row(
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  _couponText,
+                                  '쿠폰',
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    fontWeight: FontWeight.normal,
+                                    fontSize: Responsive.getFont(context, 13),
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
                                     height: 1.2,
                                   ),
                                 ),
-                                SvgPicture.asset(
-                                  'assets/images/ic_link.svg',
-                                  width: 14,
-                                  height: 14,
-                                  colorFilter: const ColorFilter.mode(
-                                    Color(0xFF7B7B7B),
-                                    BlendMode.srcIn,
+                                Text(
+                                  '보유 쿠폰 ${_couponList.length}장',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 13),
+                                    color: const Color(0xFF7B7B7B),
+                                    height: 1.2,
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '포인트 사용',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 13),
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                                height: 1.2,
-                              ),
-                            ),
-                            Text(
-                              '보유 포인트 ${Utils.getInstance().priceString(_point)}P',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 13),
-                                color: const Color(0xFF7B7B7B),
-                                height: 1.2,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                flex: 7,
-                                child: Container(
-                                  margin: const EdgeInsets.only(right: 8),
-                                  decoration: BoxDecoration(
+                            GestureDetector(
+                              onTap: () async {
+                                if (_couponList.isNotEmpty) {
+                                  CouponData? selectedCoupon = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PaymentCoupon(couponList: _couponList),
+                                    ),
+                                  );
+                                  if (selectedCoupon != null) {
+                                    setState(() {
+                                      _couponText = "${selectedCoupon.couponDiscount} 할인 적용";
+                                      _selectedCouponData = selectedCoupon;
+                                    });
+                                  }
+                                }
+                              },
+                              child: Container(
+                                height: 44,
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                                margin: const EdgeInsets.only(top: 10, bottom: 20),
+                                decoration: BoxDecoration(
                                     borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                    border: Border.all(color: const Color(0xFFDDDDDD)),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                                    textBaseline: TextBaseline.alphabetic,
-                                    children: [
-                                      Expanded(
-                                        child: TextField(
-                                          controller: _pointController,
-                                          keyboardType: TextInputType.number,
-                                          // 숫자 입력만 가능하게 설정
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none, // 테두리 제거
-                                            hintText: '0',
-                                            hintStyle: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(context, 14),
-                                              color: const Color(0xFF707070),
-                                            ),
-                                          ),
-                                          textAlign: TextAlign.right,
-                                          // 텍스트를 오른쪽 정렬
-                                          onChanged: (text) {
-                                            final value = int.parse(text);
-                                            final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
-                                            if (value > maxUsePoint) {
-                                              _pointController.text = maxUsePoint.toString();
-                                              _pointCheck(maxUsePoint.toString());
-                                            } else {
-                                              _pointCheck(text);
-                                            }
-                                          },
-                                        ),
+                                    border: Border.all(color: const Color(0xFFDDDDDD))),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      _couponText,
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.2,
                                       ),
-                                      Container(
-                                        padding: const EdgeInsets.only(right: 15, left: 10),
-                                        child: Text(
-                                          'P',
-                                          style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(context, 14),
-                                            fontWeight: FontWeight.normal,
-                                            height: 1.2,
-                                          ),
-                                        ),
+                                    ),
+                                    SvgPicture.asset(
+                                      'assets/images/ic_link.svg',
+                                      width: 14,
+                                      height: 14,
+                                      colorFilter: const ColorFilter.mode(
+                                        Color(0xFF7B7B7B),
+                                        BlendMode.srcIn,
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Expanded(
-                                flex: 3,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 14),
-                                  decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                      border: Border.all(color: const Color(0xFFDDDDDD))
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '포인트 사용',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 13),
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                    height: 1.2,
                                   ),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
-                                      if (_point > 0) {
-                                        if (_point > maxUsePoint) {
-                                          _pointController.text = maxUsePoint.toString();
-                                          _pointCheck(maxUsePoint.toString());
-                                        } else {
-                                          _pointController.text = _point.toString();
-                                          _pointCheck(_point.toString());
-                                        }
-                                      }
-                                    },
-                                    child: Center(
-                                      child: Text(
-                                        '전액사용',
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 14),
-                                          fontWeight: FontWeight.normal,
-                                          height: 1.2,
+                                ),
+                                Text(
+                                  '보유 포인트 ${Utils.getInstance().priceString(_point)}P',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 13),
+                                    color: const Color(0xFF7B7B7B),
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    flex: 7,
+                                    child: Container(
+                                      height: 44,
+                                      margin: const EdgeInsets.only(right: 8),
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                        border: Border.all(color: const Color(0xFFDDDDDD)),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                                        textBaseline: TextBaseline.alphabetic,
+                                        children: [
+                                          Expanded(
+                                            child: TextField(
+                                              style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                fontSize: Responsive.getFont(context, 14),
+                                              ),
+                                              controller: _pointController,
+                                              keyboardType: TextInputType.number,
+                                              // 숫자 입력만 가능하게 설정
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                // 테두리 제거
+                                                hintText: '0',
+                                                hintStyle: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(context, 14),
+                                                  color:
+                                                  const Color(0xFF707070),
+                                                ),
+                                              ),
+                                              textAlign: TextAlign.right,
+                                              // 텍스트를 오른쪽 정렬
+                                              onChanged: (text) {
+                                                final value = int.parse(text);
+                                                final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
+                                                if (value > maxUsePoint) {
+                                                  _pointController.text =
+                                                      maxUsePoint.toString();
+                                                  _pointCheck(
+                                                      maxUsePoint.toString());
+                                                } else {
+                                                  _pointCheck(text);
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.only(right: 15, left: 10),
+                                            child: Text(
+                                              'P',
+                                              style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                fontSize: Responsive.getFont(context, 14),
+                                                fontWeight: FontWeight.normal,
+                                                height: 1.2,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Container(
+                                      height: 44,
+                                      padding: const EdgeInsets.symmetric(vertical: 14),
+                                      decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(6)),
+                                          border: Border.all(
+                                              color: const Color(0xFFDDDDDD))),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          final maxUsePoint = widget
+                                                  .payOrderDetailData
+                                                  .maxUsePoint ??
+                                              0;
+                                          if (_point > 0) {
+                                            if (_point > maxUsePoint) {
+                                              _pointController.text =
+                                                  maxUsePoint.toString();
+                                              _pointCheck(
+                                                  maxUsePoint.toString());
+                                            } else {
+                                              _pointController.text =
+                                                  _point.toString();
+                                              _pointCheck(_point.toString());
+                                            }
+                                          }
+                                        },
+                                        child: Center(
+                                          child: Text(
+                                            '전액사용',
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              fontWeight: FontWeight.normal,
+                                              height: 1.2,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -1389,74 +1529,95 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                   width: double.infinity,
                   color: const Color(0xFFF5F9F9),
                 ),
-                CustomExpansionTile(
-                  title: '결제 금액',
-                  content: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildInfoRow('상품 금액', '${Utils.getInstance().priceString(totalAmount)}원', context),
-                        Container(
-                            margin: const EdgeInsets.symmetric(vertical: 15),
-                            child: _buildInfoRow(
-                                '배송비',
-                                '${Utils.getInstance().priceString(shippingCost)}원',
-                                context
-                            )
-                        ),
-                        Container(
-                            margin: const EdgeInsets.only(bottom: 15),
-                            child: _buildInfoRow(
-                                '할인금액',
-                                couponDiscount != 0
-                                    ? '- ${Utils.getInstance().priceString(couponDiscount)}원'
-                                    : '${Utils.getInstance().priceString(couponDiscount)}원', // 0이 아니면 '-' 추가
-                                context
-                            )
-                        ),
-                        _buildInfoRow(
-                            '포인트할인',
-                            pointsDiscount != 0
-                                ? '- ${Utils.getInstance().priceString(pointsDiscount)}원'
-                                : '${Utils.getInstance().priceString(pointsDiscount)}원', // 0이 아니면 '-' 추가
-                            context
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                          child: const Divider(
-                            color: Color(0xFFEEEEEE),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '결제 금액',
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: Colors.black,
-                                  height: 1.2,
-                                ),
-                              ),
-                              Text(
-                                '${Utils.getInstance().priceString(total)}원',
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.2,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                ListTileTheme(
+                  horizontalTitleGap: 0,
+                  child: ExpansionTile(
+                    initiallyExpanded: true,
+                    shape: const Border(
+                      top: BorderSide(color: Colors.transparent, width: 0),
+                      bottom: BorderSide(color: Colors.transparent, width: 0),
                     ),
+                    title: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        '결제금액',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 18),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              color: Color(0xFFEEEEEE),
+                            ),
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildInfoRow(
+                                '상품 금액',
+                                '${Utils.getInstance().priceString(totalAmount)}원', context),
+                            Container(
+                                margin: const EdgeInsets.symmetric(vertical: 10),
+                                child: _buildInfoRow(
+                                    '배송비',
+                                    '${Utils.getInstance().priceString(shippingCost)}원', context)),
+                            Container(
+                                margin: const EdgeInsets.only(bottom: 10),
+                                child: _buildInfoRow(
+                                    '할인금액',
+                                    couponDiscount != 0
+                                        ? '- ${Utils.getInstance().priceString(couponDiscount)}원'
+                                        : '${Utils.getInstance().priceString(couponDiscount)}원', // 0이 아니면 '-' 추가
+                                    context)),
+                            _buildInfoRow(
+                                '포인트할인',
+                                pointsDiscount != 0
+                                    ? '- ${Utils.getInstance().priceString(pointsDiscount)}원'
+                                    : '${Utils.getInstance().priceString(pointsDiscount)}원', // 0이 아니면 '-' 추가
+                                context),
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                              child: const Divider(color: Color(0xFFEEEEEE)),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '결제 금액',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: Colors.black,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${Utils.getInstance().priceString(total)}원',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -1510,7 +1671,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                         ),
                       ),
                       title: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 19.5),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
                           "주문내용 확인 및 결제동의",
                           style: TextStyle(
@@ -1525,6 +1686,13 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                       backgroundColor: Colors.white,
                       children: [
                         Container(
+                          decoration: const BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                color: Color(0xFFEEEEEE),
+                              ),
+                            ),
+                          ),
                           padding: const EdgeInsets.only(left: 16, top: 20, right: 16, bottom: 7.5),
                           child: Column(
                             children: [
@@ -1545,16 +1713,23 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             height: 22,
                                             width: 22,
                                             decoration: BoxDecoration(
-                                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(6)),
                                               border: Border.all(
-                                                color: _agree1 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                                color: _agree1
+                                                    ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                                               ),
-                                              color: _agree1 ? const Color(0xFFFF6191) : Colors.white,
+                                              color: _agree1
+                                                  ? const Color(0xFFFF6191) : Colors.white,
                                             ),
                                             child: SvgPicture.asset(
-                                              'assets/images/check01_off.svg', // 체크박스 아이콘
+                                              'assets/images/check01_off.svg',
+                                              // 체크박스 아이콘
                                               colorFilter: ColorFilter.mode(
-                                                _agree1 ? Colors.white : const Color(0xFFCCCCCC),
+                                                _agree1
+                                                    ? Colors.white
+                                                    : const Color(0xFFCCCCCC),
                                                 BlendMode.srcIn,
                                               ),
                                               height: 10,
@@ -1576,25 +1751,25 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     ),
                                   ),
                                   GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => const TermsDetail(type: 0),
-                                        ),
-                                      );
-                                    },
-                                    child:Container(
-                                      width: 50,
-                                      alignment: Alignment.centerRight,
-                                      child: SvgPicture.asset(
-                                        'assets/images/ic_link.svg',
-                                        colorFilter: const ColorFilter.mode(
-                                          Colors.black,
-                                          BlendMode.srcIn,
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const TermsDetail(type: 0),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        width: 50,
+                                        alignment: Alignment.centerRight,
+                                        child: SvgPicture.asset(
+                                          'assets/images/ic_link.svg',
+                                          colorFilter: const ColorFilter.mode(
+                                            Colors.black,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       ),
-                                    )
                                   ),
                                 ],
                               )
@@ -1622,14 +1797,17 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             height: 22,
                                             width: 22,
                                             decoration: BoxDecoration(
-                                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(6)),
                                               border: Border.all(
                                                 color: _agree2 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                                               ),
                                               color: _agree2 ? const Color(0xFFFF6191) : Colors.white,
                                             ),
                                             child: SvgPicture.asset(
-                                              'assets/images/check01_off.svg', // 체크박스 아이콘
+                                              'assets/images/check01_off.svg',
+                                              // 체크박스 아이콘
                                               colorFilter: ColorFilter.mode(
                                                 _agree2 ? Colors.white : const Color(0xFFCCCCCC),
                                                 BlendMode.srcIn,
@@ -1656,12 +1834,11 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                       onTap: () {
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(
-                                            builder: (context) => const TermsDetail(type: 0),
+                                          MaterialPageRoute(builder: (context) => const TermsDetail(type: 0),
                                           ),
                                         );
                                       },
-                                      child:Container(
+                                      child: Container(
                                         width: 50,
                                         alignment: Alignment.centerRight,
                                         child: SvgPicture.asset(
@@ -1671,7 +1848,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             BlendMode.srcIn,
                                           ),
                                         ),
-                                      )
+                                      ),
                                   ),
                                 ],
                               )
@@ -1699,16 +1876,25 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             height: 22,
                                             width: 22,
                                             decoration: BoxDecoration(
-                                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(6)),
                                               border: Border.all(
-                                                color: _agree3 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                                color: _agree3
+                                                    ? const Color(0xFFFF6191)
+                                                    : const Color(0xFFCCCCCC),
                                               ),
-                                              color: _agree3 ? const Color(0xFFFF6191) : Colors.white,
+                                              color: _agree3
+                                                  ? const Color(0xFFFF6191)
+                                                  : Colors.white,
                                             ),
                                             child: SvgPicture.asset(
-                                              'assets/images/check01_off.svg', // 체크박스 아이콘
+                                              'assets/images/check01_off.svg',
+                                              // 체크박스 아이콘
                                               colorFilter: ColorFilter.mode(
-                                                _agree3 ? Colors.white : const Color(0xFFCCCCCC),
+                                                _agree3
+                                                    ? Colors.white
+                                                    : const Color(0xFFCCCCCC),
                                                 BlendMode.srcIn,
                                               ),
                                               height: 10,
@@ -1721,7 +1907,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             '결제대행 서비스 이용약관 동의',
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(context, 14),
+                                              fontSize: Responsive.getFont(
+                                                  context, 14),
                                               height: 1.2,
                                             ),
                                           )
@@ -1730,25 +1917,25 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     ),
                                   ),
                                   GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => const TermsDetail(type: 0),
-                                        ),
-                                      );
-                                    },
-                                    child:Container(
-                                      width: 50,
-                                      alignment: Alignment.centerRight,
-                                      child: SvgPicture.asset(
-                                        'assets/images/ic_link.svg',
-                                        colorFilter: const ColorFilter.mode(
-                                          Colors.black,
-                                          BlendMode.srcIn,
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const TermsDetail(type: 0),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        width: 50,
+                                        alignment: Alignment.centerRight,
+                                        child: SvgPicture.asset(
+                                          'assets/images/ic_link.svg',
+                                          colorFilter: const ColorFilter.mode(
+                                            Colors.black,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       ),
-                                    )
                                   ),
                                 ],
                               )
@@ -1773,7 +1960,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 Container(
                   width: double.infinity,
                   height: Responsive.getHeight(context, 48),
-                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                   decoration: const BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.all(
