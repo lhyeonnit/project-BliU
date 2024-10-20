@@ -184,8 +184,9 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
                               padding: const EdgeInsets.only(top: 10.0),
                               child: TextField(
                                 style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
+                                    height: 1.2,
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14)
                                 ),
                                 maxLines: 4,
                                 maxLength: 500,

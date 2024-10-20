@@ -338,8 +338,9 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
     return TextField(
       controller: controller,
       style: TextStyle(
-        fontFamily: 'Pretendard',
-        fontSize: Responsive.getFont(context, 14),
+          height: 1.2,
+          fontFamily: 'Pretendard',
+          fontSize: Responsive.getFont(context, 14)
       ),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
@@ -365,6 +366,11 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
     return Container(
       margin: EdgeInsets.only(top: 10.0, bottom: 20),
       child: TextField(
+        style: TextStyle(
+            height: 1.2,
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 14)
+        ),
         controller: controller,
         maxLines: 7,
         decoration: InputDecoration(
@@ -430,8 +436,9 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
           if (label.isNotEmpty)
             TextField(
               style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14)
               ),
               controller: controller,
               obscureText: obscureText,

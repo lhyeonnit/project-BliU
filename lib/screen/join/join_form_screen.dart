@@ -634,8 +634,9 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
               height: 44,
               child: TextField(
                 style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14),
+                    height: 1.2,
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 14)
                 ),
                 enabled: isEnable,
                 controller: controller,
@@ -684,8 +685,9 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
               margin: const EdgeInsets.only(top: 10),
               child: TextField(
                 style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14),
+                    height: 1.2,
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 14)
                 ),
                 enabled: isEnable,
                 controller: controller,

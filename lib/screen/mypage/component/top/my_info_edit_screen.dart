@@ -655,8 +655,9 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
           if (label.isNotEmpty)
             TextField(
               style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14)
               ),
               controller: controller,
               obscureText: obscureText,
@@ -735,8 +736,9 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
           if (label.isNotEmpty)
             TextField(
               style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14)
               ),
               controller: controller,
               obscureText: obscureText,
@@ -807,8 +809,9 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
           if (label.isNotEmpty)
             TextField(
               style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14)
               ),
               controller: controller,
               obscureText: obscureText,
@@ -857,8 +860,9 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
           if (label.isNotEmpty)
             TextField(
               style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14)
               ),
               enabled: isEnable,
               controller: controller,

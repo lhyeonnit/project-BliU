@@ -152,6 +152,11 @@ class ExchangeItemState extends State<ExchangeItem> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: TextField(
+                    style: TextStyle(
+                        height: 1.2,
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14)
+                    ),
                     maxLines: 4,
                     maxLength: 500,
                     decoration: InputDecoration(
