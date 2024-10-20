@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:BliU/data/coupon_data.dart';
+import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/product/component/detail/coupon_card.dart';
 import 'package:BliU/screen/product/viewmodel/coupon_receive_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -116,30 +117,7 @@ class _CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
             ),
           Visibility(
             visible: _couponList.isEmpty,
-            child: Center(
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 130, bottom: 15),
-                      child: SvgPicture.asset('assets/images/product/no_data_img.svg',
-                        width: 90,
-                        height: 90,
-                      ),
-                    ),
-                    Text(
-                      '등록된 쿠폰이 없습니다.',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        fontWeight: FontWeight.w300,
-                        color: const Color(0xFF7B7B7B),
-                        height: 1.2,
-
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            child: const NonDataScreen(text: '등록된 쿠폰이 없습니다.',)
             ),
 
           Visibility(

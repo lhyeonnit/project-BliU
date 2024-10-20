@@ -35,8 +35,11 @@ class TopCartButton extends ConsumerWidget {
         return Stack(
           children: [
             IconButton(
-              padding: const EdgeInsets.only(right: 10),
-              icon: SvgPicture.asset("assets/images/exhibition/ic_cart.svg"),
+              padding: const EdgeInsets.only(right: 16, left: 10),
+              icon: SvgPicture.asset("assets/images/product/ic_cart.svg",
+                height: Responsive.getHeight(context, 30),
+                width: Responsive.getWidth(context, 30),
+              ),
               onPressed: () {
                 // 장바구니 버튼 동작
                 Navigator.push(
@@ -48,15 +51,15 @@ class TopCartButton extends ConsumerWidget {
               },
             ),
             Positioned(
-              right: 8,
-              top: 28,
+              right: 12,
+              top: 23,
               child: Visibility(
                 visible: cartCount == "0" ? false : true,
                 child: Container(
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF6191),
-                    borderRadius: BorderRadius.circular(6),
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFFF6191),
+                    shape: BoxShape.circle,
                   ),
                   constraints: BoxConstraints(
                     minWidth: Responsive.getWidth(context, 15),

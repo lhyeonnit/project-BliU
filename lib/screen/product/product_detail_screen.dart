@@ -213,7 +213,10 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         ),
         actions: [
           IconButton(
-            icon: SvgPicture.asset("assets/images/product/ic_top_sch.svg"),
+            icon: SvgPicture.asset("assets/images/product/ic_top_sch.svg",
+              height: Responsive.getHeight(context, 30),
+              width: Responsive.getWidth(context, 30),
+            ),
             color: Colors.black,
             onPressed: () {
               Navigator.push(

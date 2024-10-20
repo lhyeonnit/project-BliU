@@ -1,6 +1,7 @@
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/like/viewmodel/like_view_model.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -197,87 +198,96 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
       body: Stack(
         children: [
           NotificationListener(
-            onNotification: (scrollNotification){
-              if (scrollNotification is ScrollEndNotification) {
-                var metrics = scrollNotification.metrics;
-                if (metrics.axisDirection != AxisDirection.down) return false;
-                if (_maxScrollHeight < metrics.maxScrollExtent) {
-                  _maxScrollHeight = metrics.maxScrollExtent;
+              onNotification: (scrollNotification){
+                if (scrollNotification is ScrollEndNotification) {
+                  var metrics = scrollNotification.metrics;
+                  if (metrics.axisDirection != AxisDirection.down) return false;
+                  if (_maxScrollHeight < metrics.maxScrollExtent) {
+                    _maxScrollHeight = metrics.maxScrollExtent;
+                  }
+                  if (_maxScrollHeight - metrics.pixels < 50) {
+                    _nextLoad();
+                  }
                 }
-                if (_maxScrollHeight - metrics.pixels < 50) {
-                  _nextLoad();
-                }
-              }
-              return false;
-            },
-            child: NestedScrollView(
-              controller: _scrollController,
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  SliverToBoxAdapter(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 60.0,
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: TabBar(
-                            controller: _tabController,
-                            labelStyle: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.w600,
-                            ),
-                            overlayColor: WidgetStateColor.transparent,
-                            indicatorColor: Colors.black,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            dividerColor: const Color(0xFFDDDDDD),
-                            labelColor: Colors.black,
-                            unselectedLabelColor: const Color(0xFF7B7B7B),
-                            isScrollable: true,
-                            indicatorWeight: 2.0,
-                            tabAlignment: TabAlignment.start,
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            tabs: _categories.map((category) {
-                              return Tab(text: category.ctName);
-                            }).toList(),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Text(
-                            '상품 $_count', // 상품 수 표시
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.black,
-                              height: 1.2,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ), // 상단 고정된 컨텐츠
-                  )
-                ];
+                return false;
               },
-              body: TabBarView(
-                controller: _tabController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: List.generate(
-                  _categories.length,
-                      (index) {
-                    if (index == _tabController.index) {
-                      return _buildProductGrid();
-                    } else {
-                      return Container();
-                    }
-                  },
+              child: NestedScrollView(
+                controller: _scrollController,
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 60.0,
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: TabBar(
+                              controller: _tabController,
+                              labelStyle: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                fontWeight: FontWeight.w600,
+                              ),
+                              overlayColor: WidgetStateColor.transparent,
+                              indicatorColor: Colors.black,
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              dividerColor: const Color(0xFFDDDDDD),
+                              labelColor: Colors.black,
+                              unselectedLabelColor: const Color(0xFF7B7B7B),
+                              isScrollable: true,
+                              indicatorWeight: 2.0,
+                              tabAlignment: TabAlignment.start,
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              tabs: _categories.map((category) {
+                                return Tab(text: category.ctName);
+                              }).toList(),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Text(
+                              '상품 $_count', // 상품 수 표시
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: Colors.black,
+                                height: 1.2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ), // 상단 고정된 컨텐츠
+                    )
+                  ];
+                },
+                body: Visibility(
+                  visible: _productList.isNotEmpty,
+                  child: TabBarView(
+                    controller: _tabController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: List.generate(
+                      _categories.length,
+                          (index) {
+                        if (index == _tabController.index) {
+                          return _buildProductGrid();
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
+          Visibility(
+            visible: _productList.isNotEmpty,
+              child: MoveTopButton(scrollController: _scrollController)),
+          Visibility(
+              visible: _productList.isEmpty,
+              child: const NonDataScreen(text: '좋아요하신 상품이 없습니다.',)
           ),
-          MoveTopButton(scrollController: _scrollController),
         ],
       ),
     );

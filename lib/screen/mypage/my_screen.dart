@@ -89,7 +89,10 @@ class _MyScreenState extends ConsumerState<MyScreen> {
           ),
           actions: [
             IconButton(
-              icon: SvgPicture.asset('assets/images/my/ic_alim.svg'),
+              icon: SvgPicture.asset('assets/images/my/ic_alim.svg',
+                height: Responsive.getHeight(context, 30),
+                width: Responsive.getWidth(context, 30),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,

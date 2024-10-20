@@ -360,19 +360,20 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
           ),
         ),
         actions: [
-          GestureDetector(
-            child: SvgPicture.asset("assets/images/product/ic_top_sch.svg"),
-            onTap: () {
+          IconButton(
+            icon: SvgPicture.asset("assets/images/product/ic_top_sch.svg",
+              height: Responsive.getHeight(context, 30),
+              width: Responsive.getWidth(context, 30),
+            ),
+            color: Colors.black,
+            onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const SearchScreen()),
               );
             },
           ),
-          Container(
-            margin: const EdgeInsets.only(right: 6),
-            child: const TopCartButton(),
-          ),
+          const TopCartButton(),
         ],
       ),
       body: NotificationListener(

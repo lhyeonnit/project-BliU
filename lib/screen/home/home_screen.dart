@@ -303,14 +303,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     },
                                   ),
                                   Positioned(
-                                    right: 4,
-                                    top: 20,
+                                    right: 5,
+                                    top: 23,
                                     child: Visibility(
                                       visible: _cartCount == "0" ? false : true,
                                       child: Container(
                                         padding: const EdgeInsets.all(4),
                                         decoration: const BoxDecoration(
-                                          color: Colors.pinkAccent,
+                                          color: Color(0xFFFF6191),
                                           shape: BoxShape.circle,
                                         ),
                                         child: Text(
@@ -318,7 +318,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                           style: TextStyle(
                                             fontFamily: 'Pretendard',
                                             color: Colors.white,
-                                            fontSize: Responsive.getFont(context, 12),
+                                            fontSize: Responsive.getFont(context, 9),
                                             height: 1.2,
                                           ),
                                         ),
