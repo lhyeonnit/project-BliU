@@ -348,6 +348,11 @@ class _InquiryStoreState extends ConsumerState<InquiryStore> {
     return Container(
       margin: EdgeInsets.only(top: 10.0, bottom: 20),
       child: TextField(
+        style: TextStyle(
+            height: 1.2,
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 14)
+        ),
         controller: controller,
         maxLines: 7,
         decoration: InputDecoration(

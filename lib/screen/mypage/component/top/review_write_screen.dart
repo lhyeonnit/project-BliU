@@ -190,8 +190,9 @@ class ReviewWriteScreenState extends ConsumerState<ReviewWriteScreen> {
                         TextField(
                           controller: _reviewController,
                           style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
+                              height: 1.2,
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14)
                           ),
                           maxLines: 9,
                           decoration: InputDecoration(

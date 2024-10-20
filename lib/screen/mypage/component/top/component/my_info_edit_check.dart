@@ -116,8 +116,9 @@ class MyInfoEditCheck extends ConsumerWidget {
                     obscureText: true,
                     // 비밀번호 입력을 위해 텍스트 숨김
                     style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14)
                     ),
                     enabled: true,
                     controller: _passwordController,

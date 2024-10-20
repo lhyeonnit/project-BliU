@@ -189,9 +189,9 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                       Expanded(
                         child: TextField(
                           style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            decorationThickness: 0,
-                            fontSize: Responsive.getFont(context, 14)
+                              height: 1.2,
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14)
                           ),
                           controller: _searchController,
                           decoration: InputDecoration(

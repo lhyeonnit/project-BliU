@@ -85,8 +85,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   children: [
                     TextField(
                       style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
+                          height: 1.2,
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14)
                       ),
                       controller: _idController,
                       decoration: InputDecoration(
@@ -110,8 +111,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       margin: const EdgeInsets.symmetric(vertical: 10),
                       child: TextField(
                         style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
+                            height: 1.2,
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14)
                         ),
                         controller: _passwordController,
                         obscureText: true,
