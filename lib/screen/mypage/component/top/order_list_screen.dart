@@ -1,5 +1,6 @@
 import 'package:BliU/data/order_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_list_item.dart';
 import 'package:BliU/screen/mypage/viewmodel/order_list_view_model.dart';
@@ -223,22 +224,32 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
                   height: 1,
                   color: Color(0xFFEEEEEE),
                 ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: orderList.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final orderData = orderList[index];
-
-                    return OrderListItem(
-                      orderData: orderData,
-                    );
-                  }
+                Visibility(
+                  visible: orderList.isNotEmpty,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: orderList.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final orderData = orderList[index];
+                  
+                      return OrderListItem(
+                        orderData: orderData,
+                      );
+                    }
+                  ),
                 ),
               ],
             ),
           ),
-          MoveTopButton(scrollController: _scrollController),
+          Visibility(
+            visible: orderList.isNotEmpty,
+              child: MoveTopButton(scrollController: _scrollController),
+          ),
+          Visibility(
+            visible: orderList.isEmpty,
+            child: const NonDataScreen(text: '배송정보가 없습니다.'),
+          ),
         ],
       ),
     );

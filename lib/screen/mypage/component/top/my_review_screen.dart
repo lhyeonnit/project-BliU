@@ -1,4 +1,5 @@
 import 'package:BliU/data/review_data.dart';
+import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/my_review_view_model.dart';
 import 'package:BliU/screen/product/component/detail/product_review_detail.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -197,18 +198,8 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
                 ),
                 Visibility(
                   visible: !_isListVisible,
-                  child: Center(
-                    child: Text(
-                      "작성하신 리뷰가 없습니다.",
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 16),
-                        color: Colors.grey,
-                        height: 1.2,
-                      ),
-                    ),
-                  )
-                )
+                  child: const NonDataScreen(text: '작성하신 리뷰가 없습니다.'),
+                ),
               ],
             )
           ),

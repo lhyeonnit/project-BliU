@@ -1,5 +1,6 @@
 import 'package:BliU/data/point_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/point_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -237,54 +238,66 @@ class _PointScreenState extends ConsumerState<PointScreen> {
                   ),
                 ),
                 const Divider(thickness: 10, color: Color(0xFFF5F9F9)),
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: _scrollController,
-                    itemCount: _pointList.length,
-                    itemBuilder: (context, index) {
-                      // 데이터를 사용하여 아이템 생성
-                      final pointData = _pointList[index];
+                Visibility(
+                  visible: _pointList.isNotEmpty,
+                  child: Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      controller: _scrollController,
+                      itemCount: _pointList.length,
+                      itemBuilder: (context, index) {
+                        // 데이터를 사용하여 아이템 생성
+                        final pointData = _pointList[index];
 
-                      String type = pointData.pltTypeTxt ?? "";
-                      String pirce = pointData.pltPrice ?? "";
-                      String memo = pointData.pltMemo ?? "";
-                      String wdate = pointData.pltWdate ?? "";
+                        String type = pointData.pltTypeTxt ?? "";
+                        String pirce = pointData.pltPrice ?? "";
+                        String memo = pointData.pltMemo ?? "";
+                        String wdate = pointData.pltWdate ?? "";
 
-                      return Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  type,
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    color: type == '적립' ? const Color(0xFFFF6192) : Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    height: 1.2,
+                        return Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    type,
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      color: type == '적립' ? const Color(0xFFFF6192) : Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.2,
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        pirce,
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 15),
-                                          fontWeight: FontWeight.bold,
-                                          height: 1.2,
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          pirce,
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 15),
+                                            fontWeight: FontWeight.bold,
+                                            height: 1.2,
+                                          ),
                                         ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(vertical: 8),
-                                        child: Text(
-                                          memo,
+                                        Container(
+                                          margin: const EdgeInsets.symmetric(vertical: 8),
+                                          child: Text(
+                                            memo,
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              color: const Color(0xFF7B7B7B),
+                                              fontSize: Responsive.getFont(context, 14),
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          wdate,
                                           style: TextStyle(
                                             fontFamily: 'Pretendard',
                                             color: const Color(0xFF7B7B7B),
@@ -292,39 +305,38 @@ class _PointScreenState extends ConsumerState<PointScreen> {
                                             height: 1.2,
                                           ),
                                         ),
-                                      ),
-                                      Text(
-                                        wdate,
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          color: const Color(0xFF7B7B7B),
-                                          fontSize: Responsive.getFont(context, 14),
-                                          height: 1.2,
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          if (index != _pointList.length - 1)
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16),
-                              child: const Divider(
-                                thickness: 1, // 구분선 두께
-                                color: Color(0xFFEEEEEE), // 구분선 색상
+                                ],
                               ),
                             ),
-                        ],
-                      );
-                    },
+                            if (index != _pointList.length - 1)
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 16),
+                                child: const Divider(
+                                  thickness: 1, // 구분선 두께
+                                  color: Color(0xFFEEEEEE), // 구분선 색상
+                                ),
+                              ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 )
               ],
             ),
           ),
-          MoveTopButton(scrollController: _scrollController),
+          Visibility(
+              visible: _pointList.isNotEmpty,
+              child: MoveTopButton(scrollController: _scrollController)),
+          Visibility(
+            visible: _pointList.isEmpty,
+            child: Container(
+                margin: const EdgeInsets.only(top: 80),
+                child: const NonDataScreen(text: '포인트 내역이 없습니다.')),
+          ),
         ],
       ),
     );
