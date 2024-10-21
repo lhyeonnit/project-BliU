@@ -263,7 +263,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
                       _orderReturn();
                     },
                     child: Container(
-                      height: Responsive.getHeight(context, 48),
+                      height: 48,
                       margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                       decoration: const BoxDecoration(
                         color: Colors.black,

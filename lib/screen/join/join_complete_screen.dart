@@ -80,8 +80,8 @@ class JoinCompleteScreen extends StatelessWidget {
               },
               child: Container(
                 width: double.infinity,
-                height: Responsive.getHeight(context, 48),
-                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                height: 48,
+                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                 decoration: const BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.all(

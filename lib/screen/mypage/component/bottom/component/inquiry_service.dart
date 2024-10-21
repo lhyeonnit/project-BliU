@@ -162,33 +162,37 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: GestureDetector(
-              onTap: () {
-                _qnaWrite(ref);
-              },
-              child: Container(
-                width: double.infinity,
-                height: Responsive.getHeight(context, 48),
-                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(6),
+            child: Container(
+              width: double.infinity,
+              color: Colors.white,
+              child: GestureDetector(
+                onTap: () {
+                  _qnaWrite(ref);
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 48,
+                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(6),
+                    ),
                   ),
-                ),
-                child: Center(
-                  child: Text(
-                    '등록',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      color: Colors.white,
-                      height: 1.2,
+                  child: Center(
+                    child: Text(
+                      '등록',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        color: Colors.white,
+                        height: 1.2,
+                      ),
                     ),
                   ),
                 ),
               ),
-            )
+            ),
           ),
         ],
       ),

@@ -393,7 +393,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                                 child: GestureDetector(
                                   onTap: () => _submitRecommendInfo(),
                                   child: Container(
-                                    height: Responsive.getHeight(context, 48),
+                                    height: 48,
                                     margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                                     decoration: const BoxDecoration(
                                       color: Colors.black,
@@ -713,7 +713,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                 },
                 child: Container(
                   width: double.infinity,
-                  height: Responsive.getHeight(context, 48),
+                  height: 48,
                   margin: EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                   decoration: BoxDecoration(
                     color: Colors.black,

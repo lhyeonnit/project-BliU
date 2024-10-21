@@ -564,8 +564,8 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                 : null,
                 child: Container(
                   width: double.infinity,
-                  height: Responsive.getHeight(context, 48),
-                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                  height: 48,
+                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                   decoration: BoxDecoration(
                     color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
                     borderRadius: const BorderRadius.all(
@@ -963,7 +963,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                 },
                 child: Container(
                   width: double.infinity,
-                  height: Responsive.getHeight(context, 48),
+                  height: 48,
                   margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                   decoration: BoxDecoration(
                     color: Colors.black,

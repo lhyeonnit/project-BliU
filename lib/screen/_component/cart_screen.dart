@@ -781,8 +781,8 @@ class CartScreenState extends ConsumerState<CartScreen> {
                     Navigator.pop(context);
                   },
                   child: Container(
-                    height: Responsive.getHeight(context, 48),
-                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                    height: 48,
+                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                     decoration: const BoxDecoration(
                       color: Colors.black, // 다운로드할 쿠폰이 있으면 활성화
                       borderRadius: BorderRadius.all(

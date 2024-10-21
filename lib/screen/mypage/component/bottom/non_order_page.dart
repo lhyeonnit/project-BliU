@@ -129,9 +129,9 @@ class _NonOrderPageState extends State<NonOrderPage> {
               },
               child: Container(
                 width: double.infinity,
-                height: Responsive.getHeight(context, 48),
+                height: 48,
                 margin:
-                    EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                    EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                 decoration: BoxDecoration(
                   color: _isAllFieldsFilled ? Colors.black : Color(0xFFDDDDDD),
                   borderRadius: BorderRadius.all(
