@@ -24,7 +24,7 @@ class CartScreen extends ConsumerStatefulWidget {
 class CartScreenState extends ConsumerState<CartScreen> {
   final ScrollController _scrollController = ScrollController();
 
-  bool _isAllSelected = false;
+  bool _isAllSelected = true;
   List<int> _cartSelectedList = [];
 
   List<CartData> _cartItems = [];

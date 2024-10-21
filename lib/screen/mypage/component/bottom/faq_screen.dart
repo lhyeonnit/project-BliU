@@ -275,7 +275,7 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                           });
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(19),
                             border: Border.all(
@@ -284,13 +284,15 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
                             ),
                             color: Colors.white,
                           ),
-                          child: Text(
-                            faqCategoryData.cftName ?? "",
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: isSelected ? const Color(0xFFFF6192) : Colors.black,
-                              height: 1.2,
+                          child: Center(
+                            child: Text(
+                              faqCategoryData.cftName ?? "",
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ),

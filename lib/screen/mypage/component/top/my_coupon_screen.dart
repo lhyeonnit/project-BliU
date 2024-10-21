@@ -168,8 +168,8 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: 40,
-                  padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                  height: 38,
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: _categories.length,
@@ -186,8 +186,7 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
                             });
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 11),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(19),
                               border: Border.all(
@@ -198,15 +197,17 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
                               ),
                               color: Colors.white,
                             ),
-                            child: Text(
-                              _categories[index],
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: isSelected
-                                    ? const Color(0xFFFF6192)
-                                    : Colors.black,
-                                height: 1.2,
+                            child: Center(
+                              child: Text(
+                                _categories[index],
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: isSelected
+                                      ? const Color(0xFFFF6192)
+                                      : Colors.black,
+                                  height: 1.2,
+                                ),
                               ),
                             ),
                           ),
