@@ -1,3 +1,4 @@
+import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/order_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
@@ -177,48 +178,53 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: 38,
                   margin: const EdgeInsets.symmetric(vertical: 15),
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: ListView.builder(
+                  child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    itemCount: categories.length,
-                    itemBuilder: (context, index) {
-                      final bool isSelected = selectedCategoryIndex == index;
-
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 4.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedCategoryIndex = index;
-                              _getList();
-                            });
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(19),
-                              border: Border.all(
-                                color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-                                width: 1.0,
-                              ),
-                              color: Colors.white,
-                            ),
-                            child: Text(
-                              categories[index],
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: isSelected ? const Color(0xFFFF6192) : Colors.black,
-                                height: 1.2,
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                    child: Row(
+                      children: categories.map((i) => categoryItem(i)).toList(),
+                    ),
                   ),
+                  // ListView.builder(
+                  //   scrollDirection: Axis.horizontal,
+                  //   itemCount: categories.length,
+                  //   itemBuilder: (context, index) {
+                  //     final bool isSelected = selectedCategoryIndex == index;
+                  //
+                  //     return Padding(
+                  //       padding: const EdgeInsets.only(right: 4.0),
+                  //       child: GestureDetector(
+                  //         onTap: () {
+                  //           setState(() {
+                  //             selectedCategoryIndex = index;
+                  //             _getList();
+                  //           });
+                  //         },
+                  //         child: Container(
+                  //           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+                  //           decoration: BoxDecoration(
+                  //             borderRadius: BorderRadius.circular(19),
+                  //             border: Border.all(
+                  //               color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                  //               width: 1.0,
+                  //             ),
+                  //             color: Colors.white,
+                  //           ),
+                  //           child: Text(
+                  //             categories[index],
+                  //             style: TextStyle(
+                  //               fontFamily: 'Pretendard',
+                  //               fontSize: Responsive.getFont(context, 14),
+                  //               color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                  //               height: 1.2,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                 ),
                 const Divider(
                   height: 1,
@@ -251,6 +257,42 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
             child: const NonDataScreen(text: '배송정보가 없습니다.'),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget categoryItem(String category) {
+    final index = categories.indexOf(category);
+    final bool isSelected = selectedCategoryIndex == index;
+    return Padding(
+      padding: const EdgeInsets.only(right: 4.0),
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            selectedCategoryIndex = index;
+            _getList();
+          });
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(19),
+            border: Border.all(
+              color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+              width: 1.0,
+            ),
+            color: Colors.white,
+          ),
+          child: Text(
+            categories[index],
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 14),
+              color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+              height: 1.2,
+            ),
+          ),
+        ),
       ),
     );
   }

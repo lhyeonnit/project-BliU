@@ -35,7 +35,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   CouponData? _selectedCouponData;
   int _discountPoint = 0;
 
-  int _payType = 0; //1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
+  int _payType = 1; //1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
 
   bool _allAgree = false;
   bool _agree1 = false;
@@ -1205,7 +1205,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             setState(() {
                                               _payType = 3;
                                             });
-                                            },
+                                          },
                                       child: Container(
                                           padding: const EdgeInsets.symmetric(vertical: 11.0),
                                           decoration: BoxDecoration(
@@ -1957,20 +1957,20 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
             child: Column(
               children: [
                 MoveTopButton(scrollController: _scrollController),
-                Container(
-                  width: double.infinity,
-                  height: Responsive.getHeight(context, 48),
-                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                  decoration: const BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(6),
+                GestureDetector(
+                  onTap: () {
+                    _payment();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: Responsive.getHeight(context, 48),
+                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                    decoration: const BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(6),
+                      ),
                     ),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      _payment();
-                    },
                     child: Center(
                       child: Text(
                         '결제하기',
