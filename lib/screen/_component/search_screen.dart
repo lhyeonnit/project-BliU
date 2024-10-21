@@ -21,11 +21,12 @@ class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
 
   @override
-  ConsumerState<SearchScreen> createState() => _SearchScreenState();
+  ConsumerState<SearchScreen> createState() => SearchScreenState();
 }
 
-class _SearchScreenState extends ConsumerState<SearchScreen> {
+class SearchScreenState extends ConsumerState<SearchScreen> {
   final ScrollController _scrollController = ScrollController();
+  final ScrollController _listScrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
   bool _isFirst = true;
   bool _isSearching = false; // 검색 중인지 여부를 나타내는 플래그
@@ -37,14 +38,28 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   List<SearchProductData> searchProductData = [];
   SearchResponseDTO? searchResponseDTO;
   List<dynamic> _filteredResults = [];
-  List<ProductData> productList = [];
+
+  int _count = 0;
+  List<ProductData> _productList = [];
+
+  int _page = 1;
+  bool _hasNextPage = true;
+  bool _isFirstLoadRunning = false;
+  bool _isLoadMoreRunning = false;
 
   @override
   void initState() {
     super.initState();
+    _listScrollController.addListener(_nextLoad);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _listScrollController.removeListener(_nextLoad);
   }
 
   void _afterBuild(BuildContext context) {
@@ -52,30 +67,17 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     _getPopularList();
   }
 
-  void _getList() async {
+  void _getList(String research) async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
     String searchTxt = _searchController.text.toLowerCase();
+
     Map<String, dynamic> requestSearchData = {
       'mt_idx': mtIdx,
-      'token': '',
+      'token': pref.getToken(),
       'search_txt': searchTxt,
-      'research': 'N',
+      'research': research,
     };
-    Map<String, dynamic> requestProductData = {
-      'mt_idx': mtIdx,
-      'category': 'all',
-      'sub_category': 'all',
-      'sort': '',
-      'age': '',
-      'styles': '',
-      'min_price': 0,
-      'max_price': 99999,
-      'pg': 1,
-      'search_txt' :searchTxt,
-    };
-    final productListResponseDTO = await ref.read(searchModelProvider.notifier).getProductList(requestProductData);
-    productList = productListResponseDTO?.list ?? [];
 
     final searchList = await ref.read(searchModelProvider.notifier).getSearchList(requestSearchData);
     setState(() {
@@ -85,6 +87,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         _filteredResults = <dynamic>[...searchProductData, ...searchStoreData];
     });
   }
+
   void _getPopularList() async {
     final searchPopularResponseDTO = await ref.read(searchModelProvider.notifier).getPopularList();
 
@@ -108,7 +111,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   void _searchMyDel(int stIdx) async {
-    // TODO 회원 비회원 구분
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
@@ -117,8 +119,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       'slt_idx': stIdx,
     };
 
-    final defaultResponseDTO =
-        await ref.read(searchModelProvider.notifier).searchDel(requestData);
+    final defaultResponseDTO = await ref.read(searchModelProvider.notifier).searchDel(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _searchMyList();
@@ -127,7 +128,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   void _searchAllDel() async {
-    // TODO 회원 비회원 구분
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
@@ -136,8 +136,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       'slt_idx': 'all',
     };
 
-    final defaultResponseDTO =
-        await ref.read(searchModelProvider.notifier).searchDel(requestData);
+    final defaultResponseDTO = await ref.read(searchModelProvider.notifier).searchDel(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _searchMyList();
@@ -208,6 +207,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       ),
     );
   }
+
   void _startSearch() {
     setState(() {
       _isFirst = false;        // 첫 화면 아님
@@ -242,44 +242,91 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     });
   }
 
-  void _searchAction(String query) async {
+  Future<Map<String, dynamic>> _makeRequestData() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    String searchTxt = _searchController.text.toLowerCase();
+
+    Map<String, dynamic> requestProductData = {
+      'mt_idx': mtIdx,
+      'category': 'all',
+      'sub_category': 'all',
+      'sort': '',
+      'age': '',
+      'styles': '',
+      'min_price': 0,
+      'max_price': 1000000,
+      'pg': _page,
+      'search_txt' :searchTxt,
+      'search_type' : 'Y',
+      'token' : pref.getToken(),
+    };
+
+    return requestProductData;
+  }
+
+  void _searchAction() async {
     // 검색을 시작할 때 상태 업데이트
     _startSearch();
 
+    setState(() {
+      _isFirstLoadRunning = true;
+    });
+    _page = 1;
+    _hasNextPage = true;
+
     try {
-      // 실제 검색 로직 수행: _getList()와 동일한 로직을 이곳에 적용
-      final pref = await SharedPreferencesManager.getInstance();
-      final mtIdx = pref.getMtIdx();
-      String searchTxt = query.toLowerCase();  // query로 받은 검색어를 소문자로 변환
 
-      // API 호출을 위한 데이터 준비
-      Map<String, dynamic> requestSearchData = {
-        'mt_idx': mtIdx,
-        'token': '',
-        'search_txt': searchTxt,
-        'research': 'N',
-      };
+      final requestProductData = await _makeRequestData();
 
-      // 검색 결과 가져오기
-      final searchList = await ref.read(searchModelProvider.notifier).getSearchList(requestSearchData);
+      final productListResponseDTO = await ref.read(searchModelProvider.notifier).getProductList(requestProductData);
+      _count = productListResponseDTO?.count ?? 0;
+      _productList = productListResponseDTO?.list ?? [];
 
-      if (searchList != null && (searchList.storeSearch?.isNotEmpty ?? false) || (searchList?.productSearch?.isNotEmpty ?? false)) {
+      if (_productList.isNotEmpty) {
         // 검색 결과가 있으면 상태에 반영하고 완료 상태로 전환
-        setState(() {
-          searchStoreData = searchList?.storeSearch ?? [];
-          searchProductData = searchList?.productSearch ?? [];
-          // 상점 및 상품 필터링 결과를 합쳐서 _filteredResults에 저장
-          _filteredResults = <dynamic>[...searchProductData, ...searchStoreData];
-        });
         _completeSearch();
       } else {
         // 검색 결과가 없으면 실패 상태로 전환
         _failSearch();
       }
+
     } catch (e) {
       // 오류 발생 시에도 실패 상태로 전환
       _failSearch();
       print('Error during search: $e');
+    }
+
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+  }
+
+  void _nextLoad() async {
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _listScrollController.position.extentAfter < 200){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+      _page += 1;
+
+      final requestProductData = await _makeRequestData();
+
+      final productListResponseDTO = await ref.read(searchModelProvider.notifier).getProductList(requestProductData);
+      if (productListResponseDTO != null) {
+        if ((productListResponseDTO.list ?? []).isNotEmpty) {
+          setState(() {
+            _productList.addAll(productListResponseDTO.list ?? []);
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
+      });
     }
   }
 
@@ -377,13 +424,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 _isSearching = true;
                                 _isFirst = false;
                               });
-                              _getList();
+                              _getList('N');
                             }
                           },
                           // 검색 중인 상태
                           onSubmitted: (value) {
                             if (value.isNotEmpty) {
-                              _searchAction(value); // 검색어를 입력하고 검색을 실행
+                              _searchAction(); // 검색어를 입력하고 검색을 실행
                             }
                           }, // 검색 완료 시
                         ),
@@ -394,7 +441,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           onTap: () {
                             String search = _searchController.text;
                             if (search.isNotEmpty) {
-                              _searchAction(search); // 검색어를 입력하고 검색을 실행
+                              _searchAction(); // 검색어를 입력하고 검색을 실행
                             }
                           },
                           child: SvgPicture.asset(
@@ -509,7 +556,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               return GestureDetector(
                 onTap: () {
                   setState(() {
+                    _isSearching = true;
+                    _isFirst = false;
                     _searchController.text = search; // 검색 기록 누르면 텍스트 창에 반영
+                    _getList('Y');
                   });
                 },
                 child: Chip(
@@ -730,7 +780,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   Widget _buildSearchResults() {
     return SingleChildScrollView(
-      controller: _scrollController,
+      controller: _listScrollController,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 40),
         color: Colors.white,
@@ -738,7 +788,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '상품 ${productList.length}',
+              '상품 $_count',
               style: TextStyle(
                   height: 1.2,
                   fontFamily: 'Pretendard',
@@ -746,7 +796,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               ),
             ),
             GridView.builder(
-              controller: _scrollController,
               shrinkWrap: true,
               padding: const EdgeInsets.only(top: 15.0),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -756,9 +805,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 childAspectRatio: 0.5,
               ),
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: productList.length,
+              itemCount: _productList.length,
               itemBuilder: (context, index) {
-                final productData = productList[index];
+                final productData = _productList[index];
                 return ProductListCard(productData: productData);
               },
             ),

@@ -10,10 +10,10 @@ class SearchRecommendItem extends ConsumerStatefulWidget {
   const SearchRecommendItem({super.key});
 
   @override
-  ConsumerState<SearchRecommendItem> createState() => _SearchRecommendItemState();
+  ConsumerState<SearchRecommendItem> createState() => SearchRecommendItemState();
 }
 
-class _SearchRecommendItemState extends ConsumerState<SearchRecommendItem> {
+class SearchRecommendItemState extends ConsumerState<SearchRecommendItem> {
   List<bool> isFavoriteList = List<bool>.generate(10, (index) => false);
   List<ProductData> _productList = [];
 
@@ -69,7 +69,6 @@ class _SearchRecommendItemState extends ConsumerState<SearchRecommendItem> {
   }
 
   void _getList() async {
-    // TODO 회원 비회원 처리 필요
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
     Map<String, dynamic> requestData = {
