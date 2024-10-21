@@ -24,13 +24,8 @@ class StoreFavoritePage extends ConsumerStatefulWidget {
 class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   late TabController _tabController;
-  bool _isSearching = false;
-  int _page = 1;
-  bool _hasNextPage = true;
-  bool _isFirstLoadRunning = false;
-  bool _isLoadMoreRunning = false;
-  int _count = 0;
-  final PageController pageController = PageController();
+
+  final PageController _pageController = PageController();
   final ScrollController _scrollController = ScrollController();
   String sortOption = '인기순';
   String sortOptionSelected = '';
@@ -50,12 +45,20 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
         catIdx: null,
         catName: null)
   ];
+
+  int _count = 0;
   List<ProductData> _productList = [];
+
+  double _maxScrollHeight = 0;// NestedScrollView 사용시 최대 높이를 저장하기 위한 변수
+
+  int _page = 1;
+  bool _hasNextPage = true;
+  bool _isFirstLoadRunning = false;
+  bool _isLoadMoreRunning = false;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_nextLoad);
     _tabController = TabController(length: categories.length, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
@@ -64,7 +67,6 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
 
   @override
   void dispose() {
-    _scrollController.removeListener(_nextLoad);
     _tabController.dispose();
     super.dispose();
   }
@@ -126,12 +128,7 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
     });
   }
 
-  void _getList() async {
-    setState(() {
-      _isFirstLoadRunning = true;
-    });
-    _page = 1;
-
+  Future<Map<String, dynamic>> _makeRequestData() async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
@@ -177,6 +174,18 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
       'sort': sort,
     };
 
+    return requestProductData;
+  }
+
+  void _getList() async {
+    setState(() {
+      _isFirstLoadRunning = true;
+    });
+    _page = 1;
+    _hasNextPage = true;
+
+    final requestProductData = await _makeRequestData();
+
     final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestProductData);
     _count = productListResponseDTO?.count ?? 0;
     _productList = productListResponseDTO?.list ?? [];
@@ -187,31 +196,16 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
 
   void _nextLoad() async {
 
-    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning){
       setState(() {
         _isLoadMoreRunning = true;
       });
       _page += 1;
 
-      final pref = await SharedPreferencesManager.getInstance();
-      final mtIdx = pref.getMtIdx();
+      final requestProductData = await _makeRequestData();
 
-      String category = "all";
-      final categoryData = categories[_tabController.index];
-      if ((categoryData.ctIdx ?? 0) > 0) {
-        category = categoryData.ctIdx.toString();
-      }
-
-      Map<String, dynamic> requestData = {
-        'mt_idx': mtIdx,
-        'category': category,
-        'sub_category': "all",
-        'pg': _page,
-      };
-
-      final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestData);
+      final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestProductData);
       if (productListResponseDTO != null) {
-        _count = productListResponseDTO.list.length;
         if (productListResponseDTO.list.isNotEmpty) {
           setState(() {
             _productList.addAll(productListResponseDTO.list);
@@ -282,416 +276,422 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
         children: [
           Visibility(
             visible: _bookMarkList.isNotEmpty,
-            child: NestedScrollView(
-              controller: _scrollController,
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  SliverToBoxAdapter(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
-                          padding: const EdgeInsets.only(top: 20, bottom: 17),
-                          child: Text('즐겨찾기 $_bookMarkCount',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              height: 1.2,
+            child: NotificationListener(
+              onNotification: (scrollNotification) {
+                if (scrollNotification is ScrollEndNotification) {
+                  var metrics = scrollNotification.metrics;
+                  if (metrics.axisDirection != AxisDirection.down) return false;
+                  if (_maxScrollHeight < metrics.maxScrollExtent) {
+                    _maxScrollHeight = metrics.maxScrollExtent;
+                  }
+
+                  if (_maxScrollHeight - metrics.pixels < 200) {
+                    _nextLoad();
+                  }
+                }
+                return false;
+              },
+              child: NestedScrollView(
+                controller: _scrollController,
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.only(top: 20, bottom: 17),
+                            child: Text('즐겨찾기 $_bookMarkCount',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                height: 1.2,
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
-                          height: _bookMarkVisibleCount <= 5 ? (_bookMarkVisibleCount * 60.0) : 305,
-                          width: Responsive.getWidth(context, 378),
-                          child: PageView.builder(
-                            controller: pageController,
-                            itemCount: (_bookMarkCount / 5).ceil(),
-                            onPageChanged: (int page) {
-                              _getBookMark(page + 1);
-                            },
-                            itemBuilder: (context, pageIndex) {
-                              List<BookmarkData> storeList = [];
-                              try {
-                                storeList = _bookMarkList[pageIndex];
-                              } catch(e) {
-                                print(e);
-                              }
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            height: _bookMarkVisibleCount <= 5 ? (_bookMarkVisibleCount * 60.0) : 305,
+                            width: Responsive.getWidth(context, 378),
+                            child: PageView.builder(
+                              controller: _pageController,
+                              itemCount: (_bookMarkCount / 5).ceil(),
+                              onPageChanged: (int page) {
+                                _getBookMark(page + 1);
+                              },
+                              itemBuilder: (context, pageIndex) {
+                                List<BookmarkData> storeList = [];
+                                try {
+                                  storeList = _bookMarkList[pageIndex];
+                                } catch(e) {
+                                  print(e);
+                                }
 
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: storeList.length,
-                                itemBuilder: (context, index) {
-                                  final store = storeList[index];
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: storeList.length,
+                                  itemBuilder: (context, index) {
+                                    final store = storeList[index];
 
-                                  return GestureDetector(
-                                    onTap: () {
-                                      // 상점 상세 화면으로 이동 (필요 시 구현)
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => StoreDetailScreen(stIdx: store.stIdx ?? 0),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(bottom: 15),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            height: 40,
-                                            width: 40,
-                                            margin: const EdgeInsets.only(right: 10),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(20),
-                                              border: Border.all(color: const Color(0xFFDDDDDD), width: 1.0),
-                                            ),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20),
-                                              child:Image.network(
-                                                store.stProfile ?? "",
-                                                fit: BoxFit.contain,
-                                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                                  return Image.asset('assets/images/home/exhi.png');
-                                                },
+                                    return GestureDetector(
+                                      onTap: () {
+                                        // 상점 상세 화면으로 이동 (필요 시 구현)
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => StoreDetailScreen(stIdx: store.stIdx ?? 0),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        margin: const EdgeInsets.only(bottom: 15),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              height: 40,
+                                              width: 40,
+                                              margin: const EdgeInsets.only(right: 10),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                border: Border.all(color: const Color(0xFFDDDDDD), width: 1.0),
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(20),
+                                                child:Image.network(
+                                                  store.stProfile ?? "",
+                                                  fit: BoxFit.contain,
+                                                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                    return Image.asset('assets/images/home/exhi.png');
+                                                  },
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Expanded(
-                                            flex: 14,
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  store.stName ?? "",
-                                                  style: TextStyle(
-                                                    fontFamily: 'Pretendard',
-                                                    fontSize: Responsive.getFont(context, 14),
-                                                    height: 1.2,
-                                                  ),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        store.styleTxt ?? "",
-                                                        style: TextStyle(
-                                                          fontFamily: 'Pretendard',
-                                                          fontSize: Responsive.getFont(context, 13),
-                                                          color: const Color(0xFF7B7B7B),
-                                                          height: 1.2,
-                                                        ),
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
-                                                      ),
+                                            Expanded(
+                                              flex: 14,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    store.stName ?? "",
+                                                    style: TextStyle(
+                                                      fontFamily: 'Pretendard',
+                                                      fontSize: Responsive.getFont(context, 14),
+                                                      height: 1.2,
                                                     ),
-                                                    const SizedBox(width: 5),
-                                                    // 텍스트 간 여백을 추가
-                                                    Expanded(
-                                                      child: Text(
-                                                          store.ageTxt ?? "",
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: Text(
+                                                          store.styleTxt ?? "",
                                                           style: TextStyle(
-                                                              fontFamily: 'Pretendard',
-                                                              fontSize: Responsive.getFont(context, 13),
-                                                              color: const Color(0xFF7B7B7B),
-                                                              height: 1.2
+                                                            fontFamily: 'Pretendard',
+                                                            fontSize: Responsive.getFont(context, 13),
+                                                            color: const Color(0xFF7B7B7B),
+                                                            height: 1.2,
                                                           ),
                                                           maxLines: 1,
-                                                          overflow: TextOverflow.ellipsis
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 2,
-                                            child: GestureDetector(
-                                              onTap: () async {
-                                                final pref = await SharedPreferencesManager.getInstance();
-                                                final mtIdx = pref.getMtIdx() ?? ""; // 사용자 mtIdx 가져오기
-
-                                                if (mtIdx.isEmpty) {
-                                                  if(!context.mounted) return;
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
-                                                      }
-                                                  );
-                                                  return;
-                                                }
-
-                                                Map<String, dynamic> requestData = {
-                                                  'mt_idx': mtIdx,
-                                                  'st_idx': store.stIdx,
-                                                };
-                                                await ref.read(storeFavoriteViewModelProvider.notifier).toggleLike(requestData);
-                                                _getBookMark(pageIndex + 1);
-                                                _getList();
-                                              },
-                                              child: SizedBox(
-                                                width: double.infinity,
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      height: 30,
-                                                      width: 30,
-                                                      padding: const EdgeInsets.symmetric(vertical: 8),
-                                                      child: SvgPicture.asset(
-                                                        'assets/images/store/book_mark.svg',
-                                                        colorFilter: const ColorFilter.mode(
-                                                          Color(0xFFFF6192),
-                                                          BlendMode.srcIn,
+                                                          overflow: TextOverflow.ellipsis,
                                                         ),
-                                                        fit: BoxFit.contain,
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      '${store.stLike}',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Pretendard',
-                                                        color: const Color(0xFFA4A4A4),
-                                                        fontSize: Responsive.getFont(context, 12),
-                                                        height: 1.2,
+                                                      const SizedBox(width: 5),
+                                                      // 텍스트 간 여백을 추가
+                                                      Expanded(
+                                                        child: Text(
+                                                            store.ageTxt ?? "",
+                                                            style: TextStyle(
+                                                                fontFamily: 'Pretendard',
+                                                                fontSize: Responsive.getFont(context, 13),
+                                                                color: const Color(0xFF7B7B7B),
+                                                                height: 1.2
+                                                            ),
+                                                            maxLines: 1,
+                                                            overflow: TextOverflow.ellipsis
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 2,
+                                              child: GestureDetector(
+                                                onTap: () async {
+                                                  final pref = await SharedPreferencesManager.getInstance();
+                                                  final mtIdx = pref.getMtIdx() ?? ""; // 사용자 mtIdx 가져오기
+
+                                                  if (mtIdx.isEmpty) {
+                                                    if(!context.mounted) return;
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
+                                                        }
+                                                    );
+                                                    return;
+                                                  }
+
+                                                  Map<String, dynamic> requestData = {
+                                                    'mt_idx': mtIdx,
+                                                    'st_idx': store.stIdx,
+                                                  };
+                                                  await ref.read(storeFavoriteViewModelProvider.notifier).toggleLike(requestData);
+                                                  _getBookMark(pageIndex + 1);
+                                                  _getList();
+                                                },
+                                                child: SizedBox(
+                                                  width: double.infinity,
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        height: 30,
+                                                        width: 30,
+                                                        padding: const EdgeInsets.symmetric(vertical: 8),
+                                                        child: SvgPicture.asset(
+                                                          'assets/images/store/book_mark.svg',
+                                                          colorFilter: const ColorFilter.mode(
+                                                            Color(0xFFFF6192),
+                                                            BlendMode.srcIn,
+                                                          ),
+                                                          fit: BoxFit.contain,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        '${store.stLike}',
+                                                        style: TextStyle(
+                                                          fontFamily: 'Pretendard',
+                                                          color: const Color(0xFFA4A4A4),
+                                                          fontSize: Responsive.getFont(context, 12),
+                                                          height: 1.2,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                        Visibility(
-                          visible: _bookMarkCount > 5 ? true : false,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate((_bookMarkCount / 5).ceil(), (index) {
-                              final currentPage = pageController.hasClients && pageController.page != null ? pageController.page!.round() : 0;
-                              return Container(
-                                margin: const EdgeInsets.only(right: 6, top: 25),
-                                width: 6.0,
-                                height: 6.0,
-                                decoration: BoxDecoration(
-                                  color: currentPage == index ? Colors.black : const Color(0xFFDDDDDD),
-                                  shape: BoxShape.circle,
-                                ),
-                              );
-                            }),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-                        Container(
-                          height: 44,
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
-                          width: Responsive.getWidth(context, 380),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: const Color(0xFFE1E1E1)),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  style: TextStyle(
-                                    height: 1.2,
-                                    fontSize: Responsive.getFont(context, 14),
-                                    fontFamily: 'Pretendard',
-                                    decorationThickness: 0,
+                          Visibility(
+                            visible: _bookMarkCount > 5 ? true : false,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate((_bookMarkCount / 5).ceil(), (index) {
+                                final currentPage = _pageController.hasClients && _pageController.page != null ? _pageController.page!.round() : 0;
+                                return Container(
+                                  margin: const EdgeInsets.only(right: 6, top: 25),
+                                  width: 6.0,
+                                  height: 6.0,
+                                  decoration: BoxDecoration(
+                                    color: currentPage == index ? Colors.black : const Color(0xFFDDDDDD),
+                                    shape: BoxShape.circle,
                                   ),
-                                  controller: _searchController,
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.only(left: 16, bottom: 8),
-                                    hintText: '즐겨찾기한 스토어 상품 검색',
-                                    hintStyle: TextStyle(
-                                      fontFamily: 'Pretendard',
+                                );
+                              }),
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          Container(
+                            height: 44,
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            width: Responsive.getWidth(context, 380),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(color: const Color(0xFFE1E1E1)),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    style: TextStyle(
                                       height: 1.2,
                                       fontSize: Responsive.getFont(context, 14),
-                                      color: const Color(0xFF595959),
+                                      fontFamily: 'Pretendard',
+                                      decorationThickness: 0,
                                     ),
-                                    border: InputBorder.none,
-                                    suffixIcon: Visibility(
-                                      visible: _searchController.text.isNotEmpty,
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          _searchController.clear();
-                                          setState(() {
-                                            _isSearching = false;
-                                          });
-                                        },
-                                        child: SvgPicture.asset(
-                                          'assets/images/ic_word_del.svg',
-                                          fit: BoxFit.contain,
+                                    controller: _searchController,
+                                    decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.only(left: 16, bottom: 8),
+                                      hintText: '즐겨찾기한 스토어 상품 검색',
+                                      hintStyle: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        height: 1.2,
+                                        fontSize: Responsive.getFont(context, 14),
+                                        color: const Color(0xFF595959),
+                                      ),
+                                      border: InputBorder.none,
+                                      suffixIcon: Visibility(
+                                        visible: _searchController.text.isNotEmpty,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            _searchController.clear();
+                                            setState(() {});
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/images/ic_word_del.svg',
+                                            fit: BoxFit.contain,
+                                          ),
                                         ),
                                       ),
+                                      suffixIconConstraints: BoxConstraints.tight(const Size(24, 24)),
                                     ),
-                                    suffixIconConstraints: BoxConstraints.tight(const Size(24, 24)),
-                                  ),
-                                  onChanged: (value) {
-                                    if (value.isNotEmpty) {
-                                      setState(() {
-                                        _isSearching = true;
-                                      });
-                                    }
-                                  },
-                                  onSubmitted: (value) {
-                                    if (value.isNotEmpty) {
+                                    onChanged: (value) {
+                                      setState(() {});
+                                    },
+                                    onSubmitted: (value) {
                                       _getList();
-                                    }
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    final search = _searchController.text;
-                                    if (search.isNotEmpty) {
-                                      _searchController.clear();
-                                    }
-                                  },
-                                  child: SvgPicture.asset(
-                                    'assets/images/home/ic_top_sch_w.svg',
-                                    colorFilter: const ColorFilter.mode(
-                                      Colors.black,
-                                      BlendMode.srcIn,
-                                    ),
-                                    fit: BoxFit.contain,
+                                    },
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 60.0,
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: TabBar(
-                            controller: _tabController,
-                            labelStyle: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.w600,
-                            ),
-                            overlayColor: WidgetStateColor.transparent,
-                            indicatorColor: Colors.black,
-                            dividerColor: const Color(0xFFDDDDDD),
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            labelColor: Colors.black,
-                            unselectedLabelColor: const Color(0xFF7B7B7B),
-                            isScrollable: true,
-                            indicatorWeight: 2.0,
-                            tabAlignment: TabAlignment.start,
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            tabs: categories.map((category) {
-                              return Tab(text: category.ctName ?? "");
-                            }).toList(),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                          padding: const EdgeInsets.only(top: 15, bottom: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: _openSortBottomSheet, // 정렬 옵션 선택 창 열기
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset('assets/images/product/ic_filter02.svg'),
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 5),
-                                      child: Text(
-                                        sortOptionSelected.isNotEmpty ? sortOptionSelected : '인기순', // 선택된 정렬 옵션 표시
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 14),
-                                          height: 1.2,
-                                        ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _getList();
+                                    },
+                                    child: SvgPicture.asset(
+                                      'assets/images/home/ic_top_sch_w.svg',
+                                      colorFilter: const ColorFilter.mode(
+                                        Colors.black,
+                                        BlendMode.srcIn,
                                       ),
+                                      fit: BoxFit.contain,
                                     ),
-                                  ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: _showAgeGroupSelection,
-                                child: Container(
-                                  padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(22),
-                                    border: Border.all(color: const Color(0xFFDDDDDD)),
                                   ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 60.0,
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: TabBar(
+                              controller: _tabController,
+                              labelStyle: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                fontWeight: FontWeight.w600,
+                              ),
+                              overlayColor: WidgetStateColor.transparent,
+                              indicatorColor: Colors.black,
+                              dividerColor: const Color(0xFFDDDDDD),
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              labelColor: Colors.black,
+                              unselectedLabelColor: const Color(0xFF7B7B7B),
+                              isScrollable: true,
+                              indicatorWeight: 2.0,
+                              tabAlignment: TabAlignment.start,
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              tabs: categories.map((category) {
+                                return Tab(text: category.ctName ?? "");
+                              }).toList(),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.only(top: 15, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: _openSortBottomSheet, // 정렬 옵션 선택 창 열기
                                   child: Row(
-                                    mainAxisSize: MainAxisSize.min,
                                     children: [
+                                      SvgPicture.asset('assets/images/product/ic_filter02.svg'),
                                       Container(
-                                        margin: const EdgeInsets.only(right: 5),
+                                        margin: const EdgeInsets.only(left: 5),
                                         child: Text(
-                                          getSelectedAgeGroupText(), // 선택된 연령대 표시
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
+                                          sortOptionSelected.isNotEmpty ? sortOptionSelected : '인기순', // 선택된 정렬 옵션 표시
                                           style: TextStyle(
                                             fontFamily: 'Pretendard',
                                             fontSize: Responsive.getFont(context, 14),
-                                            color: Colors.black,
                                             height: 1.2,
                                           ),
                                         ),
                                       ),
-                                      SvgPicture.asset('assets/images/product/filter_select.svg'),
                                     ],
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Text(
-                            '상품 $_count', // 상품 수 표시
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.black,
-                              height: 1.2,
+                                GestureDetector(
+                                  onTap: _showAgeGroupSelection,
+                                  child: Container(
+                                    padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(22),
+                                      border: Border.all(color: const Color(0xFFDDDDDD)),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(right: 5),
+                                          child: Text(
+                                            getSelectedAgeGroupText(), // 선택된 연령대 표시
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              color: Colors.black,
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                        ),
+                                        SvgPicture.asset('assets/images/product/filter_select.svg'),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ],
-                    ), // 상단 고정된 컨텐츠
-                  )
-                ];
-              },
-              body: TabBarView(
-                controller: _tabController,
-                children: List.generate(
-                  categories.length, (index) {
-                  if (index == _tabController.index) {
-                    return _buildProductGrid();
-                  } else {
-                    return Container();
-                  }
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: Text(
+                              '상품 $_count', // 상품 수 표시
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: Colors.black,
+                                height: 1.2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ), // 상단 고정된 컨텐츠
+                    )
+                  ];
+                },
+                body: TabBarView(
+                  controller: _tabController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: List.generate(
+                    categories.length, (index) {
+                    if (index == _tabController.index) {
+                      return _buildProductGrid();
+                    } else {
+                      return Container();
+                    }
                   },
+                  ),
                 ),
               ),
             ),

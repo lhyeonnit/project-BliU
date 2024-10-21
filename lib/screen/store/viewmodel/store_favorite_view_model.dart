@@ -7,7 +7,6 @@ import 'package:BliU/dto/default_response_dto.dart';
 import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 class StoreFavoriteModel {
   BookmarkResponseDTO? bookmarkResponseDTO;
 
