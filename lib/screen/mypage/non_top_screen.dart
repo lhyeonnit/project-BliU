@@ -124,18 +124,20 @@ class _NonTopScreenState extends State<NonTopScreen> {
                 },
                 child: Container(
                   height: 38,
-                  padding: const EdgeInsets.symmetric(vertical: 11, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(22),
                     border: Border.all(color: Color(0xFFFF6192)),
                   ),
-                  child: Text(
-                    '로그인',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      color: const Color(0xFFFF6192),
-                      fontSize: Responsive.getFont(context, 14),
-                      height: 1.2,
+                  child: Center(
+                    child: Text(
+                      '로그인',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        color: const Color(0xFFFF6192),
+                        fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                      ),
                     ),
                   ),
                 ),
