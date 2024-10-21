@@ -41,6 +41,8 @@ class _MyScreenState extends ConsumerState<MyScreen> {
   @override
   void initState() {
     super.initState();
+    print("test11 ${ref.read(memberProvider)}");
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });

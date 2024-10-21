@@ -4,6 +4,7 @@ import 'package:BliU/screen/home/home_screen.dart';
 import 'package:BliU/screen/like/like_screen.dart';
 import 'package:BliU/screen/mypage/my_screen.dart';
 import 'package:BliU/screen/store/store_screen.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -55,6 +56,15 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   Widget build(BuildContext context) {
     _selectedIndex = ref.watch(mainScreenProvider) ?? 2;
 
+    SharedPreferencesManager.getInstance().then( (pref) {
+      final mtIdx = pref.getMtIdx() ?? "";
+      if (mtIdx.isEmpty) {
+        ref.read(memberProvider.notifier).isLogin(false);
+      } else {
+        ref.read(memberProvider.notifier).isLogin(true);
+      }
+    });
+
     return WillPopScope(  // WillPopScope로 뒤로가기 동작 제어
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -72,11 +82,24 @@ final mainScreenProvider = StateNotifierProvider<MainScreenProvider, int?>((ref)
   return MainScreenProvider(null, ref);
 });
 
+final memberProvider = StateNotifierProvider<MemberProvider, bool?>((ref){
+  return MemberProvider(null, ref);
+});
+
 class MainScreenProvider extends StateNotifier<int?> {
   final Ref ref;
   MainScreenProvider(super.state, this.ref);
 
   void selectNavigation(int index){
     state = index;
+  }
+}
+
+class MemberProvider extends StateNotifier<bool?> {
+  final Ref ref;
+  MemberProvider(super.state, this.ref);
+
+  void isLogin(bool isLogin){
+    state = isLogin;
   }
 }
