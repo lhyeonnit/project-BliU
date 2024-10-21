@@ -645,7 +645,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
               },
               child: Container(
                 margin: const EdgeInsets.only(right: 4),
-                height: Responsive.getHeight(context, 48),
+                height: 48,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: const BorderRadius.all(
@@ -675,7 +675,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
               },
               child: Container(
                 margin: const EdgeInsets.only(left: 4),
-                height: Responsive.getHeight(context, 48),
+                height: 48,
                 decoration: const BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.all(

@@ -600,8 +600,8 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                     }, // TODO 필드 입력에 따른 버튼 색상 수정
                     child: Container(
                       width: double.infinity,
-                      height: Responsive.getHeight(context, 48),
-                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                      height: 48,
+                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                       decoration: BoxDecoration(
                         color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
                         borderRadius: const BorderRadius.all(
@@ -1143,7 +1143,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                 },
                 child: Container(
                   width: double.infinity,
-                  height: Responsive.getHeight(context, 48),
+                  height: 48,
                   margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                   decoration: BoxDecoration(
                     color: Colors.black,

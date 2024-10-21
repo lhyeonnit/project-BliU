@@ -264,7 +264,7 @@ class ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                       },
                       child: Container(
                         margin: const EdgeInsets.only(top: 10.0),
-                        height: Responsive.getHeight(context, 48),
+                        height: 48,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: const BorderRadius.all(
