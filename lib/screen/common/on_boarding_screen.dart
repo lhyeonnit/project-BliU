@@ -138,7 +138,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
 
     if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
       _backButtonPressedTime = currentTime;
-      Utils.getInstance().showSnackBar(context, "한번 더 뒤로가기를 누르면 종료됩니다.")
+      Utils.getInstance().showSnackBar(context, "한번 더 뒤로가기를 누르면 종료됩니다.");
       return Future.value(false);
     }
 
