@@ -1,201 +1,157 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-	<dict>
-		<key>CFBundleDevelopmentRegion</key>
-		<string>$(DEVELOPMENT_LANGUAGE)</string>
-		<key>CFBundleDisplayName</key>
-		<string>BliU</string>
-		<key>CFBundleExecutable</key>
-		<string>$(EXECUTABLE_NAME)</string>
-		<key>CFBundleIdentifier</key>
-		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-		<key>CFBundleInfoDictionaryVersion</key>
-		<string>6.0</string>
-		<key>CFBundleName</key>
-		<string>BliU</string>
-		<key>CFBundlePackageType</key>
-		<string>APPL</string>
-		<key>CFBundleShortVersionString</key>
-		<string>$(FLUTTER_BUILD_NAME)</string>
-		<key>CFBundleSignature</key>
-		<string>????</string>
-		<key>CFBundleVersion</key>
-		<string>$(FLUTTER_BUILD_NUMBER)</string>
-		<key>LSRequiresIPhoneOS</key>
-		<true/>
-		<key>UILaunchStoryboardName</key>
-		<string>LaunchScreen</string>
-		<key>UIMainStoryboardFile</key>
-		<string>Main</string>
-		<key>UISupportedInterfaceOrientations</key>
-		<array>
-			<string>UIInterfaceOrientationPortrait</string>
-			<string>UIInterfaceOrientationLandscapeLeft</string>
-			<string>UIInterfaceOrientationLandscapeRight</string>
-		</array>
-		<key>UISupportedInterfaceOrientations~ipad</key>
-		<array>
-			<string>UIInterfaceOrientationPortrait</string>
-			<string>UIInterfaceOrientationPortraitUpsideDown</string>
-			<string>UIInterfaceOrientationLandscapeLeft</string>
-			<string>UIInterfaceOrientationLandscapeRight</string>
-		</array>
-		<key>CADisableMinimumFrameDurationOnPhone</key>
-		<true/>
-		<key>UIApplicationSupportsIndirectInputEvents</key>
-		<true/>
-		<key>NSPhotoLibraryUsageDescription</key>
-		<string>앱에서 이미지 업로드를 위해 사진 라이브러리 사용 권한이 필요합니다.</string>
-		<key>NSCameraUsageDescription</key>
-		<string>This app required NSCameraUsageDescription permission</string>
-		<key>NSMicrophoneUsageDescription</key>
-		<string>This app required NSMicrophoneUsageDescription permission</string>
-		<key>UIViewControllerBasedStatusBarAppearance</key>
-		<false/>
-		<!-- 추가 -->
-		<key>CFBundleURLTypes</key>
-		<array>
-			<dict>
-				<key>CFBundleURLSchemes</key>
-				<array>
-					<!-- naver login -->
-					<string>bliunaverlogin</string>
-				</array>
-			</dict>
-			<dict>
-				<key>CFBundleTypeRole</key>
-				<string>Editor</string>
-				<key>CFBundleURLName</key>
-				<string>bliuApp</string>
-				<key>CFBundleURLSchemes</key>
-				<array>
-					<string>bliuApp</string>
-				</array>
-			</dict>
-		</array>
-		<key>LSApplicationQueriesSchemes</key>
-		<array>
-			<string>naversearchapp</string>
-			<string>naversearchthirdlogin</string>
-		</array>
-		<key>naverServiceAppUrlScheme</key>
-		<string>bliunaverlogin</string>
-		<!-- naver client_id -->
-		<key>naverConsumerKey</key>
-		<string>LM163s5LQFEAE9b2U_LU</string>
-		<!-- naver client_secret -->
-		<key>naverConsumerSecret</key>
-		<string>Xjk0N97Yrz</string>
-		<key>naverServiceAppName</key>
-		<string>Bliu</string>
-		<!-- http allows configurations -->
-		<key>NSAppTransportSecurity</key>
+<dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>BliU</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>BliU</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
 		<dict>
-			<key>NSAllowsArbitraryLoadsInWebContent</key>
-			<true/>
-			<key>NSAllowsArbitraryLoads</key>
-			<true/>
-			<key>NSExceptionDomains</key>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>bliunaverlogin</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>bliuApp</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>bliuApp</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kftc-bankpay</string>
+		<string>ispmobile</string>
+		<string>itms-apps</string>
+		<string>hdcardappcardansimclick</string>
+		<string>smhyundaiansimclick</string>
+		<string>shinhan-sr-ansimclick</string>
+		<string>smshinhanansimclick</string>
+		<string>kb-acp</string>
+		<string>mpocket.online.ansimclick</string>
+		<string>ansimclickscard</string>
+		<string>ansimclickipcollect</string>
+		<string>vguardstart</string>
+		<string>samsungpay</string>
+		<string>scardcertiapp</string>
+		<string>lottesmartpay</string>
+		<string>lotteappcard</string>
+		<string>cloudpay</string>
+		<string>nhappcardansimclick</string>
+		<string>nonghyupcardansimclick</string>
+		<string>citispay</string>
+		<string>citicardappkr</string>
+		<string>citimobileapp</string>
+		<string>kakaotalk</string>
+		<string>payco</string>
+		<string>lpayapp</string>
+		<string>hanamopmoasign</string>
+		<string>wooripay</string>
+		<string>nhallonepayansimclick</string>
+		<string>hanawalletmembers</string>
+		<string>chaipayment</string>
+		<string>kb-auth</string>
+		<string>hyundaicardappcardid</string>
+		<string>com.wooricard.wcard</string>
+		<string>lmslpay</string>
+		<string>lguthepay-xpay</string>
+		<string>liivbank</string>
+		<string>supertoss</string>
+		<string>newsmartpib</string>
+		<string>naversearchthirdlogin</string>
+	</array>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>naver.com</key>
 			<dict>
-				<key>naver.com</key>
-				<dict>
-					<key>NSExceptionRequiresForwardSecrecy</key>
-					<false/>
-					<key>NSIncludesSubdomains</key>
-					<true/>
-				</dict>
-				<key>naver.net</key>
-				<dict>
-					<key>NSExceptionRequiresForwardSecrecy</key>
-					<false/>
-					<key>NSIncludesSubdomains</key>
-					<true/>
-				</dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>naver.net</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
 			</dict>
 		</dict>
-		<key>LSApplicationQueriesSchemes</key>
-		<array>
-			<string>kftc-bankpay</string>
-			<!-- 계좌이체 -->
-			<string>ispmobile</string>
-			<!-- ISP모바일 -->
-			<string>itms-apps</string>
-			<!-- 앱스토어 -->
-			<string>hdcardappcardansimclick</string>
-			<!-- 현대카드-앱카드 -->
-			<string>smhyundaiansimclick</string>
-			<!-- 현대카드-공인인증서 -->
-			<string>shinhan-sr-ansimclick</string>
-			<!-- 신한카드-앱카드 -->
-			<string>smshinhanansimclick</string>
-			<!-- 신한카드-공인인증서 -->
-			<string>kb-acp</string>
-			<!-- 국민카드-앱카드 -->
-			<string>mpocket.online.ansimclick</string>
-			<!-- 삼성카드-앱카드 -->
-			<string>ansimclickscard</string>
-			<!-- 삼성카드-온라인결제 -->
-			<string>ansimclickipcollect</string>
-			<!-- 삼성카드-온라인결제 -->
-			<string>vguardstart</string>
-			<!-- 삼성카드-백신 -->
-			<string>samsungpay</string>
-			<!-- 삼성카드-삼성페이 -->
-			<string>scardcertiapp</string>
-			<!-- 삼성카드-공인인증서 -->
-			<string>lottesmartpay</string>
-			<!-- 롯데카드-모바일결제 -->
-			<string>lotteappcard</string>
-			<!-- 롯데카드-앱카드 -->
-			<string>cloudpay</string>
-			<!-- 하나카드-앱카드 -->
-			<string>nhappcardansimclick</string>
-			<!-- 농협카드-앱카드 -->
-			<string>nonghyupcardansimclick</string>
-			<!-- 농협카드-공인인증서 -->
-			<string>citispay</string>
-			<!-- 씨티카드-앱카드 -->
-			<string>citicardappkr</string>
-			<!-- 씨티카드-공인인증서 -->
-			<string>citimobileapp</string>
-			<!-- 씨티카드-간편결제 -->
-			<string>kakaotalk</string>
-			<!-- 카카오톡 -->
-			<string>payco</string>
-			<!-- 페이코 -->
-			<string>lpayapp</string>
-			<!-- (구)롯데 L페이 -->
-			<string>hanamopmoasign</string>
-			<!-- 하나카드 공인인증앱 -->
-			<string>wooripay</string>
-			<!-- (구) 우리페이 -->
-			<string>nhallonepayansimclick</string>
-			<!-- NH 올원페이 -->
-			<string>hanawalletmembers</string>
-			<!-- 하나카드(하나멤버스 월렛) -->
-			<string>chaipayment</string>
-			<!-- 차이 -->
-			<string>kb-auth</string>
-			<!-- 국민 -->
-			<string>hyundaicardappcardid</string>
-			<!-- 현대카드 -->
-			<string>com.wooricard.wcard</string>
-			<!-- 우리WON페이 -->
-			<string>lmslpay</string>
-			<!-- 롯데 L페이 -->
-			<string>lguthepay-xpay</string>
-			<!-- 페이나우 -->
-			<string>liivbank</string>
-			<!-- Liiv 국민 -->
-			<string>supertoss</string>
-			<!-- 토스 -->
-			<string>newsmartpib</string>
-			<!-- 우리WON뱅킹 -->
-			<string>naversearchthirdlogin</string>
-			<!-- 네이버페이 앱 로그인 -->
-		</array>
-		<key>UIStatusBarHidden</key>
-		<false/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>This app required NSCameraUsageDescription permission</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app required NSMicrophoneUsageDescription permission</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>앱에서 이미지 업로드를 위해 사진 라이브러리 사용 권한이 필요합니다.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UIStatusBarHidden</key>
+	<false/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>naverConsumerKey</key>
+	<string>LM163s5LQFEAE9b2U_LU</string>
+	<key>naverConsumerSecret</key>
+	<string>Xjk0N97Yrz</string>
+	<key>naverServiceAppName</key>
+	<string>Bliu</string>
+	<key>naverServiceAppUrlScheme</key>
+	<string>bliunaverlogin</string>
+</dict>
 </plist>
