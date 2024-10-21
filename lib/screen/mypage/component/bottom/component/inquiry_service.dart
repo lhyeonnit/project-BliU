@@ -23,10 +23,26 @@ class InquiryService extends ConsumerStatefulWidget {
 class InquiryServiceState extends ConsumerState<InquiryService> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+
+  bool _phoneNumVisible = false;
 
   int _imageCnt = 0;
   final List<Widget> _addImagesWidget = [];
   List<XFile> _fileList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferencesManager.getInstance().then((pref) {
+      final mtIdx = pref.getMtIdx() ?? "";
+      if (mtIdx.isEmpty) {
+        setState(() {
+          _phoneNumVisible = true;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +128,6 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
                     ],
                   ),
                 ),
-
                 // 이미지 선택 버튼
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -149,12 +164,79 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
                           ),
                         ),
                       ),
-
                       //추가함 이미지들
                       Row(children: _addImagesWidget,),
                     ],
                   ),
                 ),
+                Visibility(
+                  visible: _phoneNumVisible,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          child: Row(
+                            children: [
+                              Text(
+                                "답변받을 연락처",
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Responsive.getFont(context, 13),
+                                  height: 1.2,
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(left: 4),
+                                child: Text(
+                                  '*',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Responsive.getFont(context, 13),
+                                    color: const Color(0xFFFF6192),
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        TextField(
+                          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                          style: TextStyle(
+                            height: 1.2,
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                          ),
+                          controller: _phoneController,
+                          obscureText: false,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                            hintText: '휴대폰 번호 입력',
+                            hintStyle: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: const Color(0xFF595959),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -167,7 +249,7 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
               color: Colors.white,
               child: GestureDetector(
                 onTap: () {
-                  _qnaWrite(ref);
+                  _qnaWrite();
                 },
                 child: Container(
                   width: double.infinity,
@@ -262,9 +344,10 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
     }
   }
 
-  void _qnaWrite(WidgetRef ref) async {
+  void _qnaWrite() async {
     final title = _titleController.text;
     final content = _contentController.text;
+    String phone = "";
     if (title.isEmpty) {
       Utils.getInstance().showSnackBar(context, "문의 제목을 입력해 주세요.");
       return;
@@ -279,12 +362,21 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
       Utils.getInstance().showSnackBar(context, "문의 내용은 10자 이상 입력해 주세요.");
       return;
     }
+
+    if (_phoneNumVisible) {
+      if (_phoneController.text.isEmpty) {
+        Utils.getInstance().showSnackBar(context, "휴대폰 번호를 입력해 주세요.");
+        return;
+      } else {
+        phone = _phoneController.text;
+      }
+    }
+
     final List<MultipartFile> files = _fileList.map((img) => MultipartFile.fromFileSync(img.path, contentType: DioMediaType("image", "jpg"))).toList();
 
     SharedPreferencesManager.getInstance().then((pref) {
       final mtIdx = pref.getMtIdx();
       String type = '2'; // 1 회원 2비회원
-      String tempMtHp = ''; // TODO 답변 받은 전화번호[비회원시에만 전달해주세요.]
       if (mtIdx != null) {
         if (mtIdx.isNotEmpty) {
           type = '1';
@@ -301,10 +393,11 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
         'qt_title': title,
         'qt_content': content,
         'qna_img': files,
-        'temp_mt_hp': tempMtHp,
+        'temp_mt_hp': phone,
       });
 
       ref.read(inquiryWriteModelProvider.notifier).qnaWrite(formData).then((resultData) {
+        if (!mounted) return;
         if (resultData != null) {
           Utils.getInstance().showSnackBar(context, resultData.message.toString());
           if (resultData.result == true) {

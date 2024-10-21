@@ -1,4 +1,3 @@
-import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/order_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
@@ -12,7 +11,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 class OrderListScreen extends ConsumerStatefulWidget {
-  const OrderListScreen({super.key});
+  final String? otCode;//비회원일 경우 사용
+  const OrderListScreen({super.key, this.otCode});
 
   @override
   ConsumerState<OrderListScreen> createState() => OrderListScreenState();
@@ -81,7 +81,7 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
       'type': memberType,
       'mt_idx': mtIdx,
       'temp_mt_id': appToken,
-      'ot_code': '', // TODO 비회원 주문조회의 경우에만 전달해주세요.
+      'ot_code': widget.otCode ?? "",
       'ct_status': ctStatus,
       'pg': _page,
     };

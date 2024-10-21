@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCXi1SzLrAzdpjtZn1CHjoEFfIFrlTmwGw</string>
+	<string>AIzaSyB0Rcg7ZaT7LUMR4U5igmLQqR6T9HaMoOs</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1011786302073</string>
+	<string>997399886578</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.dmonster.BliU</string>
 	<key>PROJECT_ID</key>
-	<string>bliu-c754d</string>
+	<string>bliu-be62b</string>
 	<key>STORAGE_BUCKET</key>
-	<string>bliu-c754d.appspot.com</string>
+	<string>bliu-be62b.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1011786302073:ios:ee7c1531b9a201f363caa8</string>
+	<string>1:997399886578:ios:58b1233c97c1e4874a2e6b</string>
 </dict>
 </plist>

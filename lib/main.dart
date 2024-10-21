@@ -42,8 +42,8 @@ Future<void> fireBaseInitializeApp() async {
   // TODO IOS 작업필요
   await Firebase.initializeApp(
     options: FirebaseOptions(
-        apiKey: Platform.isAndroid ? 'AIzaSyD29_ZlqFqM-bceJ4lRf5PaFa408K_iX6I' : 'AIzaSyCXi1SzLrAzdpjtZn1CHjoEFfIFrlTmwGw',//aos: current_key, ios : API_KEY
-        appId: Platform.isAndroid ? '1:1011786302073:android:0bac3f6a309e4b1663caa8' : '1:1011786302073:ios:ee7c1531b9a201f363caa8',//aos: mobilesdk_app_id, ios: GOOGLE_APP_ID
+        apiKey: Platform.isAndroid ? 'AIzaSyCZyPF0_XZ105BRHpsOmlygeXbUn7XboSA' : 'AIzaSyB0Rcg7ZaT7LUMR4U5igmLQqR6T9HaMoOs',//aos: current_key, ios : API_KEY
+        appId: Platform.isAndroid ? '1:997399886578:android:a9e20008de5331604a2e6b' : '1:997399886578:ios:58b1233c97c1e4874a2e6b',//aos: mobilesdk_app_id, ios: GOOGLE_APP_ID
         messagingSenderId: '1011786302073',
         projectId: 'bliu-c754d'
     ),

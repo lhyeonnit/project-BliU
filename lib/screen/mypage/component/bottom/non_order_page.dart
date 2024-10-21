@@ -1,15 +1,19 @@
+import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
+import 'package:BliU/screen/mypage/viewmodel/non_order_page_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class NonOrderPage extends StatefulWidget {
+class NonOrderPage extends ConsumerStatefulWidget {
   const NonOrderPage({super.key});
 
   @override
-  State<NonOrderPage> createState() => _NonOrderPageState();
+  ConsumerState<NonOrderPage> createState() => NonOrderPageState();
 }
 
-class _NonOrderPageState extends State<NonOrderPage> {
+class NonOrderPageState extends ConsumerState<NonOrderPage> {
   bool _isAllFieldsFilled = false;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -80,8 +84,8 @@ class _NonOrderPageState extends State<NonOrderPage> {
       body: Stack(
         children: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
-            padding: EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.only(top: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -118,23 +122,54 @@ class _NonOrderPageState extends State<NonOrderPage> {
             left: 0,
             right: 0,
             child: GestureDetector(
-              // TODO 비회원 구매 조회 로직 추가
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => NonOrderListPage()
-                //   ),
-                // );
+              onTap: () async {
+                final name = _nameController.text;
+                final phone = _phoneController.text;
+                final deliveryCode = _deliveryCodeController.text;
+
+                if(name.isEmpty) {
+                  Utils.getInstance().showSnackBar(context, "이름을 입력해 주세요.");
+                  return;
+                }
+
+                if(phone.isEmpty) {
+                  Utils.getInstance().showSnackBar(context, "휴대폰 번호를 입력해 주세요.");
+                  return;
+                }
+
+                if(deliveryCode.isEmpty) {
+                  Utils.getInstance().showSnackBar(context, "주문 번호를 입력해 주세요.");
+                  return;
+                }
+
+                Map<String, dynamic> requestData = {
+                  'name' : name,
+                  'hp' : phone,
+                  'ot_code' : deliveryCode,
+                };
+
+                final responseData = await ref.read(nonOrderPageViewModelProvider.notifier).getFindOrder(requestData);
+                if (responseData != null) {
+                  if (responseData["result"] == true) {
+                    if (!context.mounted) return;
+                    final otCode = responseData["data"]["ot_code"].toString();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => OrderListScreen(otCode: otCode)),
+                    );
+                  } else {
+                    if (!context.mounted) return;
+                    Utils.getInstance().showSnackBar(context, responseData["data"]["message"]);
+                  }
+                }
               },
               child: Container(
                 width: double.infinity,
                 height: 48,
-                margin:
-                    EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                 decoration: BoxDecoration(
-                  color: _isAllFieldsFilled ? Colors.black : Color(0xFFDDDDDD),
-                  borderRadius: BorderRadius.all(
+                  color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(6),
                   ),
                 ),
@@ -165,7 +200,7 @@ class _NonOrderPageState extends State<NonOrderPage> {
     TextInputType keyboardType = TextInputType.text,
   }) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -216,11 +251,11 @@ class _NonOrderPageState extends State<NonOrderPage> {
                   color: const Color(0xFF595959),
                   height: 1.2,
                 ),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),

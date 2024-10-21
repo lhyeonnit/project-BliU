@@ -1,4 +1,3 @@
-import 'package:BliU/data/delivery_detail_data.dart';
 import 'package:BliU/data/info_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/qna_data.dart';
@@ -97,8 +96,12 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   }
 
   void _getProductReviewList() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx() ?? "";
+
     Map<String, dynamic> requestData = {
-      'pt_idx': _ptIdx,
+      'mt_idx' : mtIdx,
+      'pt_idx' : _ptIdx,
       'pg': _productReviewCurrentPage,
     };
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:BliU/screen/common/recommend_info_screen.dart';
 import 'package:BliU/screen/join/join_agree_screen.dart';
 import 'package:BliU/screen/login/find_id_complete_screen.dart';
@@ -5,6 +7,7 @@ import 'package:BliU/screen/login/find_id_screen.dart';
 import 'package:BliU/screen/login/find_password_screen.dart';
 import 'package:BliU/screen/login/viewmodel/login_screen_view_model.dart';
 import 'package:BliU/screen/main_screen.dart';
+import 'package:BliU/screen/mypage/component/bottom/non_order_page.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -334,15 +337,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             _naverLogin();
                           },
                         ),
-                        IconButton(
-                          icon: ClipOval(
-                            child: SvgPicture.asset('assets/images/login/sns_a.svg')
+                        Visibility(
+                          visible: Platform.isIOS ? true : false,
+                          child: IconButton(
+                            icon: ClipOval(
+                                child: SvgPicture.asset('assets/images/login/sns_a.svg')
+                            ),
+                            iconSize: 60,
+                            onPressed: () {
+                              _appleLogin();
+                            },
                           ),
-                          iconSize: 60,
-                          onPressed: () {
-                            _appleLogin();
-                          },
-                        ),
+                        )
                       ],
                     ),
                   ],
@@ -351,7 +357,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    // TODO 비회원 배송조회 동작
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NonOrderPage()), // 비회원일 때의 화면
+                    );
                   },
                   child: Text(
                     '비회원 배송조회',
