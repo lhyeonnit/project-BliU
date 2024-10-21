@@ -1,5 +1,6 @@
 import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -65,79 +66,59 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                       },
                     ),
                   ),
-                  SizedBox(
-                    height: Responsive.getHeight(context, 150),
-
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            color: Colors.white,
-                            alignment: Alignment.center,
-                            child: SmoothPageIndicator(
-                              controller: _communityPageController,
-                              count: 3,
-                              effect: const ScrollingDotsEffect(
-                                activeDotColor: Colors.black,
-                                dotColor: Color(0xFFDDDDDD),
-                                activeStrokeWidth: 10,
-                                activeDotScale: 1.5,
-                                maxVisibleDots: 5,
-                                radius: 8,
-                                spacing: 6,
-                                dotHeight: 4,
-                                dotWidth: 4,
-                              ),
-                            ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 30, bottom: 10),
+                    alignment: Alignment.center,
+                    child: SmoothPageIndicator(
+                      controller: _communityPageController,
+                      count: 3,
+                      effect: const ScrollingDotsEffect(
+                        activeDotColor: Colors.black,
+                        dotColor: Color(0xFFDDDDDD),
+                        activeStrokeWidth: 10,
+                        activeDotScale: 1.5,
+                        maxVisibleDots: 5,
+                        radius: 8,
+                        spacing: 6,
+                        dotHeight: 4,
+                        dotWidth: 4,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MainScreen(),
+                              settings: const RouteSettings(name: "/")
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 16, bottom: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(19),
+                          border: Border.all(
+                            width: 1,
+                            color: const Color(0xffDDDDDD),
                           ),
                         ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Container(
-                color: Colors.white,
-                alignment: Alignment.topRight,
-                height: Responsive.getHeight(context, 58),
-                child: SizedBox(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MainScreen(),
-                          settings: const RouteSettings(name: "/")
-                        ),
-                      );
-                    },
-                    child: Container(
-                      height: Responsive.getHeight(context, 38),
-                      margin: const EdgeInsets.only(right: 16,),
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(19),
-                        border: Border.all(
-                          width: 1,
-                          color: const Color(0xffDDDDDD),
-                        ),
-                      ),
-                      child: Text(
-                        _currentPage == 2 ? "다음" : "건너뛰기",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          height: 1.2,
+                        child: Text(
+                          _currentPage == 2 ? "다음" : "건너뛰기",
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            height: 1.2,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
           ],
@@ -149,19 +130,15 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   Future<bool> _onWillPop() async {
     DateTime currentTime = DateTime.now();
 
-    bool backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
-        _backButtonPressedTime == null ||
-            currentTime.difference(_backButtonPressedTime!) >
-                const Duration(seconds: 3);
+    bool backButtonHasNotBeenPressedOrSnackBarHasBeenClosed = false;
+
+    if (_backButtonPressedTime == null || currentTime.difference(_backButtonPressedTime!) > const Duration(seconds: 3)) {
+      backButtonHasNotBeenPressedOrSnackBarHasBeenClosed = true;
+    }
 
     if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
       _backButtonPressedTime = currentTime;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("한번 더 뒤로가기를 누르면 종료됩니다."),
-          duration: Duration(seconds: 3),
-        ),
-      );
+      Utils.getInstance().showSnackBar(context, "한번 더 뒤로가기를 누르면 종료됩니다.")
       return Future.value(false);
     }
 
