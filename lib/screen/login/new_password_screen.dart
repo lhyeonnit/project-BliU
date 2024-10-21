@@ -234,6 +234,7 @@ class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
           ),
           if (label.isNotEmpty)
             TextField(
+              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),

@@ -188,6 +188,7 @@ class ReviewWriteScreenState extends ConsumerState<ReviewWriteScreen> {
                           ),
                         ),
                         TextField(
+                          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                           controller: _reviewController,
                           style: TextStyle(
                               height: 1.2,

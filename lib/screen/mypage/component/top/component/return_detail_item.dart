@@ -201,6 +201,7 @@ class _ReturnItemState extends State<ReturnItem> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: TextField(
+                    onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                     style: TextStyle(
                         height: 1.2,
                         fontFamily: 'Pretendard',
@@ -325,6 +326,7 @@ class _ReturnItemState extends State<ReturnItem> {
                 Expanded(
                   flex: 7,
                   child: TextField(
+                    onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                     maxLines: 1,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(

@@ -340,6 +340,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
   Widget _buildTitleTextField(
       TextEditingController controller, String hintText) {
     return TextField(
+      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       controller: controller,
       style: TextStyle(
           height: 1.2,
@@ -347,7 +348,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
           fontSize: Responsive.getFont(context, 14)
       ),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         hintText: hintText,
         hintStyle: TextStyle(
             fontFamily: 'Pretendard',
@@ -368,8 +369,9 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
   Widget _buildContentTextField(
       TextEditingController controller, String hintText) {
     return Container(
-      margin: EdgeInsets.only(top: 10.0, bottom: 20),
+      margin: const EdgeInsets.only(top: 10.0, bottom: 20),
       child: TextField(
+        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
         style: TextStyle(
             height: 1.2,
             fontFamily: 'Pretendard',
@@ -439,6 +441,7 @@ class _NonInquiryServiceState extends ConsumerState<NonInquiryService> {
           ),
           if (label.isNotEmpty)
             TextField(
+              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
                   height: 1.2,
                   fontFamily: 'Pretendard',

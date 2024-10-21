@@ -320,6 +320,7 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
   Widget _buildTitleTextField(
       TextEditingController controller, String hintText) {
     return TextField(
+      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       controller: controller,
       style: TextStyle(
         fontFamily: 'Pretendard',
@@ -350,6 +351,7 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
     return Container(
       margin: const EdgeInsets.only(top: 10.0, bottom: 20),
       child: TextField(
+        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
         style: TextStyle(
             height: 1.2,
             fontFamily: 'Pretendard',

@@ -379,6 +379,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                     children: [
                       Expanded(
                         child: TextField(
+                          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                           style: TextStyle(
                             height: 1.2,
                               fontFamily: 'Pretendard',

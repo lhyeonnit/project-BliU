@@ -633,6 +633,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
             Container(
               height: 44,
               child: TextField(
+                onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                 style: TextStyle(
                     height: 1.2,
                     fontFamily: 'Pretendard',
@@ -684,6 +685,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
               height: 44,
               margin: const EdgeInsets.only(top: 10),
               child: TextField(
+                onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                 style: TextStyle(
                     height: 1.2,
                     fontFamily: 'Pretendard',

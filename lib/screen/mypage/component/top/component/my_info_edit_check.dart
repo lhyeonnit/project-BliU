@@ -113,6 +113,7 @@ class MyInfoEditCheck extends ConsumerWidget {
                 Container(
                   margin: const EdgeInsets.only(top: 10),
                   child: TextField(
+                    onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                     obscureText: true,
                     // 비밀번호 입력을 위해 텍스트 숨김
                     style: TextStyle(

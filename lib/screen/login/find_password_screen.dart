@@ -392,6 +392,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
           ),
           if (label.isNotEmpty)
             TextField(
+              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
@@ -444,6 +445,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
         children: [
           if (label.isNotEmpty)
             TextField(
+              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),

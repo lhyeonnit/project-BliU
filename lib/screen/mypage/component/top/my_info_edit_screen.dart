@@ -654,6 +654,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
           ),
           if (label.isNotEmpty)
             TextField(
+              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
                   height: 1.2,
                   fontFamily: 'Pretendard',
@@ -735,6 +736,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
           ),
           if (label.isNotEmpty)
             TextField(
+              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
                   height: 1.2,
                   fontFamily: 'Pretendard',
@@ -808,6 +810,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
           ),
           if (label.isNotEmpty)
             TextField(
+              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
                   height: 1.2,
                   fontFamily: 'Pretendard',
@@ -859,6 +862,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
         children: [
           if (label.isNotEmpty)
             TextField(
+              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
                   height: 1.2,
                   fontFamily: 'Pretendard',
