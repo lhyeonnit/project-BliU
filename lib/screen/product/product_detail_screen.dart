@@ -337,20 +337,22 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         child: GestureDetector(
                           onTap: () {
                             if (_productData != null) {
-                              ProductOrderBottomOption.showBottomSheet(context, _productData!);
+                              if (_productData?.sellStatus == "Y") {
+                                ProductOrderBottomOption.showBottomSheet(context, _productData!);
+                              }
                             }
                           },
                           child: Container(
                             height: 48,
-                            decoration: const BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.all(
+                            decoration: BoxDecoration(
+                              color: _productData?.sellStatus == "Y" ? Colors.black : const Color(0xFFDDDDDD),
+                              borderRadius: const BorderRadius.all(
                                 Radius.circular(6),
                               ),
                             ),
                             child: Center(
                               child: Text(
-                                '구매하기',
+                                _productData?.sellStatusTxt ?? "",
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
