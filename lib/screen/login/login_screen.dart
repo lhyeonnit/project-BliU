@@ -84,6 +84,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   children: [
                     TextField(
+                      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                       style: TextStyle(
                           height: 1.2,
                           fontFamily: 'Pretendard',
@@ -110,6 +111,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 10),
                       child: TextField(
+                        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                         style: TextStyle(
                             height: 1.2,
                             fontFamily: 'Pretendard',

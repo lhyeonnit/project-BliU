@@ -162,6 +162,7 @@ class ReportPageState extends ConsumerState<ReportPage> {
                       child: Container(
                         margin: const EdgeInsets.only(top: 10.0, bottom: 300, right: 16, left: 16),
                         child: TextField(
+                          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                           style: TextStyle(
                               height: 1.2,
                               fontFamily: 'Pretendard',

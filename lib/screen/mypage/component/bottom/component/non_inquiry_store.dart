@@ -326,6 +326,7 @@ class _NonInquiryStoreState extends ConsumerState<NonInquiryStore> {
   Widget _buildTitleTextField(
       TextEditingController controller, String hintText) {
     return TextField(
+      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       controller: controller,
       style: TextStyle(
           height: 1.2,
@@ -356,6 +357,7 @@ class _NonInquiryStoreState extends ConsumerState<NonInquiryStore> {
     return Container(
       margin: const EdgeInsets.only(top: 10.0, bottom: 20),
       child: TextField(
+        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
         style: TextStyle(
             height: 1.2,
             fontFamily: 'Pretendard',
@@ -425,6 +427,7 @@ class _NonInquiryStoreState extends ConsumerState<NonInquiryStore> {
           ),
           if (label.isNotEmpty)
             TextField(
+              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
                   height: 1.2,
                   fontFamily: 'Pretendard',

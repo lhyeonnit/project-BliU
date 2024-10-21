@@ -513,6 +513,7 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                               children: [
                                 Expanded(
                                   child: TextField(
+                                    onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                                     style: TextStyle(
                                       height: 1.2,
                                       fontSize: Responsive.getFont(context, 14),

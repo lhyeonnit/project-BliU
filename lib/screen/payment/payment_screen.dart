@@ -808,6 +808,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     child: Container(
                                       height: 44,
                                       child: TextField(
+                                        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                                         controller: _recipientNameController,
                                         maxLines: 1,
                                         style: TextStyle(
@@ -874,6 +875,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     child: Container(
                                       height: 44,
                                       child: TextField(
+                                        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                                         controller: _recipientPhoneController,
                                         maxLines: 1,
                                         style: TextStyle(
@@ -947,6 +949,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                               child: Container(
                                                 height: 44,
                                                 child: TextField(
+                                                  onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                                                   controller: _addressRoadController,
                                                   enabled: false,
                                                   maxLines: 1,
@@ -1020,6 +1023,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                           height: 44,
                                           margin: const EdgeInsets.only(top: 10),
                                           child: TextField(
+                                            onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                                             controller: _addressDetailController,
                                             maxLines: 1,
                                             style: TextStyle(
@@ -1053,6 +1057,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                               margin: const EdgeInsets.symmetric(vertical: 20),
                               padding: const EdgeInsets.symmetric(horizontal: 16),
                               child: TextField(
+                                onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
@@ -1422,6 +1427,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                         children: [
                                           Expanded(
                                             child: TextField(
+                                              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                                               style: TextStyle(
                                                 fontFamily: 'Pretendard',
                                                 fontSize: Responsive.getFont(context, 14),

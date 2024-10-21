@@ -183,6 +183,7 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
                             Padding(
                               padding: const EdgeInsets.only(top: 10.0),
                               child: TextField(
+                                onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                                 style: TextStyle(
                                     height: 1.2,
                                     fontFamily: 'Pretendard',
