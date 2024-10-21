@@ -178,6 +178,7 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
+                  height: 38,
                   margin: const EdgeInsets.symmetric(vertical: 15),
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: SingleChildScrollView(
@@ -254,7 +255,7 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
           ),
           Visibility(
             visible: orderList.isEmpty,
-            child: const NonDataScreen(text: '배송정보가 없습니다.'),
+            child: const NonDataScreen(text: '주문내역이 없습니다.'),
           ),
         ],
       ),
@@ -274,7 +275,7 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
           });
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(19),
             border: Border.all(
@@ -283,13 +284,15 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
             ),
             color: Colors.white,
           ),
-          child: Text(
-            categories[index],
-            style: TextStyle(
-              fontFamily: 'Pretendard',
-              fontSize: Responsive.getFont(context, 14),
-              color: isSelected ? const Color(0xFFFF6192) : Colors.black,
-              height: 1.2,
+          child: Center(
+            child: Text(
+              categories[index],
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 14),
+                color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                height: 1.2,
+              ),
             ),
           ),
         ),
