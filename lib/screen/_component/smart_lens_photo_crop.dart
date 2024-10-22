@@ -121,33 +121,35 @@ class _SmartLensPhotoCropState extends ConsumerState<SmartLensPhotoCrop> {
         ),
         backgroundColor: Colors.black,
       ),
-      body: Stack(
-        children: [
-          // 이미지 파일이 있을 때만 표시
-          Visibility(
-            visible: _imageFile != null, // 이미지 파일이 있으면 표시
-            child: Positioned.fill(
-              child: _imageFile != null
-                  ? Image.file(
-                _imageFile!,
-                fit: BoxFit.cover,
-              )
-                  : const SizedBox(), // _imageFile이 없을 때 빈 공간을 사용
-            ),
-          ),
-
-          // 로딩 중일 때만 GIF 표시
-          Visibility(
-            visible: _isLoading, // 로딩 중일 때만 표시
-            child: Center(
-              child: Image.asset(
-                'assets/images/스마트렌즈-로딩.gif',
-                height: 100,
-                width: 100,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // 이미지 파일이 있을 때만 표시
+            Visibility(
+              visible: _imageFile != null, // 이미지 파일이 있으면 표시
+              child: Positioned.fill(
+                child: _imageFile != null
+                    ? Image.file(
+                  _imageFile!,
+                  fit: BoxFit.cover,
+                )
+                    : const SizedBox(), // _imageFile이 없을 때 빈 공간을 사용
               ),
             ),
-          ),
-        ],
+
+            // 로딩 중일 때만 GIF 표시
+            Visibility(
+              visible: _isLoading, // 로딩 중일 때만 표시
+              child: Center(
+                child: Image.asset(
+                  'assets/images/스마트렌즈-로딩.gif',
+                  height: 100,
+                  width: 100,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -166,9 +168,10 @@ class _SmartLensPhotoCropState extends ConsumerState<SmartLensPhotoCrop> {
       });
 
       ref.read(smartLensModelProvider.notifier).photoUpload(formData).then((resultData) {
+        if (!mounted) return;
         if (resultData != null) {
           if (resultData.result == true) {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => SmartLensResult(imagePath: croppedImageFile),

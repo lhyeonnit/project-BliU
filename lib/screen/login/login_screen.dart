@@ -23,10 +23,10 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
   @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
+class LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   var _isAutoLogin = true;

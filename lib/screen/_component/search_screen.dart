@@ -465,8 +465,9 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
         actions: [
           GestureDetector(
             child: Container(
-                margin: const EdgeInsets.only(right: 16, left: 17),
-                child: SvgPicture.asset("assets/images/product/ic_smart.svg")),
+              margin: const EdgeInsets.only(right: 16, left: 17),
+              child: SvgPicture.asset("assets/images/product/ic_smart.svg"),
+            ),
             onTap: () {
               Navigator.push(
                 context,
