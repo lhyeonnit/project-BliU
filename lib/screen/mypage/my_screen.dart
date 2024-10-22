@@ -116,21 +116,21 @@ class MyScreenState extends ConsumerState<MyScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 16),
+                    margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ClipOval(
-                            child: Container(
-                          width: 70,
-                          height: 70,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xFFFFE4DF),
+                          child: Container(
+                            width: 70,
+                            height: 70,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xFFFFE4DF),
+                            ),
+                            child: Image.asset('assets/images/my/gender_select_boy.png'),
                           ),
-                          child: Image.asset('assets/images/my/gender_select_boy.png'),
-                        )),
+                        ),
                         Expanded(
                           child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 10),

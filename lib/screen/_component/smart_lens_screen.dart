@@ -1,4 +1,3 @@
-//스마트 렌즈
 import 'package:BliU/screen/_component/grid_photo.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,7 @@ class SmartLensScreen extends StatefulWidget {
   const SmartLensScreen({super.key});
 
   @override
-  State<SmartLensScreen> createState() => _SmartLensScreenState();
+  State<SmartLensScreen> createState() => SmartLensScreenState();
 }
 
 class Album {
@@ -22,7 +21,7 @@ class Album {
   });
 }
 
-class _SmartLensScreenState extends State<SmartLensScreen> {
+class SmartLensScreenState extends State<SmartLensScreen> {
   List<AssetPathEntity>? _paths; // 모든 파일 정보
   List<Album> _albums = []; // 드롭다운 앨범 목록
   late List<AssetEntity> _images = []; // 앨범의 이미지 목록
@@ -69,14 +68,8 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
     _currentAlbum = album;
 
     // 앨범 내 사진 총 개수 가져오기
-    final totalAssets = await _paths!
-        .singleWhere((AssetPathEntity e) => e.id == album.id)
-        .assetCountAsync;
-
-    final loadImages = await _paths!
-        .singleWhere((AssetPathEntity e) => e.id == album.id)
-        .getAssetListRange(start: 0, end: totalAssets);
-
+    final totalAssets = await _paths!.singleWhere((AssetPathEntity e) => e.id == album.id).assetCountAsync;
+    final loadImages = await _paths!.singleWhere((AssetPathEntity e) => e.id == album.id).getAssetListRange(start: 0, end: totalAssets);
     setState(() {
       _images = loadImages;
     });
@@ -223,15 +216,12 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
             Expanded(
               child: NotificationListener<ScrollNotification>(
                 onNotification: (ScrollNotification scroll) {
-                  final scrollPixels =
-                      scroll.metrics.pixels / scroll.metrics.maxScrollExtent;
+                  final scrollPixels = scroll.metrics.pixels / scroll.metrics.maxScrollExtent;
                   if (scrollPixels > 0.7) getPhotos(_currentAlbum);
                   return false;
                 },
                 child: SafeArea(
-                  child: _paths == null
-                      ? const Center(child: CircularProgressIndicator())
-                      : GridPhoto(images: _images),
+                  child: _paths == null ? const Center(child: CircularProgressIndicator()) : GridPhoto(images: _images),
                 ),
               ),
             ),
@@ -241,11 +231,7 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
     );
   }
 
-  Widget _buildSmartLensInfo(
-    String image,
-    String title,
-    String content,
-  ) {
+  Widget _buildSmartLensInfo(String image, String title, String content) {
     return Row(
       children: [
         Container(
@@ -260,16 +246,17 @@ class _SmartLensScreenState extends State<SmartLensScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 16),
-                      fontWeight: FontWeight.bold,
-                      height: 1.2,
-                    ),
-                  )),
+                margin: const EdgeInsets.only(bottom: 10),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 16),
+                    fontWeight: FontWeight.bold,
+                    height: 1.2,
+                  ),
+                ),
+              ),
               Text(
                 content,
                 style: TextStyle(
