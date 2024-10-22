@@ -257,6 +257,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
       context: context,
       builder: (context) {
         return ProductCategoryBottom(
+          selectedCategory: _selectedCategory,
           onCategorySelected: (category) {
             setState(() {
               _selectedCategory = category;
@@ -429,107 +430,98 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                               }).toList(),
                             ),
                           ),
-                          Visibility(
-                            visible: _productList.isNotEmpty,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                              padding: const EdgeInsets.only(top: 15, bottom: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        _isTodayStart = !_isTodayStart;
-                                        _getList();
-                                      });
-                                    },
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.only(top: 15, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _isTodayStart = !_isTodayStart;
+                                      _getList();
+                                    });
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(right: 10),
+                                        padding: const EdgeInsets.all(6),
+                                        height: 22,
+                                        width: 22,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                          border: Border.all(
+                                            color: _isTodayStart ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                          ),
+                                          color: _isTodayStart ? const Color(0xFFFF6191) : Colors.white,
+                                        ),
+                                        child: SvgPicture.asset(
+                                          'assets/images/check01_off.svg', // 체크박스 아이콘
+                                          colorFilter: ColorFilter.mode(
+                                            _isTodayStart ? Colors.white : const Color(0xFFCCCCCC),
+                                            BlendMode.srcIn,
+                                          ),
+                                          height: 10,
+                                          width: 10,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                      Image.asset(
+                                        'assets/images/product/today_start.png',
+                                        width: 70,
+                                        height: 18,
+                                        fit: BoxFit.cover,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                Expanded(
+                                  flex: 1,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
                                     child: Row(
                                       children: [
+                                        _buildFilterButton(getSelectedAgeGroupText(), false),
                                         Container(
-                                          margin: const EdgeInsets.only(right: 10),
-                                          padding: const EdgeInsets.all(6),
-                                          height: 22,
-                                          width: 22,
-                                          decoration: BoxDecoration(
-                                            borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                            border: Border.all(
-                                              color: _isTodayStart ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
-                                            ),
-                                            color: _isTodayStart ? const Color(0xFFFF6191) : Colors.white,
-                                          ),
-                                          child: SvgPicture.asset(
-                                            'assets/images/check01_off.svg', // 체크박스 아이콘
-                                            colorFilter: ColorFilter.mode(
-                                              _isTodayStart ? Colors.white : const Color(0xFFCCCCCC),
-                                              BlendMode.srcIn,
-                                            ),
-                                            height: 10,
-                                            width: 10,
-                                            fit: BoxFit.contain,
-                                          ),
+                                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                                          child: _buildFilterButton(getSelectedStyleText(), false),
                                         ),
-                                        Image.asset(
-                                          'assets/images/product/today_start.png',
-                                          width: 70,
-                                          height: 18,
-                                          fit: BoxFit.cover,
-                                        )
+                                        _buildFilterButton(getSelectedRangeValues(), true),
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(width: 20),
-                                  Expanded(
-                                      flex: 1,
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                          children: [
-                                            _buildFilterButton(getSelectedAgeGroupText(), false),
-                                            Container(
-                                                margin: const EdgeInsets.symmetric(horizontal: 4),
-                                                child: _buildFilterButton(getSelectedStyleText(), false)
-                                            ),
-                                            _buildFilterButton(getSelectedRangeValues(), true),
-                                          ],
-                                        ),
-                                      )
-                                  )
-                                ],
-                              ),
+                                )
+                              ],
                             ),
-                          ),
+                          )
                         ],
                       ), // 상단 고정된 컨텐츠
                     )
                   ];
                 },
-                body: Visibility(
-                  visible: _productList.isNotEmpty,
-                  child: TabBarView(
-                    controller: _tabController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: List.generate(
-                      _categories.length,
-                          (index) {
-                        // 상품 리스트
-                        if (index == _tabController.index) {
-                          return _buildProductGrid();
-                        } else {
-                          return Container();
-                        }
-                      },
-                    ),
+                body: TabBarView(
+                  controller: _tabController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: List.generate(
+                    _categories.length,
+                        (index) {
+                      // 상품 리스트
+                      if (index == _tabController.index) {
+                        return _buildProductGrid();
+                      } else {
+                        return Container();
+                      }
+                    },
                   ),
                 ),
               ),
             ),
             Visibility(
-                visible: _productList.isNotEmpty,
-                child: MoveTopButton(scrollController: _scrollController)),
-            Visibility(
-                visible: _productList.isEmpty,
-                child: const NonDataScreen(text: '등록된 상품이 없습니다.',)
+              visible: _productList.isNotEmpty,
+              child: MoveTopButton(scrollController: _scrollController)
             ),
           ],
         ),
@@ -615,23 +607,34 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
           ),
         ),
         Expanded(
-          child: GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.5,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 30,
-            ),
-            itemCount: _productList.length, // 실제 상품 수로 변경
-            itemBuilder: (context, index) {
-              return ProductListCard(
-                productData: _productList[index],
-              );
-            },
-          ),
+          child: Stack(
+            children: [
+              Visibility(
+                visible: _productList.isEmpty,
+                child: const NonDataScreen(text: '등록된 상품이 없습니다.',),
+              ),
+              Visibility(
+                visible: _productList.isNotEmpty,
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.5,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 30,
+                  ),
+                  itemCount: _productList.length, // 실제 상품 수로 변경
+                  itemBuilder: (context, index) {
+                    return ProductListCard(
+                      productData: _productList[index],
+                    );
+                  },
+                ),
+              )
+            ],
+          )
         ),
       ],
     );

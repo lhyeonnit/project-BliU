@@ -176,6 +176,24 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     }
   }
 
+  void _addressSearch() async {
+    // 주소 검색 API 호출
+    DaumPostData? result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const WebviewWithDaumPostWebview(), // 주소 검색 창으로 이동
+      ),
+    );
+
+    if (result != null) {
+      setState(() {
+        _addressRoadController.text = result.roadAddress;
+        _savedZip = result.zonecode;
+        _addressChange();
+      });
+    }
+  }
+
   int _getTotalProductPrice() {
     // 선택된 기준으로 가격 가져오기
     int totalProductPrice = 0;
@@ -548,9 +566,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       'mt_idx': mtIdx,
       'temp_mt_id': pref.getToken(),
     };
-    final PayOrderResultDetailDTO? payOrderResult = await ref
-        .read(paymentViewModelProvider.notifier)
-        .orderEnd(requestData2);
+    final PayOrderResultDetailDTO? payOrderResult = await ref.read(paymentViewModelProvider.notifier).orderEnd(requestData2);
 
     if (payOrderResult != null) {
       if (payOrderResult.result == true) {
@@ -559,15 +575,17 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => PaymentCompleteScreen(
-                    payType: _payType,
-                    payOrderResultDetailData: payOrderResultDetailData,
-                    savedRecipientName: _recipientNameController.text,
-                    savedRecipientPhone: _recipientPhoneController.text,
-                    savedAddressRoad: _addressRoadController.text,
-                    savedAddressDetail: _addressDetailController.text,
-                    savedMemo: _memoController.text,
-                  )),
+            builder: (context) =>
+              PaymentCompleteScreen(
+                payType: _payType,
+                payOrderResultDetailData: payOrderResultDetailData,
+                savedRecipientName: _recipientNameController.text,
+                savedRecipientPhone: _recipientPhoneController.text,
+                savedAddressRoad: _addressRoadController.text,
+                savedAddressDetail: _addressDetailController.text,
+                savedMemo: _memoController.text,
+              )
+          ),
         );
       }
     }
@@ -666,6 +684,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                           ),
                         ),
                       ),
+                      iconColor: Colors.black,
                       children: [
                         Container(
                           decoration: const BoxDecoration(
@@ -723,20 +742,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     decoration: BoxDecoration(
                                       borderRadius: const BorderRadius.all(Radius.circular(6)),
                                       border: Border.all(
-                                        color: _isUseAddress
-                                            ? const Color(0xFFFF6191)
-                                            : const Color(0xFFCCCCCC),
+                                        color: _isUseAddress ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                                       ),
-                                      color: _isUseAddress
-                                          ? const Color(0xFFFF6191)
-                                          : Colors.white,
+                                      color: _isUseAddress ? const Color(0xFFFF6191) : Colors.white,
                                     ),
                                     child: SvgPicture.asset(
                                       'assets/images/check01_off.svg', // 체크박스 아이콘
                                       colorFilter: ColorFilter.mode(
-                                        _isUseAddress
-                                            ? Colors.white
-                                            : const Color(0xFFCCCCCC),
+                                        _isUseAddress ? Colors.white : const Color(0xFFCCCCCC),
                                         BlendMode.srcIn,
                                       ),
                                       height: 10,
@@ -759,6 +772,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                           ],
                         ),
                       ),
+                      iconColor: Colors.black,
                       children: [
                         Container(
                           decoration: const BoxDecoration(
@@ -806,7 +820,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     ),
                                     Expanded(
                                       flex: 8,
-                                      child: Container(
+                                      child: SizedBox(
                                         height: 44,
                                         child: TextField(
                                           onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
@@ -820,9 +834,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                                             hintText: '수령인',
                                             hintStyle: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 14),
-                                                color: const Color(0xFF595959)),
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              color: const Color(0xFF595959),
+                                            ),
                                             enabledBorder: const OutlineInputBorder(
                                               borderRadius: BorderRadius.all(Radius.circular(6)),
                                               borderSide: BorderSide(color: Color(0xFFE1E1E1)),
@@ -873,7 +888,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     ),
                                     Expanded(
                                       flex: 8,
-                                      child: Container(
+                                      child: SizedBox(
                                         height: 44,
                                         child: TextField(
                                           onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
@@ -887,12 +902,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                                             hintText: '‘-’ 없이 번호만 입력',
                                             hintStyle: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 14),
-                                                color: const Color(0xFF595959)),
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              color: const Color(0xFF595959),
+                                            ),
                                             enabledBorder: const OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(Radius.circular(6)),
-                                                borderSide: BorderSide(color: Color(0xFFE1E1E1))),
+                                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                            ),
                                             focusedBorder: const OutlineInputBorder(
                                               borderRadius: BorderRadius.all(Radius.circular(6)),
                                               borderSide: BorderSide(color: Color(0xFFE1E1E1)),
@@ -947,27 +964,33 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             children: [
                                               Expanded(
                                                 flex: 7,
-                                                child: Container(
-                                                  height: 44,
-                                                  child: TextField(
-                                                    onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                                                    controller: _addressRoadController,
-                                                    enabled: false,
-                                                    maxLines: 1,
-                                                    style: TextStyle(
-                                                      fontFamily: 'Pretendard',
-                                                      fontSize: Responsive.getFont(context, 14),
-                                                    ),
-                                                    decoration: InputDecoration(
-                                                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                                                      //hintText: '주소를 검색해 주세요.',
-                                                      hintStyle: TextStyle(
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    _addressSearch();
+                                                  },
+                                                  child: SizedBox(
+                                                    height: 44,
+                                                    child: TextField(
+                                                      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                                                      controller: _addressRoadController,
+                                                      enabled: false,
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                        fontFamily: 'Pretendard',
+                                                        fontSize: Responsive.getFont(context, 14),
+                                                      ),
+                                                      decoration: InputDecoration(
+                                                        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                                        //hintText: '주소를 검색해 주세요.',
+                                                        hintStyle: TextStyle(
                                                           fontFamily: 'Pretendard',
                                                           fontSize: Responsive.getFont(context, 14),
-                                                          color: const Color(0xFF595959)),
-                                                      border: const OutlineInputBorder(
-                                                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                                                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                                          color: const Color(0xFF595959),
+                                                        ),
+                                                        border: const OutlineInputBorder(
+                                                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
@@ -976,25 +999,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                               Expanded(
                                                 flex: 3,
                                                 child: GestureDetector(
-                                                  onTap: () async {
-                                                    // 주소 검색 API 호출
-                                                    DaumPostData? result = await Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) => const WebviewWithDaumPostWebview(), // 주소 검색 창으로 이동
-                                                      ),
-                                                    );
-
-                                                    if (result != null) {
-                                                      setState(() {
-                                                        _addressRoadController
-                                                            .text =
-                                                            result.roadAddress;
-                                                        _savedZip =
-                                                            result.zonecode;
-                                                        _addressChange();
-                                                      });
-                                                    }
+                                                  onTap: () {
+                                                    _addressSearch();
                                                   },
                                                   child: Container(
                                                     height: 44,
@@ -1035,12 +1041,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                 contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                                                 hintText: '상세주소 입력',
                                                 hintStyle: TextStyle(
-                                                    fontFamily: 'Pretendard',
-                                                    fontSize: Responsive.getFont(context, 14),
-                                                    color: const Color(0xFF595959)),
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(context, 14),
+                                                  color: const Color(0xFF595959),
+                                                ),
                                                 enabledBorder: const OutlineInputBorder(
-                                                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                                                    borderSide: BorderSide(color: Color(0xFFE1E1E1))),
+                                                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                                ),
                                                 focusedBorder: const OutlineInputBorder(
                                                   borderRadius: BorderRadius.all(Radius.circular(6)),
                                                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
@@ -1069,9 +1077,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                                     hintText: '배송 메모 입력',
                                     hintStyle: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        color: const Color(0xFF595959)),
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: const Color(0xFF595959),
+                                    ),
                                     enabledBorder: const OutlineInputBorder(
                                       borderRadius: BorderRadius.all(Radius.circular(6)),
                                       borderSide: BorderSide(color: Color(0xFFE1E1E1)),
@@ -1113,6 +1122,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                           ),
                         ),
                       ),
+                      iconColor: Colors.black,
                       children: [
                         Container(
                           decoration: const BoxDecoration(
@@ -1297,6 +1307,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                           ),
                         ),
                       ),
+                      iconColor: Colors.black,
                       children: [
                         Container(
                           decoration: const BoxDecoration(
@@ -1555,6 +1566,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                           ),
                         ),
                       ),
+                      iconColor: Colors.black,
                       children: [
                         Container(
                           decoration: const BoxDecoration(
@@ -1691,6 +1703,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                         ),
                         collapsedBackgroundColor: Colors.white,
                         backgroundColor: Colors.white,
+                        iconColor: Colors.black,
                         children: [
                           Container(
                             decoration: const BoxDecoration(

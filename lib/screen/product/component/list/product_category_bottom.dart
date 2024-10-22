@@ -5,19 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductCategoryBottom extends StatefulWidget {
-  final Function(CategoryData)
-      onCategorySelected; // Callback to handle category selection
+  final CategoryData? selectedCategory;
+  final Function(CategoryData)onCategorySelected; // Callback to handle category selection
 
-  const ProductCategoryBottom({
-    super.key,
-    required this.onCategorySelected,
-  });
+  const ProductCategoryBottom({super.key, required this.selectedCategory, required this.onCategorySelected,});
 
   @override
   State<ProductCategoryBottom> createState() => _ProductCategoryBottomState();
 }
 
 class _ProductCategoryBottomState extends State<ProductCategoryBottom> {
+  CategoryData? get selectedCategory => widget.selectedCategory;
   Function(CategoryData) get onCategorySelected => widget.onCategorySelected;
 
   @override
@@ -64,7 +62,7 @@ class _ProductCategoryBottomState extends State<ProductCategoryBottom> {
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 16),
-                              fontWeight: FontWeight.w600,
+                              fontWeight: selectedCategory?.ctIdx == categoryData.ctIdx ? FontWeight.bold : FontWeight.w600,
                               height: 1.2,
                             ),
                           ),
