@@ -1,4 +1,3 @@
-//내정보 수정
 import 'dart:async';
 
 import 'package:BliU/data/my_page_info_data.dart';
@@ -20,10 +19,10 @@ class MyInfoEditScreen extends ConsumerStatefulWidget {
   const MyInfoEditScreen({super.key, required this.authToken});
 
   @override
-  ConsumerState<MyInfoEditScreen> createState() => _MyInfoEditScreenState();
+  ConsumerState<MyInfoEditScreen> createState() => MyInfoEditScreenState();
 }
 
-class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
+class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   final ScrollController _scrollController = ScrollController();
 
   final _formKey = GlobalKey<FormState>();
@@ -151,481 +150,483 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            controller: _scrollController,
-            child: Container(
-              margin: EdgeInsets.only(top: 40, bottom: 90),
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '내 정보 수정',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 20),
-                        fontWeight: FontWeight.bold,
-                        height: 1.2,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 8, bottom: 30),
-                      child: Text(
-                        '회원님의 개인정보 및 연락처, 주소 등을 수정할 수 있습니다',
+      body: SafeArea(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              controller: _scrollController,
+              child: Container(
+                margin: const EdgeInsets.only(top: 40, bottom: 90),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '내 정보 수정',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: const Color(0xFF7B7B7B),
+                          fontSize: Responsive.getFont(context, 20),
+                          fontWeight: FontWeight.bold,
                           height: 1.2,
                         ),
                       ),
-                    ),
-                    _buildIdPasswordField('아이디', _idController, myPageInfoData?.mtId ?? '',
-                        isChange: _isIdChecked),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 20),
-                      child: Column(
-                        children: [
-                          _buildIdPasswordField('비밀번호', _passwordController,
-                              '비밀번호 입력(숫자, 특수기호 포함한 7~15자)',
-                              obscureText: true, isChange: true),
-                          _buildCheckField(
-                              '비밀번호', _confirmPasswordController, '비밀번호 재입력',
-                              obscureText: true, isEnable: true),
-                          GestureDetector(
-                            onTap: () {
-                              // TODO 이전 비밀번호 재사용 방지 처리 필요
-                              _editMyPassword();
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 14),
-                              margin: EdgeInsets.only(top: 10),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: Color(0xFFDDDDDD)),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '변경',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1.2,
-                                  ),
-                                )
-                              ),
-                            ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 8, bottom: 30),
+                        child: Text(
+                          '회원님의 개인정보 및 연락처, 주소 등을 수정할 수 있습니다',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            color: const Color(0xFF7B7B7B),
+                            height: 1.2,
                           ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 7,
-                          child: _buildPhoneField(
-                              '휴대폰번호', _phoneController, myPageInfoData?.mtHp ?? '',
-                              keyboardType: TextInputType.phone,
-                              isEnable: _phoneAuthChecked ? true : false),
                         ),
-                        Visibility(
-                          visible: !_phoneAuthChecked,
-                          child: Expanded(
-                            flex: 3,
-                            child: GestureDetector(
-                              onTap: () async {
-                                setState(() {
-                                  _phoneAuthChecked = true;
-                                  _timerStr;
-                                });
+                      ),
+                      _buildIdPasswordField('아이디', _idController, myPageInfoData?.mtId ?? '',
+                          isChange: _isIdChecked),
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 20),
+                        child: Column(
+                          children: [
+                            _buildIdPasswordField('비밀번호', _passwordController,
+                                '비밀번호 입력(숫자, 특수기호 포함한 7~15자)',
+                                obscureText: true, isChange: true),
+                            _buildCheckField(
+                                '비밀번호', _confirmPasswordController, '비밀번호 재입력',
+                                obscureText: true, isEnable: true),
+                            GestureDetector(
+                              onTap: () {
+                                // TODO 이전 비밀번호 재사용 방지 처리 필요
+                                _editMyPassword();
                               },
                               child: Container(
-                                  margin: EdgeInsets.only(top: 45, left: 8),
-                                  padding: EdgeInsets.symmetric(vertical: 14),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    border: Border.all(color: Color(0xFFDDDDDD)),
-                                  ),
-                                  child: Center(
+                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                margin: const EdgeInsets.only(top: 10),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(color: const Color(0xFFDDDDDD)),
+                                ),
+                                child: Center(
                                     child: Text(
                                       '변경',
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(context, 14),
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
                                         height: 1.2,
                                       ),
                                     )
-                                  )
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                        Visibility(
-                          visible: _phoneAuthChecked,
-                          child: Expanded(
-                            flex: 3,
-                            child: GestureDetector(
-                              onTap: () async {
-                                _editMyPh();
-                                if (_phoneController.text.isEmpty ||
-                                    _phoneAuthChecked) {
-                                  return;
-                                }
-
-                                final pref =
-                                await SharedPreferencesManager.getInstance();
-                                final phoneNumber = _phoneController.text;
-
-                                Map<String, dynamic> requestData = {
-                                  'app_token': pref.getToken(),
-                                  'phone_num': phoneNumber,
-                                  'code_type': 4,
-                                };
-                                final resultDTO = await ref
-                                    .read(myInfoEditViewModelProvider.notifier)
-                                    .reqPhoneAuthCode(requestData);
-                                if (resultDTO.result == true) {
-                                  setState(() {
-                                    _phoneAuthCodeVisible = true;
-                                    _authTimerStart();
-                                  });
-                                } else {
-                                  if (!context.mounted) return;
-                                  Utils.getInstance().showSnackBar(
-                                      context, resultDTO.message.toString());
-                                }
-                              },
-                              child: Container(
-                                  margin: EdgeInsets.only(top: 45, left: 8),
-                                  padding: EdgeInsets.symmetric(vertical: 14),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    border: Border.all(color: Color(0xFFDDDDDD)),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      '인증요청',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        height: 1.2,
-                                      ),
-                                    )
-                                  )
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Visibility(
-                      visible: _phoneAuthCodeVisible,
-                      child: Row(
+                      ),
+                      Row(
                         children: [
                           Expanded(
                             flex: 7,
-                            child: _buildCheckField(
-                              '휴대폰번호', _authCodeController, '인증번호 입력',
-                                isEnable: _phoneAuthChecked ? true : false
-                            ),
+                            child: _buildPhoneField(
+                                '휴대폰번호', _phoneController, myPageInfoData?.mtHp ?? '',
+                                keyboardType: TextInputType.phone,
+                                isEnable: _phoneAuthChecked ? true : false),
                           ),
-                          Expanded(
-                            flex: 3,
-                            child: GestureDetector(
-                              onTap: () async {
-                                if (_authCodeController.text.isEmpty ||
-                                    _phoneAuthChecked) {
-                                  return;
-                                }
-                                // TODO 타이머 체크필요
-
-                                final pref = await SharedPreferencesManager
-                                    .getInstance();
-                                final phoneNumber = _phoneController.text;
-                                final authCode = _authCodeController.text;
-
-                                Map<String, dynamic> requestData = {
-                                  'app_token': pref.getToken(),
-                                  'phone_num': phoneNumber,
-                                  'code_num': authCode,
-                                  'code_type': 4,
-                                };
-
-                                final resultDTO = await ref
-                                    .read(myInfoEditViewModelProvider.notifier)
-                                    .checkCode(requestData);
-                                if (!context.mounted) return;
-                                Utils.getInstance().showSnackBar(
-                                    context, resultDTO.message.toString());
-                                if (resultDTO.result == true) {
+                          Visibility(
+                            visible: !_phoneAuthChecked,
+                            child: Expanded(
+                              flex: 3,
+                              child: GestureDetector(
+                                onTap: () async {
                                   setState(() {
                                     _phoneAuthChecked = true;
-                                    _checkIfAllFieldsFilled();
+                                    _timerStr;
                                   });
-                                }
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.only(top: 10, left: 8),
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  color: _phoneAuthChecked ?  Colors.black : const Color(0xFFDDDDDD),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '확인',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: _phoneAuthChecked ? Colors.white : const Color(0xFF7B7B7B) ,
-                                      height: 1.2,
+                                },
+                                child: Container(
+                                    margin: const EdgeInsets.only(top: 45, left: 8),
+                                    padding: const EdgeInsets.symmetric(vertical: 14),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(color: const Color(0xFFDDDDDD)),
                                     ),
-                                  ),
+                                    child: Center(
+                                        child: Text(
+                                          '변경',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            height: 1.2,
+                                          ),
+                                        )
+                                    )
+                                ),
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: _phoneAuthChecked,
+                            child: Expanded(
+                              flex: 3,
+                              child: GestureDetector(
+                                onTap: () async {
+                                  _editMyPh();
+                                  if (_phoneController.text.isEmpty ||
+                                      _phoneAuthChecked) {
+                                    return;
+                                  }
+
+                                  final pref =
+                                  await SharedPreferencesManager.getInstance();
+                                  final phoneNumber = _phoneController.text;
+
+                                  Map<String, dynamic> requestData = {
+                                    'app_token': pref.getToken(),
+                                    'phone_num': phoneNumber,
+                                    'code_type': 4,
+                                  };
+                                  final resultDTO = await ref
+                                      .read(myInfoEditViewModelProvider.notifier)
+                                      .reqPhoneAuthCode(requestData);
+                                  if (resultDTO.result == true) {
+                                    setState(() {
+                                      _phoneAuthCodeVisible = true;
+                                      _authTimerStart();
+                                    });
+                                  } else {
+                                    if (!context.mounted) return;
+                                    Utils.getInstance().showSnackBar(
+                                        context, resultDTO.message.toString());
+                                  }
+                                },
+                                child: Container(
+                                    margin: const EdgeInsets.only(top: 45, left: 8),
+                                    padding: const EdgeInsets.symmetric(vertical: 14),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(color: const Color(0xFFDDDDDD)),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                          '인증요청',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            height: 1.2,
+                                          ),
+                                        )
+                                    )
                                 ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 7,
-                          child: _buildTextField(
-                            '이름', _nameController, myPageInfoData?.mtName ?? '', keyboardType: TextInputType.name
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: GestureDetector(
-                            onTap: () async {
-                              _editMyName();
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(top: 45, left: 8),
-                              padding: EdgeInsets.symmetric(vertical: 14),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: Color(0xFFDDDDDD)),
+                      Visibility(
+                        visible: _phoneAuthCodeVisible,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 7,
+                              child: _buildCheckField(
+                                  '휴대폰번호', _authCodeController, '인증번호 입력',
+                                  isEnable: _phoneAuthChecked ? true : false
                               ),
-                              child: Center(
-                                child: Text(
-                                  '변경',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    height: 1.2,
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: GestureDetector(
+                                onTap: () async {
+                                  if (_authCodeController.text.isEmpty ||
+                                      _phoneAuthChecked) {
+                                    return;
+                                  }
+                                  // TODO 타이머 체크필요
+
+                                  final pref = await SharedPreferencesManager
+                                      .getInstance();
+                                  final phoneNumber = _phoneController.text;
+                                  final authCode = _authCodeController.text;
+
+                                  Map<String, dynamic> requestData = {
+                                    'app_token': pref.getToken(),
+                                    'phone_num': phoneNumber,
+                                    'code_num': authCode,
+                                    'code_type': 4,
+                                  };
+
+                                  final resultDTO = await ref
+                                      .read(myInfoEditViewModelProvider.notifier)
+                                      .checkCode(requestData);
+                                  if (!context.mounted) return;
+                                  Utils.getInstance().showSnackBar(
+                                      context, resultDTO.message.toString());
+                                  if (resultDTO.result == true) {
+                                    setState(() {
+                                      _phoneAuthChecked = true;
+                                      _checkIfAllFieldsFilled();
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(top: 10, left: 8),
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    color: _phoneAuthChecked ?  Colors.black : const Color(0xFFDDDDDD),
                                   ),
-                                )
-                              )
+                                  child: Center(
+                                    child: Text(
+                                      '확인',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        color: _phoneAuthChecked ? Colors.white : const Color(0xFF7B7B7B) ,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 7,
+                            child: _buildTextField(
+                                '이름', _nameController, myPageInfoData?.mtName ?? '', keyboardType: TextInputType.name
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20, bottom: 10),
-                      child: Row(
-                        children: [
-                          Text('생년월일',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.bold,
-                              fontSize: Responsive.getFont(context, 13),
-                              height: 1.2,
-                            )
+                          Expanded(
+                            flex: 3,
+                            child: GestureDetector(
+                              onTap: () async {
+                                _editMyName();
+                              },
+                              child: Container(
+                                  margin: const EdgeInsets.only(top: 45, left: 8),
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                                  ),
+                                  child: Center(
+                                      child: Text(
+                                        '변경',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          height: 1.2,
+                                        ),
+                                      )
+                                  )
+                              ),
+                            ),
                           ),
-                          Container(
-                              margin: EdgeInsets.only(left: 4),
-                              child: Text('선택',
+                        ],
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 20, bottom: 10),
+                        child: Row(
+                          children: [
+                            Text('생년월일',
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontWeight: FontWeight.bold,
                                   fontSize: Responsive.getFont(context, 13),
-                                  color: const Color(0xFFFF6192),
                                   height: 1.2,
                                 )
-                              )
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                        border: Border.all(color: Color(0xFFDDDDDD)),
-                      ),
-                      child: _birthdayText(),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        // TODO 쿠폰 지급 이동
-                      },
-                      child: Stack(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 10, bottom: 20),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(9),
-                              child: Image.asset(
-                                  'assets/images/login/coupon_banner.png'),
                             ),
-                          ),
-                          Positioned(
-                            left: 25,
-                            top: 10,
-                            child: Container(
-                              margin: EdgeInsets.only(top: 15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '생일 쿠폰 지급!',
+                            Container(
+                                margin: const EdgeInsets.only(left: 4),
+                                child: Text('선택',
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 16),
                                       fontWeight: FontWeight.bold,
+                                      fontSize: Responsive.getFont(context, 13),
+                                      color: const Color(0xFFFF6192),
                                       height: 1.2,
-                                    ),
-                                  ),
-                                  Text(
-                                    '생년월일을 입력 주시면, 생일날 쿠폰 지급!',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 12),
-                                      color: const Color(0xFF6A5B54),
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                ],
+                                    )
+                                )
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(Radius.circular(6)),
+                          border: Border.all(color: const Color(0xFFDDDDDD)),
+                        ),
+                        child: _birthdayText(),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // TODO 쿠폰 지급 이동
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 10, bottom: 20),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(9),
+                                child: Image.asset(
+                                    'assets/images/login/coupon_banner.png'),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Text('성별',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.bold,
-                            fontSize: Responsive.getFont(context, 13),
-                            height: 1.2,
-                          )
+                            Positioned(
+                              left: 25,
+                              top: 10,
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '생일 쿠폰 지급!',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 16),
+                                        fontWeight: FontWeight.bold,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                    Text(
+                                      '생년월일을 입력 주시면, 생일날 쿠폰 지급!',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 12),
+                                        color: const Color(0xFF6A5B54),
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        Container(
-                            margin: const EdgeInsets.only(left: 4),
-                            child: Text('선택',
+                      ),
+                      Row(
+                        children: [
+                          Text('성별',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.bold,
                                 fontSize: Responsive.getFont(context, 13),
-                                color: const Color(0xFFFF6192),
                                 height: 1.2,
                               )
-                            )
-                        ),
-                      ],
-                    ), // 성별 선택 타이틀
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                                margin: EdgeInsets.only(right: 4),
-                                child: _buildGenderButton('남자')),
                           ),
-                          Expanded(
-                            child: Container(
-                                margin: EdgeInsets.only(left: 4),
-                                child: _buildGenderButton('여자')),
+                          Container(
+                              margin: const EdgeInsets.only(left: 4),
+                              child: Text('선택',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Responsive.getFont(context, 13),
+                                    color: const Color(0xFFFF6192),
+                                    height: 1.2,
+                                  )
+                              )
                           ),
                         ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Center(
-                        child: TextButton(
-                          onPressed: () {
-                            _retire();
-                          },
-                          child: Text(
-                            '회원탈퇴',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              color: const Color(0xFF7B7B7B),
-                              fontSize: Responsive.getFont(context, 14),
-                              height: 1.2,
+                      ), // 성별 선택 타이틀
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                  margin: const EdgeInsets.only(right: 4),
+                                  child: _buildGenderButton('남자')),
                             ),
-                            textAlign: TextAlign.center, // 텍스트 가운데 정렬
+                            Expanded(
+                              child: Container(
+                                  margin: const EdgeInsets.only(left: 4),
+                                  child: _buildGenderButton('여자')),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        child: Center(
+                          child: TextButton(
+                            onPressed: () {
+                              _retire();
+                            },
+                            child: Text(
+                              '회원탈퇴',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                color: const Color(0xFF7B7B7B),
+                                fontSize: Responsive.getFont(context, 14),
+                                height: 1.2,
+                              ),
+                              textAlign: TextAlign.center, // 텍스트 가운데 정렬
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Column(
-              children: [
-                MoveTopButton(scrollController: _scrollController),
-                Container(
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: GestureDetector(
-                    onTap: () {
-                      _isAllFieldsFilled
-                          ? () {
-                        _editMyInfo();
-                      }
-                          : null;
-                    }, // TODO 필드 입력에 따른 버튼 색상 수정
-                    child: Container(
-                      width: double.infinity,
-                      height: 48,
-                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                      decoration: BoxDecoration(
-                        color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(6),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  MoveTopButton(scrollController: _scrollController),
+                  Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: GestureDetector(
+                      onTap: () {
+                        _isAllFieldsFilled
+                            ? () {
+                          _editMyInfo();
+                        }
+                            : null;
+                      }, // TODO 필드 입력에 따른 버튼 색상 수정
+                      child: Container(
+                        width: double.infinity,
+                        height: 48,
+                        margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                        decoration: BoxDecoration(
+                          color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(6),
+                          ),
                         ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '저장',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
-                            height: 1.2,
+                        child: Center(
+                          child: Text(
+                            '저장',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
+                              height: 1.2,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -636,63 +637,60 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       TextInputType keyboardType = TextInputType.text,
       Widget? suffixIcon,
       required bool isChange}) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // if (label.isNotEmpty)
-          Container(
-            margin: EdgeInsets.only(bottom: 10),
-            child: Text(label,
-              style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontWeight: FontWeight.bold,
-                fontSize: Responsive.getFont(context, 13),
-                height: 1.2,
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // if (label.isNotEmpty)
+        Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          child: Text(label,
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.bold,
+              fontSize: Responsive.getFont(context, 13),
+              height: 1.2,
             ),
           ),
-          if (label.isNotEmpty)
-            TextField(
-              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-              style: TextStyle(
-                  height: 1.2,
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14)
-              ),
-              controller: controller,
-              obscureText: obscureText,
-              keyboardType: keyboardType,
-              enabled: isChange,
-              decoration: InputDecoration(
-                hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: isChange ? Color(0xFF595959) : Color(0xFFA4A4A4)),
-                filled: true,
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(6)),
-                hintText: hintText,
-                fillColor: isChange ? Colors.white : Color(0xFFF5F9F9),
-                // 배경색 설정
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: isChange
-                      ? BorderSide(color: Color(0xFFE1E1E1))
-                      : BorderSide(color: Colors.transparent),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-                suffixIcon: suffixIcon,
-              ),
+        ),
+        if (label.isNotEmpty)
+          TextField(
+            onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+            style: TextStyle(
+                height: 1.2,
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 14)
             ),
-        ],
-      ),
+            controller: controller,
+            obscureText: obscureText,
+            keyboardType: keyboardType,
+            enabled: isChange,
+            decoration: InputDecoration(
+              hintStyle: TextStyle(
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 14),
+                color: isChange ? const Color(0xFF595959) : const Color(0xFFA4A4A4),
+              ),
+              filled: true,
+              contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+              border: UnderlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              hintText: hintText,
+              fillColor: isChange ? Colors.white : const Color(0xFFF5F9F9),
+              // 배경색 설정
+              enabledBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(6)),
+                borderSide: isChange ? const BorderSide(color: Color(0xFFE1E1E1)) : const BorderSide(color: Colors.transparent),
+              ),
+              focusedBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(6)),
+                borderSide: BorderSide(color: Colors.black),
+              ),
+              suffixIcon: suffixIcon,
+            ),
+          ),
+      ],
     );
   }
 
@@ -702,13 +700,13 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       TextInputType keyboardType = TextInputType.text,
       Widget? suffixIcon}) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // if (label.isNotEmpty)
           Container(
-            margin: EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 10),
             child: Row(
               children: [
                 Text(label,
@@ -746,18 +744,18 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
               obscureText: obscureText,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF595959)),
-                enabledBorder: OutlineInputBorder(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: const Color(0xFF595959),
+                ),
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),
@@ -776,13 +774,13 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       Widget? suffixIcon,
       required bool isEnable}) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // if (label.isNotEmpty)
           Container(
-            margin: EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 10),
             child: Row(
               children: [
                 Text(label,
@@ -822,22 +820,24 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
               enabled: isEnable,
               decoration: InputDecoration(
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: isEnable ? Colors.white : Color(0xFFA4A4A4)),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: isEnable ? Colors.white : const Color(0xFFA4A4A4)
+                ),
                 filled: true,
-                contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 border: UnderlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(6)),
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(6),
+                ),
                 hintText: hintText,
-                fillColor: isEnable ? Colors.white : Color(0xFFF5F9F9),
+                fillColor: isEnable ? Colors.white : const Color(0xFFF5F9F9),
                 // 배경색 설정
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),
@@ -856,7 +856,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       Widget? suffixIcon,
         required bool isEnable}) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -873,18 +873,18 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
               obscureText: obscureText,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Color(0xFF595959)),
-                enabledBorder: OutlineInputBorder(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: const Color(0xFF595959),
+                ),
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Colors.black),
                 ),
@@ -911,24 +911,23 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
         });
       },
       child: Container(
-          padding: EdgeInsets.symmetric(vertical: 14.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(
-                color: isSelected ? Color(0xFFFF6192) : Color(0xFFDDDDDD)),
-          ),
-          child: Center(
-            child: Text(
-              gender,
-              style: TextStyle(
-                fontFamily: 'Pretendard',
-                color: isSelected ? const Color(0xFFFF6192) : Colors.black,
-                fontSize: Responsive.getFont(context, 14),
-                height: 1.2,
-              ),
-            )
+        padding: const EdgeInsets.symmetric(vertical: 14.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+        ),
+        child: Center(
+          child: Text(
+            gender,
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+              fontSize: Responsive.getFont(context, 14),
+              height: 1.2,
+            ),
           )
+        ),
       ),
     );
   }
@@ -939,11 +938,11 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
         _selectDate();
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         child: TextFormField(
           textAlign: TextAlign.start,
           enabled: false,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             isDense: true,
             border: InputBorder.none,
           ),
@@ -951,7 +950,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
           style: TextStyle(
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
-            color: Color(0xFF595959),
+            color: const Color(0xFF595959),
           ),
         ),
       ),
@@ -995,12 +994,12 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                       onTap: () {
                         Navigator.of(context).pop();
                       },
-                      child: Icon(Icons.close),
+                      child: const Icon(Icons.close),
                     ),
                   ],
                 ),
               ),
-              Divider(
+              const Divider(
                 height: 1,
                 thickness: 1,
                 color: Color(0xFFEEEEEE),
@@ -1008,7 +1007,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
               // 날짜 선택기
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 17),
+                  margin: const EdgeInsets.symmetric(horizontal: 17),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -1019,11 +1018,9 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                           diameterRatio: 5.0,
                           itemExtent: 50,
                           selectionOverlay: Container(
-                            margin: EdgeInsets.only(left: 17, right: 15),
-                            decoration: BoxDecoration(
-                              border: Border.symmetric(
-                                  horizontal:
-                                      BorderSide(color: Color(0xFFDDDDDD))),
+                            margin: const EdgeInsets.only(left: 17, right: 15),
+                            decoration: const BoxDecoration(
+                              border: Border.symmetric(horizontal: BorderSide(color: Color(0xFFDDDDDD))),
                             ),
                           ),
                           squeeze: 1,
@@ -1059,11 +1056,9 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                           backgroundColor: Colors.white,
                           itemExtent: 50,
                           selectionOverlay: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 15),
-                            decoration: BoxDecoration(
-                              border: Border.symmetric(
-                                  horizontal:
-                                      BorderSide(color: Color(0xFFDDDDDD))),
+                            margin: const EdgeInsets.symmetric(horizontal: 15),
+                            decoration: const BoxDecoration(
+                              border: Border.symmetric(horizontal: BorderSide(color: Color(0xFFDDDDDD))),
                             ),
                           ),
                           diameterRatio: 5.0,
@@ -1095,11 +1090,9 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                           backgroundColor: Colors.white,
                           itemExtent: 50,
                           selectionOverlay: Container(
-                            margin: EdgeInsets.only(left: 15, right: 17),
-                            decoration: BoxDecoration(
-                              border: Border.symmetric(
-                                  horizontal:
-                                      BorderSide(color: Color(0xFFDDDDDD))),
+                            margin: const EdgeInsets.only(left: 15, right: 17),
+                            decoration: const BoxDecoration(
+                              border: Border.symmetric(horizontal: BorderSide(color: Color(0xFFDDDDDD))),
                             ),
                           ),
                           diameterRatio: 5.0,
@@ -1149,7 +1142,7 @@ class _MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                   width: double.infinity,
                   height: 48,
                   margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.all(
                       Radius.circular(6),

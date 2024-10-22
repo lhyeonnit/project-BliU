@@ -56,128 +56,130 @@ class MyInfoEditCheck extends ConsumerWidget {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0),
-            padding: const EdgeInsets.only(top: 40),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '내 정보 수정',
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 20),
-                    fontWeight: FontWeight.bold,
-                    height: 1.2,
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 8, bottom: 30),
-                  child: Text(
-                    '본인 확인을 위해 한 번 더 비밀번호를 \n입력해주세요',
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.only(top: 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '내 정보 수정',
                     style: TextStyle(
                       fontFamily: 'Pretendard',
-                      color: const Color(0xFF7B7B7B),
-                      fontSize: Responsive.getFont(context, 14),
+                      fontSize: Responsive.getFont(context, 20),
+                      fontWeight: FontWeight.bold,
                       height: 1.2,
                     ),
                   ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      '비밀번호',
+                  Container(
+                    margin: const EdgeInsets.only(top: 8, bottom: 30),
+                    child: Text(
+                      '본인 확인을 위해 한 번 더 비밀번호를 \n입력해주세요',
                       style: TextStyle(
                         fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 13),
-                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF7B7B7B),
+                        fontSize: Responsive.getFont(context, 14),
                         height: 1.2,
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 4),
-                      child: Text(
-                        '*',
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        '비밀번호',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
-                          color: const Color(0xFFFF6192),
+                          fontWeight: FontWeight.bold,
                           height: 1.2,
                         ),
                       ),
+                      Container(
+                        margin: const EdgeInsets.only(left: 4),
+                        child: Text(
+                          '*',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 13),
+                            color: const Color(0xFFFF6192),
+                            height: 1.2,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    child: TextField(
+                      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                      obscureText: true,
+                      // 비밀번호 입력을 위해 텍스트 숨김
+                      style: TextStyle(
+                          height: 1.2,
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14)
+                      ),
+                      enabled: true,
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                        hintText: '비밀번호 입력',
+                        hintStyle: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            color: const Color(0xFF595959)
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                      ),
                     ),
-                  ],
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  child: TextField(
-                    onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                    obscureText: true,
-                    // 비밀번호 입력을 위해 텍스트 숨김
-                    style: TextStyle(
-                        height: 1.2,
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14)
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: GestureDetector(
+                onTap: () {
+                  _passwordCheck(context, ref);
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 48,
+                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(6),
                     ),
-                    enabled: true,
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                      hintText: '비밀번호 입력',
-                      hintStyle: TextStyle(
+                  ),
+                  child: Center(
+                    child: Text(
+                      '확인',
+                      style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
-                        color: const Color(0xFF595959)
+                        color: Colors.white,
+                        height: 1.2,
                       ),
-                      enabledBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: GestureDetector(
-              onTap: () {
-                _passwordCheck(context, ref);
-              },
-              child: Container(
-                width: double.infinity,
-                height: 48,
-                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(6),
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    '확인',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      color: Colors.white,
-                      height: 1.2,
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

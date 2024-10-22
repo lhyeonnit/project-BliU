@@ -58,187 +58,189 @@ class PaymentCouponState extends State<PaymentCoupon> {
           ),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 보유 쿠폰 정보
-          Container(
-            margin: const EdgeInsets.only(left: 16, top: 20),
-            child: Text(
-              '보유 쿠폰 ${widget.couponList.length}장',
-              style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontWeight: FontWeight.normal,
-                fontSize: Responsive.getFont(context, 14),
-                height: 1.2,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 보유 쿠폰 정보
+            Container(
+              margin: const EdgeInsets.only(left: 16, top: 20),
+              child: Text(
+                '보유 쿠폰 ${widget.couponList.length}장',
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.normal,
+                  fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                ),
               ),
             ),
-          ),
-          // 구분선
-          Container(
-            margin: const EdgeInsets.only(top: 15),
-            height: 10,
-            width: double.infinity,
-            color: const Color(0xFFF5F9F9),
-          ),
-          // 쿠폰 리스트
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.couponList.length,
-              itemBuilder: (context, index) {
-                final coupon = widget.couponList[index];
+            // 구분선
+            Container(
+              margin: const EdgeInsets.only(top: 15),
+              height: 10,
+              width: double.infinity,
+              color: const Color(0xFFF5F9F9),
+            ),
+            // 쿠폰 리스트
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.couponList.length,
+                itemBuilder: (context, index) {
+                  final coupon = widget.couponList[index];
 
-                final couponDiscount = coupon.couponDiscount ?? "0";
-                final couponName = coupon.couponName ?? "";
-                final couponEnd = "~ ${coupon.couponEnd ?? ""}까지 사용가능";
+                  final couponDiscount = coupon.couponDiscount ?? "0";
+                  final couponName = coupon.couponName ?? "";
+                  final couponEnd = "~ ${coupon.couponEnd ?? ""}까지 사용가능";
 
-                String detailMessage = "구매금액 ${Utils.getInstance().priceString(coupon.couponMinPrice ?? 0)}원 이상인경우 사용 가능";
-                if (coupon.couponMaxPrice != null) {
-                  detailMessage = "최대 ${Utils.getInstance().priceString(coupon.couponMaxPrice ?? 0)} 할인 가능\n$detailMessage";
-                }
+                  String detailMessage = "구매금액 ${Utils.getInstance().priceString(coupon.couponMinPrice ?? 0)}원 이상인경우 사용 가능";
+                  if (coupon.couponMaxPrice != null) {
+                    detailMessage = "최대 ${Utils.getInstance().priceString(coupon.couponMaxPrice ?? 0)} 할인 가능\n$detailMessage";
+                  }
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        if (coupon.couponUsealbe == "Y" && _selectedCouponIndex != index) {
-                          setState(() {
-                            _selectedCouponIndex = index;
-                          });
-                        }
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 6),
-                            child: Radio<int>(
-                              value: index,
-                              groupValue: _selectedCouponIndex,
-                              onChanged: (int? value) {
-                                if (coupon.couponUsealbe == "Y") {
-                                  setState(() {
-                                    _selectedCouponIndex = value;
-                                  });
-                                }
-                              },
-                              activeColor: const Color(0xFFFF6192),
-                              fillColor: WidgetStateProperty.resolveWith((states) {
-                                if (!states.contains(WidgetState.selected)) {
-                                  return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
-                                }
-                                return const Color(0xFFFF6192); // 선택된 상태의 색상
-                              }),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          if (coupon.couponUsealbe == "Y" && _selectedCouponIndex != index) {
+                            setState(() {
+                              _selectedCouponIndex = index;
+                            });
+                          }
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 6),
+                              child: Radio<int>(
+                                value: index,
+                                groupValue: _selectedCouponIndex,
+                                onChanged: (int? value) {
+                                  if (coupon.couponUsealbe == "Y") {
+                                    setState(() {
+                                      _selectedCouponIndex = value;
+                                    });
+                                  }
+                                },
+                                activeColor: const Color(0xFFFF6192),
+                                fillColor: WidgetStateProperty.resolveWith((states) {
+                                  if (!states.contains(WidgetState.selected)) {
+                                    return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
+                                  }
+                                  return const Color(0xFFFF6192); // 선택된 상태의 색상
+                                }),
+                              ),
                             ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      couponDiscount,
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 16),
-                                        color: coupon.couponUsealbe == "Y" ? const Color(0xFFFF6192) : const Color(0xFFA4A4A4),
-                                        fontWeight: FontWeight.bold,
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                                      child: Text(
-                                        couponName,
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        couponDiscount,
                                         style: TextStyle(
                                           fontFamily: 'Pretendard',
                                           fontSize: Responsive.getFont(context, 16),
+                                          color: coupon.couponUsealbe == "Y" ? const Color(0xFFFF6192) : const Color(0xFFA4A4A4),
                                           fontWeight: FontWeight.bold,
-                                          color: coupon.couponUsealbe == "Y" ? Colors.black : const Color(0xFFA4A4A4),
                                           height: 1.2,
                                         ),
                                       ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 6),
+                                        child: Text(
+                                          couponName,
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 16),
+                                            fontWeight: FontWeight.bold,
+                                            color: coupon.couponUsealbe == "Y" ? Colors.black : const Color(0xFFA4A4A4),
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 10),
+                                    child: Text(
+                                      couponEnd,
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        color: coupon.couponUsealbe == "Y" ? Colors.black : const Color(0xFFA4A4A4),
+                                        height: 1.2,
+                                      ),
                                     ),
-                                  ],
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 10),
-                                  child: Text(
-                                    couponEnd,
+                                  ),
+                                  Text(
+                                    detailMessage,
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: coupon.couponUsealbe == "Y" ? Colors.black : const Color(0xFFA4A4A4),
+                                      fontSize: Responsive.getFont(context, 12),
+                                      color: const Color(0xFFA4A4A4),
                                       height: 1.2,
                                     ),
                                   ),
-                                ),
-                                Text(
-                                  detailMessage,
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 12),
-                                    color: const Color(0xFFA4A4A4),
-                                    height: 1.2,
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    // 쿠폰 사이의 선
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      child: const Divider(
-                        thickness: 1,
-                        color: Color(0xFFEEEEEE)
-                      )
-                    ),
-                  ],
-                );
-              },
+                      // 쿠폰 사이의 선
+                      Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
+                          child: const Divider(
+                              thickness: 1,
+                              color: Color(0xFFEEEEEE)
+                          )
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
-          ),
-          // 하단 할인 적용 버튼
-          GestureDetector(
-            onTap: () {
-              if (_selectedCouponIndex != null) {
-                // 선택된 쿠폰 데이터를 반환
-                Navigator.pop(context, widget.couponList[_selectedCouponIndex!]);
-              }
-            },
-            child: Container(
-              width: double.infinity,
-              height: 48,
-              margin: const EdgeInsets.only(
-                right: 16.0,
-                left: 16.0,
-                top: 9,
-                bottom: 8,
-              ),
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.all(Radius.circular(6)),
-              ),
-              child: Center(
-                child: Text(
-                  '할인 적용', // 여기에 실제 적용된 할인 금액을 표시
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Colors.white,
-                    height: 1.2,
+            // 하단 할인 적용 버튼
+            GestureDetector(
+              onTap: () {
+                if (_selectedCouponIndex != null) {
+                  // 선택된 쿠폰 데이터를 반환
+                  Navigator.pop(context, widget.couponList[_selectedCouponIndex!]);
+                }
+              },
+              child: Container(
+                width: double.infinity,
+                height: 48,
+                margin: const EdgeInsets.only(
+                  right: 16.0,
+                  left: 16.0,
+                  top: 9,
+                  bottom: 8,
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                ),
+                child: Center(
+                  child: Text(
+                    '할인 적용', // 여기에 실제 적용된 할인 금액을 표시
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      color: Colors.white,
+                      height: 1.2,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

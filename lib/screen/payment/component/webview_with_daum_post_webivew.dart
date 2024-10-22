@@ -6,12 +6,10 @@ class WebviewWithDaumPostWebview extends StatefulWidget {
   const WebviewWithDaumPostWebview({super.key});
 
   @override
-  State<WebviewWithDaumPostWebview> createState() =>
-      _WebviewWithDaumPostWebviewState();
+  State<WebviewWithDaumPostWebview> createState() => WebViewWithDaumPostWebViewState();
 }
 
-class _WebviewWithDaumPostWebviewState
-    extends State<WebviewWithDaumPostWebview> {
+class WebViewWithDaumPostWebViewState extends State<WebviewWithDaumPostWebview> {
   final InAppLocalhostServer _localhostServer = InAppLocalhostServer();
   late InAppWebViewController _controller;
 
@@ -34,58 +32,58 @@ class _WebviewWithDaumPostWebviewState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("다음 주소 검색")),
-      body: Stack(
-        children: [
-          InAppWebView(
-            initialUrlRequest: URLRequest(
-                url: WebUri(
-                    "http://localhost:8080/assets/html/daum_postcode.html")),
-            onWebViewCreated: (controller) {
-              _controller = controller;
-              _controller.addJavaScriptHandler(
-                  handlerName: 'onSelectAddress',
-                  callback: (args) {
-                    Map<String, dynamic> fromMap = args.first;
-                    DaumPostData data = _dataSetting(fromMap);
-                    Navigator.of(context).pop(data);
-                  });
-            },
-            onLoadStop: (controller, url) {
-              setState(() {
-                if (_localhostServer.isRunning()) {
-                  isLoading = false;
-                } else {
-                  _localhostServer.start().then((value) {
-                    _controller.reload();
-                  });
-                }
-              });
-            },
-          ),
-          if (isLoading) ...[
-            const SizedBox(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            InAppWebView(
+              initialUrlRequest: URLRequest(url: WebUri("http://localhost:8080/assets/html/daum_postcode.html")),
+              onWebViewCreated: (controller) {
+                _controller = controller;
+                _controller.addJavaScriptHandler(
+                    handlerName: 'onSelectAddress',
+                    callback: (args) {
+                      Map<String, dynamic> fromMap = args.first;
+                      DaumPostData data = _dataSetting(fromMap);
+                      Navigator.of(context).pop(data);
+                    });
+              },
+              onLoadStop: (controller, url) {
+                setState(() {
+                  if (_localhostServer.isRunning()) {
+                    isLoading = false;
+                  } else {
+                    _localhostServer.start().then((value) {
+                      _controller.reload();
+                    });
+                  }
+                });
+              },
             ),
-          ],
-          if (isError) ...[
-            Container(
-              color: const Color.fromRGBO(71, 71, 71, 1),
-              child: const Center(
-                child: Text(
-                  "페이지를 찾을 수 없습니다",
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    height: 1.2,
+            if (isLoading) ...[
+              const SizedBox(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ],
+            if (isError) ...[
+              Container(
+                color: const Color.fromRGBO(71, 71, 71, 1),
+                child: const Center(
+                  child: Text(
+                    "페이지를 찾을 수 없습니다",
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      height: 1.2,
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

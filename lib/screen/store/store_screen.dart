@@ -92,12 +92,14 @@ class _StoreScreenState extends State<StoreScreen>
           ),
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: const [
-          StoreRakingPage(),
-          StoreFavoritePage(),
-        ],
+      body: SafeArea(
+        child: TabBarView(
+          controller: _tabController,
+          children: const [
+            StoreRakingPage(),
+            StoreFavoritePage(),
+          ],
+        ),
       ),
     );
   }

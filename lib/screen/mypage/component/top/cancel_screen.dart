@@ -110,187 +110,189 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            controller: _scrollController,
-            padding: const EdgeInsets.only(bottom: 50), // 하단 버튼 공간 확보
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // 주문 날짜 및 ID
-                CancelItem(
-                  orderData: widget.orderData,
-                  orderDetailData: widget.orderDetailData,
-                ),
-                // 취소사유 선택
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 80),
-                  // 하단 버튼 공간 확보
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 취소사유 선택
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                if (_overlayEntry == null) {
-                                  _createOverlay();
-                                } else {
-                                  _removeOverlay();
-                                }
-                              },
-                              child: Center(
-                                child: CompositedTransformTarget(
-                                  link: _layerLink,
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 14),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: const Color(0xFFE1E1E1),
-                                      ),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        // 선택값.
-                                        Text(
-                                          _dropdownText,
-                                          style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(context, 14),
-                                            color: Colors.black,
-                                            height: 1.2,
-                                          ),
-                                        ),
-                                        // 아이콘.
-                                        SvgPicture.asset('assets/images/product/ic_select.svg'),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: TextField(
-                                onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                                style: TextStyle(
-                                    height: 1.2,
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14)
-                                ),
-                                maxLines: 4,
-                                maxLength: 500,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                                  hintText: '세부 내용 입력',
-                                  hintStyle: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    color: const Color(0xFF595959)
-                                  ),
-                                  enabledBorder: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                                    borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                                    borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                  ),
-                                  counter: Align(
-                                    alignment: Alignment.centerLeft, // 왼쪽 정렬
-                                    child: Text(
-                                      '${_detailedReason.length}/500',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 13),
-                                        color: const Color(0xFF7B7B7B),
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _detailedReason = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ExchangeReturnInfo(
-                        orderDetailInfoData: orderDetailInfoData,
-                      ),
-                    ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              controller: _scrollController,
+              padding: const EdgeInsets.only(bottom: 50), // 하단 버튼 공간 확보
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 주문 날짜 및 ID
+                  CancelItem(
+                    orderData: widget.orderData,
+                    orderDetailData: widget.orderDetailData,
                   ),
-                ),
-              ],
-            ),
-          ),
-          // 하단 고정 버튼
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Column(
-              children: [
-                MoveTopButton(scrollController: _scrollController),
-                Container(
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: GestureDetector(
-                    onTap: () {
-                      // 확인 버튼 눌렀을 때 처리
-                      if (_dropdownValue == 0) {
-                        Utils.getInstance().showSnackBar(context, "취소사유를 선택해 주세요");
-                        return;
-                      }
-
-                      if (_detailedReason.isEmpty) {
-                        Utils.getInstance().showSnackBar(context, "세부 내용을 입력해 주세요.");
-                        return;
-                      }
-                      _orderCancel();
-                    },
-                    child: Container(
-                      height: 48,
-                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(6),
+                  // 취소사유 선택
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 80),
+                    // 하단 버튼 공간 확보
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 취소사유 선택
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  if (_overlayEntry == null) {
+                                    _createOverlay();
+                                  } else {
+                                    _removeOverlay();
+                                  }
+                                },
+                                child: Center(
+                                  child: CompositedTransformTarget(
+                                    link: _layerLink,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 14),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: const Color(0xFFE1E1E1),
+                                        ),
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          // 선택값.
+                                          Text(
+                                            _dropdownText,
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              color: Colors.black,
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                          // 아이콘.
+                                          SvgPicture.asset('assets/images/product/ic_select.svg'),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: TextField(
+                                  onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                                  style: TextStyle(
+                                      height: 1.2,
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14)
+                                  ),
+                                  maxLines: 4,
+                                  maxLength: 500,
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                    hintText: '세부 내용 입력',
+                                    hintStyle: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        color: const Color(0xFF595959)
+                                    ),
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                                      borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                    ),
+                                    focusedBorder: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                                      borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                    ),
+                                    counter: Align(
+                                      alignment: Alignment.centerLeft, // 왼쪽 정렬
+                                      child: Text(
+                                        '${_detailedReason.length}/500',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 13),
+                                          color: const Color(0xFF7B7B7B),
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _detailedReason = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '확인',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Colors.white,
-                            height: 1.2,
+                        ExchangeReturnInfo(
+                          orderDetailInfoData: orderDetailInfoData,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // 하단 고정 버튼
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  MoveTopButton(scrollController: _scrollController),
+                  Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: GestureDetector(
+                      onTap: () {
+                        // 확인 버튼 눌렀을 때 처리
+                        if (_dropdownValue == 0) {
+                          Utils.getInstance().showSnackBar(context, "취소사유를 선택해 주세요");
+                          return;
+                        }
+
+                        if (_detailedReason.isEmpty) {
+                          Utils.getInstance().showSnackBar(context, "세부 내용을 입력해 주세요.");
+                          return;
+                        }
+                        _orderCancel();
+                      },
+                      child: Container(
+                        height: 48,
+                        margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(6),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '확인',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.white,
+                              height: 1.2,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

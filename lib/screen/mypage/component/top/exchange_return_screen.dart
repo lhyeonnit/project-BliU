@@ -197,98 +197,100 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            controller: _scrollController,
-            padding: const EdgeInsets.only(bottom: 80), // 하단 버튼 공간 확보
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // 주문 날짜 및 ID
-                CancelItem(
-                  orderData: widget.orderData,
-                  orderDetailData: widget.orderDetailData,
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // 교환 버튼
-                      _buildCustomButton(
-                        context,
-                        text: "교환",
-                        isSelected: selectedIndex == 0,
-                        onTap: () {
-                          setState(() {
-                            selectedIndex = 0;
-                          });
-                        },
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      // 반품/환불 버튼
-                      _buildCustomButton(
-                        context,
-                        text: "반품/환불",
-                        isSelected: selectedIndex == 1,
-                        onTap: () {
-                          setState(() {
-                            selectedIndex = 1;
-                          });
-                        },
-                      ),
-                    ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              controller: _scrollController,
+              padding: const EdgeInsets.only(bottom: 80), // 하단 버튼 공간 확보
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 주문 날짜 및 ID
+                  CancelItem(
+                    orderData: widget.orderData,
+                    orderDetailData: widget.orderDetailData,
                   ),
-                ),
-                _buildSelectedPage(),
-              ],
-            ),
-          ),
-          // 하단 고정 버튼
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Column(
-              children: [
-                MoveTopButton(scrollController: _scrollController),
-                Container(
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: GestureDetector(
-                    onTap: () {
-                      _orderReturn();
-                    },
-                    child: Container(
-                      height: 48,
-                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(6),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // 교환 버튼
+                        _buildCustomButton(
+                          context,
+                          text: "교환",
+                          isSelected: selectedIndex == 0,
+                          onTap: () {
+                            setState(() {
+                              selectedIndex = 0;
+                            });
+                          },
                         ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '확인',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Colors.white,
-                            height: 1.2,
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        // 반품/환불 버튼
+                        _buildCustomButton(
+                          context,
+                          text: "반품/환불",
+                          isSelected: selectedIndex == 1,
+                          onTap: () {
+                            setState(() {
+                              selectedIndex = 1;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  _buildSelectedPage(),
+                ],
+              ),
+            ),
+            // 하단 고정 버튼
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  MoveTopButton(scrollController: _scrollController),
+                  Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: GestureDetector(
+                      onTap: () {
+                        _orderReturn();
+                      },
+                      child: Container(
+                        height: 48,
+                        margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(6),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '확인',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.white,
+                              height: 1.2,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

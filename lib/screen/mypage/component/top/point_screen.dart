@@ -157,139 +157,150 @@ class _PointScreenState extends ConsumerState<PointScreen> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 30.0),
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF5F9F9),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '나의 포인트',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Colors.black,
-                          height: 1.2,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 30.0),
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF5F9F9),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '나의 포인트',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Colors.black,
+                            height: 1.2,
+                          ),
                         ),
-                      ),
-                      Text(
-                        '${Utils.getInstance().priceString(_mtPoint)}P',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 18),
-                          fontWeight: FontWeight.bold,
-                          height: 1.2,
+                        Text(
+                          '${Utils.getInstance().priceString(_mtPoint)}P',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 18),
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  height: 38,
-                  margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _categories.length,
-                    itemBuilder: (context, index) {
-                      final bool isSelected = _selectedCategoryIndex == index;
+                  Container(
+                    height: 38,
+                    margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _categories.length,
+                      itemBuilder: (context, index) {
+                        final bool isSelected = _selectedCategoryIndex == index;
 
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 4.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _selectedCategoryIndex = index;
-                              _getList();
-                            });
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(19),
-                              border: Border.all(
-                                color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-                                width: 1.0,
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 4.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectedCategoryIndex = index;
+                                _getList();
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(19),
+                                border: Border.all(
+                                  color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                  width: 1.0,
+                                ),
+                                color: Colors.white,
                               ),
-                              color: Colors.white,
-                            ),
-                            child: Center(
-                              child: Text(
-                                _categories[index],
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: isSelected ? const Color(0xFFFF6192) : Colors.black,
-                                  height: 1.2,
+                              child: Center(
+                                child: Text(
+                                  _categories[index],
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                                    height: 1.2,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
-                const Divider(thickness: 10, color: Color(0xFFF5F9F9)),
-                Visibility(
-                  visible: _pointList.isNotEmpty,
-                  child: Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      controller: _scrollController,
-                      itemCount: _pointList.length,
-                      itemBuilder: (context, index) {
-                        // 데이터를 사용하여 아이템 생성
-                        final pointData = _pointList[index];
+                  const Divider(thickness: 10, color: Color(0xFFF5F9F9)),
+                  Visibility(
+                    visible: _pointList.isNotEmpty,
+                    child: Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        controller: _scrollController,
+                        itemCount: _pointList.length,
+                        itemBuilder: (context, index) {
+                          // 데이터를 사용하여 아이템 생성
+                          final pointData = _pointList[index];
 
-                        String type = pointData.pltTypeTxt ?? "";
-                        String pirce = pointData.pltPrice ?? "";
-                        String memo = pointData.pltMemo ?? "";
-                        String wdate = pointData.pltWdate ?? "";
+                          String type = pointData.pltTypeTxt ?? "";
+                          String pirce = pointData.pltPrice ?? "";
+                          String memo = pointData.pltMemo ?? "";
+                          String wdate = pointData.pltWdate ?? "";
 
-                        return Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    type,
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      color: type == '적립' ? const Color(0xFFFF6192) : Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      height: 1.2,
+                          return Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      type,
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        color: type == '적립' ? const Color(0xFFFF6192) : Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        height: 1.2,
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          pirce,
-                                          style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(context, 15),
-                                            fontWeight: FontWeight.bold,
-                                            height: 1.2,
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            pirce,
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 15),
+                                              fontWeight: FontWeight.bold,
+                                              height: 1.2,
+                                            ),
                                           ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(vertical: 8),
-                                          child: Text(
-                                            memo,
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(vertical: 8),
+                                            child: Text(
+                                              memo,
+                                              style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                color: const Color(0xFF7B7B7B),
+                                                fontSize: Responsive.getFont(context, 14),
+                                                height: 1.2,
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            wdate,
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
                                               color: const Color(0xFF7B7B7B),
@@ -297,49 +308,40 @@ class _PointScreenState extends ConsumerState<PointScreen> {
                                               height: 1.2,
                                             ),
                                           ),
-                                        ),
-                                        Text(
-                                          wdate,
-                                          style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            color: const Color(0xFF7B7B7B),
-                                            fontSize: Responsive.getFont(context, 14),
-                                            height: 1.2,
-                                          ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            if (index != _pointList.length - 1)
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 16),
-                                child: const Divider(
-                                  thickness: 1, // 구분선 두께
-                                  color: Color(0xFFEEEEEE), // 구분선 색상
+                                  ],
                                 ),
                               ),
-                          ],
-                        );
-                      },
+                              if (index != _pointList.length - 1)
+                                Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: const Divider(
+                                    thickness: 1, // 구분선 두께
+                                    color: Color(0xFFEEEEEE), // 구분선 색상
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
-          Visibility(
-              visible: _pointList.isNotEmpty,
-              child: MoveTopButton(scrollController: _scrollController)),
-          Visibility(
-            visible: _pointList.isEmpty,
-            child: Container(
-                margin: const EdgeInsets.only(top: 80),
-                child: const NonDataScreen(text: '포인트 내역이 없습니다.')),
-          ),
-        ],
+            Visibility(
+                visible: _pointList.isNotEmpty,
+                child: MoveTopButton(scrollController: _scrollController)),
+            Visibility(
+              visible: _pointList.isEmpty,
+              child: Container(
+                  margin: const EdgeInsets.only(top: 80),
+                  child: const NonDataScreen(text: '포인트 내역이 없습니다.')),
+            ),
+          ],
+        ),
       ),
     );
   }

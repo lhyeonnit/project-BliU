@@ -116,91 +116,81 @@ class ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                SizedBox(
-                  height: Responsive.getHeight(context, 412),
-                  child: PageView.builder(
-                    controller: _pageController,
-                    itemCount: images.length,
-                    onPageChanged: (int page) {
-                      setState(() {
-                        _currentPage = page;
-                      });
-                    },
-                    itemBuilder: (context, index) {
-                      return Image.network(
-                        images[index],
-                        fit: BoxFit.cover,
-                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                          return const SizedBox();
-                        }
-                      );
-                    },
-                  ),
-                ),
-                Positioned(
-                  bottom: 15,
-                  right: 16,
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 15),
-                    decoration: const BoxDecoration(
-                      color: Color(0x45000000),
-                      borderRadius: BorderRadius.all(Radius.circular(22)),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                children: [
+                  SizedBox(
+                    height: Responsive.getHeight(context, 412),
+                    child: PageView.builder(
+                      controller: _pageController,
+                      itemCount: images.length,
+                      onPageChanged: (int page) {
+                        setState(() {
+                          _currentPage = page;
+                        });
+                      },
+                      itemBuilder: (context, index) {
+                        return Image.network(
+                            images[index],
+                            fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              return const SizedBox();
+                            }
+                        );
+                      },
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                  Positioned(
+                    bottom: 15,
+                    right: 16,
+                    child: Container(
+                      padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 15),
+                      decoration: const BoxDecoration(
+                        color: Color(0x45000000),
+                        borderRadius: BorderRadius.all(Radius.circular(22)),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${_currentPage + 1}',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 13),
+                              color: Colors.white,
+                              height: 1.2,
+                            ),
+                          ),
+                          Text(
+                            '/${images.length}',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 13),
+                              color: const Color(0x80FFFFFF),
+                              height: 1.2,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
                         Text(
-                          '${_currentPage + 1}',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 13),
-                            color: Colors.white,
-                            height: 1.2,
-                          ),
-                        ),
-                        Text(
-                          '/${images.length}',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 13),
-                            color: const Color(0x80FFFFFF),
-                            height: 1.2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        _reviewData?.mtId ?? "",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 12),
-                          color: const Color(0xFF7B7B7B),
-                          height: 1.2,
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          _reviewData?.rtWdate ?? "",
+                          _reviewData?.mtId ?? "",
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 12),
@@ -208,89 +198,101 @@ class ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                             height: 1.2,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: _ratingStars(double.parse(_reviewData?.rtStart ?? "0.0")),
-                  ),
-                  Text(
-                    _reviewData?.rtContent ?? "",
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      height: 1.2,
-                    ),
-                  ),
-                  Visibility(
-                    visible: !isMy,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ReportPage(rtIdx: widget.rtIdx,)),
-                          );
-                        },
-                        child: const Text(
-                          '신고',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: 12,
-                            color: Colors.grey,
-                            height: 1.2,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: isMy,
-                    child: GestureDetector(
-                      onTap: () async {
-                        if (_reviewData != null) {
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyReviewEdit(reviewData: _reviewData!,)
-                            ),
-                          );
-                          if (result == true) {
-                            _getDetail();
-                          }
-                        }
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 10.0),
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(6),
-                          ),
-                          border: Border.all(color: const Color(0xFFDDDDDD)),
-                        ),
-                        child: Center(
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
                           child: Text(
-                            '수정',
+                            _reviewData?.rtWdate ?? "",
                             style: TextStyle(
                               fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.normal,
-                              color: Colors.black,
+                              fontSize: Responsive.getFont(context, 12),
+                              color: const Color(0xFF7B7B7B),
+                              height: 1.2,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: _ratingStars(double.parse(_reviewData?.rtStart ?? "0.0")),
+                    ),
+                    Text(
+                      _reviewData?.rtContent ?? "",
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                      ),
+                    ),
+                    Visibility(
+                      visible: !isMy,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ReportPage(rtIdx: widget.rtIdx,)),
+                            );
+                          },
+                          child: const Text(
+                            '신고',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: 12,
+                              color: Colors.grey,
                               height: 1.2,
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Visibility(
+                      visible: isMy,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (_reviewData != null) {
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyReviewEdit(reviewData: _reviewData!,)
+                              ),
+                            );
+                            if (result == true) {
+                              _getDetail();
+                            }
+                          }
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 10.0),
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(6),
+                            ),
+                            border: Border.all(color: const Color(0xFFDDDDDD)),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '수정',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                                height: 1.2,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
