@@ -16,7 +16,8 @@ import 'package:intl/intl.dart';
 
 class MyInfoEditScreen extends ConsumerStatefulWidget {
   final String? authToken;
-  const MyInfoEditScreen({super.key, required this.authToken});
+  final bool? isCommon;
+  const MyInfoEditScreen({super.key, this.authToken, this.isCommon});
 
   @override
   ConsumerState<MyInfoEditScreen> createState() => MyInfoEditScreenState();
@@ -61,19 +62,26 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
     _nameController.addListener(_checkIfAllFieldsFilled);
     _phoneController.addListener(_checkIfAllFieldsFilled);
     _authCodeController.addListener(_checkIfAllFieldsFilled);
-
+    _checkIfAllFieldsFilled();
   }
 
   void _checkIfAllFieldsFilled() {
     setState(() {
-      _isAllFieldsFilled = _idController.text.isNotEmpty &&
-          _passwordController.text.isNotEmpty &&
-          _confirmPasswordController.text.isNotEmpty &&
-          _nameController.text.isNotEmpty &&
-          _phoneController.text.isNotEmpty &&
-          // _selectedDate != null &&
-          // _selectedGender != null && // 성별이 선택되었는지 확인
-          _isIdChecked;
+      if (widget.isCommon ?? true) {
+        _isAllFieldsFilled = _idController.text.isNotEmpty &&
+            _passwordController.text.isNotEmpty &&
+            _confirmPasswordController.text.isNotEmpty &&
+            _nameController.text.isNotEmpty &&
+            _phoneController.text.isNotEmpty;
+            // _selectedDate != null &&
+            // _selectedGender != null && // 성별이 선택되었는지 확인
+      } else {
+        _isAllFieldsFilled = _idController.text.isNotEmpty &&
+            _nameController.text.isNotEmpty &&
+            _phoneController.text.isNotEmpty;
+            // _selectedDate != null &&
+            // _selectedGender != null && // 성별이 선택되었는지 확인
+      }
     });
   }
   void _authTimerStart() {
@@ -186,45 +194,48 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                       ),
                       _buildIdPasswordField('아이디', _idController, myPageInfoData?.mtId ?? '',
                           isChange: _isIdChecked),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 20),
-                        child: Column(
-                          children: [
-                            _buildIdPasswordField('비밀번호', _passwordController,
-                                '비밀번호 입력(숫자, 특수기호 포함한 7~15자)',
-                                obscureText: true, isChange: true),
-                            _buildCheckField(
-                                '비밀번호', _confirmPasswordController, '비밀번호 재입력',
-                                obscureText: true, isEnable: true),
-                            GestureDetector(
-                              onTap: () {
-                                // TODO 이전 비밀번호 재사용 방지 처리 필요
-                                _editMyPassword();
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                margin: const EdgeInsets.only(top: 10),
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(6),
-                                  border: Border.all(color: const Color(0xFFDDDDDD)),
-                                ),
-                                child: Center(
-                                    child: Text(
-                                      '변경',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.normal,
-                                        height: 1.2,
-                                      ),
-                                    )
+                      Visibility(
+                        visible: widget.isCommon ?? true,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 20),
+                          child: Column(
+                            children: [
+                              _buildIdPasswordField('비밀번호', _passwordController,
+                                  '비밀번호 입력(숫자, 특수기호 포함한 7~15자)',
+                                  obscureText: true, isChange: true),
+                              _buildCheckField(
+                                  '비밀번호', _confirmPasswordController, '비밀번호 재입력',
+                                  obscureText: true, isEnable: true),
+                              GestureDetector(
+                                onTap: () {
+                                  // TODO 이전 비밀번호 재사용 방지 처리 필요
+                                  _editMyPassword();
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  margin: const EdgeInsets.only(top: 10),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                                  ),
+                                  child: Center(
+                                      child: Text(
+                                        '변경',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.normal,
+                                          height: 1.2,
+                                        ),
+                                      )
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       Row(
@@ -637,6 +648,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       TextInputType keyboardType = TextInputType.text,
       Widget? suffixIcon,
       required bool isChange}) {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1181,6 +1193,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
     final DateTime displayDate = displayFormatter.parse(date);
     return serverFormatter.format(displayDate);
   }
+
   void _getMyInfo() async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx().toString();

@@ -10,6 +10,7 @@ class MemberInfoData {
   final int? myRevieCount;
   final int? myCouponCount;
   final int? myPoint;
+  final int? mtLoginType;
 
   MemberInfoData({
     required this.mtIdx,
@@ -23,6 +24,7 @@ class MemberInfoData {
     required this.myRevieCount,
     required this.myCouponCount,
     required this.myPoint,
+    required this.mtLoginType,
   });
 
   // JSON to Object
@@ -47,6 +49,7 @@ class MemberInfoData {
       myRevieCount: json['my_revie_count'],
       myCouponCount: json['my_coupon_count'],
       myPoint: json['my_point'],
+      mtLoginType: json['mt_login_type']
     );
   }
 
@@ -64,6 +67,7 @@ class MemberInfoData {
       'my_revie_count': myRevieCount,
       'my_coupon_count': myCouponCount,
       'my_point': myPoint,
+      'mt_login_type' : mtLoginType,
     };
   }
 }

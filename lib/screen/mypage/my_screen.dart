@@ -11,6 +11,7 @@ import 'package:BliU/screen/mypage/component/bottom/setting_screen.dart';
 import 'package:BliU/screen/mypage/component/top/alarm_screen.dart';
 import 'package:BliU/screen/mypage/component/top/component/my_info_edit_check.dart';
 import 'package:BliU/screen/mypage/component/top/my_coupon_screen.dart';
+import 'package:BliU/screen/mypage/component/top/my_info_edit_screen.dart';
 import 'package:BliU/screen/mypage/component/top/my_review_screen.dart';
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
 import 'package:BliU/screen/mypage/component/top/point_screen.dart';
@@ -37,6 +38,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
   int? myReviewCount;
   int? myCouponCount;
   int? myPoint;
+  int? mtLoginType;
 
   @override
   void initState() {
@@ -162,12 +164,19 @@ class MyScreenState extends ConsumerState<MyScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MyInfoEditCheck(),
-                              ),
-                            );
+                            if (mtLoginType == 1) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MyInfoEditCheck(),
+                                ),
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const MyInfoEditScreen(isCommon: false,)),
+                              );
+                            }
                           },
                           child: Container(
                               margin: const EdgeInsets.only(top: 20),
@@ -345,8 +354,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
       Map<String, dynamic> requestData = {
         'mt_idx': mtIdx,
       };
-      final memberInfoDTO =
-          await ref.read(myModelProvider.notifier).getMy(requestData);
+      final memberInfoDTO = await ref.read(myModelProvider.notifier).getMy(requestData);
       setState(() {
         // 상태 변경 후 UI 업데이트
         memberInfoData = memberInfoDTO?.data;
@@ -354,6 +362,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
         myPoint = memberInfoDTO?.data?.myPoint;
         myReviewCount = memberInfoDTO?.data?.myRevieCount;
         userId = memberInfoDTO?.data?.mtIdx.toString() ?? ''; // userId 업데이트
+        mtLoginType = memberInfo?.mtLoginType ?? 1;
       });
       String? childCk = memberInfo?.childCk;
       if (!context.mounted) return;
