@@ -6,6 +6,7 @@ import 'package:BliU/data/product_option_data.dart';
 import 'package:BliU/data/product_option_type_data.dart';
 import 'package:BliU/data/product_option_type_detail_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
+import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/payment/payment_screen.dart';
 import 'package:BliU/screen/product/viewmodel/product_order_bottom_option_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -788,7 +789,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
 
         if (addType == 0) {
           Utils.getInstance().showToast(responseData['data']['message'] ?? "");
-
+          ref.read(cartProvider.notifier).cartRefresh(true);
           Navigator.pop(context);
           showDialog(
             context: context,

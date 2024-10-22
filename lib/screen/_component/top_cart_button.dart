@@ -31,6 +31,14 @@ class TopCartButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(cartProvider,
+      ((previous, next) {
+        if (next == true) {
+          ref.read(cartProvider.notifier).cartRefresh(false);
+          _viewWillAppear(context, ref);
+        }
+      }),
+    );
 
     return FocusDetector(
       onFocusGained: () {
@@ -92,5 +100,18 @@ class TopCartButton extends ConsumerWidget {
         }
       ),
     );
+  }
+}
+
+final cartProvider = StateNotifierProvider<CartProvider, bool?>((ref){
+  return CartProvider(null, ref);
+});
+
+class CartProvider extends StateNotifier<bool?> {
+  final Ref ref;
+  CartProvider(super.state, this.ref);
+
+  void cartRefresh(bool isRefresh){
+    state = isRefresh;
   }
 }

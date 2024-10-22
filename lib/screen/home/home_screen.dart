@@ -17,15 +17,16 @@ import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:focus_detector_v2/focus_detector_v2.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class HomeScreenState extends ConsumerState<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
   String _cartCount = "0";
   List<CategoryData> _categories = [];
@@ -72,6 +73,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void _viewWillAppear(BuildContext context) {
+    _getCartCount();
   }
 
   void _afterBuild(BuildContext context) {
@@ -216,253 +221,258 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Expanded(
-                child: CustomScrollView(
-                  controller: _scrollController,
-                  slivers: [
-                    SliverAppBar(
-                      scrolledUnderElevation: 0,
-                      pinned: true,
-                      automaticallyImplyLeading: false,
-                      // 기본 뒤로가기 버튼을 숨김
-                      backgroundColor: _isScrolled ? Colors.white : Colors.transparent,
-                      expandedHeight: Responsive.getHeight(context, 625),
-                      title: SvgPicture.asset(
-                        'assets/images/home/bottom_home.svg', // SVG 파일 경로
-                        colorFilter: ColorFilter.mode(
-                          _isScrolled ? Colors.black : Colors.white,
-                          BlendMode.srcIn,
-                        ),
-                        // 색상 조건부 변경
-                        height: Responsive.getHeight(context, 40),
-                      ),
-                      flexibleSpace: const FlexibleSpaceBar(
-                        background: HomeHeader(),
-                      ),
-                      actions: [
-                        Container(
-                          padding: EdgeInsets.only(right: Responsive.getWidth(context, 8)),
-                          // 왼쪽 여백 추가
-                          child: Row(
-                            children: [
-                              IconButton(
-                                icon: SvgPicture.asset(
-                                  "assets/images/home/ic_top_sch_w.svg",
-                                  colorFilter: ColorFilter.mode(
-                                    _isScrolled ? Colors.black : Colors.white,
-                                    BlendMode.srcIn,
-                                  ),
-                                  height: Responsive.getHeight(context, 30),
-                                  width: Responsive.getWidth(context, 30),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const SearchScreen(),
-                                    ),
-                                  );
-                                },
-                              ),
-                              IconButton(
-                                icon: SvgPicture.asset(
-                                  _isScrolled ? "assets/images/product/ic_smart.svg" : "assets/images/home/ic_smart_w.svg",
-                                  height: Responsive.getHeight(context, 30),
-                                  width: Responsive.getWidth(context, 30),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const SmartLensScreen(),
-                                    ),
-                                  );
-                                },
-                              ),
-                              Stack(
-                                children: [
-                                  IconButton(
-                                    icon: SvgPicture.asset(
-                                      "assets/images/product/ic_cart.svg",
-                                      colorFilter: ColorFilter.mode(
-                                        _isScrolled ? Colors.black : Colors.white,
-                                        BlendMode.srcIn,
-                                      ),
-                                      height: Responsive.getHeight(context, 30),
-                                      width: Responsive.getWidth(context, 30),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => const CartScreen(),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  Positioned(
-                                    right: 5,
-                                    top: 23,
-                                    child: Visibility(
-                                      visible: _cartCount == "0" ? false : true,
-                                      child: Container(
-                                        padding: const EdgeInsets.all(4),
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xFFFF6191),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Text(
-                                          _cartCount,
-                                          style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            color: Colors.white,
-                                            fontSize: Responsive.getFont(context, 9),
-                                            height: 1.2,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+    return FocusDetector(
+      onFocusGained: () {
+        _viewWillAppear(context);
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                Expanded(
+                  child: CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      SliverAppBar(
+                        scrolledUnderElevation: 0,
+                        pinned: true,
+                        automaticallyImplyLeading: false,
+                        // 기본 뒤로가기 버튼을 숨김
+                        backgroundColor: _isScrolled ? Colors.white : Colors.transparent,
+                        expandedHeight: Responsive.getHeight(context, 625),
+                        title: SvgPicture.asset(
+                          'assets/images/home/bottom_home.svg', // SVG 파일 경로
+                          colorFilter: ColorFilter.mode(
+                            _isScrolled ? Colors.black : Colors.white,
+                            BlendMode.srcIn,
                           ),
+                          // 색상 조건부 변경
+                          height: Responsive.getHeight(context, 40),
                         ),
-                      ],
-                    ),
-                    SliverList(
-                      delegate: SliverChildListDelegate(
-                        [
-                          HomeBodyCategory(categories: _categories,),
-                          const HomeBodyAi(),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 30.0),
-                            child: SizedBox(
-                              height: 451, // 고정된 높이
-                              child: HomeBodyExhibition(),
-                            ),
-                          ),
-                          //HomeBodyBestSales(categories: _categories, ageCategories: _ageCategories,),
+                        flexibleSpace: const FlexibleSpaceBar(
+                          background: HomeHeader(),
+                        ),
+                        actions: [
                           Container(
-                            padding: const EdgeInsets.only(left: 16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            padding: EdgeInsets.only(right: Responsive.getWidth(context, 8)),
+                            // 왼쪽 여백 추가
+                            child: Row(
                               children: [
-                                Text(
-                                  '판매베스트',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 20),
-                                    fontWeight: FontWeight.bold,
-                                    height: 1.2,
+                                IconButton(
+                                  icon: SvgPicture.asset(
+                                    "assets/images/home/ic_top_sch_w.svg",
+                                    colorFilter: ColorFilter.mode(
+                                      _isScrolled ? Colors.black : Colors.white,
+                                      BlendMode.srcIn,
+                                    ),
+                                    height: Responsive.getHeight(context, 30),
+                                    width: Responsive.getWidth(context, 30),
                                   ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const SearchScreen(),
+                                      ),
+                                    );
+                                  },
                                 ),
-                                Container(
-                                  margin: const EdgeInsets.only(top: 20),
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      children: List<Widget>.generate(_productCategories.length, (index) {
-                                        return Container(
-                                          padding: const EdgeInsets.only(right: 4.0),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _selectedCategoryIndex = index;
-                                              });
-                                              _getList();
-                                            },
-                                            child: categoryTab(index),
+                                IconButton(
+                                  icon: SvgPicture.asset(
+                                    _isScrolled ? "assets/images/product/ic_smart.svg" : "assets/images/home/ic_smart_w.svg",
+                                    height: Responsive.getHeight(context, 30),
+                                    width: Responsive.getWidth(context, 30),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const SmartLensScreen(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                Stack(
+                                  children: [
+                                    IconButton(
+                                      icon: SvgPicture.asset(
+                                        "assets/images/product/ic_cart.svg",
+                                        colorFilter: ColorFilter.mode(
+                                          _isScrolled ? Colors.black : Colors.white,
+                                          BlendMode.srcIn,
+                                        ),
+                                        height: Responsive.getHeight(context, 30),
+                                        width: Responsive.getWidth(context, 30),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const CartScreen(),
                                           ),
                                         );
-                                      }),
+                                      },
                                     ),
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(top: 20.0),
-                                      padding: const EdgeInsets.only(right: 16.0),
-                                      child: GestureDetector(
-                                        onTap: _showAgeGroupSelection,
+                                    Positioned(
+                                      right: 5,
+                                      top: 23,
+                                      child: Visibility(
+                                        visible: _cartCount == "0" ? false : true,
                                         child: Container(
-                                          padding: const EdgeInsets.fromLTRB(20, 11, 20, 11),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.rectangle,
-                                            borderRadius: BorderRadius.circular(22),
-                                            border: Border.all(
-                                              color: const Color(0xFFDDDDDD), // 테두리 색상
-                                            ),
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: const BoxDecoration(
+                                            color: Color(0xFFFF6191),
+                                            shape: BoxShape.circle,
                                           ),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                margin: const EdgeInsets.only(right: 5),
-                                                child: Text(
-                                                  getSelectedAgeGroupText(),
-                                                  style: TextStyle(
-                                                    fontFamily: 'Pretendard',
-                                                    fontSize: Responsive.getFont(context, 14),
-                                                    color: Colors.black,
-                                                    height: 1.2,
-                                                  ),
-                                                ),
-                                              ),
-                                              SvgPicture.asset(
-                                                "assets/images/product/filter_select.svg",
-                                                width: 14,
-                                                height: 14,
-                                                fit: BoxFit.contain,
-                                                alignment: Alignment.topCenter,
-                                              )
-                                            ],
+                                          child: Text(
+                                            _cartCount,
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              color: Colors.white,
+                                              fontSize: Responsive.getFont(context, 9),
+                                              height: 1.2,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
-                                Container(
-                                  margin: const EdgeInsets.only(right: 16, bottom: 29),
-                                  child: GridView.builder(
-                                    shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 12.0,
-                                      mainAxisSpacing: 30.0,
-                                      childAspectRatio: 0.5,
-                                    ),
-                                    itemCount: _productList.length,
-                                    itemBuilder: (context, index) {
-                                      final productData = _productList[index];
-                                      return ProductListCard(productData: productData);
-                                    },
-                                  ),
-                                ),
                               ],
                             ),
                           ),
-                          const HomeFooter(),
                         ],
                       ),
-                    ),
-                  ],
+                      SliverList(
+                        delegate: SliverChildListDelegate(
+                          [
+                            HomeBodyCategory(categories: _categories,),
+                            const HomeBodyAi(),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 30.0),
+                              child: SizedBox(
+                                height: 451, // 고정된 높이
+                                child: HomeBodyExhibition(),
+                              ),
+                            ),
+                            //HomeBodyBestSales(categories: _categories, ageCategories: _ageCategories,),
+                            Container(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '판매베스트',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 20),
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 20),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: List<Widget>.generate(_productCategories.length, (index) {
+                                          return Container(
+                                            padding: const EdgeInsets.only(right: 4.0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _selectedCategoryIndex = index;
+                                                });
+                                                _getList();
+                                              },
+                                              child: categoryTab(index),
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 20.0),
+                                        padding: const EdgeInsets.only(right: 16.0),
+                                        child: GestureDetector(
+                                          onTap: _showAgeGroupSelection,
+                                          child: Container(
+                                            padding: const EdgeInsets.fromLTRB(20, 11, 20, 11),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.rectangle,
+                                              borderRadius: BorderRadius.circular(22),
+                                              border: Border.all(
+                                                color: const Color(0xFFDDDDDD), // 테두리 색상
+                                              ),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  margin: const EdgeInsets.only(right: 5),
+                                                  child: Text(
+                                                    getSelectedAgeGroupText(),
+                                                    style: TextStyle(
+                                                      fontFamily: 'Pretendard',
+                                                      fontSize: Responsive.getFont(context, 14),
+                                                      color: Colors.black,
+                                                      height: 1.2,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SvgPicture.asset(
+                                                  "assets/images/product/filter_select.svg",
+                                                  width: 14,
+                                                  height: 14,
+                                                  fit: BoxFit.contain,
+                                                  alignment: Alignment.topCenter,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(right: 16, bottom: 29),
+                                    child: GridView.builder(
+                                      shrinkWrap: true,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 12.0,
+                                        mainAxisSpacing: 30.0,
+                                        childAspectRatio: 0.5,
+                                      ),
+                                      itemCount: _productList.length,
+                                      itemBuilder: (context, index) {
+                                        final productData = _productList[index];
+                                        return ProductListCard(productData: productData);
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const HomeFooter(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          MoveTopButton(scrollController: _scrollController),
-        ],
+              ],
+            ),
+            MoveTopButton(scrollController: _scrollController),
+          ],
+        ),
       ),
     );
   }
