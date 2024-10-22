@@ -60,44 +60,45 @@ class ServiceScreen extends ConsumerWidget {
           ),
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        margin: const EdgeInsets.only(top: 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Consumer(builder: (context, ref, widget) {
-              final model = ref.watch(serviceModelProvider);
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          margin: const EdgeInsets.only(top: 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Consumer(builder: (context, ref, widget) {
+                final model = ref.watch(serviceModelProvider);
 
-              return Column(
-                children: [
-                  _buildInfoRow(
-                    context,
-                    '메일문의',
-                    model?.stCustomerEmail ?? 'email@email.com',
-                    Colors.black,
-                    false
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 20, bottom: 10),
-                    child: _buildInfoRow(
-                      context,
-                      '전화문의',
-                      model?.stCustomerTel ?? '02-000-000',
-                      const Color(0xFFFF6192),
-                      true
-                    )
-                  ),
-                ],
-              );
-            }),
-            _buildCustomTile(context, '판매자 입점 문의', () {
+                return Column(
+                  children: [
+                    _buildInfoRow(
+                        context,
+                        '메일문의',
+                        model?.stCustomerEmail ?? 'email@email.com',
+                        Colors.black,
+                        false
+                    ),
+                    Container(
+                        margin: const EdgeInsets.only(top: 20, bottom: 10),
+                        child: _buildInfoRow(
+                            context,
+                            '전화문의',
+                            model?.stCustomerTel ?? '02-000-000',
+                            const Color(0xFFFF6192),
+                            true
+                        )
+                    ),
+                  ],
+                );
+              }),
+              _buildCustomTile(context, '판매자 입점 문의', () {
                 if (mtIdx != null && mtIdx.isNotEmpty) {
                   // 회원인 경우
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const InquiryStore()
+                        builder: (context) => const InquiryStore()
                     ),
                   );
                 } else {
@@ -105,19 +106,19 @@ class ServiceScreen extends ConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const NonInquiryStore()
+                        builder: (context) => const NonInquiryStore()
                     ), // 비회원용 페이지
                   );
                 }
               },
-            ),
-            _buildCustomTile(context, '고객센터 문의하기', () {
+              ),
+              _buildCustomTile(context, '고객센터 문의하기', () {
                 if (mtIdx != null && mtIdx.isNotEmpty) {
                   // 회원인 경우
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const InquiryService(qnaType: '1',)
+                        builder: (context) => const InquiryService(qnaType: '1',)
                     ),
                   );
                 } else {
@@ -125,22 +126,23 @@ class ServiceScreen extends ConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const NonInquiryService(qnaType: '1')
+                        builder: (context) => const NonInquiryService(qnaType: '1')
                     ), // 비회원용 페이지
                   );
                 }
               },
-            ),
-            _buildCustomTile(context, '문의내역', () {
+              ),
+              _buildCustomTile(context, '문의내역', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ServiceMyInquiryScreen()
+                      builder: (context) => const ServiceMyInquiryScreen()
                   ),
                 );
               },
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

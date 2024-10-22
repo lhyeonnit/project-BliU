@@ -13,7 +13,7 @@ class NoticeDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ScrollController _scrollController = ScrollController();
+    final ScrollController scrollController = ScrollController();
 
     final Map<String, dynamic> requestData = {
       'nt_idx': ntIdx,
@@ -70,8 +70,8 @@ class NoticeDetail extends ConsumerWidget {
               final model = ref.watch(noticeDetailModelProvider);
               if (model?.noticeDetailResponseDTO?.result == false) {
                 Future.delayed(Duration.zero, () {
-                  Utils.getInstance().showSnackBar(
-                      context, model?.noticeDetailResponseDTO?.message ?? "");
+                  if (!context.mounted) return;
+                  Utils.getInstance().showSnackBar(context, model?.noticeDetailResponseDTO?.message ?? "");
                 });
               }
 
@@ -96,13 +96,13 @@ class NoticeDetail extends ConsumerWidget {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 8, bottom: 17),
+                          margin: const EdgeInsets.only(top: 8, bottom: 17),
                           child: Text(
                             ntWdate,
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
-                              color: Color(0xFF7B7B7B),
+                              color: const Color(0xFF7B7B7B),
                               height: 1.2,
                             ),
                           ),
@@ -110,10 +110,10 @@ class NoticeDetail extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  Divider(thickness: 1, color: Color(0xFFEEEEEE)),
+                  const Divider(thickness: 1, color: Color(0xFFEEEEEE)),
                   Container(
-                    margin: EdgeInsets.only(top: 20),
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    margin: const EdgeInsets.only(top: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       ntContent,
                       style: TextStyle(
@@ -127,7 +127,7 @@ class NoticeDetail extends ConsumerWidget {
               );
             }),
           ),
-          MoveTopButton(scrollController: _scrollController),
+          MoveTopButton(scrollController: scrollController),
         ],
       ),
     );

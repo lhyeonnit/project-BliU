@@ -61,39 +61,41 @@ class TermsDetail extends ConsumerWidget {
           ),
         ),
       ),
-      body: Container(
-        margin: const EdgeInsets.only(top: 40),
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Consumer(
-            builder: (context, ref, widget) {
-              String content = "";
+      body: SafeArea(
+        child: Container(
+          margin: const EdgeInsets.only(top: 40),
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Consumer(
+              builder: (context, ref, widget) {
+                String content = "";
 
-              final model = ref.watch(termsDetailModelProvider);
+                final model = ref.watch(termsDetailModelProvider);
 
-              if (model?.defaultResponseDTO != null) {
-                if (model?.defaultResponseDTO?.result == true) {
-                  content = model?.defaultResponseDTO?.message ?? "";
-                } else {
-                  Future.delayed(Duration.zero, () {
-                    Utils.getInstance().showSnackBar(
-                        context, model?.defaultResponseDTO?.message ?? "");
-                  });
+                if (model?.defaultResponseDTO != null) {
+                  if (model?.defaultResponseDTO?.result == true) {
+                    content = model?.defaultResponseDTO?.message ?? "";
+                  } else {
+                    Future.delayed(Duration.zero, () {
+                      if (!context.mounted) return;
+                      Utils.getInstance().showSnackBar(context, model?.defaultResponseDTO?.message ?? "");
+                    });
+                  }
                 }
-              }
 
-              return Text(
-                content,
-                style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: Responsive.getFont(context, 14),
-                  height: 1.2,
-                ),
-              );
-            },
+                return Text(
+                  content,
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: Responsive.getFont(context, 14),
+                    height: 1.2,
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),

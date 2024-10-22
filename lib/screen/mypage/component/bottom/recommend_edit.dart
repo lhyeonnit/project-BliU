@@ -16,10 +16,10 @@ class RecommendEdit extends ConsumerStatefulWidget {
   const RecommendEdit({super.key});
 
   @override
-  ConsumerState<RecommendEdit> createState() => _RecommendEditState();
+  ConsumerState<RecommendEdit> createState() => RecommendEditState();
 }
 
-class _RecommendEditState extends ConsumerState<RecommendEdit> {
+class RecommendEditState extends ConsumerState<RecommendEdit> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _birthController = TextEditingController(text: '선택해주세요');
 
@@ -84,47 +84,23 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          ListView(
-            controller: _scrollController,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 40, bottom: 80),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '자녀의 출생년도',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 15),
-                            fontWeight: FontWeight.w600,
-                            height: 1.2,
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: const BorderRadius.all(Radius.circular(6)),
-                            border: Border.all(color: const Color(0xFFDDDDDD)),
-                          ),
-                          child: birthdayText(),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 30),
-                      child: Column(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            ListView(
+              controller: _scrollController,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 40, bottom: 80),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '자녀의 성별',
+                            '자녀의 출생년도',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 15),
@@ -134,141 +110,167 @@ class _RecommendEditState extends ConsumerState<RecommendEdit> {
                           ),
                           Container(
                             margin: const EdgeInsets.only(top: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                _genderSelect(
-                                  'assets/images/gender_select_boy.png',
-                                  'Boy'
-                                ),
-                                const SizedBox(width: 10,),
-                                _genderSelect(
-                                  'assets/images/gender_select_girl.png',
-                                  'Girl'
-                                ),
-                              ],
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                              border: Border.all(color: const Color(0xFFDDDDDD)),
                             ),
+                            child: birthdayText(),
                           ),
                         ],
                       ),
-                    ),
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '선호 스타일',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 15),
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.2,
-                                  ),
-                                ),
-                                Text(
-                                  '* 다중선택가능',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 13),
-                                    color: const Color(0xFFFF6192),
-                                    height: 1.2,
-                                  ),
-                                ),
-                              ],
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '자녀의 성별',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 15),
+                                fontWeight: FontWeight.w600,
+                                height: 1.2,
+                              ),
                             ),
-                          ),
-                          Wrap(
-                            spacing: 4.0,
-                            runSpacing: 10.0,
-                            children: styleCategories.map((style) {
-                              final isSelected = _selectedStyles.any((selected) => selected.fsIdx == style.fsIdx);
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (isSelected) {
-                                      // 이미 선택된 경우 선택 해제
-                                      _selectedStyles.removeWhere((selected) => selected.fsIdx == style.fsIdx);
-                                    } else {
-                                      // 선택되지 않은 경우 추가
-                                      _selectedStyles.add(style);
-                                    }
-                                  });
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(19),
-                                    border: Border.all(
-                                      color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-                                      width: 1.0,
-                                    ),
-                                    color: Colors.white,
+                            Container(
+                              margin: const EdgeInsets.only(top: 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  _genderSelect(
+                                      'assets/images/gender_select_boy.png',
+                                      'Boy'
                                   ),
-                                  child: Text(
-                                    style.cstName ?? '',
+                                  const SizedBox(width: 10,),
+                                  _genderSelect(
+                                      'assets/images/gender_select_girl.png',
+                                      'Girl'
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '선호 스타일',
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                                      fontSize: Responsive.getFont(context, 15),
+                                      fontWeight: FontWeight.w600,
                                       height: 1.2,
                                     ),
                                   ),
-                                ),
-                              );
-                            }).toList(),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Column(
-              children: [
-                MoveTopButton(scrollController: _scrollController),
-                Container(
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: GestureDetector(
-                    onTap: () => _editRecommendInfo(),
-                    child: Container(
-                      height: 48,
-                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(6),
+                                  Text(
+                                    '* 다중선택가능',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 13),
+                                      color: const Color(0xFFFF6192),
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Wrap(
+                              spacing: 4.0,
+                              runSpacing: 10.0,
+                              children: styleCategories.map((style) {
+                                final isSelected = _selectedStyles.any((selected) => selected.fsIdx == style.fsIdx);
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      if (isSelected) {
+                                        // 이미 선택된 경우 선택 해제
+                                        _selectedStyles.removeWhere((selected) => selected.fsIdx == style.fsIdx);
+                                      } else {
+                                        // 선택되지 않은 경우 추가
+                                        _selectedStyles.add(style);
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(19),
+                                      border: Border.all(
+                                        color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                        width: 1.0,
+                                      ),
+                                      color: Colors.white,
+                                    ),
+                                    child: Text(
+                                      style.cstName ?? '',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            )
+                          ],
                         ),
                       ),
-                      child: Center(
-                        child: Text(
-                          '확인',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Colors.white,
-                            height: 1.2,
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  MoveTopButton(scrollController: _scrollController),
+                  Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: GestureDetector(
+                      onTap: () => _editRecommendInfo(),
+                      child: Container(
+                        height: 48,
+                        margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(6),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '확인',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.white,
+                              height: 1.2,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

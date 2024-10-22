@@ -68,222 +68,225 @@ class InquiryProductDetail extends ConsumerWidget {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Consumer(
-            builder: (context, ref, widget) {
-              final model = ref.watch(inquiryDetailModelProvider);
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Consumer(
+              builder: (context, ref, widget) {
+                final model = ref.watch(inquiryDetailModelProvider);
 
-              if (model?.qnaDetailResponseDTO?.result == false) {
-                Future.delayed(Duration.zero, () {
-                  Utils.getInstance().showSnackBar(context, model?.qnaDetailResponseDTO?.message ?? "");
-                  model?.qnaDetailResponseDTO = null;
-                });
-                return Container();
-              }
+                if (model?.qnaDetailResponseDTO?.result == false) {
+                  Future.delayed(Duration.zero, () {
+                    if (!context.mounted) return;
+                    Utils.getInstance().showSnackBar(context, model?.qnaDetailResponseDTO?.message ?? "");
+                    model?.qnaDetailResponseDTO = null;
+                  });
+                  return Container();
+                }
 
-              final detailData = model?.qnaDetailResponseDTO?.data;
-              final product = detailData?.product;
-              final contentImgList = detailData?.qtContentImg ?? [];
+                final detailData = model?.qnaDetailResponseDTO?.data;
+                final product = detailData?.product;
+                final contentImgList = detailData?.qtContentImg ?? [];
 
-              List<Widget> contentImgWidgetList = [];
-              for (var contentImg in contentImgList) {
-                final tmpWidget = _contentImgList(contentImg);
-                contentImgWidgetList.add(tmpWidget);
-              }
+                List<Widget> contentImgWidgetList = [];
+                for (var contentImg in contentImgList) {
+                  final tmpWidget = _contentImgList(contentImg);
+                  contentImgWidgetList.add(tmpWidget);
+                }
 
-              Widget answerWidget = Container();
-              if (detailData?.qtStatus == "Y") {
-                answerWidget = _answerWidget(context, detailData, product);
-              }
+                Widget answerWidget = Container();
+                if (detailData?.qtStatus == "Y") {
+                  answerWidget = _answerWidget(context, detailData, product);
+                }
 
-              return ListView(
-                controller: scrollController,
-                children: [
-                  // 상품 정보
-                  Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: const Color(0x5000000)),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: Image.network(
-                              product?.ptMainImg ?? "",
-                              width: 90,
-                              height: 90,
-                              fit: BoxFit.cover,
-                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                return const SizedBox();
-                              },
+                return ListView(
+                  controller: scrollController,
+                  children: [
+                    // 상품 정보
+                    Container(
+                      margin: const EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(right: 20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(color: const Color(0x5000000)),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(6),
+                              child: Image.network(
+                                product?.ptMainImg ?? "",
+                                width: 90,
+                                height: 90,
+                                fit: BoxFit.cover,
+                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                  return const SizedBox();
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  product?.stName ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 12),
+                                    color: const Color(0xFF7B7B7B),
+                                    height: 1.2,
+                                  ),
+                                ),
+                                Text(
+                                  product?.ptName ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.2,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 8),
+                                  child: Text(
+                                    '${product?.ptPrice ?? 0}원',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 16),
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // 문의 상태와 내용
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            textBaseline: TextBaseline.alphabetic,
                             children: [
                               Text(
-                                product?.stName ?? "",
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 12),
-                                  color: const Color(0xFF7B7B7B),
-                                  height: 1.2,
-                                ),
-                              ),
-                              Text(
-                                product?.ptName ?? "",
+                                detailData?.qtStatusTxt ?? "",
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontSize: Responsive.getFont(context, 14),
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
                                   height: 1.2,
                                 ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
                               ),
                               Container(
-                                margin: const EdgeInsets.only(top: 8),
+                                margin: const EdgeInsets.only(left: 11),
                                 child: Text(
-                                  '${product?.ptPrice ?? 0}원',
+                                  detailData?.qtWdate ?? "",
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 16),
-                                    fontWeight: FontWeight.bold,
+                                    fontSize: Responsive.getFont(context, 12),
+                                    color: const Color(0xFF7B7B7B),
                                     height: 1.2,
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // 문의 상태와 내용
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            Text(
-                              detailData?.qtStatusTxt ?? "",
+                          Container(
+                            margin: const EdgeInsets.only(top: 12, bottom: 10),
+                            child: Text(
+                              detailData?.qtTitle ?? "",
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.black,
                                 height: 1.2,
                               ),
                             ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 11),
-                              child: Text(
-                                detailData?.qtWdate ?? "",
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 12),
-                                  color: const Color(0xFF7B7B7B),
-                                  height: 1.2,
-                                ),
+                          ),
+                          Text(
+                            detailData?.qtContent ?? "",
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              height: 1.2,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // 첨부 이미지들
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          children: contentImgWidgetList,
+                        ),
+                      ),
+                    ),
+
+                    // 삭제 버튼
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      width: double.infinity,
+                      child: GestureDetector(
+                        onTap: () {
+                          _delete(context, ref);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: const Color(0xFFDDDDDD)),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '삭제',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                fontWeight: FontWeight.w500,
+                                height: 1.2,
                               ),
                             ),
-                          ],
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 12, bottom: 10),
-                          child: Text(
-                            detailData?.qtTitle ?? "",
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              height: 1.2,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          detailData?.qtContent ?? "",
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            height: 1.2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // 첨부 이미지들
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 20),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        children: contentImgWidgetList,
-                      ),
-                    ),
-                  ),
-
-                  // 삭제 버튼
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    width: double.infinity,
-                    child: GestureDetector(
-                      onTap: () {
-                        _delete(context, ref);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: const Color(0xFFDDDDDD)),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '삭제',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.w500,
-                              height: 1.2,
-                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    child: const Divider(
-                      thickness: 1,
-                      color: Color(0xFFEEEEEE),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      child: const Divider(
+                        thickness: 1,
+                        color: Color(0xFFEEEEEE),
+                      ),
                     ),
-                  ),
-                  answerWidget,
-                ],
-              );
-            },
-          ),
-          MoveTopButton(scrollController: scrollController),
-        ],
+                    answerWidget,
+                  ],
+                );
+              },
+            ),
+            MoveTopButton(scrollController: scrollController),
+          ],
+        ),
       ),
     );
   }
@@ -385,6 +388,7 @@ class InquiryProductDetail extends ConsumerWidget {
     };
 
     final defaultResponseDTO = await ref.read(inquiryDetailModelProvider.notifier).delete(requestData);
+    if (!context.mounted) return;
     Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     if (defaultResponseDTO.result == true) {
       Navigator.pop(context, true);

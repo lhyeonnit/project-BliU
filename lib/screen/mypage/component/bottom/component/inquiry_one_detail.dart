@@ -66,152 +66,155 @@ class InquiryOneDetail extends ConsumerWidget {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Consumer(
-            builder: (context, ref, widget) {
-              final model = ref.watch(inquiryDetailModelProvider);
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Consumer(
+              builder: (context, ref, widget) {
+                final model = ref.watch(inquiryDetailModelProvider);
 
-              if (model?.qnaDetailResponseDTO?.result == false) {
-                Future.delayed(Duration.zero, () {
-                  Utils.getInstance().showSnackBar(context, model?.qnaDetailResponseDTO?.message ?? "");
-                  model?.qnaDetailResponseDTO = null;
-                });
-                return Container();
-              }
+                if (model?.qnaDetailResponseDTO?.result == false) {
+                  Future.delayed(Duration.zero, () {
+                    if (!context.mounted) return;
+                    Utils.getInstance().showSnackBar(context, model?.qnaDetailResponseDTO?.message ?? "");
+                    model?.qnaDetailResponseDTO = null;
+                  });
+                  return Container();
+                }
 
-              final detailData = model?.qnaDetailResponseDTO?.data;
-              final contentImgList = detailData?.qtContentImg ?? [];
+                final detailData = model?.qnaDetailResponseDTO?.data;
+                final contentImgList = detailData?.qtContentImg ?? [];
 
-              List<Widget> contentImgWidgetList = [];
-              for (var contentImg in contentImgList) {
-                final tmpWidget = _contentImgList(contentImg);
-                contentImgWidgetList.add(tmpWidget);
-              }
+                List<Widget> contentImgWidgetList = [];
+                for (var contentImg in contentImgList) {
+                  final tmpWidget = _contentImgList(contentImg);
+                  contentImgWidgetList.add(tmpWidget);
+                }
 
-              Widget answerWidget = Container();
-              if (detailData?.qtStatus == "Y") {
-                answerWidget = _answerWidget(context, detailData);
-              }
+                Widget answerWidget = Container();
+                if (detailData?.qtStatus == "Y") {
+                  answerWidget = _answerWidget(context, detailData);
+                }
 
-              return ListView(
-                controller: scrollController,
-                children: [
-                  // 문의 상태와 내용
-                  Container(
-                    margin: const EdgeInsets.only(top: 40),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            Text(
-                              detailData?.qtStatusTxt ?? "",
+                return ListView(
+                  controller: scrollController,
+                  children: [
+                    // 문의 상태와 내용
+                    Container(
+                      margin: const EdgeInsets.only(top: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            textBaseline: TextBaseline.alphabetic,
+                            children: [
+                              Text(
+                                detailData?.qtStatusTxt ?? "",
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                  height: 1.2,
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(left: 11),
+                                child: Text(
+                                  detailData?.qtWdate ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 12),
+                                    color: const Color(0xFF7B7B7B),
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 12, bottom: 10),
+                            child: Text(
+                              detailData?.qtTitle ?? "",
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.black,
                                 height: 1.2,
                               ),
                             ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 11),
-                              child: Text(
-                                detailData?.qtWdate ?? "",
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 12),
-                                  color: const Color(0xFF7B7B7B),
-                                  height: 1.2,
-                                ),
+                          ),
+                          Text(
+                            detailData?.qtContent ?? "",
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              height: 1.2,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          children: contentImgWidgetList,
+                        ),
+                      ),
+                    ),
+
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      width: double.infinity,
+                      child: GestureDetector(
+                        onTap: () {
+                          _delete(context, ref);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: const Color(0xFFDDDDDD)),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '삭제',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                fontWeight: FontWeight.w500,
+                                height: 1.2,
                               ),
                             ),
-                          ],
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 12, bottom: 10),
-                          child: Text(
-                            detailData?.qtTitle ?? "",
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              height: 1.2,
-                            ),
                           ),
                         ),
-                        Text(
-                          detailData?.qtContent ?? "",
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            height: 1.2,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Container(
+                    Container(
                       margin: const EdgeInsets.symmetric(vertical: 20),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        children: contentImgWidgetList,
+                      child: const Divider(
+                        thickness: 1,
+                        color: Color(0xFFEEEEEE),
                       ),
                     ),
-                  ),
-
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    width: double.infinity,
-                    child: GestureDetector(
-                      onTap: () {
-                        _delete(context, ref);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: const Color(0xFFDDDDDD)),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '삭제',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.w500,
-                              height: 1.2,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    child: const Divider(
-                      thickness: 1,
-                      color: Color(0xFFEEEEEE),
-                    ),
-                  ),
-                  // 답변 내용
-                  answerWidget,
-                ],
-              );
-            },
-          ),
-          MoveTopButton(scrollController: scrollController),
-        ],
+                    // 답변 내용
+                    answerWidget,
+                  ],
+                );
+              },
+            ),
+            MoveTopButton(scrollController: scrollController),
+          ],
+        ),
       ),
     );
   }
@@ -291,6 +294,8 @@ class InquiryOneDetail extends ConsumerWidget {
     };
 
     final defaultResponseDTO = await ref.read(inquiryDetailModelProvider.notifier).delete(requestData);
+    if (!context.mounted) return;
+
     Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     if (defaultResponseDTO.result == true) {
       Navigator.pop(context);

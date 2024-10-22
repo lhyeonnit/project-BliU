@@ -11,10 +11,10 @@ class FAQScreen extends ConsumerStatefulWidget {
   const FAQScreen({super.key});
 
   @override
-  ConsumerState<FAQScreen> createState() => _FAQScreenState();
+  ConsumerState<FAQScreen> createState() => FAQScreenState();
 }
 
-class _FAQScreenState extends ConsumerState<FAQScreen> {
+class FAQScreenState extends ConsumerState<FAQScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
 
@@ -171,235 +171,237 @@ class _FAQScreenState extends ConsumerState<FAQScreen> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SingleChildScrollView(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                  height: 56,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: const Color(0xFFE1E1E1))
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                          style: TextStyle(
-                              height: 1.2,
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14)
-                          ),
-                          controller: _searchController,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                            labelStyle: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SingleChildScrollView(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    height: 56,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: const Color(0xFFE1E1E1))
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                            style: TextStyle(
+                                height: 1.2,
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14)
                             ),
-                            hintText: '내용을 입력해 주세요.',
-                            hintStyle: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: const Color(0xFF595959)
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                              labelStyle: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                              ),
+                              hintText: '내용을 입력해 주세요.',
+                              hintStyle: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: const Color(0xFF595959)
+                              ),
+                              border: InputBorder.none,
+                              suffixIcon: _searchController.text.isNotEmpty
+                                  ? GestureDetector(
+                                onTap: () {
+                                  _searchController.clear();
+                                  setState(() {});
+                                },
+                                child: SvgPicture.asset(
+                                  'assets/images/ic_word_del.svg',
+                                  fit: BoxFit.contain,
+                                ),
+                              )
+                                  : null,
+                              suffixIconConstraints: BoxConstraints.tight(const Size(24, 24)),
                             ),
-                            border: InputBorder.none,
-                            suffixIcon: _searchController.text.isNotEmpty
-                                ? GestureDetector(
-                                    onTap: () {
-                                      _searchController.clear();
-                                      setState(() {});
-                                    },
-                                    child: SvgPicture.asset(
-                                      'assets/images/ic_word_del.svg',
-                                      fit: BoxFit.contain,
-                                    ),
-                                  )
-                                : null,
-                            suffixIconConstraints: BoxConstraints.tight(const Size(24, 24)),
+                            onSubmitted: (value) {
+                              if (value.isNotEmpty) {
+                                _searchController.clear();
+                                _searchTxt = value;
+                                _getList();
+                              }
+                            },
                           ),
-                          onSubmitted: (value) {
-                            if (value.isNotEmpty) {
-                              _searchController.clear();
-                              _searchTxt = value;
-                              _getList();
-                            }
-                          },
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8, left: 10, bottom: 8, right: 15),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 10, bottom: 8, right: 15),
+                          child: GestureDetector(
+                            onTap: () {
+                              String search = _searchController.text;
+                              if (search.isNotEmpty) {
+                                _searchController.clear();
+                                _searchTxt = search;
+                                _getList();
+                              }
+                            },
+                            child: SvgPicture.asset(
+                              'assets/images/home/ic_top_sch_w.svg',
+                              colorFilter: const ColorFilter.mode(
+                                Colors.black,
+                                BlendMode.srcIn,
+                              ),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 38,
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: faqCategories.length,
+                    itemBuilder: (context, index) {
+                      final bool isSelected = _selectedCategoryIndex == index;
+                      final faqCategoryData = faqCategories[index];
+
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 4.0),
                         child: GestureDetector(
                           onTap: () {
-                            String search = _searchController.text;
-                            if (search.isNotEmpty) {
-                              _searchController.clear();
-                              _searchTxt = search;
+                            setState(() {
+                              _selectedCategoryIndex = index;
                               _getList();
-                            }
+                            });
                           },
-                          child: SvgPicture.asset(
-                            'assets/images/home/ic_top_sch_w.svg',
-                            colorFilter: const ColorFilter.mode(
-                              Colors.black,
-                              BlendMode.srcIn,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(19),
+                              border: Border.all(
+                                color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                width: 1.0,
+                              ),
+                              color: Colors.white,
                             ),
-                            fit: BoxFit.contain,
+                            child: Center(
+                              child: Text(
+                                faqCategoryData.cftName ?? "",
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                                  height: 1.2,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
-              ),
-              Container(
-                height: 38,
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: faqCategories.length,
-                  itemBuilder: (context, index) {
-                    final bool isSelected = _selectedCategoryIndex == index;
-                    final faqCategoryData = faqCategories[index];
-
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 4.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _selectedCategoryIndex = index;
-                            _getList();
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(19),
-                            border: Border.all(
-                              color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-                              width: 1.0,
-                            ),
-                            color: Colors.white,
-                          ),
-                          child: Center(
-                            child: Text(
-                              faqCategoryData.cftName ?? "",
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: isSelected ? const Color(0xFFFF6192) : Colors.black,
-                                height: 1.2,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  width: double.infinity,
+                  color: const Color(0xFFF5F9F9), // 색상 적용
+                  height: 10,
                 ),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 20),
-                width: double.infinity,
-                color: const Color(0xFFF5F9F9), // 색상 적용
-                height: 10,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  itemCount: _faqList.length,
-                  itemBuilder: (context, index) {
-                    final faq = _faqList[index];
-                    String cateName = "";
-                    for (var cate in faqCategories) {
-                      if (cate.fcIdx == faq.cftIdx) {
-                        cateName = cate.cftName ?? "";
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    itemCount: _faqList.length,
+                    itemBuilder: (context, index) {
+                      final faq = _faqList[index];
+                      String cateName = "";
+                      for (var cate in faqCategories) {
+                        if (cate.fcIdx == faq.cftIdx) {
+                          cateName = cate.cftName ?? "";
+                        }
                       }
-                    }
-                    return Theme(
-                      data: Theme.of(context)
-                          .copyWith(dividerColor: Colors.transparent), // 선 제거
-                      child: ExpansionTile(
-                        tilePadding: EdgeInsets.zero,
-                        collapsedBackgroundColor: Colors.white,
-                        // 펼쳐지기 전 배경
-                        backgroundColor: Colors.white,
-                        // 펼쳐진 후 배경
-                        title: Row(
-                          children: [
-                            Text(
-                              cateName,
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.bold,
-                                fontSize: Responsive.getFont(context, 14),
-                                height: 1.2,
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 5),
-                                child: Text(
-                                  faq.ftSubject ?? "",
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    height: 1.2,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
+                      return Theme(
+                        data: Theme.of(context)
+                            .copyWith(dividerColor: Colors.transparent), // 선 제거
+                        child: ExpansionTile(
+                          tilePadding: EdgeInsets.zero,
+                          collapsedBackgroundColor: Colors.white,
+                          // 펼쳐지기 전 배경
+                          backgroundColor: Colors.white,
+                          // 펼쳐진 후 배경
+                          title: Row(
+                            children: [
+                              Text(
+                                cateName,
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF5F9F9),
-                              borderRadius: BorderRadius.circular(6.0),
-                            ),
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  faq.ftSubject ?? "",
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: Responsive.getFont(context, 14),
-                                    height: 1.2,
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(top: 15),
+                              Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 5),
                                   child: Text(
-                                    faq.ftContent ?? "",
+                                    faq.ftSubject ?? "",
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
                                       height: 1.2,
                                     ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF5F9F9),
+                                borderRadius: BorderRadius.circular(6.0),
+                              ),
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    faq.ftSubject ?? "",
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 15),
+                                    child: Text(
+                                      faq.ftContent ?? "",
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
-          MoveTopButton(scrollController: _scrollController),
-        ],
+              ],
+            ),
+            MoveTopButton(scrollController: _scrollController),
+          ],
+        ),
       ),
     );
   }

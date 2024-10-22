@@ -98,12 +98,14 @@ class _NoticeScreenState extends State<NoticeScreen> with SingleTickerProviderSt
           ),
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: const [
-          NoticeList(),
-          EventList(), // 이벤트 탭 내용은 필요에 따라 채워 넣으세요.
-        ],
+      body: SafeArea(
+        child: TabBarView(
+          controller: _tabController,
+          children: const [
+            NoticeList(),
+            EventList(), // 이벤트 탭 내용은 필요에 따라 채워 넣으세요.
+          ],
+        ),
       ),
     );
   }

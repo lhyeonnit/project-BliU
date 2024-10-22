@@ -28,10 +28,10 @@ class MyScreen extends ConsumerStatefulWidget {
   const MyScreen({super.key});
 
   @override
-  ConsumerState<MyScreen> createState() => _MyScreenState();
+  ConsumerState<MyScreen> createState() => MyScreenState();
 }
 
-class _MyScreenState extends ConsumerState<MyScreen> {
+class MyScreenState extends ConsumerState<MyScreen> {
   String userId = '';
   MemberInfoData? memberInfoData;
   int? myReviewCount;

@@ -97,12 +97,14 @@ class _ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with Si
           ),
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: const [
-          ServiceInquiryProduct(),
-          ServiceInquiryOne(),
-        ],
+      body: SafeArea(
+        child: TabBarView(
+          controller: _tabController,
+          children: const [
+            ServiceInquiryProduct(),
+            ServiceInquiryOne(),
+          ],
+        ),
       ),
     );
   }

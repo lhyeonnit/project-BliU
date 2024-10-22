@@ -16,10 +16,10 @@ class JoinFormScreen extends ConsumerStatefulWidget {
   const JoinFormScreen({super.key});
 
   @override
-  ConsumerState<JoinFormScreen> createState() => _JoinFormScreenState();
+  ConsumerState<JoinFormScreen> createState() => JoinFormScreenState();
 }
 
-class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
+class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isIdChecked = false;
   bool _isAllFieldsFilled = false;
@@ -370,29 +370,29 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 20, bottom: 10),
+                        margin: const EdgeInsets.only(top: 20, bottom: 10),
                         child: Row(
                           children: [
                             Text('생년월일',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.bold,
+                                fontSize: Responsive.getFont(context, 13),
+                                height: 1.2,
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 4),
+                              child: Text(
+                                '선택',
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontWeight: FontWeight.bold,
                                   fontSize: Responsive.getFont(context, 13),
+                                  color: const Color(0xFFFF6192),
                                   height: 1.2,
-                                )
-                            ),
-                            Container(
-                                margin: const EdgeInsets.only(left: 4),
-                                child: Text(
-                                    '선택',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: Responsive.getFont(context, 13),
-                                      color: const Color(0xFFFF6192),
-                                      height: 1.2,
-                                    )
-                                )
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -401,8 +401,8 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         height: 44,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                          border: Border.all(color: Color(0xFFDDDDDD)),
+                          borderRadius: const BorderRadius.all(Radius.circular(6)),
+                          border: Border.all(color: const Color(0xFFDDDDDD)),
                         ),
                         child: _birthdayText(),
                       ),
@@ -632,7 +632,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
             ),
           ),
           if (label.isNotEmpty)
-            Container(
+            SizedBox(
               height: 44,
               child: TextField(
                 onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
@@ -759,11 +759,11 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
         _selectDate();
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         child: TextFormField(
           textAlign: TextAlign.start,
           enabled: false,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             isDense: true,
             border: InputBorder.none,
           ),
@@ -771,7 +771,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
           style: TextStyle(
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 14),
-            color: Color(0xFF595959),
+            color: const Color(0xFF595959),
           ),
         ),
       ),
@@ -815,12 +815,12 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                       onTap: () {
                         Navigator.of(context).pop();
                       },
-                      child: Icon(Icons.close),
+                      child: const Icon(Icons.close),
                     ),
                   ],
                 ),
               ),
-              Divider(
+              const Divider(
                 height: 1,
                 thickness: 1,
                 color: Color(0xFFEEEEEE),
@@ -828,7 +828,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
               // 날짜 선택기
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 17),
+                  margin: const EdgeInsets.symmetric(horizontal: 17),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -839,11 +839,11 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                           diameterRatio: 5.0,
                           itemExtent: 50,
                           selectionOverlay: Container(
-                            margin: EdgeInsets.only(left: 17, right: 15),
-                            decoration: BoxDecoration(
+                            margin: const EdgeInsets.only(left: 17, right: 15),
+                            decoration: const BoxDecoration(
                               border: Border.symmetric(
-                                  horizontal:
-                                  BorderSide(color: Color(0xFFDDDDDD))),
+                                horizontal: BorderSide(color: Color(0xFFDDDDDD))
+                              ),
                             ),
                           ),
                           squeeze: 1,
@@ -879,11 +879,11 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                           backgroundColor: Colors.white,
                           itemExtent: 50,
                           selectionOverlay: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 15),
-                            decoration: BoxDecoration(
+                            margin: const EdgeInsets.symmetric(horizontal: 15),
+                            decoration: const BoxDecoration(
                               border: Border.symmetric(
-                                  horizontal:
-                                  BorderSide(color: Color(0xFFDDDDDD))),
+                                horizontal: BorderSide(color: Color(0xFFDDDDDD))
+                              ),
                             ),
                           ),
                           diameterRatio: 5.0,
@@ -915,11 +915,11 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                           backgroundColor: Colors.white,
                           itemExtent: 50,
                           selectionOverlay: Container(
-                            margin: EdgeInsets.only(left: 15, right: 17),
-                            decoration: BoxDecoration(
+                            margin: const EdgeInsets.only(left: 15, right: 17),
+                            decoration: const BoxDecoration(
                               border: Border.symmetric(
-                                  horizontal:
-                                  BorderSide(color: Color(0xFFDDDDDD))),
+                                horizontal: BorderSide(color: Color(0xFFDDDDDD)),
+                              ),
                             ),
                           ),
                           diameterRatio: 5.0,
@@ -969,7 +969,7 @@ class _JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                   width: double.infinity,
                   height: 48,
                   margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.all(
                       Radius.circular(6),
