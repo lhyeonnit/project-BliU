@@ -151,6 +151,11 @@ class StoreRakingPageState extends ConsumerState<StoreRakingPage> {
       'age': age,
       'pg': _page,
     };
+
+    setState(() {
+      storeRankList = [];
+    });
+
     final storeRankResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getRank(requestData); // 서버에서 데이터 가져오기
     storeRankList = storeRankResponseDTO?.list ?? [];
 

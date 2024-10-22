@@ -104,6 +104,11 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
       'pg': _page,
     };
 
+    setState(() {
+      _count = 0;
+      _productList = [];
+    });
+
     final productListResponseDTO = await ref.read(likeViewModelProvider.notifier).getList(requestData);
     _count = productListResponseDTO?.count ?? 0;
     _productList = productListResponseDTO?.list ?? [];

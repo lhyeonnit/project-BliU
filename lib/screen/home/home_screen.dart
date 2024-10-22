@@ -118,6 +118,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     final requestData = await _makeRequestData();
 
+    setState(() {
+      _productList = [];
+    });
+
     final productListResponseDTO = await ref.read(homeViewModelProvider.notifier).getList(requestData);
     _productList = productListResponseDTO?.list ?? [];
 

@@ -127,8 +127,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
                             shape: BoxShape.circle,
                             color: Color(0xFFFFE4DF),
                           ),
-                          child: Image.asset(
-                              'assets/images/my/gender_select_boy.png'),
+                          child: Image.asset('assets/images/my/gender_select_boy.png'),
                         )),
                         Expanded(
                           child: Container(
@@ -148,6 +147,8 @@ class MyScreenState extends ConsumerState<MyScreen> {
                                 ),
                                 Text(
                                   memberInfoData?.mtId ?? "",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
@@ -170,12 +171,10 @@ class MyScreenState extends ConsumerState<MyScreen> {
                           },
                           child: Container(
                               margin: const EdgeInsets.only(top: 20),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 7),
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4),
-                                border:
-                                    Border.all(color: const Color(0xFFDDDDDD)),
+                                border: Border.all(color: const Color(0xFFDDDDDD)),
                               ),
                               child: Text(
                                 '내정보수정',

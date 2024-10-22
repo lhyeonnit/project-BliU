@@ -56,6 +56,11 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
 
     final requestData = await _makeRequestData();
 
+    setState(() {
+      _couponCount = 0;
+      _couponList = [];
+    });
+
     final productCouponResponseDTO =
         await ref.read(myCouponViewModelProvider.notifier).getList(requestData);
     _couponCount = productCouponResponseDTO?.count ?? 0;

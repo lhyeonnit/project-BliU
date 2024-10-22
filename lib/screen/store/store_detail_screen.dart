@@ -233,10 +233,16 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
       'pg': _page,
     };
 
+    setState(() {
+      storeData = null;
+      _count = 0;
+      _productList = [];
+    });
+
     final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
     storeData = storeResponseDTO?.data;
-    _productList = storeResponseDTO?.data.list ?? [];
     _count = storeResponseDTO?.data.list.length ?? 0;
+    _productList = storeResponseDTO?.data.list ?? [];
 
     setState(() {
       _isFirstLoadRunning = false;

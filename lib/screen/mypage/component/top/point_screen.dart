@@ -57,6 +57,11 @@ class _PointScreenState extends ConsumerState<PointScreen> {
 
     final requestData = await _makeRequestData();
 
+    setState(() {
+      _mtPoint = 0;
+      _pointList = [];
+    });
+
     final pointListResponseDTO = await ref.read(pointViewModelProvider.notifier).getList(requestData);
     _mtPoint = pointListResponseDTO?.mtPoint ?? 0;
     _pointList = pointListResponseDTO?.list ?? [];

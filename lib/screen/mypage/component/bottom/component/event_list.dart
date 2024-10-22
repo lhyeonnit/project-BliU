@@ -53,6 +53,10 @@ class _EventListState extends ConsumerState<EventList> {
       'pg': _page
     };
 
+    setState(() {
+      eventList = [];
+    });
+
     final eventListResponseDTO = await ref.read(eventListModelProvider.notifier).getList(requestData);
     eventList = eventListResponseDTO?.list ?? [];
 

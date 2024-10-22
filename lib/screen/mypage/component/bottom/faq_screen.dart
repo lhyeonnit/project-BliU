@@ -82,6 +82,10 @@ class FAQScreenState extends ConsumerState<FAQScreen> {
       'pg': _page
     };
 
+    setState(() {
+      _faqList = [];
+    });
+
     final faqResponseDTO = await ref.read(faqViewModelProvider.notifier).getList(requestData);
     _faqList = faqResponseDTO?.list ?? [];
 

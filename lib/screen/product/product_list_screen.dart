@@ -99,6 +99,11 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
 
     final requestData = await _makeRequestData();
 
+    setState(() {
+      _count = 0;
+      _productList = [];
+    });
+
     final productListResponseDTO = await ref.read(productListViewModelProvider.notifier).getList(requestData);
     _count = productListResponseDTO?.count ?? 0;
     _productList = productListResponseDTO?.list ?? [];

@@ -186,9 +186,15 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
 
     final requestProductData = await _makeRequestData();
 
+    setState(() {
+      _count = 0;
+      _productList = [];
+    });
+
     final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestProductData);
     _count = productListResponseDTO?.count ?? 0;
     _productList = productListResponseDTO?.list ?? [];
+
     setState(() {
       _isFirstLoadRunning = false;
     });
@@ -233,6 +239,7 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
             setState(() {
               sortOptionSelected = selectedOption;
               sortOption = selectedOption; // 선택된 정렬 옵션으로 업데이트
+              _getList();
             });
           },
         );

@@ -87,6 +87,10 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
       'pg': _page,
     };
 
+    setState(() {
+      orderList = [];
+    });
+
     final orderResponseDTO = await ref.read(orderListViewModelProvider.notifier).getList(requestData);
     orderList = orderResponseDTO?.list ?? [];
 

@@ -228,6 +228,11 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
       'pg' : _page,
     };
 
+    setState(() {
+      _reviewCount = 0;
+      _reviewList = [];
+    });
+
     final reviewInfoResponseDTO = await ref.read(myReviewViewModelProvider.notifier).getList(requestData);
     _reviewCount = reviewInfoResponseDTO?.count ?? 0;
     _reviewList = reviewInfoResponseDTO?.list ?? [];

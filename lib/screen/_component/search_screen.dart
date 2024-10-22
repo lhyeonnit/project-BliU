@@ -103,6 +103,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
     final mtIdx = pref.getMtIdx();
     Map<String, dynamic> requestSearchMyData = {
       'mt_idx': mtIdx,
+      'token': pref.getToken(),
     };
     final searchMyListResponseDTO = await ref.read(searchModelProvider.notifier).getSearchMyList(requestSearchMyData);
     setState(() {
@@ -116,6 +117,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
 
     Map<String, dynamic> requestData = {
       'mt_idx': mtIdx,
+      'token': pref.getToken(),
       'slt_idx': stIdx,
     };
 
@@ -133,6 +135,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
 
     Map<String, dynamic> requestData = {
       'mt_idx': mtIdx,
+      'token': pref.getToken(),
       'slt_idx': 'all',
     };
 
@@ -239,6 +242,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
       _isSearching = false;    // 검색 중이 아님
       _searchCompleted = false; // 검색 완료 상태 아님
       _searchFailed = false;   // 검색 실패 상태 아님
+      _searchMyList();
     });
   }
 
@@ -278,6 +282,11 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
     try {
 
       final requestProductData = await _makeRequestData();
+
+      setState(() {
+        _count = 0;
+        _productList = [];
+      });
 
       final productListResponseDTO = await ref.read(searchModelProvider.notifier).getProductList(requestProductData);
       _count = productListResponseDTO?.count ?? 0;

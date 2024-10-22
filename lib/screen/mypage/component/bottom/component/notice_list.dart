@@ -53,6 +53,10 @@ class _NoticeListState extends ConsumerState<NoticeList> {
       'pg': _page
     };
 
+    setState(() {
+      _noticeList = [];
+    });
+
     final noticeListResponseDTO = await ref.read(noticeListModelProvider.notifier).getList(requestData);
     _noticeList = noticeListResponseDTO?.list ?? [];
 
