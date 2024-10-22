@@ -478,25 +478,27 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
           ),
         ],
       ),
-      body: Stack(
-        children: [
-          Visibility(
-            visible: _isSearching,
-            child: _buildSearching(), // 검색 중 로딩 상태 UI
-          ),
-          Visibility(
-            visible: _searchCompleted,
-            child: _buildSearchResults(), // 검색 결과를 보여주는 UI
-          ),
-          Visibility(
-            visible: _searchFailed,
-            child: _buildNoResults(), // 검색 실패 시의 UI
-          ),
-          Visibility(
-            visible: _isFirst,
-            child: _buildDefaultSearchPage(),
-          ),
-        ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Visibility(
+              visible: _isSearching,
+              child: _buildSearching(), // 검색 중 로딩 상태 UI
+            ),
+            Visibility(
+              visible: _searchCompleted,
+              child: _buildSearchResults(), // 검색 결과를 보여주는 UI
+            ),
+            Visibility(
+              visible: _searchFailed,
+              child: _buildNoResults(), // 검색 실패 시의 UI
+            ),
+            Visibility(
+              visible: _isFirst,
+              child: _buildDefaultSearchPage(),
+            ),
+          ],
+        ),
       ),
     );
   }

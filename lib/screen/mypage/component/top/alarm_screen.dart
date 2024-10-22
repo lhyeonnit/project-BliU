@@ -76,154 +76,156 @@ class AlarmScreenState extends ConsumerState<AlarmScreen> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Visibility(
-            visible: pushList.isNotEmpty,
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: pushList.length,
-              itemBuilder: (context, index) {
-                final pushData = pushList[index];
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Visibility(
+              visible: pushList.isNotEmpty,
+              child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: pushList.length,
+                  itemBuilder: (context, index) {
+                    final pushData = pushList[index];
 
-                return GestureDetector(
-                  onTap: () {
-                    /**
-                    home - 홈화면
-                    order_list - 주문 배송 페이지
-                    cart_list - 장바구니
-                    coupon_list - 쿠폰함
-                    exhibition - 기획전
-                     * */
-                    switch (pushData.ptLink) {
-                      case "home":
-                        Navigator.popUntil(context, ModalRoute.withName("/"));
-                        ref.read(mainScreenProvider.notifier).selectNavigation(2);
-                        break;
-                      case "order_list":
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const OrderListScreen()),
-                        );
-                        break;
-                      case "cart_list":
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const CartScreen()),
-                        );
-                        break;
-                      case "coupon_list":
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const MyCouponScreen()),
-                        );
-                        break;
-                      case "exhibition":
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ExhibitionScreen(etIdx: pushData.etIdx ?? 0),
-                          ),
-                        );
-                        break;
-                    }
-                  },
-                  child: Container(
-                    // 눌린 상태에 따라 색상 변경
-                    color: pushData.pRead == "Y" ? Colors.white : const Color(0xFFF5F9F9),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipOval(
-                            child: SizedBox(
-                              width: Responsive.getWidth(context, 50),
-                              height: Responsive.getWidth(context, 50),
-                              child: SvgPicture.asset(
-                                'assets/images/home/cate_ic_store.svg',
-                                fit: BoxFit.contain,
+                    return GestureDetector(
+                      onTap: () {
+                        /**
+                            home - 홈화면
+                            order_list - 주문 배송 페이지
+                            cart_list - 장바구니
+                            coupon_list - 쿠폰함
+                            exhibition - 기획전
+                         * */
+                        switch (pushData.ptLink) {
+                          case "home":
+                            Navigator.popUntil(context, ModalRoute.withName("/"));
+                            ref.read(mainScreenProvider.notifier).selectNavigation(2);
+                            break;
+                          case "order_list":
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const OrderListScreen()),
+                            );
+                            break;
+                          case "cart_list":
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const CartScreen()),
+                            );
+                            break;
+                          case "coupon_list":
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const MyCouponScreen()),
+                            );
+                            break;
+                          case "exhibition":
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ExhibitionScreen(etIdx: pushData.etIdx ?? 0),
                               ),
-                            ),
-                          ),
-                          SizedBox(width: Responsive.getWidth(context, 15),),
-                          Expanded(
-                            flex: 1,
-                            child: SizedBox(
-                              width: Responsive.getWidth(context, 315),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    pushData.ptSubject ?? "",
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      color: Colors.black,
-                                      fontSize: Responsive.getFont(context, 15),
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.2,
-                                    ),
+                            );
+                            break;
+                        }
+                      },
+                      child: Container(
+                        // 눌린 상태에 따라 색상 변경
+                        color: pushData.pRead == "Y" ? Colors.white : const Color(0xFFF5F9F9),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipOval(
+                                child: SizedBox(
+                                  width: Responsive.getWidth(context, 50),
+                                  height: Responsive.getWidth(context, 50),
+                                  child: SvgPicture.asset(
+                                    'assets/images/home/cate_ic_store.svg',
+                                    fit: BoxFit.contain,
                                   ),
-                                  SizedBox(
-                                    height: Responsive.getHeight(context, 8),
-                                  ),
-                                  SizedBox(
-                                    child: Text(
-                                      pushData.ptLabel ?? "",
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        color: const Color(0xFF7B7B7B),
-                                        fontSize: Responsive.getFont(context, 14),
-                                        height: 1.2,
+                                ),
+                              ),
+                              SizedBox(width: Responsive.getWidth(context, 15),),
+                              Expanded(
+                                flex: 1,
+                                child: SizedBox(
+                                  width: Responsive.getWidth(context, 315),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        pushData.ptSubject ?? "",
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          color: Colors.black,
+                                          fontSize: Responsive.getFont(context, 15),
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.2,
+                                        ),
                                       ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                      SizedBox(
+                                        height: Responsive.getHeight(context, 8),
+                                      ),
+                                      SizedBox(
+                                        child: Text(
+                                          pushData.ptLabel ?? "",
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            color: const Color(0xFF7B7B7B),
+                                            fontSize: Responsive.getFont(context, 14),
+                                            height: 1.2,
+                                          ),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      SizedBox(height: Responsive.getHeight(context, 8),),
+                                      Text(
+                                        pushData.ptWdate ?? "",
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          color: const Color(0xFF7B7B7B),
+                                          fontSize: Responsive.getFont(context, 14),
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(height: Responsive.getHeight(context, 8),),
-                                  Text(
-                                    pushData.ptWdate ?? "",
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      color: const Color(0xFF7B7B7B),
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
-                                    ),
+                                ),
+                              ),
+                              SizedBox(width: Responsive.getWidth(context, 21),),
+                              Padding(
+                                padding: EdgeInsets.only(top: Responsive.getHeight(context, 28)),
+                                child: SvgPicture.asset(
+                                  'assets/images/ic_link.svg',
+                                  width: Responsive.getWidth(context, 14),
+                                  height: Responsive.getHeight(context, 14),
+                                  fit: BoxFit.contain,
+                                  colorFilter: const ColorFilter.mode(
+                                    Color(0xFF7B7B7B),
+                                    BlendMode.srcIn,
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                          SizedBox(width: Responsive.getWidth(context, 21),),
-                          Padding(
-                            padding: EdgeInsets.only(top: Responsive.getHeight(context, 28)),
-                            child: SvgPicture.asset(
-                              'assets/images/ic_link.svg',
-                              width: Responsive.getWidth(context, 14),
-                              height: Responsive.getHeight(context, 14),
-                              fit: BoxFit.contain,
-                              colorFilter: const ColorFilter.mode(
-                                Color(0xFF7B7B7B),
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                );
-              }
+                    );
+                  }
+              ),
             ),
-          ),
-          Visibility(
-            visible: pushList.isNotEmpty,
-              child: MoveTopButton(scrollController: _scrollController)),
-          Visibility(
-              visible: pushList.isEmpty,
-              child: const NonDataScreen(text: '등록된 알림이 없습니다.',)
-          ),
-        ],
+            Visibility(
+                visible: pushList.isNotEmpty,
+                child: MoveTopButton(scrollController: _scrollController)),
+            Visibility(
+                visible: pushList.isEmpty,
+                child: const NonDataScreen(text: '등록된 알림이 없습니다.',)
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -89,70 +89,72 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
           const TopCartButton(),
         ],
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            controller: _scrollController,
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                AspectRatio(
-                  aspectRatio: 1/1.5,
-                  child: Image.network(
-                    _exhibitionData?.etDetailBanner ?? "",
-                    fit: BoxFit.cover,
-                    alignment: Alignment.topCenter,
-                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                      return const SizedBox();
-                    },
+      body: SafeArea(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              controller: _scrollController,
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  AspectRatio(
+                    aspectRatio: 1/1.5,
+                    child: Image.network(
+                      _exhibitionData?.etDetailBanner ?? "",
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
+                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                        return const SizedBox();
+                      },
+                    ),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 30),
-                  child: Text(
-                    _exhibitionData?.etTitle ?? "",
+                  Container(
+                    margin: const EdgeInsets.only(top: 30),
+                    child: Text(
+                      _exhibitionData?.etTitle ?? "",
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.bold,
+                        fontSize: Responsive.getFont(context, 20),
+                        height: 1.2,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    _exhibitionData?.etSubTitle ?? "",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.bold,
-                      fontSize: Responsive.getFont(context, 20),
+                      fontSize: Responsive.getFont(context, 14),
+                      color: const Color(0xFF7B7B7B),
                       height: 1.2,
                     ),
                   ),
-                ),
-                Text(
-                  _exhibitionData?.etSubTitle ?? "",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: const Color(0xFF7B7B7B),
-                    height: 1.2,
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12.0,
-                      mainAxisSpacing: 30.0,
-                      childAspectRatio: 0.5,
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 12.0,
+                        mainAxisSpacing: 30.0,
+                        childAspectRatio: 0.5,
+                      ),
+                      itemCount: _productList.length,
+                      itemBuilder: (context, index) {
+                        final productData = _productList[index];
+                        return ProductListCard(productData: productData);
+                      },
                     ),
-                    itemCount: _productList.length,
-                    itemBuilder: (context, index) {
-                      final productData = _productList[index];
-                      return ProductListCard(productData: productData);
-                    },
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          MoveTopButton(scrollController: _scrollController)
-        ],
+            MoveTopButton(scrollController: _scrollController)
+          ],
+        ),
       ),
     );
   }

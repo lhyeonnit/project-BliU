@@ -60,7 +60,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   void initState() {
     super.initState();
     _ptIdx = widget.ptIdx ?? 0;
-    //_ptIdx = 4; // TODO 테스트 용도
+    //_ptIdx = 1404; // TODO 테스트 용도
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -231,146 +231,148 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           const TopCartButton(),
         ],
       ),
-      body: Stack(
-        children: [
-          DefaultTabController(
-            length: 2, // 두 개의 탭
-            child: NestedScrollView(
-              controller: _scrollController,
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                  SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        _productBanner(_productData?.imgArr ?? []),
-                        _productInfoTitle(_storeData, _productData),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 20),
-                          height: 10,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFF5F9F9),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            DefaultTabController(
+              length: 2, // 두 개의 탭
+              child: NestedScrollView(
+                controller: _scrollController,
+                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          _productBanner(_productData?.imgArr ?? []),
+                          _productInfoTitle(_storeData, _productData),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 20),
+                            height: 10,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFF5F9F9),
+                            ),
                           ),
-                        ),
+                        ],
+                      ),
+                    ),
+                  ];
+                },
+                body: Column(
+                  children: [
+                    TabBar(
+                      overlayColor: WidgetStateColor.transparent,
+                      indicatorColor: Colors.black,
+                      dividerColor: const Color(0xFFDDDDDD),
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      // 인디케이터가 각 탭의 길이에 맞게 조정됨
+                      labelColor: Colors.black,
+                      unselectedLabelColor: const Color(0xFF7B7B7B),
+                      isScrollable: true,
+                      // here
+                      tabAlignment: TabAlignment.start,
+                      // ** Use TabAlignment.start
+                      tabs: [
+                        const Tab(text: '상세정보'),
+                        Tab(text: '리뷰($_productReviewCount)'),
                       ],
                     ),
-                  ),
-                ];
-              },
-              body: Column(
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          // 첫 번째 탭: 상세정보에 모든 정보 포함
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 50),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  _productInfoContent(_productData?.ptContent ?? ""),
+                                  _productAi(_sameList),
+                                  _productInfoBeforeOrder(_infoData, _productData),
+                                  _productInquiry(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // 두 번째 탭: 리뷰만 표시
+                          _productReview(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Column(
                 children: [
-                  TabBar(
-                    overlayColor: WidgetStateColor.transparent,
-                    indicatorColor: Colors.black,
-                    dividerColor: const Color(0xFFDDDDDD),
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    // 인디케이터가 각 탭의 길이에 맞게 조정됨
-                    labelColor: Colors.black,
-                    unselectedLabelColor: const Color(0xFF7B7B7B),
-                    isScrollable: true,
-                    // here
-                    tabAlignment: TabAlignment.start,
-                    // ** Use TabAlignment.start
-                    tabs: [
-                      const Tab(text: '상세정보'),
-                      Tab(text: '리뷰($_productReviewCount)'),
-                    ],
-                  ),
-                  Expanded(
-                    child: TabBarView(
+                  MoveTopButton(scrollController: _scrollController),
+                  Container(
+                    padding: const EdgeInsets.only(top: 9, bottom: 8, left: 11, right: 10),
+                    color: Colors.white,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // 첫 번째 탭: 상세정보에 모든 정보 포함
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 50),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _productInfoContent(_productData?.ptContent ?? ""),
-                                _productAi(_sameList),
-                                _productInfoBeforeOrder(_infoData, _productData),
-                                _productInquiry(),
-                              ],
+                        GestureDetector(
+                          onTap: () {
+                            _productLike();
+                          },
+                          child: Container(
+                            height: 48,
+                            width: 48,
+                            margin: const EdgeInsets.only(right: 9),
+                            decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                border: Border.all(color: const Color(0xFFDDDDDD))
+                            ),
+                            child: SvgPicture.asset(_productData?.likeChk == "Y"
+                                ? 'assets/images/product/like_lg_on.svg'
+                                : 'assets/images/product/like_lg_off.svg'
                             ),
                           ),
                         ),
-                        // 두 번째 탭: 리뷰만 표시
-                        _productReview(),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              if (_productData != null) {
+                                if (_productData?.sellStatus == "Y") {
+                                  ProductOrderBottomOption.showBottomSheet(context, _productData!);
+                                }
+                              }
+                            },
+                            child: Container(
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: _productData?.sellStatus == "Y" ? Colors.black : const Color(0xFFDDDDDD),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(6),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  _productData?.sellStatusTxt ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: Colors.white,
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Column(
-              children: [
-                MoveTopButton(scrollController: _scrollController),
-                Container(
-                  padding: const EdgeInsets.only(top: 9, bottom: 8, left: 11, right: 10),
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          _productLike();
-                        },
-                        child: Container(
-                          height: 48,
-                          width: 48,
-                          margin: const EdgeInsets.only(right: 9),
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(Radius.circular(6)),
-                            border: Border.all(color: const Color(0xFFDDDDDD))
-                          ),
-                          child: SvgPicture.asset(_productData?.likeChk == "Y"
-                            ? 'assets/images/product/like_lg_on.svg'
-                            : 'assets/images/product/like_lg_off.svg'
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            if (_productData != null) {
-                              if (_productData?.sellStatus == "Y") {
-                                ProductOrderBottomOption.showBottomSheet(context, _productData!);
-                              }
-                            }
-                          },
-                          child: Container(
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: _productData?.sellStatus == "Y" ? Colors.black : const Color(0xFFDDDDDD),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(6),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                _productData?.sellStatusTxt ?? "",
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: Colors.white,
-                                  height: 1.2,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

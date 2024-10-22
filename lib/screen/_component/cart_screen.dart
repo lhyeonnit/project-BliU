@@ -358,445 +358,447 @@ class CartScreenState extends ConsumerState<CartScreen> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Visibility(
-            visible: _cartItems.isNotEmpty,
-            child: Column(
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    ListView(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.only(bottom: 50), // 하단 고정 버튼 공간 확보
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Visibility(
+              visible: _cartItems.isNotEmpty,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Stack(
                       children: [
-                        // 전체선택 및 전체삭제 UI
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(color: Color(0xFFEEEEEE)),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
+                        ListView(
+                          controller: _scrollController,
+                          padding: const EdgeInsets.only(bottom: 50), // 하단 고정 버튼 공간 확보
+                          children: [
+                            // 전체선택 및 전체삭제 UI
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(color: Color(0xFFEEEEEE)),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  GestureDetector(
-                                    onTap: _toggleSelectAll,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(6),
-                                      height: 22,
-                                      width: 22,
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                        border: Border.all(
-                                          color: _isAllSelected ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
-                                        ),
-                                        color: _isAllSelected ? const Color(0xFFFF6191) : Colors.white,
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/images/check01_off.svg', // 체크박스 아이콘
-                                        colorFilter: ColorFilter.mode(
-                                          _isAllSelected ? Colors.white : const Color(0xFFCCCCCC),
-                                          BlendMode.srcIn,
-                                        ),
-                                        height: 10, // 아이콘의 높이
-                                        width: 10, // 아이콘의 너비
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    '전체선택(${_cartSelectedList.length}/$totalCount)',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  _cartDel("all");
-                                },
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero
-                                ),
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset('assets/images/ic_delet.svg'),
-                                    const SizedBox(width: 5,),
-                                    Text(
-                                      '전체삭제',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        color: Colors.black,
-                                        height: 1.2,
-                                      ),
-                                    )
-                                  ]
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        ..._cartItems.map((cartItem) {
-                          final productList = cartItem.productList ?? [];
-
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // 스토어명
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                                height: 40,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: 40,
-                                      width: 40,
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(Radius.circular(20)), // 사진의 모서리 둥글게 설정
-                                        border: Border.all(
-                                          color: const Color(0xFFDDDDDD),// 테두리 색상 설정
-                                          width: 1.0, // 테두리 두께 설정
+                                  Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: _toggleSelectAll,
+                                        child: Container(
+                                          padding: const EdgeInsets.all(6),
+                                          height: 22,
+                                          width: 22,
+                                          decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                            border: Border.all(
+                                              color: _isAllSelected ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                            ),
+                                            color: _isAllSelected ? const Color(0xFFFF6191) : Colors.white,
+                                          ),
+                                          child: SvgPicture.asset(
+                                            'assets/images/check01_off.svg', // 체크박스 아이콘
+                                            colorFilter: ColorFilter.mode(
+                                              _isAllSelected ? Colors.white : const Color(0xFFCCCCCC),
+                                              BlendMode.srcIn,
+                                            ),
+                                            height: 10, // 아이콘의 높이
+                                            width: 10, // 아이콘의 너비
+                                            fit: BoxFit.contain,
+                                          ),
                                         ),
                                       ),
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.all(Radius.circular(20)), // 사진의 모서리만 둥글게 설정
-                                        child: Image.network(
-                                          cartItem.stProfile ?? "",
-                                          fit: BoxFit.contain,
-                                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                            return const SizedBox();
-                                          },
-                                        ),
+                                      const SizedBox(
+                                        width: 10,
                                       ),
-                                    ),
-                                    SizedBox(width: Responsive.getWidth(context, 10)),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(vertical: 12),
-                                      child: Text(
-                                        cartItem.stName ?? "",
+                                      Text(
+                                        '전체선택(${_cartSelectedList.length}/$totalCount)',
                                         style: TextStyle(
                                           fontFamily: 'Pretendard',
                                           fontSize: Responsive.getFont(context, 14),
                                           height: 1.2,
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              // 각 스토어의 상품들
-                              Column(
-                                children: productList.map((product) {
-                                  return CartItem(
-                                    item: product,
-                                    isSelected: _cartSelectedList.contains(product.ctIdx),
-                                    onIncrementQuantity: (index) {
-                                      setState(() {
-                                        final cartCount = (product.ptCount ?? 0) + 1;
-                                        if ((product.ctIdx ?? 0) > 0) {
-                                          _cartUpdate(product.ctIdx ?? 0, cartCount);
-                                        }
-                                      });
-                                    },
-                                    onDecrementQuantity: (index) {
-                                      setState(() {
-                                        final cartCount = (product.ptCount ?? 0) - 1;
-                                        if ((product.ctIdx ?? 0) > 0 && cartCount > 0) {
-                                          _cartUpdate(product.ctIdx ?? 0, cartCount);
-                                        }
-                                      });
-                                    },
-                                    onDelete: (index) {
-                                      setState(() {
-                                        if ((product.ctIdx ?? 0) > 0) {
-                                          _cartDel((product.ctIdx ?? 0).toString());
-                                        }
-                                      });
-                                    },
-                                    onToggleSelection: _toggleSelection, // 개별 선택 상태 변경 함수 전달
-                                  );
-                                }).toList(),
-                              ),
-                              const SizedBox(height: 10.0),
-                              // 배송비 및 결제금액
-                              Container(
-                                width: Responsive.getWidth(context, 380),
-                                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                                margin: const EdgeInsets.symmetric(horizontal: 16),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFF5F9F9),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '배송비 ${(cartItem.stDeliveryPrice ?? 0) == 0 ? "무료" : "${Utils.getInstance().priceString(cartItem.stDeliveryPrice ?? 0)}원"}',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 13),
-                                        color: const Color(0xFF7B7B7B),
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                    SizedBox(width: Responsive.getWidth(context, 10)),
-                                    Text(
-                                      '총 결제금액',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                    SizedBox(width: Responsive.getWidth(context, 10)),
-                                    Text(
-                                      '${Utils.getInstance().priceString(cartItem.stProductPrice ?? 0)}원',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        fontWeight: FontWeight.bold,
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 20.0),
-                            ],
-                          );
-                        }),
-                        const Divider(thickness: 10, color: Color(0xFFF5F9F9)),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '총 상품 금액',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
-                                    )
+                                    ],
                                   ),
-                                  Text(
-                                    '${Utils.getInstance().priceString(_getTotalProductPrice())} 원',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
-                                    )
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8.0),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('총 배송비',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
-                                    )
-                                  ),
-                                  Text(
-                                    '${Utils.getInstance().priceString(_getTotalDeliveryPrice())} 원',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
+                                  TextButton(
+                                    onPressed: () {
+                                      _cartDel("all");
+                                    },
+                                    style: TextButton.styleFrom(
+                                        padding: EdgeInsets.zero
+                                    ),
+                                    child: Row(
+                                        children: [
+                                          SvgPicture.asset('assets/images/ic_delet.svg'),
+                                          const SizedBox(width: 5,),
+                                          Text(
+                                            '전체삭제',
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              color: Colors.black,
+                                              height: 1.2,
+                                            ),
+                                          )
+                                        ]
                                     ),
                                   ),
                                 ],
                               ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 15.0, bottom: 20),
-                                child: Divider(thickness: 1, color: Color(0xFFEEEEEE)),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            ),
+                            const SizedBox(height: 10),
+                            ..._cartItems.map((cartItem) {
+                              final productList = cartItem.productList ?? [];
+
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    '총 결제예상금액',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
-                                    )
+                                  // 스토어명
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                    height: 40,
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 40,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.all(Radius.circular(20)), // 사진의 모서리 둥글게 설정
+                                            border: Border.all(
+                                              color: const Color(0xFFDDDDDD),// 테두리 색상 설정
+                                              width: 1.0, // 테두리 두께 설정
+                                            ),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: const BorderRadius.all(Radius.circular(20)), // 사진의 모서리만 둥글게 설정
+                                            child: Image.network(
+                                              cartItem.stProfile ?? "",
+                                              fit: BoxFit.contain,
+                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                return const SizedBox();
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: Responsive.getWidth(context, 10)),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(vertical: 12),
+                                          child: Text(
+                                            cartItem.stName ?? "",
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Text(
-                                    '${Utils.getInstance().priceString(_getTotalPaymentPrice())} 원',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      fontWeight: FontWeight.bold,
-                                      height: 1.2,
-                                    )
+                                  // 각 스토어의 상품들
+                                  Column(
+                                    children: productList.map((product) {
+                                      return CartItem(
+                                        item: product,
+                                        isSelected: _cartSelectedList.contains(product.ctIdx),
+                                        onIncrementQuantity: (index) {
+                                          setState(() {
+                                            final cartCount = (product.ptCount ?? 0) + 1;
+                                            if ((product.ctIdx ?? 0) > 0) {
+                                              _cartUpdate(product.ctIdx ?? 0, cartCount);
+                                            }
+                                          });
+                                        },
+                                        onDecrementQuantity: (index) {
+                                          setState(() {
+                                            final cartCount = (product.ptCount ?? 0) - 1;
+                                            if ((product.ctIdx ?? 0) > 0 && cartCount > 0) {
+                                              _cartUpdate(product.ctIdx ?? 0, cartCount);
+                                            }
+                                          });
+                                        },
+                                        onDelete: (index) {
+                                          setState(() {
+                                            if ((product.ctIdx ?? 0) > 0) {
+                                              _cartDel((product.ctIdx ?? 0).toString());
+                                            }
+                                          });
+                                        },
+                                        onToggleSelection: _toggleSelection, // 개별 선택 상태 변경 함수 전달
+                                      );
+                                    }).toList(),
+                                  ),
+                                  const SizedBox(height: 10.0),
+                                  // 배송비 및 결제금액
+                                  Container(
+                                    width: Responsive.getWidth(context, 380),
+                                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFF5F9F9),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          '배송비 ${(cartItem.stDeliveryPrice ?? 0) == 0 ? "무료" : "${Utils.getInstance().priceString(cartItem.stDeliveryPrice ?? 0)}원"}',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 13),
+                                            color: const Color(0xFF7B7B7B),
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                        SizedBox(width: Responsive.getWidth(context, 10)),
+                                        Text(
+                                          '총 결제금액',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                        SizedBox(width: Responsive.getWidth(context, 10)),
+                                        Text(
+                                          '${Utils.getInstance().priceString(cartItem.stProductPrice ?? 0)}원',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            fontWeight: FontWeight.bold,
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20.0),
+                                ],
+                              );
+                            }),
+                            const Divider(thickness: 10, color: Color(0xFFF5F9F9)),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                          '총 상품 금액',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            height: 1.2,
+                                          )
+                                      ),
+                                      Text(
+                                          '${Utils.getInstance().priceString(_getTotalProductPrice())} 원',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            height: 1.2,
+                                          )
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8.0),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('총 배송비',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            height: 1.2,
+                                          )
+                                      ),
+                                      Text(
+                                        '${Utils.getInstance().priceString(_getTotalDeliveryPrice())} 원',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsets.only(top: 15.0, bottom: 20),
+                                    child: Divider(thickness: 1, color: Color(0xFFEEEEEE)),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                          '총 결제예상금액',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            height: 1.2,
+                                          )
+                                      ),
+                                      Text(
+                                          '${Utils.getInstance().priceString(_getTotalPaymentPrice())} 원',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            fontWeight: FontWeight.bold,
+                                            height: 1.2,
+                                          )
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                        MoveTopButton(scrollController: _scrollController),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0xFFF4F4F4),
+                          blurRadius: 6.0,
+                          spreadRadius: 2.0,
+                          offset: Offset(0, -3), // 위쪽으로 그림자 위치 조정
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 17.0),
+                          width: 40,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[400],
+                            borderRadius: BorderRadius.circular(3.0),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                                '총 상품 금액: ',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
+                                )
+                            ),
+                            Text(
+                                '${Utils.getInstance().priceString(_getTotalProductPrice())} 원',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
+                                )
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                                '총 배송비: ',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
+                                )
+                            ),
+                            Text(
+                                '${Utils.getInstance().priceString(_getTotalDeliveryPrice())} 원',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
+                                )
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20.0),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_cartSelectedList.isNotEmpty) {
+                              _goOrder();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 48),
+                            backgroundColor: _cartSelectedList.isNotEmpty ? Colors.black : const Color(0xFFDDDDDD), // 선택된 항목이 없으면 회색
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                          ),
+                          child: Text(
+                            '주문하기',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              color: Colors.white,
+                              fontSize: Responsive.getFont(context, 14),
+                              height: 1.2,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    MoveTopButton(scrollController: _scrollController),
-                  ],
-                ),
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0xFFF4F4F4),
-                      blurRadius: 6.0,
-                      spreadRadius: 2.0,
-                      offset: Offset(0, -3), // 위쪽으로 그림자 위치 조정
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 17.0),
-                      width: 40,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[400],
-                        borderRadius: BorderRadius.circular(3.0),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '총 상품 금액: ',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            height: 1.2,
-                          )
-                        ),
-                        Text(
-                          '${Utils.getInstance().priceString(_getTotalProductPrice())} 원',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            height: 1.2,
-                          )
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 15.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '총 배송비: ',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            height: 1.2,
-                          )
-                        ),
-                        Text(
-                          '${Utils.getInstance().priceString(_getTotalDeliveryPrice())} 원',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            height: 1.2,
-                          )
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_cartSelectedList.isNotEmpty) {
-                          _goOrder();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 48),
-                        backgroundColor: _cartSelectedList.isNotEmpty ? Colors.black : const Color(0xFFDDDDDD), // 선택된 항목이 없으면 회색
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
-                      ),
-                      child: Text(
-                        '주문하기',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          color: Colors.white,
-                          fontSize: Responsive.getFont(context, 14),
-                          height: 1.2,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                ],
               ),
-            ],
             ),
-          ),
-          Visibility(
+            Visibility(
               visible: _cartItems.isEmpty,
               child: const NonDataScreen(text: '장바구니에 담은 상품이 없습니다.'),
-          ),
-          Visibility(
-            visible: _cartItems.isEmpty,
-            child: Positioned(
-              bottom: 0,
-              right: 0,
-              left: 0,
-              child: Container(
-                color: Colors.white,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    height: 48,
-                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                    decoration: const BoxDecoration(
-                      color: Colors.black, // 다운로드할 쿠폰이 있으면 활성화
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(6),
+            ),
+            Visibility(
+              visible: _cartItems.isEmpty,
+              child: Positioned(
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                  color: Colors.white,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      height: 48,
+                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                      decoration: const BoxDecoration(
+                        color: Colors.black, // 다운로드할 쿠폰이 있으면 활성화
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(6),
+                        ),
                       ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '확인',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Colors.white,
-                          height: 1.2,
+                      child: Center(
+                        child: Text(
+                          '확인',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Colors.white,
+                            height: 1.2,
+                          ),
                         ),
                       ),
                     ),
@@ -804,8 +806,8 @@ class CartScreenState extends ConsumerState<CartScreen> {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

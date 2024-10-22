@@ -379,158 +379,160 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
           const TopCartButton(),
         ],
       ),
-      body: Stack(
-        children: [
-          NotificationListener(
-          onNotification: (scrollNotification){
-            if (scrollNotification is ScrollEndNotification) {
-              var metrics = scrollNotification.metrics;
-              if (metrics.axisDirection != AxisDirection.down) return false;
-              if (_maxScrollHeight < metrics.maxScrollExtent) {
-                _maxScrollHeight = metrics.maxScrollExtent;
-              }
-              if (_maxScrollHeight - metrics.pixels < 50) {
-                _nextLoad();
-              }
-            }
-            return false;
-          },
-          child: NestedScrollView(
-            controller: _scrollController,
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 60.0,
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: TabBar(
-                          controller: _tabController,
-                          labelStyle: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            fontWeight: FontWeight.w600,
-                          ),
-                          overlayColor: WidgetStateColor.transparent,
-                          indicatorColor: Colors.black,
-                          dividerColor: const Color(0xFFDDDDDD),
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          labelColor: Colors.black,
-                          unselectedLabelColor: const Color(0xFF7B7B7B),
-                          isScrollable: true,
-                          indicatorWeight: 2.0,
-                          tabAlignment: TabAlignment.start,
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          tabs: (_categories).map((subCategory) {
-                            return Tab(text: subCategory.ctName);
-                          }).toList(),
-                        ),
-                      ),
-                      Visibility(
-                        visible: _productList.isNotEmpty,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                          padding: const EdgeInsets.only(top: 15, bottom: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _isTodayStart = !_isTodayStart;
-                                    _getList();
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 10),
-                                      padding: const EdgeInsets.all(6),
-                                      height: 22,
-                                      width: 22,
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                        border: Border.all(
-                                          color: _isTodayStart ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
-                                        ),
-                                        color: _isTodayStart ? const Color(0xFFFF6191) : Colors.white,
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/images/check01_off.svg', // 체크박스 아이콘
-                                        colorFilter: ColorFilter.mode(
-                                          _isTodayStart ? Colors.white : const Color(0xFFCCCCCC),
-                                          BlendMode.srcIn,
-                                        ),
-                                        height: 10,
-                                        width: 10,
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    Image.asset(
-                                      'assets/images/product/today_start.png',
-                                      width: 70,
-                                      height: 18,
-                                      fit: BoxFit.cover,
-                                    )
-                                  ],
-                                ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            NotificationListener(
+              onNotification: (scrollNotification){
+                if (scrollNotification is ScrollEndNotification) {
+                  var metrics = scrollNotification.metrics;
+                  if (metrics.axisDirection != AxisDirection.down) return false;
+                  if (_maxScrollHeight < metrics.maxScrollExtent) {
+                    _maxScrollHeight = metrics.maxScrollExtent;
+                  }
+                  if (_maxScrollHeight - metrics.pixels < 50) {
+                    _nextLoad();
+                  }
+                }
+                return false;
+              },
+              child: NestedScrollView(
+                controller: _scrollController,
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 60.0,
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: TabBar(
+                              controller: _tabController,
+                              labelStyle: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                fontWeight: FontWeight.w600,
                               ),
-                              const SizedBox(width: 20),
-                              Expanded(
-                                flex: 1,
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      _buildFilterButton(getSelectedAgeGroupText(), false),
-                                      Container(
-                                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                                          child: _buildFilterButton(getSelectedStyleText(), false)
-                                      ),
-                                      _buildFilterButton(getSelectedRangeValues(), true),
-                                    ],
-                                  ),
-                                )
-                              )
-                            ],
+                              overlayColor: WidgetStateColor.transparent,
+                              indicatorColor: Colors.black,
+                              dividerColor: const Color(0xFFDDDDDD),
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              labelColor: Colors.black,
+                              unselectedLabelColor: const Color(0xFF7B7B7B),
+                              isScrollable: true,
+                              indicatorWeight: 2.0,
+                              tabAlignment: TabAlignment.start,
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              tabs: (_categories).map((subCategory) {
+                                return Tab(text: subCategory.ctName);
+                              }).toList(),
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ), // 상단 고정된 컨텐츠
-                )
-              ];
-            },
-            body: Visibility(
-              visible: _productList.isNotEmpty,
-              child: TabBarView(
-                controller: _tabController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: List.generate(
-                  _categories.length,
-                      (index) {
-                    // 상품 리스트
-                    if (index == _tabController.index) {
-                      return _buildProductGrid();
-                    } else {
-                      return Container();
-                    }
-                  },
+                          Visibility(
+                            visible: _productList.isNotEmpty,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding: const EdgeInsets.only(top: 15, bottom: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _isTodayStart = !_isTodayStart;
+                                        _getList();
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(right: 10),
+                                          padding: const EdgeInsets.all(6),
+                                          height: 22,
+                                          width: 22,
+                                          decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                            border: Border.all(
+                                              color: _isTodayStart ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                            ),
+                                            color: _isTodayStart ? const Color(0xFFFF6191) : Colors.white,
+                                          ),
+                                          child: SvgPicture.asset(
+                                            'assets/images/check01_off.svg', // 체크박스 아이콘
+                                            colorFilter: ColorFilter.mode(
+                                              _isTodayStart ? Colors.white : const Color(0xFFCCCCCC),
+                                              BlendMode.srcIn,
+                                            ),
+                                            height: 10,
+                                            width: 10,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                        Image.asset(
+                                          'assets/images/product/today_start.png',
+                                          width: 70,
+                                          height: 18,
+                                          fit: BoxFit.cover,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  Expanded(
+                                      flex: 1,
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          children: [
+                                            _buildFilterButton(getSelectedAgeGroupText(), false),
+                                            Container(
+                                                margin: const EdgeInsets.symmetric(horizontal: 4),
+                                                child: _buildFilterButton(getSelectedStyleText(), false)
+                                            ),
+                                            _buildFilterButton(getSelectedRangeValues(), true),
+                                          ],
+                                        ),
+                                      )
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ), // 상단 고정된 컨텐츠
+                    )
+                  ];
+                },
+                body: Visibility(
+                  visible: _productList.isNotEmpty,
+                  child: TabBarView(
+                    controller: _tabController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: List.generate(
+                      _categories.length,
+                          (index) {
+                        // 상품 리스트
+                        if (index == _tabController.index) {
+                          return _buildProductGrid();
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+            Visibility(
+                visible: _productList.isNotEmpty,
+                child: MoveTopButton(scrollController: _scrollController)),
+            Visibility(
+                visible: _productList.isEmpty,
+                child: const NonDataScreen(text: '등록된 상품이 없습니다.',)
+            ),
+          ],
         ),
-          Visibility(
-              visible: _productList.isNotEmpty,
-              child: MoveTopButton(scrollController: _scrollController)),
-          Visibility(
-              visible: _productList.isEmpty,
-              child: const NonDataScreen(text: '등록된 상품이 없습니다.',)
-          ),
-        ],
       ),
     );
   }

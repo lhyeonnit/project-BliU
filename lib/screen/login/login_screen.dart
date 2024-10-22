@@ -70,65 +70,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.only(top: 40.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Center(
-                child: SvgPicture.asset(
-                  "assets/images/home/bottom_home.svg",
-                  width: 90,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.only(top: 40.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: SvgPicture.asset(
+                    "assets/images/home/bottom_home.svg",
+                    width: 90,
+                  ),
                 ),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
-                child: Column(
-                  children: [
-                    TextField(
-                      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                      style: TextStyle(
-                          height: 1.2,
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14)
-                      ),
-                      controller: _idController,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                        hintText: '아이디 입력',
-                        hintStyle: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: const Color(0xFF595959)),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      child: TextField(
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
+                  child: Column(
+                    children: [
+                      TextField(
                         onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                         style: TextStyle(
                             height: 1.2,
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14)
                         ),
-                        controller: _passwordController,
-                        obscureText: true,
+                        controller: _idController,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                          hintText: '비밀번호 입력',
+                          hintText: '아이디 입력',
                           hintStyle: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
-                            color: const Color(0xFF595959)
+                            color: const Color(0xFF595959),
                           ),
                           enabledBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -136,139 +109,130 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                           focusedBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(6)),
-                            borderSide: BorderSide(color: Color(0xFFE1E1E1)
+                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        child: TextField(
+                          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                          style: TextStyle(
+                            height: 1.2,
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                          ),
+                          controller: _passwordController,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                            hintText: '비밀번호 입력',
+                            hintStyle: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: const Color(0xFF595959),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Color(0xFFE1E1E1)
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _isAutoLogin = !_isAutoLogin;
-                              },
-                            );
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(right: 10),
-                            padding: const EdgeInsets.all(6),
-                            height: 22,
-                            width: 22,
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.all(Radius.circular(6)),
-                              border: Border.all(
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _isAutoLogin = !_isAutoLogin;
+                              });
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.all(6),
+                              height: 22,
+                              width: 22,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                border: Border.all(
+                                  color: _isAutoLogin
+                                      ? const Color(0xFFFF6191)
+                                      : const Color(0xFFCCCCCC),
+                                ),
                                 color: _isAutoLogin
                                     ? const Color(0xFFFF6191)
-                                    : const Color(0xFFCCCCCC),
+                                    : Colors.white,
                               ),
-                              color: _isAutoLogin
-                                  ? const Color(0xFFFF6191)
-                                  : Colors.white,
-                            ),
-                            child: SvgPicture.asset(
-                              'assets/images/check01_off.svg', // 체크박스 아이콘
-                              colorFilter: ColorFilter.mode(
-                                _isAutoLogin ? Colors.white : const Color(0xFFCCCCCC),
-                                BlendMode.srcIn,
+                              child: SvgPicture.asset(
+                                'assets/images/check01_off.svg', // 체크박스 아이콘
+                                colorFilter: ColorFilter.mode(
+                                  _isAutoLogin ? Colors.white : const Color(0xFFCCCCCC),
+                                  BlendMode.srcIn,
+                                ),
+                                height: 10,
+                                width: 10,
+                                fit: BoxFit.contain,
                               ),
-                              height: 10,
-                              width: 10,
-                              fit: BoxFit.contain,
                             ),
                           ),
-                        ),
-                        Text(
-                          '자동로그인',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            height: 1.2,
-                          ),
-                        ),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        // 로그인 버튼 동작
-                        _login(context);
-                      },
-                      child: Container(
-                        height: 48,
-                        margin: const EdgeInsets.only(top: 15),
-                        decoration: const BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '로그인',
+                          Text(
+                            '자동로그인',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
-                              color: Colors.white,
                               fontSize: Responsive.getFont(context, 14),
                               height: 1.2,
                             ),
                           ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // 로그인 버튼 동작
+                          _login(context);
+                        },
+                        child: Container(
+                          height: 48,
+                          margin: const EdgeInsets.only(top: 15),
+                          decoration: const BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '로그인',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                color: Colors.white,
+                                fontSize: Responsive.getFont(context, 14),
+                                height: 1.2,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      // 회원가입 버튼 동작
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const JoinAgreeScreen(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      '회원가입',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        height: 1.2,
-                      ),
-                    ),
+                    ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    margin: const EdgeInsets.symmetric(horizontal: 15),
-                    decoration: const BoxDecoration(
-                      border: Border.symmetric(
-                        vertical: BorderSide(color: Color(0xFFDDDDDD))
-                      )
-                    ),
-                    child: GestureDetector(
-                      onTap: () async {
-                        // 아이디찾기 버튼 동작
-                        final result = await Navigator.push(
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        // 회원가입 버튼 동작
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const FindIdScreen(),
+                            builder: (context) => const JoinAgreeScreen(),
                           ),
                         );
-
-                        if (result != null) {
-                          if(!context.mounted) return;
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => FindIdCompleteScreen(id: result,),
-                            ),
-                          );
-                        }
                       },
                       child: Text(
-                        '아이디찾기',
+                        '회원가입',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
@@ -276,19 +240,132 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       ),
                     ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      decoration: const BoxDecoration(
+                          border: Border.symmetric(
+                              vertical: BorderSide(color: Color(0xFFDDDDDD))
+                          )
+                      ),
+                      child: GestureDetector(
+                        onTap: () async {
+                          // 아이디찾기 버튼 동작
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const FindIdScreen(),
+                            ),
+                          );
+
+                          if (result != null) {
+                            if(!context.mounted) return;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FindIdCompleteScreen(id: result,),
+                              ),
+                            );
+                          }
+                        },
+                        child: Text(
+                          '아이디찾기',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            height: 1.2,
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // 비밀번호찾기 버튼 동작
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FindPasswordScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        '비밀번호찾기',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 50),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 25),
+                        child: Center(
+                          child: Text(
+                            'SNS 로그인',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.bold,
+                              fontSize: Responsive.getFont(context, 15),
+                              height: 1.2,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            icon: ClipOval(
+                                child: SvgPicture.asset('assets/images/login/sns_k.svg')
+                            ),
+                            iconSize: 60,
+                            onPressed: () {
+                              _kakaoLogin();
+                            },
+                          ),
+                          IconButton(
+                            icon: ClipOval(
+                                child: SvgPicture.asset('assets/images/login/sns_n.svg')
+                            ),
+                            iconSize: 60,
+                            onPressed: () {
+                              _naverLogin();
+                            },
+                          ),
+                          Visibility(
+                            visible: Platform.isIOS ? true : false,
+                            child: IconButton(
+                              icon: ClipOval(
+                                  child: SvgPicture.asset('assets/images/login/sns_a.svg')
+                              ),
+                              iconSize: 60,
+                              onPressed: () {
+                                _appleLogin();
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
                   ),
-                  GestureDetector(
+                ),
+                Center(
+                  child: GestureDetector(
                     onTap: () {
-                      // 비밀번호찾기 버튼 동작
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const FindPasswordScreen(),
-                        ),
+                            builder: (context) => const NonOrderPage()), // 비회원일 때의 화면
                       );
                     },
                     child: Text(
-                      '비밀번호찾기',
+                      '비회원 배송조회',
                       style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
@@ -296,87 +373,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                   ),
-                ],
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 50),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 25),
-                      child: Center(
-                        child: Text(
-                          'SNS 로그인',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.bold,
-                            fontSize: Responsive.getFont(context, 15),
-                            height: 1.2,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          icon: ClipOval(
-                            child: SvgPicture.asset('assets/images/login/sns_k.svg')
-                          ),
-                          iconSize: 60,
-                          onPressed: () {
-                            _kakaoLogin();
-                          },
-                        ),
-                        IconButton(
-                          icon: ClipOval(
-                            child: SvgPicture.asset('assets/images/login/sns_n.svg')
-                          ),
-                          iconSize: 60,
-                          onPressed: () {
-                            _naverLogin();
-                          },
-                        ),
-                        Visibility(
-                          visible: Platform.isIOS ? true : false,
-                          child: IconButton(
-                            icon: ClipOval(
-                                child: SvgPicture.asset('assets/images/login/sns_a.svg')
-                            ),
-                            iconSize: 60,
-                            onPressed: () {
-                              _appleLogin();
-                            },
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
                 ),
-              ),
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const NonOrderPage()), // 비회원일 때의 화면
-                    );
-                  },
-                  child: Text(
-                    '비회원 배송조회',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      height: 1.2,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      )
+      ),
     );
   }
 

@@ -72,92 +72,94 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
           },
         ),
       ),
-      body: Stack(
-        children: [
-          NotificationListener(
-            onNotification: (scrollNotification){
-              if (scrollNotification is ScrollEndNotification) {
-                var metrics = scrollNotification.metrics;
-                if (metrics.axisDirection != AxisDirection.down) return false;
-                if (_maxScrollHeight < metrics.maxScrollExtent) {
-                  _maxScrollHeight = metrics.maxScrollExtent;
-                }
-                if (_maxScrollHeight - metrics.pixels < 600) {
-                  _nextLoad();
-                }
-              }
-              return false;
-            },
-            child: NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  SliverToBoxAdapter(
-                    child: StoreInfoPage(storeData: storeData),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 60.0,
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: TabBar(
-                            controller: _tabController,
-                            labelStyle: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              fontWeight: FontWeight.w600,
-                            ),
-                            overlayColor: WidgetStateColor.transparent,
-                            indicatorColor: Colors.black,
-                            dividerColor: const Color(0xFFDDDDDD),
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            labelColor: Colors.black,
-                            unselectedLabelColor: const Color(0xFF7B7B7B),
-                            isScrollable: true,
-                            indicatorWeight: 2.0,
-                            tabAlignment: TabAlignment.start,
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            tabs: categories.map((category) {
-                              return Tab(text: category.ctName ?? "");
-                            }).toList(),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Text(
-                            '상품 $_count', // 상품 수 표시
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.black,
-                              height: 1.2,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ), // 상단 고정된 컨텐츠
-                  )
-                ];
-              },
-              body: TabBarView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: _tabController,
-                children: List.generate(
-                  categories.length, (index) {
-                  if (index == _tabController.index) {
-                    return _buildProductGrid();
-                  } else {
-                    return Container();
+      body: SafeArea(
+        child: Stack(
+          children: [
+            NotificationListener(
+              onNotification: (scrollNotification){
+                if (scrollNotification is ScrollEndNotification) {
+                  var metrics = scrollNotification.metrics;
+                  if (metrics.axisDirection != AxisDirection.down) return false;
+                  if (_maxScrollHeight < metrics.maxScrollExtent) {
+                    _maxScrollHeight = metrics.maxScrollExtent;
                   }
+                  if (_maxScrollHeight - metrics.pixels < 600) {
+                    _nextLoad();
+                  }
+                }
+                return false;
+              },
+              child: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    SliverToBoxAdapter(
+                      child: StoreInfoPage(storeData: storeData),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 60.0,
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: TabBar(
+                              controller: _tabController,
+                              labelStyle: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                fontWeight: FontWeight.w600,
+                              ),
+                              overlayColor: WidgetStateColor.transparent,
+                              indicatorColor: Colors.black,
+                              dividerColor: const Color(0xFFDDDDDD),
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              labelColor: Colors.black,
+                              unselectedLabelColor: const Color(0xFF7B7B7B),
+                              isScrollable: true,
+                              indicatorWeight: 2.0,
+                              tabAlignment: TabAlignment.start,
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              tabs: categories.map((category) {
+                                return Tab(text: category.ctName ?? "");
+                              }).toList(),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Text(
+                              '상품 $_count', // 상품 수 표시
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: Colors.black,
+                                height: 1.2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ), // 상단 고정된 컨텐츠
+                    )
+                  ];
                 },
+                body: TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: _tabController,
+                  children: List.generate(
+                    categories.length, (index) {
+                    if (index == _tabController.index) {
+                      return _buildProductGrid();
+                    } else {
+                      return Container();
+                    }
+                  },
+                  ),
                 ),
               ),
             ),
-          ),
-          MoveTopButton(scrollController: _scrollController),
-        ],
+            MoveTopButton(scrollController: _scrollController),
+          ],
+        ),
       ),
     );
   }
