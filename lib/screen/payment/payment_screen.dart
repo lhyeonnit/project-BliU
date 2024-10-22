@@ -893,6 +893,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                         child: TextField(
                                           onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                                           controller: _recipientPhoneController,
+                                          keyboardType: TextInputType.phone,
                                           maxLines: 1,
                                           style: TextStyle(
                                             fontFamily: 'Pretendard',

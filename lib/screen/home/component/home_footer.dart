@@ -191,6 +191,32 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
               ),
             ),
           ),
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: Text(
+              '블리유는 통신판매중개자이며 통신판매의 당사자가 아닙니다.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                color: const Color(0xFF7B7B7B),
+                fontSize: Responsive.getFont(context, 12),
+                height: 1.2,
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: Text(
+              '블리유는 마켓플레이스(오픈마켓) 상품, 거래정보 및 거래 등에\n대하여 책임을 지지 않습니다.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                color: const Color(0xFF7B7B7B),
+                fontSize: Responsive.getFont(context, 12),
+                height: 1.2,
+              ),
+            ),
+          )
         ],
       ),
     );
