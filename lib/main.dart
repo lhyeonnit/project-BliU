@@ -238,12 +238,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.light(),
-      // theme: ThemeData(
-      //   fontFamily: 'Pretendard'
-      // ),
+      theme: ThemeData(
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Colors.black,
+        ),
+      ),
+      themeMode: ThemeMode.light,
       navigatorKey: NavigationService.navigatorKey,
       debugShowCheckedModeBanner: false,
       home: const OnBoardingScreen(), // OnBoardingScreen을 초기 화면으로 설정
