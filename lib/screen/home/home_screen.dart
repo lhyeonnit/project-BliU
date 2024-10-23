@@ -359,7 +359,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                 child: HomeBodyExhibition(),
                               ),
                             ),
-                            //HomeBodyBestSales(categories: _categories, ageCategories: _ageCategories,),
                             Container(
                               padding: const EdgeInsets.only(left: 16.0),
                               child: Column(
@@ -446,7 +445,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                     visible: _productList.isEmpty,
                                     child: Container(
                                       margin: const EdgeInsets.only(bottom: 200),
-                                      child: const NonDataScreen(text: '등록된 스토어가 없습니다.',),
+                                      child: const NonDataScreen(text: '등록된 상품이 없습니다.',),
                                     ),
                                   ),
                                   Container(

@@ -5,6 +5,7 @@ import 'package:BliU/data/search_product_data.dart';
 import 'package:BliU/data/search_store_data.dart';
 import 'package:BliU/dto/search_response_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/_component/search_recommend_item.dart';
 import 'package:BliU/screen/_component/smart_lens_screen.dart';
 import 'package:BliU/screen/_component/viewmodel/search_view_model.dart';
@@ -84,7 +85,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
         searchStoreData = searchList?.storeSearch ?? [];
         searchProductData = searchList?.productSearch ?? [];
         // 상점 및 상품 필터링 결과를 합쳐서 _filteredResults에 저장
-        _filteredResults = <dynamic>[...searchProductData, ...searchStoreData];
+        _filteredResults = <dynamic>[...searchStoreData, ...searchProductData];
     });
   }
 
@@ -708,86 +709,94 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   Widget _buildSearching() {
-    return Stack(
-      children:[
-        GestureDetector(
-          onTap: () {
-            // 검색 화면 외부를 터치하면 검색 종료
-            _searchController.clear();
-            setState(() {
-              _isSearching = false;
-            });
-          },
-          child: Container(
-            color: Colors.white,
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.only(top: 20),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: _filteredResults.length,
-              itemBuilder: (context, index) {
-                final result = _filteredResults[index];
-                if (result is SearchStoreData) {
-                  return ListTile(
-                    leading: Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: const Color(0xFFDDDDDD)),
-                        image: DecorationImage(
-                          image: NetworkImage(result.stProfile ?? ''),
-                          fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        // 검색 화면 외부를 터치하면 검색 종료
+        _searchController.clear();
+        setState(() {
+          _isSearching = false;
+          _resetSearch();
+        });
+      },
+      child: Stack(
+        children:[
+          Visibility(
+            visible: _filteredResults.isNotEmpty,
+            child: Container(
+              color: Colors.white,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.only(top: 20),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: _filteredResults.length,
+                itemBuilder: (context, index) {
+                  final result = _filteredResults[index];
+                  if (result is SearchStoreData) {
+                    return ListTile(
+                      leading: Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: const Color(0xFFDDDDDD)),
+                          image: DecorationImage(
+                            image: NetworkImage(result.stProfile ?? ''),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    title: Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      child: _buildHighlightedText(result.stName ?? '', _searchController.text),),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => StoreDetailScreen(stIdx: result.stIdx ?? 0,),
+                      title: Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        child: _buildHighlightedText(result.stName ?? '', _searchController.text),),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => StoreDetailScreen(stIdx: result.stIdx ?? 0,),
+                          ),
+                        );
+                      },
+                    );
+                  } else {
+                    return ListTile(
+                      leading: Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: const Color(0xFFDDDDDD)),
                         ),
-                      );
-                    },
-                  );
-                } else {
-                  return ListTile(
-                    leading: Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: const Color(0xFFDDDDDD)),
-                      ),
-                      child: ClipOval(
-                        child: Image.asset('assets/images/home/sch_front.png'),
-                      ),
-                    ),
-                    title: Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      child: _buildHighlightedText(result.ptName ?? '', _searchController.text),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetailScreen(ptIdx: result.ptIdx ?? 0),
+                        child: ClipOval(
+                          child: Image.asset('assets/images/home/sch_front.png'),
                         ),
-                      );
-                    },
-                  );
-                }
-              },
+                      ),
+                      title: Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        child: _buildHighlightedText(result.ptName ?? '', _searchController.text),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetailScreen(ptIdx: result.ptIdx ?? 0),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
             ),
           ),
-        ),
-      ],
+          Visibility(
+            visible: _filteredResults.isEmpty,
+            child: const NonDataScreen(text: '검색된 결과가 없습니다.',),
+          ),
+        ],
+      ),
     );
   }
 

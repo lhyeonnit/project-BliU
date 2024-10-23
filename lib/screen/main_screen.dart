@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:BliU/screen/_component/custom_bottom_navigation_bar.dart';
 import 'package:BliU/screen/category/category_screen.dart';
@@ -7,8 +8,10 @@ import 'package:BliU/screen/like/like_screen.dart';
 import 'package:BliU/screen/mypage/my_screen.dart';
 import 'package:BliU/screen/store/store_screen.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
@@ -67,25 +70,22 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     });
   }
 
-  Future<bool> _onWillPop() async {
-    DateTime currentTime = DateTime.now();
+  Future<void> _backPressed() async {
+    if (Platform.isAndroid) { // 안드로이드 경우일때만
+      DateTime currentTime = DateTime.now();
 
-    bool backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
-        _backButtonPressedTime == null ||
-            currentTime.difference(_backButtonPressedTime!) > const Duration(seconds: 3);
+      //Statement 1 Or statement2
+      bool backButton = _backButtonPressedTime == null ||
+          currentTime.difference(_backButtonPressedTime!) > const Duration(seconds: 3);
 
-    if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
-      _backButtonPressedTime = currentTime;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("한번 더 뒤로가기를 누르면 종료됩니다."),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      return Future.value(false);
+      if (backButton) {
+        _backButtonPressedTime = currentTime;
+        Utils.getInstance().showSnackBar(context, "한번 더 뒤로가기를 누를 시 종료됩니다");
+        return;
+      }
+
+      SystemNavigator.pop();
     }
-
-    return Future.value(true);
   }
 
   @override
@@ -101,8 +101,12 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       }
     });
 
-    return WillPopScope(  // WillPopScope로 뒤로가기 동작 제어
-      onWillPop: _onWillPop,
+    return PopScope(  // WillPopScope로 뒤로가기 동작 제어
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) {
+        _backPressed();
+      },
+      //onWillPop: _onWillPop,
       child: Scaffold(
         body: _widgetOptions[_selectedIndex],
         bottomNavigationBar: CustomBottomNavigationBar(

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -29,8 +32,11 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WillPopScope(
-        onWillPop: _onWillPop,
+      body: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop, Object? result) {
+          _backPressed();
+        },
         child: Stack(
           children: <Widget>[
             SafeArea(
@@ -127,21 +133,21 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     );
   }
 
-  Future<bool> _onWillPop() async {
-    DateTime currentTime = DateTime.now();
+  Future<void> _backPressed() async {
+    if (Platform.isAndroid) { // 안드로이드 경우일때만
+      DateTime currentTime = DateTime.now();
 
-    bool backButtonHasNotBeenPressedOrSnackBarHasBeenClosed = false;
+      //Statement 1 Or statement2
+      bool backButton = _backButtonPressedTime == null ||
+          currentTime.difference(_backButtonPressedTime!) > const Duration(seconds: 3);
 
-    if (_backButtonPressedTime == null || currentTime.difference(_backButtonPressedTime!) > const Duration(seconds: 3)) {
-      backButtonHasNotBeenPressedOrSnackBarHasBeenClosed = true;
+      if (backButton) {
+        _backButtonPressedTime = currentTime;
+        Utils.getInstance().showSnackBar(context, "한번 더 뒤로가기를 누를 시 종료됩니다");
+        return;
+      }
+
+      SystemNavigator.pop();
     }
-
-    if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
-      _backButtonPressedTime = currentTime;
-      Utils.getInstance().showSnackBar(context, "한번 더 뒤로가기를 누르면 종료됩니다.");
-      return Future.value(false);
-    }
-
-    return Future.value(true);
   }
 }
