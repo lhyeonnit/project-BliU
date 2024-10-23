@@ -371,7 +371,7 @@ class StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                           // 사진의 모서리만 둥글게 설정
                                           child: Image.network(
                                               rankData.stProfile ?? "",
-                                              fit: BoxFit.contain,
+                                              fit: BoxFit.cover,
                                               errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                                 return const SizedBox();
                                               }
