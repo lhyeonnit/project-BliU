@@ -75,13 +75,27 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
 
   final List<ProductOptionTypeDetailData> _addPtOptionArr = [];
   final List<AddOptionData> _addPtAddArr = [];
-  bool _isExpanded = false;
+  List<bool> _isExpandedList = [];
   bool _isOptionSelected = false;
+
+  // 선택된 옵션 값을 저장할 Map, 키는 옵션 제목(title)
+  Map<String, String?> _selectedOptions = {};
+
+  void _onOptionSelected(String option, String title) {
+    setState(() {
+      _selectedOptions[title] = option; // 선택된 옵션을 저장
+      int index = _ptOption.indexWhere((element) => element.title == title);
+      if (index != -1) {
+        _isExpandedList[index] = false; // 해당 타일 닫기
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     _productData = widget.productData;
+    _isExpandedList = List.generate(_ptOption.length, (index) => false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -119,13 +133,23 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                         itemCount: _ptOption.length,
                         // 리스트의 길이를 사용
                         itemBuilder: (context, index) {
+                          final optionData = _ptOption[index];
+                          final title = optionData.title ?? '';
+                          final options = optionData.children ?? [];
+
+                          // 선택된 값이 있으면 표시하고 없으면 기본 타이틀 표시
+                          String displayTitle = _selectedOptions[title] == null
+                              ? title : "${_selectedOptions[title]}";
+
                           return _buildExpansionTile(
-                            title: _ptOption[index].title ?? "",
-                            options: _ptOption[index].children ?? [],
-                            onSelected: (value) {
-                              _ptOption[index].selectedValue = value;
-                              _selectOptionCheck();
+                            title: displayTitle,
+                            options: options,
+                            index: index,
+                            onSelected: (selectedOption) {
+                              optionData.selectedValue = selectedOption;
                               _isOptionSelected = true;
+                              _selectOptionCheck();
+                              _onOptionSelected(selectedOption, title);
                             },
                           );
                         },
@@ -177,10 +201,8 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                   } else {
                                     bool isAdd = true;
                                     for (int i = 0;
-                                    i < _addPtAddArr.length;
-                                    i++) {
-                                      if (_addPtAddArr[i].idx ==
-                                          ptAdd.idx) {
+                                    i < _addPtAddArr.length; i++) {
+                                      if (_addPtAddArr[i].idx == ptAdd.idx) {
                                         isAdd = false;
                                       }
                                     }
@@ -320,7 +342,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                           }
                       ),
                     ),
-                    // 추가상품
+                    // 선택한 상품
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ListView.builder(
@@ -450,11 +472,12 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                         },
                       ),
                     ),
-                    if (_isOptionSelected)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        margin: const EdgeInsets.only(bottom: 50, top: 15),
-                        child: _buildPriceSummary(context),
+                      Visibility(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          margin: const EdgeInsets.only(bottom: 50, top: 15),
+                          child: _buildPriceSummary(context),
+                        ),
                       ),
                   ],
                 ),
@@ -498,15 +521,14 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
   Widget _buildExpansionTile({
     required String title,
     required List<String> options,
+    required int index,
     required Function(String) onSelected,
   }) {
     return Theme(
       data: Theme.of(context).copyWith(
         disabledColor: Colors.transparent,
         dividerColor: Colors.transparent,
-        listTileTheme: ListTileTheme.of(context).copyWith(
-            dense: true, minVerticalPadding: 14
-        ),
+        listTileTheme: ListTileTheme.of(context).copyWith(dense: true, minVerticalPadding: 14),
       ),
       child: Container(
         margin: const EdgeInsets.only(bottom: 15),
@@ -518,7 +540,8 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
         child: ExpansionTile(
           key: UniqueKey(),
           // 각각의 타일이 고유한 상태를 갖도록 함
-          initiallyExpanded: _isExpanded,
+          initiallyExpanded: index < _isExpandedList.length ? _isExpandedList[index] : false,
+
           // 타일의 초기 상태 설정
           iconColor: Colors.black,
           collapsedIconColor: Colors.black,
@@ -532,7 +555,11 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
           ),
           onExpansionChanged: (bool expanded) {
             setState(() {
-              _isExpanded = expanded; // 타일이 열리고 닫힐 때 상태 변경
+              if (index >= _isExpandedList.length) {
+                _isExpandedList.addAll(List.generate(index - _isExpandedList.length + 1, (_) => false));
+              }
+
+              _isExpandedList[index] = expanded;
             });
           },
           children: options.map((option) {
