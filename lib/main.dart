@@ -43,8 +43,8 @@ Future<void> fireBaseInitializeApp() async {
     options: FirebaseOptions(
         apiKey: Platform.isAndroid ? 'AIzaSyCZyPF0_XZ105BRHpsOmlygeXbUn7XboSA' : 'AIzaSyB0Rcg7ZaT7LUMR4U5igmLQqR6T9HaMoOs',//aos: current_key, ios : API_KEY
         appId: Platform.isAndroid ? '1:997399886578:android:a9e20008de5331604a2e6b' : '1:997399886578:ios:58b1233c97c1e4874a2e6b',//aos: mobilesdk_app_id, ios: GOOGLE_APP_ID
-        messagingSenderId: '1011786302073',
-        projectId: 'bliu-c754d'
+        messagingSenderId: '997399886578',
+        projectId: 'bliu-be62b'
     ),
   );
 }
