@@ -93,7 +93,7 @@ class StoreInfoPageState extends ConsumerState<StoreInfoPage> {
                       widget.storeData?.stProfile ?? "",
                       width: 70,
                       height: 70,
-                      fit: BoxFit.contain,
+                      fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                         return const SizedBox();
                       }
