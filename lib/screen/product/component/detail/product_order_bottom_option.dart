@@ -146,26 +146,37 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                             options: options,
                             index: index,
                             onSelected: (selectedOption) {
-                              optionData.selectedValue = selectedOption;
-                              bool allOptionsSelected = true;
-                              for (var option in _ptOption) {
-                                if (option.selectedValue == null || option.selectedValue.isEmpty) {
-                                  allOptionsSelected = false;
-                                  break;
-                                }
-                              }
+                              setState(() {
+                                // 선택된 옵션 값을 저장
+                                optionData.selectedValue = selectedOption;
+                                _selectedOptions[title] = selectedOption;
 
-                              if (allOptionsSelected) {
-                                _isOptionSelected = true;
+                                // 모든 옵션이 선택되었는지 확인
+                                bool allOptionsSelected = true;
                                 for (var option in _ptOption) {
-                                  _selectedOptions[option.title ?? ''] = null;  // 타이틀 초기화
+                                  if (option.selectedValue == null || option.selectedValue.isEmpty) {
+                                    allOptionsSelected = false;
+                                    break;
+                                  }
                                 }
-                              } else {
-                                _isOptionSelected = false; // 모든 옵션이 선택되지 않으면 false
-                              }
 
-                              _selectOptionCheck();
-                              _onOptionSelected(selectedOption, title);
+                                // 모든 항목이 선택되면 타이틀을 초기화
+                                if (allOptionsSelected) {
+                                  _isOptionSelected = true;
+
+                                  // 모든 옵션의 타이틀 초기화
+                                  for (var option in _ptOption) {
+                                    _selectedOptions[option.title ?? ''] = option.title;  // 타이틀 초기화
+                                    selectedOption = option.title ?? '';
+                                  }
+                                } else {
+                                  _isOptionSelected = false;  // 모든 옵션이 선택되지 않으면 false
+                                }
+
+                                // 옵션 선택 후 처리
+                                _selectOptionCheck();
+                                _onOptionSelected(selectedOption, title);
+                              });
                             },
                           );
                         },
