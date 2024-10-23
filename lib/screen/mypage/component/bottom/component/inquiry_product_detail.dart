@@ -328,7 +328,8 @@ class InquiryProductDetail extends ConsumerWidget {
                   ),
                   child: ClipOval(
                     child: Image.network(
-                      detailData?.stProfile ?? "",
+                        detailData?.stProfile ?? "",
+                        fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                         return const SizedBox();
                       }

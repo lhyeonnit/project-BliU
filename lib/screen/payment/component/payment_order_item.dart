@@ -57,7 +57,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                             const BorderRadius.all(Radius.circular(20)),
                         child: Image.network(
                           item.stProfile ?? "", // 스토어 로고
-                          fit: BoxFit.contain,
+                          fit: BoxFit.cover,
                           errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                             return const SizedBox();
                           }
