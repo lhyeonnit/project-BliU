@@ -98,6 +98,18 @@ class _CouponCardState extends State<CouponCard> {
                         height: 1.2,
                       ),
                     ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 3),
+                      child: Text(
+                        '다른 쿠폰과 중복 사용불가',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 12),
+                          color: const Color(0xFFA4A4A4),
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
