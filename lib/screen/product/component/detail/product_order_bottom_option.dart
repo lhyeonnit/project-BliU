@@ -824,11 +824,16 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const CartScreen()),
-                          );
+                          Navigator.pop(context);
+                          Future.delayed(const Duration(milliseconds: 100), () {
+                            if (!context.mounted) return;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CartScreen(),
+                              ),
+                            );
+                          });
                         },
                         child: Container(
                           height: 44,

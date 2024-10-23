@@ -70,8 +70,8 @@ dependencies:
   scrollable_positioned_list: ^0.3.8
   dotted_line: ^3.2.2
   easy_rich_text: ^2.2.0
-  device_info_plus: ^11.0.0
   share_plus: ^10.0.3
+  app_links: ^6.3.2
 
 dependency_overrides:
   flutter_inappwebview: ^6.1.5

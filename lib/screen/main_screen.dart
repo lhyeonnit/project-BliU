@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:BliU/screen/_component/custom_bottom_navigation_bar.dart';
 import 'package:BliU/screen/category/category_screen.dart';
 import 'package:BliU/screen/home/home_screen.dart';
@@ -5,6 +7,7 @@ import 'package:BliU/screen/like/like_screen.dart';
 import 'package:BliU/screen/mypage/my_screen.dart';
 import 'package:BliU/screen/store/store_screen.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,8 +30,41 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     const MyScreen(),
   ];
 
+  late AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _initDeepLinks();
+  }
+
   void _onItemTapped(int index) {
     ref.read(mainScreenProvider.notifier).selectNavigation(index);
+  }
+
+  Future<void> _initDeepLinks() async {
+    _appLinks = AppLinks();
+
+    // Handle links
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      print('onAppLink: $uri');
+      //String uriString = uri.toString();
+      // if (uriString.contains("bplusapp.app.open?act=url&data=")) {
+      //   var uriArr = uriString.split("bplusapp.app.open?act=url&data=");
+      //   if (uriArr.isNotEmpty) {
+      //     if (uriArr.length >= 2) {
+      //       String moveUri = uriArr[1];
+      //       if (!_visible) {
+      //         _webViewController.loadRequest(Uri.parse(moveUri));
+      //       } else {
+      //         _saveDeepLink = moveUri;
+      //       }
+      //     }
+      //   }
+      // }
+    });
   }
 
   Future<bool> _onWillPop() async {
