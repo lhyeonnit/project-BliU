@@ -1,6 +1,6 @@
 class ProductOptionTypeData {
   final String? title;
-  final List<String>? children;
+  List<String>? children;
   String selectedValue = "";
 
   ProductOptionTypeData({

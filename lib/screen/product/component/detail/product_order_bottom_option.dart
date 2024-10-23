@@ -25,6 +25,7 @@ class ProductOrderBottomOption extends ConsumerStatefulWidget {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
         ),
+        barrierColor: Colors.black.withOpacity(0.3),
         context: context,
         backgroundColor: Colors.white,
         isScrollControlled: true,
@@ -109,7 +110,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
           children: [
             Center(
               child: Container(
-                margin: const EdgeInsets.only(top: 20, bottom: 17),
+                margin: const EdgeInsets.only(top: 15, bottom: 17),
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
@@ -124,7 +125,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                 child: Column(
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(top: 10),
+                      margin: const EdgeInsets.only(top: 10.5),
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ListView.builder(
                         shrinkWrap: true,
@@ -138,8 +139,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                           final options = optionData.children ?? [];
 
                           // 선택된 값이 있으면 표시하고 없으면 기본 타이틀 표시
-                          String displayTitle = _selectedOptions[title] == null
-                              ? title : "${_selectedOptions[title]}";
+                          String displayTitle = _selectedOptions[title] == null ? title : "${_selectedOptions[title]}";
 
                           return _buildExpansionTile(
                             title: displayTitle,
@@ -147,7 +147,23 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                             index: index,
                             onSelected: (selectedOption) {
                               optionData.selectedValue = selectedOption;
-                              _isOptionSelected = true;
+                              bool allOptionsSelected = true;
+                              for (var option in _ptOption) {
+                                if (option.selectedValue == null || option.selectedValue.isEmpty) {
+                                  allOptionsSelected = false;
+                                  break;
+                                }
+                              }
+
+                              if (allOptionsSelected) {
+                                _isOptionSelected = true;
+                                for (var option in _ptOption) {
+                                  _selectedOptions[option.title ?? ''] = null;  // 타이틀 초기화
+                                }
+                              } else {
+                                _isOptionSelected = false; // 모든 옵션이 선택되지 않으면 false
+                              }
+
                               _selectOptionCheck();
                               _onOptionSelected(selectedOption, title);
                             },
@@ -155,74 +171,68 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                         },
                       ),
                     ),
-                    _ptAddArr.isNotEmpty
-                        ? Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Theme(
-                        data: Theme.of(context).copyWith(
-                          disabledColor: Colors.transparent,
-                          dividerColor: Colors.transparent,
-                          listTileTheme: ListTileTheme.of(context).copyWith(
-                              dense: true,
-                              minVerticalPadding: 14
+                    Visibility(
+                      visible: _ptAddArr.isNotEmpty,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            disabledColor: Colors.transparent,
+                            dividerColor: Colors.transparent,
+                            listTileTheme: ListTileTheme.of(context).copyWith(dense: true, minVerticalPadding: 14),
                           ),
-                        ),
-                        child: Container(
-                          margin: const EdgeInsets.only(bottom: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: const BorderRadius.all(Radius.circular(6)),
-                            border: Border.all(color: const Color(0xFFE1E1E1)),
-                          ),
-                          child: ExpansionTile(
-                            title: Text(
-                              '추가상품',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                height: 1.2,
-                              ),
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 15),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                              border: Border.all(color: const Color(0xFFE1E1E1)),
                             ),
-                            children: _ptAddArr.map((ptAdd) {
-                              return ListTile(
-                                title: Text(
-                                  ptAdd.option ?? "",
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    height: 1.2,
-                                  ),
+                            child: ExpansionTile(
+                              title: Text(
+                                '추가상품',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  height: 1.2,
                                 ),
-                                onTap: () {
-                                  if (_addPtAddArr.isEmpty) {
-                                    setState(() {
-                                      _addPtAddArr.add(ptAdd);
-                                    });
-                                  } else {
-                                    bool isAdd = true;
-                                    for (int i = 0;
-                                    i < _addPtAddArr.length; i++) {
-                                      if (_addPtAddArr[i].idx == ptAdd.idx) {
-                                        isAdd = false;
-                                      }
-                                    }
-
-                                    if (isAdd) {
+                              ),
+                              children: _ptAddArr.map((ptAdd) {
+                                return ListTile(
+                                  title: Text(
+                                    ptAdd.option ?? "",
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    if (_addPtAddArr.isEmpty) {
                                       setState(() {
                                         _addPtAddArr.add(ptAdd);
                                       });
                                     } else {
-                                      Utils.getInstance().showToast('이미 추가한 상품 입니다.');
-                                    }
-                                  }
-                                },
-                              );
-                            }).toList(),
+                                      bool isAdd = true;
+                                      for (int i = 0; i < _addPtAddArr.length; i++) {
+                                        if (_addPtAddArr[i].idx == ptAdd.idx) {
+                                          isAdd = false;
+                                        }
+                                      }if (isAdd) {
+                                        setState(() {
+                                          _addPtAddArr.add(ptAdd);
+                                        });
+                                      } else {
+                                        Utils.getInstance().showToast('이미 추가한 상품 입니다.');
+                                      }
+                                    }},
+                                );
+                              }).toList(),
+                            ),
                           ),
                         ),
                       ),
-                    )
-                        : const SizedBox(),
+                    ),
                     //옵션
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -342,7 +352,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                           }
                       ),
                     ),
-                    // 선택한 상품
+                    // 추가상품
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ListView.builder(
@@ -473,9 +483,10 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                       ),
                     ),
                       Visibility(
+                        visible: _isOptionSelected,
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
-                          margin: const EdgeInsets.only(bottom: 50, top: 15),
+                          margin: const EdgeInsets.only(bottom: 80),
                           child: _buildPriceSummary(context),
                         ),
                       ),
@@ -485,13 +496,15 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
             ),
           ],
         ),
-        if (_isOptionSelected)
-          Positioned(
+        Visibility(
+          visible: _isOptionSelected,
+          child: Positioned(
             bottom: 0,
             left: 0,
             right: 0,
             child: _buildActionButtons(context),
           ),
+        ),
       ],
     );
   }
