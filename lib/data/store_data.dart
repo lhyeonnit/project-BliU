@@ -5,12 +5,14 @@ class StoreData {
   final String? stName;
   final String? stProfile;
   final String? stBackground;
-  final int? stLike;
+  int? stLike;
   final String? stStyle;
   final String? stStyleTxt;
   final String? stAge;
   final String? stAgeTxt;
   final String? stTxt2;
+  String? checkMark;
+  String? downCoupon;
   List<ProductData> list;
 
   StoreData({
@@ -24,6 +26,8 @@ class StoreData {
     required this.stAge,
     required this.stAgeTxt,
     required this.stTxt2,
+    required this.checkMark,
+    required this.downCoupon,
     required this.list,
   });
 
@@ -47,6 +51,8 @@ class StoreData {
       stAge: json['st_age'],
       stAgeTxt: json['st_age_txt'],
       stTxt2: json['st_txt2'],
+      checkMark: json['check_mark'],
+      downCoupon: json['down_coupon'],
       list: list,
     );
   }
@@ -64,6 +70,8 @@ class StoreData {
       'st_age': stAge,
       'st_age_txt': stAgeTxt,
       'st_txt2': stTxt2,
+      'check_mark': checkMark,
+      'down_coupon' : downCoupon,
       'list': list.map((product) => product.toJson()).toList(),
     };
   }

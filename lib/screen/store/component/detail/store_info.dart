@@ -1,6 +1,6 @@
 import 'package:BliU/data/store_data.dart';
 import 'package:BliU/screen/_component/message_dialog.dart';
-import 'package:BliU/screen/store/viewmodel/coupon_download_view_model.dart';
+import 'package:BliU/screen/store/viewmodel/store_info_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -18,6 +18,7 @@ class StoreInfoPage extends ConsumerStatefulWidget {
 }
 
 class StoreInfoPageState extends ConsumerState<StoreInfoPage> {
+
   @override
   void initState() {
     super.initState();
@@ -33,19 +34,15 @@ class StoreInfoPageState extends ConsumerState<StoreInfoPage> {
 
     try {
       // 쿠폰 다운로드 요청 수행
-      await ref.read(couponDownloadModelProvider.notifier).getList(requestData);
+      await ref.read(storeInfoViewModelProvider.notifier).downStoreCoupon(requestData);
 
       // 다운로드가 완료되었으면 사용자에게 알림
-      final storeDownloadResponse = ref.read(couponDownloadModelProvider)?.storeDownloadResponseDTO;
-      if (storeDownloadResponse != null && storeDownloadResponse.result == true) {
-        // 다운로드 성공 시 알림
-        if (!mounted) return;
-        Utils.getInstance().showSnackBar(context, "쿠폰이 성공적으로 다운로드되었습니다.");
-      } else {
-        // 다운로드 실패 시 알림
-        if (!mounted) return;
-        Utils.getInstance().showSnackBar(context, storeDownloadResponse!.data.toString());
-      }
+      final storeDownloadResponse = ref.read(storeInfoViewModelProvider)?.storeDownloadResponseDTO;
+      if (!mounted) return;
+      Utils.getInstance().showSnackBar(context, storeDownloadResponse!.data.toString());
+      setState(() {
+        widget.storeData?.downCoupon = "N";
+      });
     } catch (e) {
       // 오류 발생 시 로그 및 사용자에게 알림
       print("쿠폰 다운로드 중 오류 발생: $e");
@@ -56,7 +53,6 @@ class StoreInfoPageState extends ConsumerState<StoreInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = false;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -161,8 +157,24 @@ class StoreInfoPageState extends ConsumerState<StoreInfoPage> {
                       return;
                     }
 
-                    // TODO 즐겨찾기 버튼 활성화
-
+                    Map<String, dynamic> requestData = {
+                      'mt_idx': mtIdx,
+                      'st_idx': widget.storeData?.stIdx ?? 0,
+                    };
+                    final responseData = await ref.read(storeInfoViewModelProvider.notifier).toggleLike(requestData);
+                    if (responseData != null) {
+                      if (responseData["result"] == true) {
+                        setState(() {
+                          if (widget.storeData?.checkMark == "Y") {
+                            widget.storeData?.checkMark = "N";
+                            widget.storeData?.stLike = (widget.storeData?.stLike ?? 0) - 1;
+                          } else {
+                            widget.storeData?.checkMark = "Y";
+                            widget.storeData?.stLike = (widget.storeData?.stLike ?? 0) + 1;
+                          }
+                        });
+                      }
+                    }
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -187,7 +199,7 @@ class StoreInfoPageState extends ConsumerState<StoreInfoPage> {
                             ),
                             const SizedBox(width: 8), // 텍스트와 아이콘 사이의 간격
 
-                            isSelected == true ? SvgPicture.asset(
+                            widget.storeData?.checkMark == "Y" ? SvgPicture.asset(
                               'assets/images/store/book_mark.svg',
                               colorFilter: const ColorFilter.mode(
                                 Color(0xFFFF6192),
@@ -218,27 +230,30 @@ class StoreInfoPageState extends ConsumerState<StoreInfoPage> {
             ),
           ),
           // 쿠폰 다운로드 버튼
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            margin: const EdgeInsets.only(bottom: 15),
-            child: GestureDetector(
-              onTap: () {
-                _downloadCoupon();
-              },
-              child: Container(
-                width: double.infinity,
-                height: 44,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: const Color(0xFFDDDDDD)),
-                ),
-                child: Center(
-                  child: Text(
-                    '쿠폰 다운로드',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      height: 1.2,
+          Visibility(
+            visible: widget.storeData?.downCoupon == "Y" ? true : false,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              margin: const EdgeInsets.only(bottom: 15),
+              child: GestureDetector(
+                onTap: () {
+                  _downloadCoupon();
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '쿠폰 다운로드',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                      ),
                     ),
                   ),
                 ),

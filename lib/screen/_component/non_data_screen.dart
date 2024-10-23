@@ -26,7 +26,6 @@ class NonDataScreen extends StatelessWidget {
               fontWeight: FontWeight.w300,
               color: const Color(0xFF7B7B7B),
               height: 1.2,
-
             ),
           ),
         ],

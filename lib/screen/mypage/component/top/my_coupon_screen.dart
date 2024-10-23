@@ -209,9 +209,7 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
-                                    color: isSelected
-                                        ? const Color(0xFFFF6192)
-                                        : Colors.black,
+                                    color: isSelected ? const Color(0xFFFF6192) : Colors.black,
                                     height: 1.2,
                                   ),
                                 ),
@@ -246,18 +244,15 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
                         itemBuilder: (context, index) {
                           final productCouponData = _couponList[index];
 
-                          final couponDiscount =
-                              productCouponData.couponDiscount ?? "0";
+                          final couponDiscount = productCouponData.couponDiscount ?? "0";
                           final ctName = productCouponData.ctName ?? "";
                           final couponName = productCouponData.couponName ?? "";
                           final ctDate = "${productCouponData.ctDate ?? ""}까지 사용가능";
                           final couponStatus = productCouponData.couponStatus ?? "";
 
-                          String detailMessage =
-                              "구매금액 ${Utils.getInstance().priceString(productCouponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
+                          String detailMessage = "구매금액 ${Utils.getInstance().priceString(productCouponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
                           if (productCouponData.ctMaxPrice != null) {
-                            detailMessage =
-                            "최대 ${Utils.getInstance().priceString(productCouponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
+                            detailMessage = "최대 ${Utils.getInstance().priceString(productCouponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
                           }
 
                           return Padding(
@@ -266,8 +261,9 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
                               margin: const EdgeInsets.only(bottom: 15.0),
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                    style: BorderStyle.solid,
-                                    color: const Color(0xFFDDDDDD)),
+                                  style: BorderStyle.solid,
+                                  color: const Color(0xFFDDDDDD),
+                                ),
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: IntrinsicHeight(
@@ -327,17 +323,13 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
                                               ],
                                             ),
                                             Container(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 10),
+                                              padding: const EdgeInsets.symmetric(vertical: 10),
                                               child: Text(
                                                 ctDate,
                                                 style: TextStyle(
                                                   fontFamily: 'Pretendard',
-                                                  fontSize: Responsive.getFont(
-                                                      context, 14),
-                                                  color: couponStatus == "사용가능"
-                                                      ? Colors.black
-                                                      : const Color(0xFFA4A4A4),
+                                                  fontSize: Responsive.getFont(context, 14),
+                                                  color: couponStatus == "사용가능" ? Colors.black : const Color(0xFFA4A4A4),
                                                   height: 1.2,
                                                 ),
                                               ),
@@ -356,34 +348,32 @@ class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
                                         ),
                                       ),
                                     ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                          children: [
-                                            if (couponStatus !=
-                                                "사용가능") // 다운로드된 경우에만 텍스트 표시
+                                    Visibility(
+                                      visible: couponStatus != "사용가능" ? true : false,
+                                      child: Expanded(
+                                        flex: 3,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            children: [
                                               SizedBox(
                                                 child: Text(
-                                                  productCouponData.couponStatus ??
-                                                      "",
+                                                  productCouponData.couponStatus ?? "",
                                                   style: TextStyle(
                                                     fontFamily: 'Pretendard',
-                                                    fontSize: Responsive.getFont(
-                                                        context, 12),
+                                                    fontSize: Responsive.getFont(context, 12),
                                                     color: Colors.grey,
                                                     height: 1.2,
                                                   ),
                                                 ),
                                               ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
+                                    )
                                   ],
                                 ),
                               ),

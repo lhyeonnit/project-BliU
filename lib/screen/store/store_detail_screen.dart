@@ -16,10 +16,10 @@ class StoreDetailScreen extends ConsumerStatefulWidget {
   const StoreDetailScreen({super.key, required this.stIdx});
 
   @override
-  ConsumerState<StoreDetailScreen> createState() => _StoreDetailScreenState();
+  ConsumerState<StoreDetailScreen> createState() => StoreDetailScreenState();
 }
 
-class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with TickerProviderStateMixin {
+class StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with TickerProviderStateMixin {
   late TabController _tabController;
   final ScrollController _scrollController = ScrollController();
   double _maxScrollHeight = 0;// NestedScrollView 사용시 최대 높이를 저장하기 위한 변수
@@ -56,6 +56,113 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getCategoryList();
+    _getList();
+  }
+
+  void _getCategoryList() async {
+    Map<String, dynamic> requestData = {'category_type': '1'};
+    final categoryResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getCategory(requestData);
+    if (categoryResponseDTO != null) {
+      if (categoryResponseDTO.result == true) {
+        final list = categoryResponseDTO.list ?? [];
+        for (var item in list) {
+          categories.add(item);
+        }
+
+        setState(() {
+          _tabController = TabController(length: categories.length, vsync: this);
+          _tabController.addListener(_tabChangeCallBack);
+        });
+      }
+    }
+  }
+
+  void _tabChangeCallBack() {
+    _hasNextPage = true;
+    _isLoadMoreRunning = false;
+
+    _getList();
+  }
+  void _getList() async {
+    setState(() {
+      _isFirstLoadRunning = true;
+    });
+    _page = 1;
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    String category = "all";
+    final categoryData = categories[_tabController.index];
+    if ((categoryData.ctIdx ?? 0) > 0) {
+      category = categoryData.ctIdx.toString();
+    }
+    Map<String, dynamic> requestData = {
+      'mt_idx': mtIdx,
+      'st_idx': widget.stIdx,
+      'category': category,
+      'pg': _page,
+    };
+
+    setState(() {
+      storeData = null;
+      _count = 0;
+      _productList = [];
+    });
+
+    final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
+    storeData = storeResponseDTO?.data;
+    _count = storeResponseDTO?.data.list.length ?? 0;
+    _productList = storeResponseDTO?.data.list ?? [];
+
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+  }
+  void _nextLoad() async {
+
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+      _page += 1;
+
+      final pref = await SharedPreferencesManager.getInstance();
+      final mtIdx = pref.getMtIdx();
+
+      String category = "all";
+      final categoryData = categories[_tabController.index];
+      if ((categoryData.ctIdx ?? 0) > 0) {
+        category = categoryData.ctIdx.toString();
+      }
+
+      Map<String, dynamic> requestData = {
+        'mt_idx': mtIdx,
+        'category': category,
+        'st_idx': widget.stIdx,
+        'pg': _page,
+      };
+
+      final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
+      if (storeResponseDTO != null) {
+        if (storeResponseDTO.data.list.isNotEmpty) {
+          setState(() {
+            _productList.addAll(storeResponseDTO.data.list);
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
+      });
+    }
   }
 
   @override
@@ -182,112 +289,5 @@ class _StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Tick
         return ProductListCard(productData: productData);
       },
     );
-  }
-
-  void _afterBuild(BuildContext context) {
-    _getCategoryList();
-    _getList();
-  }
-
-  void _getCategoryList() async {
-    Map<String, dynamic> requestData = {'category_type': '1'};
-    final categoryResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getCategory(requestData);
-    if (categoryResponseDTO != null) {
-      if (categoryResponseDTO.result == true) {
-        final list = categoryResponseDTO.list ?? [];
-        for (var item in list) {
-          categories.add(item);
-        }
-
-        setState(() {
-          _tabController = TabController(length: categories.length, vsync: this);
-          _tabController.addListener(_tabChangeCallBack);
-        });
-      }
-    }
-  }
-
-  void _tabChangeCallBack() {
-    _hasNextPage = true;
-    _isLoadMoreRunning = false;
-
-    _getList();
-  }
-  void _getList() async {
-    setState(() {
-      _isFirstLoadRunning = true;
-    });
-    _page = 1;
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    String category = "all";
-    final categoryData = categories[_tabController.index];
-    if ((categoryData.ctIdx ?? 0) > 0) {
-      category = categoryData.ctIdx.toString();
-    }
-    Map<String, dynamic> requestData = {
-      'mt_idx': mtIdx,
-      'st_idx': widget.stIdx,
-      'category': category,
-      'pg': _page,
-    };
-
-    setState(() {
-      storeData = null;
-      _count = 0;
-      _productList = [];
-    });
-
-    final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
-    storeData = storeResponseDTO?.data;
-    _count = storeResponseDTO?.data.list.length ?? 0;
-    _productList = storeResponseDTO?.data.list ?? [];
-
-    setState(() {
-      _isFirstLoadRunning = false;
-    });
-  }
-  void _nextLoad() async {
-
-    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning){
-      setState(() {
-        _isLoadMoreRunning = true;
-      });
-      _page += 1;
-
-      final pref = await SharedPreferencesManager.getInstance();
-      final mtIdx = pref.getMtIdx();
-
-      String category = "all";
-      final categoryData = categories[_tabController.index];
-      if ((categoryData.ctIdx ?? 0) > 0) {
-        category = categoryData.ctIdx.toString();
-      }
-
-      Map<String, dynamic> requestData = {
-        'mt_idx': mtIdx,
-        'category': category,
-        'st_idx': widget.stIdx,
-        'pg': _page,
-      };
-
-      final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
-      if (storeResponseDTO != null) {
-        if (storeResponseDTO.data.list.isNotEmpty) {
-          setState(() {
-            _productList.addAll(storeResponseDTO.data.list);
-          });
-        } else {
-          setState(() {
-            _hasNextPage = false;
-          });
-        }
-      }
-
-      setState(() {
-        _isLoadMoreRunning = false;
-      });
-    }
   }
 }
