@@ -369,7 +369,7 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                                                   borderRadius: BorderRadius.circular(20),
                                                   child:Image.network(
                                                     store.stProfile ?? "",
-                                                    fit: BoxFit.contain,
+                                                    fit: BoxFit.cover,
                                                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                                       return Image.asset('assets/images/home/exhi.png');
                                                     },
