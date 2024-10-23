@@ -477,7 +477,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
                                             borderRadius: const BorderRadius.all(Radius.circular(20)), // 사진의 모서리만 둥글게 설정
                                             child: Image.network(
                                               cartItem.stProfile ?? "",
-                                              fit: BoxFit.contain,
+                                              fit: BoxFit.cover,
                                               errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                                 return const SizedBox();
                                               },
