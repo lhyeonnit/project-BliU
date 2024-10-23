@@ -16,7 +16,7 @@ class ProductQnaListResponseDto {
     return ProductQnaListResponseDto(
       result: json['result'],
       message: json['data']['message'],
-      data: (json['data'] as List<QnaData>),
+      data: (json['data']['list'] as List<QnaData>),
     );
   }
 
