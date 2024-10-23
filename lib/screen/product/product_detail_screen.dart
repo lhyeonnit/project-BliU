@@ -5,7 +5,6 @@ import 'package:BliU/data/review_data.dart';
 import 'package:BliU/data/store_data.dart';
 import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/product/component/detail/product_order_bottom_option.dart';
