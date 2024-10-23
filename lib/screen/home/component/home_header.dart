@@ -62,84 +62,48 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
                       },
                       child: Image.network(
                         banner.btImg ?? "",
-                        fit: BoxFit.cover, // 이미지를 전체 화면에 맞추고 가로 여백 없이 설정
+                        fit: BoxFit.fill, // 이미지를 전체 화면에 맞추고 가로 여백 없이 설정
                         errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                           return const SizedBox();
                         }
                       ),
                     ),
                   ),
-                  // 상단 그림자
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: 56, // 상단 그림자의 높이
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.black.withOpacity(0.4), // 더 진한 그림자 색
-                            Colors.transparent, // 투명색으로 변화
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: 270, // 상단 그림자의 높이
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [
-                            Colors.black.withOpacity(0.4), // 더 진한 그림자 색
-                            Colors.transparent, // 투명색으로 변화
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  // // 상단 그림자
                   // Positioned(
-                  //   top: Responsive.getHeight(context, 409),
-                  //   left: Responsive.getWidth(context, 16),
-                  //   child: Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       Text(
-                  //         'title',
-                  //         style: TextStyle(
-                  // fontFamily: 'Pretendard',
-                  //           fontSize: Responsive.getFont(context, 30),
-                  //           fontWeight: FontWeight.bold,
-                  //           color: Colors.white,
-                  //         ),
+                  //   top: 0,
+                  //   left: 0,
+                  //   right: 0,
+                  //   height: 56, // 상단 그림자의 높이
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       gradient: LinearGradient(
+                  //         begin: Alignment.topCenter,
+                  //         end: Alignment.bottomCenter,
+                  //         colors: [
+                  //           Colors.black.withOpacity(0.4), // 더 진한 그림자 색
+                  //           Colors.transparent, // 투명색으로 변화
+                  //         ],
                   //       ),
-                  //       Text(
-                  //         'subtitle',
-                  //         style: TextStyle(
-                  // fontFamily: 'Pretendard',
-                  //           fontSize: Responsive.getFont(context, 30),
-                  //           fontWeight: FontWeight.bold,
-                  //           color: Colors.white,
-                  //         ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // Positioned(
+                  //   bottom: 0,
+                  //   left: 0,
+                  //   right: 0,
+                  //   height: 270, // 상단 그림자의 높이
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       gradient: LinearGradient(
+                  //         begin: Alignment.bottomCenter,
+                  //         end: Alignment.topCenter,
+                  //         colors: [
+                  //           Colors.black.withOpacity(0.4), // 더 진한 그림자 색
+                  //           Colors.transparent, // 투명색으로 변화
+                  //         ],
                   //       ),
-                  //       SizedBox(height: Responsive.getHeight(context, 13.82)),
-                  //       Text(
-                  //         'description',
-                  //         style: TextStyle(
-                  // fontFamily: 'Pretendard',
-                  //           fontSize: Responsive.getFont(context, 16),
-                  //           color: Colors.white,
-                  //         ),
-                  //       ),
-                  //     ],
+                  //     ),
                   //   ),
                   // ),
                 ],

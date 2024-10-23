@@ -109,7 +109,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 30),
+                    margin: const EdgeInsets.only(top: 30, bottom: 10),
                     child: Text(
                       _exhibitionData?.etTitle ?? "",
                       style: TextStyle(

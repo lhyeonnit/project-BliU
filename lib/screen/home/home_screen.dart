@@ -2,6 +2,7 @@ import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:BliU/screen/_component/smart_lens_screen.dart';
 import 'package:BliU/screen/home/component/home_body_ai.dart';
@@ -440,6 +441,13 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                         ),
                                       ),
                                     ],
+                                  ),
+                                  Visibility(
+                                    visible: _productList.isEmpty,
+                                    child: Container(
+                                      margin: const EdgeInsets.only(bottom: 200),
+                                      child: const NonDataScreen(text: '등록된 스토어가 없습니다.',),
+                                    ),
                                   ),
                                   Container(
                                     margin: const EdgeInsets.only(right: 16, bottom: 29),
