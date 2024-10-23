@@ -685,6 +685,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                         ),
                       ),
                       iconColor: Colors.black,
+                      collapsedIconColor: Colors.black,
                       children: [
                         Container(
                           decoration: const BoxDecoration(

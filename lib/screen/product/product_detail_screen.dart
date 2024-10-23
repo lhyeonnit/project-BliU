@@ -964,7 +964,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             ),
             // 선 제거
             child: ExpansionTile(
-              initiallyExpanded: true,
+              initiallyExpanded: false,
               title: Text(
                 '배송안내',
                 style: TextStyle(
@@ -1161,7 +1161,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             ),
             // 선 제거
             child: ExpansionTile(
-              initiallyExpanded: true,
+              initiallyExpanded: false,
               title: Text(
                 '교환/반품 안내',
                 style: TextStyle(
