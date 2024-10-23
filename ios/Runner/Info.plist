@@ -45,6 +45,7 @@
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
+		    <string>tel</string>
 			<string>kftc-bankpay</string>
 			<string>ispmobile</string>
 			<string>itms-apps</string>
@@ -129,7 +130,7 @@
 		<key>UIMainStoryboardFile</key>
 		<string>Main</string>
 		<key>UIStatusBarHidden</key>
-		<true/>
+		<false/>
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>

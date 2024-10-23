@@ -1,16 +1,16 @@
-import 'package:BliU/main.dart';
+import 'package:BliU/screen/_component/message_dialog.dart';
+import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/non_inquiry_service.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/non_inquiry_store.dart';
+import 'package:BliU/screen/mypage/component/bottom/component/inquiry_store.dart';
+import 'package:BliU/screen/mypage/component/bottom/component/service_my_inquiry.dart';
 import 'package:BliU/screen/mypage/viewmodel/service_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-
-import 'component/inquiry_store.dart';
-import 'component/service_my_inquiry.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ServiceScreen extends ConsumerWidget {
   const ServiceScreen({super.key});
@@ -18,7 +18,6 @@ class ServiceScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(serviceModelProvider.notifier).getService();
-    final mtIdx = ref.watch(sharedPreferencesProvider).getString('mtIdx');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -80,65 +79,94 @@ class ServiceScreen extends ConsumerWidget {
                         false
                     ),
                     Container(
-                        margin: const EdgeInsets.only(top: 20, bottom: 10),
-                        child: _buildInfoRow(
-                            context,
+                      margin: const EdgeInsets.only(top: 20, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
                             '전화문의',
-                            model?.stCustomerTel ?? '02-000-000',
-                            const Color(0xFFFF6192),
-                            true
-                        )
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 15),
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              height: 1.2,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              String telNumber = model?.stCustomerTel ?? '02-000-000';
+                              telNumber = telNumber.replaceAll("-", "");
+                              final url = Uri.parse("tel:$telNumber");
+                              if (await canLaunchUrl(url)) {
+                                await launchUrl(url);
+                              }
+                            },
+                            child: Text(
+                              model?.stCustomerTel ?? '02-000-000',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                fontWeight: FontWeight.w400,
+                                color: const Color(0xFFFF6192),
+                                decoration: TextDecoration.underline,
+                                decorationColor: const Color(0xFFFF6192),
+                                height: 1.2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 );
               }),
               _buildCustomTile(context, '판매자 입점 문의', () {
-                if (mtIdx != null && mtIdx.isNotEmpty) {
-                  // 회원인 경우
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const InquiryStore()
-                    ),
-                  );
-                } else {
-                  // 비회원인 경우
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NonInquiryStore()
-                    ), // 비회원용 페이지
-                  );
-                }
-              },
-              ),
-              _buildCustomTile(context, '고객센터 문의하기', () {
-                if (mtIdx != null && mtIdx.isNotEmpty) {
-                  // 회원인 경우
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const InquiryService(qnaType: '1',)
-                    ),
-                  );
-                } else {
-                  // 비회원인 경우
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NonInquiryService(qnaType: '1')
-                    ), // 비회원용 페이지
-                  );
-                }
-              },
-              ),
-              _buildCustomTile(context, '문의내역', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ServiceMyInquiryScreen()
+                      builder: (context) => const InquiryStore()
                   ),
                 );
+              }),
+              _buildCustomTile(context, '고객센터 문의하기', () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const InquiryService(qnaType: '1',)
+                  ),
+                );
+              },),
+              _buildCustomTile(context, '문의내역', () {
+
+                SharedPreferencesManager.getInstance().then((pref) {
+                  if (!context.mounted) return;
+                  final mtIdx = pref.getMtIdx();
+                  if (mtIdx != null && mtIdx.isNotEmpty) {
+                    // 회원인 경우
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ServiceMyInquiryScreen()
+                      ),
+                    );
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return MessageDialog(
+                            title: "알림", message: "로그인이 필요합니다.",
+                            doConfirm: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                              );
+                            },
+                          );
+                        }
+                    );
+                  }
+                });
               },
               ),
             ],

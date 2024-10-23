@@ -39,7 +39,6 @@ void backgroundHandler(NotificationResponse details) {
 }
 
 Future<void> fireBaseInitializeApp() async {
-  // TODO IOS 작업필요
   await Firebase.initializeApp(
     options: FirebaseOptions(
         apiKey: Platform.isAndroid ? 'AIzaSyCZyPF0_XZ105BRHpsOmlygeXbUn7XboSA' : 'AIzaSyB0Rcg7ZaT7LUMR4U5igmLQqR6T9HaMoOs',//aos: current_key, ios : API_KEY

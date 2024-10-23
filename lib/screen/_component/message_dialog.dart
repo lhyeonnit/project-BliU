@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class MessageDialog extends StatelessWidget {
   final String title;
   final String message;
-  const MessageDialog({super.key, required this.title, required this.message});
+  final Function()? doConfirm;
+  const MessageDialog({super.key, required this.title, required this.message, this.doConfirm});
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +76,9 @@ class MessageDialog extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
+                          if (doConfirm != null) {
+                            doConfirm?.call();
+                          }
                         },
                         child: Container(
                           margin: const EdgeInsets.only(left: 5),

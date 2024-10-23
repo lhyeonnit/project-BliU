@@ -1,6 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dmonster.BliU">
 
+    <queries>
+        <!-- If your app makes calls -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="tel" />
+        </intent>
+    </queries>
+
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -15,7 +23,6 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <!-- SDK 34 (Android14) -->
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
-
 
     <application
         android:label="BliU"

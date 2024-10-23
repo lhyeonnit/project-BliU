@@ -20,7 +20,6 @@ import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:share_plus/share_plus.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final int? ptIdx;
@@ -532,8 +531,16 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             height: 24,
                           ),
                           onTap: () {
-                            String productUrl = "https://bground.api.dmonster.kr/api/user/product/detail/${_productData?.ptIdx ?? ''}"; // 고유한 URL 생성
-                            Share.share('${_productData?.ptName ?? ''}: $productUrl');
+                            // TODO Url 만들어야 함
+
+
+
+                            // String productUrl = "https://bground.api.dmonster.kr/api/user/product/detail/${_productData?.ptIdx ?? ''}"; // 고유한 URL 생성
+                            // Share.share('${_productData?.ptName ?? ''}: $productUrl');
+
+
+
+
                           },
                         ),
                       ],

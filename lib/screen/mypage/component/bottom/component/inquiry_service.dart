@@ -25,15 +25,30 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
-  bool _phoneNumVisible = false;
-
   int _imageCnt = 0;
   final List<Widget> _addImagesWidget = [];
   List<XFile> _fileList = [];
 
+  bool _phoneNumVisible = false;
+  bool _isAllFieldsFilled = false;
+
+  void _checkIfAllFieldsFilled() {
+    setState(() {
+      if (_phoneNumVisible) {
+        _isAllFieldsFilled = _titleController.text.isNotEmpty && _contentController.text.isNotEmpty && _phoneController.text.isNotEmpty;
+      } else {
+        _isAllFieldsFilled = _titleController.text.isNotEmpty && _contentController.text.isNotEmpty;
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _titleController.addListener(_checkIfAllFieldsFilled);
+    _contentController.addListener(_checkIfAllFieldsFilled);
+    _phoneController.addListener(_checkIfAllFieldsFilled);
+
     SharedPreferencesManager.getInstance().then((pref) {
       final mtIdx = pref.getMtIdx() ?? "";
       if (mtIdx.isEmpty) {
@@ -245,32 +260,30 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
               bottom: 0,
               left: 0,
               right: 0,
-              child: Container(
-                width: double.infinity,
-                color: Colors.white,
-                child: GestureDetector(
-                  onTap: () {
+              child: GestureDetector(
+                onTap: () {
+                  if(_isAllFieldsFilled) {
                     _qnaWrite();
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 48,
-                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(6),
-                      ),
+                  }
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 48,
+                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                  decoration: BoxDecoration(
+                    color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(6),
                     ),
-                    child: Center(
-                      child: Text(
-                        '등록',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Colors.white,
-                          height: 1.2,
-                        ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '등록',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
+                        height: 1.2,
                       ),
                     ),
                   ),
@@ -412,8 +425,7 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
     });
   }
 
-  Widget _buildTitleTextField(
-      TextEditingController controller, String hintText) {
+  Widget _buildTitleTextField(TextEditingController controller, String hintText) {
     return TextField(
       onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       controller: controller,
@@ -422,13 +434,13 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
         fontSize: Responsive.getFont(context, 14),
       ),
       decoration: InputDecoration(
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         hintText: hintText,
         hintStyle: TextStyle(
-            fontFamily: 'Pretendard',
-            fontSize: Responsive.getFont(context, 14),
-            color: const Color(0xFF595959)),
+          fontFamily: 'Pretendard',
+          fontSize: Responsive.getFont(context, 14),
+          color: const Color(0xFF595959),
+        ),
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(6)),
           borderSide: BorderSide(color: Color(0xFFE1E1E1)),
@@ -441,27 +453,26 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
     );
   }
 
-  Widget _buildContentTextField(
-      TextEditingController controller, String hintText) {
+  Widget _buildContentTextField(TextEditingController controller, String hintText) {
     return Container(
       margin: const EdgeInsets.only(top: 10.0, bottom: 20),
       child: TextField(
         onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
         style: TextStyle(
-            height: 1.2,
-            fontFamily: 'Pretendard',
-            fontSize: Responsive.getFont(context, 14)
+          height: 1.2,
+          fontFamily: 'Pretendard',
+          fontSize: Responsive.getFont(context, 14),
         ),
         controller: controller,
         maxLines: 7,
         decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
           hintText: hintText,
           hintStyle: TextStyle(
-              fontFamily: 'Pretendard',
-              fontSize: Responsive.getFont(context, 14),
-              color: const Color(0xFF595959)),
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 14),
+            color: const Color(0xFF595959),
+          ),
           enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(6)),
             borderSide: BorderSide(color: Color(0xFFE1E1E1)),
