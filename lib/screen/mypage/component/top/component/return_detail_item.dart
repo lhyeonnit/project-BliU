@@ -216,10 +216,15 @@ class _ReturnItemState extends State<ReturnItem> {
                       hintStyle: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
-                          color: const Color(0xFF595959)),
+                          color: const Color(0xFF595959)
+                      ),
                       enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
-                        borderSide: BorderSide(color: Colors.black),
+                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                      ),
+                      disabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -329,16 +334,21 @@ class _ReturnItemState extends State<ReturnItem> {
                     onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                     maxLines: 1,
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 15),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '환불받을 은행계좌',
                       hintStyle: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: const Color(0xFF595959)),
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        color: const Color(0xFF595959),
+                        height: 1.2,
+                      ),
                       enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
-                        borderSide: BorderSide(color: Colors.black),
+                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                      ),
+                      disabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
