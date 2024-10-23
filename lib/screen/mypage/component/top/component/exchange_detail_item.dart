@@ -165,12 +165,18 @@ class ExchangeItemState extends State<ExchangeItem> {
                           vertical: 14, horizontal: 15),
                       hintText: '세부 내용 입력',
                       hintStyle: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: const Color(0xFF595959)),
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        color: const Color(0xFF595959),
+                        height: 1.2,
+                      ),
                       enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
-                        borderSide: BorderSide(color: Colors.black),
+                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                      ),
+                      disabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),

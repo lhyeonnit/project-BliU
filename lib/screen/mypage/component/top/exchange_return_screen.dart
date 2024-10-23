@@ -158,6 +158,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
