@@ -204,6 +204,7 @@ class _ReturnItemState extends State<ReturnItem> {
                   child: TextField(
                     onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                     style: TextStyle(
+                        decorationThickness: 0,
                         height: 1.2,
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14)
@@ -333,6 +334,12 @@ class _ReturnItemState extends State<ReturnItem> {
                   flex: 7,
                   child: TextField(
                     onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                    style: TextStyle(
+                        decorationThickness: 0,
+                        height: 1.2,
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14)
+                    ),
                     maxLines: 1,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),

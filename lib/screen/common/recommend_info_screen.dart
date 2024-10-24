@@ -44,8 +44,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
     super.initState();
     // 애니메이션 컨트롤러 설정
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 600), // 바텀시트 애니메이션 지속 시간
-      vsync: this,
+      duration: const Duration(milliseconds: 300), vsync: this,
     );
 
     // 바텀시트 애니메이션 시작 위치와 끝 위치

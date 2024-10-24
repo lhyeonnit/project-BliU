@@ -430,7 +430,10 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
           ),
           if (label.isNotEmpty)
             TextField(
+              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
+                decorationThickness: 0,
+                height: 1.2,
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
@@ -475,7 +478,10 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
         children: [
           if (label.isNotEmpty)
             TextField(
+              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
+                decorationThickness: 0,
+                height: 1.2,
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
@@ -546,7 +552,10 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
             ),
           ),
           TextField(
+            onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
             style: TextStyle(
+              decorationThickness: 0,
+              height: 1.2,
               fontFamily: 'Pretendard',
               fontSize: Responsive.getFont(context, 14),
             ),

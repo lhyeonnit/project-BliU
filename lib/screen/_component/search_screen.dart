@@ -394,9 +394,10 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                         child: TextField(
                           onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                           style: TextStyle(
-                            height: 1.2,
+                              decorationThickness: 0,
+                              height: 1.2,
                               fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14)
+                              fontSize: Responsive.getFont(context, 14)
                           ),
                           controller: _searchController,
                           decoration: InputDecoration(

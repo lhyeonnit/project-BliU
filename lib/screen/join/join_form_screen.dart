@@ -652,6 +652,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                 onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                 focusNode: focusNode,
                 style: TextStyle(
+                    decorationThickness: 0,
                     height: 1.2,
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14)
@@ -704,6 +705,8 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
               child: TextField(
                 onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                 style: TextStyle(
+                  decorationThickness: 0,
+                  height: 1.2,
                   fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14),
                 ),
@@ -781,7 +784,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         child: TextFormField(
-          textAlign: TextAlign.start,
+          textAlign: TextAlign.center,
           enabled: false,
           decoration: const InputDecoration(
             isDense: true,
@@ -980,8 +983,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         selectedMonth,
                         selectedDay,
                       );
-                      _birthController.text =
-                          convertDateTimeDisplay(_selectedDate.toString());
+                      _birthController.text = convertDateTimeDisplay(_selectedDate.toString());
                     });
                     Navigator.of(context).pop();
                     FocusScope.of(context).unfocus();

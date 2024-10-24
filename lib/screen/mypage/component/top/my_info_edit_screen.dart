@@ -668,6 +668,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
           TextField(
             onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
             style: TextStyle(
+                decorationThickness: 0,
                 height: 1.2,
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14)
@@ -748,6 +749,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
             TextField(
               onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
+                  decorationThickness: 0,
                   height: 1.2,
                   fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14)
@@ -822,6 +824,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
             TextField(
               onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
+                  decorationThickness: 0,
                   height: 1.2,
                   fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14)
@@ -876,6 +879,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
             TextField(
               onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
+                  decorationThickness: 0,
                   height: 1.2,
                   fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14)
@@ -952,7 +956,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         child: TextFormField(
-          textAlign: TextAlign.start,
+          textAlign: TextAlign.center,
           enabled: false,
           decoration: const InputDecoration(
             isDense: true,

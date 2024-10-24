@@ -111,6 +111,7 @@ class MyReviewEditState extends ConsumerState<MyReviewEdit> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -190,6 +191,7 @@ class MyReviewEditState extends ConsumerState<MyReviewEdit> {
                             onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                             controller: _reviewController,
                             style: TextStyle(
+                                decorationThickness: 0,
                                 height: 1.2,
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14)

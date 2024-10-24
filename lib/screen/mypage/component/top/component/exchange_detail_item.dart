@@ -153,6 +153,7 @@ class ExchangeItemState extends State<ExchangeItem> {
                   child: TextField(
                     onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                     style: TextStyle(
+                        decorationThickness: 0,
                         height: 1.2,
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14)
