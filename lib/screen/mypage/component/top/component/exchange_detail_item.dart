@@ -2,12 +2,11 @@ import 'dart:io';
 
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../../../../../utils/responsive.dart';
 
 class ExchangeItem extends StatefulWidget {
   final OrderDetailInfoData? orderDetailInfoData;

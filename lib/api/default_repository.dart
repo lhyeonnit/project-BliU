@@ -22,17 +22,11 @@ class DefaultRepository {
     _dio.options.contentType = Headers.formUrlEncodedContentType;
   }
   // POST
-  Future<Response<dynamic>?> reqPost({
-    required String url,
-    Object? data,
-  }) async {
+  Future<Response<dynamic>?> reqPost({required String url, Object? data,}) async {
     try {
       _dio.options.contentType = Headers.formUrlEncodedContentType;
 
-      final response = await _dio.post(
-        url,
-        data: data,
-      );
+      final response = await _dio.post(url, data: data,);
       return response;
     } catch (e) {
       if (kDebugMode) {
@@ -42,17 +36,11 @@ class DefaultRepository {
     }
   }
   //POST FILE
-  Future<Response<dynamic>?> reqPostFiles({
-    required String url,
-    FormData? data,
-  }) async {
+  Future<Response<dynamic>?> reqPostFiles({required String url, FormData? data,}) async {
     try {
       _dio.options.contentType = Headers.multipartFormDataContentType;
 
-      final response = await _dio.post(
-        url,
-        data: data,
-      );
+      final response = await _dio.post(url, data: data,);
       return response;
     } catch (e) {
       if (kDebugMode) {
@@ -62,17 +50,11 @@ class DefaultRepository {
     }
   }
   //GET
-  Future<Response<dynamic>?> reqGet({
-    required String url,
-    Map<String, dynamic>? data,
-  }) async {
+  Future<Response<dynamic>?> reqGet({required String url, Map<String, dynamic>? data,}) async {
     try {
       _dio.options.contentType = Headers.formUrlEncodedContentType;
 
-      final response = await _dio.get(
-          url,
-          queryParameters: data,
-      );
+      final response = await _dio.get(url, queryParameters: data,);
       return response;
     } catch (e) {
       if (kDebugMode) {
