@@ -2,6 +2,7 @@ import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/category_response_dto.dart';
 import 'package:BliU/dto/default_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ReportPageModel {}
@@ -25,7 +26,9 @@ class ReportPageViewModel extends StateNotifier<ReportPageModel?> {
       return null;
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       return null;
     }
   }
@@ -43,7 +46,9 @@ class ReportPageViewModel extends StateNotifier<ReportPageModel?> {
       return null;
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       return null;
     }
   }

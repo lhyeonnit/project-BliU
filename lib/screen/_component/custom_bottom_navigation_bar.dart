@@ -25,42 +25,48 @@ class CustomBottomNavigationBar extends StatelessWidget {
           ),
         ],
       ),
-      child: BottomNavigationBar(
-        items: [
-          _buildNavItem(
-            index: 0,
-            iconPath: 'assets/images/home/bottom_store.svg',
-            label: 'home',
-          ),
-          _buildNavItem(
-            index: 1,
-            iconPath: 'assets/images/home/bottom_like.svg',
-            label: 'like',
-          ),
-          _buildNavItem(
-            index: 2,
-            iconPath: 'assets/images/home/bottom_home.svg',
-            label: 'store',
-          ),
-          _buildNavItem(
-            index: 3,
-            iconPath: 'assets/images/home/bottom_cate.svg',
-            label: 'cate',
-          ),
-          _buildNavItem(
-            index: 4,
-            iconPath: 'assets/images/home/bottom_my.svg',
-            label: 'my',
-          ),
-        ],
-        currentIndex: selectedIndex,
-        selectedItemColor: Colors.black,
-        onTap: onItemTapped,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
-        elevation: 0, // 그림자 제거
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: BottomNavigationBar(
+          items: [
+            _buildNavItem(
+              index: 0,
+              iconPath: 'assets/images/home/bottom_store.svg',
+              label: 'home',
+            ),
+            _buildNavItem(
+              index: 1,
+              iconPath: 'assets/images/home/bottom_like.svg',
+              label: 'like',
+            ),
+            _buildNavItem(
+              index: 2,
+              iconPath: 'assets/images/home/bottom_home.svg',
+              label: 'store',
+            ),
+            _buildNavItem(
+              index: 3,
+              iconPath: 'assets/images/home/bottom_cate.svg',
+              label: 'cate',
+            ),
+            _buildNavItem(
+              index: 4,
+              iconPath: 'assets/images/home/bottom_my.svg',
+              label: 'my',
+            ),
+          ],
+          currentIndex: selectedIndex,
+          selectedItemColor: Colors.black,
+          onTap: onItemTapped,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+          elevation: 0, // 그림자 제거
+        ),
       ),
     );
   }

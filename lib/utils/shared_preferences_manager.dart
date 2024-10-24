@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:BliU/data/member_info_data.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesManager {
@@ -65,7 +66,9 @@ class SharedPreferencesManager {
         memberInfoData = MemberInfoData.fromJson(memberInfoJsonData);
       }
     } catch (e) {
-     print("getMemberInfo error $e");
+      if (kDebugMode) {
+        print("getMemberInfo error $e");
+      }
     }
 
     return memberInfoData;

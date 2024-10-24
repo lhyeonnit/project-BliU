@@ -323,9 +323,9 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
 
       final productListResponseDTO = await ref.read(searchModelProvider.notifier).getProductList(requestProductData);
       if (productListResponseDTO != null) {
-        if ((productListResponseDTO.list ?? []).isNotEmpty) {
+        if ((productListResponseDTO.list).isNotEmpty) {
           setState(() {
-            _productList.addAll(productListResponseDTO.list ?? []);
+            _productList.addAll(productListResponseDTO.list);
           });
         } else {
           setState(() {

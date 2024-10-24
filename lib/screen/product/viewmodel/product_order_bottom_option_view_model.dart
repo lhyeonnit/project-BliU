@@ -2,6 +2,7 @@ import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/pay_order_detail_dto.dart';
 import 'package:BliU/dto/product_option_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductOrderBottomOptionModel {
@@ -25,7 +26,9 @@ class ProductOrderBottomOptionViewModel extends StateNotifier<ProductOrderBottom
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -42,7 +45,9 @@ class ProductOrderBottomOptionViewModel extends StateNotifier<ProductOrderBottom
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -59,7 +64,9 @@ class ProductOrderBottomOptionViewModel extends StateNotifier<ProductOrderBottom
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }

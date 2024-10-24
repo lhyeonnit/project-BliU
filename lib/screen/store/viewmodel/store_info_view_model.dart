@@ -1,6 +1,7 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/store_download_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class StoreInfoModel {
@@ -31,7 +32,9 @@ class StoreInfoViewModel extends StateNotifier<StoreInfoModel?> {
       state = state;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       state = state;
     }
   }
@@ -46,7 +49,9 @@ class StoreInfoViewModel extends StateNotifier<StoreInfoModel?> {
       }
       return null;
     } catch (e) {
-      print('Error toggling like: $e');
+      if (kDebugMode) {
+        print('Error toggling like: $e');
+      }
       return null;
     }
   }

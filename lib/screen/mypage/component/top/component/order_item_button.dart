@@ -25,14 +25,15 @@ class OrderItemButton extends ConsumerStatefulWidget {
 class OrderItemButtonState extends ConsumerState<OrderItemButton> {
   late OrderData _orderData;
   late OrderDetailData _orderDetailData;
-  late String _ctStatusTxt;
+  late int _ctStatus;
 
   @override
   void initState() {
     super.initState();
     _orderData = widget.orderData;
     _orderDetailData = widget.orderDetailData;
-    _ctStatusTxt = _orderDetailData.ctStatusTxt ?? "";
+    _ctStatus = _orderDetailData.ctStats ?? 0;
+    //_ctStatus = 81; //테스트용
   }
 
   void _requestOrderComplete() {
@@ -67,7 +68,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
                   Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
                   Navigator.pop(context);
                   setState(() {
-                    _ctStatusTxt = "구매확정";
+                    _ctStatus = 8;
                   });
                 }
               }
@@ -82,7 +83,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
   @override
   Widget build(BuildContext context) {
 
-    if (_ctStatusTxt == "상품준비중") {
+    if (_ctStatus == 3) {
       return Row(
         children: [
           Expanded(
@@ -138,7 +139,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
           ),
         ],
       );
-    } else if (_ctStatusTxt == "배송중") {
+    } else if (_ctStatus == 5) {
       return Row(
         children: [
           Expanded(
@@ -173,7 +174,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? ""),
+                    builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? "", deliveryType: 1,),
                   ),
                 );
               },
@@ -220,7 +221,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
           ),
         ],
       );
-    } else if (_ctStatusTxt == "배송완료") {
+    } else if (_ctStatus == 7) {
       return Column(
         children: [
           SizedBox(
@@ -278,7 +279,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? ""),
+                        builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? "", deliveryType: 1,),
                       ),
                     );
                   },
@@ -327,7 +328,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
           ),
         ],
       );
-    } else if (_ctStatusTxt == "구매확정") {
+    } else if (_ctStatus == 8) {
       return Row(
         children: [
           Expanded(
@@ -362,7 +363,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? ""),
+                    builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? "", deliveryType: 1,),
                   ),
                 );
               },
@@ -408,6 +409,33 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
             ),
           ),
         ],
+      );
+    } else if (_ctStatus == 81 || _ctStatus == 82) {
+      return SizedBox(
+        width: double.infinity,
+        child: TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? "", deliveryType: 2,),
+              ),
+            );
+          },
+          style: TextButton.styleFrom(
+            side: const BorderSide(color: Color(0xFFDDDDDD)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+            backgroundColor: Colors.white,
+          ),
+          child: Text(
+            '배송조회',
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              color: Colors.black,
+              fontSize: Responsive.getFont(context, 14),
+            ),
+          ),
+        ),
       );
     }
     return const SizedBox();

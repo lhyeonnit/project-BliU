@@ -80,7 +80,7 @@ class _StoreScreenState extends State<StoreScreen>
                     Tab(text: '즐겨찾기'),
                   ],
                   overlayColor: WidgetStateColor.transparent,
-                  dividerColor: Color(0xFFDDDDDD),
+                  dividerColor: const Color(0xFFDDDDDD),
                   indicatorColor: Colors.black,
                   indicatorSize: TabBarIndicatorSize.tab,
                   // 인디케이터가 각 탭의 길이에 맞게 조정됨

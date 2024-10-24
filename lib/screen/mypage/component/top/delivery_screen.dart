@@ -10,8 +10,8 @@ import 'package:flutter_svg/svg.dart';
 
 class DeliveryScreen extends ConsumerStatefulWidget {
   final String odtCode;
-
-  const DeliveryScreen({super.key, required this.odtCode});
+  final int deliveryType;
+  const DeliveryScreen({super.key, required this.odtCode, required this.deliveryType});
 
   @override
   ConsumerState<DeliveryScreen> createState() => DeliveryScreenState();
@@ -44,14 +44,16 @@ class DeliveryScreenState extends ConsumerState<DeliveryScreen> {
       'mt_idx': mtIdx,
       'temp_mt_id': appToken,
       'odt_code': widget.odtCode,
+      'delivery_type': widget.deliveryType,
     };
 
-    // // 테스트용
+    // 테스트용
     // Map<String, dynamic> requestData = {
     //   'type': 1,
     //   'mt_idx': 2,
     //   'temp_mt_id': appToken,
     //   'odt_code': 'P240819032421A26T',
+    //   'delivery_type': 1,
     // };
 
     final orderDeliveryResponseDTO = await ref.read(deliveryViewModelProvider.notifier).getList(requestData);

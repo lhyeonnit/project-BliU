@@ -107,17 +107,16 @@ class _StoreGroupSelectionState extends State<StoreGroupSelection> {
             child: GestureDetector(
               onTap: _showAgeGroupSelection, // 연령대 필터 선택
               child: Container(
-                padding:
-                    EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
+                padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(22),
-                  border: Border.all(color: Color(0xFFDDDDDD)),
+                  border: Border.all(color: const Color(0xFFDDDDDD)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(right: 5),
+                      margin: const EdgeInsets.only(right: 5),
                       child: Text(
                         getSelectedAgeGroupText(), // 선택된 연령대 표시
                         overflow: TextOverflow.ellipsis,

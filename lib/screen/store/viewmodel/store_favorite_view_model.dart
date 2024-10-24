@@ -5,6 +5,7 @@ import 'package:BliU/dto/bookmark_response_dto.dart';
 import 'package:BliU/dto/category_response_dto.dart';
 import 'package:BliU/dto/default_response_dto.dart';
 import 'package:BliU/dto/product_list_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class StoreFavoriteModel {
@@ -34,7 +35,9 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
       return null;
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       return null;
     }
   }
@@ -52,7 +55,9 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
       return null;
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       return null;
     }
   }
@@ -69,7 +74,9 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
       return null;
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       return null;
     }
   }
@@ -86,7 +93,9 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -103,7 +112,9 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -136,7 +147,9 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel?> {
         }
       }
     } catch (e) {
-      print('Error toggling like: $e');
+      if (kDebugMode) {
+        print('Error toggling like: $e');
+      }
     }
   }
 }

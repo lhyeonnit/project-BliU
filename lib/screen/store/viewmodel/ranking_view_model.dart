@@ -3,6 +3,7 @@ import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/category_response_dto.dart';
 import 'package:BliU/dto/store_rank_response_dto.dart';
 import 'package:BliU/dto/style_category_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RankingModel {}
@@ -26,7 +27,9 @@ class RankingViewModel extends StateNotifier<RankingModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -43,7 +46,9 @@ class RankingViewModel extends StateNotifier<RankingModel?> {
       return null;
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       return null;
     }
   }
@@ -61,7 +66,9 @@ class RankingViewModel extends StateNotifier<RankingModel?> {
       return null;
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       return null;
     }
   }

@@ -11,6 +11,7 @@ import 'package:BliU/screen/store/store_detail_screen.dart';
 import 'package:BliU/screen/store/viewmodel/store_favorite_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -282,7 +283,9 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
       _getList();
       _getBookMark(1);
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -349,7 +352,9 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                                     try {
                                       storeList = _bookMarkList[pageIndex];
                                     } catch(e) {
-                                      print(e);
+                                      if (kDebugMode) {
+                                        print(e);
+                                      }
                                     }
 
                                     return ListView.builder(

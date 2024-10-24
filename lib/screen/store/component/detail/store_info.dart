@@ -4,6 +4,7 @@ import 'package:BliU/screen/store/viewmodel/store_info_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -45,7 +46,9 @@ class StoreInfoPageState extends ConsumerState<StoreInfoPage> {
       });
     } catch (e) {
       // 오류 발생 시 로그 및 사용자에게 알림
-      print("쿠폰 다운로드 중 오류 발생: $e");
+      if (kDebugMode) {
+        print("쿠폰 다운로드 중 오류 발생: $e");
+      }
       if (!mounted) return;
       Utils.getInstance().showSnackBar(context, "쿠폰 다운로드 중 오류가 발생했습니다.");
     }

@@ -65,7 +65,7 @@ class StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Ticke
 
   void _getCategoryList() async {
     Map<String, dynamic> requestData = {'category_type': '1'};
-    final categoryResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getCategory(requestData);
+    final categoryResponseDTO = await ref.read(storeProductViewModelProvider.notifier).getCategory(requestData);
     if (categoryResponseDTO != null) {
       if (categoryResponseDTO.result == true) {
         final list = categoryResponseDTO.list ?? [];
@@ -113,7 +113,7 @@ class StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Ticke
       _productList = [];
     });
 
-    final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
+    final storeResponseDTO = await ref.read(storeProductViewModelProvider.notifier).getStoreList(requestData);
     storeData = storeResponseDTO?.data;
     _count = storeResponseDTO?.data.list.length ?? 0;
     _productList = storeResponseDTO?.data.list ?? [];
@@ -146,7 +146,7 @@ class StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Ticke
         'pg': _page,
       };
 
-      final storeResponseDTO = await ref.read(StoreProductViewModelProvider.notifier).getStoreList(requestData);
+      final storeResponseDTO = await ref.read(storeProductViewModelProvider.notifier).getStoreList(requestData);
       if (storeResponseDTO != null) {
         if (storeResponseDTO.data.list.isNotEmpty) {
           setState(() {

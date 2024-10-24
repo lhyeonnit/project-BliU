@@ -11,6 +11,7 @@ import 'package:BliU/utils/permission_manager.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -156,7 +157,9 @@ Future<MemberInfoResponseDTO?> _authAutoLogin(Map<String, dynamic> requestData) 
     return null;
   } catch(e) {
     // Catch and log any exceptions
-    print('Error request Api: $e');
+    if (kDebugMode) {
+      print('Error request Api: $e');
+    }
     return null;
   }
 }
@@ -195,7 +198,9 @@ Future<void> main() async {
     _fcmToken = await FirebaseMessaging.instance.getToken();
   }
 
-  print("fcmToken ====> $_fcmToken");
+  if (kDebugMode) {
+    print("fcmToken ====> $_fcmToken");
+  }
   final pref = await SharedPreferencesManager.getInstance();
   await pref.setToken(_fcmToken ?? "");
 
