@@ -675,9 +675,15 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
               final popularData = searchPopularList![index];
               return GestureDetector(
                 onTap: () {
-                  setState(() {
-                    _searchController.text = popularData.sltTxt!;
-                  });
+                  final searchText = popularData.sltTxt ?? "";
+                  if (searchText.isNotEmpty) {
+                    setState(() {
+                      _searchController.text = searchText;
+                      _isSearching = true;
+                      _isFirst = false;
+                    });
+                    _getList('N');
+                  }
                 },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,

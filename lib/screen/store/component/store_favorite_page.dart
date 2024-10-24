@@ -659,33 +659,39 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                                         ],
                                       ),
                                     ),
-                                    GestureDetector(
-                                      onTap: _showAgeGroupSelection,
-                                      child: Container(
-                                        padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(22),
-                                          border: Border.all(color: const Color(0xFFDDDDDD)),
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Container(
-                                              margin: const EdgeInsets.only(right: 5),
-                                              child: Text(
-                                                getSelectedAgeGroupText(), // 선택된 연령대 표시
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  fontSize: Responsive.getFont(context, 14),
-                                                  color: Colors.black,
-                                                  height: 1.2,
+                                    Visibility(
+                                      visible: categories[_tabController.index].ctName == "악세서리" ? false : true,
+                                      maintainSize: true,
+                                      maintainAnimation: true,
+                                      maintainState: true,
+                                      child: GestureDetector(
+                                        onTap: _showAgeGroupSelection,
+                                        child: Container(
+                                          padding: const EdgeInsets.only(left: 20, right: 17, top: 11, bottom: 11),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(22),
+                                            border: Border.all(color: const Color(0xFFDDDDDD)),
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Container(
+                                                margin: const EdgeInsets.only(right: 5),
+                                                child: Text(
+                                                  getSelectedAgeGroupText(), // 선택된 연령대 표시
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pretendard',
+                                                    fontSize: Responsive.getFont(context, 14),
+                                                    color: Colors.black,
+                                                    height: 1.2,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            SvgPicture.asset('assets/images/product/filter_select.svg'),
-                                          ],
+                                              SvgPicture.asset('assets/images/product/filter_select.svg'),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),

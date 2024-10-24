@@ -108,13 +108,12 @@ class StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Ticke
     };
 
     setState(() {
-      storeData = null;
       _count = 0;
       _productList = [];
     });
 
     final storeResponseDTO = await ref.read(storeProductViewModelProvider.notifier).getStoreList(requestData);
-    storeData = storeResponseDTO?.data;
+    storeData ??= storeResponseDTO?.data;
     _count = storeResponseDTO?.data.list.length ?? 0;
     _productList = storeResponseDTO?.data.list ?? [];
 

@@ -489,7 +489,10 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
                                     scrollDirection: Axis.horizontal,
                                     child: Row(
                                       children: [
-                                        _buildFilterButton(getSelectedAgeGroupText(), false),
+                                        Visibility(
+                                          visible: _selectedCategory.ctName == "악세서리" ? false : true,
+                                          child: _buildFilterButton(getSelectedAgeGroupText(), false),
+                                        ),
                                         Container(
                                           margin: const EdgeInsets.symmetric(horizontal: 4),
                                           child: _buildFilterButton(getSelectedStyleText(), false),
