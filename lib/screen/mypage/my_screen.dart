@@ -50,13 +50,62 @@ class MyScreenState extends ConsumerState<MyScreen> {
     });
   }
 
+  void _viewWillAppear(BuildContext context) {
+    SharedPreferencesManager.getInstance().then((pref) {
+      final mtIdx = pref.getMtIdx();
+      if (mtIdx != null && mtIdx.isNotEmpty) {
+        Map<String, dynamic> requestData = {
+          'mt_idx': mtIdx,
+        };
+        ref.read(myModelProvider.notifier).getMy(requestData);
+      }
+    });
+  }
+
+  void _afterBuild(BuildContext context) async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final memberInfo = pref.getMemberInfo();
+    final mtIdx = memberInfo?.mtIdx.toString();
+    if (mtIdx != null && mtIdx.isNotEmpty) {
+      Map<String, dynamic> requestData = {
+        'mt_idx': mtIdx,
+      };
+      final memberInfoDTO = await ref.read(myModelProvider.notifier).getMy(requestData);
+      setState(() {
+        // 상태 변경 후 UI 업데이트
+        memberInfoData = memberInfoDTO?.data;
+        myCouponCount = memberInfoDTO?.data?.myCouponCount;
+        myPoint = memberInfoDTO?.data?.myPoint;
+        myReviewCount = memberInfoDTO?.data?.myRevieCount;
+        userId = memberInfoDTO?.data?.mtIdx.toString() ?? ''; // userId 업데이트
+        mtLoginType = memberInfo?.mtLoginType ?? 1;
+      });
+      String? childCk = memberInfo?.childCk;
+      if (!context.mounted) return;
+      if (childCk == "N") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
+        );
+      }
+    }
+  }
+
+  void logout() async {
+    SharedPreferencesManager prefs =
+    await SharedPreferencesManager.getInstance();
+    await prefs.logOut(); // 저장된 모든 데이터를 삭제
+
+    // 로그아웃 후 로그인 화면으로 전환
+    ref.read(mainScreenProvider.notifier).selectNavigation(2);
+  }
+
   @override
   Widget build(BuildContext context) {
     return FocusDetector(
       onFocusGained: () {
         _viewWillAppear(context);
       },
-      onFocusLost: _viewWillDisappear,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -330,60 +379,6 @@ class MyScreenState extends ConsumerState<MyScreen> {
     );
   }
 
-  void _viewWillAppear(BuildContext context) {
-    SharedPreferencesManager.getInstance().then((pref) {
-      final mtIdx = pref.getMtIdx();
-      if (mtIdx != null && mtIdx.isNotEmpty) {
-        Map<String, dynamic> requestData = {
-          'mt_idx': mtIdx,
-        };
-        ref.read(myModelProvider.notifier).getMy(requestData);
-      }
-    });
-  }
-
-  void _viewWillDisappear() {
-    print("viewWillDisappear");
-  }
-
-  void _afterBuild(BuildContext context) async {
-    final pref = await SharedPreferencesManager.getInstance();
-    final memberInfo = pref.getMemberInfo();
-    final mtIdx = memberInfo?.mtIdx.toString();
-    if (mtIdx != null && mtIdx.isNotEmpty) {
-      Map<String, dynamic> requestData = {
-        'mt_idx': mtIdx,
-      };
-      final memberInfoDTO = await ref.read(myModelProvider.notifier).getMy(requestData);
-      setState(() {
-        // 상태 변경 후 UI 업데이트
-        memberInfoData = memberInfoDTO?.data;
-        myCouponCount = memberInfoDTO?.data?.myCouponCount;
-        myPoint = memberInfoDTO?.data?.myPoint;
-        myReviewCount = memberInfoDTO?.data?.myRevieCount;
-        userId = memberInfoDTO?.data?.mtIdx.toString() ?? ''; // userId 업데이트
-        mtLoginType = memberInfo?.mtLoginType ?? 1;
-      });
-      String? childCk = memberInfo?.childCk;
-      if (!context.mounted) return;
-      if (childCk == "N") {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
-        );
-      }
-    }
-  }
-
-  void logout() async {
-    SharedPreferencesManager prefs =
-        await SharedPreferencesManager.getInstance();
-    await prefs.logOut(); // 저장된 모든 데이터를 삭제
-
-    // 로그아웃 후 로그인 화면으로 전환
-    ref.read(mainScreenProvider.notifier).selectNavigation(2);
-  }
-
   Widget _buildSection(BuildContext context, String title) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -400,8 +395,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
     );
   }
 
-  Widget _buildSectionItem(
-      BuildContext context, String title, VoidCallback onPressed) {
+  Widget _buildSectionItem(BuildContext context, String title, VoidCallback onPressed) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       margin: const EdgeInsets.only(bottom: 17),
@@ -436,8 +430,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
     );
   }
 
-  Widget _buildIconButton(BuildContext context, String label, String icon,
-      VoidCallback onPressed, String num) {
+  Widget _buildIconButton(BuildContext context, String label, String icon, VoidCallback onPressed, String num) {
     return Column(
       children: [
         IconButton(

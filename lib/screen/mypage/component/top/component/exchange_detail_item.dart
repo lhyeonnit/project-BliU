@@ -40,7 +40,7 @@ class ExchangeItemState extends State<ExchangeItem> {
       widget.exchangeDeliveryCostCategory;
 
   // 이미지 리스트
-  List<File> _selectedImages = [];
+  final List<File> _selectedImages = [];
 
   // 교환 배송비 선택
   int _shippingOption = 0;
@@ -61,8 +61,8 @@ class ExchangeItemState extends State<ExchangeItem> {
 
   // 이미지 선택 함수
   Future<void> _pickImages() async {
-    final ImagePicker _picker = ImagePicker();
-    final List<XFile>? images = await _picker.pickMultiImage(
+    final ImagePicker picker = ImagePicker();
+    final List<XFile>? images = await picker.pickMultiImage(
       maxWidth: 400,
       maxHeight: 400,
       imageQuality: 80,

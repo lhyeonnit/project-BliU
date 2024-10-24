@@ -2,6 +2,7 @@ import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/default_response_dto.dart';
 import 'package:BliU/dto/qna_detail_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class InquiryDetailModel {
@@ -37,7 +38,9 @@ class InquiryDetailViewModel extends StateNotifier<InquiryDetailModel?> {
       );
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       state = InquiryDetailModel(
           qnaDetailResponseDTO: QnaDetailResponseDTO(
               result: false,
@@ -60,7 +63,9 @@ class InquiryDetailViewModel extends StateNotifier<InquiryDetailModel?> {
       return DefaultResponseDTO(result: false, message: "Network Error");
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return DefaultResponseDTO(result: false, message: e.toString());
     }
   }

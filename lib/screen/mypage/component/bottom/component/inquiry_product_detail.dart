@@ -113,7 +113,7 @@ class InquiryProductDetail extends ConsumerWidget {
                             margin: const EdgeInsets.only(right: 20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
-                              border: Border.all(color: const Color(0x5000000)),
+                              border: Border.all(color: const Color(0x50000000)),
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(6),

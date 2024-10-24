@@ -5,6 +5,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -353,7 +354,9 @@ class InquiryStoreState extends ConsumerState<InquiryStore> {
       _fileList = await picker.pickMultiImage(limit: 4);
       _addImageCheck();
     } catch (e) {
-      print("Image Failed $e");
+      if (kDebugMode) {
+        print("Image Failed $e");
+      }
     }
   }
 

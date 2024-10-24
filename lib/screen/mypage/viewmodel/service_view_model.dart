@@ -1,5 +1,6 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ServiceModel {
@@ -34,7 +35,9 @@ class ServiceViewModel extends StateNotifier<ServiceModel?> {
       state = state;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       state = state;
     }
   }

@@ -1,6 +1,7 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/notice_detail_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class NoticeDetailModel {
@@ -37,7 +38,9 @@ class NoticeDetailViewModel extends StateNotifier<NoticeDetailModel?> {
       );
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       state = NoticeDetailModel(
           noticeDetailResponseDTO: NoticeDetailResponseDTO(
               result: false,

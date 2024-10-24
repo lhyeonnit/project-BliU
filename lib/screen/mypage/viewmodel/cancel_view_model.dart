@@ -3,6 +3,7 @@ import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/category_response_dto.dart';
 import 'package:BliU/dto/default_response_dto.dart';
 import 'package:BliU/dto/order_detail_info_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CancelModel {
@@ -28,7 +29,9 @@ class CancelViewModel extends StateNotifier<CancelModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -48,7 +51,9 @@ class CancelViewModel extends StateNotifier<CancelModel?> {
       return DefaultResponseDTO(result: false, message: "Network Or Data Error");
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return DefaultResponseDTO(result: false, message: e.toString());
     }
   }
@@ -66,7 +71,9 @@ class CancelViewModel extends StateNotifier<CancelModel?> {
       return null;
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       return null;
     }
   }

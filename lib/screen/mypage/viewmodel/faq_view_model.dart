@@ -3,6 +3,7 @@ import 'package:BliU/const/constant.dart';
 import 'package:BliU/data/faq_category_data.dart';
 import 'package:BliU/dto/faq_category_response_dto.dart';
 import 'package:BliU/dto/faq_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class FaqModel {}
@@ -26,7 +27,9 @@ class FaqViewModel extends StateNotifier<FaqModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -44,7 +47,9 @@ class FaqViewModel extends StateNotifier<FaqModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }

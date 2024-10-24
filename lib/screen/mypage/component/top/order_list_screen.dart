@@ -133,17 +133,12 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
     _getList();
   }
 
-  void _viewWillDisappear() {
-    print("viewWillDisappear");
-  }
-
   @override
   Widget build(BuildContext context) {
     return FocusDetector(
       onFocusGained: () {
         _viewWillAppear(context);
       },
-      onFocusLost: _viewWillDisappear,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(

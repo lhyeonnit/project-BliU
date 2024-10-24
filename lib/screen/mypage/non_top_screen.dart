@@ -57,63 +57,60 @@ class _NonTopScreenState extends State<NonTopScreen> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 16),
-          padding: EdgeInsets.only(top: 20),
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.only(top: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 70,
-                      width: 70,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFFFFE4DF), // 첫 번째 색상
-                            Color(0xFFFFDFEE), // 두 번째 색상
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 70,
+                    width: 70,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFFFFE4DF), // 첫 번째 색상
+                          Color(0xFFFFDFEE), // 두 번째 색상
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                       ),
-                      child: ClipOval(
-                          child: Image.asset(
-                              'assets/images/non/gender_select_boy.png')),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(left: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              margin: const EdgeInsets.only(bottom: 4),
-                              child: Text(
-                                '블리유',
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 18),
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.2,
-                                ),
-                              )),
-                          Text(
-                            '회원이 되어 주세요!',
+                    child: ClipOval(child: Image.asset('assets/images/non/gender_select_boy.png')),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 4),
+                          child: Text(
+                            '블리유',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
-                              color: const Color(0xFF7B7B7B),
-                              fontSize: Responsive.getFont(context, 12),
+                              fontSize: Responsive.getFont(context, 18),
+                              fontWeight: FontWeight.bold,
                               height: 1.2,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        Text(
+                          '회원이 되어 주세요!',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            color: const Color(0xFF7B7B7B),
+                            fontSize: Responsive.getFont(context, 12),
+                            height: 1.2,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               GestureDetector(
                 onTap: () {
@@ -127,7 +124,7 @@ class _NonTopScreenState extends State<NonTopScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(22),
-                    border: Border.all(color: Color(0xFFFF6192)),
+                    border: Border.all(color: const Color(0xFFFF6192)),
                   ),
                   child: Center(
                     child: Text(

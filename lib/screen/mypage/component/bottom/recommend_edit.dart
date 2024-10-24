@@ -7,6 +7,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -153,78 +154,76 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
                           ],
                         ),
                       ),
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 15),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '선호 스타일',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 15),
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.2,
-                                    ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '선호 스타일',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 15),
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.2,
                                   ),
-                                  Text(
-                                    '* 다중선택가능',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 13),
-                                      color: const Color(0xFFFF6192),
-                                      height: 1.2,
-                                    ),
+                                ),
+                                Text(
+                                  '* 다중선택가능',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 13),
+                                    color: const Color(0xFFFF6192),
+                                    height: 1.2,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            Wrap(
-                              spacing: 4.0,
-                              runSpacing: 10.0,
-                              children: styleCategories.map((style) {
-                                final isSelected = _selectedStyles.any((selected) => selected.fsIdx == style.fsIdx);
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      if (isSelected) {
-                                        // 이미 선택된 경우 선택 해제
-                                        _selectedStyles.removeWhere((selected) => selected.fsIdx == style.fsIdx);
-                                      } else {
-                                        // 선택되지 않은 경우 추가
-                                        _selectedStyles.add(style);
-                                      }
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(19),
-                                      border: Border.all(
-                                        color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-                                        width: 1.0,
-                                      ),
-                                      color: Colors.white,
+                          ),
+                          Wrap(
+                            spacing: 4.0,
+                            runSpacing: 10.0,
+                            children: styleCategories.map((style) {
+                              final isSelected = _selectedStyles.any((selected) => selected.fsIdx == style.fsIdx);
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (isSelected) {
+                                      // 이미 선택된 경우 선택 해제
+                                      _selectedStyles.removeWhere((selected) => selected.fsIdx == style.fsIdx);
+                                    } else {
+                                      // 선택되지 않은 경우 추가
+                                      _selectedStyles.add(style);
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(19),
+                                    border: Border.all(
+                                      color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                      width: 1.0,
                                     ),
-                                    child: Text(
-                                      style.cstName ?? '',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        color: isSelected ? const Color(0xFFFF6192) : Colors.black,
-                                        height: 1.2,
-                                      ),
+                                    color: Colors.white,
+                                  ),
+                                  child: Text(
+                                    style.cstName ?? '',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                                      height: 1.2,
                                     ),
                                   ),
-                                );
-                              }).toList(),
-                            )
-                          ],
-                        ),
+                                ),
+                              );
+                            }).toList(),
+                          )
+                        ],
                       ),
                     ],
                   ),
@@ -369,10 +368,11 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
               ),
               controller: _birthController,
               style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 16),
-                  color: Color(0xFFFF6192),
-                  fontWeight: FontWeight.bold),
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 16),
+                color: const Color(0xFFFF6192),
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
@@ -417,12 +417,12 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
                       onTap: () {
                         Navigator.of(context).pop();
                       },
-                      child: Icon(Icons.close),
+                      child: const Icon(Icons.close),
                     ),
                   ],
                 ),
               ),
-              Divider(
+              const Divider(
                 height: 1,
                 thickness: 1,
                 color: Color(0xFFEEEEEE),
@@ -430,7 +430,7 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
               // 날짜 선택기
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 17),
+                  margin: const EdgeInsets.symmetric(horizontal: 17),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -441,16 +441,17 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
                           diameterRatio: 5.0,
                           itemExtent: 50,
                           selectionOverlay: Container(
-                            margin: EdgeInsets.only(left: 17, right: 15),
-                            decoration: BoxDecoration(
+                            margin: const EdgeInsets.only(left: 17, right: 15),
+                            decoration: const BoxDecoration(
                               border: Border.symmetric(
-                                  horizontal:
-                                      BorderSide(color: Color(0xFFDDDDDD))),
+                                horizontal: BorderSide(
+                                  color: Color(0xFFDDDDDD),
+                                ),
+                              ),
                             ),
                           ),
                           squeeze: 1,
-                          scrollController: FixedExtentScrollController(
-                              initialItem: selectedYear - 1900),
+                          scrollController: FixedExtentScrollController(initialItem: selectedYear - 1900),
                           onSelectedItemChanged: (int index) {
                             setState(() {
                               selectedYear = 1900 + index;
@@ -481,11 +482,13 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
                           backgroundColor: Colors.white,
                           itemExtent: 50,
                           selectionOverlay: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 15),
-                            decoration: BoxDecoration(
+                            margin: const EdgeInsets.symmetric(horizontal: 15),
+                            decoration: const BoxDecoration(
                               border: Border.symmetric(
-                                  horizontal:
-                                      BorderSide(color: Color(0xFFDDDDDD))),
+                                horizontal: BorderSide(
+                                  color: Color(0xFFDDDDDD),
+                                ),
+                              ),
                             ),
                           ),
                           diameterRatio: 5.0,
@@ -517,11 +520,13 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
                           backgroundColor: Colors.white,
                           itemExtent: 50,
                           selectionOverlay: Container(
-                            margin: EdgeInsets.only(left: 15, right: 17),
-                            decoration: BoxDecoration(
+                            margin: const EdgeInsets.only(left: 15, right: 17),
+                            decoration: const BoxDecoration(
                               border: Border.symmetric(
-                                  horizontal:
-                                      BorderSide(color: Color(0xFFDDDDDD))),
+                                horizontal: BorderSide(
+                                  color: Color(0xFFDDDDDD),
+                                ),
+                              ),
                             ),
                           ),
                           diameterRatio: 5.0,
@@ -569,8 +574,8 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
                 child: Container(
                   width: double.infinity,
                   height: 48,
-                  margin: EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                  decoration: BoxDecoration(
+                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                  decoration: const BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.all(
                       Radius.circular(6),
@@ -618,7 +623,9 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
     final pref = await SharedPreferencesManager.getInstance();
     final memberInfo = pref.getMemberInfo(); // 사용자의 전체 정보
 
-    print("_getRecommendInfo ${memberInfo?.toJson()}");
+    if (kDebugMode) {
+      print("_getRecommendInfo ${memberInfo?.toJson()}");
+    }
     if (memberInfo != null) {
       setState(() {
         // 저장된 출생일 정보 설정
@@ -691,7 +698,9 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
       }
     } else {
       // 적절한 데이터 타입이 아닌 경우 처리
-      print("Unexpected data type: ${defaultResponseDTO?.runtimeType}");
+      if (kDebugMode) {
+        print("Unexpected data type: ${defaultResponseDTO?.runtimeType}");
+      }
     }
   }
   void _getStyleCategory() async {

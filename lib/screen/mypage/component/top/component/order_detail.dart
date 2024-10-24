@@ -196,9 +196,8 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
           orderDetailInfoData = orderDetailInfoResponseDTO.data;
         });
       } else {
-        if (!context.mounted) return;
-        Utils.getInstance()
-            .showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
+        if (!mounted) return;
+        Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
       }
     }
   }

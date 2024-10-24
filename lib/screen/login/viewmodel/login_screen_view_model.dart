@@ -1,6 +1,7 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/member_info_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginScreenModel {
@@ -39,7 +40,9 @@ class LoginScreenViewModel extends StateNotifier<LoginScreenModel?> {
       );
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       setState(
         MemberInfoResponseDTO(
           result: false,
@@ -68,7 +71,9 @@ class LoginScreenViewModel extends StateNotifier<LoginScreenModel?> {
       );
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       setState(
           MemberInfoResponseDTO(
               result: false,

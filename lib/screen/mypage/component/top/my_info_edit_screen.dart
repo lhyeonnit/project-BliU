@@ -10,6 +10,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -1225,7 +1226,9 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
         birthDay = DateFormat("yyyy-MM-dd").format(_selectedDate);
       }
     } catch (e) {
-      print("DateError $e");
+      if (kDebugMode) {
+        print("DateError $e");
+      }
     }
     Map<String, dynamic> requestData = {
       'mt_idx' : mtIdx,

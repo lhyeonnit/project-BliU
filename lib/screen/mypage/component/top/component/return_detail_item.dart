@@ -57,7 +57,7 @@ class _ReturnItemState extends State<ReturnItem> {
   ];
 
   // 이미지 리스트
-  List<File> _selectedImages = [];
+  final List<File> _selectedImages = [];
 
   // 드롭다운 생성 (취소 사유).
   void _createOverlayReason() {
@@ -101,8 +101,8 @@ class _ReturnItemState extends State<ReturnItem> {
   }
 
   Future<void> _pickImages() async {
-    final ImagePicker _picker = ImagePicker();
-    final List<XFile>? images = await _picker.pickMultiImage(
+    final ImagePicker picker = ImagePicker();
+    final List<XFile>? images = await picker.pickMultiImage(
       maxWidth: 400,
       maxHeight: 400,
       imageQuality: 80,
@@ -111,16 +111,12 @@ class _ReturnItemState extends State<ReturnItem> {
       setState(() {
         // 현재 선택된 이미지 개수에 따라 추가될 이미지를 제한
         if (_selectedImages.length + images.length <= 3) {
-          _selectedImages
-              .addAll(images.map((image) => File(image.path)).toList());
+          _selectedImages.addAll(images.map((image) => File(image.path)).toList());
           _updateCollectedData();
         } else {
           // 남은 자리에만 이미지를 추가
           int remainingSlots = 3 - _selectedImages.length;
-          _selectedImages.addAll(images
-              .take(remainingSlots)
-              .map((image) => File(image.path))
-              .toList());
+          _selectedImages.addAll(images.take(remainingSlots).map((image) => File(image.path)).toList());
           _updateCollectedData();
         }
       });
