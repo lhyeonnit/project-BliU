@@ -133,7 +133,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                         Expanded(
                           flex: 7,
                           child: _buildTextField(
-                              '휴대폰번호', _phoneController, '-없이 숫자만 입력',
+                              '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
                               keyboardType: TextInputType.phone,
                               isEnable: _phoneAuthChecked ? false : true
                           ),
@@ -155,9 +155,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                                 'phone_num': phoneNumber,
                                 'code_type': 3,
                               };
-                              final resultDTO = await ref.read(
-                                  findPasswordScreenModelProvider.notifier)
-                                  .reqPhoneAuthCode(requestData);
+                              final resultDTO = await ref.read(findPasswordScreenModelProvider.notifier).reqPhoneAuthCode(requestData);
                               if (resultDTO?.result == true) {
                                 setState(() {
                                   _phoneAuthCodeVisible = true;
@@ -187,15 +185,11 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                                     )
                                 ),
                                 Container(
-                                    margin: const EdgeInsets.only(
-                                        top: 10, left: 8),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 14),
+                                    margin: const EdgeInsets.only(top: 10, left: 8),
+                                    padding: const EdgeInsets.symmetric(vertical: 14),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(6),
-                                      border:
-                                      Border.all(
-                                          color: const Color(0xFFDDDDDD)),
+                                      border: Border.all(color: const Color(0xFFDDDDDD)),
                                     ),
                                     child: Center(
                                         child: Text(
@@ -230,8 +224,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                             flex: 3,
                             child: GestureDetector(
                               onTap: () async {
-                                if (_authCodeController.text.isEmpty ||
-                                    _phoneAuthChecked) {
+                                if (_authCodeController.text.isEmpty || _phoneAuthChecked) {
                                   return;
                                 }
                                 // TODO 타이머 체크필요
@@ -247,8 +240,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                                   'code_type': 3,
                                 };
 
-                                final resultDTO = await ref.read(
-                                    findPasswordScreenModelProvider.notifier).checkCode(requestData);
+                                final resultDTO = await ref.read(findPasswordScreenModelProvider.notifier).checkCode(requestData);
                                 if (!context.mounted) return;
                                 Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                                 if (resultDTO.result == true) {
@@ -270,8 +262,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                                     '확인',
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(
-                                          context, 14),
+                                      fontSize: Responsive.getFont(context, 14),
                                       color: _phoneAuthChecked ? const Color(0xFF7B7B7B) : Colors.white,
                                       height: 1.2,
                                     ),
@@ -318,8 +309,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                     if (!context.mounted) return;
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => NewPasswordScreen(idx: idx),
+                      MaterialPageRoute(builder: (context) => NewPasswordScreen(idx: idx),
                       ),
                     );
                   }
@@ -405,8 +395,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
               obscureText: obscureText,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(
-                    vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
                   fontFamily: 'Pretendard',

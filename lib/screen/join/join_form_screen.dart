@@ -21,13 +21,15 @@ class JoinFormScreen extends ConsumerStatefulWidget {
 
 class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
   final _formKey = GlobalKey<FormState>();
+  final FocusNode _idFocusNode = FocusNode();
+  bool _isIdFocused = false;
   bool _isIdChecked = false;
   bool _isAllFieldsFilled = false;
   bool _phoneAuthCodeVisible = false;
   bool _phoneAuthChecked = false;
   String? _selectedGender; // 성별을 저장하는 변수
 
-  final TextEditingController _birthController = TextEditingController(text: '생년월일입력');
+  final TextEditingController _birthController = TextEditingController(text: '생년월일 입력');
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
@@ -47,7 +49,11 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
   @override
   void initState() {
     super.initState();
-
+    _idFocusNode.addListener(() {
+      setState(() {
+        _isIdFocused = _idFocusNode.hasFocus;
+      });
+    });
     _idController.addListener(_checkIfAllFieldsFilled);
     _passwordController.addListener(_checkIfAllFieldsFilled);
     _confirmPasswordController.addListener(_checkIfAllFieldsFilled);
@@ -99,6 +105,12 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
         }
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _idFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -154,8 +166,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         children: [
                           Expanded(
                             flex: 7,
-                            child: _buildTextField('아이디', _idController, '아이디 입력',
-                                isEnable: _isIdChecked ? false : true),
+                            child: _buildTextField('아이디', _idController, '아이디 입력', focusNode: _idFocusNode),
                           ),
                           Expanded(
                             flex: 3,
@@ -182,8 +193,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                               },
                               child: Container(
                                   height: 44,
-                                  margin: const EdgeInsets.only(top: 43, left: 8),
-                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  margin: const EdgeInsets.only(top: 47, left: 8),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(6),
                                     border: Border.all(color: const Color(0xFFDDDDDD)),
@@ -203,15 +213,18 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                           ),
                         ],
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 8),
-                        child: Text(
-                          '5~15자의 영문 소문자, 숫자만 입력해 주세요',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            color: const Color(0xFFF23728),
-                            fontSize: Responsive.getFont(context, 12),
-                            height: 1.2,
+                      Visibility(
+                        visible: _isIdFocused, // Show the message only when the ID field is focused
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            '5~15자의 영문 소문자, 숫자만 입력해 주세요',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              color: const Color(0xFFF23728),
+                              fontSize: Responsive.getFont(context, 12),
+                              height: 1.2,
+                            ),
                           ),
                         ),
                       ),
@@ -280,7 +293,6 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                   child: Container(
                                       height: 44,
                                       margin: const EdgeInsets.only(top: 10, left: 8),
-                                      padding: const EdgeInsets.symmetric(vertical: 14),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(6),
                                         border: Border.all(color: const Color(0xFFDDDDDD)),
@@ -347,7 +359,6 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                 child: Container(
                                   height: 44,
                                   margin: const EdgeInsets.only(top: 10, left: 8),
-                                  padding: const EdgeInsets.symmetric(vertical: 14),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(6),
                                     color: _phoneAuthChecked ? const Color(0xFFDDDDDD) : Colors.black,
@@ -599,7 +610,8 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
       {bool obscureText = false,
       TextInputType keyboardType = TextInputType.text,
       Widget? suffixIcon,
-      bool isEnable = true}) {
+      bool isEnable = true,
+        FocusNode? focusNode}) {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -636,6 +648,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
               height: 44,
               child: TextField(
                 onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                focusNode: focusNode,
                 style: TextStyle(
                     height: 1.2,
                     fontFamily: 'Pretendard',
@@ -646,7 +659,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                 obscureText: obscureText,
                 keyboardType: keyboardType,
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 15),
                   hintText: hintText,
                   hintStyle: TextStyle(
                     fontFamily: 'Pretendard',
@@ -689,24 +702,30 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
               child: TextField(
                 onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                 style: TextStyle(
-                    height: 1.2,
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14)
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
                 ),
-                enabled: isEnable,
                 controller: controller,
                 obscureText: obscureText,
                 keyboardType: keyboardType,
+                enabled: isEnable,
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                  hintText: hintText,
                   hintStyle: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
-                      color: const Color(0xFF595959)),
-                  enabledBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                    borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                      color: isEnable ? const Color(0xFF595959) : const Color(0xFFA4A4A4)),
+                  filled: true,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  hintText: hintText,
+                  fillColor: isEnable ? Colors.white : const Color(0xFFF5F9F9),
+                  // 배경색 설정
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(6)),
+                    borderSide: isEnable ? const BorderSide(color: Color(0xFFE1E1E1)) : const BorderSide(color: Colors.transparent),
                   ),
                   focusedBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -731,7 +750,6 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
       },
       child: Container(
         height: 44,
-        padding: const EdgeInsets.symmetric(vertical: 14.0),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(6),

@@ -38,7 +38,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   int selectedDay = DateTime.now().day;
 
   String? _selectedGender; // 성별을 저장하는 변수
-  final TextEditingController _birthController = TextEditingController(text: '생년월일입력');
+  final TextEditingController _birthController = TextEditingController(text: '생년월일 입력');
 
   late TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -354,7 +354,9 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                   if (_authCodeController.text.isEmpty || _phoneAuthChecked) {
                                     return;
                                   }
-                                  // TODO 타이머 체크필요
+                                  if (_authSeconds <= 0) {
+                                    return;
+                                  }
 
                                   final pref = await SharedPreferencesManager.getInstance();
                                   final phoneNumber = _phoneController.text;
