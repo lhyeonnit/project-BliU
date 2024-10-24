@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:BliU/data/category_data.dart';
+import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
@@ -469,6 +470,7 @@ class _ReturnItemState extends State<ReturnItem> {
 
                 ExchangeReturnInfo(
                   orderDetailInfoData: widget.orderDetailInfoData,
+                  otCode: widget.orderDetailInfoData?.product?[0].otCode ?? '',
                 ),
               ],
             ),

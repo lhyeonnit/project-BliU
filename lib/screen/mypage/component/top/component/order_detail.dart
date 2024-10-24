@@ -160,7 +160,7 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
                     ],
                   ),
                 ),
-                OrderDetailItem(orderDetailInfoData: orderDetailInfoData),
+                OrderDetailItem(orderDetailInfoData: orderDetailInfoData, otCode: orderDetailInfoData?.product?[0].otCode ?? '',),
               ],
             ),
           ),
