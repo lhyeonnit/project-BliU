@@ -964,6 +964,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                 MaterialPageRoute(
                   builder: (context) => PaymentScreen(
                     payOrderDetailData: payOrderDetailData,
+                    memberType: memberType,
                   ),
                 ),
               );

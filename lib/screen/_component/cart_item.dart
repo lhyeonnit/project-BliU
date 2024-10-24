@@ -27,6 +27,13 @@ class CartItem extends StatefulWidget {
 }
 
 class _CartItemState extends State<CartItem> {
+  int _getProductPrice() {
+    // 선택된 기준으로 가격 가져오기
+    int productPrice = widget.item.ptPrice ?? 0;
+    int productCount = widget.item.ptCount ?? 0;
+    productPrice = (productPrice * productCount);
+    return productPrice;
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -152,7 +159,7 @@ class _CartItemState extends State<CartItem> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    '${Utils.getInstance().priceString(widget.item.ptPrice ?? 0)}원', // widget.item 사용
+                    '${Utils.getInstance().priceString(_getProductPrice())}원', // widget.item 사용
                     style:  TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 16.0) ,
