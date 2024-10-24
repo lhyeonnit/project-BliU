@@ -2,6 +2,7 @@ import 'package:BliU/data/style_category_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/common/viewmodel/recommend_info_view_model.dart';
 import 'package:BliU/screen/main_screen.dart';
+import 'package:BliU/screen/mypage/my_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/recommend_edit_info_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -688,12 +689,8 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
         if(!mounted) return;
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const MainScreen()),
+          MaterialPageRoute(builder: (context) => const MyScreen()),
         );
-
-        setState(() {
-          ref.read(mainScreenProvider.notifier).selectNavigation(2);
-        });
       } else {
         if(!mounted) return;
         Utils.getInstance().showSnackBar(context, "회원 정보를 불러오지 못했습니다.");
