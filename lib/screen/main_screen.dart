@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:BliU/data/fcm_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/custom_bottom_navigation_bar.dart';
 import 'package:BliU/screen/category/category_screen.dart';
@@ -10,6 +11,7 @@ import 'package:BliU/screen/like/like_screen.dart';
 import 'package:BliU/screen/mypage/component/top/my_coupon_screen.dart';
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
 import 'package:BliU/screen/mypage/my_screen.dart';
+import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/store_screen.dart';
 import 'package:BliU/utils/firebase_service.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -39,13 +41,20 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   ];
 
   late AppLinks _appLinks;
-  StreamSubscription<Uri>? _linkSubscription;
 
   @override
   void initState() {
     super.initState();
 
-    _initDeepLinks();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initDeepLinks();
+      FirebaseService firebaseService = FirebaseService();
+      final fcmData = firebaseService.saveFcmData;
+      if (fcmData != null) {
+        _pushCheck(fcmData);
+        firebaseService.saveFcmData = null;
+      }
+    });
   }
 
   void _onItemTapped(int index) {
@@ -56,22 +65,33 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     _appLinks = AppLinks();
 
     // Handle links
-    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
-      print('onAppLink: $uri');
+    _appLinks.uriLinkStream.listen((uri) {
       String uriString = uri.toString();
-      // if (uriString.contains("bplusapp.app.open?act=url&data=")) {
-      //   var uriArr = uriString.split("bplusapp.app.open?act=url&data=");
-      //   if (uriArr.isNotEmpty) {
-      //     if (uriArr.length >= 2) {
-      //       String moveUri = uriArr[1];
-      //       if (!_visible) {
-      //         _webViewController.loadRequest(Uri.parse(moveUri));
-      //       } else {
-      //         _saveDeepLink = moveUri;
-      //       }
-      //     }
-      //   }
-      // }
+      if (uriString.contains("app.open?act=")) {
+        final parameters = uri.queryParameters;
+        String act = (parameters['act'] ?? "");
+        int idx = int.parse((parameters['data'] ?? "0"));
+        if (!mounted) return;
+        if (idx == 0) return;
+        switch(act) {
+          case "product":
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProductDetailScreen(ptIdx: idx),
+              ),
+            );
+            break;
+          case "exhibition":
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ExhibitionScreen(etIdx: idx),
+              ),
+            );
+            break;
+        }
+      }
     });
   }
 
@@ -91,49 +111,53 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     }
   }
 
+  void _pushCheck(FcmData fcmData) {
+    String? ptLink = fcmData.ptLink;
+    int etIdx = int.parse(fcmData.etIdx ?? "0");
+    if (ptLink != null) {
+      if (ptLink.isNotEmpty) {
+        switch (ptLink) {
+          case "home":
+            Navigator.popUntil(context, ModalRoute.withName("/"));
+            ref.read(mainScreenProvider.notifier).selectNavigation(2);
+            break;
+          case "order_list":
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const OrderListScreen()),
+            );
+            break;
+          case "cart_list":
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CartScreen()),
+            );
+            break;
+          case "coupon_list":
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MyCouponScreen()),
+            );
+            break;
+          case "exhibition":
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ExhibitionScreen(etIdx: etIdx),
+              ),
+            );
+            break;
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen(fcmProvider,
       ((previous, next) {
         if (next != null) {
-          String? ptLink = next.ptLink;
-          int etIdx = int.parse(next.etIdx ?? "0");
-          if (ptLink != null) {
-            if (ptLink.isNotEmpty) {
-              switch (ptLink) {
-                case "home":
-                  Navigator.popUntil(context, ModalRoute.withName("/"));
-                  ref.read(mainScreenProvider.notifier).selectNavigation(2);
-                  break;
-                case "order_list":
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const OrderListScreen()),
-                  );
-                  break;
-                case "cart_list":
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const CartScreen()),
-                  );
-                  break;
-                case "coupon_list":
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MyCouponScreen()),
-                  );
-                  break;
-                case "exhibition":
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ExhibitionScreen(etIdx: etIdx),
-                    ),
-                  );
-                  break;
-              }
-            }
-          }
+          _pushCheck(next);
           ref.read(fcmProvider.notifier).getFcm(null);
         }
       }),

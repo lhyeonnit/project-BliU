@@ -18,6 +18,7 @@ class FirebaseService {
   FirebaseService._internal();
 
   late WidgetRef? ref;
+  FcmData? saveFcmData;
 
   void setRef(WidgetRef ref) {
     this.ref = ref;
@@ -134,7 +135,7 @@ class FirebaseService {
     if (message != null) {
       // 액션 부분 -> 파라미터는 message.data['test_parameter1'] 이런 방식으로...
       //print("getInitialMessage ${message.data}");
-      //_fcmData = FcmData.fromJson(message.data);
+      saveFcmData = FcmData.fromJson(message.data);
     }
   }
 
@@ -147,16 +148,6 @@ class FirebaseService {
   void _handleData(FcmData fcmData) {
     print("_handleData");
     ref?.read(fcmProvider.notifier).getFcm(fcmData);
-
-    //var context = NavigationService.navigatorKey.currentContext;
-    // if (context != null) {
-    //   // TODO 푸시 데이터 전달
-    //   print("_handleData");
-    //   // _container = ProviderContainer();
-    //   // _container.read(fcmProvider.notifier).getFcm(fcmData);
-    //   // FcmProvider fcmProvider = context.read<FcmProvider>();
-    //   // fcmProvider.setFcmData(fcmData);
-    // }
   }
 }
 
@@ -173,7 +164,6 @@ void backgroundHandler(NotificationResponse details) {
   if (payload != null) {
     if (payload.isNotEmpty) {
       FirebaseService._instance._handleMessage(payload);
-      //_handleMessage(payload);
     }
   }
 }
