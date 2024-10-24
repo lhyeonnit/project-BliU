@@ -952,7 +952,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         child: TextFormField(
-          textAlign: TextAlign.start,
+          textAlign: TextAlign.center,
           enabled: false,
           decoration: const InputDecoration(
             isDense: true,

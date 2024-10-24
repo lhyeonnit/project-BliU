@@ -781,7 +781,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         child: TextFormField(
-          textAlign: TextAlign.start,
+          textAlign: TextAlign.center,
           enabled: false,
           decoration: const InputDecoration(
             isDense: true,
@@ -980,8 +980,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         selectedMonth,
                         selectedDay,
                       );
-                      _birthController.text =
-                          convertDateTimeDisplay(_selectedDate.toString());
+                      _birthController.text = convertDateTimeDisplay(_selectedDate.toString());
                     });
                     Navigator.of(context).pop();
                     FocusScope.of(context).unfocus();
