@@ -34,6 +34,7 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
   String _detailedReason = '';
   final LayerLink _layerLink = LayerLink();
   List<CategoryData> _cancelCategory = [];
+  int? userType;
 
   // 드롭다운 생성.
   void _createOverlay() {
@@ -113,133 +114,117 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            SingleChildScrollView(
-              controller: _scrollController,
-              padding: const EdgeInsets.only(bottom: 50), // 하단 버튼 공간 확보
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // 주문 날짜 및 ID
-                  CancelItem(
-                    orderData: widget.orderData,
-                    orderDetailData: widget.orderDetailData,
-                  ),
-                  // 취소사유 선택
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 80),
-                    // 하단 버튼 공간 확보
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // 취소사유 선택
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  if (_overlayEntry == null) {
-                                    _createOverlay();
-                                  } else {
-                                    _removeOverlay();
-                                  }
-                                },
-                                child: Center(
-                                  child: CompositedTransformTarget(
-                                    link: _layerLink,
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 14),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: const Color(0xFFE1E1E1),
-                                        ),
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          // 선택값.
-                                          Text(
-                                            _dropdownText,
-                                            style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(context, 14),
-                                              color: Colors.black,
-                                              height: 1.2,
-                                            ),
-                                          ),
-                                          // 아이콘.
-                                          SvgPicture.asset('assets/images/product/ic_select.svg'),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+            Column(
+              children: [
+                SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 주문 날짜 및 ID
+                      CancelItem(
+                        orderData: widget.orderData,
+                        orderDetailData: widget.orderDetailData,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (_overlayEntry == null) {
+                            _createOverlay();
+                          } else {
+                            _removeOverlay();
+                          }
+                        },
+                        child: Center(
+                          child: CompositedTransformTarget(
+                            link: _layerLink,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: const Color(0xFFE1E1E1),
                                 ),
+                                borderRadius: BorderRadius.circular(6),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10.0),
-                                child: TextField(
-                                  onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                                  style: TextStyle(
-                                    height: 1.2,
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                  ),
-                                  maxLines: 4,
-                                  maxLength: 500,
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                                    hintText: '세부 내용 입력',
-                                    hintStyle: TextStyle(
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // 선택값.
+                                  Text(
+                                    _dropdownText,
+                                    style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
-                                      color: const Color(0xFF595959),
-                                    ),
-                                    enabledBorder: const OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                                      borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                    ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                                      borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                    ),
-                                    counter: Align(
-                                      alignment: Alignment.centerLeft, // 왼쪽 정렬
-                                      child: Text(
-                                        '${_detailedReason.length}/500',
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 13),
-                                          color: const Color(0xFF7B7B7B),
-                                          height: 1.2,
-                                        ),
-                                      ),
+                                      color: Colors.black,
+                                      height: 1.2,
                                     ),
                                   ),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _detailedReason = value;
-                                    });
-                                  },
-                                ),
+                                  // 아이콘.
+                                  SvgPicture.asset('assets/images/product/ic_select.svg'),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                        ExchangeReturnInfo(
-                          orderDetailInfoData: orderDetailInfoData,
-                          orderDetailData: widget.orderDetailData,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: TextField(
+                          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                          style: TextStyle(
+                            height: 1.2,
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                          ),
+                          maxLines: 4,
+                          maxLength: 500,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                            hintText: '세부 내용 입력',
+                            hintStyle: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: const Color(0xFF595959),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                            ),
+                            counter: Align(
+                              alignment: Alignment.centerLeft, // 왼쪽 정렬
+                              child: Text(
+                                '${_detailedReason.length}/500',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 13),
+                                  color: const Color(0xFF7B7B7B),
+                                  height: 1.2,
+                                ),
+                              ),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _detailedReason = value;
+                            });
+                          },
                         ),
-                      ],
-                    ),
+                      ),
+                      ExchangeReturnInfo(
+                        orderDetailInfoData: orderDetailInfoData,
+                        orderDetailData: widget.orderDetailData,
+                        userType: userType ?? 0,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             // 하단 고정 버튼
             Positioned(
@@ -322,6 +307,7 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
     if (orderDetailInfoResponseDTO != null) {
       if (orderDetailInfoResponseDTO.result == true) {
         orderDetailInfoData = orderDetailInfoResponseDTO.data;
+        userType = memberType;
       } else {
         if (!mounted) return;
         Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");

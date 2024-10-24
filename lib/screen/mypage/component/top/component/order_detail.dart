@@ -26,7 +26,7 @@ class OrderDetail extends ConsumerStatefulWidget {
 class _OrderDetailState extends ConsumerState<OrderDetail> {
   final ScrollController _scrollController = ScrollController();
   OrderDetailInfoData? orderDetailInfoData;
-
+  int? userType;
   @override
   void initState() {
     super.initState();
@@ -160,7 +160,7 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
                     ],
                   ),
                 ),
-                OrderDetailItem(orderDetailInfoData: orderDetailInfoData, otCode: orderDetailInfoData?.product?[0].otCode ?? '',),
+                OrderDetailItem(orderDetailInfoData: orderDetailInfoData, userType: userType ?? 0,),
               ],
             ),
           ),
@@ -187,18 +187,16 @@ class _OrderDetailState extends ConsumerState<OrderDetail> {
       'ot_code': widget.orderData.detailList?[0].otCode,
     };
 
-    final orderDetailInfoResponseDTO = await ref
-        .read(orderDetailViewModelProvider.notifier)
-        .getOrderDetail(requestData);
+    final orderDetailInfoResponseDTO = await ref.read(orderDetailViewModelProvider.notifier).getOrderDetail(requestData);
     if (orderDetailInfoResponseDTO != null) {
       if (orderDetailInfoResponseDTO.result == true) {
         setState(() {
           orderDetailInfoData = orderDetailInfoResponseDTO.data;
+          userType = memberType;
         });
       } else {
-        if (!context.mounted) return;
-        Utils.getInstance()
-            .showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
+        if (!mounted) return;
+        Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
       }
     }
   }

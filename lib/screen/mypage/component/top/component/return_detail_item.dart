@@ -15,6 +15,7 @@ class ReturnItem extends StatefulWidget {
   final OrderDetailInfoData? orderDetailInfoData;
   final OrderDetailData? orderDetailData;
   final List<CategoryData> returnCategory;
+  final int userType;
   final Function(
       String reason,
       int reasonIdx,
@@ -23,12 +24,13 @@ class ReturnItem extends StatefulWidget {
       String returnBank,
       List<File> images) onDataCollected;
 
-  const ReturnItem(
-      {required this.orderDetailInfoData,
-      required this.orderDetailData,
-      required this.returnCategory,
-      required this.onDataCollected,
-      super.key});
+  const ReturnItem({
+    required this.orderDetailInfoData,
+    required this.orderDetailData,
+    required this.returnCategory,
+    required this.onDataCollected,
+    required this.userType,
+    super.key});
 
   @override
   State<ReturnItem> createState() => _ReturnItemState();
@@ -471,6 +473,7 @@ class _ReturnItemState extends State<ReturnItem> {
                   ),
 
                 ExchangeReturnInfo(
+                  userType: widget.userType,
                   orderDetailInfoData: widget.orderDetailInfoData,
                   orderDetailData: widget.orderDetailData,
                 ),

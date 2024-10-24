@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 
 class OrderDetailItem extends StatelessWidget {
   final OrderDetailInfoData? orderDetailInfoData;
-  final String otCode;
+  final int userType;
 
-  const OrderDetailItem({super.key, required this.orderDetailInfoData, required this.otCode});
+  const OrderDetailItem({super.key, required this.orderDetailInfoData, required this.userType});
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +140,7 @@ class OrderDetailItem extends StatelessWidget {
                       "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원",
                       context)),
               Visibility(
-                visible: otCode.isEmpty,
+                visible: userType == 1,
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 15),
                   child: Column(
@@ -155,7 +155,7 @@ class OrderDetailItem extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: otCode.isEmpty,
+                visible: userType == 1,
                 child: _buildInfoRow(
                     '포인트할인',
                     '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUsePoint ?? 0)}원',
