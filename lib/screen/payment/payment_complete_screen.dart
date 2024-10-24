@@ -1,3 +1,4 @@
+import 'package:BliU/data/pay_order_detail_data.dart';
 import 'package:BliU/data/pay_order_result_detail_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
@@ -335,7 +336,8 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                 visible: widget.memberType == 1,
                                 child: Container(
                                     margin: const EdgeInsets.only(top: 15),
-                                    child: const Divider(color: Color(0xFFEEEEEE))),
+                                    child: const Divider(color: Color(0xFFEEEEEE)),
+                                ),
                             ),
                             Visibility(
                               visible: widget.memberType == 1,
@@ -367,13 +369,13 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                                   height: 1.2,
                                                 ),
                                               ),
-                                              Text('${Utils.getInstance().priceString(int.parse(payOrderResultDetailData?.coupon?.couponUse ?? "0"))}원',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Pretendard',
-                                                    fontSize: Responsive.getFont(context, 14),
-                                                    color: const Color(0xFFA4A4A4),
-                                                    height: 1.2,
-                                                  )
+                                              Text('${Utils.getInstance().priceString(payOrderResultDetailData?.coupon?.couponUse ?? 0)}원',
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(context, 14),
+                                                  color: const Color(0xFFA4A4A4),
+                                                  height: 1.2,
+                                                ),
                                               ),
                                             ],
                                           ),
