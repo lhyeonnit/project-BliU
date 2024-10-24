@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:BliU/data/my_page_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/main_screen.dart';
+import 'package:BliU/screen/mypage/component/top/component/my_info_delete_page.dart';
 import 'package:BliU/screen/mypage/my_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/my_info_edit_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -566,7 +567,10 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                         child: Center(
                           child: TextButton(
                             onPressed: () {
-                              _retire();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const MyInfoDeletePage()),
+                              );
                             },
                             child: Text(
                               '회원탈퇴',
@@ -603,7 +607,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                           _editMyInfo();
                         }
                             : null;
-                      }, // TODO 필드 입력에 따른 버튼 색상 수정
+                      },
                       child: Container(
                         width: double.infinity,
                         height: 48,
@@ -1290,25 +1294,5 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       'pwd_token' :pref.getToken(),
     };
     await ref.read(myInfoEditViewModelProvider.notifier).editMyPassword(requestData);
-  }
-  void _retire() async {
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-    Map<String, dynamic> requestData = {
-      'mt_idx' : mtIdx,
-    };
-    final resultDTO = await ref.read(myInfoEditViewModelProvider.notifier).retire(requestData);
-    if(!mounted) return;
-    Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
-    await pref.logOut();
-    if(!mounted) return;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-    );
-
-    setState(() {
-      ref.read(mainScreenProvider.notifier).selectNavigation(2);
-    });
   }
 }
