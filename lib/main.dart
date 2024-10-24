@@ -89,7 +89,7 @@ void initializeNotification() async {
     if (notification != null) {
       FcmData fcmData = FcmData.fromJson(message.data);
       String fcmDataString = json.encode(fcmData.toJson());
-      //print("notification data = ${message.data}");
+      print("notification data = ${message.data}");
 
       if (Platform.isAndroid) {
         flutterLocalNotificationsPlugin.show(
@@ -134,13 +134,13 @@ void _handleData(FcmData fcmData) {
   var context = NavigationService.navigatorKey.currentContext;
   if (context != null) {
     // TODO 푸시 데이터 전달
+    print("_handleData");
+    // _container = ProviderContainer();
+    // _container.read(fcmProvider.notifier).getFcm(fcmData);
     // FcmProvider fcmProvider = context.read<FcmProvider>();
     // fcmProvider.setFcmData(fcmData);
   }
 }
-final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
-  throw UnimplementedError();  // ProviderScope에서 값을 주입하기 전까지 에러를 던지도록 설정
-});
 
 // 자동 로그인
 Future<MemberInfoResponseDTO?> _authAutoLogin(Map<String, dynamic> requestData) async {
@@ -166,7 +166,7 @@ Future<MemberInfoResponseDTO?> _authAutoLogin(Map<String, dynamic> requestData) 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final sharedPreferences = await SharedPreferences.getInstance();
+  await SharedPreferences.getInstance();
 
   KakaoSdk.init(
       nativeAppKey: '525bbbd40b4de98d500d446c14f28bd4'
@@ -227,15 +227,15 @@ Future<void> main() async {
     }
   }
 
-  // runApp(const ProviderScope(child: MyApp()));
-  runApp(
-    ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-      ],
-      child: MyApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: MyApp()));
+  // runApp(
+  //   ProviderScope(
+  //     overrides: [
+  //       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+  //     ],
+  //     child: MyApp(),
+  //   ),
+  // );
 }
 
 class MyApp extends StatelessWidget {
@@ -255,5 +255,18 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const OnBoardingScreen(), // OnBoardingScreen을 초기 화면으로 설정
     );
+  }
+}
+
+final fcmProvider = StateNotifierProvider<FcmProvider, FcmData?>((ref){
+  return FcmProvider(null, ref);
+});
+
+class FcmProvider extends StateNotifier<FcmData?> {
+  final Ref ref;
+  FcmProvider(super.state, this.ref);
+
+  void getFcm(FcmData? fcmData) {
+    state = fcmData;
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:BliU/main.dart';
 import 'package:BliU/screen/_component/custom_bottom_navigation_bar.dart';
 import 'package:BliU/screen/category/category_screen.dart';
 import 'package:BliU/screen/home/home_screen.dart';
@@ -90,6 +91,21 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(fcmProvider,
+      ((previous, next) {
+        print("listen");
+        if (next != null) {
+          String? ptLink = next.ptLink;
+          if (ptLink != null) {
+            if (ptLink.isNotEmpty) {
+              print("ptLink $ptLink");
+            }
+          }
+          ref.read(fcmProvider.notifier).getFcm(null);
+        }
+      }),
+    );
+
     _selectedIndex = ref.watch(mainScreenProvider) ?? 2;
 
     SharedPreferencesManager.getInstance().then( (pref) {

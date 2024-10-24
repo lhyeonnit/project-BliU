@@ -8,8 +8,8 @@ import 'package:BliU/screen/store/viewmodel/store_product_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class StoreDetailScreen extends ConsumerStatefulWidget {
   final int stIdx;
