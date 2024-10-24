@@ -223,7 +223,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                           Expanded(
                             flex: 7,
                             child: _buildTextField(
-                                '휴대폰번호', _phoneController, '-없이 숫자만 입력',
+                                '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
                                 keyboardType: TextInputType.phone,
                                 isEnable: _phoneAuthChecked ? false : true
                             ),

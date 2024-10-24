@@ -27,7 +27,6 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   final ScrollController _scrollController = ScrollController();
 
   final _formKey = GlobalKey<FormState>();
-  final bool _isIdChecked = false;
   bool _isAllFieldsFilled = false;
   bool _phoneAuthCodeVisible = false;
   bool _phoneAuthChecked = false;
@@ -41,11 +40,11 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   String? _selectedGender; // 성별을 저장하는 변수
   final TextEditingController _birthController = TextEditingController(text: '생년월일입력');
 
-  final TextEditingController _idController = TextEditingController();
+  late TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  late TextEditingController _nameController = TextEditingController();
+  late TextEditingController _phoneController = TextEditingController();
   final TextEditingController _authCodeController = TextEditingController();
   int _authSeconds = 180;
   String _timerStr = "00:00";
@@ -53,6 +52,9 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
   @override
   void initState() {
     super.initState();
+    _idController = TextEditingController();
+    _nameController = TextEditingController();
+    _phoneController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getMyInfo();
     });
@@ -69,8 +71,8 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
     setState(() {
       if (widget.isCommon ?? true) {
         _isAllFieldsFilled = _idController.text.isNotEmpty &&
-            _passwordController.text.isNotEmpty &&
-            _confirmPasswordController.text.isNotEmpty &&
+            // _passwordController.text.isNotEmpty &&
+            // _confirmPasswordController.text.isNotEmpty &&
             _nameController.text.isNotEmpty &&
             _phoneController.text.isNotEmpty;
             // _selectedDate != null &&
@@ -192,8 +194,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                           ),
                         ),
                       ),
-                      _buildIdPasswordField('아이디', _idController, myPageInfoData?.mtId ?? '',
-                          isChange: _isIdChecked),
+                      _buildIdPasswordField('아이디', _idController, '아이디 입력', isChange: false),
                       Visibility(
                         visible: widget.isCommon ?? true,
                         child: Container(
@@ -243,7 +244,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                           Expanded(
                             flex: 7,
                             child: _buildPhoneField(
-                                '휴대폰번호', _phoneController, myPageInfoData?.mtHp ?? '',
+                                '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
                                 keyboardType: TextInputType.phone,
                                 isEnable: _phoneAuthChecked ? true : false),
                           ),
@@ -291,8 +292,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                     return;
                                   }
 
-                                  final pref =
-                                  await SharedPreferencesManager.getInstance();
+                                  final pref = await SharedPreferencesManager.getInstance();
                                   final phoneNumber = _phoneController.text;
 
                                   Map<String, dynamic> requestData = {
@@ -310,8 +310,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                     });
                                   } else {
                                     if (!context.mounted) return;
-                                    Utils.getInstance().showSnackBar(
-                                        context, resultDTO.message.toString());
+                                    Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                                   }
                                 },
                                 child: Container(
@@ -352,14 +351,12 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                               flex: 3,
                               child: GestureDetector(
                                 onTap: () async {
-                                  if (_authCodeController.text.isEmpty ||
-                                      _phoneAuthChecked) {
+                                  if (_authCodeController.text.isEmpty || _phoneAuthChecked) {
                                     return;
                                   }
                                   // TODO 타이머 체크필요
 
-                                  final pref = await SharedPreferencesManager
-                                      .getInstance();
+                                  final pref = await SharedPreferencesManager.getInstance();
                                   final phoneNumber = _phoneController.text;
                                   final authCode = _authCodeController.text;
 
@@ -370,12 +367,9 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                     'code_type': 4,
                                   };
 
-                                  final resultDTO = await ref
-                                      .read(myInfoEditViewModelProvider.notifier)
-                                      .checkCode(requestData);
+                                  final resultDTO = await ref.read(myInfoEditViewModelProvider.notifier).checkCode(requestData);
                                   if (!context.mounted) return;
-                                  Utils.getInstance().showSnackBar(
-                                      context, resultDTO.message.toString());
+                                  Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                                   if (resultDTO.result == true) {
                                     setState(() {
                                       _phoneAuthChecked = true;
@@ -411,8 +405,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                         children: [
                           Expanded(
                             flex: 7,
-                            child: _buildTextField(
-                                '이름', _nameController, myPageInfoData?.mtName ?? '', keyboardType: TextInputType.name
+                            child: _buildTextField('이름', _nameController, '이름 입력', keyboardType: TextInputType.name
                             ),
                           ),
                           Expanded(
@@ -1205,10 +1198,14 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
     final myPageInfoResponseDTO = await ref.read(myInfoEditViewModelProvider.notifier).getMyInfo(requestData);
     setState(() {
       myPageInfoData = myPageInfoResponseDTO?.data;
+      _idController.text = myPageInfoData?.mtId ?? '';  // ID 설정
+      _nameController.text = myPageInfoData?.mtName ?? '';  // 이름 설정
+      _phoneController.text = myPageInfoData?.mtHp ?? '';  // 전화번호 설정
       if (myPageInfoResponseDTO?.data?.mtBirth != null && myPageInfoResponseDTO!.data!.mtBirth!.isNotEmpty) {
         _selectedDate = DateTime.parse(myPageInfoResponseDTO.data!.mtBirth!); // 출생일 데이터를 DateTime으로 변환
         _birthController.text = convertDateTimeDisplay(_selectedDate.toString());
       }
+
       _selectedGender = myPageInfoResponseDTO?.data?.mtGender;
     });
   }
