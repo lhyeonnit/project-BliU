@@ -233,6 +233,7 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
                         ),
                         ExchangeReturnInfo(
                           orderDetailInfoData: orderDetailInfoData,
+                          otCode: orderDetailInfoData?.product?[0].otCode ?? '',
                         ),
                       ],
                     ),

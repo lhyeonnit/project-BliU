@@ -308,6 +308,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
           MaterialPageRoute(
             builder: (context) => PaymentScreen(
               payOrderDetailData: payOrderDetailData,
+              memberType: memberType,
             ),
           ),
         );
