@@ -25,7 +25,7 @@ class InquiryStoreState extends ConsumerState<InquiryStore> {
 
   int _imageCnt = 0;
   final List<Widget> _addImagesWidget = [];
-  List<XFile> _fileList = [];
+  final List<XFile> _fileList = [];
 
   bool _phoneNumVisible = false;
   bool _isAllFieldsFilled = false;

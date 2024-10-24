@@ -22,17 +22,18 @@ class ProductOrderBottomOption extends ConsumerStatefulWidget {
 
   static void showBottomSheet(BuildContext context, ProductData productData) {
     showModalBottomSheet(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
-        ),
-        barrierColor: Colors.black.withOpacity(0.3),
-        context: context,
-        backgroundColor: Colors.white,
-        isScrollControlled: true,
-        // set this to true
-        useSafeArea: true,
-        builder: (BuildContext context) {
-          return DraggableScrollableSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+      ),
+      barrierColor: Colors.black.withOpacity(0.3),
+      context: context,
+      backgroundColor: Colors.white,
+      isScrollControlled: true,
+      // set this to true
+      useSafeArea: true,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: DraggableScrollableSheet(
             expand: false,
             snap: true,
             builder: (context, scrollController) {
@@ -41,15 +42,17 @@ class ProductOrderBottomOption extends ConsumerStatefulWidget {
                 scrollController: scrollController,
               );
             },
-          );
-        });
+          ),
+        );
+      }
+    );
   }
 
   @override
-  ConsumerState<ProductOrderBottomOption> createState() => _ProductOrderBottomOptionState();
+  ConsumerState<ProductOrderBottomOption> createState() => ProductOrderBottomOptionState();
 }
 
-class _ProductOrderBottomOptionState extends ConsumerState<ProductOrderBottomOption> {
+class ProductOrderBottomOptionState extends ConsumerState<ProductOrderBottomOption> {
   @override
   Widget build(BuildContext context) {
     return const Placeholder();

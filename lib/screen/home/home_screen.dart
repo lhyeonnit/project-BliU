@@ -198,15 +198,17 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
       context: context,
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
-        return StoreAgeGroupSelection(
-          ageCategories: _ageCategories,
-          selectedAgeGroup: _selectedAgeGroup,
-          onSelectionChanged: (CategoryData? newSelection) {
-            setState(() {
-              _selectedAgeGroup = newSelection;
-            });
-            _getList();
-          },
+        return SafeArea(
+          child: StoreAgeGroupSelection(
+            ageCategories: _ageCategories,
+            selectedAgeGroup: _selectedAgeGroup,
+            onSelectionChanged: (CategoryData? newSelection) {
+              setState(() {
+                _selectedAgeGroup = newSelection;
+              });
+              _getList();
+            },
+          ),
         );
       },
     );

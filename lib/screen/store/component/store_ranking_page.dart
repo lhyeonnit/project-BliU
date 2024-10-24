@@ -58,15 +58,17 @@ class StoreRakingPageState extends ConsumerState<StoreRakingPage> {
       context: context,
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
-        return StoreAgeGroupSelection(
-          ageCategories: _ageCategories,
-          selectedAgeGroup: _selectedAgeGroup,
-          onSelectionChanged: (CategoryData? newSelection) {
-            setState(() {
-              _selectedAgeGroup = newSelection;
-              _getList();
-            });
-          },
+        return SafeArea(
+          child: StoreAgeGroupSelection(
+            ageCategories: _ageCategories,
+            selectedAgeGroup: _selectedAgeGroup,
+            onSelectionChanged: (CategoryData? newSelection) {
+              setState(() {
+                _selectedAgeGroup = newSelection;
+                _getList();
+              });
+            },
+          ),
         );
       },
     );
@@ -90,16 +92,18 @@ class StoreRakingPageState extends ConsumerState<StoreRakingPage> {
       constraints: const BoxConstraints(maxHeight: 400, minHeight: 400),
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
-        return StyleSelectionSheet(
-          styleCategories: _styleCategories,
-          selectedStyle: _selectedStyle,
-          onSelectionChanged: (StyleCategoryData? newSelection) {
-            setState(() {
-              _selectedStyle = newSelection;
-              _getList(); // 스타일 선택 후 동작
-            });
-          },
-          scrollController: _scrollController, // 스크롤 컨트롤러 전달
+        return SafeArea(
+          child: StyleSelectionSheet(
+            styleCategories: _styleCategories,
+            selectedStyle: _selectedStyle,
+            onSelectionChanged: (StyleCategoryData? newSelection) {
+              setState(() {
+                _selectedStyle = newSelection;
+                _getList(); // 스타일 선택 후 동작
+              });
+            },
+            scrollController: _scrollController, // 스크롤 컨트롤러 전달
+          ),
         );
       },
     );

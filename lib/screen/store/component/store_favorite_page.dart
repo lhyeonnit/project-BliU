@@ -236,15 +236,17 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return ProductSortBottom(
-          sortOption: sortOption,
-          onSortOptionSelected: (selectedOption) {
-            setState(() {
-              sortOptionSelected = selectedOption;
-              sortOption = selectedOption; // 선택된 정렬 옵션으로 업데이트
-              _getList();
-            });
-          },
+        return SafeArea(
+          child: ProductSortBottom(
+            sortOption: sortOption,
+            onSortOptionSelected: (selectedOption) {
+              setState(() {
+                sortOptionSelected = selectedOption;
+                sortOption = selectedOption; // 선택된 정렬 옵션으로 업데이트
+                _getList();
+              });
+            },
+          ),
         );
       },
     );
@@ -255,15 +257,17 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
       context: context,
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
-        return StoreAgeGroupSelection(
-          ageCategories: ageCategories,
-          selectedAgeGroup: selectedAgeGroup,
-          onSelectionChanged: (CategoryData? newSelection) {
-            setState(() {
-              selectedAgeGroup = newSelection;
-              _getList();
-            });
-          },
+        return SafeArea(
+          child: StoreAgeGroupSelection(
+            ageCategories: ageCategories,
+            selectedAgeGroup: selectedAgeGroup,
+            onSelectionChanged: (CategoryData? newSelection) {
+              setState(() {
+                selectedAgeGroup = newSelection;
+                _getList();
+              });
+            },
+          ),
         );
       },
     );

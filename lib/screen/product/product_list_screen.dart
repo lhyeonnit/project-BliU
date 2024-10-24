@@ -240,15 +240,17 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
       ),
       context: context,
       builder: (context) {
-        return ProductSortBottom(
-          sortOption: _sortOption,
-          onSortOptionSelected: (selectedOption) {
-            setState(() {
-              _sortOptionSelected = selectedOption;
-              _sortOption = selectedOption; // 선택된 정렬 옵션으로 업데이트
-              _getList();
-            });
-          },
+        return SafeArea(
+          child: ProductSortBottom(
+            sortOption: _sortOption,
+            onSortOptionSelected: (selectedOption) {
+              setState(() {
+                _sortOptionSelected = selectedOption;
+                _sortOption = selectedOption; // 선택된 정렬 옵션으로 업데이트
+                _getList();
+              });
+            },
+          ),
         );
       },
     );
@@ -261,16 +263,18 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
       ),
       context: context,
       builder: (context) {
-        return ProductCategoryBottom(
-          selectedCategory: _selectedCategory,
-          onCategorySelected: (category) {
-            setState(() {
-              _selectedCategory = category;
-              _categories = _selectedCategory.subList ?? [];
-              _tabController = TabController(length: _categories.length, vsync: this);
-              _getList();
-            });
-          },
+        return SafeArea(
+          child: ProductCategoryBottom(
+            selectedCategory: _selectedCategory,
+            onCategorySelected: (category) {
+              setState(() {
+                _selectedCategory = category;
+                _categories = _selectedCategory.subList ?? [];
+                _tabController = TabController(length: _categories.length, vsync: this);
+                _getList();
+              });
+            },
+          ),
         );
       },
     );
@@ -286,21 +290,23 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> with Tick
       constraints: const BoxConstraints(maxHeight: 700, minHeight: 400),
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
-        return ProductFilterBottom(
-          isMoveBottom: isMoveBottom,
-          ageCategories: _ageCategories,
-          styleCategories: _styleCategories,
-          selectedStyleOption: selectedStyles,
-          selectedAgeOption: selectedAgeGroup,
-          selectedRangeValuesOption: selectedRangeValues,
-          onValueSelected: (Map<String, dynamic> selectedValue) {
-            setState(() {
-              selectedAgeGroup = selectedValue['age'];
-              selectedStyles = selectedValue['style'];
-              selectedRangeValues = selectedValue['range'];
-              _getList();
-            });
-          },
+        return SafeArea(
+          child: ProductFilterBottom(
+            isMoveBottom: isMoveBottom,
+            ageCategories: _ageCategories,
+            styleCategories: _styleCategories,
+            selectedStyleOption: selectedStyles,
+            selectedAgeOption: selectedAgeGroup,
+            selectedRangeValuesOption: selectedRangeValues,
+            onValueSelected: (Map<String, dynamic> selectedValue) {
+              setState(() {
+                selectedAgeGroup = selectedValue['age'];
+                selectedStyles = selectedValue['style'];
+                selectedRangeValues = selectedValue['range'];
+                _getList();
+              });
+            },
+          ),
         );
       },
     );
