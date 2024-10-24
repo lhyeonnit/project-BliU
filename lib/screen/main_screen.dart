@@ -25,10 +25,11 @@ class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
 
   @override
-  ConsumerState<MainScreen> createState() => _MainScreenState();
+  ConsumerState<MainScreen> createState() => MainScreenState();
 }
 
-class _MainScreenState extends ConsumerState<MainScreen> {
+class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   DateTime? _backButtonPressedTime;
   int _selectedIndex = 2;
 
@@ -45,6 +46,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   @override
   void initState() {
     super.initState();
+
+    _tabController =  TabController(length: 5, vsync: this);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initDeepLinks();
@@ -164,6 +167,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     );
 
     _selectedIndex = ref.watch(mainScreenProvider) ?? 2;
+    _tabController.animateTo(_selectedIndex);
 
     SharedPreferencesManager.getInstance().then( (pref) {
       final mtIdx = pref.getMtIdx() ?? "";
@@ -181,7 +185,11 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       },
       //onWillPop: _onWillPop,
       child: Scaffold(
-        body: _widgetOptions[_selectedIndex],
+        body: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: _tabController,
+          children: _widgetOptions,
+        ),
         bottomNavigationBar: CustomBottomNavigationBar(
           selectedIndex: _selectedIndex,
           onItemTapped: _onItemTapped,

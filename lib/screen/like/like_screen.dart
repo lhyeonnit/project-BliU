@@ -218,6 +218,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
               },
               child: NestedScrollView(
                 controller: _scrollController,
+                physics: _productList.isEmpty ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics(),
                 headerSliverBuilder: (context, innerBoxIsScrolled) {
                   return [
                     SliverToBoxAdapter(
