@@ -3,6 +3,7 @@ import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/category_response_dto.dart';
 import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:BliU/dto/style_category_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductListModel {}
@@ -26,7 +27,9 @@ class ProductListViewModel extends StateNotifier<ProductListModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -44,7 +47,9 @@ class ProductListViewModel extends StateNotifier<ProductListModel?> {
       return null;
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       return null;
     }
   }
@@ -62,7 +67,9 @@ class ProductListViewModel extends StateNotifier<ProductListModel?> {
       return null;
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       return null;
     }
   }

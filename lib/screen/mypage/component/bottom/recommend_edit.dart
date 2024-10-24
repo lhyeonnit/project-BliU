@@ -666,7 +666,7 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
     };
 
     // 서버에 데이터 전송 및 응답 처리
-    final defaultResponseDTO = await ref.read(RecommendEditInfoModelProvider.notifier).editRecommendInfo(requestData);
+    final defaultResponseDTO = await ref.read(recommendEditInfoModelProvider.notifier).editRecommendInfo(requestData);
 
     if (defaultResponseDTO != null && defaultResponseDTO.result == true) {
       if (memberInfo != null) {

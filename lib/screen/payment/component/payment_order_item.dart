@@ -25,7 +25,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
 
   @override
   Widget build(BuildContext context) {
-    print("_selectedItems ${json.encode(_selectedItems)}");
+    //print("_selectedItems ${json.encode(_selectedItems)}");
     return Column(
       children: [
         ..._selectedItems.map((item) {
@@ -45,16 +45,14 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                       height: 40,
                       width: 40,
                       decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
+                        borderRadius: const BorderRadius.all(Radius.circular(20)),
                         border: Border.all(
                           color: const Color(0xFFDDDDDD),
                           width: 1.0,
                         ),
                       ),
                       child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
+                        borderRadius: const BorderRadius.all(Radius.circular(20)),
                         child: Image.network(
                           item.stProfile ?? "", // 스토어 로고
                           fit: BoxFit.cover,
@@ -65,8 +63,7 @@ class _PaymentOrderItemState extends State<PaymentOrderItem> {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                       child: Text(
                         item.stName ?? "", // 스토어 이름
                         style: TextStyle(

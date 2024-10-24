@@ -244,6 +244,7 @@ class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
 
     final defaultResponseDTO = await ref.read(couponReceiveModelProvider.notifier).couponDown(requestData);
     if (defaultResponseDTO != null) {
+      if (!mounted) return;
       Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
       if (defaultResponseDTO.result == true) {
         _getList();

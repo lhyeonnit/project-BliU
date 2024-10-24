@@ -104,7 +104,7 @@ class FirebaseService {
       if (notification != null) {
         FcmData fcmData = FcmData.fromJson(message.data);
         String fcmDataString = json.encode(fcmData.toJson());
-        print("notification data = ${message.data}");
+        //print("notification data = ${message.data}");
 
         if (Platform.isAndroid) {
           flutterLocalNotificationsPlugin.show(
@@ -146,7 +146,9 @@ class FirebaseService {
   }
 
   void _handleData(FcmData fcmData) {
-    print("_handleData");
+    if (kDebugMode) {
+      print("_handleData");
+    }
     ref?.read(fcmProvider.notifier).getFcm(fcmData);
   }
 }

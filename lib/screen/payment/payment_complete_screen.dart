@@ -356,7 +356,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                               height: 1.2,
                                             ),
                                           ),
-                                          Text('${Utils.getInstance().priceString(int.parse(payOrderResultDetailData?.coupon?.couponUse ?? "0"))}원',
+                                          Text('${Utils.getInstance().priceString(payOrderResultDetailData?.coupon?.couponUse ?? 0)}원',
                                               style: TextStyle(
                                                 fontFamily: 'Pretendard',
                                                 fontSize: Responsive.getFont(context, 14),

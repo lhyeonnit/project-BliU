@@ -5,6 +5,7 @@ import 'package:BliU/dto/default_response_dto.dart';
 import 'package:BliU/dto/member_info_response_dto.dart';
 import 'package:BliU/dto/pay_order_detail_dto.dart';
 import 'package:BliU/dto/pay_order_result_detail_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PaymentModel {
@@ -30,7 +31,9 @@ class PaymentViewModel extends StateNotifier<PaymentModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -48,7 +51,9 @@ class PaymentViewModel extends StateNotifier<PaymentModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -66,7 +71,9 @@ class PaymentViewModel extends StateNotifier<PaymentModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -83,7 +90,9 @@ class PaymentViewModel extends StateNotifier<PaymentModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -101,7 +110,9 @@ class PaymentViewModel extends StateNotifier<PaymentModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -119,7 +130,9 @@ class PaymentViewModel extends StateNotifier<PaymentModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -137,7 +150,9 @@ class PaymentViewModel extends StateNotifier<PaymentModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -155,7 +170,9 @@ class PaymentViewModel extends StateNotifier<PaymentModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -172,7 +189,9 @@ class PaymentViewModel extends StateNotifier<PaymentModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }

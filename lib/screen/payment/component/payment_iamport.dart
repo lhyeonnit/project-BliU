@@ -1,5 +1,6 @@
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/data/iamport_pay_data.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iamport_flutter/iamport_payment.dart';
 import 'package:iamport_flutter/model/payment_data.dart';
@@ -24,16 +25,14 @@ class PaymentIamport extends StatelessWidget {
         ),
       ),
       /* 웹뷰 로딩 컴포넌트 */
-      initialChild: Container(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/images/iamport-logo.png'),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 15)),
-              const Text('잠시만 기다려주세요...', style: TextStyle(fontSize: 20)),
-            ],
-          ),
+      initialChild: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/iamport-logo.png'),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 15)),
+            const Text('잠시만 기다려주세요...', style: TextStyle(fontSize: 20)),
+          ],
         ),
       ),
       /* [필수입력] 가맹점 식별코드 */
@@ -56,7 +55,9 @@ class PaymentIamport extends StatelessWidget {
       ),
       /* [필수입력] 콜백 함수 */
       callback: (Map<String, String> result) {
-        print("result $result");
+        if (kDebugMode) {
+          print("result $result");
+        }
         Navigator.pop(context, result);
       },
     );

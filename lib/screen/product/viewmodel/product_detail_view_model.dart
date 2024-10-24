@@ -4,6 +4,7 @@ import 'package:BliU/dto/default_response_dto.dart';
 import 'package:BliU/dto/product_detail_response_dto.dart';
 import 'package:BliU/dto/qna_list_response_dto.dart';
 import 'package:BliU/dto/review_info_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductDetailModel {}
@@ -34,7 +35,9 @@ class ProductDetailViewModel extends StateNotifier<ProductDetailModel?> {
       );
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return ProductDetailResponseDto(
           result: false,
           message: e.toString(),
@@ -59,7 +62,9 @@ class ProductDetailViewModel extends StateNotifier<ProductDetailModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -77,7 +82,9 @@ class ProductDetailViewModel extends StateNotifier<ProductDetailModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -95,7 +102,9 @@ class ProductDetailViewModel extends StateNotifier<ProductDetailModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }

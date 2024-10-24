@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:BliU/data/category_data.dart';
+import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +13,7 @@ import 'exchange_return_info.dart';
 
 class ReturnItem extends StatefulWidget {
   final OrderDetailInfoData? orderDetailInfoData;
+  final OrderDetailData? orderDetailData;
   final List<CategoryData> returnCategory;
   final Function(
       String reason,
@@ -23,6 +25,7 @@ class ReturnItem extends StatefulWidget {
 
   const ReturnItem(
       {required this.orderDetailInfoData,
+      required this.orderDetailData,
       required this.returnCategory,
       required this.onDataCollected,
       super.key});
@@ -469,6 +472,7 @@ class _ReturnItemState extends State<ReturnItem> {
 
                 ExchangeReturnInfo(
                   orderDetailInfoData: widget.orderDetailInfoData,
+                  orderDetailData: widget.orderDetailData,
                 ),
               ],
             ),

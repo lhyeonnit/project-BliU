@@ -80,7 +80,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
   bool _isOptionSelected = false;
 
   // 선택된 옵션 값을 저장할 Map, 키는 옵션 제목(title)
-  Map<String, String?> _selectedOptions = {};
+  final Map<String, String?> _selectedOptions = {};
 
   void _onOptionSelected(String option, String title) {
     setState(() {

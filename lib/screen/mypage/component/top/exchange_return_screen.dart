@@ -325,6 +325,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: ReturnItem(
           orderDetailInfoData: orderDetailInfoData,
+          orderDetailData: widget.orderDetailData,
           returnCategory: returnCategory,
           onDataCollected: (String collectedReason,
               int collectedReasonIdx,

@@ -9,7 +9,7 @@ class CouponData {
   final int? couponMinPrice;
   final int? couponMaxPrice;
   final String? couponEnd;
-  final String? couponUse;
+  final int? couponUse;
   final String? ctName;
   final String? ctCode;
   final int? ctPrice;

@@ -87,7 +87,7 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
           decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(
-                color: Color(0xD000000)
+                color: Color(0xD0000000)
               )
             )
           ),

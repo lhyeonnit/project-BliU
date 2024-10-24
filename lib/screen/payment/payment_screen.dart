@@ -35,6 +35,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   CouponData? _selectedCouponData;
   int _discountPoint = 0;
 
+  bool _isLoading = false;
+
   int _payType = 1; //1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
 
   bool _allAgree = false;
@@ -46,13 +48,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
   late bool _isUseAddress = false;
 
-  final TextEditingController _recipientNameController =
-      TextEditingController();
-  final TextEditingController _recipientPhoneController =
-      TextEditingController();
+  final TextEditingController _recipientNameController = TextEditingController();
+  final TextEditingController _recipientPhoneController = TextEditingController();
   final TextEditingController _addressRoadController = TextEditingController();
-  final TextEditingController _addressDetailController =
-      TextEditingController();
+  final TextEditingController _addressDetailController = TextEditingController();
   final TextEditingController _memoController = TextEditingController();
 
   String _savedZip = ""; // 저장된 우편번호
@@ -361,6 +360,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       return;
     }
 
+    setState(() {
+      _isLoading = true;
+    });
+
     String payMethod = "card";
     switch (_payType) {
       //1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
@@ -409,9 +412,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       'cart_arr': json.encode(cartArr),
     };
 
-    final payOrderDetailDTO = await ref
-        .read(paymentViewModelProvider.notifier)
-        .orderDetail(requestData);
+    final payOrderDetailDTO = await ref.read(paymentViewModelProvider.notifier).orderDetail(requestData);
     if (payOrderDetailDTO != null) {
       final payOrderDetailData = payOrderDetailDTO.data;
 
@@ -535,25 +536,26 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
               'imp_uid': '',
               'merchant_uid': '',
             };
-            final defaultResponseDTO = await ref
-                .read(paymentViewModelProvider.notifier)
-                .orderCheck(orderRequestData);
+            final defaultResponseDTO = await ref.read(paymentViewModelProvider.notifier).orderCheck(orderRequestData);
             // 결제검증 결과값 ex)  return res.status(200).json({'result': true, 'data':{'message': '결제 완료.'}});
             if (defaultResponseDTO?.result == true) {
               _paymentComplete(payOrderDetailData);
+              return;
             } else {
               if (!mounted) return;
-              Utils.getInstance()
-                  .showSnackBar(context, defaultResponseDTO?.message ?? "");
+              Utils.getInstance().showSnackBar(context, defaultResponseDTO?.message ?? "");
             }
           } else {
             if (!mounted) return;
-            Utils.getInstance()
-                .showSnackBar(context, response['data']['message'] ?? "");
+            Utils.getInstance().showSnackBar(context, response['data']['message'] ?? "");
           }
         }
       }
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void _paymentComplete(PayOrderDetailData payOrderDetailData) async {
@@ -589,6 +591,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
         );
       }
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -1994,6 +2000,12 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                     ),
                   ),
                 ],
+              ),
+            ),
+            Visibility(
+              visible: _isLoading,
+              child: const Center(
+                child: CircularProgressIndicator(),
               ),
             ),
           ],

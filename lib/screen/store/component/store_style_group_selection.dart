@@ -102,8 +102,13 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
               child: Container(
                 padding: const EdgeInsets.only(left: 11, right: 10, top: 9, bottom: 8),
                 decoration: const BoxDecoration(
-                    color: Colors.white,
-                    border: Border(top: BorderSide(color: Color(0xD000000)))),
+                  color: Colors.white,
+                  border: Border(
+                    top: BorderSide(
+                      color: Color(0xD0000000),
+                    ),
+                  ),
+                ),
                 child: Row(
                   children: [
                     GestureDetector(
@@ -116,8 +121,9 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(Radius.circular(6)),
-                            border: Border.all(color: const Color(0xFFDDDDDD))),
+                          borderRadius: const BorderRadius.all(Radius.circular(6)),
+                          border: Border.all(color: const Color(0xFFDDDDDD)),
+                        ),
                         child: SvgPicture.asset('assets/images/store/ic_release.svg'),
                       ),
                     ),

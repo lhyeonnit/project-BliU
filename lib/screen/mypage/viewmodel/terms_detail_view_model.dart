@@ -1,6 +1,7 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/default_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TermsDetailModel {
@@ -33,7 +34,7 @@ class TermsDetailViewModel extends StateNotifier<TermsDetailModel?> {
           Map<String, dynamic> responseData = response.data;
 
           String? message = responseData["data"]["message"];
-          print("message ${message}");
+          //print("message $message");
           if (message == null || message.isEmpty) {
             String content = (responseData["data"][key]).toString();
             DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO(result: true, message: content);
@@ -48,7 +49,9 @@ class TermsDetailViewModel extends StateNotifier<TermsDetailModel?> {
       state = TermsDetailModel(defaultResponseDTO: DefaultResponseDTO(result: false, message: "Network Or Data Error"));
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       state = TermsDetailModel(defaultResponseDTO: DefaultResponseDTO(result: false, message: e.toString()));
     }
   }

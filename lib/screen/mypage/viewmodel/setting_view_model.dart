@@ -1,6 +1,7 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/default_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingModel {
@@ -42,7 +43,9 @@ class SettingViewModel extends StateNotifier<SettingModel?> {
       state = SettingModel(mtPushing: state?.mtPushing, pushInfoResponseDTO: DefaultResponseDTO(result: false, message: "Network Or Data Error"));
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       state = SettingModel(mtPushing: state?.mtPushing, pushInfoResponseDTO: DefaultResponseDTO(result: false, message: e.toString()));
     }
   }
@@ -61,7 +64,9 @@ class SettingViewModel extends StateNotifier<SettingModel?> {
       state = SettingModel(mtPushing: state?.mtPushing, setPushResponseDTO: DefaultResponseDTO(result: false, message: "Network Or Data Error"));
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       state = SettingModel(mtPushing: state?.mtPushing, setPushResponseDTO: DefaultResponseDTO(result: false, message: e.toString()));
     }
   }

@@ -53,7 +53,7 @@ class RecommendEditInfoViewModel extends StateNotifier<RecommendEditInfoModel?>{
 }
 
 
-final RecommendEditInfoModelProvider =
+final recommendEditInfoModelProvider =
 StateNotifierProvider<RecommendEditInfoViewModel, RecommendEditInfoModel?>((req) {
   return RecommendEditInfoViewModel(null, req);
 });

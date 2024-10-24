@@ -1,3 +1,4 @@
+import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
@@ -5,8 +6,9 @@ import 'package:flutter/material.dart';
 
 class ExchangeReturnInfo extends StatelessWidget {
   final OrderDetailInfoData? orderDetailInfoData;
+  final OrderDetailData? orderDetailData;
 
-  const ExchangeReturnInfo({super.key, required this.orderDetailInfoData});
+  const ExchangeReturnInfo({super.key, required this.orderDetailInfoData, required this.orderDetailData});
 
   @override
   Widget build(BuildContext context) {
@@ -45,16 +47,21 @@ class ExchangeReturnInfo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildInfoRow(
-                  '포인트환급액',
-                  "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUsePoint ?? 0)}원",
-                  context),
-              Container(
-                margin: const EdgeInsets.only(top: 15),
-                child: _buildInfoRow(
+                '포인트환급액',
+                "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUsePoint ?? 0)}원",
+                context,
+              ),
+              Visibility(
+                visible: orderDetailData?.ctStats == 2 || orderDetailData?.ctStats == 3 ? false : true,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 15),
+                  child: _buildInfoRow(
                     '배송비차감액',
                     "(-) ${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원",
-                    context),
-              ),
+                    context,
+                  ),
+                ),
+              )
             ],
           ),
         ),

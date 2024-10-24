@@ -186,9 +186,9 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
                                 child: TextField(
                                   onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                                   style: TextStyle(
-                                      height: 1.2,
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14)
+                                    height: 1.2,
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
                                   ),
                                   maxLines: 4,
                                   maxLength: 500,
@@ -196,9 +196,9 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
                                     contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                                     hintText: '세부 내용 입력',
                                     hintStyle: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        color: const Color(0xFF595959)
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: const Color(0xFF595959),
                                     ),
                                     enabledBorder: const OutlineInputBorder(
                                       borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -233,6 +233,7 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
                         ),
                         ExchangeReturnInfo(
                           orderDetailInfoData: orderDetailInfoData,
+                          orderDetailData: widget.orderDetailData,
                         ),
                       ],
                     ),
