@@ -10,7 +10,7 @@ class PayOrderResultDetailData {
   final int? otUsePoint;
   final int? otUseCoupon;
   final CouponData? coupon;
-  final List<CartData>? productList;
+  final List<CartData>? list;
 
   PayOrderResultDetailData({
     required this.otIdx,
@@ -21,11 +21,11 @@ class PayOrderResultDetailData {
     required this.otUsePoint,
     required this.otUseCoupon,
     required this.coupon,
-    required this.productList,
+    required this.list,
   });
 
   factory PayOrderResultDetailData.fromJson(Map<String, dynamic> json) {
-    final product = List<CartData>.from((json['product_list'])?.map((item) {
+    final product = List<CartData>.from((json['list'])?.map((item) {
       return CartData.fromJson(item as Map<String, dynamic>);
     }).toList());
 
@@ -38,7 +38,7 @@ class PayOrderResultDetailData {
       otUsePoint: json['ot_use_point'],
       otUseCoupon: json['ot_use_coupon'],
       coupon: CouponData.fromJson(json['coupon']),
-      productList: product,
+      list: product,
     );
   }
 
@@ -51,6 +51,6 @@ class PayOrderResultDetailData {
     'ot_use_point' : otUsePoint,
     'ot_use_coupon' : otUseCoupon,
     'coupon' : coupon?.toJson(),
-    'product_list' : productList?.map((it) => it.toJson()).toList()
+    'product_list' : list?.map((it) => it.toJson()).toList()
   };
 }
