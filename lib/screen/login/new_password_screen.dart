@@ -237,6 +237,7 @@ class NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
             TextField(
               onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
+                decorationThickness: 0,
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),

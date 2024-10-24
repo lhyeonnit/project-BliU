@@ -191,6 +191,7 @@ class MyReviewEditState extends ConsumerState<MyReviewEdit> {
                             onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                             controller: _reviewController,
                             style: TextStyle(
+                                decorationThickness: 0,
                                 height: 1.2,
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14)

@@ -838,6 +838,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                           controller: _recipientNameController,
                                           maxLines: 1,
                                           style: TextStyle(
+                                            decorationThickness: 0,
+                                            height: 1.2,
                                             fontFamily: 'Pretendard',
                                             fontSize: Responsive.getFont(context, 14),
                                           ),
@@ -907,6 +909,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                           keyboardType: TextInputType.phone,
                                           maxLines: 1,
                                           style: TextStyle(
+                                            decorationThickness: 0,
+                                            height: 1.2,
                                             fontFamily: 'Pretendard',
                                             fontSize: Responsive.getFont(context, 14),
                                           ),
@@ -988,6 +992,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                       enabled: false,
                                                       maxLines: 1,
                                                       style: TextStyle(
+                                                        decorationThickness: 0,
+                                                        height: 1.2,
                                                         fontFamily: 'Pretendard',
                                                         fontSize: Responsive.getFont(context, 14),
                                                       ),
@@ -1045,6 +1051,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                               controller: _addressDetailController,
                                               maxLines: 1,
                                               style: TextStyle(
+                                                decorationThickness: 0,
+                                                height: 1.2,
                                                 fontFamily: 'Pretendard',
                                                 fontSize: Responsive.getFont(context, 14),
                                               ),
@@ -1079,6 +1087,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                 child: TextField(
                                   onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                                   style: TextStyle(
+                                    decorationThickness: 0,
+                                    height: 1.2,
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),
                                   ),
@@ -1453,6 +1463,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                 child: TextField(
                                                   onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                                                   style: TextStyle(
+                                                    decorationThickness: 0,
+                                                    height: 1.2,
                                                     fontFamily: 'Pretendard',
                                                     fontSize: Responsive.getFont(context, 14),
                                                   ),

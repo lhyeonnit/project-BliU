@@ -652,6 +652,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                 onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                 focusNode: focusNode,
                 style: TextStyle(
+                    decorationThickness: 0,
                     height: 1.2,
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14)
@@ -704,6 +705,8 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
               child: TextField(
                 onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                 style: TextStyle(
+                  decorationThickness: 0,
+                  height: 1.2,
                   fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14),
                 ),

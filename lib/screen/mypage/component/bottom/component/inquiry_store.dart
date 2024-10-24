@@ -223,6 +223,7 @@ class InquiryStoreState extends ConsumerState<InquiryStore> {
                           TextField(
                             onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                             style: TextStyle(
+                              decorationThickness: 0,
                               height: 1.2,
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
@@ -430,6 +431,8 @@ class InquiryStoreState extends ConsumerState<InquiryStore> {
       onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       controller: controller,
       style: TextStyle(
+        decorationThickness: 0,
+        height: 1.2,
         fontFamily: 'Pretendard',
         fontSize: Responsive.getFont(context, 14),
       ),
@@ -459,6 +462,7 @@ class InquiryStoreState extends ConsumerState<InquiryStore> {
       child: TextField(
         onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
         style: TextStyle(
+          decorationThickness: 0,
           height: 1.2,
           fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 14),

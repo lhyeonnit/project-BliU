@@ -390,6 +390,7 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
             TextField(
               onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
+                decorationThickness: 0,
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
                 height: 1.2,
@@ -442,6 +443,7 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
             TextField(
               onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
+                decorationThickness: 0,
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
