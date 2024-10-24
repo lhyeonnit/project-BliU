@@ -376,6 +376,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                         fontSize: Responsive.getFont(context, 14),
                         color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
                         height: 1.2,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),

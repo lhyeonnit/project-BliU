@@ -141,6 +141,7 @@ class _CouponCardState extends State<CouponCard> {
                             fontSize: Responsive.getFont(context, 12),
                             color: isDownload ? Colors.black : Colors.grey,
                             height: 1.2,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),

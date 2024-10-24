@@ -267,10 +267,10 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                                         '확인',
                                         style: TextStyle(
                                           fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(
-                                              context, 14),
+                                          fontSize: Responsive.getFont(context, 14),
                                           color: _phoneAuthChecked ? const Color(0xFF7B7B7B) : Colors.white,
                                           height: 1.2,
+                                          fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                     ),
@@ -334,6 +334,7 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                         fontSize: Responsive.getFont(context, 14),
                         color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
                         height: 1.2,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),

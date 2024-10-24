@@ -130,6 +130,7 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
                           fontFamily: 'Pretendard',
                           color: Colors.white,
                           height: 1.2,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
