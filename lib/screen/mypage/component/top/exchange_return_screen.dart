@@ -45,6 +45,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
   String details = ''; // 상세내용
   int shippingCost = 0;
   List<File> images = [];
+  int? userType;
 
   @override
   void initState() {
@@ -87,6 +88,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
     if (orderDetailInfoResponseDTO != null) {
       if (orderDetailInfoResponseDTO.result == true) {
         orderDetailInfoData = orderDetailInfoResponseDTO.data;
+        userType = memberType;
       } else {
         if (!mounted) return;
         Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
@@ -324,6 +326,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: ReturnItem(
+          userType: userType ?? 0,
           orderDetailInfoData: orderDetailInfoData,
           orderDetailData: widget.orderDetailData,
           returnCategory: returnCategory,
