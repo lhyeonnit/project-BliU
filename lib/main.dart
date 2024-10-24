@@ -1,146 +1,16 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
-import 'package:BliU/data/fcm_data.dart';
 import 'package:BliU/dto/member_info_response_dto.dart';
 import 'package:BliU/screen/common/on_boarding_screen.dart';
+import 'package:BliU/utils/firebase_service.dart';
 import 'package:BliU/utils/navigation_service.dart';
 import 'package:BliU/utils/permission_manager.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-String? _fcmToken;
-FcmData? _fcmData;
-
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  // 세부 내용이 필요한 경우 추가...
-}
-
-@pragma('vm:entry-point')
-void backgroundHandler(NotificationResponse details) {
-  // 액션 추가... 파라미터는 details.payload 방식으로 전달
-  String? payload = details.payload;
-  if (payload != null) {
-    if (payload.isNotEmpty) {
-      _handleMessage(payload);
-    }
-  }
-}
-
-Future<void> fireBaseInitializeApp() async {
-  await Firebase.initializeApp(
-    options: FirebaseOptions(
-        apiKey: Platform.isAndroid ? 'AIzaSyCZyPF0_XZ105BRHpsOmlygeXbUn7XboSA' : 'AIzaSyB0Rcg7ZaT7LUMR4U5igmLQqR6T9HaMoOs',//aos: current_key, ios : API_KEY
-        appId: Platform.isAndroid ? '1:997399886578:android:a9e20008de5331604a2e6b' : '1:997399886578:ios:58b1233c97c1e4874a2e6b',//aos: mobilesdk_app_id, ios: GOOGLE_APP_ID
-        messagingSenderId: '997399886578',
-        projectId: 'bliu-be62b'
-    ),
-  );
-}
-
-void initializeNotification() async {
-  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-      AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(const AndroidNotificationChannel(
-      'high_importance_channel', 'high_importance_notification',
-      importance: Importance.max));
-
-  await flutterLocalNotificationsPlugin.initialize(
-    const InitializationSettings(
-      android: AndroidInitializationSettings("@mipmap/ic_launcher"),
-      iOS: DarwinInitializationSettings(),
-    ),
-    onDidReceiveNotificationResponse: (details) {
-      // 액션 추가...
-      //print("onDidReceiveNotificationResponse ${details.payload}");
-      String? payload = details.payload;
-      if (payload != null) {
-        if (payload.isNotEmpty) {
-          _handleMessage(payload);
-        }
-      }
-    },
-
-    onDidReceiveBackgroundNotificationResponse: backgroundHandler,
-  );
-
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-    RemoteNotification? notification = message.notification;
-    if (notification != null) {
-      FcmData fcmData = FcmData.fromJson(message.data);
-      String fcmDataString = json.encode(fcmData.toJson());
-      print("notification data = ${message.data}");
-
-      if (Platform.isAndroid) {
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            const NotificationDetails(
-              android: AndroidNotificationDetails(
-                'high_importance_channel',
-                'high_importance_notification',
-                importance: Importance.max,
-              ),
-              iOS: DarwinNotificationDetails(),
-            ),
-            payload: fcmDataString);
-      }
-    }
-  });
-
-  // 백그라운드에서 눌러서 들어올시
-  FirebaseMessaging.onMessageOpenedApp.listen((message) {
-    //print("onMessageOpenedApp ${message.data}");
-    FcmData fcmData = FcmData.fromJson(message.data);
-    _handleData(fcmData);
-  });
-
-  RemoteMessage? message = await FirebaseMessaging.instance.getInitialMessage();
-  if (message != null) {
-    // 액션 부분 -> 파라미터는 message.data['test_parameter1'] 이런 방식으로...
-    //print("getInitialMessage ${message.data}");
-    _fcmData = FcmData.fromJson(message.data);
-  }
-}
-
-void _handleMessage(String message) {
-  var jsonMap = json.decode(message);
-  FcmData fcmData = FcmData.fromJson(jsonMap);
-  _handleData(fcmData);
-}
-
-void _handleData(FcmData fcmData) {
-  var context = NavigationService.navigatorKey.currentContext;
-  if (context != null) {
-    // TODO 푸시 데이터 전달
-    print("_handleData");
-    // _container = ProviderContainer();
-    // _container.read(fcmProvider.notifier).getFcm(fcmData);
-    // FcmProvider fcmProvider = context.read<FcmProvider>();
-    // fcmProvider.setFcmData(fcmData);
-  }
-}
 
 // 자동 로그인
 Future<MemberInfoResponseDTO?> _authAutoLogin(Map<String, dynamic> requestData) async {
@@ -166,7 +36,7 @@ Future<MemberInfoResponseDTO?> _authAutoLogin(Map<String, dynamic> requestData) 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SharedPreferences.getInstance();
+  final pref = await SharedPreferencesManager.getInstance();
 
   KakaoSdk.init(
       nativeAppKey: '525bbbd40b4de98d500d446c14f28bd4'
@@ -178,36 +48,13 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  await fireBaseInitializeApp();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  initializeNotification();
-
-  if (Platform.isIOS) {
-    var token = await FirebaseMessaging.instance.getAPNSToken();
-    if (token == null) {
-      await Future.delayed(const Duration(seconds: 2), () async {
-        token = await FirebaseMessaging.instance.getAPNSToken();
-        if (token != null) {
-          _fcmToken = await FirebaseMessaging.instance.getToken();
-        }
-      });
-    } else {
-      _fcmToken = await FirebaseMessaging.instance.getToken();
-    }
-  } else {
-    _fcmToken = await FirebaseMessaging.instance.getToken();
-  }
-
-  if (kDebugMode) {
-    print("fcmToken ====> $_fcmToken");
-  }
-  final pref = await SharedPreferencesManager.getInstance();
-  await pref.setToken(_fcmToken ?? "");
+  FirebaseService firebaseService = FirebaseService();
+  await firebaseService.initMessage();
 
   await PermissionManager().requestPermission();
   if (pref.getAutoLogin()) {
     Map<String, dynamic> requestData = {
-      'app_token': _fcmToken,
+      'app_token': pref.getToken(),
     };
 
     final memberInfoResponseDTO = await _authAutoLogin(requestData);
@@ -228,21 +75,15 @@ Future<void> main() async {
   }
 
   runApp(const ProviderScope(child: MyApp()));
-  // runApp(
-  //   ProviderScope(
-  //     overrides: [
-  //       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-  //     ],
-  //     child: MyApp(),
-  //   ),
-  // );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    FirebaseService firebaseService = FirebaseService();
+    firebaseService.setRef(ref);
 
     return MaterialApp(
       theme: ThemeData(
@@ -255,18 +96,5 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const OnBoardingScreen(), // OnBoardingScreen을 초기 화면으로 설정
     );
-  }
-}
-
-final fcmProvider = StateNotifierProvider<FcmProvider, FcmData?>((ref){
-  return FcmProvider(null, ref);
-});
-
-class FcmProvider extends StateNotifier<FcmData?> {
-  final Ref ref;
-  FcmProvider(super.state, this.ref);
-
-  void getFcm(FcmData? fcmData) {
-    state = fcmData;
   }
 }

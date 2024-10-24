@@ -1,13 +1,17 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:BliU/main.dart';
+import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/custom_bottom_navigation_bar.dart';
 import 'package:BliU/screen/category/category_screen.dart';
+import 'package:BliU/screen/home/exhibition_screen.dart';
 import 'package:BliU/screen/home/home_screen.dart';
 import 'package:BliU/screen/like/like_screen.dart';
+import 'package:BliU/screen/mypage/component/top/my_coupon_screen.dart';
+import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
 import 'package:BliU/screen/mypage/my_screen.dart';
 import 'package:BliU/screen/store/store_screen.dart';
+import 'package:BliU/utils/firebase_service.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:app_links/app_links.dart';
@@ -54,7 +58,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     // Handle links
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
       print('onAppLink: $uri');
-      //String uriString = uri.toString();
+      String uriString = uri.toString();
       // if (uriString.contains("bplusapp.app.open?act=url&data=")) {
       //   var uriArr = uriString.split("bplusapp.app.open?act=url&data=");
       //   if (uriArr.isNotEmpty) {
@@ -76,9 +80,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       DateTime currentTime = DateTime.now();
 
       //Statement 1 Or statement2
-      bool backButton = _backButtonPressedTime == null ||
-          currentTime.difference(_backButtonPressedTime!) > const Duration(seconds: 3);
-
+      bool backButton = _backButtonPressedTime == null || currentTime.difference(_backButtonPressedTime!) > const Duration(seconds: 3);
       if (backButton) {
         _backButtonPressedTime = currentTime;
         Utils.getInstance().showSnackBar(context, "한번 더 뒤로가기를 누를 시 종료됩니다");
@@ -93,12 +95,43 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   Widget build(BuildContext context) {
     ref.listen(fcmProvider,
       ((previous, next) {
-        print("listen");
         if (next != null) {
           String? ptLink = next.ptLink;
+          int etIdx = int.parse(next.etIdx ?? "0");
           if (ptLink != null) {
             if (ptLink.isNotEmpty) {
-              print("ptLink $ptLink");
+              switch (ptLink) {
+                case "home":
+                  Navigator.popUntil(context, ModalRoute.withName("/"));
+                  ref.read(mainScreenProvider.notifier).selectNavigation(2);
+                  break;
+                case "order_list":
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const OrderListScreen()),
+                  );
+                  break;
+                case "cart_list":
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const CartScreen()),
+                  );
+                  break;
+                case "coupon_list":
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MyCouponScreen()),
+                  );
+                  break;
+                case "exhibition":
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ExhibitionScreen(etIdx: etIdx),
+                    ),
+                  );
+                  break;
+              }
             }
           }
           ref.read(fcmProvider.notifier).getFcm(null);
