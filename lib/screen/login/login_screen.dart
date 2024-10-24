@@ -210,6 +210,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                                 color: Colors.white,
                                 fontSize: Responsive.getFont(context, 14),
                                 height: 1.2,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),

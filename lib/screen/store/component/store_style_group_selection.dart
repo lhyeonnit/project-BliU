@@ -142,6 +142,7 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
                                 fontFamily: 'Pretendard',
                                 color: Colors.white,
                                 height: 1.2,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),

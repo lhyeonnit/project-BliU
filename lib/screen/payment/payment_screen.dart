@@ -832,7 +832,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             fontSize: Responsive.getFont(context, 14),
                                           ),
                                           decoration: InputDecoration(
-                                            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                            contentPadding: const EdgeInsets.symmetric(horizontal: 15),
                                             hintText: '수령인',
                                             hintStyle: TextStyle(
                                               fontFamily: 'Pretendard',
@@ -901,7 +901,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             fontSize: Responsive.getFont(context, 14),
                                           ),
                                           decoration: InputDecoration(
-                                            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                            contentPadding: const EdgeInsets.symmetric(horizontal: 15),
                                             hintText: '‘-’ 없이 번호만 입력',
                                             hintStyle: TextStyle(
                                               fontFamily: 'Pretendard',
@@ -982,7 +982,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                         fontSize: Responsive.getFont(context, 14),
                                                       ),
                                                       decoration: InputDecoration(
-                                                        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                                        contentPadding: const EdgeInsets.symmetric( horizontal: 15),
                                                         //hintText: '주소를 검색해 주세요.',
                                                         hintStyle: TextStyle(
                                                           fontFamily: 'Pretendard',
@@ -1007,7 +1007,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                   child: Container(
                                                     height: 44,
                                                     margin: const EdgeInsets.only(left: 8),
-                                                    padding: const EdgeInsets.symmetric(vertical: 14),
                                                     decoration: BoxDecoration(
                                                       borderRadius: const BorderRadius.all(Radius.circular(6)),
                                                       border: Border.all(color: const Color(0xFFE1E1E1)),
@@ -1040,7 +1039,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                 fontSize: Responsive.getFont(context, 14),
                                               ),
                                               decoration: InputDecoration(
-                                                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                                contentPadding: const EdgeInsets.symmetric(horizontal: 15),
                                                 hintText: '상세주소 입력',
                                                 hintStyle: TextStyle(
                                                   fontFamily: 'Pretendard',
@@ -1151,7 +1150,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             });
                                           },
                                           child: Container(
-                                              padding: const EdgeInsets.symmetric(vertical: 11.0),
                                               decoration: BoxDecoration(
                                                 color: Colors.white,
                                                 borderRadius: BorderRadius.circular(6),
@@ -1183,7 +1181,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                           });
                                         },
                                         child: Container(
-                                          padding: const EdgeInsets.symmetric(vertical: 11.0),
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius:
@@ -1225,7 +1222,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                               });
                                             },
                                             child: Container(
-                                                padding: const EdgeInsets.symmetric(vertical: 11.0),
                                                 decoration: BoxDecoration(
                                                   color: Colors.white,
                                                   borderRadius: BorderRadius.circular(6),
@@ -1257,7 +1253,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             });
                                           },
                                           child: Container(
-                                              padding: const EdgeInsets.symmetric(vertical: 11.0),
                                               decoration: BoxDecoration(
                                                 color: Colors.white,
                                                 borderRadius: BorderRadius.circular(6),
@@ -1366,7 +1361,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                 },
                                 child: Container(
                                   height: 44,
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                                  padding: const EdgeInsets.symmetric(horizontal: 20,),
                                   margin: const EdgeInsets.only(top: 10, bottom: 20),
                                   decoration: BoxDecoration(
                                       borderRadius: const BorderRadius.all(Radius.circular(6)),
@@ -1496,27 +1491,18 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                       flex: 3,
                                       child: Container(
                                         height: 44,
-                                        padding: const EdgeInsets.symmetric(vertical: 14),
                                         decoration: BoxDecoration(
-                                            borderRadius: const BorderRadius.all(
-                                                Radius.circular(6)),
-                                            border: Border.all(
-                                                color: const Color(0xFFDDDDDD))),
+                                            borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                            border: Border.all(color: const Color(0xFFDDDDDD))),
                                         child: GestureDetector(
                                           onTap: () {
-                                            final maxUsePoint = widget
-                                                .payOrderDetailData
-                                                .maxUsePoint ??
-                                                0;
+                                            final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
                                             if (_point > 0) {
                                               if (_point > maxUsePoint) {
-                                                _pointController.text =
-                                                    maxUsePoint.toString();
-                                                _pointCheck(
-                                                    maxUsePoint.toString());
+                                                _pointController.text = maxUsePoint.toString();
+                                                _pointCheck(maxUsePoint.toString());
                                               } else {
-                                                _pointController.text =
-                                                    _point.toString();
+                                                _pointController.text = _point.toString();
                                                 _pointCheck(_point.toString());
                                               }
                                             }
@@ -2001,6 +1987,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                             fontSize: Responsive.getFont(context, 14),
                             color: Colors.white,
                             height: 1.2,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),

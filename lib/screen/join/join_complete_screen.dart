@@ -97,6 +97,7 @@ class JoinCompleteScreen extends StatelessWidget {
                         fontSize: Responsive.getFont(context, 14),
                         color: Colors.white,
                         height: 1.2,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),

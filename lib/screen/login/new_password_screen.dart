@@ -185,6 +185,7 @@ class NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 14),
                         color: _isConfirmPasswordValid ? Colors.white : const Color(0xFF7B7B7B),
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
