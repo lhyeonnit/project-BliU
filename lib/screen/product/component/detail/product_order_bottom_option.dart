@@ -403,9 +403,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                                 _addPtAddArr.removeAt(index);
                                               });
                                             },
-                                            child: SvgPicture.asset(
-                                                'assets/images/ic_del.svg'
-                                            ),
+                                            child: SvgPicture.asset('assets/images/ic_del.svg'),
                                           ),
                                         ],
                                       ),

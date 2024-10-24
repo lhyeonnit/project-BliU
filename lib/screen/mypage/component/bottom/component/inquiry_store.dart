@@ -326,7 +326,7 @@ class InquiryStoreState extends ConsumerState<InquiryStore> {
               File(file.path),
               width: 100,
               height: 100,
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
             ),
           ),
           Positioned(
@@ -349,9 +349,15 @@ class InquiryStoreState extends ConsumerState<InquiryStore> {
   }
 
   void _addImage() async {
+    if (_fileList.length >= 4) {
+      Utils.getInstance().showSnackBar(context, "이미지는 4장까지 가능합니다.");
+      return;
+    }
     try {
       final ImagePicker picker = ImagePicker();
-      _fileList = await picker.pickMultiImage(limit: 4);
+      final limitCnt = 4 - _fileList.length;
+      final fileList = await picker.pickMultiImage(limit: limitCnt);
+      _fileList.addAll(fileList);
       _addImageCheck();
     } catch (e) {
       if (kDebugMode) {

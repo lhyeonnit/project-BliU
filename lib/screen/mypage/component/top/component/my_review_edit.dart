@@ -304,7 +304,7 @@ class MyReviewEditState extends ConsumerState<MyReviewEdit> {
                                               image,
                                               width: 100,
                                               height: 100,
-                                              fit: BoxFit.cover,
+                                              fit: BoxFit.contain,
                                             ),
                                           ),
                                           Positioned(

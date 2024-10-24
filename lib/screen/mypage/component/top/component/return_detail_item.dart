@@ -444,7 +444,7 @@ class _ReturnItemState extends State<ReturnItem> {
                                   _selectedImages[index],
                                   width: 100,
                                   height: 100,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.contain,
                                 ),
                               ),
                               Positioned(
