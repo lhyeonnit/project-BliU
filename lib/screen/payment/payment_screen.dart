@@ -579,7 +579,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
           MaterialPageRoute(
             builder: (context) =>
               PaymentCompleteScreen(
-                payOrderDetailData: widget.payOrderDetailData,
                 memberType: mtIdx.isNotEmpty ? 1 : 2,
                 payType: _payType,
                 payOrderResultDetailData: payOrderResultDetailData,

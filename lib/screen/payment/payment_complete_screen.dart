@@ -1,4 +1,3 @@
-import 'package:BliU/data/pay_order_detail_data.dart';
 import 'package:BliU/data/pay_order_result_detail_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PaymentCompleteScreen extends ConsumerStatefulWidget {
-  final PayOrderDetailData payOrderDetailData;
   final int memberType;
   final int payType;//1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
   final PayOrderResultDetailData? payOrderResultDetailData;
@@ -23,7 +21,6 @@ class PaymentCompleteScreen extends ConsumerStatefulWidget {
 
   const PaymentCompleteScreen({
     super.key,
-    required this.payOrderDetailData,
     required this.memberType,
     required this.payType,
     required this.payOrderResultDetailData,
@@ -558,7 +555,7 @@ class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                 ),
                               ),
                               child: PaymentOrderItem(
-                                  cartList: widget.payOrderDetailData.list ?? []
+                                  cartList: widget.payOrderResultDetailData?.list ?? []
                               ),
                             ),
                           ],
