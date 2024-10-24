@@ -12,6 +12,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
@@ -392,7 +393,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
         //print('카카오톡으로 로그인 성공');
         await _kakaoGetInfo();
       } catch (error) {
-        print('카카오톡으로 로그인 실패 $error');
+        if (kDebugMode) {
+          print('카카오톡으로 로그인 실패 $error');
+        }
 
         // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
         // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
@@ -405,7 +408,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
           //print('카카오계정으로 로그인 성공');
           await _kakaoGetInfo();
         } catch (error) {
-          print('카카오계정으로 로그인 실패 $error');
+          if (kDebugMode) {
+            print('카카오계정으로 로그인 실패 $error');
+          }
         }
       }
     } else {
@@ -414,7 +419,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
         //print('카카오계정으로 로그인 성공');
         await _kakaoGetInfo();
       } catch (error) {
-        print('카카오계정으로 로그인 실패 $error');
+        if (kDebugMode) {
+          print('카카오계정으로 로그인 실패 $error');
+        }
       }
     }
   }
@@ -434,7 +441,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
 
       await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
     } catch (error) {
-      print('사용자 정보 요청 실패 $error');
+      if (kDebugMode) {
+        print('사용자 정보 요청 실패 $error');
+      }
     }
   }
 
@@ -456,7 +465,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
         await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
       }
     } catch (error) {
-      print(error);
+      if (kDebugMode) {
+        print(error);
+      }
     }
   }
 
@@ -544,6 +555,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
       // 로그인 실패 시 처리
       pref.setAutoLogin(false);
       Future.delayed(Duration.zero, () {
+        if (!mounted) return;
         Utils.getInstance().showSnackBar(context, model.memberInfoResponseDTO?.message ?? "로그인 실패");
       });
     }

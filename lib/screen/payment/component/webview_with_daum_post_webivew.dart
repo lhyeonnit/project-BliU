@@ -2,14 +2,14 @@ import 'package:BliU/data/daum_post_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-class WebviewWithDaumPostWebview extends StatefulWidget {
-  const WebviewWithDaumPostWebview({super.key});
+class WebViewWithDaumPostWebView extends StatefulWidget {
+  const WebViewWithDaumPostWebView({super.key});
 
   @override
-  State<WebviewWithDaumPostWebview> createState() => WebViewWithDaumPostWebViewState();
+  State<WebViewWithDaumPostWebView> createState() => WebViewWithDaumPostWebViewState();
 }
 
-class WebViewWithDaumPostWebViewState extends State<WebviewWithDaumPostWebview> {
+class WebViewWithDaumPostWebViewState extends State<WebViewWithDaumPostWebView> {
   final InAppLocalhostServer _localhostServer = InAppLocalhostServer();
   late InAppWebViewController _controller;
 

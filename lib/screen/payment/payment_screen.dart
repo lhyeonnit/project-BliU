@@ -180,7 +180,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     DaumPostData? result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const WebviewWithDaumPostWebview(), // 주소 검색 창으로 이동
+        builder: (context) => const WebViewWithDaumPostWebView(), // 주소 검색 창으로 이동
       ),
     );
 
@@ -2017,6 +2017,12 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                     ),
                   ),
                 ],
+              ),
+            ),
+            Visibility(
+              visible: _isLoading,
+              child: const Center(
+                child: CircularProgressIndicator(),
               ),
             ),
           ],

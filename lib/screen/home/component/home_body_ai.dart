@@ -73,18 +73,9 @@ class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
 
   void _getList() async {
     final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-    String? memberType = (mtIdx != null) ? mtIdx : '';
-
-    // 회원 여부에 따라 처리 (비회원도 처리 가능)
-    if (mtIdx == null || mtIdx.isEmpty) {
-      // 비회원 처리 (예: 비회원용 메시지나 기본값 설정)
-      print('비회원');
-    } else {
-      print('회원 mtIdx: $mtIdx');
-    }
+    final mtIdx = pref.getMtIdx() ?? '';
     Map<String, dynamic> requestData = {
-      'mt_idx': memberType,
+      'mt_idx': mtIdx,
     };
 
     final productListResponseDTO = await ref.read(homeBodyAiViewModelProvider.notifier).getList(requestData);

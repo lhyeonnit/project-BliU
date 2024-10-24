@@ -359,8 +359,8 @@ class ExchangeItemState extends State<ExchangeItem> {
                         });
                       },
                       activeColor: const Color(0xFFFF6192),
-                      fillColor: MaterialStateProperty.resolveWith((states) {
-                        if (!states.contains(MaterialState.selected)) {
+                      fillColor: WidgetStateProperty.resolveWith((states) {
+                        if (!states.contains(WidgetState.selected)) {
                           return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
                         }
                         return const Color(0xFFFF6192); // 선택된 상태의 색상

@@ -3,6 +3,7 @@ import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/default_response_dto.dart';
 import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SmartLensModel {
@@ -28,7 +29,9 @@ class SmartLensViewModel extends StateNotifier<SmartLensModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return DefaultResponseDTO(result: false, message: e.toString());
     }
   }
@@ -45,7 +48,9 @@ class SmartLensViewModel extends StateNotifier<SmartLensModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -62,7 +67,9 @@ class SmartLensViewModel extends StateNotifier<SmartLensModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }

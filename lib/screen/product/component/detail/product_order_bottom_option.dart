@@ -154,7 +154,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                 // 모든 옵션이 선택되었는지 확인
                                 bool allOptionsSelected = true;
                                 for (var option in _ptOption) {
-                                  if (option.selectedValue == null || option.selectedValue.isEmpty) {
+                                  if (option.selectedValue.isEmpty) {
                                     allOptionsSelected = false;
                                     break;
                                   }

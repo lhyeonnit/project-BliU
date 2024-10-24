@@ -1,4 +1,5 @@
 import 'package:BliU/data/product_data.dart';
+import 'package:flutter/foundation.dart';
 
 class ProductListResponseDTO {
   final bool result;
@@ -23,7 +24,9 @@ class ProductListResponseDTO {
         count = json['data']['count'];
       }
     } catch (e) {
-      print("e = ${e.toString()}");
+      if (kDebugMode) {
+        print("e = ${e.toString()}");
+      }
     }
 
     return ProductListResponseDTO(

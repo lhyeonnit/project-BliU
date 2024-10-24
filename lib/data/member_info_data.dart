@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class MemberInfoData {
   final int? mtIdx;
   final String? mtId;
@@ -35,7 +37,9 @@ class MemberInfoData {
         mctStyle = List<String>.from(json['mct_style'] as Iterable<dynamic>);
       }
     } catch (e) {
-      print('memberInfoData.fromJson E - ${e.toString()}');
+      if (kDebugMode) {
+        print('memberInfoData.fromJson E - ${e.toString()}');
+      }
     }
     return MemberInfoData(
       mtIdx: json['mt_idx'],

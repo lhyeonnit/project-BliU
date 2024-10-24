@@ -1,6 +1,7 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/category_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CategoryModel {
@@ -31,7 +32,9 @@ class CategoryViewModel extends StateNotifier<CategoryModel?> {
       state = CategoryModel(categoryResponseDTO: CategoryResponseDTO(result: false, message: "Network Or Data Error"));
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       state = CategoryModel(categoryResponseDTO: CategoryResponseDTO(result: false, message: e.toString()));
     }
   }

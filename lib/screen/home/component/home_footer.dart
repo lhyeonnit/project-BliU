@@ -40,6 +40,7 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
             }
           } else {
             Future.delayed(Duration.zero, () {
+              if (!mounted) return;
               Utils.getInstance().showSnackBar(context, model?.footResponseDTO?.message ?? "");
             });
           }

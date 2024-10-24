@@ -1,6 +1,7 @@
 import 'package:BliU/api/dio_interceptor.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 class DefaultRepository {
   Dio _dio = Dio();
@@ -34,7 +35,9 @@ class DefaultRepository {
       );
       return response;
     } catch (e) {
-      print("Error toggling store like: $e");
+      if (kDebugMode) {
+        print("Error reqPost : $e");
+      }
       return null;
     }
   }
@@ -52,7 +55,9 @@ class DefaultRepository {
       );
       return response;
     } catch (e) {
-      print("Error toggling store like: $e");
+      if (kDebugMode) {
+        print("Error reqPostFiles : $e");
+      }
       return null;
     }
   }
@@ -70,7 +75,9 @@ class DefaultRepository {
       );
       return response;
     } catch (e) {
-      print("Error toggling store like: $e");
+      if (kDebugMode) {
+        print("Error reqGet : $e");
+      }
       return null;
     }
   }

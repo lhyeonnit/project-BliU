@@ -5,6 +5,7 @@ import 'package:BliU/dto/product_list_response_dto.dart';
 import 'package:BliU/dto/search_my_response_dto.dart';
 import 'package:BliU/dto/search_popular_response_dto.dart';
 import 'package:BliU/dto/search_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchModel {
@@ -35,7 +36,9 @@ class SearchViewModel extends StateNotifier<SearchModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -54,7 +57,9 @@ class SearchViewModel extends StateNotifier<SearchModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -74,7 +79,9 @@ class SearchViewModel extends StateNotifier<SearchModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       return null;
     }
   }
@@ -92,7 +99,9 @@ class SearchViewModel extends StateNotifier<SearchModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }
@@ -109,7 +118,9 @@ class SearchViewModel extends StateNotifier<SearchModel?> {
       return null;
     } catch (e) {
       // Catch and log any exceptions
-      print('Error fetching : $e');
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
       return null;
     }
   }

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:BliU/data/my_page_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/screen/mypage/component/top/component/my_info_delete_page.dart';
 import 'package:BliU/screen/mypage/my_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/my_info_edit_view_model.dart';
@@ -1222,9 +1221,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
     final mtIdx = pref.getMtIdx();
     String birthDay = "";
     try {
-      if (_selectedDate != null) {
-        birthDay = DateFormat("yyyy-MM-dd").format(_selectedDate);
-      }
+      birthDay = DateFormat("yyyy-MM-dd").format(_selectedDate);
     } catch (e) {
       if (kDebugMode) {
         print("DateError $e");

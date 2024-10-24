@@ -1,6 +1,7 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/foot_response_dto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeFooterModel {
@@ -32,7 +33,9 @@ class HomeFooterViewModel extends StateNotifier<HomeFooterModel?> {
       return state;
     } catch(e) {
       // Catch and log any exceptions
-      print('Error request Api: $e');
+      if (kDebugMode) {
+        print('Error request Api: $e');
+      }
       state = HomeFooterModel(footResponseDTO: FootResponseDTO(result: false, message: e.toString()));
       return state;
     }

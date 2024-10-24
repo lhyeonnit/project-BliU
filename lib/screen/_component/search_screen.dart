@@ -14,6 +14,7 @@ import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/store_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -304,7 +305,9 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
     } catch (e) {
       // 오류 발생 시에도 실패 상태로 전환
       _failSearch();
-      print('Error during search: $e');
+      if (kDebugMode) {
+        print('Error during search: $e');
+      }
     }
 
     setState(() {
