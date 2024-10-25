@@ -112,7 +112,7 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
           ],
         ),
         Positioned(
-          top: Responsive.getHeight(context, 536),
+          top: MediaQuery.of(context).size.width * 1.3,
           left: Responsive.getWidth(context, 19),
           child: Center(
             child: SmoothPageIndicator(

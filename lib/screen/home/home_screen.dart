@@ -244,7 +244,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                         automaticallyImplyLeading: false,
                         // 기본 뒤로가기 버튼을 숨김
                         backgroundColor: _isScrolled ? Colors.white : Colors.transparent,
-                        expandedHeight: Responsive.getHeight(context, 625),
+                        expandedHeight: MediaQuery.of(context).size.width * 1.4,
                         centerTitle: false,
                         title: SvgPicture.asset(
                           'assets/images/home/bottom_home.svg', // SVG 파일 경로
@@ -256,9 +256,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                           height: Responsive.getHeight(context, 40),
                         ),
                         flexibleSpace: const FlexibleSpaceBar(
-                          title: HomeHeader(),
-                          expandedTitleScale: 1.0,
-                          //title: HomeScreen(),
+                          background: HomeHeader(),
                         ),
                         actions: [
                           Container(
