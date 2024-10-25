@@ -1,26 +1,83 @@
+import 'dart:async';
+
+import 'package:BliU/screen/join/viewmodel/join_add_info_view_model.dart';
 import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
-//회원가입 추가정보 입력
-class JoinAddInfoScreen extends StatefulWidget {
+class JoinAddInfoScreen extends ConsumerStatefulWidget {
   const JoinAddInfoScreen({super.key});
 
   @override
-  State<JoinAddInfoScreen> createState() => _JoinAddInfoScreenState();
+  ConsumerState<JoinAddInfoScreen> createState() => JoinAddInfoScreenState();
 }
- // TODO 전체 수정 필요
-class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
+
+class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isAllFieldsFilled = false;
-  String? _selectedGender; // 성별을 저장하는 변수
+  bool _phoneAuthCodeVisible = false;
+  bool _phoneAuthChecked = false;
+  String? _selectedGender;
 
+  final TextEditingController _birthController = TextEditingController(text: '생년월일 입력');
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _authCodeController = TextEditingController();
-  DateTime? _selectedDate;
+  DateTime? tempPickedDate;
+  DateTime _selectedDate = DateTime.now();
+  int selectedYear = DateTime.now().year;
+  int selectedMonth = DateTime.now().month;
+  int selectedDay = DateTime.now().day;
 
+  int _authSeconds = 180;
+  String _timerStr = "00:00";
+  Timer? _timer;
+
+  void _showCancelDialog(BuildContext context) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      // 다른 영역을 클릭해도 닫힘
+      // barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      // barrierColor: Colors.black.withOpacity(0.5),
+      // 배경을 어둡게
+      transitionDuration: const Duration(milliseconds: 100),
+      // 애니메이션 시간
+      pageBuilder: (BuildContext buildContext, Animation animation,
+          Animation secondaryAnimation) {
+        return Align(
+          alignment: Alignment.topCenter, // 화면 상단 중앙에 배치
+          child: Material(
+            color: Colors.transparent, // 배경을 투명하게
+            child: Container(
+              margin: const EdgeInsets.only(top: 50), // 상단에서의 간격
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+              decoration: BoxDecoration(
+                color: const Color(0xCC000000), // 알림창 배경색
+                borderRadius: BorderRadius.circular(22), // 둥근 모서리
+              ),
+              child: Text(
+                '추가정보 입력이 완료되었습니다.',
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: Colors.white,
+                  height: 1.2,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
   @override
   void initState() {
     super.initState();
@@ -31,26 +88,42 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
 
   void _checkIfAllFieldsFilled() {
     setState(() {
-      _isAllFieldsFilled = _nameController.text.isNotEmpty &&
+      _isAllFieldsFilled =
+          _nameController.text.isNotEmpty &&
           _phoneController.text.isNotEmpty &&
-          _selectedDate != null &&
-          _selectedGender != null; // 성별이 선택되었는지 확인
+          _phoneAuthChecked;
     });
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime(2000),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-        _checkIfAllFieldsFilled();
-      });
+  void _authTimerStart() {
+    if (_timer != null) {
+      _timer?.cancel();
     }
+
+    setState(() {
+      _authSeconds = 180;
+      _timerStr = "03:00";
+    });
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      setState(() {
+        if (_authSeconds == 0) {
+          t.cancel();
+        } else {
+          _authSeconds--;
+
+          int min = _authSeconds~/60;
+          int sec = _authSeconds%60;
+          String secStr = "";
+          if (sec < 10) {
+            secStr = "0$sec";
+          } else {
+            secStr = sec.toString();
+          }
+
+          _timerStr = "0$min:$secStr";
+        }
+      });
+    });
   }
 
   @override
@@ -59,8 +132,8 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
+        scrolledUnderElevation: 0,
         elevation: 0,
         leading: IconButton(
           icon: SvgPicture.asset("assets/images/login/ic_back.svg"),
@@ -102,124 +175,138 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                           ),
                         ),
                       ),
-                      _buildTextField('이름', _nameController, '이름 입력',
-                          keyboardType: TextInputType.name),
+                      _buildTextField('이름', _nameController, '이름 입력', keyboardType: TextInputType.name),
                       Row(
                         children: [
                           Expanded(
                             flex: 7,
                             child: _buildTextField(
-                              '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
-                              keyboardType: TextInputType.phone,
-                              // isEnable: _phoneAuthChecked ? false : true
+                                '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
+                                keyboardType: TextInputType.phone,
+                                isEnable: _phoneAuthChecked ? false : true
                             ),
                           ),
                           Expanded(
                             flex: 3,
-                            child: GestureDetector(
-                              onTap: () async {
-                                // if (_phoneController.text.isEmpty ||
-                                //     _phoneAuthChecked) {
-                                //   return;
-                                // }
-                                //
-                                // final pref =
-                                // await SharedPreferencesManager.getInstance();
-                                // final phoneNumber = _phoneController.text;
-                                //
-                                // Map<String, dynamic> requestData = {
-                                //   'app_token': pref.getToken(),
-                                //   'phone_num': phoneNumber,
-                                //   'code_type': 1,
-                                // };
-                                // final resultDTO = await ref
-                                //     .read(joinFormModelProvider.notifier)
-                                //     .reqPhoneAuthCode(requestData);
-                                // if (resultDTO.result == true) {
-                                //   setState(() {
-                                //     _phoneAuthCodeVisible = true;
-                                //     // TODO 타이머 로직 추가
-                                //   });
-                                // } else {
-                                //   if (!context.mounted) return;
-                                //   Utils.getInstance().showSnackBar(
-                                //       context, resultDTO.message.toString());
-                                // }
-                              },
-                              child: Container(
-                                  margin: const EdgeInsets.only(top: 50, left: 8),
-                                  padding: const EdgeInsets.symmetric(vertical: 14),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    border: Border.all(color: const Color(0xFFDDDDDD)),
-                                  ),
-                                  child: Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Visibility(
+                                    visible: _phoneAuthCodeVisible && !_phoneAuthChecked,
+                                    maintainSize: true,
+                                    maintainAnimation: true,
+                                    maintainState: true,
+                                    child: Container(
+                                      margin: const EdgeInsets.only(top: 20, left: 8),
                                       child: Text(
-                                        '인증요청',
+                                        _timerStr,
                                         style: TextStyle(
+                                          color: const Color(0xFFFF6192),
                                           fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 14),
+                                          fontSize: Responsive.getFont(context, 13),
                                           height: 1.2,
                                         ),
+                                      ),
+                                    )
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    if (_phoneController.text.isEmpty || _phoneAuthChecked) {
+                                      return;
+                                    }
+
+                                    final pref = await SharedPreferencesManager.getInstance();
+                                    final phoneNumber = _phoneController.text;
+
+                                    Map<String, dynamic> requestData = {
+                                      'app_token': pref.getToken(),
+                                      'phone_num': phoneNumber,
+                                      'code_type': 1,
+                                    };
+                                    final resultDTO = await ref.read(joinAddInfoModelProvider.notifier).reqPhoneAuthCode(requestData);
+                                    if (resultDTO.result == true) {
+                                      setState(() {
+                                        _phoneAuthChecked = false;
+                                        _phoneAuthCodeVisible = true;
+                                        _authTimerStart();
+                                      });
+                                    } else {
+                                      if (!context.mounted) return;
+                                      Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
+                                    }
+                                  },
+                                  child: Container(
+                                      height: 44,
+                                      margin: const EdgeInsets.only(top: 10, left: 8),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6),
+                                        border: Border.all(color: const Color(0xFFDDDDDD)),
+                                      ),
+                                      child: Center(
+                                          child: Text(
+                                            '인증요청',
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              height: 1.2,
+                                            ),
+                                          )
                                       )
-                                  )
-                              ),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ],
                       ),
                       Visibility(
-                        // visible: _phoneAuthCodeVisible,
+                        visible: _phoneAuthCodeVisible,
                         child: Row(
                           children: [
                             Expanded(
                               flex: 7,
                               child: _buildCheckField(
-                                '휴대폰번호', _authCodeController, '인증번호 입력',
-                                // isEnable: _phoneAuthChecked ? false : true
-                              ),
+                                  '휴대폰번호', _authCodeController, '인증번호 입력',
+                                  isEnable: _phoneAuthChecked ? false : true),
                             ),
                             Expanded(
                               flex: 3,
                               child: GestureDetector(
                                 onTap: () async {
-                                  // if (_authCodeController.text.isEmpty ||
-                                  //     _phoneAuthChecked) {
-                                  //   return;
-                                  // }
-                                  // // TODO 타이머 체크필요
-                                  //
-                                  // final pref = await SharedPreferencesManager
-                                  //     .getInstance();
-                                  // final phoneNumber = _phoneController.text;
-                                  // final authCode = _authCodeController.text;
-                                  //
-                                  // Map<String, dynamic> requestData = {
-                                  //   'app_token': pref.getToken(),
-                                  //   'phone_num': phoneNumber,
-                                  //   'code_num': authCode,
-                                  //   'code_type': 1,
-                                  // };
-                                  //
-                                  // final resultDTO = await ref
-                                  //     .read(joinFormModelProvider.notifier)
-                                  //     .checkCode(requestData);
-                                  // if (!context.mounted) return;
-                                  // Utils.getInstance().showSnackBar(
-                                  //     context, resultDTO.message.toString());
-                                  // if (resultDTO.result == true) {
-                                  //   setState(() {
-                                  //     _phoneAuthChecked = true;
-                                  //     _checkIfAllFieldsFilled();
-                                  //   });
-                                  // }
+                                  if (_authCodeController.text.isEmpty || _phoneAuthChecked) {
+                                    return;
+                                  }
+                                  if (_authSeconds <= 0) {
+                                    return;
+                                  }
+
+                                  final pref = await SharedPreferencesManager.getInstance();
+                                  final phoneNumber = _phoneController.text;
+                                  final authCode = _authCodeController.text;
+
+                                  Map<String, dynamic> requestData = {
+                                    'app_token': pref.getToken(),
+                                    'phone_num': phoneNumber,
+                                    'code_num': authCode,
+                                    'code_type': 1,
+                                  };
+
+                                  final resultDTO = await ref.read(joinAddInfoModelProvider.notifier).checkCode(requestData);
+                                  if (!context.mounted) return;
+                                  Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
+                                  if (resultDTO.result == true) {
+                                    setState(() {
+                                      _phoneAuthChecked = true;
+                                      _checkIfAllFieldsFilled();
+                                    });
+                                  }
                                 },
                                 child: Container(
+                                  height: 44,
                                   margin: const EdgeInsets.only(top: 10, left: 8),
-                                  padding: const EdgeInsets.symmetric(vertical: 14),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(6),
-                                    color: Colors.black,
+                                    color: _phoneAuthChecked ? const Color(0xFFDDDDDD) : Colors.black,
                                   ),
                                   child: Center(
                                     child: Text(
@@ -227,7 +314,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(context, 14),
-                                        color: Colors.white,
+                                        color: _phoneAuthChecked ? const Color(0xFF7B7B7B) : Colors.white,
                                         height: 1.2,
                                       ),
                                     ),
@@ -238,18 +325,42 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                           ],
                         ),
                       ),
-
-                      GestureDetector(
-                        onTap: () => _selectDate(context),
-                        child: AbsorbPointer(
-                          child: _buildOrTextField(
-                              '생년월일',
-                              TextEditingController(
-                                  text: _selectedDate == null
-                                      ? '생년월일 선택'
-                                      : '${_selectedDate!.year}-${_selectedDate!.month}-${_selectedDate!.day}'),
-                              ''),
+                      Container(
+                        margin: const EdgeInsets.only(top: 20, bottom: 10),
+                        child: Row(
+                          children: [
+                            Text('생년월일',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.bold,
+                                fontSize: Responsive.getFont(context, 13),
+                                height: 1.2,
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 4),
+                              child: Text(
+                                '선택',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Responsive.getFont(context, 13),
+                                  color: const Color(0xFFFF6192),
+                                  height: 1.2,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
+                      ),
+                      Container(
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(Radius.circular(6)),
+                          border: Border.all(color: const Color(0xFFDDDDDD)),
+                        ),
+                        child: _birthdayText(),
                       ),
                       GestureDetector(
                         onTap: () {},
@@ -259,8 +370,7 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                               margin: const EdgeInsets.only(top: 10, bottom: 20),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(6),
-                                child: Image.asset(
-                                    'assets/images/login/coupon_banner.png'),
+                                child: Image.asset('assets/images/login/coupon_banner.png'),
                               ),
                             ),
                             Positioned(
@@ -283,7 +393,6 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                                     Text(
                                       '생년월일을 입력 주시면, 생일날 쿠폰 지급!',
                                       style: TextStyle(
-                                        fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(context, 12),
                                         color: const Color(0xFF6A5B54),
                                         height: 1.2,
@@ -299,24 +408,24 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                       Row(
                         children: [
                           Text('성별',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.bold,
+                              fontSize: Responsive.getFont(context, 13),
+                              height: 1.2,
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(left: 4),
+                            child: Text('선택',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.bold,
                                 fontSize: Responsive.getFont(context, 13),
+                                color: const Color(0xFFFF6192),
                                 height: 1.2,
-                              )
-                          ),
-                          Container(
-                              margin: const EdgeInsets.only(left: 4),
-                              child: Text('선택',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: Responsive.getFont(context, 13),
-                                    color: const Color(0xFFFF6192),
-                                    height: 1.2,
-                                  )
-                              )
+                              ),
+                            ),
                           ),
                         ],
                       ), // 성별 선택 타이틀
@@ -327,12 +436,14 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                             Expanded(
                               child: Container(
                                   margin: const EdgeInsets.only(right: 4),
-                                  child: _buildGenderButton('남자')),
+                                  child: _buildGenderButton('남자')
+                              ),
                             ),
                             Expanded(
                               child: Container(
                                   margin: const EdgeInsets.only(left: 4),
-                                  child: _buildGenderButton('여자')),
+                                  child: _buildGenderButton('여자')
+                              ),
                             ),
                           ],
                         ),
@@ -346,37 +457,81 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
               bottom: 0,
               left: 0,
               right: 0,
-              child: GestureDetector(
-                onTap: _isAllFieldsFilled
-                    ? () {
-                  // 회원가입 확인 로직 추가
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainScreen(),
+              child: Container(
+                width: double.infinity,
+                color: Colors.white,
+                child: GestureDetector(
+                  onTap: _isAllFieldsFilled
+                      ? () async {
+                    String name = _nameController.text;
+                    String phoneNum = _phoneController.text;
+                    final phoneNumChk = _phoneAuthChecked ? "Y" : "N";
+                    String birthDay = "";
+                    try {
+                      birthDay = DateFormat("yyyy-MM-dd").format(_selectedDate);
+                    } catch (e) {
+                      if (kDebugMode) {
+                        print("DateError $e");
+                      }
+                    }
+                    String gender = "";
+                    if (_selectedGender == "남자") {
+                      gender = "M";
+                    } else if (_selectedGender == "여자") {
+                      gender = "F";
+                    }
+
+                    final pref = await SharedPreferencesManager.getInstance();
+                    Map<String, dynamic> requestData = {
+                      'name': name,
+                      'phone_num': phoneNum,
+                      'phone_num_chk': phoneNumChk,
+                      'birth_day': birthDay,
+                      'gender': gender,
+                      'app_token': pref.getToken(),
+                    };
+
+                    final myPageInfoDTO = await ref.read(joinAddInfoModelProvider.notifier).snsAddInfo(requestData);
+                    if (myPageInfoDTO.result == true) {
+                      name = myPageInfoDTO.data?.mtName ?? '';
+                      phoneNum = myPageInfoDTO.data?.mtHp ?? '';
+                      birthDay = myPageInfoDTO.data?.mtBirth ?? '';
+                      gender = myPageInfoDTO.data?.mtGender ?? '';
+
+                      if (!context.mounted) return;
+                      _showCancelDialog(context);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const MainScreen()),
+                      );
+                      ref.read(mainScreenProvider.notifier).selectNavigation(2);
+                    } else {
+                      if (!context.mounted) return;
+                      final message = myPageInfoDTO.message ?? "";
+                      Utils.getInstance().showSnackBar(context, message);
+                    }
+                  }
+                      : null,
+                  child: Container(
+                    width: double.infinity,
+                    height: 48,
+                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                    decoration: BoxDecoration(
+                      color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(6),
+                      ),
                     ),
-                  );
-                }
-                    : null,
-                child: Container(
-                  width: double.infinity,
-                  height: 48,
-                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                  decoration: BoxDecoration(
-                    color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(6),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      '확인',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
-                        height: 1.2,
-                        fontWeight: FontWeight.w600,
+                    child: Center(
+                      child: Text(
+                        '확인',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
+                          height: 1.2,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
@@ -392,64 +547,70 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
   Widget _buildTextField(
       String label, TextEditingController controller, String hintText,
       {bool obscureText = false,
-      TextInputType keyboardType = TextInputType.text,
-      Widget? suffixIcon,
-      bool isEnable = true}) {
-    return Container(
-      margin: const EdgeInsets.only(top: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // if (label.isNotEmpty)
-          Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            child: Row(
-              children: [
-                Text(label,
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.bold,
-                    fontSize: Responsive.getFont(context, 13),
-                    height: 1.2,
-                  )
+        TextInputType keyboardType = TextInputType.text,
+        Widget? suffixIcon,
+        bool isEnable = true,
+        FocusNode? focusNode}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // if (label.isNotEmpty)
+        Container(
+          margin: const EdgeInsets.only(bottom: 10, top: 20),
+          child: Row(
+            children: [
+              Text(label,
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.bold,
+                  fontSize: Responsive.getFont(context, 13),
+                  height: 1.2,
                 ),
-                Container(
+              ),
+              Container(
                   margin: const EdgeInsets.only(left: 4),
                   child: Text('*',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.bold,
-                      fontSize: Responsive.getFont(context, 13),
-                      color: const Color(0xFFFF6192),
-                      height: 1.2,
-                    )
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.bold,
+                        fontSize: Responsive.getFont(context, 13),
+                        color: const Color(0xFFFF6192),
+                        height: 1.2,
+                      )
                   )
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          if (label.isNotEmpty)
-            TextField(
+        ),
+        if (label.isNotEmpty)
+          SizedBox(
+            height: 44,
+            child: TextField(
               onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+              focusNode: focusNode,
               style: TextStyle(
-                decorationThickness: 0,
-                height: 1.2,
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14),
+                  decorationThickness: 0,
+                  height: 1.2,
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14)
               ),
               enabled: isEnable,
               controller: controller,
               obscureText: obscureText,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14),
-                  color: const Color(0xFF595959)
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 14),
+                    color: const Color(0xFF595959)
                 ),
                 enabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                ),
+                disabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                 ),
@@ -460,24 +621,25 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                 suffixIcon: suffixIcon,
               ),
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 
   Widget _buildCheckField(
       String label, TextEditingController controller, String hintText,
       {bool obscureText = false,
-      TextInputType keyboardType = TextInputType.text,
-      Widget? suffixIcon,
-      bool isEnable = true}) {
-    return Container(
-      margin: const EdgeInsets.only(top: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (label.isNotEmpty)
-            TextField(
+        TextInputType keyboardType = TextInputType.text,
+        Widget? suffixIcon,
+        bool isEnable = true}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (label.isNotEmpty)
+          Container(
+            height: 44,
+            margin: const EdgeInsets.only(top: 10),
+            child: TextField(
               onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
                 decorationThickness: 0,
@@ -485,21 +647,27 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                 fontFamily: 'Pretendard',
                 fontSize: Responsive.getFont(context, 14),
               ),
-              enabled: isEnable,
               controller: controller,
               obscureText: obscureText,
               keyboardType: keyboardType,
+              enabled: isEnable,
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                hintText: hintText,
                 hintStyle: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14),
-                  color: const Color(0xFF595959)
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 14),
+                    color: isEnable ? const Color(0xFF595959) : const Color(0xFFA4A4A4)),
+                filled: true,
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(6),
                 ),
-                enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                hintText: hintText,
+                fillColor: isEnable ? Colors.white : const Color(0xFFF5F9F9),
+                // 배경색 설정
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(6)),
+                  borderSide: isEnable ? const BorderSide(color: Color(0xFFE1E1E1)) : const BorderSide(color: Colors.transparent),
                 ),
                 focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -508,81 +676,8 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
                 suffixIcon: suffixIcon,
               ),
             ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOrTextField(
-      String label, TextEditingController controller, String hintText,
-      {bool obscureText = false,
-      TextInputType keyboardType = TextInputType.text,
-      bool isEnable = true}) {
-    return Container(
-      margin: const EdgeInsets.only(top: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // if (label.isNotEmpty)
-          Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            child: Row(
-              children: [
-                Text(label,
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.bold,
-                    fontSize: Responsive.getFont(context, 13),
-                    height: 1.2,
-                  )
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 4),
-                  child: Text('선택',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.bold,
-                      fontSize: Responsive.getFont(context, 13),
-                      color: const Color(0xFFFF6192),
-                      height: 1.2,
-                    )
-                  )
-                ),
-              ],
-            ),
           ),
-          TextField(
-            onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-            style: TextStyle(
-              decorationThickness: 0,
-              height: 1.2,
-              fontFamily: 'Pretendard',
-              fontSize: Responsive.getFont(context, 14),
-            ),
-            enabled: isEnable,
-            controller: controller,
-            obscureText: obscureText,
-            keyboardType: keyboardType,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-              hintText: hintText,
-              hintStyle: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14),
-                color: const Color(0xFF595959)
-              ),
-              enabledBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(6)),
-                borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(6)),
-                borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-              ),
-            ),
-          ),
-        ],
-      ),
+      ],
     );
   }
 
@@ -596,70 +691,282 @@ class _JoinAddInfoScreenState extends State<JoinAddInfoScreen> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(
-              color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
-        ),
-        child: Center(
-          child: Text(
-            gender,
-            style: TextStyle(
-              fontFamily: 'Pretendard',
-              color: isSelected ? const Color(0xFFFF6192) : Colors.black,
-              fontSize: Responsive.getFont(context, 14)
+          height: 44,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(
+                color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)
             ),
+          ),
+          child: Center(
+              child: Text(
+                gender,
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                  fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                ),
+              )
           )
-        )
       ),
     );
   }
-}
+  Widget _birthdayText() {
+    return GestureDetector(
+      onTap: () {
+        _selectDate();
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+        child: TextFormField(
+          textAlign: TextAlign.center,
+          enabled: false,
+          decoration: const InputDecoration(
+            isDense: true,
+            border: InputBorder.none,
+          ),
+          controller: _birthController,
+          style: TextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 14),
+            color: const Color(0xFF595959),
+          ),
+        ),
+      ),
+    );
+  }
 
-//   Widget _buildTextField(
-//       String label, TextEditingController controller, String hintText,
-//       {bool obscureText = false,
-//         TextInputType keyboardType = TextInputType.text,
-//         Widget? suffixIcon}) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         if (label.isNotEmpty)
-//           Text(label, style: const TextStyle( fontFamily: 'Pretendard',fontWeight: FontWeight.bold)),
-//         if (label.isNotEmpty) const SizedBox(height: 8),
-//         TextField(
-//           controller: controller,
-//           obscureText: obscureText,
-//           keyboardType: keyboardType,
-//           decoration: InputDecoration(
-//             hintText: hintText,
-//             border: const OutlineInputBorder(),
-//             suffixIcon: suffixIcon,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-//
-//   Widget _buildGenderButton(String gender) {
-//     bool isSelected = _selectedGender == gender;
-//     return ElevatedButton(
-//       onPressed: () {
-//         setState(() {
-//           _selectedGender = gender;
-//           _checkIfAllFieldsFilled();
-//         });
-//       },
-//       style: ElevatedButton.styleFrom(
-//         foregroundColor: isSelected ? Colors.white : Colors.black,
-//         backgroundColor: isSelected ? Colors.pinkAccent : Colors.white,
-//         side: BorderSide(color: isSelected ? Colors.pinkAccent : Colors.grey),
-//         elevation: 0,
-//         padding: const EdgeInsets.symmetric(vertical: 16.0),
-//       ),
-//       child: Text(gender),
-//     );
-//   }
-// }
+  _selectDate() async {
+    DateTime? pickedDate = await showModalBottomSheet<DateTime>(
+      backgroundColor: Colors.white,
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.3),
+      isScrollControlled: true, // 모달이 화면을 꽉 채우도록 설정
+      builder: (context) {
+        return SafeArea(
+          child: Container(
+            height: 400,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(12), // 상단 왼쪽, 오른쪽 12만큼 둥글게
+              ),
+            ),
+            child: Column(
+              children: <Widget>[
+                // 상단 타이틀과 닫기 버튼
+                Padding(
+                  padding: const EdgeInsets.only(
+                      right: 16.0, left: 16, top: 15, bottom: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '출생년도',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 18),
+                          fontWeight: FontWeight.w600,
+                          height: 1.2,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Icon(Icons.close),
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: Color(0xFFEEEEEE),
+                ),
+                // 날짜 선택기
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 17),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // 년도 선택 부분
+                        Expanded(
+                          child: CupertinoPicker(
+                            backgroundColor: Colors.white,
+                            diameterRatio: 5.0,
+                            itemExtent: 50,
+                            selectionOverlay: Container(
+                              margin: const EdgeInsets.only(left: 17, right: 15),
+                              decoration: const BoxDecoration(
+                                border: Border.symmetric(
+                                    horizontal: BorderSide(color: Color(0xFFDDDDDD))
+                                ),
+                              ),
+                            ),
+                            squeeze: 1,
+                            scrollController: FixedExtentScrollController(
+                                initialItem: selectedYear - 1900),
+                            onSelectedItemChanged: (int index) {
+                              setState(() {
+                                selectedYear = 1900 + index;
+                              });
+                            },
+                            children: List<Widget>.generate(
+                              DateTime.now().year - 1900 + 1,
+                                  (int index) {
+                                return Center(
+                                  child: Text(
+                                    '${1900 + index}년', // 년도로 표시
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 16),
+                                      fontWeight: FontWeight.w600,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+
+                        // 월 선택 부분
+                        Expanded(
+                          child: CupertinoPicker(
+                            backgroundColor: Colors.white,
+                            itemExtent: 50,
+                            selectionOverlay: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 15),
+                              decoration: const BoxDecoration(
+                                border: Border.symmetric(
+                                    horizontal: BorderSide(color: Color(0xFFDDDDDD))
+                                ),
+                              ),
+                            ),
+                            diameterRatio: 5.0,
+                            squeeze: 1,
+                            scrollController: FixedExtentScrollController(
+                                initialItem: selectedMonth - 1),
+                            onSelectedItemChanged: (int index) {
+                              setState(() {
+                                selectedMonth = index + 1;
+                              });
+                            },
+                            children: List<Widget>.generate(12, (int index) {
+                              return Center(
+                                child: Text(
+                                  '${index + 1}월', // 월로 표시
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 16),
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.2,
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ), // 일 선택 부분
+                        Expanded(
+                          child: CupertinoPicker(
+                            backgroundColor: Colors.white,
+                            itemExtent: 50,
+                            selectionOverlay: Container(
+                              margin: const EdgeInsets.only(left: 15, right: 17),
+                              decoration: const BoxDecoration(
+                                border: Border.symmetric(
+                                  horizontal: BorderSide(color: Color(0xFFDDDDDD)),
+                                ),
+                              ),
+                            ),
+                            diameterRatio: 5.0,
+                            squeeze: 1,
+                            scrollController: FixedExtentScrollController(
+                                initialItem: selectedDay - 1),
+                            onSelectedItemChanged: (int index) {
+                              setState(() {
+                                selectedDay = index + 1;
+                              });
+                            },
+                            children: List<Widget>.generate(31, (int index) {
+                              return Center(
+                                child: Text(
+                                  '${index + 1}일', // 일로 표시
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 16),
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.2,
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // '선택하기' 버튼
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedDate = DateTime(
+                        selectedYear,
+                        selectedMonth,
+                        selectedDay,
+                      );
+                      _birthController.text = convertDateTimeDisplay(_selectedDate.toString());
+                    });
+                    Navigator.of(context).pop();
+                    FocusScope.of(context).unfocus();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 48,
+                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                    decoration: const BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(6),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '선택하기',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: Colors.white,
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    if (pickedDate != null && pickedDate != _selectedDate) {
+      setState(() {
+        _selectedDate = pickedDate;
+        _birthController.text = convertDateTimeDisplay(pickedDate.toString());
+      });
+    }
+  }
+
+  String convertDateTimeDisplay(String date) {
+    final DateFormat displayFormatter = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
+    final DateFormat serverFormatter = DateFormat('yyyy년 MM월 dd일');
+    final DateTime displayDate = displayFormatter.parse(date);
+    return serverFormatter.format(displayDate);
+  }
+}

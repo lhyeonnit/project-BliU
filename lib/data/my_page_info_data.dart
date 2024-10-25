@@ -1,6 +1,7 @@
 class MyPageInfoData{
   final String? mtId;
   final int? mtIdx;
+  final int? mtLoginType;
   String? mtHp;
   String? mtName;
   String? mtBirth;
@@ -10,6 +11,7 @@ class MyPageInfoData{
   MyPageInfoData({
     required this.mtId,
     required this.mtIdx,
+    required this.mtLoginType,
     required this.mtHp,
     required this.mtName,
     required this.mtBirth,
@@ -21,6 +23,7 @@ class MyPageInfoData{
     return MyPageInfoData(
       mtId: json['mt_id'],
       mtIdx: json['mt_idx'],
+      mtLoginType: json['mt_login_type'],
       mtHp: json['mt_hp'],
       mtName: json['mt_name'],
       mtBirth: json['mt_birth'],
@@ -33,6 +36,7 @@ class MyPageInfoData{
     return {
       'mt_id': mtId,
       'mt_idx': mtIdx,
+      'mt_login_type': mtLoginType,
       'mt_hp': mtHp,
       'mt_name': mtName,
       'mt_birth': mtBirth,
