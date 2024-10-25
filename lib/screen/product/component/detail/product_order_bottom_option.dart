@@ -81,6 +81,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
   final List<AddOptionData> _addPtAddArr = [];
   List<bool> _isExpandedList = [];
   bool _isOptionSelected = false;
+  final _addItemController = ExpansionTileController();
 
   // 선택된 옵션 값을 저장할 Map, 키는 옵션 제목(title)
   final Map<String, String?> _selectedOptions = {};
@@ -203,6 +204,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                               border: Border.all(color: const Color(0xFFE1E1E1)),
                             ),
                             child: ExpansionTile(
+                              controller: _addItemController,
                               title: Text(
                                 '추가상품',
                                 style: TextStyle(
@@ -224,6 +226,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                   onTap: () {
                                     if (_addPtAddArr.isEmpty) {
                                       setState(() {
+                                        _addItemController.collapse();
                                         _addPtAddArr.add(ptAdd);
                                       });
                                     } else {
@@ -232,8 +235,11 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                         if (_addPtAddArr[i].idx == ptAdd.idx) {
                                           isAdd = false;
                                         }
-                                      }if (isAdd) {
+                                      }
+
+                                      if (isAdd) {
                                         setState(() {
+                                          _addItemController.collapse();
                                           _addPtAddArr.add(ptAdd);
                                         });
                                       } else {
