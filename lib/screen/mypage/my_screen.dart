@@ -43,26 +43,20 @@ class MyScreenState extends ConsumerState<MyScreen> {
   @override
   void initState() {
     super.initState();
-    print("test11 ${ref.read(memberProvider)}");
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
   }
 
   void _viewWillAppear(BuildContext context) {
-    SharedPreferencesManager.getInstance().then((pref) {
-      final mtIdx = pref.getMtIdx();
-      if (mtIdx != null && mtIdx.isNotEmpty) {
-        Map<String, dynamic> requestData = {
-          'mt_idx': mtIdx,
-        };
-        ref.read(myModelProvider.notifier).getMy(requestData);
-      }
-    });
+    _getMy();
   }
 
-  void _afterBuild(BuildContext context) async {
+  void _afterBuild(BuildContext context) {
+    _getMy();
+  }
+
+  void _getMy() async {
     final pref = await SharedPreferencesManager.getInstance();
     final memberInfo = pref.getMemberInfo();
     final mtIdx = memberInfo?.mtIdx.toString();
@@ -71,30 +65,46 @@ class MyScreenState extends ConsumerState<MyScreen> {
         'mt_idx': mtIdx,
       };
       final memberInfoDTO = await ref.read(myModelProvider.notifier).getMy(requestData);
-      setState(() {
-        // 상태 변경 후 UI 업데이트
-        memberInfoData = memberInfoDTO?.data;
-        myCouponCount = memberInfoDTO?.data?.myCouponCount;
-        myPoint = memberInfoDTO?.data?.myPoint;
-        myReviewCount = memberInfoDTO?.data?.myRevieCount;
-        userId = memberInfoDTO?.data?.mtIdx.toString() ?? ''; // userId 업데이트
-        mtLoginType = memberInfo?.mtLoginType ?? 1;
-      });
-      String? childCk = memberInfo?.childCk;
-      if (!context.mounted) return;
-      if (childCk == "N") {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),
-        );
+      if (memberInfoDTO?.result == true) {
+        setState(() {
+          // 상태 변경 후 UI 업데이트
+          memberInfoData = memberInfoDTO?.data;
+          myCouponCount = memberInfoDTO?.data?.myCouponCount;
+          myPoint = memberInfoDTO?.data?.myPoint;
+          myReviewCount = memberInfoDTO?.data?.myRevieCount;
+          userId = memberInfoDTO?.data?.mtIdx.toString() ?? ''; // userId 업데이트
+          mtLoginType = memberInfo?.mtLoginType ?? 1;
+        });
+        String? childCk = memberInfo?.childCk;
+        if (!mounted) return;
+        if (childCk == "N") {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),);
+        }
+      } else {
+        _resetData();
       }
+    } else {
+      _resetData();
     }
+  }
+
+  void _resetData() {
+    setState(() {
+      memberInfoData = null;
+      myCouponCount = null;
+      myPoint = null;
+      myReviewCount = null;
+      userId = ''; // userId 업데이트
+      mtLoginType = null;
+    });
   }
 
   void logout() async {
     SharedPreferencesManager prefs =
     await SharedPreferencesManager.getInstance();
     await prefs.logOut(); // 저장된 모든 데이터를 삭제
+
+    _resetData();
 
     // 로그아웃 후 로그인 화면으로 전환
     ref.read(mainScreenProvider.notifier).selectNavigation(2);

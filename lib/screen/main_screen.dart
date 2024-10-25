@@ -30,7 +30,6 @@ class MainScreen extends ConsumerStatefulWidget {
 }
 
 class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProviderStateMixin {
-  //late TabController _tabController;
   late PreloadPageController _preloadPageController;
   DateTime? _backButtonPressedTime;
   int _selectedIndex = 2;
@@ -48,8 +47,6 @@ class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProvide
   @override
   void initState() {
     super.initState();
-
-    //_tabController =  TabController(length: 5, vsync: this);
     _preloadPageController = PreloadPageController(initialPage: 2);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -174,11 +171,10 @@ class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProvide
       ((previous, next) {
         if (next == null) return;
         if (previous != next) {
-          _preloadPageController.animateToPage(next, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+          _preloadPageController.animateToPage(next, duration: const Duration(milliseconds: 1), curve: Curves.linear);
         }
       }),
     );
-    //_tabController.animateTo(_selectedIndex);
 
     SharedPreferencesManager.getInstance().then( (pref) {
       final mtIdx = pref.getMtIdx() ?? "";
@@ -194,17 +190,6 @@ class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProvide
       onPopInvokedWithResult: (bool didPop, Object? result) {
         _backPressed();
       },
-      // child: Scaffold(
-      //   body: TabBarView(
-      //     physics: const NeverScrollableScrollPhysics(),
-      //     controller: _tabController,
-      //     children: _widgetOptions,
-      //   ),
-      //   bottomNavigationBar: CustomBottomNavigationBar(
-      //     selectedIndex: _selectedIndex,
-      //     onItemTapped: _onItemTapped,
-      //   ),
-      // ),
       child: Scaffold(
         body: PreloadPageView.builder(
           itemCount: 5,

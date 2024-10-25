@@ -256,7 +256,9 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                           height: Responsive.getHeight(context, 40),
                         ),
                         flexibleSpace: const FlexibleSpaceBar(
-                          background: HomeHeader(),
+                          title: HomeHeader(),
+                          expandedTitleScale: 1.0,
+                          //title: HomeScreen(),
                         ),
                         actions: [
                           Container(
