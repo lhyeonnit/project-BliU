@@ -44,7 +44,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
     super.initState();
     // 애니메이션 컨트롤러 설정
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 300), vsync: this,
+      duration: const Duration(milliseconds: 900), vsync: this,
     );
 
     // 바텀시트 애니메이션 시작 위치와 끝 위치
@@ -60,7 +60,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
         _isAppBarVisible = true;
         _isBottomSheetVisible = true;
       });
-      Future.delayed(const Duration(seconds: 5), () {
+      Future.delayed(const Duration(seconds: 3), () {
         if (mounted) {
           _animationController.forward();
         }
@@ -79,34 +79,34 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: _isAppBarVisible
-      //     ? AppBar(
-      //         backgroundColor: Colors.white,
-      //         title: Text('추천정보'),
-      //         titleTextStyle: TextStyle(
-      //           fontFamily: 'Pretendard',
-      //           fontSize: Responsive.getFont(context, 18),
-      //           fontWeight: FontWeight.w600,
-      //           color: Colors.black,
-      //           height: 1.2,
-      //         ),
-      //         leading: IconButton(
-      //           icon: SvgPicture.asset("assets/images/product/ic_back.svg"),
-      //           onPressed: () {
-      //             Navigator.pop(context);
-      //           },
-      //         ),
-      //         titleSpacing: -1.0,
-      //         bottom: PreferredSize(
-      //           preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
-      //           child: Container(
-      // TODO 구분선 색상 변경
-      //             color: const Color(0xFFF4F4F4), // 하단 구분선 색상
-      //             height: 1.0, // 구분선의 두께 설정
-      //           ),
-      //         ),
-      //       )
-      //     : null,
+      appBar: _isAppBarVisible
+          ? AppBar(
+              scrolledUnderElevation: 0,
+              backgroundColor: Colors.white,
+              title: const Text('추천정보'),
+              titleTextStyle: TextStyle(
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 18),
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+                height: 1.2,
+              ),
+              leading: IconButton(
+                icon: SvgPicture.asset("assets/images/product/ic_back.svg"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              titleSpacing: -1.0,
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+                child: Container(
+                  color: const Color(0xFFF4F4F4), // 하단 구분선 색상
+                  height: 1.0, // 구분선의 두께 설정
+                ),
+              ),
+            )
+          : null,
       body: SafeArea(
         child: Stack(
           children: [
@@ -118,54 +118,77 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                 height: double.infinity,
               ),
             ),
-            Visibility(
-              visible: _isAppBarVisible,
-              child: Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: SafeArea(
-                  child: Container(
-                    height: 56.0,  // 기본 AppBar 높이
-                    decoration: const BoxDecoration(
-                      color: Colors.white, // 앱바 배경색
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0x0D000000),
-                          spreadRadius: 1,
-                          blurRadius: 6,
-                          offset: Offset(0, 3), // 그림자 위치
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(left: 16, right: 15),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: SvgPicture.asset("assets/images/product/ic_back.svg"),
-                          ),
-                        ),
-                        Text(
-                          '추천정보',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 18),
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                            height: 1.2,
-                          ),
-                        ),
-                      ],
+            Positioned(
+              bottom: 55,
+                right: 74,
+                left: 75,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: const Color(0x807280D9),
+                    borderRadius: BorderRadius.circular(29),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '당신의 자녀는 어떤아이인가요?',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 15),
+                        color: Colors.white,
+                        height: 1.2,
+                      ),
                     ),
                   ),
                 ),
-              ),
             ),
+            // Visibility(
+            //   visible: _isAppBarVisible,
+            //   child: Positioned(
+            //     top: 0,
+            //     left: 0,
+            //     right: 0,
+            //     child: SafeArea(
+            //       child: Container(
+            //         height: 56.0,  // 기본 AppBar 높이
+            //         decoration: const BoxDecoration(
+            //           color: Colors.white, // 앱바 배경색
+            //           boxShadow: [
+            //             BoxShadow(
+            //               color: Color(0x0D000000),
+            //               spreadRadius: 1,
+            //               blurRadius: 6,
+            //               offset: Offset(0, 3), // 그림자 위치
+            //             ),
+            //           ],
+            //         ),
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.start,
+            //           children: [
+            //             Container(
+            //               margin: const EdgeInsets.only(left: 16, right: 15),
+            //               child: GestureDetector(
+            //                 onTap: () {
+            //                   Navigator.pop(context);
+            //                 },
+            //                 child: SvgPicture.asset("assets/images/product/ic_back.svg"),
+            //               ),
+            //             ),
+            //             Text(
+            //               '추천정보',
+            //               style: TextStyle(
+            //                 fontFamily: 'Pretendard',
+            //                 fontSize: Responsive.getFont(context, 18),
+            //                 fontWeight: FontWeight.w600,
+            //                 color: Colors.black,
+            //                 height: 1.2,
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
             Visibility(
               visible: _isBottomSheetVisible,

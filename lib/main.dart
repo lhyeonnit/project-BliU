@@ -2,6 +2,7 @@ import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/member_info_response_dto.dart';
 import 'package:BliU/screen/common/on_boarding_screen.dart';
+import 'package:BliU/screen/common/recommend_info_screen.dart';
 import 'package:BliU/utils/firebase_service.dart';
 import 'package:BliU/utils/navigation_service.dart';
 import 'package:BliU/utils/permission_manager.dart';
@@ -94,7 +95,7 @@ class MyApp extends ConsumerWidget {
       themeMode: ThemeMode.light,
       navigatorKey: NavigationService.navigatorKey,
       debugShowCheckedModeBanner: false,
-      home: const OnBoardingScreen(), // OnBoardingScreen을 초기 화면으로 설정
+      home: const RecommendInfoScreen(), // OnBoardingScreen을 초기 화면으로 설정
     );
   }
 }
