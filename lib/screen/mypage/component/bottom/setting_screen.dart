@@ -179,9 +179,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
     );
   }
 
-  Widget _buildCustomTile(
-      BuildContext context, String title, VoidCallback onTap) {
-    return InkWell(
+  Widget _buildCustomTile(BuildContext context, String title, VoidCallback onTap) {
+    return GestureDetector(
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0), // 최소한의 간격으로 조절 가능

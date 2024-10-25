@@ -189,10 +189,10 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
 
     final requestProductData = await _makeRequestData();
 
-    setState(() {
-      _count = 0;
-      _productList = [];
-    });
+    // setState(() {
+    //   _count = 0;
+    //   _productList = [];
+    // });
 
     final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestProductData);
     _count = productListResponseDTO?.count ?? 0;
