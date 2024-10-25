@@ -560,7 +560,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                     };
 
                     final myPageInfoDTO = await ref.read(joinFormModelProvider.notifier).join(requestData);
-                    if (myPageInfoDTO != null && myPageInfoDTO.result == true) {
+                    if (myPageInfoDTO.result == true) {
                       id = myPageInfoDTO.data?.mtId ?? '';
                       name = myPageInfoDTO.data?.mtName ?? '';
                       phoneNum = myPageInfoDTO.data?.mtHp ?? '';
@@ -571,7 +571,8 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const JoinCompleteScreen(),),);
                     } else {
                       if (!context.mounted) return;
-                      Utils.getInstance().showSnackBar(context, "회원 가입에 실패했습니다.");
+                      final message = myPageInfoDTO.message ?? "";
+                      Utils.getInstance().showSnackBar(context, message);
                     }
                   }
                       : null,

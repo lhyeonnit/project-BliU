@@ -93,7 +93,7 @@ class JoinFormViewModel extends StateNotifier<JoinFormModel?> {
   }
 
 
-  Future<MyPageInfoResponseDTO?> join(Map<String, dynamic> requestData) async {
+  Future<MyPageInfoResponseDTO> join(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiAuthJoinUrl, data: requestData);
       if (response != null) {

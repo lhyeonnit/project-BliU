@@ -546,6 +546,12 @@ class StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                                       ],
                                     ),
                                   ),
+                                  Visibility(
+                                    visible: ((storeRankList.length - 1) == index && (rankData.productList?.length ?? 0) == 0) ? true : false,
+                                    child: const SizedBox(
+                                      height: 40,
+                                    ),
+                                  )
                                 ],
                               ),
                             );
