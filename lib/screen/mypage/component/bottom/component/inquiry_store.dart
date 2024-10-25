@@ -101,8 +101,43 @@ class InquiryStoreState extends ConsumerState<InquiryStore> {
           ),
         ),
       ),
+      bottomSheet: SafeArea(
+          child: Container(
+            color: Colors.white,
+            width: double.infinity,
+            child: GestureDetector(
+              onTap: () {
+                if (_isAllFieldsFilled) {
+                  _qnaWrite();
+                }
+              },
+              child: Container(
+                width: double.infinity,
+                height: 48,
+                margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                decoration: BoxDecoration(
+                  color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(6),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    '등록',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
+                      height: 1.2,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ),
       body: SafeArea(
-        child: Stack(
+        child: ListView(
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -256,40 +291,7 @@ class InquiryStoreState extends ConsumerState<InquiryStore> {
                 ],
               ),
             ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: GestureDetector(
-                onTap: () {
-                  if (_isAllFieldsFilled) {
-                    _qnaWrite();
-                  }
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 48,
-                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                  decoration: BoxDecoration(
-                    color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(6),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      '등록',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
-                        height: 1.2,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+
           ],
         ),
       ),
