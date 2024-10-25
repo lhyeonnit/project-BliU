@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+
 class SmartLensResult extends ConsumerStatefulWidget {
   final File imagePath;
   const SmartLensResult({super.key, required this.imagePath});
@@ -20,6 +21,7 @@ class SmartLensResult extends ConsumerStatefulWidget {
 }
 
 class _SmartLensResultState extends ConsumerState<SmartLensResult> {
+  final DraggableScrollableController _draggableScrollableController = DraggableScrollableController();
   final ScrollController _scrollController = ScrollController();
   List<ProductData> _productList = [];
   final bool result = true;
@@ -76,69 +78,81 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
       body: SafeArea(
         child: Stack(
           children: [
-            Column(
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    height: 300, // 상단 이미지 높이 설정
-                    child: Image.file(
-                      widget.imagePath, // 크롭된 이미지 파일을 사용
-                      fit: BoxFit.cover,
-                    ),
+            GestureDetector(
+              // 시트 외부를 터치했을 때 시트를 최소 높이로 축소하는 기능 추가
+              onTap: () {
+                _draggableScrollableController.animateTo(
+                  0.5,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
+                );
+              },
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: AspectRatio(
+                  aspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 2),
+                  child: Image.file(
+                    widget.imagePath, // 크롭된 이미지 파일을 사용
+                    fit: BoxFit.contain,
                   ),
                 ),
-              ],
+              ),
             ),
+
             Visibility(
               visible: result == true,
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: DraggableScrollableSheet(
+                  controller: _draggableScrollableController,
                   initialChildSize: 0.5,
                   minChildSize: 0.5,
                   maxChildSize: 0.95,
                   builder: (BuildContext context, ScrollController scrollController) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xFFF4F4F4),
-                            blurRadius: 6.0,
-                            spreadRadius: 1.0,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Center(
-                            child: Container(
-                              margin: const EdgeInsets.only(bottom: 17, top: 15),
-                              width: 40,
-                              height: 4,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFDDDDDD),
-                                borderRadius: BorderRadius.circular(3),
+                    return SingleChildScrollView(
+                      controller: scrollController,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0x0D000000),
+                              blurRadius: 6.0,
+                              spreadRadius: 0.0,
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Container(
+                                margin: const EdgeInsets.only(bottom: 17, top: 15),
+                                width: 40,
+                                height: 4,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFDDDDDD),
+                                  borderRadius: BorderRadius.circular(3),
+                                ),
                               ),
                             ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 13, bottom: 20),
-                            child: Text(
-                              '이미지와 비슷한 상품',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 20),
-                                fontWeight: FontWeight.bold,
-                                height: 1.2,
+                            Container(
+                              margin: const EdgeInsets.only(top: 13, bottom: 20),
+                              child: Text(
+                                '이미지와 비슷한 상품',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 20),
+                                  fontWeight: FontWeight.bold,
+                                  height: 1.2,
+                                ),
                               ),
                             ),
-                          ),
-                          buildItemCard(), // 기존에 있는 메서드 호출
-                        ],
+                            buildItemCard(), // 기존에 있는 메서드 호출
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -150,6 +164,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: DraggableScrollableSheet(
+                  controller: _draggableScrollableController,
                   initialChildSize: 0.5,
                   minChildSize: 0.5,
                   maxChildSize: 0.5,
