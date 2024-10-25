@@ -63,7 +63,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
       if (_scrollController.position.maxScrollExtent - _scrollController.offset < 100) {
         _nextLoad();
       }
-
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
@@ -78,6 +77,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
   void _viewWillAppear(BuildContext context) {
     _getCartCount();
+    _getList();
   }
 
   void _afterBuild(BuildContext context) {

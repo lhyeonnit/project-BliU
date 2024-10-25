@@ -10,6 +10,7 @@ import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:focus_detector_v2/focus_detector_v2.dart';
 
 class LikeScreen extends ConsumerStatefulWidget {
   const LikeScreen({super.key});
@@ -27,6 +28,8 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
 
   int _count = 0;
   List<ProductData> _productList = [];
+
+  bool _listEmpty = false;
 
   double _maxScrollHeight = 0;// NestedScrollView 사용시 최대 높이를 저장하기 위한 변수
 
@@ -114,6 +117,11 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
     _productList = productListResponseDTO?.list ?? [];
 
     setState(() {
+      if (_productList.isNotEmpty) {
+        _listEmpty = false;
+      } else {
+        _listEmpty = true;
+      }
       _isFirstLoadRunning = false;
     });
   }
@@ -162,47 +170,55 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
     }
   }
 
+  void _viewWillAppear(BuildContext context) {
+    _getList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+    return FocusDetector(
+      onFocusGained: () {
+        _viewWillAppear(context);
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        // 기본 뒤로가기 버튼을 숨김
-        scrolledUnderElevation: 0,
-        title: const Text('좋아요'),
-        titleTextStyle: TextStyle(
-          fontFamily: 'Pretendard',
-          fontSize: Responsive.getFont(context, 18),
-          fontWeight: FontWeight.w600,
-          color: Colors.black,
-          height: 1.2,
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
-          child: Container(
-            color: const Color(0x0D000000), // 하단 구분선 색상
-            height: 1.0, // 구분선의 두께 설정
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          // 기본 뒤로가기 버튼을 숨김
+          scrolledUnderElevation: 0,
+          title: const Text('좋아요'),
+          titleTextStyle: TextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 18),
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+            height: 1.2,
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
             child: Container(
-              height: 1.0, // 그림자 부분의 높이
-              decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x0D000000),
-                    blurRadius: 6.0,
-                    spreadRadius: 0.1,
-                    offset: Offset(0, 3),
-                  ),
-                ],
+              color: const Color(0x0D000000), // 하단 구분선 색상
+              height: 1.0, // 구분선의 두께 설정
+              child: Container(
+                height: 1.0, // 그림자 부분의 높이
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x0D000000),
+                      blurRadius: 6.0,
+                      spreadRadius: 0.1,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-      body: Stack(
-        children: [
-          NotificationListener(
+        body: Stack(
+          children: [
+            NotificationListener(
               onNotification: (scrollNotification){
                 if (scrollNotification is ScrollEndNotification) {
                   var metrics = scrollNotification.metrics;
@@ -269,7 +285,7 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
                   ];
                 },
                 body: Visibility(
-                  visible: _productList.isNotEmpty,
+                  visible: !_listEmpty,
                   child: TabBarView(
                     controller: _tabController,
                     physics: const NeverScrollableScrollPhysics(),
@@ -287,14 +303,15 @@ class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStat
                 ),
               ),
             ),
-          Visibility(
-            visible: _productList.isNotEmpty,
-              child: MoveTopButton(scrollController: _scrollController)),
-          Visibility(
-              visible: _productList.isEmpty,
-              child: const NonDataScreen(text: '좋아요하신 상품이 없습니다.',)
-          ),
-        ],
+            Visibility(
+                visible: !_listEmpty,
+                child: MoveTopButton(scrollController: _scrollController)),
+            Visibility(
+                visible: _listEmpty,
+                child: const NonDataScreen(text: '좋아요하신 상품이 없습니다.',)
+            ),
+          ],
+        ),
       ),
     );
   }

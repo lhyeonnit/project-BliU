@@ -20,6 +20,7 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:preload_page_view/preload_page_view.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
@@ -29,7 +30,8 @@ class MainScreen extends ConsumerStatefulWidget {
 }
 
 class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+  //late TabController _tabController;
+  late PreloadPageController _preloadPageController;
   DateTime? _backButtonPressedTime;
   int _selectedIndex = 2;
 
@@ -47,7 +49,8 @@ class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProvide
   void initState() {
     super.initState();
 
-    _tabController =  TabController(length: 5, vsync: this);
+    //_tabController =  TabController(length: 5, vsync: this);
+    _preloadPageController = PreloadPageController(initialPage: 2);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initDeepLinks();
@@ -167,7 +170,15 @@ class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProvide
     );
 
     _selectedIndex = ref.watch(mainScreenProvider) ?? 2;
-    _tabController.animateTo(_selectedIndex);
+    ref.listen(mainScreenProvider,
+      ((previous, next) {
+        if (next == null) return;
+        if (previous != next) {
+          _preloadPageController.animateToPage(next, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        }
+      }),
+    );
+    //_tabController.animateTo(_selectedIndex);
 
     SharedPreferencesManager.getInstance().then( (pref) {
       final mtIdx = pref.getMtIdx() ?? "";
@@ -183,12 +194,25 @@ class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProvide
       onPopInvokedWithResult: (bool didPop, Object? result) {
         _backPressed();
       },
-      //onWillPop: _onWillPop,
+      // child: Scaffold(
+      //   body: TabBarView(
+      //     physics: const NeverScrollableScrollPhysics(),
+      //     controller: _tabController,
+      //     children: _widgetOptions,
+      //   ),
+      //   bottomNavigationBar: CustomBottomNavigationBar(
+      //     selectedIndex: _selectedIndex,
+      //     onItemTapped: _onItemTapped,
+      //   ),
+      // ),
       child: Scaffold(
-        body: TabBarView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _tabController,
-          children: _widgetOptions,
+        body: PreloadPageView.builder(
+          itemCount: 5,
+          preloadPagesCount: 5,
+          controller: _preloadPageController,
+          itemBuilder: (BuildContext context, int index) {
+            return _widgetOptions[index];
+          },
         ),
         bottomNavigationBar: CustomBottomNavigationBar(
           selectedIndex: _selectedIndex,

@@ -35,6 +35,8 @@ class StoreRakingPageState extends ConsumerState<StoreRakingPage> {
   CategoryData? _selectedAgeGroup;
   StyleCategoryData? _selectedStyle;
 
+  bool _listEmpty = false;
+
   double _maxScrollHeight = 0;// NestedScrollView 사용시 최대 높이를 저장하기 위한 변수
 
   int _page = 1;
@@ -166,6 +168,11 @@ class StoreRakingPageState extends ConsumerState<StoreRakingPage> {
     storeRankList = storeRankResponseDTO?.list ?? [];
 
     setState(() {
+      if (storeRankList.isNotEmpty) {
+        _listEmpty = false;
+      } else {
+        _listEmpty = true;
+      }
       _isFirstLoadRunning = false;
     });
   }
@@ -324,11 +331,11 @@ class StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                       ),
                     ),
                     Visibility(
-                      visible: storeRankList.isEmpty,
+                      visible: _listEmpty,
                       child: const NonDataScreen(text: '등록된 스토어가 없습니다.',),
                     ),
                     Visibility(
-                      visible: storeRankList.isNotEmpty,
+                      visible: !_listEmpty,
                       child: Column(
                         children: [
                           ...List.generate(storeRankList.length, (index) {
