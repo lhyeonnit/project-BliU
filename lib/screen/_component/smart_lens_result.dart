@@ -101,63 +101,70 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
 
             Visibility(
               visible: result == true,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: DraggableScrollableSheet(
+              child: DraggableScrollableSheet(
                   controller: _draggableScrollableController,
                   initialChildSize: 0.5,
                   minChildSize: 0.5,
-                  maxChildSize: 0.95,
+                  maxChildSize: 0.90,
                   builder: (BuildContext context, ScrollController scrollController) {
-                    return SingleChildScrollView(
-                      controller: scrollController,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0x0D000000),
-                              blurRadius: 6.0,
-                              spreadRadius: 0.0,
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Center(
-                              child: Container(
-                                margin: const EdgeInsets.only(bottom: 17, top: 15),
-                                width: 40,
-                                height: 4,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFDDDDDD),
-                                  borderRadius: BorderRadius.circular(3),
-                                ),
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0x0D000000),
+                            blurRadius: 6.0,
+                            spreadRadius: 0.0,
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Center(
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 17, top: 15),
+                              width: 40,
+                              height: 4,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFDDDDDD),
+                                borderRadius: BorderRadius.circular(3),
                               ),
                             ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 13, bottom: 20),
-                              child: Text(
-                                '이미지와 비슷한 상품',
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 20),
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.2,
+                          ),
+                          Expanded(
+                            child: CustomScrollView(
+                              controller: scrollController,
+                              slivers: [
+                                SliverToBoxAdapter(
+                                  child: Container(
+                                    margin: const EdgeInsets.only(top: 13, bottom: 20),
+                                    child: Text(
+                                      '이미지와 비슷한 상품',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 20),
+                                        fontWeight: FontWeight.bold,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                SliverList.list(
+                                  children: [
+                            
+                                    buildItemCard(),
+                                  ],
+                                )
+                              ],
                             ),
-                            buildItemCard(), // 기존에 있는 메서드 호출
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   },
                 ),
-              ),
             ),
             Visibility(
               visible: result == false,

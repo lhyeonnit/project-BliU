@@ -32,6 +32,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: PopScope(
         canPop: false,
         onPopInvokedWithResult: (bool didPop, Object? result) {
