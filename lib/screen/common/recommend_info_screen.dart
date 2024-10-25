@@ -125,7 +125,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   decoration: BoxDecoration(
-                    color: const Color(0x807280D9),
+                    color: const Color(0x9069828B),
                     borderRadius: BorderRadius.circular(29),
                   ),
                   child: Center(
