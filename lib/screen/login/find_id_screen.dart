@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/login/find_id_complete_screen.dart';
 import 'package:BliU/screen/login/viewmodel/find_id_screen_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -291,8 +292,11 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
               left: 0,
               right: 0,
               child: GestureDetector(
-                onTap: _isAllFieldsFilled
-                    ? () async {
+                onTap: () async {
+                  if (!_isAllFieldsFilled) {
+                    return;
+                  }
+
                   final name = _nameController.text;
                   final phoneNum = _phoneController.text;
                   final phoneNumChk = _phoneAuthChecked ? "Y" : "N";
@@ -313,14 +317,25 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                         builder: (context) => FindIdCompleteScreen(id: id),
                       ),
                     );
+                  } else {
+                    if (!context.mounted) return;
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        final message = findIdResponseDTO?.message ?? "";
+
+                        return MessageDialog(
+                          title: "알림", message: message,
+                        );
+                      },
+                    );
                   }
-                }
-                    : null,
+                },
                 child: Container(
                   width: double.infinity,
                   height: 48,
-                  margin: const EdgeInsets.only(
-                      right: 16.0, left: 16, top: 8, bottom: 9),
+                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
                   decoration: BoxDecoration(
                     color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
                     borderRadius: const BorderRadius.all(Radius.circular(6),
@@ -453,9 +468,10 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
               enabled: isEnable,
               decoration: InputDecoration(
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: isEnable ? const Color(0xFF595959) : const Color(0xFFA4A4A4)),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: isEnable ? const Color(0xFF595959) : const Color(0xFFA4A4A4),
+                ),
                 filled: true,
                 contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 border: UnderlineInputBorder(

@@ -1,4 +1,3 @@
-//가입완료
 import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';

@@ -415,9 +415,12 @@ class InquiryStoreState extends ConsumerState<InquiryStore> {
       ref.read(inquiryWriteModelProvider.notifier).qnaSeller(formData).then((resultData) {
         if (!mounted) return;
         if (resultData != null) {
-          Utils.getInstance().showSnackBar(context, resultData.message.toString());
           if (resultData.result == true) {
+            Utils.getInstance().showSnackBar(context, "문의가 정상적으로 등록되었습니다");
+
             Navigator.pop(context);
+          } else {
+            Utils.getInstance().showSnackBar(context, resultData.message.toString());
           }
         } else {
           Utils.getInstance().showSnackBar(context, "Network Or Data Error");

@@ -152,18 +152,19 @@ class ServiceScreen extends ConsumerWidget {
                     );
                   } else {
                     showDialog(
-                        context: context,
-                        builder: (context) {
-                          return MessageDialog(
-                            title: "알림", message: "로그인이 필요합니다.",
-                            doConfirm: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => const LoginScreen()),
-                              );
-                            },
-                          );
-                        }
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return MessageDialog(
+                          title: "알림", message: "로그인이 필요합니다.",
+                          doConfirm: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => const LoginScreen()),
+                            );
+                          },
+                        );
+                      },
                     );
                   }
                 });

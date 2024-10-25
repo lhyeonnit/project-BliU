@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/login/viewmodel/find_password_screen_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -126,16 +127,15 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                       ),
                     ),
                     _buildTextField('아이디', _idController, '아이디 입력'),
-                    _buildTextField('이름', _nameController, '이름 입력',
-                        keyboardType: TextInputType.name),
+                    _buildTextField('이름', _nameController, '이름 입력', keyboardType: TextInputType.name),
                     Row(
                       children: [
                         Expanded(
                           flex: 7,
                           child: _buildTextField(
-                              '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
-                              keyboardType: TextInputType.phone,
-                              isEnable: _phoneAuthChecked ? false : true
+                            '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
+                            keyboardType: TextInputType.phone,
+                            isEnable: _phoneAuthChecked ? false : true,
                           ),
                         ),
                         Expanded(
@@ -146,8 +146,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                                 return;
                               }
 
-                              final pref = await SharedPreferencesManager
-                                  .getInstance();
+                              final pref = await SharedPreferencesManager.getInstance();
                               final phoneNumber = _phoneController.text;
 
                               Map<String, dynamic> requestData = {
@@ -155,6 +154,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                                 'phone_num': phoneNumber,
                                 'code_type': 3,
                               };
+
                               final resultDTO = await ref.read(findPasswordScreenModelProvider.notifier).reqPhoneAuthCode(requestData);
                               if (resultDTO?.result == true) {
                                 setState(() {
@@ -185,24 +185,23 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                                     )
                                 ),
                                 Container(
-                                    margin: const EdgeInsets.only(top: 10, left: 8),
-                                    padding: const EdgeInsets.symmetric(vertical: 14),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
-                                      border: Border.all(color: const Color(0xFFDDDDDD)),
+                                  margin: const EdgeInsets.only(top: 10, left: 8),
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '인증요청',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
+                                      ),
                                     ),
-                                    child: Center(
-                                        child: Text(
-                                          '인증요청',
-                                          style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(
-                                                context, 14),
-                                            height: 1.2,
-                                          ),
-                                        )
-                                    )
-                                )
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -311,6 +310,19 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                       context,
                       MaterialPageRoute(builder: (context) => NewPasswordScreen(idx: idx),
                       ),
+                    );
+                  } else {
+                    if (!context.mounted) return;
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        final message = findPasswordResponseDTO?.message ?? "";
+
+                        return MessageDialog(
+                          title: "알림", message: message,
+                        );
+                      },
                     );
                   }
                 },
