@@ -298,10 +298,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                         children: [
                                           Container(
                                             width: Responsive.getWidth(context, 96),
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 6,
-                                              horizontal: 8,
-                                            ),
+                                            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8,),
                                             decoration: BoxDecoration(
                                               color: Colors.white,
                                               borderRadius: const BorderRadius.all(Radius.circular(22)),
@@ -380,6 +377,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                             children: [
                               Container(
                                 padding: const EdgeInsets.all(20),
+                                margin: const EdgeInsets.only(bottom: 15),
                                 decoration: const BoxDecoration(
                                   color: Color(0xFFF5F9F9),
                                   borderRadius: BorderRadius.all(Radius.circular(6)),
