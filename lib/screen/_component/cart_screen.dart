@@ -6,6 +6,7 @@ import 'package:BliU/screen/_component/cart_item.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/_component/viewmodel/cart_view_model.dart';
+import 'package:BliU/screen/join/join_add_info_screen.dart';
 import 'package:BliU/screen/payment/payment_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -300,18 +301,32 @@ class CartScreenState extends ConsumerState<CartScreen> {
     final payOrderDetailDTO = await ref.read(cartModelProvider.notifier).orderDetail(requestData);
     if (payOrderDetailDTO != null) {
       final payOrderDetailData = payOrderDetailDTO.data;
-
+      final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;
       if (payOrderDetailData != null) {
-        if(!mounted) return;
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PaymentScreen(
-              payOrderDetailData: payOrderDetailData,
-              memberType: memberType,
-            ),
-          ),
-        );
+        if (mounted) {
+          if (userInfoCheck == "Y") {
+            if(!mounted) return;
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PaymentScreen(
+                  payOrderDetailData: payOrderDetailData,
+                  memberType: memberType,
+                ),
+              ),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => JoinAddInfoScreen(
+                payOrderDetailData: payOrderDetailData,
+                memberType: memberType,
+              ),
+              ),
+            );
+          }
+          return;
+        }
       }
     }
   }

@@ -574,31 +574,23 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     if (payOrderResult != null) {
       if (payOrderResult.result == true) {
         final payOrderResultDetailData = payOrderResult.data;
-        final userInfoCheck = payOrderResult.data?.userInfoCheck;
         if (mounted) {
-          if (userInfoCheck == "Y") {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      PaymentCompleteScreen(
-                        memberType: mtIdx.isNotEmpty ? 1 : 2,
-                        payType: _payType,
-                        payOrderResultDetailData: payOrderResultDetailData,
-                        savedRecipientName: _recipientNameController.text,
-                        savedRecipientPhone: _recipientPhoneController.text,
-                        savedAddressRoad: _addressRoadController.text,
-                        savedAddressDetail: _addressDetailController.text,
-                        savedMemo: _memoController.text,
-                      )
-              ),
-            );
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const JoinAddInfoScreen()),
-            );
-          }
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    PaymentCompleteScreen(
+                      memberType: mtIdx.isNotEmpty ? 1 : 2,
+                      payType: _payType,
+                      payOrderResultDetailData: payOrderResultDetailData,
+                      savedRecipientName: _recipientNameController.text,
+                      savedRecipientPhone: _recipientPhoneController.text,
+                      savedAddressRoad: _addressRoadController.text,
+                      savedAddressDetail: _addressDetailController.text,
+                      savedMemo: _memoController.text,
+                    )
+            ),
+          );
           return;
         }
       }

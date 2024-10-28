@@ -1,7 +1,8 @@
 import 'dart:async';
 
+import 'package:BliU/data/pay_order_detail_data.dart';
 import 'package:BliU/screen/join/viewmodel/join_add_info_view_model.dart';
-import 'package:BliU/screen/main_screen.dart';
+import 'package:BliU/screen/payment/payment_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -13,7 +14,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 class JoinAddInfoScreen extends ConsumerStatefulWidget {
-  const JoinAddInfoScreen({super.key});
+  final PayOrderDetailData payOrderDetailData;
+  final int memberType;
+  const JoinAddInfoScreen({super.key, required this.memberType, required this.payOrderDetailData});
 
   @override
   ConsumerState<JoinAddInfoScreen> createState() => JoinAddInfoScreenState();
@@ -92,8 +95,6 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
           _nameController.text.isNotEmpty &&
           _phoneController.text.isNotEmpty &&
           _phoneAuthChecked;
-
-
     });
   }
 
@@ -268,7 +269,7 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                             Expanded(
                               flex: 7,
                               child: _buildCheckField(
-                                  '휴대폰번호', _authCodeController, '인증번호 입력',
+                                  '휴대폰번호', _authCodeController, keyboardType: TextInputType.number, '인증번호 입력',
                                   isEnable: _phoneAuthChecked ? false : true),
                             ),
                             Expanded(
@@ -486,7 +487,7 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                     Map<String, dynamic> requestData = {
                       "mt_idx": pref.getMtIdx(),
                       'mt_name': name,
-                      'mt_ph': phoneNum,
+                      'mt_hp': phoneNum,
                       'mt_birth': birthDay,
                       'mt_gender': gender,
                     };
@@ -500,7 +501,15 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
 
                       if (!context.mounted) return;
                       _showCancelDialog(context);
-                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PaymentScreen(
+                            payOrderDetailData: widget.payOrderDetailData,
+                            memberType: widget.memberType,
+                          ),
+                        ),
+                      );
                     } else {
                       if (!context.mounted) return;
                       final message = myPageInfoDTO.message ?? "";

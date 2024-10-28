@@ -812,10 +812,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
           context,
           MaterialPageRoute(builder: (context) => const MainScreen()),
         );
-
-        setState(() {
-          ref.read(mainScreenProvider.notifier).selectNavigation(2);
-        });
+        ref.read(mainScreenProvider.notifier).selectNavigation(2);
       } else {
         if(!mounted) return;
         Utils.getInstance().showSnackBar(context, "회원 정보를 불러오지 못했습니다.");
