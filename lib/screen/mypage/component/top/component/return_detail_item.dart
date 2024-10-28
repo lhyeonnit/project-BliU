@@ -79,8 +79,7 @@ class _ReturnItemState extends State<ReturnItem> {
   // 드롭다운 생성 (은행명).
   void _createOverlayBank() {
     if (_overlayEntryBank == null) {
-      _overlayEntryBank =
-          _customDropdown(_returnBank, _layerLinkBank, (int index) {
+      _overlayEntryBank = _customDropdown(_returnBank, _layerLinkBank, (int index) {
         setState(() {
           _dropdownAccount = _returnBank[index];
           _updateCollectedData();
@@ -287,10 +286,10 @@ class _ReturnItemState extends State<ReturnItem> {
             margin: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
-                Container(
-                  margin: const EdgeInsets.only(right: 8),
-                  child: Expanded(
-                    flex: 3,
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 8),
                     child: GestureDetector(
                       onTap: () {
                         if (_overlayEntryBank == null) {
@@ -303,11 +302,9 @@ class _ReturnItemState extends State<ReturnItem> {
                         child: CompositedTransformTarget(
                           link: _layerLinkBank, // 은행명 LayerLink
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 14),
+                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
                             decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xFFE1E1E1)),
+                              border: Border.all(color: const Color(0xFFE1E1E1)),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Row(
@@ -335,10 +332,10 @@ class _ReturnItemState extends State<ReturnItem> {
                   child: TextField(
                     onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                     style: TextStyle(
-                        decorationThickness: 0,
-                        height: 1.2,
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14)
+                      decorationThickness: 0,
+                      height: 1.2,
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
                     ),
                     maxLines: 1,
                     decoration: InputDecoration(
@@ -388,41 +385,45 @@ class _ReturnItemState extends State<ReturnItem> {
                       Text(
                         '사진',
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 13),
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal),
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 13),
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                       Text(
                         '최대3장',
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            color: const Color(0xFF7B7B7B),
-                            fontSize: Responsive.getFont(context, 13)),
+                          fontFamily: 'Pretendard',
+                          color: const Color(0xFF7B7B7B),
+                          fontSize: Responsive.getFont(context, 13),
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(6),
-                      ),
-                      border: Border.all(color: const Color(0xFFDDDDDD))),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(6),
+                    ),
+                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                  ),
                   child: GestureDetector(
                     onTap: _pickImages, // 이미지 선택 함수 호출
                     child: Center(
-                        child: Text(
-                      '첨부하기',
-                      style: TextStyle(
+                      child: Text(
+                        '첨부하기',
+                        style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
-                          fontWeight: FontWeight.normal),
-                    )),
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 // 선택된 이미지 표시

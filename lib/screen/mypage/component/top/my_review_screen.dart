@@ -89,123 +89,120 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
       ),
       body: SafeArea(
         child:Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                margin: const EdgeInsets.only(top: 20, bottom: 15),
-                child: Text(
-                  '작성한 리뷰 $_reviewCount',
-                  style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14)
-                  ),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              margin: const EdgeInsets.only(top: 20, bottom: 15),
+              child: Text(
+                '작성한 리뷰 $_reviewCount',
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                child: const Divider(
-                  height: 1,
-                  color: Color(0xFFEEEEEE),
-                ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              child: const Divider(
+                height: 1,
+                color: Color(0xFFEEEEEE),
               ),
-              Expanded(
-                  child: Stack(
-                    children: [
-                      Visibility(
-                          visible: _isListVisible,
-                          child: ListView.builder(
-                            controller: _scrollController,
-                            itemCount: _reviewList.length, // 리뷰 개수에 맞춰 설정
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              final reviewData = _reviewList[index];
+            ),
+            Expanded(
+              flex: _isListVisible ? 1 : 0,
+              child: Visibility(
+                visible: _isListVisible,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _reviewList.length, // 리뷰 개수에 맞춰 설정
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    final reviewData = _reviewList[index];
 
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ProductReviewDetail(rtIdx: reviewData.rtIdx ?? 0),
-                                    ),
-                                  );
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      // 상품 이미지
-                                      Padding(
-                                        padding: const EdgeInsets.only(right: 20.0),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(6.0),
-                                          child: Image.network(
-                                              reviewData.rtImg ?? "",
-                                              width: 90,
-                                              height: 90,
-                                              fit: BoxFit.cover,
-                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                                return const SizedBox();
-                                              }
-                                          ),
-                                        ),
-                                      ),
-                                      // 상품 정보 텍스트
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              reviewData.stName ?? "",
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 12),
-                                                color: const Color(0xFF7B7B7B),
-                                                height: 1.2,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(top: 4),
-                                              child: Text(
-                                                reviewData.ptName ?? "",
-                                                style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  fontSize: Responsive.getFont(context, 14),
-                                                  height: 1.2,
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                              ),
-                                            ),
-                                            Text(
-                                              reviewData.ctOptName ?? "",
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 13),
-                                                color: const Color(0xFF7B7B7B),
-                                                height: 1.2,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductReviewDetail(rtIdx: reviewData.rtIdx ?? 0),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // 상품 이미지
+                            Padding(
+                              padding: const EdgeInsets.only(right: 20.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(6.0),
+                                child: Image.network(
+                                    reviewData.rtImg ?? "",
+                                    width: 90,
+                                    height: 90,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                      return const SizedBox();
+                                    }
                                 ),
-                              );
-                            },
-                          )
+                              ),
+                            ),
+                            // 상품 정보 텍스트
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    reviewData.stName ?? "",
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 12),
+                                      color: const Color(0xFF7B7B7B),
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: Text(
+                                      reviewData.ptName ?? "",
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                  Text(
+                                    reviewData.ctOptName ?? "",
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 13),
+                                      color: const Color(0xFF7B7B7B),
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      Visibility(
-                        visible: !_isListVisible,
-                        child: const NonDataScreen(text: '작성하신 리뷰가 없습니다.'),
-                      ),
-                    ],
-                  )
+                    );
+                  },
+                ),
               ),
-            ],
-          ),
+            ),
+            Visibility(
+              visible: !_isListVisible,
+              child: const NonDataScreen(text: '작성하신 리뷰가 없습니다.'),
+            ),
+          ],
+        ),
       ),
     );
   }
