@@ -22,13 +22,11 @@ class StyleSelectionSheet extends StatefulWidget {
 }
 
 class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
-  late List<StyleCategoryData> _styleCategories;
   late StyleCategoryData? _tempSelectedStyle;
 
   @override
   void initState() {
     super.initState();
-    _styleCategories = widget.styleCategories;
     _tempSelectedStyle = widget.selectedStyle;
   }
 
@@ -68,8 +66,8 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                      padding: const EdgeInsets.only(bottom: 10),
                       child: Text(
                         '스타일',
                         style: TextStyle(
@@ -81,12 +79,13 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.only(bottom: 80),
                       child: Wrap(
                         spacing: 4.0,
                         runSpacing: 10.0,
-                        children: List.generate(_styleCategories.length, (index) {
-                          final styleCategory = _styleCategories[index];
+                        children: List.generate(widget.styleCategories.length, (index) {
+                          final styleCategory = widget.styleCategories[index];
                           return  _buildStyleChip(styleCategory);
                         }),
                       ),
@@ -95,70 +94,71 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
                 ),
               ),
             ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              left: 0,
-              child: Container(
-                padding: const EdgeInsets.only(left: 11, right: 10, top: 9, bottom: 8),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _tempSelectedStyle = null;
-                        });
-                      },
-                      child: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(6)),
-                          border: Border.all(color: const Color(0xFFDDDDDD)),
-                        ),
-                        child: SvgPicture.asset('assets/images/store/ic_release.svg'),
-                      ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          widget.onSelectionChanged(_tempSelectedStyle);
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 9),
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(6)),
-                            color: Colors.black,
-                          ),
-                          width: double.infinity,
-                          height: 48,
-                          child: const Center(
-                            child: Text(
-                              '선택완료',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                color: Colors.white,
-                                height: 1.2,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ],
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          left: 0,
+          child: Container(
+            color: Colors.white,
+            padding: const EdgeInsets.only(left: 11, right: 10, top: 9, bottom: 8),
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _tempSelectedStyle = null;
+                    });
+                  },
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(color: const Color(0xFFDDDDDD)),
+                    ),
+                    child: SvgPicture.asset('assets/images/store/ic_release.svg'),
+                  ),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      widget.onSelectionChanged(_tempSelectedStyle);
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 9),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        color: Colors.black,
+                      ),
+                      width: double.infinity,
+                      height: 48,
+                      child: const Center(
+                        child: Text(
+                          '선택완료',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            color: Colors.white,
+                            height: 1.2,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );
   }
 
   Widget _buildStyleChip(StyleCategoryData styleCategoryData) {
-    final isSelected = _tempSelectedStyle == styleCategoryData ? true : false;
+    final isSelected = _tempSelectedStyle?.fsIdx == styleCategoryData.fsIdx;
     return GestureDetector(
       onTap: () => _toggleSelection(styleCategoryData),
       child: Container(
