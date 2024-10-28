@@ -92,6 +92,8 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
           _nameController.text.isNotEmpty &&
           _phoneController.text.isNotEmpty &&
           _phoneAuthChecked;
+
+
     });
   }
 
