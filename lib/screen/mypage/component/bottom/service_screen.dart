@@ -6,6 +6,7 @@ import 'package:BliU/screen/mypage/component/bottom/component/service_my_inquiry
 import 'package:BliU/screen/mypage/viewmodel/service_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -196,9 +197,10 @@ class ServiceScreen extends ConsumerWidget {
           onTap: () {
             // 텍스트를 클릭했을 때 클립보드에 복사
             Clipboard.setData(ClipboardData(text: content));
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('$content 복사되었습니다.')),
-            );
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(content: Text('$content 복사되었습니다.')),
+            // );
+            Utils.getInstance().showSnackBar(context, '$content 복사되었습니다.');
           },
           child: Text(
             content,

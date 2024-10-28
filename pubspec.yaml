@@ -42,7 +42,7 @@ dependencies:
   hooks_riverpod: ^2.0.0
   permission_handler: ^11.3.1
   shared_preferences: ^2.2.2
-  fluttertoast: ^8.2.8
+  #fluttertoast: ^8.2.8
   image_picker: ^1.1.2
   image_cropper: ^8.0.2
   photo_manager: ^3.5.0

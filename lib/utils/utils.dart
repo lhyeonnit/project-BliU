@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -18,24 +17,25 @@ class Utils {
   }
   Utils._();
 
-  void showToast(String message) {
-    Fluttertoast.showToast(
-      msg: message,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.black,
-      fontSize: 20,
-      textColor: Colors.white,
-      toastLength: Toast.LENGTH_SHORT,
-    );
-  }
+  // void showToast(String message) {
+  //   Fluttertoast.showToast(
+  //     msg: message,
+  //     gravity: ToastGravity.BOTTOM,
+  //     backgroundColor: Colors.black,
+  //     fontSize: 20,
+  //     textColor: Colors.white,
+  //     toastLength: Toast.LENGTH_SHORT,
+  //   );
+  // }
 
   void showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 3),
-      ),
-    );
+    _showTopMessage(context, message);
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text(message),
+    //     duration: const Duration(seconds: 3),
+    //   ),
+    // );
   }
 
   String priceString(int price) {
@@ -56,7 +56,7 @@ class Utils {
     return files;
   }
 
-  void showTopMessage(BuildContext context, String message) {
+  void _showTopMessage(BuildContext context, String message) {
     BuildContext? dialogContext;
     showGeneralDialog(
       context: context,
@@ -101,7 +101,7 @@ class Utils {
       },
     );
 
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (dialogContext != null) {
         if (dialogContext!.mounted) {
           Navigator.pop(dialogContext!);

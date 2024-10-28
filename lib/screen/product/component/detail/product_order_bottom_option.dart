@@ -243,7 +243,8 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                           _addPtAddArr.add(ptAdd);
                                         });
                                       } else {
-                                        Utils.getInstance().showToast('이미 추가한 상품 입니다.');
+                                        //Utils.getInstance().showToast('이미 추가한 상품 입니다.');
+                                        Utils.getInstance().showSnackBar(context, '이미 추가한 상품 입니다.');
                                       }
                                     }},
                                 );
@@ -795,7 +796,8 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                 _addPtOptionArr.add(_ptOptionArr[i]);
               });
             } else {
-              Utils.getInstance().showToast('이미 추가한 옵션 입니다.');
+              //Utils.getInstance().showToast('이미 추가한 옵션 입니다.');
+              Utils.getInstance().showSnackBar(context, '이미 추가한 옵션 입니다.');
             }
           }
         }
@@ -844,7 +846,8 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
         if(!mounted) return;
 
         if (addType == 0) {
-          Utils.getInstance().showToast(responseData['data']['message'] ?? "");
+          //Utils.getInstance().showToast(responseData['data']['message'] ?? "");
+          Utils.getInstance().showSnackBar(context, responseData['data']['message'] ?? "");
           ref.read(cartProvider.notifier).cartRefresh(true);
           Navigator.pop(context);
           showDialog(
@@ -977,7 +980,9 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
           }
         }
       } else {
-        Utils.getInstance().showToast(responseData['data']['message'].message ?? "");
+        //Utils.getInstance().showToast(responseData['data']['message'].message ?? "");
+        if (!mounted) return;
+        Utils.getInstance().showSnackBar(context, responseData['data']['message'].message ?? "");
       }
     }
   }
