@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -53,5 +54,59 @@ class Utils {
         buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
     XFile files = XFile(file.path);
     return files;
+  }
+
+  void showTopMessage(BuildContext context, String message) {
+    BuildContext? dialogContext;
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      // 다른 영역을 클릭해도 닫힘
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black.withOpacity(0.5),
+      // 배경을 어둡게
+      transitionDuration: const Duration(milliseconds: 100),
+      // 애니메이션 시간
+      pageBuilder: (BuildContext buildContext, Animation animation, Animation secondaryAnimation) {
+        dialogContext = buildContext;
+        return Align(
+          alignment: Alignment.topCenter, // 화면 상단 중앙에 배치
+          child: Material(
+            color: Colors.transparent, // 배경을 투명하게
+            child: Container(
+              margin: const EdgeInsets.only(top: 50), // 상단에서의 간격
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+              decoration: BoxDecoration(
+                color: const Color(0xCC000000), // 알림창 배경색
+                borderRadius: BorderRadius.circular(22), // 둥근 모서리
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, // 가로로 배치
+                mainAxisSize: MainAxisSize.min, // 알림창 크기를 내용에 맞춤
+                children: [
+                  Text(
+                    message,
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      color: Colors.white,
+                      height: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
+    Future.delayed(const Duration(seconds: 2), () {
+      if (dialogContext != null) {
+        if (dialogContext!.mounted) {
+          Navigator.pop(dialogContext!);
+        }
+      }
+    });
   }
 }
