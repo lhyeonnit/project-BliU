@@ -8,7 +8,6 @@ import 'package:BliU/data/iamport_pay_data.dart';
 import 'package:BliU/data/pay_order_detail_data.dart';
 import 'package:BliU/dto/pay_order_result_detail_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/join/join_add_info_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
 import 'package:BliU/screen/payment/component/payment_coupon.dart';
 import 'package:BliU/screen/payment/component/payment_order_item.dart';
