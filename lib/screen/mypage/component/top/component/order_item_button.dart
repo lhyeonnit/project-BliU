@@ -63,9 +63,9 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
 
               final defaultResponseDTO = await ref.read(orderItemButtonViewModelProvider.notifier).requestOrder(requestData);
               if (defaultResponseDTO != null) {
+                if (!mounted) return;
+                Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
                 if (defaultResponseDTO.result == true) {
-                  if (!mounted) return;
-                  Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
                   Navigator.pop(context);
                   setState(() {
                     _ctStatus = 8;

@@ -56,7 +56,51 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
       _isFirstLoadRunning = true;
     });
     _page = 1;
+    _hasNextPage = true;
 
+    final Map<String, dynamic> requestData = await _makeRequestData();
+
+    setState(() {
+      orderList = [];
+    });
+
+    final orderResponseDTO = await ref.read(orderListViewModelProvider.notifier).getList(requestData);
+    orderList = orderResponseDTO?.list ?? [];
+
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+  }
+
+  void _nextLoad() async {
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
+      setState(() {
+        _isLoadMoreRunning = true;
+      });
+      _page += 1;
+
+      final Map<String, dynamic> requestData = await _makeRequestData();
+
+      final orderResponseDTO = await ref.read(orderListViewModelProvider.notifier).getList(requestData);
+      if (orderResponseDTO != null) {
+        if ((orderResponseDTO.list ?? []).isNotEmpty) {
+          setState(() {
+            orderList.addAll(orderResponseDTO.list ?? []);
+          });
+        } else {
+          setState(() {
+            _hasNextPage = false;
+          });
+        }
+      }
+
+      setState(() {
+        _isLoadMoreRunning = false;
+      });
+    }
+  }
+
+  Future<Map<String, dynamic>> _makeRequestData() async {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
@@ -87,46 +131,7 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
       'pg': _page,
     };
 
-    setState(() {
-      orderList = [];
-    });
-
-    final orderResponseDTO = await ref.read(orderListViewModelProvider.notifier).getList(requestData);
-    orderList = orderResponseDTO?.list ?? [];
-
-    setState(() {
-      _isFirstLoadRunning = false;
-    });
-  }
-
-  void _nextLoad() async {
-    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200){
-      setState(() {
-        _isLoadMoreRunning = true;
-      });
-      _page += 1;
-
-      final Map<String, dynamic> requestData = {
-        'pg': _page
-      };
-
-      final orderResponseDTO = await ref.read(orderListViewModelProvider.notifier).getList(requestData);
-      if (orderResponseDTO != null) {
-        if ((orderResponseDTO.list ?? []).isNotEmpty) {
-          setState(() {
-            orderList.addAll(orderResponseDTO.list ?? []);
-          });
-        } else {
-          setState(() {
-            _hasNextPage = false;
-          });
-        }
-      }
-
-      setState(() {
-        _isLoadMoreRunning = false;
-      });
-    }
+    return requestData;
   }
 
   void _viewWillAppear(BuildContext context) {
