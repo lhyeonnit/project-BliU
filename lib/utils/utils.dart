@@ -63,7 +63,7 @@ class Utils {
       barrierDismissible: true,
       // 다른 영역을 클릭해도 닫힘
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      barrierColor: Colors.black.withOpacity(0.5),
+      barrierColor: Colors.black.withOpacity(0.0),
       // 배경을 어둡게
       transitionDuration: const Duration(milliseconds: 100),
       // 애니메이션 시간
