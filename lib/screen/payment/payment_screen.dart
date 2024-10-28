@@ -8,6 +8,7 @@ import 'package:BliU/data/iamport_pay_data.dart';
 import 'package:BliU/data/pay_order_detail_data.dart';
 import 'package:BliU/dto/pay_order_result_detail_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/join/join_add_info_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
 import 'package:BliU/screen/payment/component/payment_coupon.dart';
 import 'package:BliU/screen/payment/component/payment_order_item.dart';
@@ -573,23 +574,33 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     if (payOrderResult != null) {
       if (payOrderResult.result == true) {
         final payOrderResultDetailData = payOrderResult.data;
-        if (!mounted) return;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-              PaymentCompleteScreen(
-                memberType: mtIdx.isNotEmpty ? 1 : 2,
-                payType: _payType,
-                payOrderResultDetailData: payOrderResultDetailData,
-                savedRecipientName: _recipientNameController.text,
-                savedRecipientPhone: _recipientPhoneController.text,
-                savedAddressRoad: _addressRoadController.text,
-                savedAddressDetail: _addressDetailController.text,
-                savedMemo: _memoController.text,
-              )
-          ),
-        );
+        final userInfoCheck = payOrderResult.data?.userInfoCheck;
+        if (mounted) {
+          if (userInfoCheck == "Y") {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      PaymentCompleteScreen(
+                        memberType: mtIdx.isNotEmpty ? 1 : 2,
+                        payType: _payType,
+                        payOrderResultDetailData: payOrderResultDetailData,
+                        savedRecipientName: _recipientNameController.text,
+                        savedRecipientPhone: _recipientPhoneController.text,
+                        savedAddressRoad: _addressRoadController.text,
+                        savedAddressDetail: _addressDetailController.text,
+                        savedMemo: _memoController.text,
+                      )
+              ),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const JoinAddInfoScreen()),
+            );
+          }
+          return;
+        }
       }
     }
 

@@ -221,7 +221,7 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                                     Map<String, dynamic> requestData = {
                                       'app_token': pref.getToken(),
                                       'phone_num': phoneNumber,
-                                      'code_type': 1,
+                                      'code_type': 4,
                                     };
                                     final resultDTO = await ref.read(joinAddInfoModelProvider.notifier).reqPhoneAuthCode(requestData);
                                     if (resultDTO.result == true) {
@@ -288,7 +288,7 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                                     'app_token': pref.getToken(),
                                     'phone_num': phoneNumber,
                                     'code_num': authCode,
-                                    'code_type': 1,
+                                    'code_type': 4,
                                   };
 
                                   final resultDTO = await ref.read(joinAddInfoModelProvider.notifier).checkCode(requestData);
@@ -465,7 +465,6 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                       ? () async {
                     String name = _nameController.text;
                     String phoneNum = _phoneController.text;
-                    final phoneNumChk = _phoneAuthChecked ? "Y" : "N";
                     String birthDay = "";
                     try {
                       birthDay = DateFormat("yyyy-MM-dd").format(_selectedDate);
@@ -483,12 +482,11 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
 
                     final pref = await SharedPreferencesManager.getInstance();
                     Map<String, dynamic> requestData = {
-                      'name': name,
-                      'phone_num': phoneNum,
-                      'phone_num_chk': phoneNumChk,
-                      'birth_day': birthDay,
-                      'gender': gender,
-                      'app_token': pref.getToken(),
+                      "mt_idx": pref.getMtIdx(),
+                      'mt_name': name,
+                      'mt_ph': phoneNum,
+                      'mt_birth': birthDay,
+                      'mt_gender': gender,
                     };
 
                     final myPageInfoDTO = await ref.read(joinAddInfoModelProvider.notifier).snsAddInfo(requestData);
@@ -500,11 +498,7 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
 
                       if (!context.mounted) return;
                       _showCancelDialog(context);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MainScreen()),
-                      );
-                      ref.read(mainScreenProvider.notifier).selectNavigation(2);
+                      Navigator.pop(context);
                     } else {
                       if (!context.mounted) return;
                       final message = myPageInfoDTO.message ?? "";

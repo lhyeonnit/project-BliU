@@ -14,32 +14,6 @@ class JoinAddInfoViewModel extends StateNotifier<JoinAddInfoModel?> {
 
   JoinAddInfoViewModel(super.state, this.ref);
 
-  Future<DefaultResponseDTO> checkId(Map<String, dynamic> requestData) async {
-    try {
-      final response = await repository.reqPost(url: Constant.apiAuthCheckIdUrl, data: requestData);
-      if (response != null) {
-        if (response.statusCode == 200) {
-          Map<String, dynamic> responseData = response.data;
-          DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
-          return defaultResponseDTO;
-        }
-      }
-      return DefaultResponseDTO(
-        result: false,
-        message: "Network Or Data Error",
-      );
-    } catch (e) {
-      // Catch and log any exceptions
-      if (kDebugMode) {
-        print('Error fetching : $e');
-      }
-      return DefaultResponseDTO(
-        result: false,
-        message: e.toString(),
-      );
-    }
-  }
-
   Future<DefaultResponseDTO> reqPhoneAuthCode(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiAuthSendCodeUrl, data: requestData);
@@ -95,7 +69,7 @@ class JoinAddInfoViewModel extends StateNotifier<JoinAddInfoModel?> {
 
   Future<MyPageInfoResponseDTO> snsAddInfo(Map<String, dynamic> requestData) async {
     try {
-      final response = await repository.reqPost(url: Constant.apiAuthJoinUrl, data: requestData);
+      final response = await repository.reqPost(url: Constant.apiMyPageAddInfoUrl, data: requestData);
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
