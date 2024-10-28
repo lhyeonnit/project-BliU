@@ -13,6 +13,7 @@ class StoreData {
   final String? stTxt2;
   String? checkMark;
   String? downCoupon;
+  int? count;
   List<ProductData> list;
 
   StoreData({
@@ -28,6 +29,7 @@ class StoreData {
     required this.stTxt2,
     required this.checkMark,
     required this.downCoupon,
+    required this.count,
     required this.list,
   });
 
@@ -53,6 +55,7 @@ class StoreData {
       stTxt2: json['st_txt2'],
       checkMark: json['check_mark'],
       downCoupon: json['down_coupon'],
+      count: json['count'],
       list: list,
     );
   }
@@ -72,6 +75,7 @@ class StoreData {
       'st_txt2': stTxt2,
       'check_mark': checkMark,
       'down_coupon' : downCoupon,
+      'count': count,
       'list': list.map((product) => product.toJson()).toList(),
     };
   }
