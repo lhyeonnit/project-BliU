@@ -19,6 +19,7 @@ import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 //로그인
 class LoginScreen extends ConsumerStatefulWidget {
@@ -474,23 +475,52 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
 
   //애플 로그인
   Future<void> _appleLogin() async {
-    AppleAuthProvider appleProvider = AppleAuthProvider();
-    appleProvider = appleProvider.addScope('email');
-    appleProvider = appleProvider.addScope('name');
-    final userCredential = await FirebaseAuth.instance.signInWithProvider(appleProvider);
-    var user = userCredential.user;
-    if (user != null) {
-      final pref = await SharedPreferencesManager.getInstance();
-      Map<String, dynamic> data = {
-        'id': user.uid,
-        'name': user.displayName,
-        'app_token': pref.getToken(),
-        'login_type': '4'
-      };
-      await pref.setAutoLogin(true);
+    final userCredential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
 
-      await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
+    if (kDebugMode) {
+      print('credential.state = $userCredential');
+      print('credential.state = ${userCredential.email}');
+      print('credential.state = ${userCredential.userIdentifier}');
+      print('credential.state = ${userCredential.familyName}');
+      print('credential.state = ${userCredential.givenName}');
     }
+
+    final id = userCredential.userIdentifier;
+    final name = "${userCredential.familyName ?? ""}${userCredential.givenName ?? ""}";
+
+    final pref = await SharedPreferencesManager.getInstance();
+    Map<String, dynamic> data = {
+      'id': id,
+      'name': name,
+      'app_token': pref.getToken(),
+      'login_type': '4'
+    };
+    await pref.setAutoLogin(true);
+
+    await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
+
+    // AppleAuthProvider appleProvider = AppleAuthProvider();
+    // appleProvider = appleProvider.addScope('email');
+    // appleProvider = appleProvider.addScope('name');
+    // final userCredential = await FirebaseAuth.instance.signInWithProvider(appleProvider);
+    // var user = userCredential.user;
+    // if (user != null) {
+    //   final pref = await SharedPreferencesManager.getInstance();
+    //   Map<String, dynamic> data = {
+    //     'id': user.uid,
+    //     'name': user.displayName,
+    //     'app_token': pref.getToken(),
+    //     'login_type': '4'
+    //   };
+    //   await pref.setAutoLogin(true);
+    //
+    //   await ref.read(loginViewModelProvider.notifier).authSnsLogin(data);
+    // }
   }
 
   void _login(BuildContext context) async {
