@@ -133,9 +133,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       'all_price': _getTotalProductPrice(),
     };
 
-    final couponResponseDTO = await ref
-        .read(paymentViewModelProvider.notifier)
-        .getOrderCoupon(requestData);
+    final couponResponseDTO = await ref.read(paymentViewModelProvider.notifier).getOrderCoupon(requestData);
     _couponList = couponResponseDTO?.list ?? [];
   }
 
@@ -166,9 +164,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       'all_delivery_price': widget.payOrderDetailData.allDeliveryPrice,
     };
 
-    final responseData = await ref
-        .read(paymentViewModelProvider.notifier)
-        .orderLocal(requestData);
+    final responseData = await ref.read(paymentViewModelProvider.notifier).orderLocal(requestData);
     if (responseData != null) {
       setState(() {
         _userDeliveryPrice = responseData['data']['user_delivey_add'] ?? 0;
@@ -355,8 +351,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       return;
     }
 
-    if (_addressRoadController.text.isEmpty ||
-        _addressDetailController.text.isEmpty) {
+    if (_addressRoadController.text.isEmpty || _addressDetailController.text.isEmpty) {
       Utils.getInstance().showSnackBar(context, '수령인 주소를 입력해 주세요.');
       return;
     }
@@ -447,9 +442,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
             'mt_idx': mtIdx,
           };
 
-          await ref
-              .read(paymentViewModelProvider.notifier)
-              .couponUse(requestCouponData);
+          await ref.read(paymentViewModelProvider.notifier).couponUse(requestCouponData);
         }
 
         if (_discountPoint > 0) {
@@ -459,9 +452,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
             'mt_idx': mtIdx,
           };
 
-          await ref
-              .read(paymentViewModelProvider.notifier)
-              .pointUse(requestPointData);
+          await ref.read(paymentViewModelProvider.notifier).pointUse(requestPointData);
         }
 
         Map<String, dynamic> requestData1 = {
@@ -478,9 +469,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
           'memo': _memoController.text,
         };
 
-        final Map<String, dynamic>? response = await ref
-            .read(paymentViewModelProvider.notifier)
-            .reqOrder(requestData1);
+        final Map<String, dynamic>? response = await ref.read(paymentViewModelProvider.notifier).reqOrder(requestData1);
         if (response != null) {
           /*
           *
@@ -1164,43 +1153,43 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                               ),
                             ),
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                           child: Column(
                             children: [
                               Row(
                                 children: [
                                   Expanded(
-                                      child: Container(
-                                        height: 44,
-                                        margin: const EdgeInsets.only(right: 4),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              _payType = 1;
-                                            });
-                                          },
-                                          child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.circular(6),
-                                                border: Border.all(
-                                                    color: _payType == 1
-                                                        ? const Color(0xFFFF6192)
-                                                        : const Color(0xFFDDDDDD)),
+                                    child: Container(
+                                      height: 44,
+                                      margin: const EdgeInsets.only(right: 4),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _payType = 1;
+                                          });
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(6),
+                                            border: Border.all(
+                                              color: _payType == 1 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              '카드결제',
+                                              style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                color: _payType == 1 ? const Color(0xFFFF6192) : Colors.black,
+                                                fontSize: Responsive.getFont(context, 14),
                                               ),
-                                              child: Center(
-                                                  child: Text(
-                                                    '카드결제',
-                                                    style: TextStyle(
-                                                        fontFamily: 'Pretendard',
-                                                        color: _payType == 1
-                                                            ? const Color(0xFFFF6192)
-                                                            : Colors.black,
-                                                        fontSize: Responsive.getFont(context, 14)),
-                                                  ))),
+                                            ),
+                                          ),
                                         ),
-                                      )),
+                                      ),
+                                    ),
+                                  ),
                                   Expanded(
                                     child: Container(
                                       height: 44,
@@ -1217,19 +1206,17 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             borderRadius:
                                             BorderRadius.circular(6),
                                             border: Border.all(
-                                                color: _payType == 2
-                                                    ? const Color(0xFFFF6192)
-                                                    : const Color(0xFFDDDDDD)),
+                                              color: _payType == 2 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                            ),
                                           ),
                                           child: Center(
                                             child: Text(
                                               '휴대폰',
                                               style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  color: _payType == 2
-                                                      ? const Color(0xFFFF6192)
-                                                      : Colors.black,
-                                                  fontSize: Responsive.getFont(context, 14)),
+                                                fontFamily: 'Pretendard',
+                                                color: _payType == 2 ? const Color(0xFFFF6192) : Colors.black,
+                                                fontSize: Responsive.getFont(context, 14),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -1244,35 +1231,36 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                        child: Container(
-                                          margin: const EdgeInsets.only(right: 4),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _payType = 3;
-                                              });
-                                            },
-                                            child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.circular(6),
-                                                  border: Border.all(
-                                                      color: _payType == 3
-                                                          ? const Color(0xFFFF6192)
-                                                          : const Color(0xFFDDDDDD)),
+                                      child: Container(
+                                        margin: const EdgeInsets.only(right: 4),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _payType = 3;
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(6),
+                                              border: Border.all(
+                                                color: _payType == 3 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                              ),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                '계좌이체',
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  color: _payType == 3 ? const Color(0xFFFF6192) : Colors.black,
+                                                  fontSize: Responsive.getFont(context, 14),
                                                 ),
-                                                child: Center(
-                                                    child: Text(
-                                                      '계좌이체',
-                                                      style: TextStyle(
-                                                          fontFamily: 'Pretendard',
-                                                          color: _payType == 3
-                                                              ? const Color(0xFFFF6192)
-                                                              : Colors.black,
-                                                          fontSize: Responsive.getFont(context, 14)),
-                                                    ))),
+                                              ),
+                                            ),
                                           ),
-                                        )),
+                                        ),
+                                      ),
+                                    ),
                                     Expanded(
                                       child: Container(
                                         height: 44,
@@ -1284,21 +1272,23 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             });
                                           },
                                           child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.circular(6),
-                                                border: Border.all(
-                                                    color: _payType == 4 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  '네이버페이',
-                                                  style: TextStyle(
-                                                      fontFamily: 'Pretendard',
-                                                      color: _payType == 4 ? const Color(0xFFFF6192) : Colors.black,
-                                                      fontSize: Responsive.getFont(context, 14)),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(6),
+                                              border: Border.all(
+                                                  color: _payType == 4 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                '네이버페이',
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  color: _payType == 4 ? const Color(0xFFFF6192) : Colors.black,
+                                                  fontSize: Responsive.getFont(context, 14),
                                                 ),
-                                              )),
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -1400,8 +1390,9 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     padding: const EdgeInsets.symmetric(horizontal: 20,),
                                     margin: const EdgeInsets.only(top: 10, bottom: 20),
                                     decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                        border: Border.all(color: const Color(0xFFDDDDDD))),
+                                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                      border: Border.all(color: const Color(0xFFDDDDDD)),
+                                    ),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -1530,8 +1521,9 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                         child: Container(
                                           height: 44,
                                           decoration: BoxDecoration(
-                                              borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                              border: Border.all(color: const Color(0xFFDDDDDD))),
+                                            borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                            border: Border.all(color: const Color(0xFFDDDDDD)),
+                                          ),
                                           child: GestureDetector(
                                             onTap: () {
                                               final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;

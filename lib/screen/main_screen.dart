@@ -195,6 +195,7 @@ class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProvide
           itemCount: 5,
           preloadPagesCount: 5,
           controller: _preloadPageController,
+          physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
             return _widgetOptions[index];
           },
