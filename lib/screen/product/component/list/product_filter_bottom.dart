@@ -95,18 +95,95 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                 ),
               ),
               Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 80),
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 7, bottom: 10),
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 7, bottom: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          '연령',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 18),
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate(
+                            _ageCategories.length, (index) {
+                              final ageCategory = _ageCategories[index];
+                              return Container(
+                                  margin: const EdgeInsets.only(top: 10),
+                                  child: _buildAgeGroupChip(ageCategory));
+                            }
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 1, color: const Color(0xFFEEEEEE)),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          '스타일',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 18),
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Wrap(
+                          spacing: 4.0,
+                          runSpacing: 10.0,
+                          children: List.generate(
+                            _styleCategories.length, (index) {
+                              final styleCategory = _styleCategories[index];
+                              return  _buildStyleChip(styleCategory);
+                            }
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(width: 1, color: const Color(0xFFEEEEEE)),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          '가격',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 18),
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        child: Center(
                           child: Text(
-                            '연령',
+                            '${_tempSelectedRange.start.toInt()}원 ~ ${_tempSelectedRange.end.toInt()}원',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 18),
@@ -115,88 +192,11 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                             ),
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(
-                              _ageCategories.length, (index) {
-                                final ageCategory = _ageCategories[index];
-                                return Container(
-                                    margin: const EdgeInsets.only(top: 10),
-                                    child: _buildAgeGroupChip(ageCategory));
-                              }
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 1, color: const Color(0xFFEEEEEE)),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 20),
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(
-                            '스타일',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 18),
-                              fontWeight: FontWeight.bold,
-                              height: 1.2,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Wrap(
-                            spacing: 4.0,
-                            runSpacing: 10.0,
-                            children: List.generate(
-                              _styleCategories.length, (index) {
-                                final styleCategory = _styleCategories[index];
-                                return  _buildStyleChip(styleCategory);
-                              }
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-                          decoration: BoxDecoration(
-                            border:
-                                Border.all(width: 1, color: const Color(0xFFEEEEEE)),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 20),
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(
-                            '가격',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 18),
-                              fontWeight: FontWeight.bold,
-                              height: 1.2,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 10),
-                          child: Center(
-                            child: Text(
-                              '${_tempSelectedRange.start.toInt()}원 ~ ${_tempSelectedRange.end.toInt()}원',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 18),
-                                fontWeight: FontWeight.bold,
-                                height: 1.2,
-                              ),
-                            ),
-                          ),
-                        ),
-                        // 실제 RangeSlider
-                        RangeSlider(
+                      ),
+                      // 실제 RangeSlider
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 80),
+                        child: RangeSlider(
                           values: _tempSelectedRange,
                           min: 0,
                           max: 100000,
@@ -215,8 +215,8 @@ class _ProductFilterBottomState extends State<ProductFilterBottom> {
                             });
                           },
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

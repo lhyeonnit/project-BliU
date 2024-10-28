@@ -101,14 +101,6 @@ class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
               left: 0,
               child: Container(
                 padding: const EdgeInsets.only(left: 11, right: 10, top: 9, bottom: 8),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                    top: BorderSide(
-                      color: Color(0xD0000000),
-                    ),
-                  ),
-                ),
                 child: Row(
                   children: [
                     GestureDetector(

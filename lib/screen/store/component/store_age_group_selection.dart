@@ -84,13 +84,6 @@ class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
         ),
         Container(
           padding: const EdgeInsets.only(left: 11, right: 10, top: 9, bottom: 8),
-          decoration: const BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                color: Color(0xD0000000)
-              )
-            )
-          ),
           child: Row(
             children: [
               GestureDetector(
