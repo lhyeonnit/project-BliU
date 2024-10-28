@@ -770,7 +770,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
       if (optionStr.isEmpty) {
         optionStr = _ptOption[i].selectedValue;
       } else {
-        optionStr += "|${_ptOption[i].selectedValue}";
+        optionStr += " | ${_ptOption[i].selectedValue}";
       }
     }
     if (isAllChecked) {
