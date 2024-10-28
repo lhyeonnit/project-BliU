@@ -23,9 +23,9 @@ class RecommendInfoScreen extends ConsumerStatefulWidget {
 class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
     with SingleTickerProviderStateMixin {
   bool _isBottomSheetVisible = false;
-  bool _isAppBarVisible = false;
   late AnimationController _animationController;
-  late Animation<Offset> _offsetAnimation;
+  late Animation<Offset> _appBarSlideAnimation;
+  late Animation<Offset> _bottomSheetSlideAnimation;
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _birthController = TextEditingController(text: '선택해주세요');
 
@@ -43,21 +43,25 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
   void initState() {
     super.initState();
     // 애니메이션 컨트롤러 설정
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 900), vsync: this,
-    );
+    _animationController = AnimationController(duration: const Duration(milliseconds: 900), vsync: this);
 
     // 바텀시트 애니메이션 시작 위치와 끝 위치
-    _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0.0, 1.0), // 화면 아래에서 시작
+    _appBarSlideAnimation = Tween<Offset>(
+      begin: const Offset(0.0, -2.0),
       end: Offset.zero, // 화면 안으로 들어옴
     ).animate(CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeInOut, // 부드러운 애니메이션 곡선
     ));
+    _bottomSheetSlideAnimation = Tween<Offset>(
+      begin: const Offset(0.0, 1.0), // 화면 아래에서 시작
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        _isAppBarVisible = true;
         _isBottomSheetVisible = true;
       });
       Future.delayed(const Duration(seconds: 3), () {
@@ -79,34 +83,6 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: _isAppBarVisible
-          ? AppBar(
-              scrolledUnderElevation: 0,
-              backgroundColor: Colors.white,
-              title: const Text('추천정보'),
-              titleTextStyle: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 18),
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-                height: 1.2,
-              ),
-              leading: IconButton(
-                icon: SvgPicture.asset("assets/images/product/ic_back.svg"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              titleSpacing: -1.0,
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
-                child: Container(
-                  color: const Color(0xFFF4F4F4), // 하단 구분선 색상
-                  height: 1.0, // 구분선의 두께 설정
-                ),
-              ),
-            )
-          : null,
       body: SafeArea(
         child: Stack(
           children: [
@@ -141,63 +117,47 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                   ),
                 ),
             ),
-            // Visibility(
-            //   visible: _isAppBarVisible,
-            //   child: Positioned(
-            //     top: 0,
-            //     left: 0,
-            //     right: 0,
-            //     child: SafeArea(
-            //       child: Container(
-            //         height: 56.0,  // 기본 AppBar 높이
-            //         decoration: const BoxDecoration(
-            //           color: Colors.white, // 앱바 배경색
-            //           boxShadow: [
-            //             BoxShadow(
-            //               color: Color(0x0D000000),
-            //               spreadRadius: 1,
-            //               blurRadius: 6,
-            //               offset: Offset(0, 3), // 그림자 위치
-            //             ),
-            //           ],
-            //         ),
-            //         child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.start,
-            //           children: [
-            //             Container(
-            //               margin: const EdgeInsets.only(left: 16, right: 15),
-            //               child: GestureDetector(
-            //                 onTap: () {
-            //                   Navigator.pop(context);
-            //                 },
-            //                 child: SvgPicture.asset("assets/images/product/ic_back.svg"),
-            //               ),
-            //             ),
-            //             Text(
-            //               '추천정보',
-            //               style: TextStyle(
-            //                 fontFamily: 'Pretendard',
-            //                 fontSize: Responsive.getFont(context, 18),
-            //                 fontWeight: FontWeight.w600,
-            //                 color: Colors.black,
-            //                 height: 1.2,
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-
+            SlideTransition(
+              position: _appBarSlideAnimation,
+              child: Container(
+                height: 56,
+                color: Colors.white,
+                child: AppBar(
+                  scrolledUnderElevation: 0,
+                  backgroundColor: Colors.transparent, // 살짝 투명하게 처리
+                  title: const Text('추천정보'),
+                  titleTextStyle: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 18),
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                    height: 1.2,
+                  ),
+                  leading: IconButton(
+                    icon: SvgPicture.asset("assets/images/product/ic_back.svg"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  titleSpacing: -1.0,
+                  bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(1.0),
+                    child: Container(
+                      color: const Color(0xFFF4F4F4),
+                      height: 1.0,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Visibility(
               visible: _isBottomSheetVisible,
               child: SlideTransition(
-                position: _offsetAnimation,
+                position: _bottomSheetSlideAnimation,
                 child: DraggableScrollableSheet(
                   initialChildSize: 0.5, // 바텀 시트가 처음 열릴 때 높이
                   minChildSize: 0.5,
-                  maxChildSize: 1.0,
+                  maxChildSize: 0.95,
                   builder: (context, scrollController) {
                     return Stack(
                       children: [
@@ -548,86 +508,125 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
     );
   }
 
-  _selectDate() async {
+  void _selectDate() async {
     DateTime? pickedDate = await showModalBottomSheet<DateTime>(
       backgroundColor: Colors.white,
       context: context,
       barrierColor: Colors.black.withOpacity(0.3),
-      isScrollControlled: true, // 모달이 화면을 꽉 채우도록 설정
+      isScrollControlled: true,
       builder: (context) {
         return SafeArea(
-          child: Container(
-            height: 400,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(12), // 상단 왼쪽, 오른쪽 12만큼 둥글게
-              ),
-            ),
-            child: Column(
-              children: <Widget>[
-                // 상단 타이틀과 닫기 버튼
-                Padding(
-                  padding: const EdgeInsets.only(right: 16.0, left: 16, top: 15, bottom: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '출생년도',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 18),
-                          fontWeight: FontWeight.w600,
-                          height: 1.2,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Icon(Icons.close),
-                      ),
-                    ],
+          child: StatefulBuilder(
+            builder: (context, setModalState) {
+              int maxDay = DateTime(selectedYear, selectedMonth + 1, 0).day;
+
+              return Container(
+                height: 400,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(12),
                   ),
                 ),
-                const Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: Color(0xFFEEEEEE),
-                ),
-                // 날짜 선택기
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 17),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        // 년도 선택 부분
-                        Expanded(
-                          child: CupertinoPicker(
-                            backgroundColor: Colors.white,
-                            diameterRatio: 5.0,
-                            itemExtent: 50,
-                            selectionOverlay: Container(
-                              margin: const EdgeInsets.only(left: 17, right: 15),
-                              decoration: const BoxDecoration(
-                                border: Border.symmetric(
-                                    horizontal: BorderSide(color: Color(0xFFDDDDDD))),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16.0, left: 16, top: 15, bottom: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '출생년도',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 18),
+                              fontWeight: FontWeight.w600,
+                              height: 1.2,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Icon(Icons.close),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: Color(0xFFEEEEEE),
+                    ),
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 17),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: CupertinoPicker(
+                                backgroundColor: Colors.white,
+                                diameterRatio: 5.0,
+                                itemExtent: 50,
+                                selectionOverlay: Container(
+                                  margin: const EdgeInsets.only(left: 17, right: 15),
+                                  decoration: const BoxDecoration(
+                                    border: Border.symmetric(
+                                      horizontal: BorderSide(color: Color(0xFFDDDDDD)),
+                                    ),
+                                  ),
+                                ),
+                                squeeze: 1,
+                                scrollController: FixedExtentScrollController(initialItem: selectedYear - 1900),
+                                onSelectedItemChanged: (int index) {
+                                  setModalState(() {
+                                    selectedYear = 1900 + index;
+                                    maxDay = DateTime(selectedYear, selectedMonth + 1, 0).day;
+                                    if (selectedDay > maxDay) selectedDay = maxDay;
+                                  });
+                                },
+                                children: List<Widget>.generate(
+                                  DateTime.now().year - 1900 + 1,
+                                      (int index) => Center(
+                                    child: Text(
+                                      '${1900 + index}년',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 16),
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                            squeeze: 1,
-                            scrollController: FixedExtentScrollController(initialItem: selectedYear - 1900),
-                            onSelectedItemChanged: (int index) {
-                              setState(() {
-                                selectedYear = 1900 + index;
-                              });
-                            },
-                            children: List<Widget>.generate(
-                              DateTime.now().year - 1900 + 1,
-                                  (int index) {
-                                return Center(
+                            Expanded(
+                              child: CupertinoPicker(
+                                backgroundColor: Colors.white,
+                                itemExtent: 50,
+                                selectionOverlay: Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                                  decoration: const BoxDecoration(
+                                    border: Border.symmetric(
+                                      horizontal: BorderSide(color: Color(0xFFDDDDDD)),
+                                    ),
+                                  ),
+                                ),
+                                diameterRatio: 5.0,
+                                squeeze: 1,
+                                scrollController: FixedExtentScrollController(initialItem: selectedMonth - 1),
+                                onSelectedItemChanged: (int index) {
+                                  setModalState(() {
+                                    selectedMonth = index + 1;
+                                    maxDay = DateTime(selectedYear, selectedMonth + 1, 0).day;
+                                    if (selectedDay > maxDay) selectedDay = maxDay;
+                                  });
+                                },
+                                children: List<Widget>.generate(12, (int index) => Center(
                                   child: Text(
-                                    '${1900 + index}년', // 년도로 표시
+                                    '${index + 1}월',
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 16),
@@ -635,124 +634,84 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                                       height: 1.2,
                                     ),
                                   ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-
-                        // 월 선택 부분
-                        Expanded(
-                          child: CupertinoPicker(
-                            backgroundColor: Colors.white,
-                            itemExtent: 50,
-                            selectionOverlay: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 15),
-                              decoration: const BoxDecoration(
-                                border: Border.symmetric(
-                                    horizontal: BorderSide(color: Color(0xFFDDDDDD))),
+                                )),
                               ),
                             ),
-                            diameterRatio: 5.0,
-                            squeeze: 1,
-                            scrollController: FixedExtentScrollController(initialItem: selectedMonth - 1),
-                            onSelectedItemChanged: (int index) {
-                              setState(() {
-                                selectedMonth = index + 1;
-                              });
-                            },
-                            children: List<Widget>.generate(12, (int index) {
-                              return Center(
-                                child: Text(
-                                  '${index + 1}월', // 월로 표시
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 16),
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.2,
+                            Expanded(
+                              child: CupertinoPicker(
+                                backgroundColor: Colors.white,
+                                itemExtent: 50,
+                                selectionOverlay: Container(
+                                  margin: const EdgeInsets.only(left: 15, right: 17),
+                                  decoration: const BoxDecoration(
+                                    border: Border.symmetric(
+                                      horizontal: BorderSide(color: Color(0xFFDDDDDD)),
+                                    ),
                                   ),
                                 ),
-                              );
-                            }),
-                          ),
-                        ), // 일 선택 부분
-                        Expanded(
-                          child: CupertinoPicker(
-                            backgroundColor: Colors.white,
-                            itemExtent: 50,
-                            selectionOverlay: Container(
-                              margin: const EdgeInsets.only(left: 15, right: 17),
-                              decoration: const BoxDecoration(
-                                border: Border.symmetric(
-                                    horizontal: BorderSide(color: Color(0xFFDDDDDD))),
+                                diameterRatio: 5.0,
+                                squeeze: 1,
+                                scrollController: FixedExtentScrollController(initialItem: selectedDay - 1),
+                                onSelectedItemChanged: (int index) {
+                                  setModalState(() {
+                                    selectedDay = index + 1;
+                                  });
+                                },
+                                children: List<Widget>.generate(
+                                  maxDay,
+                                      (int index) => Center(
+                                    child: Text(
+                                      '${index + 1}일',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 16),
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                            diameterRatio: 5.0,
-                            squeeze: 1,
-                            scrollController: FixedExtentScrollController(initialItem: selectedDay - 1),
-                            onSelectedItemChanged: (int index) {
-                              setState(() {
-                                selectedDay = index + 1;
-                              });
-                            },
-                            children: List<Widget>.generate(31, (int index) {
-                              return Center(
-                                child: Text(
-                                  '${index + 1}일', // 일로 표시
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 16),
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.2,
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                // '선택하기' 버튼
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _selectedDate = DateTime(
-                        selectedYear,
-                        selectedMonth,
-                        selectedDay,
-                      );
-                      _birthController.text = convertDateTimeDisplay(_selectedDate.toString());
-                    });
-                    Navigator.of(context).pop();
-                    FocusScope.of(context).unfocus();
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 48,
-                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.all(Radius.circular(6),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '선택하기',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Colors.white,
-                          height: 1.2,
-                          fontWeight: FontWeight.w600,
+                          ],
                         ),
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedDate = DateTime(selectedYear, selectedMonth, selectedDay);
+                          _birthController.text = convertDateTimeDisplay(_selectedDate.toString());
+                        });
+                        Navigator.of(context).pop();
+                        FocusScope.of(context).unfocus();
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 48,
+                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '선택하기',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.white,
+                              height: 1.2,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
         );
       },
@@ -765,6 +724,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
       });
     }
   }
+
 
   String convertDateTimeDisplay(String date) {
     final DateFormat displayFormatter = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');

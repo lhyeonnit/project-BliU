@@ -977,83 +977,121 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
     DateTime? pickedDate = await showModalBottomSheet<DateTime>(
       backgroundColor: Colors.white,
       context: context,
-      isScrollControlled: true, // 모달이 화면을 꽉 채우도록 설정
       barrierColor: Colors.black.withOpacity(0.3),
+      isScrollControlled: true,
       builder: (context) {
         return SafeArea(
-          child: Container(
-            height: 400,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(12), // 상단 왼쪽, 오른쪽 12만큼 둥글게
-              ),
-            ),
-            child: Column(
-              children: <Widget>[
-                // 상단 타이틀과 닫기 버튼
-                Padding(
-                  padding: const EdgeInsets.only(
-                      right: 16.0, left: 16, top: 15, bottom: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '출생년도',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 18),
-                          fontWeight: FontWeight.w600,
-                          height: 1.2,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Icon(Icons.close),
-                      ),
-                    ],
+          child: StatefulBuilder(
+            builder: (context, setModalState) {
+              int maxDay = DateTime(selectedYear, selectedMonth + 1, 0).day;
+
+              return Container(
+                height: 400,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(12),
                   ),
                 ),
-                const Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: Color(0xFFEEEEEE),
-                ),
-                // 날짜 선택기
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 17),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        // 년도 선택 부분
-                        Expanded(
-                          child: CupertinoPicker(
-                            backgroundColor: Colors.white,
-                            diameterRatio: 5.0,
-                            itemExtent: 50,
-                            selectionOverlay: Container(
-                              margin: const EdgeInsets.only(left: 17, right: 15),
-                              decoration: const BoxDecoration(
-                                border: Border.symmetric(horizontal: BorderSide(color: Color(0xFFDDDDDD))),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16.0, left: 16, top: 15, bottom: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '출생년도',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 18),
+                              fontWeight: FontWeight.w600,
+                              height: 1.2,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Icon(Icons.close),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: Color(0xFFEEEEEE),
+                    ),
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 17),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: CupertinoPicker(
+                                backgroundColor: Colors.white,
+                                diameterRatio: 5.0,
+                                itemExtent: 50,
+                                selectionOverlay: Container(
+                                  margin: const EdgeInsets.only(left: 17, right: 15),
+                                  decoration: const BoxDecoration(
+                                    border: Border.symmetric(
+                                      horizontal: BorderSide(color: Color(0xFFDDDDDD)),
+                                    ),
+                                  ),
+                                ),
+                                squeeze: 1,
+                                scrollController: FixedExtentScrollController(initialItem: selectedYear - 1900),
+                                onSelectedItemChanged: (int index) {
+                                  setModalState(() {
+                                    selectedYear = 1900 + index;
+                                    maxDay = DateTime(selectedYear, selectedMonth + 1, 0).day;
+                                    if (selectedDay > maxDay) selectedDay = maxDay;
+                                  });
+                                },
+                                children: List<Widget>.generate(
+                                  DateTime.now().year - 1900 + 1,
+                                      (int index) => Center(
+                                    child: Text(
+                                      '${1900 + index}년',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 16),
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                            squeeze: 1,
-                            scrollController: FixedExtentScrollController(
-                                initialItem: selectedYear - 1900),
-                            onSelectedItemChanged: (int index) {
-                              setState(() {
-                                selectedYear = 1900 + index;
-                              });
-                            },
-                            children: List<Widget>.generate(
-                              DateTime.now().year - 1900 + 1,
-                                  (int index) {
-                                return Center(
+                            Expanded(
+                              child: CupertinoPicker(
+                                backgroundColor: Colors.white,
+                                itemExtent: 50,
+                                selectionOverlay: Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                                  decoration: const BoxDecoration(
+                                    border: Border.symmetric(
+                                      horizontal: BorderSide(color: Color(0xFFDDDDDD)),
+                                    ),
+                                  ),
+                                ),
+                                diameterRatio: 5.0,
+                                squeeze: 1,
+                                scrollController: FixedExtentScrollController(initialItem: selectedMonth - 1),
+                                onSelectedItemChanged: (int index) {
+                                  setModalState(() {
+                                    selectedMonth = index + 1;
+                                    maxDay = DateTime(selectedYear, selectedMonth + 1, 0).day;
+                                    if (selectedDay > maxDay) selectedDay = maxDay;
+                                  });
+                                },
+                                children: List<Widget>.generate(12, (int index) => Center(
                                   child: Text(
-                                    '${1900 + index}년', // 년도로 표시
+                                    '${index + 1}월',
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 16),
@@ -1061,125 +1099,84 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                       height: 1.2,
                                     ),
                                   ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-
-                        // 월 선택 부분
-                        Expanded(
-                          child: CupertinoPicker(
-                            backgroundColor: Colors.white,
-                            itemExtent: 50,
-                            selectionOverlay: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 15),
-                              decoration: const BoxDecoration(
-                                border: Border.symmetric(horizontal: BorderSide(color: Color(0xFFDDDDDD))),
+                                )),
                               ),
                             ),
-                            diameterRatio: 5.0,
-                            squeeze: 1,
-                            scrollController: FixedExtentScrollController(
-                                initialItem: selectedMonth - 1),
-                            onSelectedItemChanged: (int index) {
-                              setState(() {
-                                selectedMonth = index + 1;
-                              });
-                            },
-                            children: List<Widget>.generate(12, (int index) {
-                              return Center(
-                                child: Text(
-                                  '${index + 1}월', // 월로 표시
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 16),
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.2,
+                            Expanded(
+                              child: CupertinoPicker(
+                                backgroundColor: Colors.white,
+                                itemExtent: 50,
+                                selectionOverlay: Container(
+                                  margin: const EdgeInsets.only(left: 15, right: 17),
+                                  decoration: const BoxDecoration(
+                                    border: Border.symmetric(
+                                      horizontal: BorderSide(color: Color(0xFFDDDDDD)),
+                                    ),
                                   ),
                                 ),
-                              );
-                            }),
-                          ),
-                        ), // 일 선택 부분
-                        Expanded(
-                          child: CupertinoPicker(
-                            backgroundColor: Colors.white,
-                            itemExtent: 50,
-                            selectionOverlay: Container(
-                              margin: const EdgeInsets.only(left: 15, right: 17),
-                              decoration: const BoxDecoration(
-                                border: Border.symmetric(horizontal: BorderSide(color: Color(0xFFDDDDDD))),
+                                diameterRatio: 5.0,
+                                squeeze: 1,
+                                scrollController: FixedExtentScrollController(initialItem: selectedDay - 1),
+                                onSelectedItemChanged: (int index) {
+                                  setModalState(() {
+                                    selectedDay = index + 1;
+                                  });
+                                },
+                                children: List<Widget>.generate(
+                                  maxDay,
+                                      (int index) => Center(
+                                    child: Text(
+                                      '${index + 1}일',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 16),
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                            diameterRatio: 5.0,
-                            squeeze: 1,
-                            scrollController: FixedExtentScrollController(
-                                initialItem: selectedDay - 1),
-                            onSelectedItemChanged: (int index) {
-                              setState(() {
-                                selectedDay = index + 1;
-                              });
-                            },
-                            children: List<Widget>.generate(31, (int index) {
-                              return Center(
-                                child: Text(
-                                  '${index + 1}일', // 일로 표시
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 16),
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.2,
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                // '선택하기' 버튼
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _selectedDate = DateTime(
-                        selectedYear,
-                        selectedMonth,
-                        selectedDay,
-                      );
-                      _birthController.text =
-                          convertDateTimeDisplay(_selectedDate.toString());
-                    });
-                    Navigator.of(context).pop();
-                    FocusScope.of(context).unfocus();
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 48,
-                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(6),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '선택하기',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Colors.white,
-                          height: 1.2,
+                          ],
                         ),
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedDate = DateTime(selectedYear, selectedMonth, selectedDay);
+                          _birthController.text = convertDateTimeDisplay(_selectedDate.toString());
+                        });
+                        Navigator.of(context).pop();
+                        FocusScope.of(context).unfocus();
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 48,
+                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '선택하기',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.white,
+                              height: 1.2,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
         );
       },
