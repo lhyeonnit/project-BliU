@@ -10,6 +10,7 @@ class PayOrderDetailData {
   final int? allPrice;
   final int? allDeliveryPrice;
   final UserDeliveyAddData? userDeliveyAdd;
+  final String? userInfoCheck;
 
   PayOrderDetailData({
     required this.otIdx,
@@ -20,6 +21,7 @@ class PayOrderDetailData {
     required this.allPrice,
     required this.allDeliveryPrice,
     required this.userDeliveyAdd,
+    required this.userInfoCheck,
   });
 
   // JSON to Object
@@ -42,6 +44,7 @@ class PayOrderDetailData {
       allPrice: json['all_price'],
       allDeliveryPrice: json['all_delivery_price'],
       userDeliveyAdd: userDeliveyAdd,
+      userInfoCheck: json['user_info_check'],
     );
   }
 
@@ -56,6 +59,7 @@ class PayOrderDetailData {
       'all_price': allPrice,
       'all_delivery_price': allDeliveryPrice,
       'user_delivey_add': userDeliveyAdd,
+      'user_info_check': userInfoCheck,
     };
   }
 }

@@ -7,6 +7,7 @@ import 'package:BliU/data/product_option_type_data.dart';
 import 'package:BliU/data/product_option_type_detail_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
+import 'package:BliU/screen/join/join_add_info_screen.dart';
 import 'package:BliU/screen/payment/payment_screen.dart';
 import 'package:BliU/screen/product/viewmodel/product_order_bottom_option_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -213,6 +214,8 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                   height: 1.2,
                                 ),
                               ),
+                              iconColor: Colors.black,
+                              collapsedIconColor: Colors.black,
                               children: _ptAddArr.map((ptAdd) {
                                 return ListTile(
                                   title: Text(
@@ -443,15 +446,11 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                             children: [
                                               GestureDetector(
                                                 child: const Icon(
-                                                    CupertinoIcons.minus,
-                                                    size: 20),
+                                                    CupertinoIcons.minus, size: 20),
                                                 onTap: () {
-                                                  if (_addPtAddArr[index]
-                                                      .count >
-                                                      1) {
+                                                  if (_addPtAddArr[index].count > 1) {
                                                     setState(() {
-                                                      _addPtAddArr[index]
-                                                          .count -= 1;
+                                                      _addPtAddArr[index].count -= 1;
                                                     });
                                                   }
                                                 },
@@ -963,19 +962,30 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
           final payOrderDetailDTO = await ref.read(productOrderBottomOptionModelProvider.notifier).orderDetail(requestData2);
           if (payOrderDetailDTO != null) {
             final payOrderDetailData = payOrderDetailDTO.data;
-
+            final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;
             if (payOrderDetailData != null) {
-              if(!mounted) return;
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PaymentScreen(
-                    payOrderDetailData: payOrderDetailData,
-                    memberType: memberType,
-                  ),
-                ),
-              );
+              if (mounted) {
+                if (userInfoCheck == "Y") {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaymentScreen(
+                        payOrderDetailData: payOrderDetailData,
+                        memberType: memberType,
+                      ),
+                    ),
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => JoinAddInfoScreen(
+                      payOrderDetailData: payOrderDetailData,
+                      memberType: memberType,
+                    )),
+                  );
+                }
+                return;
+              }
             }
           }
         }

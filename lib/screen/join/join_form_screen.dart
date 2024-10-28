@@ -322,7 +322,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                             Expanded(
                               flex: 7,
                               child: _buildCheckField(
-                                  '휴대폰번호', _authCodeController, '인증번호 입력',
+                                  '휴대폰번호', _authCodeController, keyboardType: TextInputType.number,'인증번호 입력',
                                   isEnable: _phoneAuthChecked ? false : true),
                             ),
                             Expanded(
@@ -519,7 +519,6 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                 child: GestureDetector(
                   onTap: _isAllFieldsFilled
                       ? () async {
-                    // TODO 회원가입 확인 로직 추가
                     if (_passwordController.text != _confirmPasswordController.text) {
                       Utils.getInstance().showSnackBar(context, "비밀번호가 서로 다릅니다 다시 입력해 주세요.");
                       return;
