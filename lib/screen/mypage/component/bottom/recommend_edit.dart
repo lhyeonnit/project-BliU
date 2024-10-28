@@ -24,7 +24,6 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _birthController = TextEditingController(text: '선택해주세요');
 
-  DateTime? tempPickedDate;
   DateTime _selectedDate = DateTime.now();
   int selectedYear = DateTime.now().year;
   int selectedMonth = DateTime.now().month;

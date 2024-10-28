@@ -23,13 +23,13 @@ class RecommendInfoScreen extends ConsumerStatefulWidget {
 class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
     with SingleTickerProviderStateMixin {
   bool _isBottomSheetVisible = false;
+  bool _isAllFieldsFilled = false;
   late AnimationController _animationController;
   late Animation<Offset> _appBarSlideAnimation;
   late Animation<Offset> _bottomSheetSlideAnimation;
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _birthController = TextEditingController(text: '선택해주세요');
 
-  DateTime? tempPickedDate;
   DateTime _selectedDate = DateTime.now();
   int selectedYear = DateTime.now().year;
   int selectedMonth = DateTime.now().month;
@@ -37,7 +37,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
 
   List<StyleCategoryData> styleCategories = [];
   final List<StyleCategoryData> _selectedStyles = [];
-  String? _selectedGender;
+  String _selectedGender = "";
 
   @override
   void initState() {
@@ -72,7 +72,14 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
       _afterBuild(context);
     });
   }
-
+  void _checkIfAllFieldsFilled() {
+    setState(() {
+      _isAllFieldsFilled =
+          _birthController.text.isNotEmpty &&
+              _selectedGender.isNotEmpty &&
+              _selectedStyles.isNotEmpty;
+    });
+  }
   @override
   void dispose() {
     _animationController.dispose();
@@ -322,6 +329,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                                                       // 선택되지 않은 경우 추가
                                                       _selectedStyles.add(style);
                                                     }
+                                                    _checkIfAllFieldsFilled();
                                                   });
                                                 },
                                                 child: Container(
@@ -367,13 +375,16 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                                 width: double.infinity,
                                 color: Colors.white,
                                 child: GestureDetector(
-                                  onTap: () => _submitRecommendInfo(),
+                                  onTap: () => _isAllFieldsFilled
+                                      ? () async {
+                                      _submitRecommendInfo();
+                                  } : null,
                                   child: Container(
                                     height: 48,
                                     margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.all(Radius.circular(6),
+                                    decoration: BoxDecoration(
+                                      color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                                      borderRadius: const BorderRadius.all(Radius.circular(6),
                                       ),
                                     ),
                                     child: Center(
@@ -382,7 +393,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                                         style: TextStyle(
                                           fontFamily: 'Pretendard',
                                           fontSize: Responsive.getFont(context, 14),
-                                          color: Colors.white,
+                                          color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
                                           height: 1.2,
                                         ),
                                       ),
@@ -419,6 +430,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
         onTap: () {
           setState(() {
             _selectedGender = genderValue;
+            _checkIfAllFieldsFilled();
           });
         },
         child: Container(
@@ -682,6 +694,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                         setState(() {
                           _selectedDate = DateTime(selectedYear, selectedMonth, selectedDay);
                           _birthController.text = convertDateTimeDisplay(_selectedDate.toString());
+                          _checkIfAllFieldsFilled();
                         });
                         Navigator.of(context).pop();
                         FocusScope.of(context).unfocus();
@@ -765,14 +778,18 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
         formattedDate = memberInfo.mctBirth ?? '';
         _selectedGender = memberInfo.mctGender ?? '';
         selectedStyleIds = memberInfo.mctStyle ?? [];
+        memberInfo.childCk == 'Y';
         pref.login(memberInfo);
 
-        if(!mounted) return;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MainScreen()),
-        );
-        ref.read(mainScreenProvider.notifier).selectNavigation(2);
+
+        if(mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const MainScreen()),
+          );
+          ref.read(mainScreenProvider.notifier).selectNavigation(2);
+          return;
+        }
       } else {
         if(!mounted) return;
         Utils.getInstance().showSnackBar(context, "회원 정보를 불러오지 못했습니다.");

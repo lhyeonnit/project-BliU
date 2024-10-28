@@ -499,6 +499,9 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                       birthDay = myPageInfoDTO.data?.mtBirth ?? '';
                       gender = myPageInfoDTO.data?.mtGender ?? '';
 
+                      setState(() {
+                        widget.payOrderDetailData.userInfoCheck == 'Y';
+                      });
                       if (!context.mounted) return;
                       _showCancelDialog(context);
                       Navigator.push(
