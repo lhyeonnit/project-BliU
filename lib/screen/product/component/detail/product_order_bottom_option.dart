@@ -637,6 +637,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
         deliveryPriceStr = "무료";
       } else {
         deliveryPriceStr = "${Utils.getInstance().priceString((_productData.deliveryInfo?.deliveryPrice ?? 0))}원";
+        print("test::::::::${_productData.deliveryInfo?.deliveryPrice}");
       }
     }
     return Container(
@@ -972,7 +973,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
             if (payOrderDetailData != null) {
               if (mounted) {
                 if (userInfoCheck == "Y") {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => PaymentScreen(
@@ -982,7 +983,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                     ),
                   );
                 } else {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => JoinAddInfoScreen(
                       payOrderDetailData: payOrderDetailData,

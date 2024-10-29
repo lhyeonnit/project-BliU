@@ -365,48 +365,45 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                         ),
                         child: _birthdayText(),
                       ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Stack(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(top: 10, bottom: 20),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(6),
-                                child: Image.asset('assets/images/login/coupon_banner.png'),
+                      Stack(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 10, bottom: 20),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(6),
+                              child: Image.asset('assets/images/login/coupon_banner.png'),
+                            ),
+                          ),
+                          Positioned(
+                            left: 25,
+                            top: 10,
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '생일 쿠폰 지급!',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 16),
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                  Text(
+                                    '생년월일을 입력 주시면, 생일날 쿠폰 지급!',
+                                    style: TextStyle(
+                                      fontSize: Responsive.getFont(context, 12),
+                                      color: const Color(0xFF6A5B54),
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            Positioned(
-                              left: 25,
-                              top: 10,
-                              child: Container(
-                                margin: const EdgeInsets.only(top: 15),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '생일 쿠폰 지급!',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 16),
-                                        fontWeight: FontWeight.bold,
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                    Text(
-                                      '생년월일을 입력 주시면, 생일날 쿠폰 지급!',
-                                      style: TextStyle(
-                                        fontSize: Responsive.getFont(context, 12),
-                                        color: const Color(0xFF6A5B54),
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       Row(
                         children: [
@@ -503,8 +500,8 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                         widget.payOrderDetailData.userInfoCheck == 'Y';
                       });
                       if (!context.mounted) return;
-                      _showCancelDialog(context);
-                      Navigator.push(
+                      // _showCancelDialog(context);
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => PaymentScreen(

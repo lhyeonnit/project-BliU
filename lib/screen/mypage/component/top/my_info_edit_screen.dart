@@ -210,7 +210,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                   obscureText: true, isEnable: true),
                               GestureDetector(
                                 onTap: () {
-                                  // TODO 이전 비밀번호 재사용 방지 처리 필요
+
                                   _editMyPassword();
                                 },
                                 child: Container(
@@ -474,52 +474,47 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                         ),
                         child: _birthdayText(),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          // TODO 쿠폰 지급 이동
-                        },
-                        child: Stack(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(top: 10, bottom: 20),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(9),
-                                child: Image.asset(
-                                    'assets/images/login/coupon_banner.png'),
+                      Stack(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 10, bottom: 20),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(9),
+                              child: Image.asset(
+                                  'assets/images/login/coupon_banner.png'),
+                            ),
+                          ),
+                          Positioned(
+                            left: 25,
+                            top: 10,
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '생일 쿠폰 지급!',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 16),
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                  Text(
+                                    '생년월일을 입력 주시면, 생일날 쿠폰 지급!',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 12),
+                                      color: const Color(0xFF6A5B54),
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            Positioned(
-                              left: 25,
-                              top: 10,
-                              child: Container(
-                                margin: const EdgeInsets.only(top: 15),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '생일 쿠폰 지급!',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 16),
-                                        fontWeight: FontWeight.bold,
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                    Text(
-                                      '생년월일을 입력 주시면, 생일날 쿠폰 지급!',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 12),
-                                        color: const Color(0xFF6A5B54),
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       Row(
                         children: [
