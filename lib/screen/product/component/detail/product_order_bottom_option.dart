@@ -637,7 +637,6 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
         deliveryPriceStr = "무료";
       } else {
         deliveryPriceStr = "${Utils.getInstance().priceString((_productData.deliveryInfo?.deliveryPrice ?? 0))}원";
-        print("test::::::::${_productData.deliveryInfo?.deliveryPrice}");
       }
     }
     return Container(
@@ -972,7 +971,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
             final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;
             if (payOrderDetailData != null) {
               if (mounted) {
-                if (userInfoCheck == "Y") {
+                if (userInfoCheck == "Y" || memberType == 2) {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
