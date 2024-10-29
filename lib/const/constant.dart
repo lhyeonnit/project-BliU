@@ -126,6 +126,9 @@ class Constant {
   //카테고리
   static const apiCategoryAgeUrl = "category/age";
 
+  // 공유하기
+  static const apiShareUrl = "${USER_URL}view/link";
+
   // 기본 테스트용
   static const iamportUserCode = "iamport";// 테스트용
   static const iamportPg = "html5_inicis";// 테스트용

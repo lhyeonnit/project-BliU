@@ -66,7 +66,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
       if (exhibitionDetailResponseDTO.result == true) {
         setState(() {
           _exhibitionData = exhibitionDetailResponseDTO.data;
-          _productList.addAll(exhibitionDetailResponseDTO.data?.product ?? []);
+          _productList = exhibitionDetailResponseDTO.data?.product ?? [];
         });
       }
     }
