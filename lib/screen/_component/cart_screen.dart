@@ -304,7 +304,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
       final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;
       if (payOrderDetailData != null) {
         if (mounted) {
-          if (userInfoCheck == "Y") {
+          if (userInfoCheck == "Y" || memberType == 2) {
             if(!mounted) return;
             Navigator.push(
               context,

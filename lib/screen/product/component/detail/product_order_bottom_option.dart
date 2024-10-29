@@ -971,7 +971,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
             final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;
             if (payOrderDetailData != null) {
               if (mounted) {
-                if (userInfoCheck == "Y") {
+                if (userInfoCheck == "Y" || memberType == 2) {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
