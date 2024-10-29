@@ -1201,9 +1201,19 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
                     '본 상품 정보의 내용은 공정거래위원회 ‘상품정보제공고시’ 에 따라 판매자가 직접 등록한 것으로 해당 정보에 대한 책임은 판매자에게 있습니다.',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      color: const Color(0xFF7B7B7B),
+                      height: 1.2,
+                    ),
                   ),
                 ),
-                // TODO 표 추가
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  margin: const EdgeInsets.only(top: 20),
+                  child: _makeProductInfoTable(),
+                )
               ],
             ),
           ),
@@ -1222,12 +1232,9 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 ),
               ),
               children: [
-                // TODO 표 추가
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    '표 주가',
-                  ),
+                  child: _makeSellerInfoTable(),
                 ),
               ],
             ),
@@ -1811,6 +1818,128 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             Icons.star,
             color: Color(0xFFFF6191), // 채워진 별 색상
             size: 16,
+          ),
+        ),
+      ],
+    );
+  }
+
+  //상품정보제공고시 테이블 구성 만들기
+  Widget _makeProductInfoTable() {
+    List<TableRow> tableRows = [];
+    final ptCategory = _productData?.ptCategory ?? "";
+    List<String> typeList = [];
+
+    // 아우터, 상의, 하의, 원피스, 세트/한벌옷, 언더웨어/홈웨어
+    final List<String> type1 = [
+      '제품명 및 모델명', 'KC 인증정보', '크기.중량', '색상', '재질', '사용연령 또는 권장사용연령', '동일모델의 출시년월',
+      '제조자, 수입품의 경우 수입자와 함께 표기', '제조국', '취급방법 및 취급시 주의사항', '품질보증기간', 'A/S 책임자와 전화번호',
+    ];
+    //슈즈
+    final List<String> type2 = [
+      '재품 주소재(운동화인 경우에는 겉감, 안감을 구분하여 표시)', 'KC 인증정보', '색상', '치수', '제조자. 수입품의 경우 수입자와 함께 표기',
+      '제조국', '취급방법 및 취급시 주의사항', '품질보증기간', 'A/S 책임자와 전화번호',
+    ];
+    //악세서리
+    final List<String> type3 = [
+      '종류', 'KC 인증정보', '소재', '치수 및 크기', '제조자, 수입품의 경우 수입자와 함께 표기', '제조국',
+      '취급방법 및 취급시 주의사항', '품질보증기간', 'A/S 책임자와 전화번호'
+    ];
+    //베이비 잡화
+    final List<String> type4 = [
+      '종류', 'KC 인증정보', '소재', '치수', '제조자, 수입품의 경우 수입자와 함께 표기', '제조국',
+      '취급방법 및 취급시 주의사항', '품질보증기간', 'A/S 책임자와 전화번호'
+    ];
+
+    switch(ptCategory) {
+      // 아우터, 상의, 하의, 원피스, 세트/한벌옷, 언더웨어/홈웨어
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "6":
+      case "7":
+        typeList = type1;
+        break;
+      //슈즈
+      case "5":
+        typeList = type2;
+        break;
+      //악세서리
+      case "8":
+        typeList = type3;
+        break;
+      //베이비 잡화
+      case "9":
+        typeList = type4;
+        break;
+    }
+
+    for (var name in typeList) {
+      tableRows.add(_makeTableRow(name, '상품상세참조'));
+    }
+
+    return Table(
+      //defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      border: TableBorder.all(
+        color: const Color(0xFFDDDDDD),
+      ),
+      columnWidths: const {
+        0: FractionColumnWidth(0.45),
+        1: FractionColumnWidth(0.55),
+      },
+      children: tableRows,
+    );
+  }
+
+  Widget _makeSellerInfoTable() {
+    return Table(
+      border: TableBorder.all(
+        color: const Color(0xFFDDDDDD),
+      ),
+      columnWidths: const {
+        0: FractionColumnWidth(0.45),
+        1: FractionColumnWidth(0.55),
+      },
+      children: [
+        _makeTableRow('상호명', '베베쥬'),
+        _makeTableRow('사업자등록번호', '12345678'),
+        _makeTableRow('대표전화', '02-1234-5678'),
+      ],
+    );
+  }
+
+  TableRow _makeTableRow(String name, String value) {
+    return TableRow(
+      children: [
+        TableCell(
+          child: Container(
+            color: const Color(0xFFF5F9F9),
+            padding: const EdgeInsets.fromLTRB(13, 12, 13, 12),
+            child: Text(
+              name,
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 13),
+                color: Colors.black,
+                height: 1.2,
+              ),
+            ),
+          ),
+        ),
+        TableCell(
+          verticalAlignment: TableCellVerticalAlignment.middle,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(13, 12, 13, 12),
+            child: Text(
+              value,
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 13),
+                color: Colors.black,
+                height: 1.2,
+              ),
+            ),
           ),
         ),
       ],
