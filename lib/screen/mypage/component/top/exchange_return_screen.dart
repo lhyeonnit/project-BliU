@@ -150,10 +150,10 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
 
     final defaultResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).orderReturn(formData);
     if (!mounted) return;
-    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     if (defaultResponseDTO.result) {
       Navigator.pop(context);
     }
+    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
   }
 
   @override

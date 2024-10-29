@@ -418,9 +418,8 @@ class InquiryStoreState extends ConsumerState<InquiryStore> {
         if (!mounted) return;
         if (resultData != null) {
           if (resultData.result == true) {
-            Utils.getInstance().showSnackBar(context, "문의가 정상적으로 등록되었습니다");
-
             Navigator.pop(context);
+            Utils.getInstance().showSnackBar(context, "문의가 정상적으로 등록되었습니다");
           } else {
             Utils.getInstance().showSnackBar(context, resultData.message.toString());
           }

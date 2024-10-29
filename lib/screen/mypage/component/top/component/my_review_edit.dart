@@ -98,10 +98,10 @@ class MyReviewEditState extends ConsumerState<MyReviewEdit> {
       final defaultResponseDTO = await ref.read(productReviewEditViewModelProvider.notifier).reviewUpdate(formData);
       if (defaultResponseDTO != null) {
         if (!mounted) return;
-        Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
         if (defaultResponseDTO.result == true) {
           Navigator.pop(context, true);
         }
+        Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
       }
     } else {
       Utils.getInstance().showSnackBar(context, '리뷰는 최소 10자 이상이어야 합니다.');

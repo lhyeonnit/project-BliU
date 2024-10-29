@@ -296,9 +296,9 @@ class InquiryOneDetail extends ConsumerWidget {
     final defaultResponseDTO = await ref.read(inquiryDetailModelProvider.notifier).delete(requestData);
     if (!context.mounted) return;
 
-    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     if (defaultResponseDTO.result == true) {
       Navigator.pop(context);
     }
+    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
   }
 }

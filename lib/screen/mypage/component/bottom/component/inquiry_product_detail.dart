@@ -390,9 +390,10 @@ class InquiryProductDetail extends ConsumerWidget {
 
     final defaultResponseDTO = await ref.read(inquiryDetailModelProvider.notifier).delete(requestData);
     if (!context.mounted) return;
-    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+
     if (defaultResponseDTO.result == true) {
       Navigator.pop(context, true);
     }
+    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
   }
 }

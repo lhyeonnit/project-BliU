@@ -340,10 +340,10 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
 
     final defaultResponseDTO = await ref.read(cancelViewModelProvider.notifier).orderCancel(requestData);
     if (!mounted) return;
-    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
     if (defaultResponseDTO.result == true) {
       Navigator.pop(context);
     }
+    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
   }
 
   OverlayEntry _customDropdown() {

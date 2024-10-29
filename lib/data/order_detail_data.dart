@@ -12,6 +12,7 @@ class OrderDetailData {
   final int? ctOptQty;
   final int? ptPrice;
   final String? ptImg;
+  final String? reviewWrite;
 
   OrderDetailData({
     required this.ctIdx,
@@ -27,6 +28,7 @@ class OrderDetailData {
     required this.ctOptQty,
     required this.ptPrice,
     required this.ptImg,
+    required this.reviewWrite,
   });
 
   // JSON to Object
@@ -45,6 +47,7 @@ class OrderDetailData {
       ctOptQty: json['ct_opt_qty'],
       ptPrice: json['pt_price'],
       ptImg: json['pt_img'],
+      reviewWrite: json['review_write'],
     );
   }
 
@@ -64,6 +67,7 @@ class OrderDetailData {
       'ct_opt_qty': ctOptQty,
       'pt_price': ptPrice,
       'pt_img': ptImg,
+      'review_write': reviewWrite,
     };
   }
 }
