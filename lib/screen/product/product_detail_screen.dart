@@ -57,6 +57,26 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   bool _isDeliveryInfoVisible = false;
   bool _isExpanded = false;
 
+  final _infoThemeData = ThemeData(
+    /// Prevents to splash effect when clicking.
+    splashColor: Colors.transparent,
+
+    /// Prevents the mouse cursor to highlight the tile when hovering on web.
+    hoverColor: Colors.transparent,
+
+    /// Hides the highlight color when the tile is pressed.
+    highlightColor: Colors.transparent,
+
+    /// Makes the top and bottom dividers invisible when expanded.
+    dividerColor: Colors.transparent,
+
+    /// Make background transparent.
+    expansionTileTheme: const ExpansionTileThemeData(
+      backgroundColor: Colors.transparent,
+      collapsedBackgroundColor: Colors.transparent,
+    ),
+  );
+
   @override
   void initState() {
     super.initState();
@@ -339,12 +359,13 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             width: 48,
                             margin: const EdgeInsets.only(right: 9),
                             decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                border: Border.all(color: const Color(0xFFDDDDDD))
+                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                              border: Border.all(color: const Color(0xFFDDDDDD)),
                             ),
-                            child: SvgPicture.asset(_productData?.likeChk == "Y"
-                                ? 'assets/images/product/like_lg_on.svg'
-                                : 'assets/images/product/like_lg_off.svg'
+                            child: SvgPicture.asset(
+                              _productData?.likeChk == "Y"
+                              ? 'assets/images/product/like_lg_on.svg'
+                              : 'assets/images/product/like_lg_off.svg',
                             ),
                           ),
                         ),
@@ -460,9 +481,27 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   }
 
   Widget _productInfoTitle(StoreData? storeData, ProductData? productData) {
+    // 배송비 정보
+    final deliveryBasicPrice = productData?.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0;
+    final deliveryBasicPriceStr = Utils.getInstance().priceString(deliveryBasicPrice);
+
+    final deliveryMinPrice = productData?.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0;
+    final deliveryMinPriceStr = Utils.getInstance().priceString(deliveryMinPrice);
+
+    final deliveryPrice = productData?.deliveryInfo?.deliveryPrice ?? 0;
+    String deliveryPriceStr = '';
+    if (deliveryPrice == 0) {
+      deliveryPriceStr = '무료배송)';
+    } else {
+      deliveryPriceStr = '${Utils.getInstance().priceString(deliveryPrice)}원)';
+    }
+
+    final deliveryPriceInfoStr1 = '$deliveryBasicPriceStr원 ($deliveryMinPriceStr원 이상 $deliveryPriceStr';
+
+    final deliveryPriceInfoStr2 = '배송비: 기본 배송비 $deliveryBasicPriceStr원 / $deliveryMinPriceStr 이상 무료';
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -568,19 +607,20 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     // 가격 정보
                     Row(
                       children: [
-                        (productData?.ptDiscountPer ?? 0) > 0
-                            ? Text(
-                                "${productData?.ptDiscountPer ?? 0}%",
-                                // 할인률
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 18),
-                                  color: const Color(0xFFFF6192),
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.2,
-                                ),
-                              )
-                            : const SizedBox(),
+                        Visibility(
+                          visible: (productData?.ptDiscountPer ?? 0) > 0 ? true : false,
+                          child: Text(
+                            "${productData?.ptDiscountPer ?? 0}%",
+                            // 할인률
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 18),
+                              color: const Color(0xFFFF6192),
+                              fontWeight: FontWeight.bold,
+                              height: 1.2,
+                            ),
+                          ),
+                        ),
                         Container(
                           margin: const EdgeInsets.only(left: 6, right: 5),
                           child: Text(
@@ -593,30 +633,33 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             ),
                           ),
                         ),
-                        Stack(
-                          children: [
-                            // 원래 텍스트 (원래 가격)
-                            Text(
-                              '${Utils.getInstance().priceString(productData?.ptSellingPrice ?? 0)}원',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: const Color(0xFFABABAB),
-                                height: 1.2,
+                        Visibility(
+                          visible: (productData?.ptDiscountPer ?? 0) > 0 ? true : false,
+                          child: Stack(
+                            children: [
+                              // 원래 텍스트 (원래 가격)
+                              Text(
+                                '${Utils.getInstance().priceString(productData?.ptSellingPrice ?? 0)}원',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: const Color(0xFFABABAB),
+                                  height: 1.2,
+                                ),
                               ),
-                            ),
-                            // 커스텀 취소선
-                            Positioned(
-                              top: 7, // 텍스트 가운데쯤에 맞춰서 위치
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                height: 1, // 선의 두께
-                                color: const Color(0xFFABABAB), // 취소선 색상
+                              // 커스텀 취소선
+                              Positioned(
+                                top: 7, // 텍스트 가운데쯤에 맞춰서 위치
+                                left: 0,
+                                right: 0,
+                                child: Container(
+                                  height: 1, // 선의 두께
+                                  color: const Color(0xFFABABAB), // 취소선 색상
+                                ),
                               ),
-                            ),
-                          ],
-                        )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                     Visibility(
@@ -665,13 +708,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       child: Row(
                         children: [
                           Text(
-                            '${Utils.getInstance().priceString(
-                                productData?.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0
-                            )}원 (${Utils.getInstance().priceString(
-                                productData?.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0
-                            )}원 이상 ${(productData?.deliveryInfo?.deliveryPrice ?? 0) == 0 ?
-                            '무료배송)' :
-                            '${Utils.getInstance().priceString((productData?.deliveryInfo?.deliveryPrice ?? 0))}원)'}', // 배송비 정보
+                            deliveryPriceInfoStr1,
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
@@ -719,11 +756,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        '배송비: 기본 배송비 ${Utils.getInstance().priceString(
-                            productData?.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0
-                        )}원 / ${Utils.getInstance().priceString(
-                            productData?.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0
-                        )} 이상 무료',
+                        deliveryPriceInfoStr2,
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 10),
@@ -746,7 +779,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           ),
                           Text(
                             '제주 추가배송비: ${Utils.getInstance().priceString(
-                                productData?.deliveryInfo?.deliveryDetail?.deliveryAddPrice2 ?? 0
+                              productData?.deliveryInfo?.deliveryDetail?.deliveryAddPrice2 ?? 0
                             )}원',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
@@ -834,13 +867,14 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           children: [
             // 내용이 들어가는 영역
             AnimatedSize(
-              duration: const Duration(milliseconds: 300),
-              child: _isExpanded
-                  ? SizedBox(
-                      height: 750,
-                      child: Text(content),
-                    )
-                  : Text(content),
+              duration: const Duration(milliseconds: 500),
+              child: Container(
+                constraints: BoxConstraints(
+                  minHeight: _isExpanded ? 750 : 0,
+                  maxHeight: _isExpanded ? double.infinity : 50,
+                ),
+                child: Text(content),
+              ),
             ),
             // 버튼
             GestureDetector(
@@ -932,25 +966,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           ),
           // 배송 안내 섹션
           Theme(
-            data: ThemeData(
-              /// Prevents to splash effect when clicking.
-              splashColor: Colors.transparent,
-
-              /// Prevents the mouse cursor to highlight the tile when hovering on web.
-              hoverColor: Colors.transparent,
-
-              /// Hides the highlight color when the tile is pressed.
-              highlightColor: Colors.transparent,
-
-              /// Makes the top and bottom dividers invisible when expanded.
-              dividerColor: Colors.transparent,
-
-              /// Make background transparent.
-              expansionTileTheme: const ExpansionTileThemeData(
-                backgroundColor: Colors.transparent,
-                collapsedBackgroundColor: Colors.transparent,
-              ),
-            ),
+            data: _infoThemeData,
             // 선 제거
             child: ExpansionTile(
               initiallyExpanded: false,
@@ -1129,25 +1145,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           // 교환/반품 안내 섹션
           Theme(
             //data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-            data: ThemeData(
-              /// Prevents to splash effect when clicking.
-              splashColor: Colors.transparent,
-
-              /// Prevents the mouse cursor to highlight the tile when hovering on web.
-              hoverColor: Colors.transparent,
-
-              /// Hides the highlight color when the tile is pressed.
-              highlightColor: Colors.transparent,
-
-              /// Makes the top and bottom dividers invisible when expanded.
-              dividerColor: Colors.transparent,
-
-              /// Make background transparent.
-              expansionTileTheme: const ExpansionTileThemeData(
-                backgroundColor: Colors.transparent,
-                collapsedBackgroundColor: Colors.transparent,
-              ),
-            ),
+            data: _infoThemeData,
             // 선 제거
             child: ExpansionTile(
               initiallyExpanded: false,
@@ -1184,6 +1182,56 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               ],
             ),
           ),
+          //상품정보제공 공시
+          Theme(
+            data: _infoThemeData,
+            child: ExpansionTile(
+              initiallyExpanded: false,
+              title: Text(
+                '상품정보제공고시',
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.bold,
+                  fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                ),
+              ),
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    '본 상품 정보의 내용은 공정거래위원회 ‘상품정보제공고시’ 에 따라 판매자가 직접 등록한 것으로 해당 정보에 대한 책임은 판매자에게 있습니다.',
+                  ),
+                ),
+                // TODO 표 추가
+              ],
+            ),
+          ),
+          // 판매자정보
+          Theme(
+            data: _infoThemeData,
+            child: ExpansionTile(
+              initiallyExpanded: false,
+              title: Text(
+                '판매자정보',
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.bold,
+                  fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                ),
+              ),
+              children: [
+                // TODO 표 추가
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    '표 주가',
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
