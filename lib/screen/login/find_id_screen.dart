@@ -231,7 +231,7 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                                       return;
                                     }
                                     FocusScope.of(context).unfocus();
-                                    // TODO 타이머 체크필요
+
 
                                     final pref = await SharedPreferencesManager
                                         .getInstance();
