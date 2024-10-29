@@ -73,7 +73,6 @@ class ProductOrderBottomOptionContent extends ConsumerStatefulWidget {
 
 class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBottomOptionContent> {
   late ProductData _productData;
-  ProductOptionData? _productOptionData;
   List<ProductOptionTypeData> _ptOption = [];
   List<ProductOptionTypeDetailData> _ptOptionArr = [];
   List<AddOptionData> _ptAddArr = [];
@@ -142,7 +141,6 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                           final optionData = _ptOption[index];
                           final title = optionData.title ?? '';
                           final options = optionData.children ?? [];
-
                           // 선택된 값이 있으면 표시하고 없으면 기본 타이틀 표시
                           String displayTitle = _selectedOptions[title] == null ? title : "${_selectedOptions[title]}";
 
@@ -171,8 +169,8 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
 
                                   // 모든 옵션의 타이틀 초기화
                                   for (var option in _ptOption) {
-                                    _selectedOptions[option.title ?? ''] = option.title;  // 타이틀 초기화
-                                    selectedOption = option.title ?? '';
+                                    _selectedOptions[option.title ?? ''] = null;  // 타이틀 초기화
+                                    selectedOption = title;
                                   }
                                 } else {
                                   _isOptionSelected = false;  // 모든 옵션이 선택되지 않으면 false
@@ -195,7 +193,11 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                           data: Theme.of(context).copyWith(
                             disabledColor: Colors.transparent,
                             dividerColor: Colors.transparent,
-                            listTileTheme: ListTileTheme.of(context).copyWith(dense: true, minVerticalPadding: 14),
+                            listTileTheme: ListTileTheme.of(context).copyWith(
+                              dense: true,
+                              minVerticalPadding: 14,
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                            ),
                           ),
                           child: Container(
                             margin: const EdgeInsets.only(bottom: 15),
@@ -214,6 +216,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                   height: 1.2,
                                 ),
                               ),
+
                               iconColor: Colors.black,
                               collapsedIconColor: Colors.black,
                               children: _ptAddArr.map((ptAdd) {
@@ -538,10 +541,9 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
         .getList(requestData);
     if (responseDto != null) {
       setState(() {
-        _productOptionData = responseDto.data;
-        _ptOption = _productOptionData?.ptOption ?? [];
-        _ptOptionArr = _productOptionData?.ptOptionArr ?? [];
-        _ptAddArr = _productOptionData?.ptAddArr ?? [];
+        _ptOption = responseDto.data?.ptOption ?? [];
+        _ptOptionArr = responseDto.data?.ptOptionArr ?? [];
+        _ptAddArr = responseDto.data?.ptAddArr ?? [];
       });
     }
   }
@@ -557,7 +559,11 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
       data: Theme.of(context).copyWith(
         disabledColor: Colors.transparent,
         dividerColor: Colors.transparent,
-        listTileTheme: ListTileTheme.of(context).copyWith(dense: true, minVerticalPadding: 14),
+        listTileTheme: ListTileTheme.of(context).copyWith(
+          dense: true,
+          minVerticalPadding: 14,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+        ),
       ),
       child: Container(
         margin: const EdgeInsets.only(bottom: 15),
@@ -587,7 +593,6 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
               if (index >= _isExpandedList.length) {
                 _isExpandedList.addAll(List.generate(index - _isExpandedList.length + 1, (_) => false));
               }
-
               _isExpandedList[index] = expanded;
             });
           },
@@ -603,6 +608,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
               ),
               onTap: () {
                 onSelected(option); // 항목이 선택되면 콜백 실행
+
               },
             );
           }).toList(),
