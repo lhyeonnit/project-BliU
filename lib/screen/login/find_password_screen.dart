@@ -226,7 +226,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                                 if (_authCodeController.text.isEmpty || _phoneAuthChecked) {
                                   return;
                                 }
-                                // TODO 타이머 체크필요
+
                                 FocusScope.of(context).unfocus();
                                 final pref = await SharedPreferencesManager.getInstance();
                                 final phoneNumber = _phoneController.text;
