@@ -260,61 +260,58 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         children: [
                           _productBanner(_productData?.imgArr ?? []),
                           _productInfoTitle(_storeData, _productData),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 20),
+                            height: 10,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFF5F9F9),
+                            ),
+                          ),
+                          TabBar(
+                            overlayColor: WidgetStateColor.transparent,
+                            indicatorColor: Colors.black,
+                            dividerColor: const Color(0xFFDDDDDD),
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            // 인디케이터가 각 탭의 길이에 맞게 조정됨
+                            labelColor: Colors.black,
+                            unselectedLabelColor: const Color(0xFF7B7B7B),
+                            isScrollable: true,
+                            // here
+                            tabAlignment: TabAlignment.start,
+                            // ** Use TabAlignment.start
+                            tabs: [
+                              const Tab(text: '상세정보'),
+                              Tab(text: '리뷰($_productReviewCount)'),
+                            ],
+                          ),
                         ],
                       ),
                     ),
                   ];
                 },
-                body: Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 20),
-                        height: 10,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFF5F9F9),
-                        ),
-                      ),
-                      TabBar(
-                        overlayColor: WidgetStateColor.transparent,
-                        indicatorColor: Colors.black,
-                        dividerColor: const Color(0xFFDDDDDD),
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        // 인디케이터가 각 탭의 길이에 맞게 조정됨
-                        labelColor: Colors.black,
-                        unselectedLabelColor: const Color(0xFF7B7B7B),
-                        isScrollable: true,
-                        // here
-                        tabAlignment: TabAlignment.start,
-                        // ** Use TabAlignment.start
-                        tabs: [
-                          const Tab(text: '상세정보'),
-                          Tab(text: '리뷰($_productReviewCount)'),
+                body: Column(
+                  children: [
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          // 첫 번째 탭: 상세정보에 모든 정보 포함
+                          SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _productInfoContent(_productData?.ptContent ?? ""),
+                                _productAi(_sameList),
+                                _productInfoBeforeOrder(_infoData, _productData),
+                                _productInquiry(),
+                              ],
+                            ),
+                          ),
+                          // 두 번째 탭: 리뷰만 표시
+                          _productReview(),
                         ],
                       ),
-                      Expanded(
-                        child: TabBarView(
-                          children: [
-                            // 첫 번째 탭: 상세정보에 모든 정보 포함
-                            SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _productInfoContent(_productData?.ptContent ?? ""),
-                                  _productAi(_sameList),
-                                  _productInfoBeforeOrder(_infoData, _productData),
-                                  _productInquiry(),
-                                ],
-                              ),
-                            ),
-                            // 두 번째 탭: 리뷰만 표시
-                            _productReview(),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -462,8 +459,8 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   Widget _productInfoTitle(StoreData? storeData, ProductData? productData) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16.0),
-      padding: const EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
