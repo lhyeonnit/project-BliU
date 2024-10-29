@@ -249,74 +249,71 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 50),
-              child: DefaultTabController(
-                length: 2, // 두 개의 탭
-                child: NestedScrollView(
-                  controller: _scrollController,
-                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      SliverToBoxAdapter(
-                        child: Column(
-                          children: [
-                            _productBanner(_productData?.imgArr ?? []),
-                            _productInfoTitle(_storeData, _productData),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 20),
-                              height: 10,
-                              decoration: const BoxDecoration(
-                                color: Color(0xFFF5F9F9),
-                              ),
+            DefaultTabController(
+              length: 2, // 두 개의 탭
+              child: NestedScrollView(
+                controller: _scrollController,
+                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          _productBanner(_productData?.imgArr ?? []),
+                          _productInfoTitle(_storeData, _productData),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 20),
+                            height: 10,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFF5F9F9),
                             ),
-                          ],
-                        ),
-                      ),
-                    ];
-                  },
-                  body: Column(
-                      children: [
-                        TabBar(
-                          overlayColor: WidgetStateColor.transparent,
-                          indicatorColor: Colors.black,
-                          dividerColor: const Color(0xFFDDDDDD),
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          // 인디케이터가 각 탭의 길이에 맞게 조정됨
-                          labelColor: Colors.black,
-                          unselectedLabelColor: const Color(0xFF7B7B7B),
-                          isScrollable: true,
-                          // here
-                          tabAlignment: TabAlignment.start,
-                          // ** Use TabAlignment.start
-                          tabs: [
-                            const Tab(text: '상세정보'),
-                            Tab(text: '리뷰($_productReviewCount)'),
-                          ],
-                        ),
-                        Expanded(
-                          child: TabBarView(
-                            children: [
-                              // 첫 번째 탭: 상세정보에 모든 정보 포함
-                              SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      _productInfoContent(_productData?.ptContent ?? ""),
-                                      _productAi(_sameList),
-                                      _productInfoBeforeOrder(_infoData, _productData),
-                                      _productInquiry(),
-                                    ],
-                                  ),
-                                ),
-                              // 두 번째 탭: 리뷰만 표시
-                              _productReview(),
+                          ),
+                          TabBar(
+                            overlayColor: WidgetStateColor.transparent,
+                            indicatorColor: Colors.black,
+                            dividerColor: const Color(0xFFDDDDDD),
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            // 인디케이터가 각 탭의 길이에 맞게 조정됨
+                            labelColor: Colors.black,
+                            unselectedLabelColor: const Color(0xFF7B7B7B),
+                            isScrollable: true,
+                            // here
+                            tabAlignment: TabAlignment.start,
+                            // ** Use TabAlignment.start
+                            tabs: [
+                              const Tab(text: '상세정보'),
+                              Tab(text: '리뷰($_productReviewCount)'),
                             ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
+                  ];
+                },
+                body: Column(
+                  children: [
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          // 첫 번째 탭: 상세정보에 모든 정보 포함
+                          SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _productInfoContent(_productData?.ptContent ?? ""),
+                                _productAi(_sameList),
+                                _productInfoBeforeOrder(_infoData, _productData),
+                                _productInquiry(),
+                              ],
+                            ),
+                          ),
+                          // 두 번째 탭: 리뷰만 표시
+                          _productReview(),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
+              ),
             ),
             Positioned(
               bottom: 0,
@@ -462,8 +459,8 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   Widget _productInfoTitle(StoreData? storeData, ProductData? productData) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16.0),
-      padding: const EdgeInsets.only(top: 20, bottom: 40),
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1365,6 +1362,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
          visible: _productQnaCount == 0 ? false : true,
          child: Container(
            color: Colors.white,
+           margin: const EdgeInsets.only(bottom: 50),
            child: Padding(
              padding: const EdgeInsets.symmetric(vertical: 30.0),
              child: Row(
@@ -1445,89 +1443,98 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       totalPagesStr = "0$_productReviewTotalPages";
     }
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 80),
-      child: ListView(
-        children: [
-          // 평점과 총 리뷰 수 섹션
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            margin: const EdgeInsets.only(top: 30),
-            child: Row(
-              children: [
-                Text(
-                  _productReviewStarAvg,
+    return ListView(
+      children: [
+        // 평점과 총 리뷰 수 섹션
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          margin: const EdgeInsets.only(top: 30),
+          child: Row(
+            children: [
+              Text(
+                _productReviewStarAvg,
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 20),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  height: 1.2,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: Text(
+                  '/5.0',
                   style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 20),
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: const Color(0xFFA4A4A4),
                     height: 1.2,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Text(
-                    '/5.0',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 20),
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFFA4A4A4),
-                      height: 1.2,
-                    ),
+              ),
+              const Spacer(),
+              Text(
+                '$_productReviewCount명의 리뷰',
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.w400,
+                  fontSize: Responsive.getFont(context, 14),
+                  height: 1.2,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          child: _ratingTotalStars(double.parse(_productReviewStarAvg)),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 10, bottom: 20),
+          height: 10,
+          width: double.infinity,
+          color: const Color(0xFFF5F9F9),
+        ),
+
+        // 리뷰 리스트
+        ...List.generate(_productReviewList.length, (index) {
+          final reviewData = _productReviewList[index];
+          final reviewImages = reviewData.imgArr ?? [];
+
+          return GestureDetector(
+            onTap: () {
+              // 각 리뷰를 클릭했을 때 리뷰 상세 페이지로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductReviewDetail(
+                    rtIdx: reviewData.rtIdx ?? 0,
                   ),
                 ),
-                const Spacer(),
-                Text(
-                  '$_productReviewCount명의 리뷰',
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w400,
-                    fontSize: Responsive.getFont(context, 14),
-                    height: 1.2,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-            child: _ratingTotalStars(double.parse(_productReviewStarAvg)),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 10, bottom: 20),
-            height: 10,
-            width: double.infinity,
-            color: const Color(0xFFF5F9F9),
-          ),
-
-          // 리뷰 리스트
-          ...List.generate(_productReviewList.length, (index) {
-            final reviewData = _productReviewList[index];
-            final reviewImages = reviewData.imgArr ?? [];
-
-            return GestureDetector(
-              onTap: () {
-                // 각 리뷰를 클릭했을 때 리뷰 상세 페이지로 이동
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductReviewDetail(
-                      rtIdx: reviewData.rtIdx ?? 0,
-                    ),
-                  ),
-                );
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: [
-                        Text(
-                          reviewData.mtId ?? "",
+              );
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Text(
+                        reviewData.mtId ?? "",
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          color: const Color(0xFF7B7B7B),
+                          fontSize: Responsive.getFont(context, 12),
+                          height: 1.2,
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          reviewData.rtWdate ?? "",
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             color: const Color(0xFF7B7B7B),
@@ -1535,72 +1542,61 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             height: 1.2,
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            reviewData.rtWdate ?? "",
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              color: const Color(0xFF7B7B7B),
-                              fontSize: Responsive.getFont(context, 12),
-                              height: 1.2,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                  child: _ratingStars(double.parse(reviewData.rtStart ?? "0.0")),
+                ),
+                // 리뷰 텍스트 두 줄로 제한하고 넘칠 경우 생략 부호 표시
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    reviewData.rtContent ?? "",
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      color: Colors.black,
+                      height: 1.2,
                     ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                    child: _ratingStars(double.parse(reviewData.rtStart ?? "0.0")),
-                  ),
-                  // 리뷰 텍스트 두 줄로 제한하고 넘칠 경우 생략 부호 표시
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 10, bottom: 15, left: 16),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ReportPage(rtIdx: reviewData.rtIdx ?? 0)),
+                      );
+                    },
                     child: Text(
-                      reviewData.rtContent ?? "",
+                      '신고',
                       style: TextStyle(
                         fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        color: Colors.black,
+                        fontSize: Responsive.getFont(context, 12),
+                        color: const Color(0xFF7B7B7B),
                         height: 1.2,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 15, left: 16),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ReportPage(rtIdx: reviewData.rtIdx ?? 0)),
-                        );
-                      },
-                      child: Text(
-                        '신고',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 12),
-                          color: const Color(0xFF7B7B7B),
-                          height: 1.2,
-                        ),
-                      ),
-                    ),
-                  ),
-                  // 사진 목록 - 가로 사이즈에 맞게 배치
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: reviewImages.map((imagePath) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: Image.network(
+                ),
+                // 사진 목록 - 가로 사이즈에 맞게 배치
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: reviewImages.map((imagePath) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Image.network(
                                 imagePath,
                                 width: 90,
                                 height: 90,
@@ -1608,37 +1604,39 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                 errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                   return const SizedBox();
                                 }
-                              ),
                             ),
-                          );
-                        }).toList(),
-                      ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ),
-                  Container(
+                ),
+                Container(
                     margin: const EdgeInsets.symmetric(vertical: 20),
                     child: const Divider(thickness: 1, color: Color(0xFFEEEEEE))
-                  ),
-                ],
-              ),
-            );
-          }),
-          // 페이지네이션
-          Visibility(
-            visible: _productReviewCount == 0 ? false : true,
+                ),
+              ],
+            ),
+          );
+        }),
+        // 페이지네이션
+        Visibility(
+          visible: _productReviewCount == 0 ? false : true,
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 80),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  icon: SvgPicture.asset('assets/images/product/pager_prev.svg'),
-                  onPressed: () {
-                    if (_productReviewCurrentPage > 1) {
-                      setState(() {
-                        _productReviewCurrentPage--;
-                        _getProductReviewList();
-                      });
+                    icon: SvgPicture.asset('assets/images/product/pager_prev.svg'),
+                    onPressed: () {
+                      if (_productReviewCurrentPage > 1) {
+                        setState(() {
+                          _productReviewCurrentPage--;
+                          _getProductReviewList();
+                        });
+                      }
                     }
-                  }
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -1667,21 +1665,21 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   ),
                 ),
                 IconButton(
-                  icon: SvgPicture.asset('assets/images/product/pager_next.svg'),
-                  onPressed: () {
-                    if (_productReviewCurrentPage < _productReviewTotalPages) {
-                      setState(() {
-                        _productReviewCurrentPage++;
-                        _getProductReviewList();
-                      });
+                    icon: SvgPicture.asset('assets/images/product/pager_next.svg'),
+                    onPressed: () {
+                      if (_productReviewCurrentPage < _productReviewTotalPages) {
+                        setState(() {
+                          _productReviewCurrentPage++;
+                          _getProductReviewList();
+                        });
+                      }
                     }
-                  }
                 ),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
