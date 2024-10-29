@@ -2,6 +2,7 @@ import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
 import 'package:BliU/screen/mypage/component/top/cancel_screen.dart';
+import 'package:BliU/screen/mypage/component/top/component/my_review_edit.dart';
 import 'package:BliU/screen/mypage/component/top/delivery_screen.dart';
 import 'package:BliU/screen/mypage/component/top/exchange_return_screen.dart';
 import 'package:BliU/screen/mypage/component/top/review_write_screen.dart';
@@ -78,6 +79,29 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
         ],
       ),
     );
+  }
+
+  void _getReviewDetail(int rtIdx) async {
+    final pref = await SharedPreferencesManager.getInstance();
+
+    Map<String, dynamic> requestData = {
+      'mt_idx': pref.getMtIdx(),
+      'rt_idx': rtIdx,
+    };
+
+    final reviewDetailResponseDTO = await ref.read(orderItemButtonViewModelProvider.notifier).getDetail(requestData);
+    if (reviewDetailResponseDTO != null) {
+      if (reviewDetailResponseDTO.result == true) {
+        final reviewData = reviewDetailResponseDTO.data;
+        if(!mounted) return;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyReviewEdit(reviewData: reviewData!,)
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -334,15 +358,17 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                // TODO 리뷰 이미 작성시 수정페이지로
-
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ReviewWriteScreen(orderDetailData: _orderDetailData),
-                  ),
-                );
+                if (_orderDetailData.reviewWrite == "N") {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ReviewWriteScreen(orderDetailData: _orderDetailData),
+                    ),
+                  );
+                } else {
+                  // 수정 페이지로
+                  _getReviewDetail(_orderDetailData.rtIdx ?? 0);
+                }
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFFF6192)),
