@@ -637,7 +637,6 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
         deliveryPriceStr = "무료";
       } else {
         deliveryPriceStr = "${Utils.getInstance().priceString((_productData.deliveryInfo?.deliveryPrice ?? 0))}원";
-        print("test::::::::${_productData.deliveryInfo?.deliveryPrice}");
       }
     }
     return Container(

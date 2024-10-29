@@ -729,7 +729,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             productData?.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0
                         )}원 / ${Utils.getInstance().priceString(
                             productData?.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0
-                        )} 이상 무료',
+                        )}원 이상 무료',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 10),
