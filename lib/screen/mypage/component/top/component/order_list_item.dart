@@ -1,4 +1,5 @@
 import 'package:BliU/data/order_data.dart';
+import 'package:BliU/screen/mypage/component/top/cancel_detail_screen.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_detail.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_item.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -57,12 +58,21 @@ class OrderListItem extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
+                  if () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CancelDetailScreen(orderData: orderData,),
+                      ),
+                    );
+                  }
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => OrderDetail(orderData: orderData),
                     ),
                   );
+
                 },
                 child: Row(
                   children: [
