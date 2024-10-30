@@ -36,19 +36,12 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_nextLoad);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _afterBuild(context);
-    });
   }
 
   @override
   void dispose() {
     super.dispose();
     _scrollController.removeListener(_nextLoad);
-  }
-
-  void _afterBuild(BuildContext context) {
-    _getList();
   }
 
   void _getList() async {

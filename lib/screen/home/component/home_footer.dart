@@ -31,8 +31,7 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
             var data = model?.footResponseDTO?.data;
             if (data != null) {
               setState(() {
-                footInfo =
-                '회사명 : ${data.stCompanyName}  |  대표 : ${data.stCompanyBoss}\n'
+                footInfo = '회사명 : ${data.stCompanyName}  |  대표 : ${data.stCompanyBoss}\n'
                     '사업자등록번호 ${data.stCompanyNum1}\n'
                     '제 통신판매업신고번호 : ${data.stCompanyNum2}\n'
                     '주소 : ${data.stCompanyAdd}';
@@ -164,10 +163,9 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
           AnimatedSize(
             duration: const Duration(milliseconds: 150),
             curve: Curves.fastOutSlowIn,
-            child: Container(
-              child: !isExpand
-                  ? null :
-              Text(
+            child: Visibility(
+              visible: isExpand,
+              child: Text(
                 footInfo,
                 textAlign: TextAlign.center,
                 style: TextStyle(
