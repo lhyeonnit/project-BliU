@@ -43,44 +43,7 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
   String _timerStr = "00:00";
   Timer? _timer;
 
-  void _showCancelDialog(BuildContext context) {
-    showGeneralDialog(
-      context: context,
-      barrierDismissible: true,
-      // 다른 영역을 클릭해도 닫힘
-      // barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      // barrierColor: Colors.black.withOpacity(0.5),
-      // 배경을 어둡게
-      transitionDuration: const Duration(milliseconds: 100),
-      // 애니메이션 시간
-      pageBuilder: (BuildContext buildContext, Animation animation,
-          Animation secondaryAnimation) {
-        return Align(
-          alignment: Alignment.topCenter, // 화면 상단 중앙에 배치
-          child: Material(
-            color: Colors.transparent, // 배경을 투명하게
-            child: Container(
-              margin: const EdgeInsets.only(top: 50), // 상단에서의 간격
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-              decoration: BoxDecoration(
-                color: const Color(0xCC000000), // 알림창 배경색
-                borderRadius: BorderRadius.circular(22), // 둥근 모서리
-              ),
-              child: Text(
-                '추가정보 입력이 완료되었습니다.',
-                style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14),
-                  color: Colors.white,
-                  height: 1.2,
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+
   @override
   void initState() {
     super.initState();
@@ -500,7 +463,10 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                         widget.payOrderDetailData.userInfoCheck == 'Y';
                       });
                       if (!context.mounted) return;
-                      // _showCancelDialog(context);
+                      if (_isAllFieldsFilled) {
+                        Utils.getInstance().showSnackBar(context, "추가정보 입력이 완료되었습니다.");
+                        return;
+                      }
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
