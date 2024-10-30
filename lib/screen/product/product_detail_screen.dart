@@ -1826,6 +1826,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   //상품정보제공고시 테이블 구성 만들기
   Widget _makeProductInfoTable() {
+    // TODO 작업 필요
     List<TableRow> tableRows = [];
     final ptCategory = _productData?.ptCategory ?? "";
     List<String> typeList = [];
@@ -1891,8 +1892,9 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       children: tableRows,
     );
   }
-
+  // 판매자 정보
   Widget _makeSellerInfoTable() {
+    // TODO 작업 필요
     return Table(
       border: TableBorder.all(
         color: const Color(0xFFDDDDDD),
