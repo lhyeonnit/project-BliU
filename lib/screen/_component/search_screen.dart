@@ -11,7 +11,7 @@ import 'package:BliU/screen/_component/smart_lens_screen.dart';
 import 'package:BliU/screen/_component/viewmodel/search_view_model.dart';
 import 'package:BliU/screen/product/component/list/product_list_card.dart';
 import 'package:BliU/screen/product/product_detail_screen.dart';
-import 'package:BliU/screen/store/store_detail_screen.dart';
+import 'package:BliU/screen/store_detail/store_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/foundation.dart';

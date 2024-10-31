@@ -1,4 +1,4 @@
-import 'package:BliU/screen/home/viewmodel/home_footer_view_model.dart';
+import 'package:BliU/screen/main/page_screen/home/view_model/home_footer_view_model.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
 import 'package:BliU/screen/mypage/component/bottom/notice_screen.dart';
 import 'package:BliU/utils/responsive.dart';

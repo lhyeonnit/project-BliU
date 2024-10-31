@@ -1,5 +1,5 @@
-import 'package:BliU/screen/store/component/store_favorite_page.dart';
-import 'package:BliU/screen/store/component/store_ranking_page.dart';
+import 'package:BliU/screen/main/page_screen/store/child_view/store_favorite_page.dart';
+import 'package:BliU/screen/main/page_screen/store/child_view/store_ranking_page.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 

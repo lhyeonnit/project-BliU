@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:BliU/screen/common/recommend_info_screen.dart';
+import 'package:BliU/screen/recommend_info/recommend_info_screen.dart';
 import 'package:BliU/screen/join/join_agree_screen.dart';
 import 'package:BliU/screen/login/find_id_complete_screen.dart';
 import 'package:BliU/screen/login/find_id_screen.dart';
 import 'package:BliU/screen/login/find_password_screen.dart';
 import 'package:BliU/screen/login/viewmodel/login_view_model.dart';
-import 'package:BliU/screen/main_screen.dart';
+import 'package:BliU/screen/main/main_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/non_order_page.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';

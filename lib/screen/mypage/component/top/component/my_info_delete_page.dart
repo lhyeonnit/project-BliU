@@ -1,4 +1,4 @@
-import 'package:BliU/screen/main_screen.dart';
+import 'package:BliU/screen/main/main_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/my_info_edit_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';

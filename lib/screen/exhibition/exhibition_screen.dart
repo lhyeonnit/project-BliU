@@ -3,7 +3,7 @@ import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
-import 'package:BliU/screen/home/viewmodel/exhibition_view_model.dart';
+import 'package:BliU/screen/exhibition/view_model/exhibition_view_model.dart';
 import 'package:BliU/screen/product/component/list/product_list_card.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
