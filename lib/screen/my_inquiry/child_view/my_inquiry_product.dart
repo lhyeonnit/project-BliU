@@ -1,21 +1,21 @@
 import 'package:BliU/data/qna_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_product_detail.dart';
-import 'package:BliU/screen/mypage/viewmodel/service_inquiry_product_view_model.dart';
+import 'package:BliU/screen/my_inquiry/view_model/my_inquiry_product_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class ServiceInquiryProduct extends ConsumerStatefulWidget {
-  const ServiceInquiryProduct({super.key});
+class MyInquiryProduct extends ConsumerStatefulWidget {
+  const MyInquiryProduct({super.key});
 
   @override
-  ConsumerState<ServiceInquiryProduct> createState() => ServiceInquiryProductState();
+  ConsumerState<MyInquiryProduct> createState() => MyInquiryProductState();
 }
 
-class ServiceInquiryProductState extends ConsumerState<ServiceInquiryProduct> {
+class MyInquiryProductState extends ConsumerState<MyInquiryProduct> {
   final ScrollController _scrollController = ScrollController();
   int _currentPage = 1;
   int _totalPages = 1;
@@ -36,7 +36,7 @@ class ServiceInquiryProductState extends ConsumerState<ServiceInquiryProduct> {
           margin: const EdgeInsets.only(top: 10),
           color: Colors.white,
           child: Consumer(builder: (context, ref, widget) {
-            final model = ref.watch(serviceInquiryProductViewModelProvider);
+            final model = ref.watch(myInquiryProductViewModelProvider);
             int count = model?.qnaListResponseDTO?.count ?? 0;
             List<QnaData> list = model?.qnaListResponseDTO?.list ?? [];
 
@@ -210,8 +210,8 @@ class ServiceInquiryProductState extends ConsumerState<ServiceInquiryProduct> {
         'qna_type': 3,
         'pg': _currentPage,
       };
-      ref.read(serviceInquiryProductViewModelProvider)?.qnaListResponseDTO?.list?.clear();
-      ref.read(serviceInquiryProductViewModelProvider.notifier).getList(requestData);
+      ref.read(myInquiryProductViewModelProvider)?.qnaListResponseDTO?.list?.clear();
+      ref.read(myInquiryProductViewModelProvider.notifier).getList(requestData);
     });
   }
 }

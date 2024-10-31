@@ -1,17 +1,17 @@
-import 'package:BliU/screen/mypage/component/bottom/component/service_inquiry_one.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/service_inquiry_product.dart';
+import 'package:BliU/screen/my_inquiry/child_view/my_inquiry_one.dart';
+import 'package:BliU/screen/my_inquiry/child_view/my_inquiry_product.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ServiceMyInquiryScreen extends StatefulWidget {
-  const ServiceMyInquiryScreen({super.key});
+class MyInquiryScreen extends StatefulWidget {
+  const MyInquiryScreen({super.key});
 
   @override
-  State<ServiceMyInquiryScreen> createState() => ServiceMyInquiryScreenState();
+  State<MyInquiryScreen> createState() => MyInquiryScreenState();
 }
 
-class ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with SingleTickerProviderStateMixin {
+class MyInquiryScreenState extends State<MyInquiryScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -101,8 +101,8 @@ class ServiceMyInquiryScreenState extends State<ServiceMyInquiryScreen> with Sin
         child: TabBarView(
           controller: _tabController,
           children: const [
-            ServiceInquiryProduct(),
-            ServiceInquiryOne(),
+            MyInquiryProduct(),
+            MyInquiryOne(),
           ],
         ),
       ),

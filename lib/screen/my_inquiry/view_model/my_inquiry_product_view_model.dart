@@ -5,19 +5,19 @@ import 'package:BliU/dto/qna_list_response_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ServiceInquiryOneModel {
+class MyInquiryProductModel {
   QnaListResponseDTO? qnaListResponseDTO;
 
-  ServiceInquiryOneModel({
+  MyInquiryProductModel({
     this.qnaListResponseDTO,
   });
 }
 
-class ServiceInquiryOneViewModel extends StateNotifier<ServiceInquiryOneModel?> {
+class MyInquiryProductViewModel extends StateNotifier<MyInquiryProductModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  ServiceInquiryOneViewModel(super.state, this.ref);
+  MyInquiryProductViewModel(super.state, this.ref);
 
   Future<void> getList(Map<String, dynamic> requestData) async {
     try {
@@ -35,7 +35,7 @@ class ServiceInquiryOneViewModel extends StateNotifier<ServiceInquiryOneModel?> 
 
           qnaListResponseDTO.list = list;
 
-          state = ServiceInquiryOneModel(qnaListResponseDTO: qnaListResponseDTO);
+          state = MyInquiryProductModel(qnaListResponseDTO: qnaListResponseDTO);
           return;
         }
       }
@@ -50,7 +50,7 @@ class ServiceInquiryOneViewModel extends StateNotifier<ServiceInquiryOneModel?> 
   }
 }
 
-final serviceInquiryOneViewModelProvider =
-StateNotifierProvider<ServiceInquiryOneViewModel, ServiceInquiryOneModel?>((req) {
-  return ServiceInquiryOneViewModel(null, req);
+final myInquiryProductViewModelProvider =
+StateNotifierProvider<MyInquiryProductViewModel, MyInquiryProductModel?>((req) {
+  return MyInquiryProductViewModel(null, req);
 });

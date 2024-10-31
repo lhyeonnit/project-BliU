@@ -2,7 +2,7 @@ import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_store.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/service_my_inquiry.dart';
+import 'package:BliU/screen/my_inquiry/my_inquiry_screen.dart';
 import 'package:BliU/screen/consumer_center/view_model/consumer_center_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -148,7 +148,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ServiceMyInquiryScreen()
+                          builder: (context) => const MyInquiryScreen()
                       ),
                     );
                   } else {

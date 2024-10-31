@@ -1,21 +1,21 @@
 import 'package:BliU/data/qna_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_one_detail.dart';
-import 'package:BliU/screen/mypage/viewmodel/service_inquiry_one_view_model.dart';
+import 'package:BliU/screen/my_inquiry/view_model/my_inquiry_one_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ServiceInquiryOne extends ConsumerStatefulWidget {
-  const ServiceInquiryOne({super.key});
+class MyInquiryOne extends ConsumerStatefulWidget {
+  const MyInquiryOne({super.key});
 
   @override
-  ConsumerState<ServiceInquiryOne> createState() => ServiceInquiryOneState();
+  ConsumerState<MyInquiryOne> createState() => MyInquiryOneState();
 }
 
-class ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
+class MyInquiryOneState extends ConsumerState<MyInquiryOne> {
   final ScrollController _scrollController = ScrollController();
   int _currentPage = 1;
   int _totalPages = 1;
@@ -36,7 +36,7 @@ class ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
           margin: const EdgeInsets.only(top: 10),
           color: Colors.white,
           child: Consumer(builder: (context, ref, widget) {
-            final model = ref.watch(serviceInquiryOneViewModelProvider);
+            final model = ref.watch(myInquiryOneViewModelProvider);
             int count = model?.qnaListResponseDTO?.count ?? 0;
             List<QnaData> list = model?.qnaListResponseDTO?.list ?? [];
 
@@ -211,8 +211,8 @@ class ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
         'qna_type': 1,
         'pg': _currentPage,
       };
-      ref.read(serviceInquiryOneViewModelProvider)?.qnaListResponseDTO?.list?.clear();
-      ref.read(serviceInquiryOneViewModelProvider.notifier).getList(requestData);
+      ref.read(myInquiryOneViewModelProvider)?.qnaListResponseDTO?.list?.clear();
+      ref.read(myInquiryOneViewModelProvider.notifier).getList(requestData);
     });
   }
 }
