@@ -1,5 +1,5 @@
 import 'package:BliU/data/review_data.dart';
-import 'package:BliU/screen/mypage/component/top/component/my_review_edit.dart';
+import 'package:BliU/screen/my_review_edit/my_review_edit_screen.dart';
 import 'package:BliU/screen/report/report_screen.dart';
 import 'package:BliU/screen/product_review_detail/view_model/product_review_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -255,7 +255,7 @@ class ProductReviewDetailScreenState extends ConsumerState<ProductReviewDetailSc
                             final result = await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MyReviewEdit(reviewData: _reviewData!,)
+                                  builder: (context) => MyReviewEditScreen(reviewData: _reviewData!,)
                               ),
                             );
                             if (result == true) {

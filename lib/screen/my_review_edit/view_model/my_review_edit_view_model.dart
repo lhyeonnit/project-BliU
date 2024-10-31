@@ -5,13 +5,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProductReviewEditModel {}
+class MyReviewEditModel {}
 
-class ProductReviewEditViewModel extends StateNotifier<ProductReviewEditModel?> {
+class MyReviewEditViewModel extends StateNotifier<MyReviewEditModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  ProductReviewEditViewModel(super.state, this.ref);
+  MyReviewEditViewModel(super.state, this.ref);
 
   Future<DefaultResponseDTO?> reviewUpdate(FormData formData) async {
     try {
@@ -35,7 +35,7 @@ class ProductReviewEditViewModel extends StateNotifier<ProductReviewEditModel?> 
 
 }
 
-final productReviewEditViewModelProvider =
-StateNotifierProvider<ProductReviewEditViewModel, ProductReviewEditModel?>((req) {
-  return ProductReviewEditViewModel(null, req);
+final myReviewEditViewModelModelProvider =
+StateNotifierProvider<MyReviewEditViewModel, MyReviewEditModel?>((req) {
+  return MyReviewEditViewModel(null, req);
 });

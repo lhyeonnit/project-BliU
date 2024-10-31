@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:BliU/data/review_data.dart';
-import 'package:BliU/screen/mypage/viewmodel/product_review_edit_view_model.dart';
+import 'package:BliU/screen/my_review_edit/view_model/my_review_edit_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -12,16 +12,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
-class MyReviewEdit extends ConsumerStatefulWidget {
+class MyReviewEditScreen extends ConsumerStatefulWidget {
   final ReviewData reviewData;
 
-  const MyReviewEdit({super.key, required this.reviewData,});
+  const MyReviewEditScreen({super.key, required this.reviewData,});
 
   @override
-  ConsumerState<MyReviewEdit> createState() => MyReviewEditState();
+  ConsumerState<MyReviewEditScreen> createState() => MyReviewEditScreenState();
 }
 
-class MyReviewEditState extends ConsumerState<MyReviewEdit> {
+class MyReviewEditScreenState extends ConsumerState<MyReviewEditScreen> {
   final bool _isRTLMode = false;
   final bool _isVertical = false;
 
@@ -95,7 +95,7 @@ class MyReviewEditState extends ConsumerState<MyReviewEdit> {
         'rt_img': files,
       });
 
-      final defaultResponseDTO = await ref.read(productReviewEditViewModelProvider.notifier).reviewUpdate(formData);
+      final defaultResponseDTO = await ref.read(myReviewEditViewModelModelProvider.notifier).reviewUpdate(formData);
       if (defaultResponseDTO != null) {
         if (!mounted) return;
         if (defaultResponseDTO.result == true) {

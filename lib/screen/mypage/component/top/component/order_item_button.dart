@@ -2,8 +2,8 @@ import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
 import 'package:BliU/screen/mypage/component/top/cancel_screen.dart';
-import 'package:BliU/screen/mypage/component/top/component/my_review_edit.dart';
-import 'package:BliU/screen/mypage/component/top/delivery_screen.dart';
+import 'package:BliU/screen/my_review_edit/my_review_edit_screen.dart';
+import 'package:BliU/screen/delivery/delivery_screen.dart';
 import 'package:BliU/screen/mypage/component/top/exchange_return_screen.dart';
 import 'package:BliU/screen/review_write/review_write_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/order_item_button_view_model.dart';
@@ -97,7 +97,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => MyReviewEdit(reviewData: reviewData!,)
+              builder: (context) => MyReviewEditScreen(reviewData: reviewData!,)
           ),
         );
       }

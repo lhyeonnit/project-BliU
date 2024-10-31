@@ -1,6 +1,6 @@
 import 'package:BliU/data/order_delivery_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/viewmodel/delivery_view_model.dart';
+import 'package:BliU/screen/delivery/view_model/delivery_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
