@@ -5,6 +5,7 @@ class OrderDetailInfoDeliveryData {
   final String? otRadd1;
   final String? otRadd2;
   final String? otRmemo1;
+  final String? octMemo;
 
   OrderDetailInfoDeliveryData({
     required this.otRname,
@@ -13,6 +14,7 @@ class OrderDetailInfoDeliveryData {
     required this.otRadd1,
     required this.otRadd2,
     required this.otRmemo1,
+    required this.octMemo,
   });
 
   // JSON to Object
@@ -24,6 +26,8 @@ class OrderDetailInfoDeliveryData {
       otRadd1: json['ot_radd1'],
       otRadd2: json['ot_radd2'],
       otRmemo1: json['ot_rmemo1'],
+      octMemo: json['oct_memo'],
+
     );
   }
 
@@ -36,6 +40,7 @@ class OrderDetailInfoDeliveryData {
       'ot_radd1': otRadd1,
       'ot_radd2': otRadd2,
       'ot_rmemo1': otRmemo1,
+      'oct_memo': octMemo,
     };
   }
 }

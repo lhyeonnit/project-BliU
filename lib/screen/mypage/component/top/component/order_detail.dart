@@ -1,8 +1,11 @@
+import 'package:BliU/data/change_order_detail_data.dart';
 import 'package:BliU/data/order_data.dart';
+import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_detail_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_item.dart';
+import 'package:BliU/screen/mypage/viewmodel/change_order_detail_view_model.dart';
 import 'package:BliU/screen/mypage/viewmodel/order_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -13,10 +16,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class OrderDetail extends ConsumerStatefulWidget {
   final OrderData orderData;
+  final int count;
 
   const OrderDetail({
     super.key,
     required this.orderData,
+    required this.count,
   });
 
   @override
@@ -26,7 +31,11 @@ class OrderDetail extends ConsumerStatefulWidget {
 class OrderDetailState extends ConsumerState<OrderDetail> {
   final ScrollController _scrollController = ScrollController();
   OrderDetailInfoData? orderDetailInfoData;
+  OrderDetailData? orderDetailData;
+  ChangeOrderDetailData? cancelDetailData;
+  ChangeOrderDetailData? exchangeReturnDetailData;
   int? userType;
+
   @override
   void initState() {
     super.initState();
@@ -171,6 +180,9 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
 
   void _afterBuild(BuildContext context) {
     _getOrderDetail();
+    _getCancelDetail();
+    _getReturnDetail();
+
   }
 
   void _getOrderDetail() async {
@@ -196,6 +208,59 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
       } else {
         if (!mounted) return;
         Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
+      }
+    }
+  }
+  void _getCancelDetail() async {
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    String? appToken = pref.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
+    Map<String, dynamic> requestData = {
+      'type': memberType,
+      'mt_idx': mtIdx,
+      'temp_mt_id': appToken,
+      'odt_code': widget.orderData.detailList?[0].otCode,
+    };
+
+    final cancelDetailResponseDTO = await ref.read(changeOrderDetailViewModelProvider.notifier).getCancelDetail(requestData);
+    if (cancelDetailResponseDTO != null) {
+      if (cancelDetailResponseDTO.result == true) {
+        setState(() {
+          cancelDetailData = cancelDetailResponseDTO.data;
+          userType = memberType;
+        });
+      } else {
+        if (!mounted) return;
+        Utils.getInstance().showSnackBar(context, cancelDetailResponseDTO.message ?? "");
+      }
+    }
+  }
+  void _getReturnDetail() async {
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    String? appToken = pref.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
+    Map<String, dynamic> requestData = {
+      'type': memberType,
+      'mt_idx': mtIdx,
+      'temp_mt_id': appToken,
+      'odt_code': widget.orderData.detailList?[0].otCode,
+      'ct_type': widget.orderData.detailList?[widget.count].type,
+    };
+
+    final exchangeReturnDetailResponseDTO = await ref.read(changeOrderDetailViewModelProvider.notifier).getReturnDetail(requestData);
+    if (exchangeReturnDetailResponseDTO != null) {
+      if (exchangeReturnDetailResponseDTO.result == true) {
+        setState(() {
+          userType = memberType;
+          exchangeReturnDetailData = exchangeReturnDetailResponseDTO.data;
+        });
+      } else {
+        if (!mounted) return;
+        Utils.getInstance().showSnackBar(context, exchangeReturnDetailResponseDTO.message ?? "");
       }
     }
   }

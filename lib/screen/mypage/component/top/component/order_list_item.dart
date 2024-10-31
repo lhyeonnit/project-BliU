@@ -7,8 +7,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class OrderListItem extends StatelessWidget {
   final OrderData orderData;
+  final int count;
 
-  const OrderListItem({super.key, required this.orderData,});
+  const OrderListItem({super.key, required this.orderData, required this.count});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class OrderListItem extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => OrderDetail(orderData: orderData),
+                      builder: (context) => OrderDetail(orderData: orderData, count: count,),
                     ),
                   );
                 },
