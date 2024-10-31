@@ -5,7 +5,7 @@ import 'package:BliU/screen/mypage/component/top/cancel_screen.dart';
 import 'package:BliU/screen/mypage/component/top/component/my_review_edit.dart';
 import 'package:BliU/screen/mypage/component/top/delivery_screen.dart';
 import 'package:BliU/screen/mypage/component/top/exchange_return_screen.dart';
-import 'package:BliU/screen/mypage/component/top/review_write_screen.dart';
+import 'package:BliU/screen/review_write/review_write_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/order_item_button_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';

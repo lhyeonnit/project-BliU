@@ -1,5 +1,5 @@
-import 'package:BliU/screen/mypage/component/top/my_info_edit_screen.dart';
-import 'package:BliU/screen/mypage/viewmodel/my_info_edit_check_view_model.dart';
+import 'package:BliU/screen/my_info_edit/my_info_edit_screen.dart';
+import 'package:BliU/screen/my_info_edit_check/view_model/my_info_edit_check_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class MyInfoEditCheck extends ConsumerWidget {
+class MyInfoEditCheckScreen extends ConsumerWidget {
   final TextEditingController _passwordController = TextEditingController();
 
-  MyInfoEditCheck({super.key});
+  MyInfoEditCheckScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

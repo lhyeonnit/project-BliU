@@ -9,10 +9,10 @@ import 'package:BliU/screen/mypage/component/bottom/recommend_edit.dart';
 import 'package:BliU/screen/consumer_center/consumer_center_screen.dart';
 import 'package:BliU/screen/setting/setting_screen.dart';
 import 'package:BliU/screen/alarm/alarm_screen.dart';
-import 'package:BliU/screen/mypage/component/top/component/my_info_edit_check.dart';
+import 'package:BliU/screen/my_info_edit_check/my_info_edit_check_screen.dart';
 import 'package:BliU/screen/my_coupon/my_coupon_screen.dart';
-import 'package:BliU/screen/mypage/component/top/my_info_edit_screen.dart';
-import 'package:BliU/screen/mypage/component/top/my_review_screen.dart';
+import 'package:BliU/screen/my_info_edit/my_info_edit_screen.dart';
+import 'package:BliU/screen/my_review/my_review_screen.dart';
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
 import 'package:BliU/screen/my_point/my_point_screen.dart';
 import 'package:BliU/screen/main/page_screen/my/child_view/non_top_screen.dart';
@@ -234,7 +234,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MyInfoEditCheck(),
+                                  builder: (context) => MyInfoEditCheckScreen(),
                                 ),
                               );
                             } else {

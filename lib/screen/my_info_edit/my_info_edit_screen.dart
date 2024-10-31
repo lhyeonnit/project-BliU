@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:BliU/data/my_page_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/component/top/component/my_info_delete_page.dart';
+import 'package:BliU/screen/my_info_delete/my_info_delete_screen.dart';
 import 'package:BliU/screen/main/page_screen/my/my_screen.dart';
-import 'package:BliU/screen/mypage/viewmodel/my_info_edit_view_model.dart';
+import 'package:BliU/screen/my_info_edit/view_model/my_info_edit_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -564,7 +564,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const MyInfoDeletePage()),
+                                MaterialPageRoute(builder: (context) => const MyInfoDeleteScreen()),
                               );
                             },
                             child: Text(

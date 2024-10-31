@@ -1,5 +1,5 @@
 import 'package:BliU/screen/main/main_screen.dart';
-import 'package:BliU/screen/mypage/viewmodel/my_info_edit_view_model.dart';
+import 'package:BliU/screen/my_info_edit/view_model/my_info_edit_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class MyInfoDeletePage extends ConsumerStatefulWidget {
-  const MyInfoDeletePage({super.key});
+class MyInfoDeleteScreen extends ConsumerStatefulWidget {
+  const MyInfoDeleteScreen({super.key});
 
   @override
-  ConsumerState<MyInfoDeletePage> createState() => MyInfoDeletePageState();
+  ConsumerState<MyInfoDeleteScreen> createState() => MyInfoDeleteScreenState();
 }
 
-class MyInfoDeletePageState extends ConsumerState<MyInfoDeletePage> {
+class MyInfoDeleteScreenState extends ConsumerState<MyInfoDeleteScreen> {
   bool _isChecked = false;
   @override
   void initState() {
