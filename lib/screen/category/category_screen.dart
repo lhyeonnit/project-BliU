@@ -125,22 +125,22 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                         _scrollController.scrollTo(index: index, duration: const Duration(milliseconds: 1));
                       },
                       child: Container(
-                          padding: const EdgeInsets.only(left: 16),
-                          height: 50,
-                          color: isSelectCategory ? Colors.white : const Color(0xFFF5F9F9),
-                          child: Row(
-                            children: [
-                              Text(
-                                categoryData.ctName ?? "",
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 15),
-                                  fontWeight: FontWeight.w600,
-                                  height: 1.2,
-                                ),
-                              )
-                            ],
-                          ),
+                        padding: const EdgeInsets.only(left: 16),
+                        height: 50,
+                        color: isSelectCategory ? Colors.white : const Color(0xFFF5F9F9),
+                        child: Row(
+                          children: [
+                            Text(
+                              categoryData.ctName ?? "",
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 15),
+                                fontWeight: FontWeight.w600,
+                                height: 1.2,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -212,7 +212,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                     'assets/images/category/그룹 37778.svg',
                                     width: 26,
                                     height: 26,
-                                  )
+                                  ),
                                 ],
                               ),
                             ),

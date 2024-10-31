@@ -63,7 +63,7 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -105,163 +105,165 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
         ),
       ),
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              margin: const EdgeInsets.only(top: 40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // 문의 제목 입력
-                  _buildTitleTextField(_titleController, '문의 제목 입력'),
-                  // 문의 내용 입력
-                  _buildContentTextField(_contentController, '문의 내용을 최소 10자 이상 입력해주세요.'),
-                  // 이미지 선택 영역
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '이미지',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            height: 1.2,
-                          ),
-                        ),
-                        Text(
-                          '$_imageCnt/4',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 13),
-                            color: const Color(0xFF7B7B7B),
-                            height: 1.2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // 이미지 선택 버튼
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            // 이미지 선택 동작 추가
-                            _addImage();
-                          },
-                          child: Container(
-                            width: 100,
-                            height: 100,
-                            margin: const EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                border: Border.all(color: const Color(0xFFE7EAEF))),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset('assets/images/my/btn_add_img.svg'),
-                                Text(
-                                  '사진선택',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    color: const Color(0xFF707070),
-                                    fontSize: Responsive.getFont(context, 14),
-                                    height: 1.2,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        //추가함 이미지들
-                        Row(children: _addImagesWidget,),
-                      ],
-                    ),
-                  ),
-                  Visibility(
-                    visible: _phoneNumVisible,
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 10),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "답변받을 연락처",
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: Responsive.getFont(context, 13),
-                                    height: 1.2,
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(left: 4),
-                                  child: Text(
-                                    '*',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: Responsive.getFont(context, 13),
-                                      color: const Color(0xFFFF6192),
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          TextField(
-                            onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                            style: TextStyle(
-                              decorationThickness: 0,
-                              height: 1.2,
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                            ),
-                            controller: _phoneController,
-                            obscureText: false,
-                            keyboardType: TextInputType.phone,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                              hintText: '휴대폰 번호 입력',
-                              hintStyle: TextStyle(
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  margin: const EdgeInsets.only(top: 40),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 문의 제목 입력
+                      _buildTitleTextField(_titleController, '문의 제목 입력'),
+                      // 문의 내용 입력
+                      _buildContentTextField(_contentController, '문의 내용을 최소 10자 이상 입력해주세요.'),
+                      // 이미지 선택 영역
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '이미지',
+                              style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
-                                color: const Color(0xFF595959),
-                              ),
-                              enabledBorder: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(6)),
-                                borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(6)),
-                                borderSide: BorderSide(color: Colors.black),
+                                height: 1.2,
                               ),
                             ),
-                          ),
-                        ],
+                            Text(
+                              '$_imageCnt/4',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 13),
+                                color: const Color(0xFF7B7B7B),
+                                height: 1.2,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                      // 이미지 선택 버튼
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                // 이미지 선택 동작 추가
+                                _addImage();
+                              },
+                              child: Container(
+                                width: 100,
+                                height: 100,
+                                margin: const EdgeInsets.only(right: 10),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                    border: Border.all(color: const Color(0xFFE7EAEF))),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset('assets/images/my/btn_add_img.svg'),
+                                    Text(
+                                      '사진선택',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        color: const Color(0xFF707070),
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            //추가함 이미지들
+                            Row(children: _addImagesWidget,),
+                          ],
+                        ),
+                      ),
+                      Visibility(
+                        visible: _phoneNumVisible,
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 10),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "답변받을 연락처",
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: Responsive.getFont(context, 13),
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 4),
+                                      child: Text(
+                                        '*',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: Responsive.getFont(context, 13),
+                                          color: const Color(0xFFFF6192),
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TextField(
+                                onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                                style: TextStyle(
+                                  decorationThickness: 0,
+                                  height: 1.2,
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                ),
+                                controller: _phoneController,
+                                obscureText: false,
+                                keyboardType: TextInputType.phone,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                  hintText: '휴대폰 번호 입력',
+                                  hintStyle: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: const Color(0xFF595959),
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                                    borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                                    borderSide: BorderSide(color: Colors.black),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
+            Visibility(
+              visible: MediaQuery.of(context).viewInsets.bottom == 0 ? true : false,
               child: GestureDetector(
                 onTap: () {
                   if(_isAllFieldsFilled) {

@@ -179,63 +179,63 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
                   child: Row(
                     children: [
                       Expanded(
-                          child: Row(
-                            children: [
-                              Flexible(
-                                flex: 1,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  child: AspectRatio(
-                                    aspectRatio: 1,
-                                    child: Image.network(
-                                      exhibitionData.ptImg?[0] ?? "",
-                                      height: Responsive.getHeight(context, 84),
-                                      fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                        return const SizedBox();
-                                      }
-                                    ),
+                        child: Row(
+                          children: [
+                            Flexible(
+                              flex: 1,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5.0),
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Image.network(
+                                    exhibitionData.ptImg?[0] ?? "",
+                                    height: Responsive.getHeight(context, 84),
+                                    fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                      return const SizedBox();
+                                    }
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 10),
-                              Flexible(
-                                flex: 1,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  child: AspectRatio(
-                                    aspectRatio: 1,
-                                    child: Image.network(
-                                      exhibitionData.ptImg?[1] ?? "",
-                                      height: Responsive.getHeight(context, 84),
-                                      fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                        return const SizedBox();
-                                      }
-                                    ),
+                            ),
+                            const SizedBox(width: 10),
+                            Flexible(
+                              flex: 1,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5.0),
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Image.network(
+                                    exhibitionData.ptImg?[1] ?? "",
+                                    height: Responsive.getHeight(context, 84),
+                                    fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                      return const SizedBox();
+                                    }
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 10),
-                              Flexible(
-                                flex: 1,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  child: AspectRatio(
-                                    aspectRatio: 1,
-                                    child: Image.network(
-                                      exhibitionData.ptImg?[2] ?? "",
-                                      height: Responsive.getHeight(context, 84),
-                                      fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                        return const SizedBox();
-                                      }
-                                    ),
+                            ),
+                            const SizedBox(width: 10),
+                            Flexible(
+                              flex: 1,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5.0),
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Image.network(
+                                    exhibitionData.ptImg?[2] ?? "",
+                                    height: Responsive.getHeight(context, 84),
+                                    fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                      return const SizedBox();
+                                    }
                                   ),
                                 ),
                               ),
-                            ],
-                          )
+                            ),
+                          ],
+                        ),
                       ),
                       Container(
                         margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
