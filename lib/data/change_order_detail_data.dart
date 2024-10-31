@@ -1,10 +1,10 @@
 import 'package:BliU/data/cancel_detail_info_data.dart';
-import 'package:BliU/data/cancel_detail_return_data.dart';
+import 'package:BliU/data/return_info_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_delivery_data.dart';
 import 'package:BliU/data/order_detail_info_order_data.dart';
 
-class CancelDetailData {
+class ChangeOrderDetailData {
   final int? cancelIdx;
   final String? ctWdate;
   final int? ctStatus;
@@ -13,12 +13,12 @@ class CancelDetailData {
   final String? octCancelMemo2;
   final OrderDetailData? product;
   final CancelDetailInfoData? info;
-  final CancelDetailReturnData? cancelDetailReturn;
+  final ReturnInfoData? returnInfoData;
   final OrderDetailInfoDeliveryData? delivery;
   final OrderDetailInfoOrderData? order;
 
 
-  CancelDetailData({
+  ChangeOrderDetailData({
     required this.cancelIdx,
     required this.ctWdate,
     required this.ctStatus,
@@ -27,15 +27,15 @@ class CancelDetailData {
     required this.octCancelMemo2,
     required this.product,
     required this.info,
-    required this.cancelDetailReturn,
+    required this.returnInfoData,
     required this.delivery,
     required this.order,
   });
 
   // JSON to Object
-  factory CancelDetailData.fromJson(Map<String, dynamic> json) {
+  factory ChangeOrderDetailData.fromJson(Map<String, dynamic> json) {
 
-    return CancelDetailData(
+    return ChangeOrderDetailData(
       cancelIdx: json['cancel_idx'],
       ctWdate: json['ct_wdate'],
       ctStatus: json['ct_stats'],
@@ -44,7 +44,7 @@ class CancelDetailData {
       octCancelMemo2: json['oct_cancel_memo2'],
       product: OrderDetailData.fromJson(json['product']),
       info: CancelDetailInfoData.fromJson(json['info']),
-      cancelDetailReturn: CancelDetailReturnData.fromJson(json['return']),
+      returnInfoData: ReturnInfoData.fromJson(json['return']),
       delivery: OrderDetailInfoDeliveryData.fromJson(json['delivery']),
       order: OrderDetailInfoOrderData.fromJson(json['order']),
     );
@@ -61,7 +61,7 @@ class CancelDetailData {
       'oct_cancel_memo2': octCancelMemo2,
       'product': product?.toJson(),
       'info': info?.toJson(),
-      'return': cancelDetailReturn?.toJson(),
+      'return': returnInfoData?.toJson(),
       'delivery': delivery?.toJson(),
       'order': order?.toJson(),
     };

@@ -1,10 +1,10 @@
-class CancelDetailReturnData {
+class ReturnInfoData {
   final String? octReturnPoint;
   final String? octDeliveryReturn;
   final String? octReturnPrice;
   final String? octReturnType;
 
-  CancelDetailReturnData({
+  ReturnInfoData({
     required this.octReturnPoint,
     required this.octDeliveryReturn,
     required this.octReturnPrice,
@@ -12,8 +12,8 @@ class CancelDetailReturnData {
   });
 
   // JSON to Object
-  factory CancelDetailReturnData.fromJson(Map<String, dynamic> json) {
-    return CancelDetailReturnData(
+  factory ReturnInfoData.fromJson(Map<String, dynamic> json) {
+    return ReturnInfoData(
       octReturnPoint: json['oct_return_point'],
       octDeliveryReturn: json['oct_delivery_return'],
       octReturnPrice: json['oct_return_price'],
