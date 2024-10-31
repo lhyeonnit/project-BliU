@@ -1,7 +1,7 @@
 import 'package:BliU/data/faq_category_data.dart';
 import 'package:BliU/data/faq_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/viewmodel/faq_view_model.dart';
+import 'package:BliU/screen/faq/view_model/faq_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

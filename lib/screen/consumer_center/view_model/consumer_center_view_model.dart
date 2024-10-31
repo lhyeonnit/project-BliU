@@ -3,21 +3,21 @@ import 'package:BliU/const/constant.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ServiceModel {
+class ConsumerCenterModel {
   String? stCustomerTel;
   String? stCustomerEmail;
 
-  ServiceModel({
+  ConsumerCenterModel({
     this.stCustomerTel,
     this.stCustomerEmail,
   });
 }
 
-class ServiceViewModel extends StateNotifier<ServiceModel?> {
+class ConsumerCenterViewModel extends StateNotifier<ConsumerCenterModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  ServiceViewModel(super.state, this.ref);
+  ConsumerCenterViewModel(super.state, this.ref);
 
   Future<void> getService() async {
     try {
@@ -28,7 +28,7 @@ class ServiceViewModel extends StateNotifier<ServiceModel?> {
           String? stCustomerTel = responseData['data'][0]['st_customer_tel'];
           String? stCustomerEmail = responseData['data'][0]['st_customer_email'];
 
-          state = ServiceModel(stCustomerTel: stCustomerTel, stCustomerEmail: stCustomerEmail);
+          state = ConsumerCenterModel(stCustomerTel: stCustomerTel, stCustomerEmail: stCustomerEmail);
           return;
         }
       }
@@ -43,7 +43,7 @@ class ServiceViewModel extends StateNotifier<ServiceModel?> {
   }
 }
 
-final serviceViewModelProvider =
-StateNotifierProvider<ServiceViewModel, ServiceModel?>((req) {
-  return ServiceViewModel(null, req);
+final consumerCenterViewModelProvider =
+StateNotifierProvider<ConsumerCenterViewModel, ConsumerCenterModel?>((req) {
+  return ConsumerCenterViewModel(null, req);
 });

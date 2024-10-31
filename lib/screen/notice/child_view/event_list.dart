@@ -1,22 +1,22 @@
-import 'package:BliU/data/notice_data.dart';
+import 'package:BliU/data/event_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/notice_detail.dart';
-import 'package:BliU/screen/mypage/viewmodel/notice_list_view_model.dart';
+import 'package:BliU/screen/mypage/component/bottom/component/event_detail.dart';
+import 'package:BliU/screen/notice/view_model/event_list_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class NoticeList extends ConsumerStatefulWidget {
-  const NoticeList({super.key});
+class EventList extends ConsumerStatefulWidget {
+  const EventList({super.key});
 
   @override
-  ConsumerState<NoticeList> createState() => NoticeListState();
+  ConsumerState<EventList> createState() => EventListState();
 }
 
-class NoticeListState extends ConsumerState<NoticeList> {
+class EventListState extends ConsumerState<EventList> {
   final ScrollController _scrollController = ScrollController();
-  List<NoticeData> _noticeList = [];
+  List<EventData> eventList = [];
 
   int _page = 1;
   bool _hasNextPage = true;
@@ -54,11 +54,11 @@ class NoticeListState extends ConsumerState<NoticeList> {
     };
 
     setState(() {
-      _noticeList = [];
+      eventList = [];
     });
 
-    final noticeListResponseDTO = await ref.read(noticeListViewModelProvider.notifier).getList(requestData);
-    _noticeList = noticeListResponseDTO?.list ?? [];
+    final eventListResponseDTO = await ref.read(eventListViewModelProvider.notifier).getList(requestData);
+    eventList = eventListResponseDTO?.list ?? [];
 
     setState(() {
       _isFirstLoadRunning = false;
@@ -76,11 +76,11 @@ class NoticeListState extends ConsumerState<NoticeList> {
         'pg': _page
       };
 
-      final noticeListResponseDTO = await ref.read(noticeListViewModelProvider.notifier).getList(requestData);
-      if (noticeListResponseDTO != null) {
-        if ((noticeListResponseDTO.list ?? []).isNotEmpty) {
+      final eventListResponseDTO = await ref.read(eventListViewModelProvider.notifier).getList(requestData);
+      if (eventListResponseDTO != null) {
+        if ((eventListResponseDTO.list ?? []).isNotEmpty) {
           setState(() {
-            _noticeList.addAll(noticeListResponseDTO.list ?? []);
+            eventList.addAll(eventListResponseDTO.list ?? []);
           });
         } else {
           setState(() {
@@ -105,15 +105,15 @@ class NoticeListState extends ConsumerState<NoticeList> {
           child: ListView.builder(
             shrinkWrap: true,
             controller: _scrollController,
-            itemCount: _noticeList.length,
+            itemCount: eventList.length,
             itemBuilder: (context, index) {
-              final noticeData = _noticeList[index];
+              final eventData = eventList[index];
               return Column(
                 children: [
                   ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     title: Text(
-                      noticeData.ntTitle ?? "",
+                      eventData.btTitle ?? "",
                       style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 15),
@@ -121,31 +121,34 @@ class NoticeListState extends ConsumerState<NoticeList> {
                         height: 1.2,
                       ),
                     ),
-                    subtitle: Text(noticeData.ntWdate ?? "",
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        color: const Color(0xFF7B7B7B),
-                        fontSize: Responsive.getFont(context, 14),
-                        height: 1.2,
-                      )
+                    subtitle: Text(eventData.btWdate ?? "",
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          color: const Color(0xFF7B7B7B),
+                          fontSize: Responsive.getFont(context, 14),
+                          height: 1.2,
+                        )
                     ),
                     trailing: SvgPicture.asset('assets/images/ic_link.svg'),
                     onTap: () {
                       // 공지사항 상세 페이지로 이동
-                      final ntIdx = noticeData.ntIdx;
-                      if (ntIdx != null) {
+                      final btIdx = eventData.btIdx;
+                      if (btIdx != null) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => NoticeDetail(ntIdx: ntIdx),
+                            builder: (context) => EventDetail(btIdx: btIdx),
                           ),
                         );
                       }
                     },
                   ),
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    child: const Divider(thickness: 1, color: Color(0xFFEEEEEE),),
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      child: const Divider(
+                        thickness: 1,
+                        color: Color(0xFFEEEEEE),
+                      )
                   )
                 ],
               );

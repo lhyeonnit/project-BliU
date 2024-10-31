@@ -1,6 +1,6 @@
 import 'package:BliU/screen/main/page_screen/home/view_model/home_footer_view_model.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
-import 'package:BliU/screen/mypage/component/bottom/notice_screen.dart';
+import 'package:BliU/screen/terms_detail/terms_detail_screen.dart';
+import 'package:BliU/screen/notice/notice_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +90,7 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TermsDetail(type: 0),
+                        builder: (context) => const TermsDetailScreen(type: 0),
                       ),
                     );
                   },
@@ -110,7 +110,7 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const TermsDetail(type: 1),
+                      builder: (context) => const TermsDetailScreen(type: 1),
                     ),
                   );
                 },

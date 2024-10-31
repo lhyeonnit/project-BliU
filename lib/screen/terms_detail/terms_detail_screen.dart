@@ -1,4 +1,4 @@
-import 'package:BliU/screen/mypage/viewmodel/terms_detail_view_model.dart';
+import 'package:BliU/screen/terms_detail/view_model/terms_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 //약관 or 개인정보 처리방치등
-class TermsDetail extends ConsumerWidget {
+class TermsDetailScreen extends ConsumerWidget {
   final int type; //0 - 이용약관 1 - 개인정보 처리 방침
   // TODO 결제관련 동의 필요
 
-  const TermsDetail({super.key, required this.type});
+  const TermsDetailScreen({super.key, required this.type});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

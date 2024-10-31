@@ -1,5 +1,5 @@
-import 'package:BliU/screen/mypage/component/bottom/component/event_list.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/notice_list.dart';
+import 'package:BliU/screen/notice/child_view/event_list.dart';
+import 'package:BliU/screen/notice/child_view/notice_list.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

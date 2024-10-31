@@ -8,7 +8,7 @@ import 'package:BliU/data/iamport_pay_data.dart';
 import 'package:BliU/data/pay_order_detail_data.dart';
 import 'package:BliU/dto/pay_order_result_detail_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
+import 'package:BliU/screen/terms_detail/terms_detail_screen.dart';
 import 'package:BliU/screen/payment_coupon/payment_coupon_screen.dart';
 import 'package:BliU/screen/payment/child_view/payment_order_item.dart';
 import 'package:BliU/screen/_component/webview_with_daum_post_webivew.dart';
@@ -1792,7 +1792,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => const TermsDetail(type: 0),
+                                            builder: (context) => const TermsDetailScreen(type: 0),
                                           ),
                                         );
                                       },
@@ -1871,7 +1871,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                       onTap: () {
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => const TermsDetail(type: 0),
+                                          MaterialPageRoute(builder: (context) => const TermsDetailScreen(type: 0),
                                           ),
                                         );
                                       },
@@ -1958,7 +1958,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => const TermsDetail(type: 0),
+                                            builder: (context) => const TermsDetailScreen(type: 0),
                                           ),
                                         );
                                       },

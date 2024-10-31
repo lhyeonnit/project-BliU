@@ -1,5 +1,5 @@
-import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
-import 'package:BliU/screen/mypage/viewmodel/setting_view_model.dart';
+import 'package:BliU/screen/terms_detail/terms_detail_screen.dart';
+import 'package:BliU/screen/setting/view_model/setting_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +154,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const TermsDetail(type: 0)),
+                              builder: (context) => const TermsDetailScreen(type: 0)),
                         );
                       },
                     ),
@@ -165,7 +165,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const TermsDetail(type: 1)),
+                              builder: (context) => const TermsDetailScreen(type: 1)),
                         );
                       },
                     ),

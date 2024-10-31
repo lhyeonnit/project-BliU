@@ -2,12 +2,12 @@ import 'package:BliU/data/member_info_data.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/recommend_info/recommend_info_screen.dart';
 import 'package:BliU/screen/main/main_screen.dart';
-import 'package:BliU/screen/mypage/component/bottom/faq_screen.dart';
+import 'package:BliU/screen/faq/faq_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/non_order_page.dart';
-import 'package:BliU/screen/mypage/component/bottom/notice_screen.dart';
+import 'package:BliU/screen/notice/notice_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/recommend_edit.dart';
-import 'package:BliU/screen/mypage/component/bottom/service_screen.dart';
-import 'package:BliU/screen/mypage/component/bottom/setting_screen.dart';
+import 'package:BliU/screen/consumer_center/consumer_center_screen.dart';
+import 'package:BliU/screen/setting/setting_screen.dart';
 import 'package:BliU/screen/alarm/alarm_screen.dart';
 import 'package:BliU/screen/mypage/component/top/component/my_info_edit_check.dart';
 import 'package:BliU/screen/mypage/component/top/my_coupon_screen.dart';
@@ -367,7 +367,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
             _buildSectionItem(context, '고객센터', () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ServiceScreen()),
+                MaterialPageRoute(builder: (context) => const ConsumerCenterScreen()),
               );
             }),
             _buildSectionItem(context, '설정', () {

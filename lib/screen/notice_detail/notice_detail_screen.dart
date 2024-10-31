@@ -1,15 +1,15 @@
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/viewmodel/notice_detail_view_model.dart';
+import 'package:BliU/screen/notice_detail/view_model/notice_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class NoticeDetail extends ConsumerWidget {
+class NoticeDetailScreen extends ConsumerWidget {
   final int ntIdx;
 
-  const NoticeDetail({super.key, required this.ntIdx});
+  const NoticeDetailScreen({super.key, required this.ntIdx});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

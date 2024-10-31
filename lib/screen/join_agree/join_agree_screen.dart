@@ -1,5 +1,5 @@
 //회원가입 약관 동의
-import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
+import 'package:BliU/screen/terms_detail/terms_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -96,7 +96,7 @@ class JoinAgreeScreenState extends State<JoinAgreeScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const TermsDetail(type: 0),
+                              builder: (context) => const TermsDetailScreen(type: 0),
                             ),
                           );
                         },
@@ -130,7 +130,7 @@ class JoinAgreeScreenState extends State<JoinAgreeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const TermsDetail(type: 1),
+                                builder: (context) => const TermsDetailScreen(type: 1),
                               ),
                             );
                           },

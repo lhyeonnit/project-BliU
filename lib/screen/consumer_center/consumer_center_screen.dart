@@ -3,7 +3,7 @@ import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_store.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/service_my_inquiry.dart';
-import 'package:BliU/screen/mypage/viewmodel/service_view_model.dart';
+import 'package:BliU/screen/consumer_center/view_model/consumer_center_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -13,12 +13,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ServiceScreen extends ConsumerWidget {
-  const ServiceScreen({super.key});
+class ConsumerCenterScreen extends ConsumerWidget {
+  const ConsumerCenterScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(serviceViewModelProvider.notifier).getService();
+    ref.read(consumerCenterViewModelProvider.notifier).getService();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -68,7 +68,7 @@ class ServiceScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Consumer(builder: (context, ref, widget) {
-                final model = ref.watch(serviceViewModelProvider);
+                final model = ref.watch(consumerCenterViewModelProvider);
 
                 return Column(
                   children: [
