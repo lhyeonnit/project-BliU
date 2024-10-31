@@ -12,10 +12,10 @@ class ProductSortBottom extends StatefulWidget {
   });
 
   @override
-  State<ProductSortBottom> createState() => _ProductSortBottomState();
+  State<ProductSortBottom> createState() => ProductSortBottomState();
 }
 
-class _ProductSortBottomState extends State<ProductSortBottom> {
+class ProductSortBottomState extends State<ProductSortBottom> {
   late String _tempSelectedSortGroup;
 
   @override

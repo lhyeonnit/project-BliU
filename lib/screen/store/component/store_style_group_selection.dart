@@ -18,10 +18,10 @@ class StyleSelectionSheet extends StatefulWidget {
   });
 
   @override
-  State<StyleSelectionSheet> createState() => _StyleSelectionSheetState();
+  State<StyleSelectionSheet> createState() => StyleSelectionSheetState();
 }
 
-class _StyleSelectionSheetState extends State<StyleSelectionSheet> {
+class StyleSelectionSheetState extends State<StyleSelectionSheet> {
   late StyleCategoryData? _tempSelectedStyle;
 
   @override

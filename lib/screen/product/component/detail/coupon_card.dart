@@ -24,10 +24,10 @@ class CouponCard extends StatefulWidget {
   });
 
   @override
-  State<CouponCard> createState() => _CouponCardState();
+  State<CouponCard> createState() => CouponCardState();
 }
 
-class _CouponCardState extends State<CouponCard> {
+class CouponCardState extends State<CouponCard> {
   @override
   Widget build(BuildContext context) {
     // 부모로부터 전달된 `isDownloaded` 상태 반영

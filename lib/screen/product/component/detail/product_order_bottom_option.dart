@@ -67,10 +67,10 @@ class ProductOrderBottomOptionContent extends ConsumerStatefulWidget {
       {super.key, required this.productData, required this.scrollController});
 
   @override
-  ConsumerState<ProductOrderBottomOptionContent> createState() => _ProductOrderBottomOptionContentState();
+  ConsumerState<ProductOrderBottomOptionContent> createState() => ProductOrderBottomOptionContentState();
 }
 
-class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBottomOptionContent> {
+class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBottomOptionContent> {
   late ProductData _productData;
   List<ProductOptionTypeData> _ptOption = [];
   List<ProductOptionTypeDetailData> _ptOptionArr = [];
@@ -251,7 +251,8 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
                                         //Utils.getInstance().showToast('이미 추가한 상품 입니다.');
                                         Utils.getInstance().showSnackBar(context, '이미 추가한 상품 입니다.');
                                       }
-                                    }},
+                                    }
+                                  },
                                 );
                               }).toList(),
                             ),
@@ -536,7 +537,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
       'pt_idx': _productData.ptIdx,
     };
     final responseDto = await ref
-        .read(productOrderBottomOptionModelProvider.notifier)
+        .read(productOrderBottomOptionViewModelProvider.notifier)
         .getList(requestData);
     if (responseDto != null) {
       setState(() {
@@ -844,7 +845,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
       'addProducts': json.encode(addProducts),
     };
 
-    final responseData = await ref.read(productOrderBottomOptionModelProvider.notifier).addCart(requestData1);
+    final responseData = await ref.read(productOrderBottomOptionViewModelProvider.notifier).addCart(requestData1);
     if (responseData != null) {
       if (responseData['result'] == true) {
         if(!mounted) return;
@@ -964,7 +965,7 @@ class _ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBo
             'cart_arr': responseData['data']['cart_arr'],
           };
 
-          final payOrderDetailDTO = await ref.read(productOrderBottomOptionModelProvider.notifier).orderDetail(requestData2);
+          final payOrderDetailDTO = await ref.read(productOrderBottomOptionViewModelProvider.notifier).orderDetail(requestData2);
           if (payOrderDetailDTO != null) {
             final payOrderDetailData = payOrderDetailDTO.data;
             final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;

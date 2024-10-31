@@ -110,7 +110,7 @@ class ProductDetailViewModel extends StateNotifier<ProductDetailModel?> {
   }
 }
 
-final productDetailModelProvider =
+final productDetailViewModelProvider =
 StateNotifierProvider<ProductDetailViewModel, ProductDetailModel?>((req) {
   return ProductDetailViewModel(null, req);
 });

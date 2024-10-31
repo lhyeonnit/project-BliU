@@ -32,10 +32,10 @@ class PaymentCompleteScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<PaymentCompleteScreen> createState() => _PaymentCompleteScreenState();
+  ConsumerState<PaymentCompleteScreen> createState() => PaymentCompleteScreenState();
 }
 
-class _PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
+class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
   final ScrollController _scrollController = ScrollController();
 
   PayOrderResultDetailData? payOrderResultDetailData;

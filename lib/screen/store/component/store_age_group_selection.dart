@@ -16,10 +16,10 @@ class StoreAgeGroupSelection extends StatefulWidget {
   });
 
   @override
-  State<StoreAgeGroupSelection> createState() => _StoreAgeGroupSelectionState();
+  State<StoreAgeGroupSelection> createState() => StoreAgeGroupSelectionState();
 }
 
-class _StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
+class StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
   CategoryData? _tempSelectedAgeGroup;
 
   @override

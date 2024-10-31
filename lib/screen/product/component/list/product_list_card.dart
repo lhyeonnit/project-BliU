@@ -15,10 +15,10 @@ class ProductListCard extends ConsumerStatefulWidget {
   const ProductListCard({super.key, required this.productData, this.bottomVisible});
 
   @override
-  ConsumerState<ProductListCard> createState() => _ProductListCardState();
+  ConsumerState<ProductListCard> createState() => ProductListCardState();
 }
 
-class _ProductListCardState extends ConsumerState<ProductListCard> {
+class ProductListCardState extends ConsumerState<ProductListCard> {
   late ProductData productData;
   @override
   void initState() {

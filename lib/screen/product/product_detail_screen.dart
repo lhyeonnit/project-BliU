@@ -101,7 +101,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       'reload': 'N',
     };
 
-    final productDetailResponseDto = await ref.read(productDetailModelProvider.notifier).getDetail(requestData);
+    final productDetailResponseDto = await ref.read(productDetailViewModelProvider.notifier).getDetail(requestData);
     if (productDetailResponseDto.result == true) {
       setState(() {
         _storeData = productDetailResponseDto.store;
@@ -125,7 +125,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       'pg': _productReviewCurrentPage,
     };
 
-    final reviewInfoResponseDTO = await ref.read(productDetailModelProvider.notifier).getProductReviewList(requestData);
+    final reviewInfoResponseDTO = await ref.read(productDetailViewModelProvider.notifier).getProductReviewList(requestData);
     if (reviewInfoResponseDTO != null) {
       if (reviewInfoResponseDTO.result == true) {
         setState(() {
@@ -144,7 +144,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       'pt_idx': _ptIdx,
       'pg': _productQnaCurrentPage,
     };
-    final qnaListResponseDTO = await ref.read(productDetailModelProvider.notifier).getProductQnaList(requestData);
+    final qnaListResponseDTO = await ref.read(productDetailViewModelProvider.notifier).getProductQnaList(requestData);
     if (qnaListResponseDTO != null) {
       if (qnaListResponseDTO.result == true) {
         setState(() {
@@ -179,7 +179,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         'pt_idx': _productData?.ptIdx,
       };
 
-      final defaultResponseDTO = await ref.read(productDetailModelProvider.notifier).productLike(requestData);
+      final defaultResponseDTO = await ref.read(productDetailViewModelProvider.notifier).productLike(requestData);
       if (defaultResponseDTO != null) {
         if (defaultResponseDTO.result == true) {
           setState(() {

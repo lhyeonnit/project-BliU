@@ -25,10 +25,10 @@ class ProductFilterBottom extends StatefulWidget {
   });
 
   @override
-  State<ProductFilterBottom> createState() => _ProductFilterBottomState();
+  State<ProductFilterBottom> createState() => ProductFilterBottomState();
 }
 
-class _ProductFilterBottomState extends State<ProductFilterBottom> {
+class ProductFilterBottomState extends State<ProductFilterBottom> {
   final _scrollController = ScrollController();
   late List<CategoryData> _ageCategories;
   late List<StyleCategoryData> _styleCategories;

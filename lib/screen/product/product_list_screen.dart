@@ -25,10 +25,10 @@ class ProductListScreen extends ConsumerStatefulWidget {
   const ProductListScreen({super.key, required this.selectedCategory, this.selectSubCategoryIndex});
 
   @override
-  ConsumerState<ProductListScreen> createState() => _ProductListScreenState();
+  ConsumerState<ProductListScreen> createState() => ProductListScreenState();
 }
 
-class _ProductListScreenState extends ConsumerState<ProductListScreen> with TickerProviderStateMixin {
+class ProductListScreenState extends ConsumerState<ProductListScreen> with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   late TabController _tabController;
   late CategoryData _selectedCategory;

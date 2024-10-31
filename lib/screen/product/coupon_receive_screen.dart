@@ -214,7 +214,7 @@ class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
       'pt_idx': _ptIdx,
     };
 
-    final productCouponResponseDTO = await ref.read(couponReceiveModelProvider.notifier).getList(requestData);
+    final productCouponResponseDTO = await ref.read(couponReceiveViewModelProvider.notifier).getList(requestData);
     setState(() {
       int downAbleCount = productCouponResponseDTO?.downAbleCount ?? 0;
       _couponList = productCouponResponseDTO?.list ?? [];
@@ -242,7 +242,7 @@ class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
       'ct_codes': json.encode(ctCodes),
     };
 
-    final defaultResponseDTO = await ref.read(couponReceiveModelProvider.notifier).couponDown(requestData);
+    final defaultResponseDTO = await ref.read(couponReceiveViewModelProvider.notifier).couponDown(requestData);
     if (defaultResponseDTO != null) {
       if (!mounted) return;
       Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");

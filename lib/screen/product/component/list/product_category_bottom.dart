@@ -11,10 +11,10 @@ class ProductCategoryBottom extends StatefulWidget {
   const ProductCategoryBottom({super.key, required this.selectedCategory, required this.onCategorySelected,});
 
   @override
-  State<ProductCategoryBottom> createState() => _ProductCategoryBottomState();
+  State<ProductCategoryBottom> createState() => ProductCategoryBottomState();
 }
 
-class _ProductCategoryBottomState extends State<ProductCategoryBottom> {
+class ProductCategoryBottomState extends State<ProductCategoryBottom> {
   CategoryData? get selectedCategory => widget.selectedCategory;
   Function(CategoryData) get onCategorySelected => widget.onCategorySelected;
 

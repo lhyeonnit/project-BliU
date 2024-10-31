@@ -55,7 +55,7 @@ class CouponReceiveViewModel extends StateNotifier<CouponReceiveModel?> {
 }
 
 
-final couponReceiveModelProvider =
+final couponReceiveViewModelProvider =
 StateNotifierProvider<CouponReceiveViewModel, CouponReceiveModel?>((req) {
   return CouponReceiveViewModel(null, req);
 });

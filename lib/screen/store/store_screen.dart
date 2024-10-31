@@ -7,10 +7,10 @@ class StoreScreen extends StatefulWidget {
   const StoreScreen({super.key});
 
   @override
-  State<StoreScreen> createState() => _StoreScreenState();
+  State<StoreScreen> createState() => StoreScreenState();
 }
 
-class _StoreScreenState extends State<StoreScreen>
+class StoreScreenState extends State<StoreScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 

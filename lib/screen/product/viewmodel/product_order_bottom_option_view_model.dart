@@ -72,7 +72,7 @@ class ProductOrderBottomOptionViewModel extends StateNotifier<ProductOrderBottom
   }
 }
 
-final productOrderBottomOptionModelProvider =
+final productOrderBottomOptionViewModelProvider =
 StateNotifierProvider<ProductOrderBottomOptionViewModel, ProductOrderBottomOptionModel?>((req) {
   return ProductOrderBottomOptionViewModel(null, req);
 });

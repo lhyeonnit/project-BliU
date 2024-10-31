@@ -6,13 +6,13 @@ import 'package:BliU/dto/style_category_response_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RankingModel {}
+class StoreRankingModel {}
 
-class RankingViewModel extends StateNotifier<RankingModel?> {
+class StoreRankingViewModel extends StateNotifier<StoreRankingModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  RankingViewModel(super.state, this.ref);
+  StoreRankingViewModel(super.state, this.ref);
 
   Future<StoreRankResponseDTO?> getRank(Map<String, dynamic> requestData) async {
     try {
@@ -74,7 +74,7 @@ class RankingViewModel extends StateNotifier<RankingModel?> {
   }
 }
 
-final storeLankListViewModelProvider =
-StateNotifierProvider<RankingViewModel, RankingModel?>((req) {
-  return RankingViewModel(null, req);
+final storeRankingViewModelProvider =
+StateNotifierProvider<StoreRankingViewModel, StoreRankingModel?>((req) {
+  return StoreRankingViewModel(null, req);
 });

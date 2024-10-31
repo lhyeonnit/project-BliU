@@ -8,7 +8,7 @@ import 'package:BliU/screen/product/product_detail_screen.dart';
 import 'package:BliU/screen/store/component/store_age_group_selection.dart';
 import 'package:BliU/screen/store/component/store_style_group_selection.dart';
 import 'package:BliU/screen/store/store_detail_screen.dart';
-import 'package:BliU/screen/store/viewmodel/ranking_view_model.dart';
+import 'package:BliU/screen/store/viewmodel/store_ranking_view_model.dart';
 import 'package:BliU/screen/store/viewmodel/store_favorite_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -125,10 +125,10 @@ class StoreRakingPageState extends ConsumerState<StoreRakingPage> {
   }
 
   void _getFilterCategory() async {
-    final ageCategoryResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getAgeCategory();
+    final ageCategoryResponseDTO = await ref.read(storeRankingViewModelProvider.notifier).getAgeCategory();
     _ageCategories = ageCategoryResponseDTO?.list ?? [];
 
-    final styleCategoryResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getStyleCategory();
+    final styleCategoryResponseDTO = await ref.read(storeRankingViewModelProvider.notifier).getStyleCategory();
     _styleCategories = styleCategoryResponseDTO?.list ?? [];
   }
 
@@ -164,7 +164,7 @@ class StoreRakingPageState extends ConsumerState<StoreRakingPage> {
     //   storeRankList = [];
     // });
 
-    final storeRankResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getRank(requestData); // 서버에서 데이터 가져오기
+    final storeRankResponseDTO = await ref.read(storeRankingViewModelProvider.notifier).getRank(requestData); // 서버에서 데이터 가져오기
     storeRankList = storeRankResponseDTO?.list ?? [];
 
     setState(() {
@@ -203,7 +203,7 @@ class StoreRakingPageState extends ConsumerState<StoreRakingPage> {
         'age': age,
         'pg': _page,
       };
-      final storeRankResponseDTO = await ref.read(storeLankListViewModelProvider.notifier).getRank(requestData); // 서버에서 데이터 가져오기
+      final storeRankResponseDTO = await ref.read(storeRankingViewModelProvider.notifier).getRank(requestData); // 서버에서 데이터 가져오기
       if (storeRankResponseDTO != null) {
         if ((storeRankResponseDTO.list ?? []).isNotEmpty) {
           setState(() {

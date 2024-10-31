@@ -9,10 +9,10 @@ class PaymentOrderItem extends StatefulWidget {
   const PaymentOrderItem({super.key, required this.cartList,});
 
   @override
-  State<PaymentOrderItem> createState() => _PaymentOrderItemState();
+  State<PaymentOrderItem> createState() => PaymentOrderItemState();
 }
 
-class _PaymentOrderItemState extends State<PaymentOrderItem> {
+class PaymentOrderItemState extends State<PaymentOrderItem> {
   List<CartData> _selectedItems = [];
 
   @override
