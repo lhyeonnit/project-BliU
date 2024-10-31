@@ -1,5 +1,5 @@
 import 'package:BliU/data/push_data.dart';
-import 'package:BliU/screen/_component/cart_screen.dart';
+import 'package:BliU/screen/cart/cart_screen.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/exhibition/exhibition_screen.dart';

@@ -1,5 +1,5 @@
 import 'package:BliU/screen/login/login_screen.dart';
-import 'package:BliU/screen/login/viewmodel/new_password_view_model.dart';
+import 'package:BliU/screen/new_password/view_model/new_password_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';

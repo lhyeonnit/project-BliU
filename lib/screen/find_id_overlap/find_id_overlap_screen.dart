@@ -2,7 +2,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'login_screen.dart';
+import '../login/login_screen.dart';
 
 class FindIdOverlapScreen extends StatelessWidget {
   final String userId = "ID_1234";

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:BliU/screen/join/join_complete_screen.dart';
-import 'package:BliU/screen/join/viewmodel/join_form_view_model.dart';
+import 'package:BliU/screen/join_complete/join_complete_screen.dart';
+import 'package:BliU/screen/join_form/view_model/join_form_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';

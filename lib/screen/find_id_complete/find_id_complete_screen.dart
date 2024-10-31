@@ -1,10 +1,9 @@
+import 'package:BliU/screen/find_password/find_password_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-
-import 'find_password_screen.dart';
 
 class FindIdCompleteScreen extends ConsumerStatefulWidget {
   final String? id;

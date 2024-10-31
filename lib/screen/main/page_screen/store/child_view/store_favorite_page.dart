@@ -1,7 +1,7 @@
 import 'package:BliU/data/bookmark_data.dart';
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
-import 'package:BliU/screen/_component/message_dialog.dart';
+import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/product_list/item/product_list_card.dart';

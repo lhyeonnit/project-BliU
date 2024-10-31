@@ -1,5 +1,5 @@
 import 'package:BliU/data/store_data.dart';
-import 'package:BliU/screen/_component/message_dialog.dart';
+import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/screen/store_detail/view_model/store_info_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';

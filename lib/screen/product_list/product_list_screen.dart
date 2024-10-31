@@ -5,7 +5,7 @@ import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/style_category_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
-import 'package:BliU/screen/_component/search_screen.dart';
+import 'package:BliU/screen/search/search_screen.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/modal_dialog/product_category_bottom.dart';
 import 'package:BliU/screen/modal_dialog/product_filter_bottom.dart';

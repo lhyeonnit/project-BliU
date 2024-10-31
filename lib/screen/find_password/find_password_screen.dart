@@ -2,8 +2,8 @@
 
 import 'dart:async';
 
-import 'package:BliU/screen/_component/message_dialog.dart';
-import 'package:BliU/screen/login/viewmodel/find_password_view_model.dart';
+import 'package:BliU/screen/modal_dialog/message_dialog.dart';
+import 'package:BliU/screen/find_password/view_model/find_password_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'new_password_screen.dart';
+import '../new_password/new_password_screen.dart';
 
 class FindPasswordScreen extends ConsumerStatefulWidget {
   const FindPasswordScreen({super.key});

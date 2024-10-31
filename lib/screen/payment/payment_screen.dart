@@ -11,7 +11,7 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
 import 'package:BliU/screen/payment_coupon/payment_coupon_screen.dart';
 import 'package:BliU/screen/payment/child_view/payment_order_item.dart';
-import 'package:BliU/utils/webview_with_daum_post_webivew.dart';
+import 'package:BliU/screen/_component/webview_with_daum_post_webivew.dart';
 import 'package:BliU/screen/payment_complete/payment_complete_screen.dart';
 import 'package:BliU/screen/payment/view_model/payment_view_model.dart';
 import 'package:BliU/utils/responsive.dart';

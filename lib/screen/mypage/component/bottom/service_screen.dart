@@ -1,4 +1,4 @@
-import 'package:BliU/screen/_component/message_dialog.dart';
+import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/inquiry_store.dart';

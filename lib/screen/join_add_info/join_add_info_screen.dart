@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:BliU/data/pay_order_detail_data.dart';
-import 'package:BliU/screen/join/viewmodel/join_add_info_view_model.dart';
+import 'package:BliU/screen/join_add_info/view_model/join_add_info_view_model.dart';
 import 'package:BliU/screen/payment/payment_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';

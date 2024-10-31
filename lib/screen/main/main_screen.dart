@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:BliU/data/fcm_data.dart';
-import 'package:BliU/screen/_component/cart_screen.dart';
+import 'package:BliU/screen/cart/cart_screen.dart';
 import 'package:BliU/screen/_component/custom_bottom_navigation_bar.dart';
 import 'package:BliU/screen/main/page_screen/category/category_screen.dart';
 import 'package:BliU/screen/exhibition/exhibition_screen.dart';

@@ -4,7 +4,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'join_form_screen.dart';
+import '../join_form/join_form_screen.dart';
 
 class JoinAgreeScreen extends StatefulWidget {
   const JoinAgreeScreen({super.key});
