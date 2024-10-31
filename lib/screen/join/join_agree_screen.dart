@@ -10,10 +10,10 @@ class JoinAgreeScreen extends StatefulWidget {
   const JoinAgreeScreen({super.key});
 
   @override
-  State<JoinAgreeScreen> createState() => _JoinAgreeScreenState();
+  State<JoinAgreeScreen> createState() => JoinAgreeScreenState();
 }
 
-class _JoinAgreeScreenState extends State<JoinAgreeScreen> {
+class JoinAgreeScreenState extends State<JoinAgreeScreen> {
   bool _serviceAgreement = false;
   bool _privacyPolicy = false;
   bool _ageConfirmation = false;

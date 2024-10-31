@@ -76,7 +76,7 @@ class SmartLensViewModel extends StateNotifier<SmartLensModel?> {
 }
 
 // ViewModel Provider 정의
-final smartLensModelProvider =
+final smartLensViewModelProvider =
 StateNotifierProvider<SmartLensViewModel, SmartLensModel?>((ref) {
   return SmartLensViewModel(null, ref);
 });

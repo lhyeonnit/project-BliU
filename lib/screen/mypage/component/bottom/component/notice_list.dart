@@ -11,10 +11,10 @@ class NoticeList extends ConsumerStatefulWidget {
   const NoticeList({super.key});
 
   @override
-  ConsumerState<NoticeList> createState() => _NoticeListState();
+  ConsumerState<NoticeList> createState() => NoticeListState();
 }
 
-class _NoticeListState extends ConsumerState<NoticeList> {
+class NoticeListState extends ConsumerState<NoticeList> {
   final ScrollController _scrollController = ScrollController();
   List<NoticeData> _noticeList = [];
 

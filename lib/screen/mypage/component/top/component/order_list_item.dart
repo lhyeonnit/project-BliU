@@ -58,21 +58,12 @@ class OrderListItem extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  if () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CancelDetailScreen(orderData: orderData,),
-                      ),
-                    );
-                  }
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => OrderDetail(orderData: orderData),
                     ),
                   );
-
                 },
                 child: Row(
                   children: [

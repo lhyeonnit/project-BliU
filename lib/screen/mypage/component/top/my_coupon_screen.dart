@@ -12,10 +12,10 @@ class MyCouponScreen extends ConsumerStatefulWidget {
   const MyCouponScreen({super.key});
 
   @override
-  ConsumerState<MyCouponScreen> createState() => _MyCouponScreenState();
+  ConsumerState<MyCouponScreen> createState() => MyCouponScreenState();
 }
 
-class _MyCouponScreenState extends ConsumerState<MyCouponScreen> {
+class MyCouponScreenState extends ConsumerState<MyCouponScreen> {
   final ScrollController _scrollController = ScrollController();
   final List<String> _categories = ['사용가능', '완료/만료'];
   int _selectedCategoryIndex = 0;

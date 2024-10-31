@@ -17,10 +17,10 @@ class SmartLensPhotoCrop extends ConsumerStatefulWidget {
   const SmartLensPhotoCrop({super.key, required this.imageEntity});
 
   @override
-  ConsumerState<SmartLensPhotoCrop> createState() => _SmartLensPhotoCropState();
+  ConsumerState<SmartLensPhotoCrop> createState() => SmartLensPhotoCropState();
 }
 
-class _SmartLensPhotoCropState extends ConsumerState<SmartLensPhotoCrop> {
+class SmartLensPhotoCropState extends ConsumerState<SmartLensPhotoCrop> {
   bool _isLoading = true;
   File? _imageFile;
 
@@ -167,7 +167,7 @@ class _SmartLensPhotoCropState extends ConsumerState<SmartLensPhotoCrop> {
         'search_img': file,
       });
 
-      ref.read(smartLensModelProvider.notifier).photoUpload(formData).then((resultData) {
+      ref.read(smartLensViewModelProvider.notifier).photoUpload(formData).then((resultData) {
         if (!mounted) return;
         if (resultData != null) {
           if (resultData.result == true) {

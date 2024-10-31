@@ -65,7 +65,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
 
     final requestData = await _makeRequestData();
 
-    final cartResponseDTO = await ref.read(cartModelProvider.notifier).getList(requestData);
+    final cartResponseDTO = await ref.read(cartViewModelProvider.notifier).getList(requestData);
     if (cartResponseDTO != null) {
       setState(() {
         _cartItems = cartResponseDTO.list ?? [];
@@ -103,7 +103,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
 
       final requestData = await _makeRequestData();
 
-      final cartResponseDTO = await ref.read(cartModelProvider.notifier).getList(requestData);
+      final cartResponseDTO = await ref.read(cartViewModelProvider.notifier).getList(requestData);
       if (cartResponseDTO != null) {
         if ((cartResponseDTO.list ?? []).isNotEmpty) {
           setState(() {
@@ -232,7 +232,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
       'ct_count': ctCount
     };
 
-    final defaultResponseDTO = await ref.read(cartModelProvider.notifier).cartUpdate(requestData);
+    final defaultResponseDTO = await ref.read(cartViewModelProvider.notifier).cartUpdate(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _getList();
@@ -256,7 +256,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
       'ct_idx': ctIdx,
     };
 
-    final defaultResponseDTO = await ref.read(cartModelProvider.notifier).cartDel(requestData);
+    final defaultResponseDTO = await ref.read(cartViewModelProvider.notifier).cartDel(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _getList();
@@ -298,7 +298,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
       'cart_arr': json.encode(cartArr),
     };
 
-    final payOrderDetailDTO = await ref.read(cartModelProvider.notifier).orderDetail(requestData);
+    final payOrderDetailDTO = await ref.read(cartViewModelProvider.notifier).orderDetail(requestData);
     if (payOrderDetailDTO != null) {
       final payOrderDetailData = payOrderDetailDTO.data;
       final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;

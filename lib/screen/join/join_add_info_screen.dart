@@ -189,7 +189,7 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                                       'phone_num': phoneNumber,
                                       'code_type': 4,
                                     };
-                                    final resultDTO = await ref.read(joinAddInfoModelProvider.notifier).reqPhoneAuthCode(requestData);
+                                    final resultDTO = await ref.read(joinAddInfoViewModelProvider.notifier).reqPhoneAuthCode(requestData);
                                     if (resultDTO.result == true) {
                                       setState(() {
                                         _phoneAuthChecked = false;
@@ -257,7 +257,7 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                                     'code_type': 4,
                                   };
 
-                                  final resultDTO = await ref.read(joinAddInfoModelProvider.notifier).checkCode(requestData);
+                                  final resultDTO = await ref.read(joinAddInfoViewModelProvider.notifier).checkCode(requestData);
                                   if (!context.mounted) return;
                                   Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                                   if (resultDTO.result == true) {
@@ -452,7 +452,7 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                       'mt_gender': gender,
                     };
 
-                    final myPageInfoDTO = await ref.read(joinAddInfoModelProvider.notifier).snsAddInfo(requestData);
+                    final myPageInfoDTO = await ref.read(joinAddInfoViewModelProvider.notifier).snsAddInfo(requestData);
                     if (myPageInfoDTO.result == true) {
                       name = myPageInfoDTO.data?.mtName ?? '';
                       phoneNum = myPageInfoDTO.data?.mtHp ?? '';

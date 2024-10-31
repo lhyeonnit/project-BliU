@@ -16,11 +16,10 @@ class RecommendInfoScreen extends ConsumerStatefulWidget {
   const RecommendInfoScreen({super.key});
 
   @override
-  ConsumerState<RecommendInfoScreen> createState() =>
-      _RecommendInfoScreenState();
+  ConsumerState<RecommendInfoScreen> createState() => RecommendInfoScreenState();
 }
 
-class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
+class RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
     with SingleTickerProviderStateMixin {
 
   bool _isAllFieldsFilled = false;
@@ -405,7 +404,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                                     'style': styleValue,
                                   };
 
-                                  final defaultResponseDTO = await ref.read(recommendInfoModelProvider.notifier).saveRecommendInfo(requestData);
+                                  final defaultResponseDTO = await ref.read(recommendInfoViewModelProvider.notifier).saveRecommendInfo(requestData);
 
                                   if (defaultResponseDTO != null && defaultResponseDTO.result == true) {
                                     if (memberInfo != null) {
@@ -807,7 +806,7 @@ class _RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
   }
 
   void _getStyleCategory() async {
-    final styleCategoriesResponseDTO = await ref.read(recommendInfoModelProvider.notifier).getStyleCategory();
+    final styleCategoriesResponseDTO = await ref.read(recommendInfoViewModelProvider.notifier).getStyleCategory();
 
     if (styleCategoriesResponseDTO != null) {
       if (styleCategoriesResponseDTO.result == true) {

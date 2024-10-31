@@ -11,10 +11,10 @@ class SettingScreen extends ConsumerStatefulWidget {
   const SettingScreen({super.key});
 
   @override
-  ConsumerState<SettingScreen> createState() => _SettingScreenState();
+  ConsumerState<SettingScreen> createState() => SettingScreenState();
 }
 
-class _SettingScreenState extends ConsumerState<SettingScreen> {
+class SettingScreenState extends ConsumerState<SettingScreen> {
   void _getList() async {
     final pref = await SharedPreferencesManager.getInstance();
     Map<String, dynamic> requestData = {

@@ -11,10 +11,10 @@ class EventList extends ConsumerStatefulWidget {
   const EventList({super.key});
 
   @override
-  ConsumerState<EventList> createState() => _EventListState();
+  ConsumerState<EventList> createState() => EventListState();
 }
 
-class _EventListState extends ConsumerState<EventList> {
+class EventListState extends ConsumerState<EventList> {
   final ScrollController _scrollController = ScrollController();
   List<EventData> eventList = [];
 

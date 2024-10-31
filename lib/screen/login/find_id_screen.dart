@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/login/find_id_complete_screen.dart';
-import 'package:BliU/screen/login/viewmodel/find_id_screen_view_model.dart';
+import 'package:BliU/screen/login/viewmodel/find_id_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -156,7 +156,7 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                                     'code_type': 2,
                                   };
                                   final resultDTO = await ref.read(
-                                      findIdScreenModelProvider.notifier)
+                                      findIdViewModelModelProvider.notifier)
                                       .reqPhoneAuthCode(requestData);
                                   if (resultDTO?.result == true) {
                                     setState(() {
@@ -246,7 +246,7 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                                     };
 
                                     final resultDTO = await ref.read(
-                                        findIdScreenModelProvider.notifier).checkCode(requestData);
+                                        findIdViewModelModelProvider.notifier).checkCode(requestData);
                                     if (!context.mounted) return;
                                     Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                                     if (resultDTO.result == true) {
@@ -307,7 +307,7 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                     'phone_num_chk': phoneNumChk,
                   };
 
-                  final findIdResponseDTO = await ref.read(findIdScreenModelProvider.notifier).findId(requestData);
+                  final findIdResponseDTO = await ref.read(findIdViewModelModelProvider.notifier).findId(requestData);
                   if (findIdResponseDTO?.result == true) {
                     id = findIdResponseDTO?.id;
                     if (!context.mounted) return;

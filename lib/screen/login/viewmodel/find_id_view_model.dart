@@ -5,14 +5,14 @@ import 'package:BliU/dto/find_id_pwd_response_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FindIdScreenModel {
+class FindIdModel {
 }
 
-class FindIdScreenViewModel extends StateNotifier<FindIdScreenModel?> {
+class FindIdViewModel extends StateNotifier<FindIdModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  FindIdScreenViewModel(super.state, this.ref);
+  FindIdViewModel(super.state, this.ref);
 
   Future<FindIdPwdResponseDTO?> findId(Map<String, dynamic> requestData) async {
     try {
@@ -82,7 +82,7 @@ class FindIdScreenViewModel extends StateNotifier<FindIdScreenModel?> {
 }
 
 // ViewModel Provider 정의
-final findIdScreenModelProvider =
-StateNotifierProvider<FindIdScreenViewModel, FindIdScreenModel?>((ref) {
-  return FindIdScreenViewModel(null, ref);
+final findIdViewModelModelProvider =
+StateNotifierProvider<FindIdViewModel, FindIdModel?>((ref) {
+  return FindIdViewModel(null, ref);
 });

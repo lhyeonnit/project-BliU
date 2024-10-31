@@ -1,5 +1,5 @@
 import 'package:BliU/screen/login/login_screen.dart';
-import 'package:BliU/screen/login/viewmodel/new_password_screen_view_model.dart';
+import 'package:BliU/screen/login/viewmodel/new_password_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
@@ -156,7 +156,7 @@ class NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
                       'pwd_token': pwdToken,
                     };
 
-                    final findIdResponseDTO = await ref.read(newPasswordScreenModelProvider.notifier).changePassword(requestData);
+                    final findIdResponseDTO = await ref.read(newPasswordViewModelProvider.notifier).changePassword(requestData);
                     if (findIdResponseDTO?.result == true) {
                       if (!context.mounted) return;
                       Navigator.pushReplacement(

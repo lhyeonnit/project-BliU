@@ -81,7 +81,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
       'research': research,
     };
 
-    final searchList = await ref.read(searchModelProvider.notifier).getSearchList(requestSearchData);
+    final searchList = await ref.read(searchViewModelProvider.notifier).getSearchList(requestSearchData);
     setState(() {
         searchStoreData = searchList?.storeSearch ?? [];
         searchProductData = searchList?.productSearch ?? [];
@@ -91,7 +91,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   void _getPopularList() async {
-    final searchPopularResponseDTO = await ref.read(searchModelProvider.notifier).getPopularList();
+    final searchPopularResponseDTO = await ref.read(searchViewModelProvider.notifier).getPopularList();
 
     if (searchPopularResponseDTO != null && searchPopularResponseDTO.result == true) {
       setState(() {
@@ -107,7 +107,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
       'mt_idx': mtIdx,
       'token': pref.getToken(),
     };
-    final searchMyListResponseDTO = await ref.read(searchModelProvider.notifier).getSearchMyList(requestSearchMyData);
+    final searchMyListResponseDTO = await ref.read(searchViewModelProvider.notifier).getSearchMyList(requestSearchMyData);
     setState(() {
       searchMyList = searchMyListResponseDTO?.list ?? [];
     });
@@ -123,7 +123,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
       'slt_idx': stIdx,
     };
 
-    final defaultResponseDTO = await ref.read(searchModelProvider.notifier).searchDel(requestData);
+    final defaultResponseDTO = await ref.read(searchViewModelProvider.notifier).searchDel(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _searchMyList();
@@ -141,7 +141,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
       'slt_idx': 'all',
     };
 
-    final defaultResponseDTO = await ref.read(searchModelProvider.notifier).searchDel(requestData);
+    final defaultResponseDTO = await ref.read(searchViewModelProvider.notifier).searchDel(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _searchMyList();
@@ -290,7 +290,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
         _productList = [];
       });
 
-      final productListResponseDTO = await ref.read(searchModelProvider.notifier).getProductList(requestProductData);
+      final productListResponseDTO = await ref.read(searchViewModelProvider.notifier).getProductList(requestProductData);
       _count = productListResponseDTO?.count ?? 0;
       _productList = productListResponseDTO?.list ?? [];
 
@@ -324,7 +324,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
 
       final requestProductData = await _makeRequestData();
 
-      final productListResponseDTO = await ref.read(searchModelProvider.notifier).getProductList(requestProductData);
+      final productListResponseDTO = await ref.read(searchViewModelProvider.notifier).getProductList(requestProductData);
       if (productListResponseDTO != null) {
         if ((productListResponseDTO.list).isNotEmpty) {
           setState(() {

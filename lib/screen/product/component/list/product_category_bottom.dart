@@ -22,7 +22,7 @@ class _ProductCategoryBottomState extends State<ProductCategoryBottom> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, widget) {
-        final model = ref.watch(categoryModelProvider);
+        final model = ref.watch(categoryViewModelProvider);
         final categories = model?.categoryResponseDTO?.list ?? [];
 
         return Container(

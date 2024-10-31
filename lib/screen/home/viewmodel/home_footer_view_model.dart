@@ -43,7 +43,7 @@ class HomeFooterViewModel extends StateNotifier<HomeFooterModel?> {
 }
 
 // ViewModel Provider 정의
-final footerViewModelProvider =
+final homeFooterViewModelProvider =
 StateNotifierProvider<HomeFooterViewModel, HomeFooterModel?>((ref) {
   return HomeFooterViewModel(null, ref);
 });

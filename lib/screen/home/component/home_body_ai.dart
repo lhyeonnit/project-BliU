@@ -10,10 +10,10 @@ class HomeBodyAi extends ConsumerStatefulWidget {
   const HomeBodyAi({super.key});
 
   @override
-  ConsumerState<HomeBodyAi> createState() => _HomeBodyAiState();
+  ConsumerState<HomeBodyAi> createState() => HomeBodyAiState();
 }
 
-class _HomeBodyAiState extends ConsumerState<HomeBodyAi> {
+class HomeBodyAiState extends ConsumerState<HomeBodyAi> {
   // 각 아이템의 좋아요 상태를 저장하는 리스트
   List<ProductData> _productList = [];
 

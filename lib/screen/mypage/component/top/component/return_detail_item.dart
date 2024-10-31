@@ -33,10 +33,10 @@ class ReturnItem extends StatefulWidget {
     super.key});
 
   @override
-  State<ReturnItem> createState() => _ReturnItemState();
+  State<ReturnItem> createState() => ReturnItemState();
 }
 
-class _ReturnItemState extends State<ReturnItem> {
+class ReturnItemState extends State<ReturnItem> {
   OverlayEntry? _overlayEntryReason; // 취소 사유 드롭다운
   OverlayEntry? _overlayEntryBank; // 은행명 드롭다운
   String _dropdownText = '사유 선택';

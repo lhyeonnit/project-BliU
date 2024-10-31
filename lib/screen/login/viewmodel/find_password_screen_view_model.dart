@@ -82,7 +82,7 @@ class FindPasswordScreenViewModel extends StateNotifier<FindPasswordScreenModel?
 }
 
 // ViewModel Provider 정의
-final findPasswordScreenModelProvider =
+final findPasswordScreenViewModelProvider =
 StateNotifierProvider<FindPasswordScreenViewModel, FindPasswordScreenModel?>((ref) {
   return FindPasswordScreenViewModel(null, ref);
 });

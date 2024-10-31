@@ -56,7 +56,7 @@ class RecommendInfoViewModel extends StateNotifier<RecommendInfoModel?>{
 }
 
 
-final recommendInfoModelProvider =
+final recommendInfoViewModelProvider =
 StateNotifierProvider<RecommendInfoViewModel, RecommendInfoModel?>((req) {
   return RecommendInfoViewModel(null, req);
 });

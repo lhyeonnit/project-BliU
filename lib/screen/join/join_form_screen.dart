@@ -180,7 +180,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                 final id = _idController.text;
                                 Map<String, dynamic> requestData = {'id': id};
 
-                                final resultDTO = await ref.read(joinFormModelProvider.notifier).checkId(requestData);
+                                final resultDTO = await ref.read(joinFormViewModelProvider.notifier).checkId(requestData);
                                 if (!context.mounted) return;
                                 Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                                 if (resultDTO.result == true) {
@@ -279,7 +279,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                       'phone_num': phoneNumber,
                                       'code_type': 1,
                                     };
-                                    final resultDTO = await ref.read(joinFormModelProvider.notifier).reqPhoneAuthCode(requestData);
+                                    final resultDTO = await ref.read(joinFormViewModelProvider.notifier).reqPhoneAuthCode(requestData);
                                     if (resultDTO.result == true) {
                                       setState(() {
                                         _phoneAuthChecked = false;
@@ -347,7 +347,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                     'code_type': 1,
                                   };
 
-                                  final resultDTO = await ref.read(joinFormModelProvider.notifier).checkCode(requestData);
+                                  final resultDTO = await ref.read(joinFormViewModelProvider.notifier).checkCode(requestData);
                                   if (!context.mounted) return;
                                   Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                                   if (resultDTO.result == true) {
@@ -558,7 +558,7 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                       'app_token': pref.getToken(),
                     };
 
-                    final myPageInfoDTO = await ref.read(joinFormModelProvider.notifier).join(requestData);
+                    final myPageInfoDTO = await ref.read(joinFormViewModelProvider.notifier).join(requestData);
                     if (myPageInfoDTO.result == true) {
                       id = myPageInfoDTO.data?.mtId ?? '';
                       name = myPageInfoDTO.data?.mtName ?? '';

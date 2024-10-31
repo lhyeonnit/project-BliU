@@ -17,10 +17,10 @@ class FindPasswordScreen extends ConsumerStatefulWidget {
   const FindPasswordScreen({super.key});
 
   @override
-  ConsumerState<FindPasswordScreen> createState() => _FindPasswordScreenState();
+  ConsumerState<FindPasswordScreen> createState() => FindPasswordScreenState();
 }
 
-class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
+class FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isAllFieldsFilled = false;
   bool _phoneAuthCodeVisible = false;
@@ -155,7 +155,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                                 'code_type': 3,
                               };
 
-                              final resultDTO = await ref.read(findPasswordScreenModelProvider.notifier).reqPhoneAuthCode(requestData);
+                              final resultDTO = await ref.read(findPasswordScreenViewModelProvider.notifier).reqPhoneAuthCode(requestData);
                               if (resultDTO?.result == true) {
                                 setState(() {
                                   _phoneAuthCodeVisible = true;
@@ -239,7 +239,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                                   'code_type': 3,
                                 };
 
-                                final resultDTO = await ref.read(findPasswordScreenModelProvider.notifier).checkCode(requestData);
+                                final resultDTO = await ref.read(findPasswordScreenViewModelProvider.notifier).checkCode(requestData);
                                 if (!context.mounted) return;
                                 Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                                 if (resultDTO.result == true) {
@@ -299,7 +299,7 @@ class _FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                     'phone_num_chk': phoneNumChk,
                   };
 
-                  final findPasswordResponseDTO = await ref.read(findPasswordScreenModelProvider.notifier).findPassword(requestData);
+                  final findPasswordResponseDTO = await ref.read(findPasswordScreenViewModelProvider.notifier).findPassword(requestData);
                   if (findPasswordResponseDTO?.result == true) {
                     idx = findPasswordResponseDTO?.idx;
                     final passwordToken = findPasswordResponseDTO?.pwdToken;  // 서버에서 받은 비밀번호 토큰

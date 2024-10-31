@@ -9,10 +9,10 @@ class GridPhoto extends StatefulWidget {
   const GridPhoto({required this.images, super.key,});
 
   @override
-  State<GridPhoto> createState() => _GridPhotoState();
+  State<GridPhoto> createState() => GridPhotoState();
 }
 
-class _GridPhotoState extends State<GridPhoto> {
+class GridPhotoState extends State<GridPhoto> {
   @override
   Widget build(BuildContext context) {
     return GridView(

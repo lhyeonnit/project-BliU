@@ -12,10 +12,10 @@ class ServiceInquiryOne extends ConsumerStatefulWidget {
   const ServiceInquiryOne({super.key});
 
   @override
-  ConsumerState<ServiceInquiryOne> createState() => _ServiceInquiryOneState();
+  ConsumerState<ServiceInquiryOne> createState() => ServiceInquiryOneState();
 }
 
-class _ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
+class ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
   final ScrollController _scrollController = ScrollController();
   int _currentPage = 1;
   int _totalPages = 1;

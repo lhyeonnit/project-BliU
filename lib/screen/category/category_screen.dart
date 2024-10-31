@@ -11,10 +11,10 @@ class CategoryScreen extends ConsumerStatefulWidget {
   const CategoryScreen({super.key});
 
   @override
-  ConsumerState<CategoryScreen> createState() => _CategoryScreenState();
+  ConsumerState<CategoryScreen> createState() => CategoryScreenState();
 }
 
-class _CategoryScreenState extends ConsumerState<CategoryScreen> {
+class CategoryScreenState extends ConsumerState<CategoryScreen> {
   final ItemScrollController _scrollController = ItemScrollController();
   final ItemPositionsListener _itemPositionsListener = ItemPositionsListener.create();
   int _selectedCategoryIndex = 0; // 선택된 카테고리의 인덱스
@@ -30,7 +30,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
 
   void _itemPositionListener() {
     final last = _itemPositionsListener.itemPositions.value.last;
-    final categories = ref.watch(categoryModelProvider)?.categoryResponseDTO?.list ?? [];
+    final categories = ref.watch(categoryViewModelProvider)?.categoryResponseDTO?.list ?? [];
     if (last.index == (categories.length - 1)) {
       if (last.itemTrailingEdge < 1.001) {
         if (_selectedCategoryIndex != last.index) {
@@ -103,7 +103,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
       ),
       body: Consumer(
         builder: (context, ref, widget) {
-          final model = ref.watch(categoryModelProvider);
+          final model = ref.watch(categoryViewModelProvider);
           final categories = model?.categoryResponseDTO?.list ?? [];
 
           return Row(
@@ -280,6 +280,6 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
 
   void _afterBuild(BuildContext context) {
     Map<String, dynamic> requestData = {'category_type': '2'};
-    ref.read(categoryModelProvider.notifier).getCategory(requestData);
+    ref.read(categoryViewModelProvider.notifier).getCategory(requestData);
   }
 }

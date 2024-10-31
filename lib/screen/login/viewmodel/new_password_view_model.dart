@@ -4,14 +4,14 @@ import 'package:BliU/dto/find_id_pwd_response_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NewPasswordScreenModel {
+class NewPasswordModel {
 }
 
-class NewPasswordScreenViewModel extends StateNotifier<NewPasswordScreenModel?> {
+class NewPasswordViewModel extends StateNotifier<NewPasswordModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  NewPasswordScreenViewModel(super.state, this.ref);
+  NewPasswordViewModel(super.state, this.ref);
 
   Future<FindIdPwdResponseDTO?> changePassword(Map<String, dynamic> requestData) async {
     try {
@@ -35,7 +35,7 @@ class NewPasswordScreenViewModel extends StateNotifier<NewPasswordScreenModel?> 
 }
 
 // ViewModel Provider 정의
-final newPasswordScreenModelProvider =
-StateNotifierProvider<NewPasswordScreenViewModel, NewPasswordScreenModel?>((ref) {
-  return NewPasswordScreenViewModel(null, ref);
+final newPasswordViewModelProvider =
+StateNotifierProvider<NewPasswordViewModel, NewPasswordModel?>((ref) {
+  return NewPasswordViewModel(null, ref);
 });

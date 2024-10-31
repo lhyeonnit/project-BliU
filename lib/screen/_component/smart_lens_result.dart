@@ -17,10 +17,10 @@ class SmartLensResult extends ConsumerStatefulWidget {
   const SmartLensResult({super.key, required this.imagePath});
 
   @override
-  ConsumerState<SmartLensResult> createState() => _SmartLensResultState();
+  ConsumerState<SmartLensResult> createState() => SmartLensResultState();
 }
 
-class _SmartLensResultState extends ConsumerState<SmartLensResult> {
+class SmartLensResultState extends ConsumerState<SmartLensResult> {
   final DraggableScrollableController _draggableScrollableController = DraggableScrollableController();
   final ScrollController _scrollController = ScrollController();
   List<ProductData> _productList = [];
@@ -316,7 +316,7 @@ class _SmartLensResultState extends ConsumerState<SmartLensResult> {
       'search_img': file,
     });
 
-    final productListResponseDTO = await ref.read(smartLensModelProvider.notifier).getList(formData);
+    final productListResponseDTO = await ref.read(smartLensViewModelProvider.notifier).getList(formData);
     setState(() {
       _productList = productListResponseDTO?.list ?? [];
     });

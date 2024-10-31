@@ -41,7 +41,7 @@ class CategoryViewModel extends StateNotifier<CategoryModel?> {
 }
 
 // ViewModel Provider 정의
-final categoryModelProvider =
+final categoryViewModelProvider =
 StateNotifierProvider<CategoryViewModel, CategoryModel?>((ref) {
   return CategoryViewModel(null, ref);
 });

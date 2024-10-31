@@ -13,10 +13,10 @@ class PointScreen extends ConsumerStatefulWidget {
   const PointScreen({super.key});
 
   @override
-  ConsumerState<PointScreen> createState() => _PointScreenState();
+  ConsumerState<PointScreen> createState() => PointScreenState();
 }
 
-class _PointScreenState extends ConsumerState<PointScreen> {
+class PointScreenState extends ConsumerState<PointScreen> {
   final ScrollController _scrollController = ScrollController();
   final List<String> _categories = ['전체', '적립', '사용'];
   int _selectedCategoryIndex = 0;

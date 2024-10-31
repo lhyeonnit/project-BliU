@@ -23,10 +23,10 @@ class CartItem extends StatefulWidget {
   });
 
   @override
-  State<CartItem> createState() => _CartItemState();
+  State<CartItem> createState() => CartItemState();
 }
 
-class _CartItemState extends State<CartItem> {
+class CartItemState extends State<CartItem> {
   int _getProductPrice() {
     // 선택된 기준으로 가격 가져오기
     int productPrice = widget.item.ptPrice ?? 0;

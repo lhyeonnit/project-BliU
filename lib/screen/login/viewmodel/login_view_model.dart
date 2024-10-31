@@ -4,22 +4,22 @@ import 'package:BliU/dto/member_info_response_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreenModel {
+class LoginModel {
   final MemberInfoResponseDTO? memberInfoResponseDTO;
 
-  LoginScreenModel({
+  LoginModel({
     required this.memberInfoResponseDTO,
   });
 }
 
-class LoginScreenViewModel extends StateNotifier<LoginScreenModel?> {
+class LoginViewModel extends StateNotifier<LoginModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  LoginScreenViewModel(super.state, this.ref);
+  LoginViewModel(super.state, this.ref);
 
   void setState(MemberInfoResponseDTO? memberInfoResponseDTO) {
-    state = LoginScreenModel(memberInfoResponseDTO: memberInfoResponseDTO);
+    state = LoginModel(memberInfoResponseDTO: memberInfoResponseDTO);
   }
   Future<void> login(Map<String, dynamic> requestData) async {
     final response = await repository.reqPost(url: Constant.apiAuthLoginUrl, data: requestData);
@@ -86,6 +86,6 @@ class LoginScreenViewModel extends StateNotifier<LoginScreenModel?> {
 
 // ViewModel Provider 정의
 final loginViewModelProvider =
-StateNotifierProvider<LoginScreenViewModel, LoginScreenModel?>((ref) {
-  return LoginScreenViewModel(null, ref);
+StateNotifierProvider<LoginViewModel, LoginModel?>((ref) {
+  return LoginViewModel(null, ref);
 });

@@ -25,7 +25,7 @@ class HomeFooterState extends ConsumerState<HomeFooter> with TickerProviderState
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_){
-      ref.read(footerViewModelProvider.notifier).getFoot().then((model) {
+      ref.read(homeFooterViewModelProvider.notifier).getFoot().then((model) {
         if (model?.footResponseDTO != null) {
           if (model?.footResponseDTO?.result == true) {
             var data = model?.footResponseDTO?.data;

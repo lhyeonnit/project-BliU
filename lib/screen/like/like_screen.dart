@@ -16,10 +16,10 @@ class LikeScreen extends ConsumerStatefulWidget {
   const LikeScreen({super.key});
 
   @override
-  ConsumerState<LikeScreen> createState() => _LikeScreenState();
+  ConsumerState<LikeScreen> createState() => LikeScreenState();
 }
 
-class _LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStateMixin {
+class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   late TabController _tabController;
   final List<CategoryData> _categories = [

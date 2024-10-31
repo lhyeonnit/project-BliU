@@ -5,7 +5,7 @@ import 'package:BliU/screen/join/join_agree_screen.dart';
 import 'package:BliU/screen/login/find_id_complete_screen.dart';
 import 'package:BliU/screen/login/find_id_screen.dart';
 import 'package:BliU/screen/login/find_password_screen.dart';
-import 'package:BliU/screen/login/viewmodel/login_screen_view_model.dart';
+import 'package:BliU/screen/login/viewmodel/login_view_model.dart';
 import 'package:BliU/screen/main_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/non_order_page.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -552,7 +552,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
     await ref.read(loginViewModelProvider.notifier).login(data);
   }
 
-  void _loginResult(LoginScreenModel model) async {
+  void _loginResult(LoginModel model) async {
     if (model.memberInfoResponseDTO != null) {
       final pref = await SharedPreferencesManager.getInstance();
       if (model.memberInfoResponseDTO?.result == true) {

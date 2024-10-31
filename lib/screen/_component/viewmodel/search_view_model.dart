@@ -127,7 +127,7 @@ class SearchViewModel extends StateNotifier<SearchModel?> {
 }
 
 // ViewModel Provider 정의
-final searchModelProvider =
+final searchViewModelProvider =
     StateNotifierProvider<SearchViewModel, SearchModel?>((ref) {
   return SearchViewModel(null, ref);
 });

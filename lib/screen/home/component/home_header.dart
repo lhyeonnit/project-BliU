@@ -12,10 +12,10 @@ class HomeHeader extends ConsumerStatefulWidget {
   const HomeHeader({super.key});
 
   @override
-  ConsumerState<HomeHeader> createState() => _HomeHeaderState();
+  ConsumerState<HomeHeader> createState() => HomeHeaderState();
 }
 
-class _HomeHeaderState extends ConsumerState<HomeHeader> {
+class HomeHeaderState extends ConsumerState<HomeHeader> {
   final PageController _pageController = PageController();
   Timer? _timer;
   int _currentPage = 0;

@@ -688,7 +688,7 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
     }
   }
   void _getStyleCategory() async {
-    final styleCategoriesResponseDTO = await ref.read(recommendInfoModelProvider.notifier).getStyleCategory();
+    final styleCategoriesResponseDTO = await ref.read(recommendInfoViewModelProvider.notifier).getStyleCategory();
 
     if (styleCategoriesResponseDTO != null && styleCategoriesResponseDTO.result == true) {
       setState(() {

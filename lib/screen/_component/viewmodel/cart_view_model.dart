@@ -94,7 +94,7 @@ class CartViewModel extends StateNotifier<CartModel?> {
 }
 
 // ViewModel Provider 정의
-final cartModelProvider =
+final cartViewModelProvider =
 StateNotifierProvider<CartViewModel, CartModel?>((ref) {
   return CartViewModel(null, ref);
 });

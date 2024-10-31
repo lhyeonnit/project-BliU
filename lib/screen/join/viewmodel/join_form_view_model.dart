@@ -124,7 +124,7 @@ class JoinFormViewModel extends StateNotifier<JoinFormModel?> {
 
 }
 
-final joinFormModelProvider =
+final joinFormViewModelProvider =
 StateNotifierProvider<JoinFormViewModel, JoinFormModel?>((req) {
   return JoinFormViewModel(null, req);
 });
