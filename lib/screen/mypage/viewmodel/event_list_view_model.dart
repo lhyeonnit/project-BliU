@@ -33,7 +33,7 @@ class EventListViewModel extends StateNotifier<EventListModel?> {
   }
 }
 
-final eventListModelProvider =
+final eventListViewModelProvider =
 StateNotifierProvider<EventListViewModel, EventListModel?>((req) {
   return EventListViewModel(null, req);
 });

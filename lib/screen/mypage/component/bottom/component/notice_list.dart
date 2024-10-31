@@ -57,7 +57,7 @@ class NoticeListState extends ConsumerState<NoticeList> {
       _noticeList = [];
     });
 
-    final noticeListResponseDTO = await ref.read(noticeListModelProvider.notifier).getList(requestData);
+    final noticeListResponseDTO = await ref.read(noticeListViewModelProvider.notifier).getList(requestData);
     _noticeList = noticeListResponseDTO?.list ?? [];
 
     setState(() {
@@ -76,7 +76,7 @@ class NoticeListState extends ConsumerState<NoticeList> {
         'pg': _page
       };
 
-      final noticeListResponseDTO = await ref.read(noticeListModelProvider.notifier).getList(requestData);
+      final noticeListResponseDTO = await ref.read(noticeListViewModelProvider.notifier).getList(requestData);
       if (noticeListResponseDTO != null) {
         if ((noticeListResponseDTO.list ?? []).isNotEmpty) {
           setState(() {

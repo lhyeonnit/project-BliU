@@ -52,7 +52,7 @@ class NoticeDetailViewModel extends StateNotifier<NoticeDetailModel?> {
   }
 }
 
-final noticeDetailModelProvider =
+final noticeDetailViewModelProvider =
 StateNotifierProvider<NoticeDetailViewModel, NoticeDetailModel?>((req) {
   return NoticeDetailViewModel(null, req);
 });

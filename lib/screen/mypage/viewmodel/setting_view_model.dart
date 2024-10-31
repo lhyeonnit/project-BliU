@@ -72,7 +72,7 @@ class SettingViewModel extends StateNotifier<SettingModel?> {
   }
 }
 
-final settingModelProvider =
+final settingViewModelProvider =
 StateNotifierProvider<SettingViewModel, SettingModel?>((req) {
   return SettingViewModel(null, req);
 });

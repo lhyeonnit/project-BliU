@@ -43,7 +43,7 @@ class ServiceViewModel extends StateNotifier<ServiceModel?> {
   }
 }
 
-final serviceModelProvider =
+final serviceViewModelProvider =
 StateNotifierProvider<ServiceViewModel, ServiceModel?>((req) {
   return ServiceViewModel(null, req);
 });

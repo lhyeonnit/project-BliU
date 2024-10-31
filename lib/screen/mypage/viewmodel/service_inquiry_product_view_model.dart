@@ -50,7 +50,7 @@ class ServiceInquiryProductViewModel extends StateNotifier<ServiceInquiryProduct
   }
 }
 
-final serviceInquiryProductModelProvider =
+final serviceInquiryProductViewModelProvider =
 StateNotifierProvider<ServiceInquiryProductViewModel, ServiceInquiryProductModel?>((req) {
   return ServiceInquiryProductViewModel(null, req);
 });

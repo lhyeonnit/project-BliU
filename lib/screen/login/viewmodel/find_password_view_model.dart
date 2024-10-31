@@ -5,14 +5,14 @@ import 'package:BliU/dto/find_id_pwd_response_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FindPasswordScreenModel {
+class FindPasswordModel {
 }
 
-class FindPasswordScreenViewModel extends StateNotifier<FindPasswordScreenModel?> {
+class FindPasswordViewModel extends StateNotifier<FindPasswordModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  FindPasswordScreenViewModel(super.state, this.ref);
+  FindPasswordViewModel(super.state, this.ref);
 
   Future<FindIdPwdResponseDTO?> findPassword(Map<String, dynamic> requestData) async {
     try {
@@ -82,7 +82,7 @@ class FindPasswordScreenViewModel extends StateNotifier<FindPasswordScreenModel?
 }
 
 // ViewModel Provider 정의
-final findPasswordScreenViewModelProvider =
-StateNotifierProvider<FindPasswordScreenViewModel, FindPasswordScreenModel?>((ref) {
-  return FindPasswordScreenViewModel(null, ref);
+final findPasswordViewModelModelProvider =
+StateNotifierProvider<FindPasswordViewModel, FindPasswordModel?>((ref) {
+  return FindPasswordViewModel(null, ref);
 });

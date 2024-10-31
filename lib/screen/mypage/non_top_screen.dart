@@ -9,10 +9,10 @@ class NonTopScreen extends StatefulWidget {
   const NonTopScreen({super.key});
 
   @override
-  State<NonTopScreen> createState() => _NonTopScreenState();
+  State<NonTopScreen> createState() => NonTopScreenState();
 }
 
-class _NonTopScreenState extends State<NonTopScreen> {
+class NonTopScreenState extends State<NonTopScreen> {
   final PageController _pageController = PageController();
   Timer? _timer;
   int _currentPage = 0;

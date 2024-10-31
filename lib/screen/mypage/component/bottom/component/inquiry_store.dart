@@ -413,7 +413,7 @@ class InquiryStoreState extends ConsumerState<InquiryStore> {
         'seller_imgs': files,
       });
 
-      ref.read(inquiryWriteModelProvider.notifier).qnaSeller(formData).then((resultData) {
+      ref.read(inquiryWriteViewModelProvider.notifier).qnaSeller(formData).then((resultData) {
         if (!mounted) return;
         if (resultData != null) {
           if (resultData.result == true) {

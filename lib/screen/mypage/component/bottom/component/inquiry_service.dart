@@ -423,7 +423,7 @@ class InquiryServiceState extends ConsumerState<InquiryService> {
         'temp_mt_hp': phone,
       });
 
-      ref.read(inquiryWriteModelProvider.notifier).qnaWrite(formData).then((resultData) {
+      ref.read(inquiryWriteViewModelProvider.notifier).qnaWrite(formData).then((resultData) {
         if (!mounted) return;
         if (resultData != null) {
 

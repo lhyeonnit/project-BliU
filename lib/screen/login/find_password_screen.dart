@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:BliU/screen/_component/message_dialog.dart';
-import 'package:BliU/screen/login/viewmodel/find_password_screen_view_model.dart';
+import 'package:BliU/screen/login/viewmodel/find_password_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -155,7 +155,7 @@ class FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                                 'code_type': 3,
                               };
 
-                              final resultDTO = await ref.read(findPasswordScreenViewModelProvider.notifier).reqPhoneAuthCode(requestData);
+                              final resultDTO = await ref.read(findPasswordViewModelModelProvider.notifier).reqPhoneAuthCode(requestData);
                               if (resultDTO?.result == true) {
                                 setState(() {
                                   _phoneAuthCodeVisible = true;
@@ -239,7 +239,7 @@ class FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                                   'code_type': 3,
                                 };
 
-                                final resultDTO = await ref.read(findPasswordScreenViewModelProvider.notifier).checkCode(requestData);
+                                final resultDTO = await ref.read(findPasswordViewModelModelProvider.notifier).checkCode(requestData);
                                 if (!context.mounted) return;
                                 Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                                 if (resultDTO.result == true) {
@@ -299,7 +299,7 @@ class FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                     'phone_num_chk': phoneNumChk,
                   };
 
-                  final findPasswordResponseDTO = await ref.read(findPasswordScreenViewModelProvider.notifier).findPassword(requestData);
+                  final findPasswordResponseDTO = await ref.read(findPasswordViewModelModelProvider.notifier).findPassword(requestData);
                   if (findPasswordResponseDTO?.result == true) {
                     idx = findPasswordResponseDTO?.idx;
                     final passwordToken = findPasswordResponseDTO?.pwdToken;  // 서버에서 받은 비밀번호 토큰

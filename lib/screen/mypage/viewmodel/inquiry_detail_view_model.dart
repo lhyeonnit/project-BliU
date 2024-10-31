@@ -71,7 +71,7 @@ class InquiryDetailViewModel extends StateNotifier<InquiryDetailModel?> {
   }
 }
 
-final inquiryDetailModelProvider =
+final inquiryDetailViewModelProvider =
 StateNotifierProvider<InquiryDetailViewModel, InquiryDetailModel?>((req) {
   return InquiryDetailViewModel(null, req);
 });

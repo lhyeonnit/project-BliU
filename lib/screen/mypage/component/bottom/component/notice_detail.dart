@@ -19,7 +19,7 @@ class NoticeDetail extends ConsumerWidget {
       'nt_idx': ntIdx,
     };
 
-    ref.read(noticeDetailModelProvider.notifier).getDetail(requestData);
+    ref.read(noticeDetailViewModelProvider.notifier).getDetail(requestData);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -67,7 +67,7 @@ class NoticeDetail extends ConsumerWidget {
           Container(
             margin: const EdgeInsets.only(top: 40.0),
             child: Consumer(builder: (context, ref, widget) {
-              final model = ref.watch(noticeDetailModelProvider);
+              final model = ref.watch(noticeDetailViewModelProvider);
               if (model?.noticeDetailResponseDTO?.result == false) {
                 Future.delayed(Duration.zero, () {
                   if (!context.mounted) return;

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:BliU/data/add_option_data.dart';
 import 'package:BliU/data/product_data.dart';
-import 'package:BliU/data/product_option_data.dart';
 import 'package:BliU/data/product_option_type_data.dart';
 import 'package:BliU/data/product_option_type_detail_data.dart';
 import 'package:BliU/screen/_component/cart_screen.dart';

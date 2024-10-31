@@ -57,7 +57,7 @@ class EventListState extends ConsumerState<EventList> {
       eventList = [];
     });
 
-    final eventListResponseDTO = await ref.read(eventListModelProvider.notifier).getList(requestData);
+    final eventListResponseDTO = await ref.read(eventListViewModelProvider.notifier).getList(requestData);
     eventList = eventListResponseDTO?.list ?? [];
 
     setState(() {
@@ -76,7 +76,7 @@ class EventListState extends ConsumerState<EventList> {
         'pg': _page
       };
 
-      final eventListResponseDTO = await ref.read(eventListModelProvider.notifier).getList(requestData);
+      final eventListResponseDTO = await ref.read(eventListViewModelProvider.notifier).getList(requestData);
       if (eventListResponseDTO != null) {
         if ((eventListResponseDTO.list ?? []).isNotEmpty) {
           setState(() {

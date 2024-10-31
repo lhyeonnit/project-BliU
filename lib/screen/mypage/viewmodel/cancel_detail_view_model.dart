@@ -32,7 +32,7 @@ class CancelDetailViewModel extends StateNotifier<CancelDetailModel?> {
   // }
 }
 
-final cancelDetailModelProvider =
+final cancelDetailViewModelProvider =
 StateNotifierProvider<CancelDetailViewModel, CancelDetailModel?>((req) {
   return CancelDetailViewModel(null, req);
 });

@@ -33,7 +33,7 @@ class NoticeListViewModel extends StateNotifier<NoticeListModel?> {
   }
 }
 
-final noticeListModelProvider =
+final noticeListViewModelProvider =
 StateNotifierProvider<NoticeListViewModel, NoticeListModel?>((req) {
   return NoticeListViewModel(null, req);
 });

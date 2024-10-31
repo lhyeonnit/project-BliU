@@ -18,7 +18,7 @@ class TermsDetail extends ConsumerWidget {
     if (type == 1) {
       title = "개인정보처리방침";
     }
-    ref.read(termsDetailModelProvider.notifier).getTermsAndPrivacy(type);
+    ref.read(termsDetailViewModelProvider.notifier).getTermsAndPrivacy(type);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -71,7 +71,7 @@ class TermsDetail extends ConsumerWidget {
               builder: (context, ref, widget) {
                 String content = "";
 
-                final model = ref.watch(termsDetailModelProvider);
+                final model = ref.watch(termsDetailViewModelProvider);
 
                 if (model?.defaultResponseDTO != null) {
                   if (model?.defaultResponseDTO?.result == true) {

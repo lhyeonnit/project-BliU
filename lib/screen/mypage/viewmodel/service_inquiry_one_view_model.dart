@@ -50,7 +50,7 @@ class ServiceInquiryOneViewModel extends StateNotifier<ServiceInquiryOneModel?> 
   }
 }
 
-final serviceInquiryOneModelProvider =
+final serviceInquiryOneViewModelProvider =
 StateNotifierProvider<ServiceInquiryOneViewModel, ServiceInquiryOneModel?>((req) {
   return ServiceInquiryOneViewModel(null, req);
 });

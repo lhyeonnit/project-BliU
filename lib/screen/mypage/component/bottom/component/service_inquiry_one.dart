@@ -36,7 +36,7 @@ class ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
           margin: const EdgeInsets.only(top: 10),
           color: Colors.white,
           child: Consumer(builder: (context, ref, widget) {
-            final model = ref.watch(serviceInquiryOneModelProvider);
+            final model = ref.watch(serviceInquiryOneViewModelProvider);
             int count = model?.qnaListResponseDTO?.count ?? 0;
             List<QnaData> list = model?.qnaListResponseDTO?.list ?? [];
 
@@ -211,8 +211,8 @@ class ServiceInquiryOneState extends ConsumerState<ServiceInquiryOne> {
         'qna_type': 1,
         'pg': _currentPage,
       };
-      ref.read(serviceInquiryOneModelProvider)?.qnaListResponseDTO?.list?.clear();
-      ref.read(serviceInquiryOneModelProvider.notifier).getList(requestData);
+      ref.read(serviceInquiryOneViewModelProvider)?.qnaListResponseDTO?.list?.clear();
+      ref.read(serviceInquiryOneViewModelProvider.notifier).getList(requestData);
     });
   }
 }

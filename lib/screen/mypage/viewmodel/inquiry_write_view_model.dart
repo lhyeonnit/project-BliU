@@ -52,7 +52,7 @@ class InquiryWriteViewModel extends StateNotifier<dynamic> {
   }
 }
 
-final inquiryWriteModelProvider =
+final inquiryWriteViewModelProvider =
 StateNotifierProvider<InquiryWriteViewModel, dynamic>((req) {
   return InquiryWriteViewModel(null, req);
 });

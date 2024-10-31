@@ -52,7 +52,7 @@ class EventDetailViewModel extends StateNotifier<EventDetailModel?> {
   }
 }
 
-final eventDetailModelProvider =
+final eventDetailViewModelProvider =
 StateNotifierProvider<EventDetailViewModel, EventDetailModel?>((req) {
   return EventDetailViewModel(null, req);
 });

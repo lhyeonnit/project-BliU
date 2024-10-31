@@ -24,7 +24,7 @@ class InquiryProductDetail extends ConsumerWidget {
         'qt_idx': qtIdx,
         'qnt_type': 3,
       };
-      ref.read(inquiryDetailModelProvider.notifier).getDetail(requestData);
+      ref.read(inquiryDetailViewModelProvider.notifier).getDetail(requestData);
     });
 
     return Scaffold(
@@ -73,7 +73,7 @@ class InquiryProductDetail extends ConsumerWidget {
           children: [
             Consumer(
               builder: (context, ref, widget) {
-                final model = ref.watch(inquiryDetailModelProvider);
+                final model = ref.watch(inquiryDetailViewModelProvider);
 
                 if (model?.qnaDetailResponseDTO?.result == false) {
                   Future.delayed(Duration.zero, () {
@@ -388,7 +388,7 @@ class InquiryProductDetail extends ConsumerWidget {
       'qt_idx' : qtIdx,
     };
 
-    final defaultResponseDTO = await ref.read(inquiryDetailModelProvider.notifier).delete(requestData);
+    final defaultResponseDTO = await ref.read(inquiryDetailViewModelProvider.notifier).delete(requestData);
     if (!context.mounted) return;
 
     if (defaultResponseDTO.result == true) {

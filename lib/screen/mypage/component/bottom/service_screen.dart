@@ -18,7 +18,7 @@ class ServiceScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(serviceModelProvider.notifier).getService();
+    ref.read(serviceViewModelProvider.notifier).getService();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -68,7 +68,7 @@ class ServiceScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Consumer(builder: (context, ref, widget) {
-                final model = ref.watch(serviceModelProvider);
+                final model = ref.watch(serviceViewModelProvider);
 
                 return Column(
                   children: [

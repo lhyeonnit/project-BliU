@@ -57,7 +57,7 @@ class TermsDetailViewModel extends StateNotifier<TermsDetailModel?> {
   }
 }
 
-final termsDetailModelProvider =
+final termsDetailViewModelProvider =
 StateNotifierProvider<TermsDetailViewModel, TermsDetailModel?>((ref) {
   return TermsDetailViewModel(null, ref);
 });

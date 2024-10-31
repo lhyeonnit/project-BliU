@@ -20,7 +20,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
     Map<String, dynamic> requestData = {
       'mt_idx': pref.getMtIdx(),
     };
-    await ref.read(settingModelProvider.notifier).getPushInfo(requestData);
+    await ref.read(settingViewModelProvider.notifier).getPushInfo(requestData);
   }
 
   @override
@@ -85,7 +85,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                 child: ListView(
                   children: [
                     Consumer(builder: (context, ref, widget) {
-                      final resultModel = ref.watch(settingModelProvider);
+                      final resultModel = ref.watch(settingViewModelProvider);
 
                       var isSwitched = false;
                       if (resultModel?.mtPushing != null) {
@@ -138,9 +138,9 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                                   'mt_idx': pref.getMtIdx(),
                                   'mt_pushing': mtPushing
                                 };
-                                var model = ref.read(settingModelProvider);
+                                var model = ref.read(settingViewModelProvider);
                                 model?.mtPushing = mtPushing;
-                                ref.read(settingModelProvider.notifier).setPush(data);
+                                ref.read(settingViewModelProvider.notifier).setPush(data);
                               },
                             ),
                           ],

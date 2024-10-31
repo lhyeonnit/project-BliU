@@ -16,7 +16,7 @@ class EventDetail extends ConsumerWidget {
       'bt_idx': btIdx,
     };
 
-    ref.read(eventDetailModelProvider.notifier).getDetail(requestData);
+    ref.read(eventDetailViewModelProvider.notifier).getDetail(requestData);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -63,7 +63,7 @@ class EventDetail extends ConsumerWidget {
         child: Container(
           margin: const EdgeInsets.only(top: 40.0),
           child: Consumer(builder: (context, ref, widget) {
-            final model = ref.watch(eventDetailModelProvider);
+            final model = ref.watch(eventDetailViewModelProvider);
             if (model?.eventDetailResponseDTO?.result == false) {
               Future.delayed(Duration.zero, () {
                 if (!context.mounted) return;

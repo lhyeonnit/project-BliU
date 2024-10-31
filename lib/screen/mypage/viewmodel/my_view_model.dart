@@ -40,7 +40,7 @@ class MyViewModel extends StateNotifier<MyModel?>{
 }
 
 
-final myModelProvider =
+final myViewModelProvider =
 StateNotifierProvider<MyViewModel, MyModel?>((req) {
   return MyViewModel(null, req);
 });

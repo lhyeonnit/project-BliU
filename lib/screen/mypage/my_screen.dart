@@ -64,7 +64,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
       Map<String, dynamic> requestData = {
         'mt_idx': mtIdx,
       };
-      final memberInfoDTO = await ref.read(myModelProvider.notifier).getMy(requestData);
+      final memberInfoDTO = await ref.read(myViewModelProvider.notifier).getMy(requestData);
       if (memberInfoDTO?.result == true) {
         setState(() {
           // 상태 변경 후 UI 업데이트

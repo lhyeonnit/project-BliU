@@ -17,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-//교환 반품
 class ExchangeReturnDetailScreen extends ConsumerStatefulWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
