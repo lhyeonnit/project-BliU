@@ -24,7 +24,7 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
 
   final List<String> categories = ['전체', '배송중', '배송완료', '취소/교환반품'];
   int selectedCategoryIndex = 0;
-
+  int? count;
   List<OrderData> orderList = [];
 
   int _page = 1;
@@ -59,7 +59,7 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
 
     final orderResponseDTO = await ref.read(orderListViewModelProvider.notifier).getList(requestData);
     orderList = orderResponseDTO?.list ?? [];
-
+    count = orderResponseDTO?.count;
     setState(() {
       _isFirstLoadRunning = false;
     });
@@ -253,6 +253,7 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
                             final orderData = orderList[index];
 
                             return OrderListItem(
+                              count: count ?? 0,
                               orderData: orderData,
                             );
                           }
