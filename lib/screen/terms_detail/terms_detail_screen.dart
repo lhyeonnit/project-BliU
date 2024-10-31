@@ -7,17 +7,32 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 //약관 or 개인정보 처리방치등
 class TermsDetailScreen extends ConsumerWidget {
-  final int type; //0 - 이용약관 1 - 개인정보 처리 방침
-  // TODO 결제관련 동의 필요
+  final int type; // type 0 - 이용약관 1 - 개인정보 처리 방침 2 - 개인정보 수집 이용 동의 3 - 개인정보 제 3자 정보 제공 동의 4 - 결제대행 서비스 이용약관 동의
 
   const TermsDetailScreen({super.key, required this.type});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String title = "이용약관";
-    if (type == 1) {
-      title = "개인정보처리방침";
+    String title = "";
+
+    switch(type) {
+      case 0:
+        title = "이용약관";
+        break;
+      case 1:
+        title = "개인정보처리방침";
+        break;
+      case 2:
+        title = "개인정보 수집 이용 동의";
+        break;
+      case 3:
+        title = "개인정보 제 3자 정보 제공 동의";
+        break;
+      case 4:
+        title = "결제대행 서비스 이용약관 동의";
+        break;
     }
+
     ref.read(termsDetailViewModelProvider.notifier).getTermsAndPrivacy(type);
 
     return Scaffold(

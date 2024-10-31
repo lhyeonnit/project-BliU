@@ -19,12 +19,31 @@ class TermsDetailViewModel extends StateNotifier<TermsDetailModel?> {
   TermsDetailViewModel(super.state, this.ref);
 
   Future<void> getTermsAndPrivacy(int type) async {
-    // type 0 - 이용약관 1 - 개인정보 처리 방침 2 - 개인정보 수집 이용 동의 3 - 개인정보 제 3자 정보 제공 동의
+    // type 0 - 이용약관 1 - 개인정보 처리 방침 2 - 개인정보 수집 이용 동의 3 - 개인정보 제 3자 정보 제공 동의 4 - 결제대행 서비스 이용약관 동의
     String url = Constant.apiMyPageTermsUrl;
     String key = "terms";
-    if (type == 1) {
-      url = Constant.apiMyPagePrivacyUrl;
-      key = "privacy";
+
+    switch(type) {
+      case 0:
+        url = Constant.apiMyPageTermsUrl;
+        key = "terms";
+        break;
+      case 1:
+        url = Constant.apiMyPagePrivacyUrl;
+        key = "privacy";
+        break;
+      case 2:
+        url = Constant.apiMyPageCollectionUrl;
+        key = "collection";
+        break;
+      case 3:
+        url = Constant.apiMyPageInformationUrl;
+        key = "information";
+        break;
+      case 4:
+        url = Constant.apiMyPageServiceUrl;
+        key = "service";
+        break;
     }
 
     final response = await repository.reqGet(url: url);
