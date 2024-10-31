@@ -35,15 +35,28 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
   ChangeOrderDetailData? cancelDetailData;
   ChangeOrderDetailData? exchangeReturnDetailData;
   int? userType;
+  String? statusTitle;
 
   @override
   void initState() {
     super.initState();
-
+    statusTitle = orderDetailData?.type;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
   }
+  String _statusTitle() {
+    if (statusTitle == "C") {
+      return "취소";
+    } else if (statusTitle == "R") {
+      return "반품/환불";
+    } else if (statusTitle == "X") {
+      return "교환";
+    } else {
+      return "주문상세";
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +65,9 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        title: const Text('주문상세'),
+        title: Text(
+            _statusTitle(),
+        ),
         titleTextStyle: TextStyle(
           fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 18),
