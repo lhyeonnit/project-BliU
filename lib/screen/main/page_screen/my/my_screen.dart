@@ -8,7 +8,7 @@ import 'package:BliU/screen/mypage/component/bottom/notice_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/recommend_edit.dart';
 import 'package:BliU/screen/mypage/component/bottom/service_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/setting_screen.dart';
-import 'package:BliU/screen/mypage/component/top/alarm_screen.dart';
+import 'package:BliU/screen/alarm/alarm_screen.dart';
 import 'package:BliU/screen/mypage/component/top/component/my_info_edit_check.dart';
 import 'package:BliU/screen/mypage/component/top/my_coupon_screen.dart';
 import 'package:BliU/screen/mypage/component/top/my_info_edit_screen.dart';

@@ -12,7 +12,7 @@ import 'package:BliU/screen/modal_dialog/product_order_bottom_option.dart';
 import 'package:BliU/screen/product_review_detail/product_review_detail_screen.dart';
 import 'package:BliU/screen/report/report_screen.dart';
 import 'package:BliU/screen/product_list/item/product_list_card.dart';
-import 'package:BliU/screen/coupon_reveive/coupon_receive_screen.dart';
+import 'package:BliU/screen/coupon_receive/coupon_receive_screen.dart';
 import 'package:BliU/screen/product_detail/view_model/product_detail_view_model.dart';
 import 'package:BliU/screen/store_detail/store_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';

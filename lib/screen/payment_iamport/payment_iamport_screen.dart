@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:iamport_flutter/iamport_payment.dart';
 import 'package:iamport_flutter/model/payment_data.dart';
 
-class PaymentIamport extends StatelessWidget {
+class PaymentIamportScreen extends StatelessWidget {
   final IamportPayData iamportPayData;
 
-  const PaymentIamport({required this.iamportPayData, super.key});
+  const PaymentIamportScreen({required this.iamportPayData, super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -9,9 +9,9 @@ import 'package:BliU/data/pay_order_detail_data.dart';
 import 'package:BliU/dto/pay_order_result_detail_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/bottom/component/terms_detail.dart';
-import 'package:BliU/screen/payment/component/payment_coupon.dart';
+import 'package:BliU/screen/payment_coupon/payment_coupon_screen.dart';
 import 'package:BliU/screen/payment/child_view/payment_order_item.dart';
-import 'package:BliU/screen/payment/component/webview_with_daum_post_webivew.dart';
+import 'package:BliU/utils/webview_with_daum_post_webivew.dart';
 import 'package:BliU/screen/payment_complete/payment_complete_screen.dart';
 import 'package:BliU/screen/payment/view_model/payment_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -1365,7 +1365,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                       CouponData? selectedCoupon = await Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => PaymentCoupon(couponList: _couponList),
+                                          builder: (context) => PaymentCouponScreen(couponList: _couponList),
                                         ),
                                       );
                                       if (selectedCoupon != null) {

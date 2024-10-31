@@ -6,7 +6,7 @@ import 'package:BliU/screen/exhibition/exhibition_screen.dart';
 import 'package:BliU/screen/main/main_screen.dart';
 import 'package:BliU/screen/mypage/component/top/my_coupon_screen.dart';
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
-import 'package:BliU/screen/mypage/viewmodel/alarm_view_model.dart';
+import 'package:BliU/screen/alarm/view_model/alarm_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';

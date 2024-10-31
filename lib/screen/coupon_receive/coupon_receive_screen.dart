@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:BliU/data/coupon_data.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
-import 'package:BliU/screen/coupon_reveive/item/coupon_card.dart';
-import 'package:BliU/screen/coupon_reveive/view_model/coupon_receive_view_model.dart';
+import 'package:BliU/screen/coupon_receive/item/coupon_card.dart';
+import 'package:BliU/screen/coupon_receive/view_model/coupon_receive_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';

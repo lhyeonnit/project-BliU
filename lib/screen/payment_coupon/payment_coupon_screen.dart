@@ -4,16 +4,16 @@ import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class PaymentCoupon extends StatefulWidget {
+class PaymentCouponScreen extends StatefulWidget {
   final List<CouponData> couponList;
 
-  const PaymentCoupon({super.key, required this.couponList});
+  const PaymentCouponScreen({super.key, required this.couponList});
 
   @override
-  State<PaymentCoupon> createState() => PaymentCouponState();
+  State<PaymentCouponScreen> createState() => PaymentCouponScreenState();
 }
 
-class PaymentCouponState extends State<PaymentCoupon> {
+class PaymentCouponScreenState extends State<PaymentCouponScreen> {
   int? _selectedCouponIndex; // 선택된 쿠폰의 인덱스 저장
 
   @override
