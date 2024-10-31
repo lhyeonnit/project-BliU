@@ -40,11 +40,13 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
   @override
   void initState() {
     super.initState();
-    statusTitle = orderDetailData?.type;
+    // statusTitle = ;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
   }
+
+  // TODO 상태값 가져오기
   String _statusTitle() {
     if (statusTitle == "C") {
       return "취소";
@@ -263,7 +265,8 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
       'mt_idx': mtIdx,
       'temp_mt_id': appToken,
       'odt_code': widget.orderData.detailList?[0].otCode,
-      'ct_type': widget.orderData.detailList?[widget.count].type,
+      // TODO ct_type 불러오기
+      // 'ct_type': widget.orderData.detailList?[widget.count].type,
     };
 
     final exchangeReturnDetailResponseDTO = await ref.read(changeOrderDetailViewModelProvider.notifier).getReturnDetail(requestData);
