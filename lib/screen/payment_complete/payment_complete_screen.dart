@@ -1,7 +1,7 @@
 import 'package:BliU/data/pay_order_result_detail_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
-import 'package:BliU/screen/payment/component/payment_order_item.dart';
+import 'package:BliU/screen/payment/child_view/payment_order_item.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -156,14 +156,14 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => OrderListScreen(otCode: payOrderResultDetailData?.otCode ?? "",)
+                                            builder: (context) => OrderListScreen(otCode: payOrderResultDetailData?.otCode ?? "",),
                                           ),
                                         );
                                       } else {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => const OrderListScreen()
+                                            builder: (context) => const OrderListScreen(),
                                           ),
                                         );
                                       }
@@ -172,8 +172,8 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                       padding: const EdgeInsets.symmetric(vertical: 14),
                                       margin: const EdgeInsets.only(right: 4),
                                       decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                          border: Border.all(color: const Color(0xFFDDDDDD))
+                                        borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                        border: Border.all(color: const Color(0xFFDDDDDD)),
                                       ),
                                       child: Center(
                                         child: Text(
@@ -201,15 +201,15 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                         borderRadius: BorderRadius.all(Radius.circular(6)),
                                       ),
                                       child: Center(
-                                          child: Text(
-                                            '계속 쇼핑하기',
-                                            style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              color: Colors.white,
-                                              fontSize: Responsive.getFont(context, 14),
-                                              height: 1.2,
-                                            ),
-                                          )
+                                        child: Text(
+                                          '계속 쇼핑하기',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            color: Colors.white,
+                                            fontSize: Responsive.getFont(context, 14),
+                                            height: 1.2,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -332,8 +332,8 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                             Visibility(
                                 visible: widget.memberType == 1,
                                 child: Container(
-                                    margin: const EdgeInsets.only(top: 15),
-                                    child: const Divider(color: Color(0xFFEEEEEE)),
+                                  margin: const EdgeInsets.only(top: 15),
+                                  child: const Divider(color: Color(0xFFEEEEEE)),
                                 ),
                             ),
                             Visibility(
@@ -411,8 +411,7 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                         decoration: const BoxDecoration(
                           border: Border(
                             top: BorderSide(
@@ -427,15 +426,15 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
-                                    flex: 6,
-                                    child: Text(
-                                      '받는사람',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        height: 1.2,
-                                      ),
-                                    )
+                                  flex: 6,
+                                  child: Text(
+                                    '받는사람',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
+                                    ),
+                                  ),
                                 ),
                                 Expanded(
                                   flex: 4,
@@ -452,15 +451,15 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                         ),
                                       ),
                                       Container(
-                                          margin: const EdgeInsets.only(left: 4),
-                                          child: Text(
-                                            '${widget.savedRecipientPhone}',
-                                            style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(context, 14),
-                                              height: 1.2,
-                                            ),
-                                          )
+                                        margin: const EdgeInsets.only(left: 4),
+                                        child: Text(
+                                          '${widget.savedRecipientPhone}',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            height: 1.2,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -474,14 +473,14 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                      flex: 5,
-                                      child: Text(
-                                        '배송지 주소',
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 14),
-                                        ),
-                                      )
+                                    flex: 5,
+                                    child: Text(
+                                      '배송지 주소',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                      ),
+                                    ),
                                   ),
                                   Expanded(
                                     flex: 5,
@@ -555,7 +554,7 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                 ),
                               ),
                               child: PaymentOrderItem(
-                                  cartList: widget.payOrderResultDetailData?.list ?? []
+                                cartList: widget.payOrderResultDetailData?.list ?? [],
                               ),
                             ),
                           ],

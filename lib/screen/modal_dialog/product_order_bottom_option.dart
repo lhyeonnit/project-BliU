@@ -8,7 +8,7 @@ import 'package:BliU/screen/_component/cart_screen.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/join/join_add_info_screen.dart';
 import 'package:BliU/screen/payment/payment_screen.dart';
-import 'package:BliU/screen/product/viewmodel/product_order_bottom_option_view_model.dart';
+import 'package:BliU/screen/modal_dialog/view_model/product_order_bottom_option_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';

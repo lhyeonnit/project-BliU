@@ -4,7 +4,7 @@ import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
-import 'package:BliU/screen/product/component/list/product_list_card.dart';
+import 'package:BliU/screen/product_list/item/product_list_card.dart';
 import 'package:BliU/screen/modal_dialog/product_sort_bottom.dart';
 import 'package:BliU/screen/modal_dialog/store_age_group_selection.dart';
 import 'package:BliU/screen/store_detail/store_detail_screen.dart';

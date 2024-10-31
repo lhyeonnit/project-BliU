@@ -37,7 +37,8 @@ class CouponCardState extends State<CouponCard> {
       margin: const EdgeInsets.only(bottom: 15.0),
       decoration: BoxDecoration(
         border: Border.all(
-          style: BorderStyle.solid, color: const Color(0xFFDDDDDD)
+          style: BorderStyle.solid,
+          color: const Color(0xFFDDDDDD),
         ),
         borderRadius: BorderRadius.circular(12.0),
       ),

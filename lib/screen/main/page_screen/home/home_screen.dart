@@ -11,7 +11,7 @@ import 'package:BliU/screen/main/page_screen/home/child_view/home_body_exhibitio
 import 'package:BliU/screen/main/page_screen/home/child_view/home_footer.dart';
 import 'package:BliU/screen/main/page_screen/home/child_view/home_header.dart';
 import 'package:BliU/screen/main/page_screen/home/view_model/home_view_model.dart';
-import 'package:BliU/screen/product/component/list/product_list_card.dart';
+import 'package:BliU/screen/product_list/item/product_list_card.dart';
 import 'package:BliU/screen/modal_dialog/store_age_group_selection.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';

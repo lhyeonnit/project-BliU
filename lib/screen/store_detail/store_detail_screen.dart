@@ -2,7 +2,7 @@ import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/store_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/product/component/list/product_list_card.dart';
+import 'package:BliU/screen/product_list/item/product_list_card.dart';
 import 'package:BliU/screen/store_detail/child_view/store_info.dart';
 import 'package:BliU/screen/store_detail/view_model/store_product_view_model.dart';
 import 'package:BliU/utils/responsive.dart';

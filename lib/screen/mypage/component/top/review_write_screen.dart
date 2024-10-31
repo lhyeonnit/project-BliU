@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/screen/mypage/viewmodel/review_write_view_model.dart';
-import 'package:BliU/screen/product/component/detail/product_review_detail.dart';
+import 'package:BliU/screen/product_review_detail/product_review_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -85,7 +85,7 @@ class ReviewWriteScreenState extends ConsumerState<ReviewWriteScreen> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => ProductReviewDetail(rtIdx: (responseData['data']['rt_idx'] ?? 0)),
+              builder: (context) => ProductReviewDetailScreen(rtIdx: (responseData['data']['rt_idx'] ?? 0)),
             ),
           );
         } else {

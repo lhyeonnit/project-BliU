@@ -1,22 +1,22 @@
 import 'package:BliU/data/review_data.dart';
 import 'package:BliU/screen/mypage/component/top/component/my_review_edit.dart';
 import 'package:BliU/screen/report/report_screen.dart';
-import 'package:BliU/screen/product/viewmodel/product_review_detail_view_model.dart';
+import 'package:BliU/screen/product_review_detail/view_model/product_review_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ProductReviewDetail extends ConsumerStatefulWidget {
+class ProductReviewDetailScreen extends ConsumerStatefulWidget {
   final int rtIdx;
-  const ProductReviewDetail({super.key, required this.rtIdx});
+  const ProductReviewDetailScreen({super.key, required this.rtIdx});
 
   @override
-  ConsumerState<ProductReviewDetail> createState() => ProductReviewDetailState();
+  ConsumerState<ProductReviewDetailScreen> createState() => ProductReviewDetailScreenState();
 }
 
-class ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
+class ProductReviewDetailScreenState extends ConsumerState<ProductReviewDetailScreen> {
   final ScrollController _scrollController = ScrollController();
   PageController? _pageController;
 

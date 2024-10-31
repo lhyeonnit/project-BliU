@@ -8,11 +8,11 @@ import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
-import 'package:BliU/screen/product/component/detail/product_order_bottom_option.dart';
-import 'package:BliU/screen/product/component/detail/product_review_detail.dart';
+import 'package:BliU/screen/modal_dialog/product_order_bottom_option.dart';
+import 'package:BliU/screen/product_review_detail/product_review_detail_screen.dart';
 import 'package:BliU/screen/report/report_screen.dart';
-import 'package:BliU/screen/product/component/list/product_list_card.dart';
-import 'package:BliU/screen/product/coupon_receive_screen.dart';
+import 'package:BliU/screen/product_list/item/product_list_card.dart';
+import 'package:BliU/screen/coupon_reveive/coupon_receive_screen.dart';
 import 'package:BliU/screen/product_detail/view_model/product_detail_view_model.dart';
 import 'package:BliU/screen/store_detail/store_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -1558,7 +1558,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProductReviewDetail(
+                  builder: (context) => ProductReviewDetailScreen(
                     rtIdx: reviewData.rtIdx ?? 0,
                   ),
                 ),

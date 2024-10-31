@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:BliU/data/review_data.dart';
-import 'package:BliU/screen/product/viewmodel/product_review_edit_view_model.dart';
+import 'package:BliU/screen/mypage/viewmodel/product_review_edit_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';

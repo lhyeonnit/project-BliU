@@ -9,7 +9,7 @@ import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/_component/search_recommend_item.dart';
 import 'package:BliU/screen/_component/smart_lens_screen.dart';
 import 'package:BliU/screen/_component/viewmodel/search_view_model.dart';
-import 'package:BliU/screen/product/component/list/product_list_card.dart';
+import 'package:BliU/screen/product_list/item/product_list_card.dart';
 import 'package:BliU/screen/product_detail/product_detail_screen.dart';
 import 'package:BliU/screen/store_detail/store_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
