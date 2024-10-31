@@ -5,13 +5,13 @@ import 'package:BliU/dto/default_response_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ReportPageModel {}
+class ReportModel {}
 
-class ReportPageViewModel extends StateNotifier<ReportPageModel?> {
+class ReportViewModel extends StateNotifier<ReportModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  ReportPageViewModel(super.state, this.ref);
+  ReportViewModel(super.state, this.ref);
 
   Future<CategoryResponseDTO?> getCategory() async {
     final response = await repository.reqGet(url: Constant.apiProductSingoCateUrl,);
@@ -54,7 +54,7 @@ class ReportPageViewModel extends StateNotifier<ReportPageModel?> {
   }
 }
 
-final reportPageViewModelProvider =
-StateNotifierProvider<ReportPageViewModel, ReportPageModel?>((req) {
-  return ReportPageViewModel(null, req);
+final reportViewModelProvider =
+StateNotifierProvider<ReportViewModel, ReportModel?>((req) {
+  return ReportViewModel(null, req);
 });

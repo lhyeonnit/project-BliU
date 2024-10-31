@@ -1,6 +1,6 @@
 import 'package:BliU/data/review_data.dart';
 import 'package:BliU/screen/mypage/component/top/component/my_review_edit.dart';
-import 'package:BliU/screen/product/component/detail/report_page.dart';
+import 'package:BliU/screen/report/report_screen.dart';
 import 'package:BliU/screen/product/viewmodel/product_review_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -232,7 +232,7 @@ class ProductReviewDetailState extends ConsumerState<ProductReviewDetail> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ReportPage(rtIdx: widget.rtIdx,)),
+                              MaterialPageRoute(builder: (context) => ReportScreen(rtIdx: widget.rtIdx,)),
                             );
                           },
                           child: const Text(

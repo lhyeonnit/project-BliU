@@ -5,7 +5,7 @@ import 'package:BliU/screen/_component/message_dialog.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/product/component/list/product_list_card.dart';
-import 'package:BliU/screen/product/component/list/product_sort_bottom.dart';
+import 'package:BliU/screen/modal_dialog/product_sort_bottom.dart';
 import 'package:BliU/screen/modal_dialog/store_age_group_selection.dart';
 import 'package:BliU/screen/store_detail/store_detail_screen.dart';
 import 'package:BliU/screen/main/page_screen/store/view_model/store_favorite_view_model.dart';

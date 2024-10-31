@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:BliU/data/my_page_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/my_info_delete_page.dart';
-import 'package:BliU/screen/mypage/my_screen.dart';
+import 'package:BliU/screen/main/page_screen/my/my_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/my_info_edit_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';

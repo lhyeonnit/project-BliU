@@ -1,5 +1,5 @@
 import 'package:BliU/data/category_data.dart';
-import 'package:BliU/screen/product/viewmodel/report_page_view_model.dart';
+import 'package:BliU/screen/report/view_model/report_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -7,15 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ReportPage extends ConsumerStatefulWidget {
+class ReportScreen extends ConsumerStatefulWidget {
   final int rtIdx;
-  const ReportPage({super.key, required this.rtIdx});
+  const ReportScreen({super.key, required this.rtIdx});
 
   @override
-  ConsumerState<ReportPage> createState() => ReportPageState();
+  ConsumerState<ReportScreen> createState() => ReportScreenState();
 }
 
-class ReportPageState extends ConsumerState<ReportPage> {
+class ReportScreenState extends ConsumerState<ReportScreen> {
   final TextEditingController _controller = TextEditingController();
   
   List<CategoryData> categories = [];
@@ -49,7 +49,7 @@ class ReportPageState extends ConsumerState<ReportPage> {
       'rt_category_txt' : _controller.text,
     };
 
-    final defaultResponseDTO = await ref.read(reportPageViewModelProvider.notifier).reviewSingo(requestData);
+    final defaultResponseDTO = await ref.read(reportViewModelProvider.notifier).reviewSingo(requestData);
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         setState(() {
@@ -263,7 +263,7 @@ class ReportPageState extends ConsumerState<ReportPage> {
   }
 
   void _getCategory() async {
-    final categoryResponseDTO = await ref.read(reportPageViewModelProvider.notifier).getCategory();
+    final categoryResponseDTO = await ref.read(reportViewModelProvider.notifier).getCategory();
     if (categoryResponseDTO != null) {
       if (categoryResponseDTO.result == true) {
         setState(() {

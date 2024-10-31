@@ -10,10 +10,10 @@ import 'package:BliU/screen/_component/search_screen.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/product/component/detail/product_order_bottom_option.dart';
 import 'package:BliU/screen/product/component/detail/product_review_detail.dart';
-import 'package:BliU/screen/product/component/detail/report_page.dart';
+import 'package:BliU/screen/report/report_screen.dart';
 import 'package:BliU/screen/product/component/list/product_list_card.dart';
 import 'package:BliU/screen/product/coupon_receive_screen.dart';
-import 'package:BliU/screen/product/viewmodel/product_detail_view_model.dart';
+import 'package:BliU/screen/product_detail/view_model/product_detail_view_model.dart';
 import 'package:BliU/screen/store_detail/store_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -1620,7 +1620,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ReportPage(rtIdx: reviewData.rtIdx ?? 0)),
+                        MaterialPageRoute(builder: (context) => ReportScreen(rtIdx: reviewData.rtIdx ?? 0)),
                       );
                     },
                     child: Text(

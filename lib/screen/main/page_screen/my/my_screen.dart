@@ -15,8 +15,8 @@ import 'package:BliU/screen/mypage/component/top/my_info_edit_screen.dart';
 import 'package:BliU/screen/mypage/component/top/my_review_screen.dart';
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
 import 'package:BliU/screen/mypage/component/top/point_screen.dart';
-import 'package:BliU/screen/mypage/non_top_screen.dart';
-import 'package:BliU/screen/mypage/viewmodel/my_view_model.dart';
+import 'package:BliU/screen/main/page_screen/my/child_view/non_top_screen.dart';
+import 'package:BliU/screen/main/page_screen/my/view_model/my_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +78,12 @@ class MyScreenState extends ConsumerState<MyScreen> {
         String? childCk = memberInfo?.childCk;
         if (!mounted) return;
         if (childCk == "N") {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RecommendInfoScreen()),);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const RecommendInfoScreen(),
+            ),
+          );
         }
       } else {
         _resetData();
@@ -159,7 +164,9 @@ class MyScreenState extends ConsumerState<MyScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AlarmScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => const AlarmScreen(),
+                  ),
                 );
               },
             ),
@@ -233,26 +240,29 @@ class MyScreenState extends ConsumerState<MyScreen> {
                             } else {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const MyInfoEditScreen(isCommon: false,)),
+                                MaterialPageRoute(
+                                  builder: (context) => const MyInfoEditScreen(isCommon: false,),
+                                ),
                               );
                             }
                           },
                           child: Container(
-                              margin: const EdgeInsets.only(top: 20),
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(color: const Color(0xFFDDDDDD)),
+                            margin: const EdgeInsets.only(top: 20),
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(color: const Color(0xFFDDDDDD)),
+                            ),
+                            child: Text(
+                              '내정보수정',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                color: Colors.black,
+                                fontSize: Responsive.getFont(context, 12),
+                                height: 1.2,
                               ),
-                              child: Text(
-                                '내정보수정',
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  color: Colors.black,
-                                  fontSize: Responsive.getFont(context, 12),
-                                  height: 1.2,
-                                ),
-                              )),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -267,7 +277,8 @@ class MyScreenState extends ConsumerState<MyScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const OrderListScreen()),
+                              builder: (context) => const OrderListScreen(),
+                            ),
                           );
                         }, ''),
                         _buildIconButton(
@@ -276,7 +287,8 @@ class MyScreenState extends ConsumerState<MyScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const MyReviewScreen()),
+                              builder: (context) => const MyReviewScreen(),
+                            ),
                           );
                         }, '$myReviewCount'),
                         _buildIconButton(context, '쿠폰함',
@@ -284,7 +296,8 @@ class MyScreenState extends ConsumerState<MyScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const MyCouponScreen()),
+                              builder: (context) => const MyCouponScreen(),
+                            ),
                           );
                         }, '$myCouponCount'),
                         _buildIconButton(
@@ -293,7 +306,8 @@ class MyScreenState extends ConsumerState<MyScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const PointScreen()),
+                              builder: (context) => const PointScreen(),
+                            ),
                           );
                         }, '$myPoint'),
                       ],

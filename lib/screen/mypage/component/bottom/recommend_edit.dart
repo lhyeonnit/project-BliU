@@ -1,7 +1,7 @@
 import 'package:BliU/data/style_category_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/recommend_info/view_model/recommend_info_view_model.dart';
-import 'package:BliU/screen/mypage/my_screen.dart';
+import 'package:BliU/screen/main/page_screen/my/my_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/recommend_edit_info_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
