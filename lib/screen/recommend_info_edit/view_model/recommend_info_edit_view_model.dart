@@ -5,15 +5,13 @@ import 'package:BliU/dto/style_category_response_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RecommendEditInfoModel {
+class RecommendInfoEditModel {}
 
-}
-
-class RecommendEditInfoViewModel extends StateNotifier<RecommendEditInfoModel?>{
+class RecommendInfoEditViewModel extends StateNotifier<RecommendInfoEditModel?>{
   final Ref ref;
   final repository = DefaultRepository();
 
-  RecommendEditInfoViewModel(super.state, this.ref);
+  RecommendInfoEditViewModel(super.state, this.ref);
 
   Future<StyleCategoryResponseDTO?> getStyleCategory() async {
     final response = await repository.reqGet(url: Constant.apiAuthStyleCategoryUrl);
@@ -58,7 +56,7 @@ class RecommendEditInfoViewModel extends StateNotifier<RecommendEditInfoModel?>{
 }
 
 
-final recommendEditInfoViewModelProvider =
-StateNotifierProvider<RecommendEditInfoViewModel, RecommendEditInfoModel?>((req) {
-  return RecommendEditInfoViewModel(null, req);
+final recommendInfoEditViewModelProvider =
+StateNotifierProvider<RecommendInfoEditViewModel, RecommendInfoEditModel?>((req) {
+  return RecommendInfoEditViewModel(null, req);
 });

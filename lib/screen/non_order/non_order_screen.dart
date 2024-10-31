@@ -1,4 +1,4 @@
-import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
+import 'package:BliU/screen/order_list/order_list_screen.dart';
 import 'package:BliU/screen/non_order/view_model/non_order_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';

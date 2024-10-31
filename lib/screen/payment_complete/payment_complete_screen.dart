@@ -1,6 +1,6 @@
 import 'package:BliU/data/pay_order_result_detail_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
+import 'package:BliU/screen/order_list/order_list_screen.dart';
 import 'package:BliU/screen/payment/child_view/payment_order_item.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';

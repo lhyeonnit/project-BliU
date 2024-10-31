@@ -3,7 +3,7 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_list_item.dart';
-import 'package:BliU/screen/mypage/viewmodel/order_list_view_model.dart';
+import 'package:BliU/screen/order_list/view_model/order_list_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';

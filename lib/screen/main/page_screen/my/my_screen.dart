@@ -5,7 +5,7 @@ import 'package:BliU/screen/main/main_screen.dart';
 import 'package:BliU/screen/faq/faq_screen.dart';
 import 'package:BliU/screen/non_order/non_order_screen.dart';
 import 'package:BliU/screen/notice/notice_screen.dart';
-import 'package:BliU/screen/mypage/component/bottom/recommend_edit.dart';
+import 'package:BliU/screen/recommend_info_edit/recommend_info_edit_screen.dart';
 import 'package:BliU/screen/consumer_center/consumer_center_screen.dart';
 import 'package:BliU/screen/setting/setting_screen.dart';
 import 'package:BliU/screen/alarm/alarm_screen.dart';
@@ -13,7 +13,7 @@ import 'package:BliU/screen/my_info_edit_check/my_info_edit_check_screen.dart';
 import 'package:BliU/screen/my_coupon/my_coupon_screen.dart';
 import 'package:BliU/screen/my_info_edit/my_info_edit_screen.dart';
 import 'package:BliU/screen/my_review/my_review_screen.dart';
-import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
+import 'package:BliU/screen/order_list/order_list_screen.dart';
 import 'package:BliU/screen/my_point/my_point_screen.dart';
 import 'package:BliU/screen/main/page_screen/my/child_view/non_top_screen.dart';
 import 'package:BliU/screen/main/page_screen/my/view_model/my_view_model.dart';
@@ -333,7 +333,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const RecommendEdit()),
+                        builder: (context) => const RecommendInfoEditScreen()),
                   );
                 },
               ),

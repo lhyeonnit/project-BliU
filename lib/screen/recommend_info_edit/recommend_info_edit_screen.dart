@@ -2,7 +2,7 @@ import 'package:BliU/data/style_category_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/recommend_info/view_model/recommend_info_view_model.dart';
 import 'package:BliU/screen/main/page_screen/my/my_screen.dart';
-import 'package:BliU/screen/mypage/viewmodel/recommend_edit_info_view_model.dart';
+import 'package:BliU/screen/recommend_info_edit/view_model/recommend_info_edit_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -13,14 +13,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
-class RecommendEdit extends ConsumerStatefulWidget {
-  const RecommendEdit({super.key});
+class RecommendInfoEditScreen extends ConsumerStatefulWidget {
+  const RecommendInfoEditScreen({super.key});
 
   @override
-  ConsumerState<RecommendEdit> createState() => RecommendEditState();
+  ConsumerState<RecommendInfoEditScreen> createState() => RecommendInfoEditScreenState();
 }
 
-class RecommendEditState extends ConsumerState<RecommendEdit> {
+class RecommendInfoEditScreenState extends ConsumerState<RecommendInfoEditScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _birthController = TextEditingController(text: '선택해주세요');
 
@@ -661,7 +661,7 @@ class RecommendEditState extends ConsumerState<RecommendEdit> {
     };
 
     // 서버에 데이터 전송 및 응답 처리
-    final defaultResponseDTO = await ref.read(recommendEditInfoViewModelProvider.notifier).editRecommendInfo(requestData);
+    final defaultResponseDTO = await ref.read(recommendInfoEditViewModelProvider.notifier).editRecommendInfo(requestData);
 
     if (defaultResponseDTO != null && defaultResponseDTO.result == true) {
       if (memberInfo != null) {
