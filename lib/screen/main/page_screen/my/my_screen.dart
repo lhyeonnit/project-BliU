@@ -316,7 +316,10 @@ class MyScreenState extends ConsumerState<MyScreen> {
                 ],
               ),
             ),
-            Visibility(visible: userId.isEmpty, child: const NonTopScreen()),
+            Visibility(
+              visible: userId.isEmpty,
+              child: const NonTopScreen(),
+            ),
             Container(
               margin: const EdgeInsets.only(top: 15, bottom: 30),
               width: double.infinity,
@@ -333,7 +336,8 @@ class MyScreenState extends ConsumerState<MyScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const RecommendInfoEditScreen()),
+                      builder: (context) => const RecommendInfoEditScreen(),
+                    ),
                   );
                 },
               ),
@@ -344,7 +348,8 @@ class MyScreenState extends ConsumerState<MyScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const NonOrderScreen()), // 비회원일 때의 화면
+                    builder: (context) => const NonOrderScreen(),
+                  ), // 비회원일 때의 화면
                 );
               }),
             ),
@@ -355,25 +360,33 @@ class MyScreenState extends ConsumerState<MyScreen> {
             _buildSectionItem(context, 'FAQ', () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const FAQScreen()),
+                MaterialPageRoute(
+                  builder: (context) => const FAQScreen(),
+                ),
               );
             }),
             _buildSectionItem(context, '공지사항', () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const NoticeScreen()),
+                MaterialPageRoute(
+                  builder: (context) => const NoticeScreen(),
+                ),
               );
             }),
             _buildSectionItem(context, '고객센터', () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ConsumerCenterScreen()),
+                MaterialPageRoute(
+                  builder: (context) => const ConsumerCenterScreen(),
+                ),
               );
             }),
             _buildSectionItem(context, '설정', () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SettingScreen()),
+                MaterialPageRoute(
+                  builder: (context) => const SettingScreen(),
+                ),
               );
             }),
             Visibility(

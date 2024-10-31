@@ -210,7 +210,6 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                   obscureText: true, isEnable: true),
                               GestureDetector(
                                 onTap: () {
-
                                   _editMyPassword();
                                 },
                                 child: Container(
@@ -223,16 +222,16 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                     border: Border.all(color: const Color(0xFFDDDDDD)),
                                   ),
                                   child: Center(
-                                      child: Text(
-                                        '변경',
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 14),
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
-                                          height: 1.2,
-                                        ),
-                                      )
+                                    child: Text(
+                                      '변경',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.2,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -261,22 +260,22 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                   });
                                 },
                                 child: Container(
-                                    margin: const EdgeInsets.only(top: 45, left: 8),
-                                    padding: const EdgeInsets.symmetric(vertical: 14),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
-                                      border: Border.all(color: const Color(0xFFDDDDDD)),
+                                  margin: const EdgeInsets.only(top: 45, left: 8),
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '변경',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
+                                      ),
                                     ),
-                                    child: Center(
-                                        child: Text(
-                                          '변경',
-                                          style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(context, 14),
-                                            height: 1.2,
-                                          ),
-                                        )
-                                    )
+                                  ),
                                 ),
                               ),
                             ),
@@ -288,8 +287,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                               child: GestureDetector(
                                 onTap: () async {
                                   _editMyPh();
-                                  if (_phoneController.text.isEmpty ||
-                                      _phoneAuthChecked) {
+                                  if (_phoneController.text.isEmpty || _phoneAuthChecked) {
                                     return;
                                   }
 
@@ -301,9 +299,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                     'phone_num': phoneNumber,
                                     'code_type': 4,
                                   };
-                                  final resultDTO = await ref
-                                      .read(myInfoEditViewModelProvider.notifier)
-                                      .reqPhoneAuthCode(requestData);
+                                  final resultDTO = await ref.read(myInfoEditViewModelProvider.notifier).reqPhoneAuthCode(requestData);
                                   if (resultDTO.result == true) {
                                     setState(() {
                                       _phoneAuthCodeVisible = true;
@@ -315,22 +311,22 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                   }
                                 },
                                 child: Container(
-                                    margin: const EdgeInsets.only(top: 45, left: 8),
-                                    padding: const EdgeInsets.symmetric(vertical: 14),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
-                                      border: Border.all(color: const Color(0xFFDDDDDD)),
+                                  margin: const EdgeInsets.only(top: 45, left: 8),
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '인증요청',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
+                                      ),
                                     ),
-                                    child: Center(
-                                        child: Text(
-                                          '인증요청',
-                                          style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(context, 14),
-                                            height: 1.2,
-                                          ),
-                                        )
-                                    )
+                                  ),
                                 ),
                               ),
                             ),
@@ -344,8 +340,8 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                             Expanded(
                               flex: 7,
                               child: _buildCheckField(
-                                  '휴대폰번호', _authCodeController, '인증번호 입력',
-                                  isEnable: _phoneAuthChecked ? true : false
+                                '휴대폰번호', _authCodeController, '인증번호 입력',
+                                isEnable: _phoneAuthChecked ? true : false,
                               ),
                             ),
                             Expanded(
@@ -418,22 +414,22 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                                 _editMyName();
                               },
                               child: Container(
-                                  margin: const EdgeInsets.only(top: 45, left: 8),
-                                  padding: const EdgeInsets.symmetric(vertical: 14),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                                margin: const EdgeInsets.only(top: 45, left: 8),
+                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(color: const Color(0xFFDDDDDD)),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '변경',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
+                                    ),
                                   ),
-                                  child: Center(
-                                      child: Text(
-                                        '변경',
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 14),
-                                          height: 1.2,
-                                        ),
-                                      )
-                                  )
+                                ),
                               ),
                             ),
                           ),
@@ -443,25 +439,27 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                         margin: const EdgeInsets.only(top: 20, bottom: 10),
                         child: Row(
                           children: [
-                            Text('생년월일',
+                            Text(
+                              '생년월일',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.bold,
+                                fontSize: Responsive.getFont(context, 13),
+                                height: 1.2,
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 4),
+                              child: Text(
+                                '선택',
                                 style: TextStyle(
                                   fontFamily: 'Pretendard',
                                   fontWeight: FontWeight.bold,
                                   fontSize: Responsive.getFont(context, 13),
+                                  color: const Color(0xFFFF6192),
                                   height: 1.2,
-                                )
-                            ),
-                            Container(
-                                margin: const EdgeInsets.only(left: 4),
-                                child: Text('선택',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: Responsive.getFont(context, 13),
-                                      color: const Color(0xFFFF6192),
-                                      height: 1.2,
-                                    )
-                                )
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -480,8 +478,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                             margin: const EdgeInsets.only(top: 10, bottom: 20),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(9),
-                              child: Image.asset(
-                                  'assets/images/login/coupon_banner.png'),
+                              child: Image.asset('assets/images/login/coupon_banner.png'),
                             ),
                           ),
                           Positioned(
@@ -519,24 +516,24 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                       Row(
                         children: [
                           Text('성별',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.bold,
+                              fontSize: Responsive.getFont(context, 13),
+                              height: 1.2,
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(left: 4),
+                            child: Text('선택',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.bold,
                                 fontSize: Responsive.getFont(context, 13),
+                                color: const Color(0xFFFF6192),
                                 height: 1.2,
-                              )
-                          ),
-                          Container(
-                              margin: const EdgeInsets.only(left: 4),
-                              child: Text('선택',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: Responsive.getFont(context, 13),
-                                    color: const Color(0xFFFF6192),
-                                    height: 1.2,
-                                  )
-                              )
+                              ),
+                            ),
                           ),
                         ],
                       ), // 성별 선택 타이틀
@@ -546,13 +543,15 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                           children: [
                             Expanded(
                               child: Container(
-                                  margin: const EdgeInsets.only(right: 4),
-                                  child: _buildGenderButton('남자')),
+                                margin: const EdgeInsets.only(right: 4),
+                                child: _buildGenderButton('남자'),
+                              ),
                             ),
                             Expanded(
                               child: Container(
-                                  margin: const EdgeInsets.only(left: 4),
-                                  child: _buildGenderButton('여자')),
+                                margin: const EdgeInsets.only(left: 4),
+                                child: _buildGenderButton('여자'),
+                              ),
                             ),
                           ],
                         ),
@@ -597,11 +596,9 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                     color: Colors.white,
                     child: GestureDetector(
                       onTap: () {
-                        _isAllFieldsFilled
-                            ? () {
+                        if (_isAllFieldsFilled) {
                           _editMyInfo();
                         }
-                            : null;
                       },
                       child: Container(
                         width: double.infinity,
@@ -663,10 +660,10 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
           TextField(
             onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
             style: TextStyle(
-                decorationThickness: 0,
-                height: 1.2,
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 14)
+              decorationThickness: 0,
+              height: 1.2,
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 14),
             ),
             controller: controller,
             obscureText: obscureText,
@@ -723,19 +720,20 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                     fontWeight: FontWeight.bold,
                     fontSize: Responsive.getFont(context, 13),
                     height: 1.2,
-                  )
+                  ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(left: 4),
-                  child: Text('*',
+                  child: Text(
+                    '*',
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontWeight: FontWeight.bold,
                       fontSize: Responsive.getFont(context, 13),
                       color: const Color(0xFFFF6192),
                       height: 1.2,
-                    )
-                  )
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -744,10 +742,10 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
             TextField(
               onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
-                  decorationThickness: 0,
-                  height: 1.2,
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14)
+                decorationThickness: 0,
+                height: 1.2,
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 14),
               ),
               controller: controller,
               obscureText: obscureText,
@@ -819,10 +817,10 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
             TextField(
               onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
-                  decorationThickness: 0,
-                  height: 1.2,
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14)
+                decorationThickness: 0,
+                height: 1.2,
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 14),
               ),
               controller: controller,
               obscureText: obscureText,
@@ -874,10 +872,10 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
             TextField(
               onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               style: TextStyle(
-                  decorationThickness: 0,
-                  height: 1.2,
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14)
+                decorationThickness: 0,
+                height: 1.2,
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 14),
               ),
               enabled: isEnable,
               controller: controller,

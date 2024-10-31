@@ -118,10 +118,10 @@ class MyInfoEditCheckScreen extends ConsumerWidget {
                       obscureText: true,
                       // 비밀번호 입력을 위해 텍스트 숨김
                       style: TextStyle(
-                          decorationThickness: 0,
-                          height: 1.2,
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14)
+                        decorationThickness: 0,
+                        height: 1.2,
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
                       ),
                       enabled: true,
                       controller: _passwordController,
@@ -129,9 +129,9 @@ class MyInfoEditCheckScreen extends ConsumerWidget {
                         contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                         hintText: '비밀번호 입력',
                         hintStyle: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: const Color(0xFF595959)
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: const Color(0xFF595959),
                         ),
                         enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -207,11 +207,13 @@ class MyInfoEditCheckScreen extends ConsumerWidget {
         if (!context.mounted) return;
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MyInfoEditScreen(authToken: authToken,)),
+          MaterialPageRoute(
+            builder: (context) => MyInfoEditScreen(authToken: authToken,),
+          ),
         );
       } else {
         if (!context.mounted) return;
-          Utils.getInstance().showSnackBar(context, myInfoResponseDTO.message ?? "");
+        Utils.getInstance().showSnackBar(context, myInfoResponseDTO.message ?? "");
       }
     }
   }

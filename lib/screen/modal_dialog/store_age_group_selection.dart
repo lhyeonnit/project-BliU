@@ -75,8 +75,8 @@ class StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
             children: [
               ...widget.ageCategories.map((category) {
                 return Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    child: _buildAgeGroupChip(category),
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: _buildAgeGroupChip(category),
                 );
               }),
             ],
@@ -111,8 +111,8 @@ class StoreAgeGroupSelectionState extends State<StoreAgeGroupSelection> {
                   child: Container(
                     margin: const EdgeInsets.only(left: 9),
                     decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                        color: Colors.black
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      color: Colors.black,
                     ),
                     width: double.infinity,
                     height: 48,

@@ -72,10 +72,7 @@ class MyCouponScreenState extends ConsumerState<MyCouponScreen> {
   }
 
   void _nextLoad() async {
-    if (_hasNextPage &&
-        !_isFirstLoadRunning &&
-        !_isLoadMoreRunning &&
-        _scrollController.position.extentAfter < 200) {
+    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200) {
       setState(() {
         _isLoadMoreRunning = true;
       });
@@ -196,9 +193,7 @@ class MyCouponScreenState extends ConsumerState<MyCouponScreen> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(19),
                                 border: Border.all(
-                                  color: isSelected
-                                      ? const Color(0xFFFF6192)
-                                      : const Color(0xFFDDDDDD),
+                                  color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
                                   width: 1.0,
                                 ),
                                 color: Colors.white,
@@ -272,8 +267,7 @@ class MyCouponScreenState extends ConsumerState<MyCouponScreen> {
                                     Expanded(
                                       flex: 8,
                                       child: Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 30.0, horizontal: 20),
+                                        margin: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
                                         child: Column(
                                           crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -286,34 +280,23 @@ class MyCouponScreenState extends ConsumerState<MyCouponScreen> {
                                                   couponDiscount,
                                                   style: TextStyle(
                                                     fontFamily: 'Pretendard',
-                                                    fontSize: Responsive.getFont(
-                                                        context, 16),
+                                                    fontSize: Responsive.getFont(context, 16),
                                                     fontWeight: FontWeight.bold,
-                                                    color: couponStatus == "사용가능"
-                                                        ? const Color(0xFFFF6192)
-                                                        : const Color(0xFFA4A4A4),
+                                                    color: couponStatus == "사용가능" ? const Color(0xFFFF6192) : const Color(0xFFA4A4A4),
                                                     height: 1.2,
                                                   ),
                                                 ),
                                                 Expanded(
                                                   child: Container(
-                                                    margin: const EdgeInsets.only(
-                                                        left: 6),
+                                                    margin: const EdgeInsets.only(left: 6),
                                                     child: Text(
-                                                      ctName.isEmpty
-                                                          ? couponName
-                                                          : ctName,
+                                                      ctName.isEmpty ? couponName : ctName,
                                                       style: TextStyle(
                                                         fontFamily: 'Pretendard',
                                                         fontSize:
-                                                        Responsive.getFont(
-                                                            context, 16),
+                                                        Responsive.getFont(context, 16),
                                                         fontWeight: FontWeight.bold,
-                                                        color:
-                                                        couponStatus == "사용가능"
-                                                            ? Colors.black
-                                                            : const Color(
-                                                            0xFFA4A4A4),
+                                                        color: couponStatus == "사용가능" ? Colors.black : const Color(0xFFA4A4A4),
                                                         height: 1.2,
                                                       ),
                                                       softWrap: true,

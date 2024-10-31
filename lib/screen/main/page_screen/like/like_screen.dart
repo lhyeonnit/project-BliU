@@ -304,11 +304,12 @@ class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderState
               ),
             ),
             Visibility(
-                visible: !_listEmpty,
-                child: MoveTopButton(scrollController: _scrollController)),
+              visible: !_listEmpty,
+              child: MoveTopButton(scrollController: _scrollController),
+            ),
             Visibility(
-                visible: _listEmpty,
-                child: const NonDataScreen(text: '좋아요하신 상품이 없습니다.',)
+              visible: _listEmpty,
+              child: const NonDataScreen(text: '좋아요하신 상품이 없습니다.',),
             ),
           ],
         ),

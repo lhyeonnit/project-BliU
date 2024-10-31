@@ -154,8 +154,9 @@ class NonTopScreenState extends State<NonTopScreen> {
             itemCount: _totalPages,
             itemBuilder: (context, index) {
               return ClipRRect(
-                  borderRadius: BorderRadius.circular(6),
-                  child: Image.asset(banners[index]));
+                borderRadius: BorderRadius.circular(6),
+                child: Image.asset(banners[index]),
+              );
             },
           ),
         ),

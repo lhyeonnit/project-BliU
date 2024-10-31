@@ -40,13 +40,14 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
   final List<List<BookmarkData>> _bookMarkList = [];
   final List<CategoryData> categories = [
     CategoryData(
-        ctIdx: 0,
-        cstIdx: 0,
-        img: '',
-        ctName: '전체',
-        subList: [],
-        catIdx: null,
-        catName: null)
+      ctIdx: 0,
+      cstIdx: 0,
+      img: '',
+      ctName: '전체',
+      subList: [],
+      catIdx: null,
+      catName: null,
+    )
   ];
 
   int _count = 0;
@@ -728,13 +729,15 @@ class StoreFavoritePageState extends ConsumerState<StoreFavoritePage> with Ticke
                       controller: _tabController,
                       physics: const NeverScrollableScrollPhysics(),
                       children: List.generate(
-                          categories.length, (index) {
-                        if (index == _tabController.index) {
-                          return _buildProductGrid();
-                        } else {
-                          return Container();
-                        }
-                      }),
+                        categories.length,
+                        (index) {
+                          if (index == _tabController.index) {
+                            return _buildProductGrid();
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
                     ),
                   ),
                 ),

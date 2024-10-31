@@ -264,116 +264,116 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: _addPtOptionArr.length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 15),
-                                  padding: const EdgeInsets.all(20),
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFFF5F9F9),
-                                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(bottom: 12),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              _addPtOptionArr[index].option ?? "",
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 14),
-                                                height: 1.2,
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  _addPtOptionArr.removeAt(index);
-                                                });
-                                              },
-                                              child: SvgPicture.asset('assets/images/ic_del.svg'),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _addPtOptionArr.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 15),
+                                padding: const EdgeInsets.all(20),
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFFF5F9F9),
+                                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(bottom: 12),
+                                      child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Container(
-                                            width: Responsive.getWidth(context, 96),
-                                            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8,),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: const BorderRadius.all(Radius.circular(22)),
-                                              border: Border.all(
-                                                  color: const Color(0xFFE3E3E3)
-                                              ),
-                                            ),
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                GestureDetector(
-                                                  child: const Icon(CupertinoIcons.minus, size: 20),
-                                                  onTap: () {
-                                                    if (_addPtOptionArr[index].count > 1) {
-                                                      setState(() {
-                                                        _addPtOptionArr[index].count -= 1;
-                                                      });
-                                                    }
-                                                  },
-                                                ),
-                                                Container(
-                                                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                                                  child: Text(
-                                                    '${_addPtOptionArr[index].count}',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Pretendard',
-                                                      fontSize: Responsive.getFont(context, 14),
-                                                      height: 1.2,
-                                                    ),
-                                                  ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    if ((_addPtOptionArr[index].potJaego ?? 0) > _addPtOptionArr[index].count) {
-                                                      setState(() {
-                                                        _addPtOptionArr[index].count += 1;
-                                                      });
-                                                    }
-                                                  },
-                                                  child: const Icon(Icons.add, size: 20),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
                                           Text(
-                                            '${Utils.getInstance().priceString(_addPtOptionArr[index].count * ((_addPtOptionArr[index].potPrice ?? 0) + (_productData.ptPrice ?? 0)))}원',
+                                            _addPtOptionArr[index].option ?? "",
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
                                               fontSize: Responsive.getFont(context, 14),
-                                              fontWeight: FontWeight.bold,
                                               height: 1.2,
                                             ),
                                           ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                _addPtOptionArr.removeAt(index);
+                                              });
+                                            },
+                                            child: SvgPicture.asset('assets/images/ic_del.svg'),
+                                          ),
                                         ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          width: Responsive.getWidth(context, 96),
+                                          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8,),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: const BorderRadius.all(Radius.circular(22)),
+                                            border: Border.all(
+                                                color: const Color(0xFFE3E3E3)
+                                            ),
+                                          ),
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              GestureDetector(
+                                                child: const Icon(CupertinoIcons.minus, size: 20),
+                                                onTap: () {
+                                                  if (_addPtOptionArr[index].count > 1) {
+                                                    setState(() {
+                                                      _addPtOptionArr[index].count -= 1;
+                                                    });
+                                                  }
+                                                },
+                                              ),
+                                              Container(
+                                                margin: const EdgeInsets.symmetric(horizontal: 5),
+                                                child: Text(
+                                                  '${_addPtOptionArr[index].count}',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pretendard',
+                                                    fontSize: Responsive.getFont(context, 14),
+                                                    height: 1.2,
+                                                  ),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  if ((_addPtOptionArr[index].potJaego ?? 0) > _addPtOptionArr[index].count) {
+                                                    setState(() {
+                                                      _addPtOptionArr[index].count += 1;
+                                                    });
+                                                  }
+                                                },
+                                                child: const Icon(Icons.add, size: 20),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Text(
+                                          '${Utils.getInstance().priceString(_addPtOptionArr[index].count * ((_addPtOptionArr[index].potPrice ?? 0) + (_productData.ptPrice ?? 0)))}원',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            fontWeight: FontWeight.bold,
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            );
-                          }
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
                     // 추가상품
@@ -536,9 +536,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
     Map<String, dynamic> requestData = {
       'pt_idx': _productData.ptIdx,
     };
-    final responseDto = await ref
-        .read(productOrderBottomOptionViewModelProvider.notifier)
-        .getList(requestData);
+    final responseDto = await ref.read(productOrderBottomOptionViewModelProvider.notifier).getList(requestData);
     if (responseDto != null) {
       setState(() {
         _ptOption = responseDto.data?.ptOption ?? [];
@@ -608,7 +606,6 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
               ),
               onTap: () {
                 onSelected(option); // 항목이 선택되면 콜백 실행
-
               },
             );
           }).toList(),
@@ -984,10 +981,9 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                 } else {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => JoinAddInfoScreen(
-                      payOrderDetailData: payOrderDetailData,
-                      memberType: memberType,
-                    )),
+                    MaterialPageRoute(
+                      builder: (context) => JoinAddInfoScreen(payOrderDetailData: payOrderDetailData, memberType: memberType,),
+                    ),
                   );
                 }
                 return;

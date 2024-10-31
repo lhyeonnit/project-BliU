@@ -121,8 +121,9 @@ class ProductFilterBottomState extends State<ProductFilterBottom> {
                             _ageCategories.length, (index) {
                               final ageCategory = _ageCategories[index];
                               return Container(
-                                  margin: const EdgeInsets.only(top: 10),
-                                  child: _buildAgeGroupChip(ageCategory));
+                                margin: const EdgeInsets.only(top: 10),
+                                child: _buildAgeGroupChip(ageCategory),
+                              );
                             }
                           ),
                         ),
@@ -162,8 +163,7 @@ class ProductFilterBottomState extends State<ProductFilterBottom> {
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
                         decoration: BoxDecoration(
-                          border:
-                              Border.all(width: 1, color: const Color(0xFFEEEEEE)),
+                          border: Border.all(width: 1, color: const Color(0xFFEEEEEE)),
                         ),
                       ),
                       Container(
@@ -265,8 +265,8 @@ class ProductFilterBottomState extends State<ProductFilterBottom> {
                     child: Container(
                       margin: const EdgeInsets.only(left: 9),
                       decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                          color: Colors.black
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        color: Colors.black,
                       ),
                       width: double.infinity,
                       height: 48,
@@ -282,7 +282,7 @@ class ProductFilterBottomState extends State<ProductFilterBottom> {
                         )
                       ),
                     ),
-                  )
+                  ),
                 ),
               ],
             ),

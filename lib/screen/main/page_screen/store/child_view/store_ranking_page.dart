@@ -338,231 +338,234 @@ class StoreRakingPageState extends ConsumerState<StoreRakingPage> {
                       visible: !_listEmpty,
                       child: Column(
                         children: [
-                          ...List.generate(storeRankList.length, (index) {
-                            final rankData = storeRankList[index];
+                          ...List.generate(
+                            storeRankList.length,
+                            (index) {
+                              final rankData = storeRankList[index];
 
-                            return Container(
-                              margin: const EdgeInsets.symmetric(vertical: 15),
-                              padding: const EdgeInsets.only(left: 16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: Responsive.getHeight(context, 40),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        // Navigate to store_detail page when item is tapped
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => StoreDetailScreen(stIdx: rankData.stIdx ?? 0,),
-                                          ),
-                                        );
-                                      },
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(right: 10),
-                                            constraints: BoxConstraints(
-                                              minWidth: Responsive.getWidth(context, 30),
+                              return Container(
+                                margin: const EdgeInsets.symmetric(vertical: 15),
+                                padding: const EdgeInsets.only(left: 16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: Responsive.getHeight(context, 40),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          // Navigate to store_detail page when item is tapped
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => StoreDetailScreen(stIdx: rankData.stIdx ?? 0,),
                                             ),
-                                            child: Center(
-                                              child: Text(
-                                                // '${rankData.stIdx}',
-                                                '${index + 1}',
-                                                style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  fontSize: Responsive.getFont(context, 24),
-                                                  fontWeight: FontWeight.w600,
-                                                  height: 1.2,
+                                          );
+                                        },
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(right: 10),
+                                              constraints: BoxConstraints(
+                                                minWidth: Responsive.getWidth(context, 30),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  // '${rankData.stIdx}',
+                                                  '${index + 1}',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pretendard',
+                                                    fontSize: Responsive.getFont(context, 24),
+                                                    fontWeight: FontWeight.w600,
+                                                    height: 1.2,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            height: 40,
-                                            width: 40,
-                                            margin: const EdgeInsets.only(right: 10),
-                                            decoration: BoxDecoration(
-                                              borderRadius: const BorderRadius.all(Radius.circular(20)),
-                                              // 사진의 모서리 둥글게 설정
-                                              border: Border.all(
-                                                color: const Color(0xFFDDDDDD),
-                                                // 테두리 색상 설정
-                                                width: 1.0, // 테두리 두께 설정
+                                            Container(
+                                              height: 40,
+                                              width: 40,
+                                              margin: const EdgeInsets.only(right: 10),
+                                              decoration: BoxDecoration(
+                                                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                                                // 사진의 모서리 둥글게 설정
+                                                border: Border.all(
+                                                  color: const Color(0xFFDDDDDD),
+                                                  // 테두리 색상 설정
+                                                  width: 1.0, // 테두리 두께 설정
+                                                ),
                                               ),
-                                            ),
-                                            child: ClipRRect(
-                                              borderRadius: const BorderRadius.all(Radius.circular(20)),
-                                              // 사진의 모서리만 둥글게 설정
-                                              child: Image.network(
+                                              child: ClipRRect(
+                                                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                                                // 사진의 모서리만 둥글게 설정
+                                                child: Image.network(
                                                   rankData.stProfile ?? "",
                                                   fit: BoxFit.contain,
                                                   errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                                     return const SizedBox();
-                                                  }
+                                                  },
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  rankData.stName ?? "",
-                                                  style: TextStyle(
-                                                    fontFamily: 'Pretendard',
-                                                    fontSize: Responsive.getFont(context, 14),
-                                                    height: 1.2,
-                                                  ),
-                                                  overflow: TextOverflow.ellipsis,
-                                                ),
-                                                Text(
-                                                  "${rankData.stStyleTxt?.split(',').first ?? ""}, ${rankData.stAgeTxt ?? ""}",
-                                                  // 쉼표로 분리 후 첫 번째 값만 가져옴
-                                                  style: TextStyle(
-                                                    fontFamily: 'Pretendard',
-                                                    fontSize: Responsive.getFont(context, 13),
-                                                    color: const Color(0xFF7B7B7B),
-                                                    height: 1.2,
-                                                  ),
-                                                  overflow: TextOverflow.ellipsis,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              // 북마크 토글을 위한 데이터 요청
-                                              final pref = await SharedPreferencesManager.getInstance();
-                                              final mtIdx = pref.getMtIdx() ?? ""; // 사용자 mtIdx 가져오기
-
-                                              if (mtIdx.isEmpty) {
-                                                if(!context.mounted) return;
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
-                                                    }
-                                                );
-                                                return;
-                                              }
-
-                                              Map<String, dynamic> requestData = {
-                                                'mt_idx': mtIdx,
-                                                'st_idx': rankData.stIdx, // 상점 인덱스 사용
-                                              };
-
-                                              // 북마크 토글 함수 호출
-                                              await ref.read(storeFavoriteViewModelProvider.notifier).toggleLike(requestData);
-                                              // 북마크 상태 반전 (check_mark 값 반전)
-                                              setState(() {
-                                                if (rankData.checkMark == "Y") {
-                                                  rankData.checkMark = "N";
-                                                  rankData.stMark = (rankData.stMark ?? 0) - 1;
-                                                } else {
-                                                  rankData.checkMark = "Y";
-                                                  rankData.stMark = (rankData.stMark ?? 0) + 1;
-                                                }
-                                              });
-                                            },
-                                            child: Container(
-                                              width: 50,
-                                              margin: const EdgeInsets.only(top: 3, right: 5),
+                                            Expanded(
+                                              flex: 1,
                                               child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Container(
-                                                    width: Responsive.getWidth(context, 14),
-                                                    height: Responsive.getHeight(context, 17),
-                                                    margin: const EdgeInsets.only(bottom: 3),
-                                                    child: rankData.checkMark == "Y" ? SvgPicture.asset(
-                                                      'assets/images/store/book_mark.svg',
-                                                      colorFilter: const ColorFilter.mode(
-                                                        Color(0xFFFF6192),
-                                                        BlendMode.srcIn,
-                                                      ),
-                                                      fit: BoxFit.contain,
-                                                    ) : SvgPicture.asset(
-                                                      'assets/images/store/book_mark.svg',
-                                                      fit: BoxFit.contain,
-                                                    ),
-                                                  ),
                                                   Text(
-                                                    '${rankData.stMark ?? 0}',
+                                                    rankData.stName ?? "",
                                                     style: TextStyle(
                                                       fontFamily: 'Pretendard',
-                                                      color: const Color(0xFFA4A4A4),
-                                                      fontSize: Responsive.getFont(context, 12),
+                                                      fontSize: Responsive.getFont(context, 14),
                                                       height: 1.2,
                                                     ),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                  Text(
+                                                    "${rankData.stStyleTxt?.split(',').first ?? ""}, ${rankData.stAgeTxt ?? ""}",
+                                                    // 쉼표로 분리 후 첫 번째 값만 가져옴
+                                                    style: TextStyle(
+                                                      fontFamily: 'Pretendard',
+                                                      fontSize: Responsive.getFont(context, 13),
+                                                      color: const Color(0xFF7B7B7B),
+                                                      height: 1.2,
+                                                    ),
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ],
                                               ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                // 북마크 토글을 위한 데이터 요청
+                                                final pref = await SharedPreferencesManager.getInstance();
+                                                final mtIdx = pref.getMtIdx() ?? ""; // 사용자 mtIdx 가져오기
+
+                                                if (mtIdx.isEmpty) {
+                                                  if(!context.mounted) return;
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
+                                                    },
+                                                  );
+                                                  return;
+                                                }
+
+                                                Map<String, dynamic> requestData = {
+                                                  'mt_idx': mtIdx,
+                                                  'st_idx': rankData.stIdx, // 상점 인덱스 사용
+                                                };
+
+                                                // 북마크 토글 함수 호출
+                                                await ref.read(storeFavoriteViewModelProvider.notifier).toggleLike(requestData);
+                                                // 북마크 상태 반전 (check_mark 값 반전)
+                                                setState(() {
+                                                  if (rankData.checkMark == "Y") {
+                                                    rankData.checkMark = "N";
+                                                    rankData.stMark = (rankData.stMark ?? 0) - 1;
+                                                  } else {
+                                                    rankData.checkMark = "Y";
+                                                    rankData.stMark = (rankData.stMark ?? 0) + 1;
+                                                  }
+                                                });
+                                              },
+                                              child: Container(
+                                                width: 50,
+                                                margin: const EdgeInsets.only(top: 3, right: 5),
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      width: Responsive.getWidth(context, 14),
+                                                      height: Responsive.getHeight(context, 17),
+                                                      margin: const EdgeInsets.only(bottom: 3),
+                                                      child: rankData.checkMark == "Y" ? SvgPicture.asset(
+                                                        'assets/images/store/book_mark.svg',
+                                                        colorFilter: const ColorFilter.mode(
+                                                          Color(0xFFFF6192),
+                                                          BlendMode.srcIn,
+                                                        ),
+                                                        fit: BoxFit.contain,
+                                                      ) : SvgPicture.asset(
+                                                        'assets/images/store/book_mark.svg',
+                                                        fit: BoxFit.contain,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '${rankData.stMark ?? 0}',
+                                                      style: TextStyle(
+                                                        fontFamily: 'Pretendard',
+                                                        color: const Color(0xFFA4A4A4),
+                                                        fontSize: Responsive.getFont(context, 12),
+                                                        height: 1.2,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Visibility(
+                                      visible: (rankData.productList?.length ?? 0) > 0,
+                                      child: Column(
+                                        children: [
+                                          const SizedBox(height: 20),
+                                          SizedBox(
+                                            height: 120,
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: rankData.productList?.length ?? 0,
+                                              itemBuilder: (context, imageIndex) {
+                                                final productData = rankData.productList?[imageIndex];
+
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    // Navigate to store_detail page when item is tapped
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => ProductDetailScreen(ptIdx: productData?.ptIdx),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    width: 120,
+                                                    height: 120,
+                                                    margin: const EdgeInsets.only(right: 5),
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(6),
+                                                      // 모서리 둥글게 설정
+                                                      child: Image.network(
+                                                        productData?.ptImg ?? '',
+                                                        // null인 경우 빈 문자열을 처리
+                                                        fit: BoxFit.cover,
+                                                        errorBuilder: (context, error, stackTrace) {
+                                                          return const Icon(Icons.error); // 이미지 로딩에 실패한 경우 표시할 위젯
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  Visibility(
-                                    visible: (rankData.productList?.length ?? 0) > 0,
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(height: 20),
-                                        SizedBox(
-                                          height: 120,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: rankData.productList?.length ?? 0,
-                                            itemBuilder: (context, imageIndex) {
-                                              final productData = rankData.productList?[imageIndex];
-
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  // Navigate to store_detail page when item is tapped
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) => ProductDetailScreen(ptIdx: productData?.ptIdx),
-                                                    ),
-                                                  );
-                                                },
-                                                child: Container(
-                                                  width: 120,
-                                                  height: 120,
-                                                  margin: const EdgeInsets.only(right: 5),
-                                                  child: ClipRRect(
-                                                    borderRadius: BorderRadius.circular(6),
-                                                    // 모서리 둥글게 설정
-                                                    child: Image.network(
-                                                      productData?.ptImg ?? '',
-                                                      // null인 경우 빈 문자열을 처리
-                                                      fit: BoxFit.cover,
-                                                      errorBuilder: (context, error, stackTrace) {
-                                                        return const Icon(Icons.error); // 이미지 로딩에 실패한 경우 표시할 위젯
-                                                      },
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: ((storeRankList.length - 1) == index && (rankData.productList?.length ?? 0) == 0) ? true : false,
-                                    child: const SizedBox(
-                                      height: 40,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            );
-                          }),
+                                    Visibility(
+                                      visible: ((storeRankList.length - 1) == index && (rankData.productList?.length ?? 0) == 0) ? true : false,
+                                      child: const SizedBox(
+                                        height: 40,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ],
                       ),
                     )

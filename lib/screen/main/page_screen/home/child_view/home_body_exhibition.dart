@@ -193,7 +193,7 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
                                     fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                       return const SizedBox();
-                                    }
+                                    },
                                   ),
                                 ),
                               ),
@@ -211,7 +211,7 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
                                     fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                       return const SizedBox();
-                                    }
+                                    },
                                   ),
                                 ),
                               ),
@@ -229,7 +229,7 @@ class HomeBodyExhibitionState extends ConsumerState<HomeBodyExhibition> {
                                     fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                       return const SizedBox();
-                                    }
+                                    },
                                   ),
                                 ),
                               ),

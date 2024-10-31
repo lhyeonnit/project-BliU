@@ -5,11 +5,7 @@ class ProductSortBottom extends StatefulWidget {
   final String sortOption;
   final ValueChanged<String> onSortOptionSelected;
 
-  const ProductSortBottom({
-    super.key,
-    required this.sortOption,
-    required this.onSortOptionSelected,
-  });
+  const ProductSortBottom({super.key, required this.sortOption, required this.onSortOptionSelected,});
 
   @override
   State<ProductSortBottom> createState() => ProductSortBottomState();
