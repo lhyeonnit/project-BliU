@@ -8,7 +8,7 @@ import 'package:BliU/screen/main/page_screen/category/category_screen.dart';
 import 'package:BliU/screen/exhibition/exhibition_screen.dart';
 import 'package:BliU/screen/main/page_screen/home/home_screen.dart';
 import 'package:BliU/screen/main/page_screen/like/like_screen.dart';
-import 'package:BliU/screen/mypage/component/top/my_coupon_screen.dart';
+import 'package:BliU/screen/my_coupon/my_coupon_screen.dart';
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
 import 'package:BliU/screen/main/page_screen/my/my_screen.dart';
 import 'package:BliU/screen/product_detail/product_detail_screen.dart';

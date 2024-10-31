@@ -4,13 +4,13 @@ import 'package:BliU/dto/point_list_response_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PointModel {}
+class MyPointModel {}
 
-class PointViewModel extends StateNotifier<PointModel?> {
+class MyPointViewModel extends StateNotifier<MyPointModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  PointViewModel(super.state, this.ref);
+  MyPointViewModel(super.state, this.ref);
 
   Future<PointListResponseDTO?> getList(Map<String, dynamic> requestData) async {
     try {
@@ -33,7 +33,7 @@ class PointViewModel extends StateNotifier<PointModel?> {
   }
 }
 
-final pointViewModelProvider =
-StateNotifierProvider<PointViewModel, PointModel?>((req) {
-  return PointViewModel(null, req);
+final myPointViewModelProvider =
+StateNotifierProvider<MyPointViewModel, MyPointModel?>((req) {
+  return MyPointViewModel(null, req);
 });

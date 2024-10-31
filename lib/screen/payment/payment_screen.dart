@@ -1792,7 +1792,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => const TermsDetailScreen(type: 0),
+                                            builder: (context) => const TermsDetailScreen(type: 0), // TODO 작업 필요
                                           ),
                                         );
                                       },
@@ -1871,7 +1871,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                       onTap: () {
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => const TermsDetailScreen(type: 0),
+                                          MaterialPageRoute(builder: (context) => const TermsDetailScreen(type: 0), // TODO 작업 필요
                                           ),
                                         );
                                       },
@@ -1958,7 +1958,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => const TermsDetailScreen(type: 0),
+                                            builder: (context) => const TermsDetailScreen(type: 0), // TODO 작업 필요
                                           ),
                                         );
                                       },

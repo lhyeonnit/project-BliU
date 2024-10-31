@@ -7,7 +7,7 @@ import 'package:BliU/screen/find_id/find_id_screen.dart';
 import 'package:BliU/screen/find_password/find_password_screen.dart';
 import 'package:BliU/screen/login/view_model/login_view_model.dart';
 import 'package:BliU/screen/main/main_screen.dart';
-import 'package:BliU/screen/mypage/component/bottom/non_order_page.dart';
+import 'package:BliU/screen/non_order/non_order_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -364,7 +364,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const NonOrderPage()), // 비회원일 때의 화면
+                            builder: (context) => const NonOrderScreen()), // 비회원일 때의 화면
                       );
                     },
                     child: Text(

@@ -1,19 +1,19 @@
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
-import 'package:BliU/screen/mypage/viewmodel/non_order_page_view_model.dart';
+import 'package:BliU/screen/non_order/view_model/non_order_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class NonOrderPage extends ConsumerStatefulWidget {
-  const NonOrderPage({super.key});
+class NonOrderScreen extends ConsumerStatefulWidget {
+  const NonOrderScreen({super.key});
 
   @override
-  ConsumerState<NonOrderPage> createState() => NonOrderPageState();
+  ConsumerState<NonOrderScreen> createState() => NonOrderScreenState();
 }
 
-class NonOrderPageState extends ConsumerState<NonOrderPage> {
+class NonOrderScreenState extends ConsumerState<NonOrderScreen> {
   bool _isAllFieldsFilled = false;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -149,7 +149,7 @@ class NonOrderPageState extends ConsumerState<NonOrderPage> {
                     'ot_code' : deliveryCode,
                   };
 
-                  final responseData = await ref.read(nonOrderPageViewModelProvider.notifier).getFindOrder(requestData);
+                  final responseData = await ref.read(nonOrderViewModelProvider.notifier).getFindOrder(requestData);
                   if (responseData != null) {
                     if (responseData["result"] == true) {
                       if (!context.mounted) return;

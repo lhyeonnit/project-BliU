@@ -1,14 +1,14 @@
-import 'package:BliU/screen/mypage/viewmodel/event_detail_view_model.dart';
+import 'package:BliU/screen/event_detail/view_model/event_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class EventDetail extends ConsumerWidget {
+class EventDetailScreen extends ConsumerWidget {
   final int btIdx;
 
-  const EventDetail({super.key, required this.btIdx});
+  const EventDetailScreen({super.key, required this.btIdx});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

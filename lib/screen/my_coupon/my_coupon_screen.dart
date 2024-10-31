@@ -1,6 +1,6 @@
 import 'package:BliU/data/coupon_data.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
-import 'package:BliU/screen/mypage/viewmodel/my_coupon_view_model.dart';
+import 'package:BliU/screen/my_coupon/view_model/my_coupon_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';

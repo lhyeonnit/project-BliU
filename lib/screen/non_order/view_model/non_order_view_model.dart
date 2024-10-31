@@ -3,13 +3,13 @@ import 'package:BliU/const/constant.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NonOrderPageModel {}
+class NonOrderModel {}
 
-class NonOrderPageViewModel extends StateNotifier<NonOrderPageModel?> {
+class NonOrderViewModel extends StateNotifier<NonOrderModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  NonOrderPageViewModel(super.state, this.ref);
+  NonOrderViewModel(super.state, this.ref);
 
   Future<Map<String, dynamic>?> getFindOrder(Map<String, dynamic> requestData) async {
     try {
@@ -31,7 +31,7 @@ class NonOrderPageViewModel extends StateNotifier<NonOrderPageModel?> {
   }
 }
 
-final nonOrderPageViewModelProvider =
-StateNotifierProvider<NonOrderPageViewModel, NonOrderPageModel?>((req) {
-  return NonOrderPageViewModel(null, req);
+final nonOrderViewModelProvider =
+StateNotifierProvider<NonOrderViewModel, NonOrderModel?>((req) {
+  return NonOrderViewModel(null, req);
 });

@@ -1,6 +1,6 @@
 import 'package:BliU/data/event_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/event_detail.dart';
+import 'package:BliU/screen/event_detail/event_detail_screen.dart';
 import 'package:BliU/screen/notice/view_model/event_list_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -137,7 +137,7 @@ class EventListState extends ConsumerState<EventList> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => EventDetail(btIdx: btIdx),
+                            builder: (context) => EventDetailScreen(btIdx: btIdx),
                           ),
                         );
                       }

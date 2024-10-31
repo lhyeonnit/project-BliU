@@ -3,18 +3,18 @@ import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/recommend_info/recommend_info_screen.dart';
 import 'package:BliU/screen/main/main_screen.dart';
 import 'package:BliU/screen/faq/faq_screen.dart';
-import 'package:BliU/screen/mypage/component/bottom/non_order_page.dart';
+import 'package:BliU/screen/non_order/non_order_screen.dart';
 import 'package:BliU/screen/notice/notice_screen.dart';
 import 'package:BliU/screen/mypage/component/bottom/recommend_edit.dart';
 import 'package:BliU/screen/consumer_center/consumer_center_screen.dart';
 import 'package:BliU/screen/setting/setting_screen.dart';
 import 'package:BliU/screen/alarm/alarm_screen.dart';
 import 'package:BliU/screen/mypage/component/top/component/my_info_edit_check.dart';
-import 'package:BliU/screen/mypage/component/top/my_coupon_screen.dart';
+import 'package:BliU/screen/my_coupon/my_coupon_screen.dart';
 import 'package:BliU/screen/mypage/component/top/my_info_edit_screen.dart';
 import 'package:BliU/screen/mypage/component/top/my_review_screen.dart';
 import 'package:BliU/screen/mypage/component/top/order_list_screen.dart';
-import 'package:BliU/screen/mypage/component/top/point_screen.dart';
+import 'package:BliU/screen/my_point/my_point_screen.dart';
 import 'package:BliU/screen/main/page_screen/my/child_view/non_top_screen.dart';
 import 'package:BliU/screen/main/page_screen/my/view_model/my_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -306,7 +306,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const PointScreen(),
+                              builder: (context) => const MyPointScreen(),
                             ),
                           );
                         }, '$myPoint'),
@@ -344,7 +344,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const NonOrderPage()), // 비회원일 때의 화면
+                      builder: (context) => const NonOrderScreen()), // 비회원일 때의 화면
                 );
               }),
             ),

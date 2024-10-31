@@ -1,7 +1,7 @@
 import 'package:BliU/data/point_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
-import 'package:BliU/screen/mypage/viewmodel/point_view_model.dart';
+import 'package:BliU/screen/my_point/view_model/my_point_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class PointScreen extends ConsumerStatefulWidget {
-  const PointScreen({super.key});
+class MyPointScreen extends ConsumerStatefulWidget {
+  const MyPointScreen({super.key});
 
   @override
-  ConsumerState<PointScreen> createState() => PointScreenState();
+  ConsumerState<MyPointScreen> createState() => MyPointScreenState();
 }
 
-class PointScreenState extends ConsumerState<PointScreen> {
+class MyPointScreenState extends ConsumerState<MyPointScreen> {
   final ScrollController _scrollController = ScrollController();
   final List<String> _categories = ['전체', '적립', '사용'];
   int _selectedCategoryIndex = 0;
@@ -62,7 +62,7 @@ class PointScreenState extends ConsumerState<PointScreen> {
       _pointList = [];
     });
 
-    final pointListResponseDTO = await ref.read(pointViewModelProvider.notifier).getList(requestData);
+    final pointListResponseDTO = await ref.read(myPointViewModelProvider.notifier).getList(requestData);
     _mtPoint = pointListResponseDTO?.mtPoint ?? 0;
     _pointList = pointListResponseDTO?.list ?? [];
 
@@ -80,7 +80,7 @@ class PointScreenState extends ConsumerState<PointScreen> {
 
       final requestData = await _makeRequestData();
 
-      final pointListResponseDTO = await ref.read(pointViewModelProvider.notifier).getList(requestData);
+      final pointListResponseDTO = await ref.read(myPointViewModelProvider.notifier).getList(requestData);
       if (pointListResponseDTO != null) {
         if ((pointListResponseDTO.list ?? []).isNotEmpty) {
           setState(() {

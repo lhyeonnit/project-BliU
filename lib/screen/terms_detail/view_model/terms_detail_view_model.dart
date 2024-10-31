@@ -19,7 +19,7 @@ class TermsDetailViewModel extends StateNotifier<TermsDetailModel?> {
   TermsDetailViewModel(super.state, this.ref);
 
   Future<void> getTermsAndPrivacy(int type) async {
-    // type 0 - 이용약관 1 - 개인정보 처리 방침
+    // type 0 - 이용약관 1 - 개인정보 처리 방침 2 - 개인정보 수집 이용 동의 3 - 개인정보 제 3자 정보 제공 동의
     String url = Constant.apiMyPageTermsUrl;
     String key = "terms";
     if (type == 1) {

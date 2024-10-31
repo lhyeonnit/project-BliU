@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:BliU/data/banner_data.dart';
 import 'package:BliU/screen/main/page_screen/home/view_model/home_header_view_model.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/event_detail.dart';
+import 'package:BliU/screen/event_detail/event_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,7 +55,7 @@ class HomeHeaderState extends ConsumerState<HomeHeader> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => EventDetail(btIdx: banner.btIdx ?? 0),
+                              builder: (context) => EventDetailScreen(btIdx: banner.btIdx ?? 0),
                             ),
                           );
                         }
