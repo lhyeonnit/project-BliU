@@ -118,8 +118,7 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
-                    children: (orderDetailInfoData?.product ?? [])
-                        .map((orderDetailData) {
+                    children: (widget.orderData.detailList ?? []).map((orderDetailData) {
                       return OrderItem(
                         orderData: widget.orderData,
                         orderDetailData: orderDetailData,
