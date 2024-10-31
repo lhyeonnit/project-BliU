@@ -337,13 +337,15 @@ class MyPointScreenState extends ConsumerState<MyPointScreen> {
               ),
             ),
             Visibility(
-                visible: _pointList.isNotEmpty,
-                child: MoveTopButton(scrollController: _scrollController)),
+              visible: _pointList.isNotEmpty,
+              child: MoveTopButton(scrollController: _scrollController),
+            ),
             Visibility(
               visible: _pointList.isEmpty,
               child: Container(
-                  margin: const EdgeInsets.only(top: 80),
-                  child: const NonDataScreen(text: '포인트 내역이 없습니다.')),
+                margin: const EdgeInsets.only(top: 80),
+                child: const NonDataScreen(text: '포인트 내역이 없습니다.'),
+              ),
             ),
           ],
         ),

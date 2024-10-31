@@ -140,13 +140,13 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(6.0),
                                 child: Image.network(
-                                    reviewData.rtImg ?? "",
-                                    width: 90,
-                                    height: 90,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                      return const SizedBox();
-                                    }
+                                  reviewData.rtImg ?? "",
+                                  width: 90,
+                                  height: 90,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                    return const SizedBox();
+                                  },
                                 ),
                               ),
                             ),

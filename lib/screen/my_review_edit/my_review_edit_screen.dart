@@ -166,9 +166,9 @@ class MyReviewEditScreenState extends ConsumerState<MyReviewEditScreen> {
                           Text(
                             '상품은 어떠셨나요?',
                             style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 16),
-                                fontWeight: FontWeight.bold
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 16),
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           Directionality(
@@ -179,9 +179,9 @@ class MyReviewEditScreenState extends ConsumerState<MyReviewEditScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Container(
-                                      width: 250,
-                                      margin: const EdgeInsets.symmetric(vertical: 20),
-                                      child: _ratingBar(1)
+                                    width: 250,
+                                    margin: const EdgeInsets.symmetric(vertical: 20),
+                                    child: _ratingBar(1),
                                   ),
                                 ],
                               ),
@@ -191,19 +191,19 @@ class MyReviewEditScreenState extends ConsumerState<MyReviewEditScreen> {
                             onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                             controller: _reviewController,
                             style: TextStyle(
-                                decorationThickness: 0,
-                                height: 1.2,
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14)
+                              decorationThickness: 0,
+                              height: 1.2,
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
                             ),
                             maxLines: 10,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                               hintText: '최소 10자 이상 입력해주세요. \n구매하신 상품에 대한 솔직한 리뷰를 남겨주세요. :)',
                               hintStyle: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: const Color(0xFF595959)
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: const Color(0xFF595959),
                               ),
                               enabledBorder: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -223,16 +223,16 @@ class MyReviewEditScreenState extends ConsumerState<MyReviewEditScreen> {
                                 Text(
                                   '이미지',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 13)
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 13),
                                   ),
                                 ),
                                 Text(
                                   '${_selectedImages.length + _currentImages.length}/4',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 13),
-                                      color: const Color(0xFF7B7B7B)
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 13),
+                                    color: const Color(0xFF7B7B7B),
                                   ),
                                 ),
                               ],
@@ -252,9 +252,9 @@ class MyReviewEditScreenState extends ConsumerState<MyReviewEditScreen> {
                               height: 100,
                               margin: const EdgeInsets.only(right: 10),
                               decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                  border: Border.all(color: const Color(0xFFE7EAEF))
+                                color: Colors.white,
+                                borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                border: Border.all(color: const Color(0xFFE7EAEF)),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -264,9 +264,9 @@ class MyReviewEditScreenState extends ConsumerState<MyReviewEditScreen> {
                                   Text(
                                     '사진선택',
                                     style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        color: const Color(0xFF707070),
-                                        fontSize: Responsive.getFont(context, 14)
+                                      fontFamily: 'Pretendard',
+                                      color: const Color(0xFF707070),
+                                      fontSize: Responsive.getFont(context, 14),
                                     ),
                                   )
                                 ],

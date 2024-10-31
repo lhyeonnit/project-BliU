@@ -97,12 +97,12 @@ class MyInquiryOneState extends ConsumerState<MyInquiryOne> {
                               ],
                             ),
                             subtitle: Text(qnaData.qtTitle ?? "",
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.2,
-                                )
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                fontWeight: FontWeight.w400,
+                                height: 1.2,
+                              ),
                             ),
                             onTap: () async {
                               final qtIdx = qnaData.qtIdx;
