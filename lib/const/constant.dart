@@ -92,9 +92,11 @@ class Constant {
   static const apiMyPageOrderCancelCategoryUrl = "mypage/order_cancel_category";//주문 취소 카테고리
   static const apiMyPageOrderCancelUrl = "mypage/order_cancel";//주문 취소
   static const apiMyPageOrderCancelDetailUrl = "mypage/order_cancel_detail";//주문 취소 상세
+  static const apiMyPageOrderCancelInfoUrl = "mypage/order_cancel_info";//주문 취소 요청
   static const apiMyPageOrderReturnCategoryUrl = "mypage/order_return_category";//주문 교환/환불 카테고리
   static const apiMyPageOrderReturnPayUrl = "mypage/order_return_pay";//주문 교환 배송비 지불방법
   static const apiMyPageOrderReturnDetailUrl = "mypage/order_return_detail";//주문 교환/환불 상세
+  static const apiMyPageOrderReturnInfoUrl = "mypage/order_return_info";//주문 교환/환불 요청
   static const apiMyPageOrderReturnUrl = "mypage/order_return";//주문 교환/환불
   static const apiMyPageReviewListUrl = "mypage/review_list";//나의리뷰 리스트
   static const apiMyPageReviewWriteUrl = "mypage/review_write";//나의리뷰 등록

@@ -1,25 +1,23 @@
-import 'package:BliU/data/order_detail_info_data.dart';
+import 'package:BliU/data/return_info_data.dart';
 
-class OrderDetailInfoResponseDTO {
+class OrderCancelReturnDetailDTO {
   final bool? result;
   final String? message;
-  OrderDetailInfoData data;
+  final ReturnInfoData? data;
 
-  OrderDetailInfoResponseDTO({
+  OrderCancelReturnDetailDTO({
     required this.result,
     required this.message,
     required this.data
   });
-
   // JSON to Object
-  factory OrderDetailInfoResponseDTO.fromJson(Map<String, dynamic> json) {
-    return OrderDetailInfoResponseDTO(
+  factory OrderCancelReturnDetailDTO.fromJson(Map<String, dynamic> json) {
+    return OrderCancelReturnDetailDTO(
       result: json['result'],
       message: json['data']['message'],
-      data: OrderDetailInfoData.fromJson(json['data']),
+      data: ReturnInfoData.fromJson(json['data']),
     );
   }
-
   // Object to JSON
   Map<String, dynamic> toJson() {
     return {

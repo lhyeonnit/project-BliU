@@ -2,6 +2,7 @@ import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/category_response_dto.dart';
 import 'package:BliU/dto/default_response_dto.dart';
+import 'package:BliU/dto/order_cancel_return_detail_dto.dart';
 import 'package:BliU/dto/order_detail_info_response_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,6 +25,26 @@ class CancelViewModel extends StateNotifier<CancelModel?> {
           OrderDetailInfoResponseDTO orderDetailInfoResponseDTO = OrderDetailInfoResponseDTO.fromJson(responseData);
 
           return orderDetailInfoResponseDTO;
+        }
+      }
+      return null;
+    } catch (e) {
+      // Catch and log any exceptions
+      if (kDebugMode) {
+        print('Error fetching : $e');
+      }
+      return null;
+    }
+  }
+  Future<OrderCancelReturnDetailDTO?> getOrderCancelInfo(Map<String, dynamic> requestData) async {
+    try {
+      final response = await repository.reqPost(url: Constant.apiMyPageOrderCancelInfoUrl, data: requestData);
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseData = response.data;
+          OrderCancelReturnDetailDTO orderCancelReturnDetailDTO = OrderCancelReturnDetailDTO.fromJson(responseData);
+
+          return orderCancelReturnDetailDTO;
         }
       }
       return null;

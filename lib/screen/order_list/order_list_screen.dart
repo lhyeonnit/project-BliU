@@ -26,7 +26,6 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
   int selectedCategoryIndex = 0;
   int? count;
   List<OrderData> orderList = [];
-
   int _page = 1;
   bool _hasNextPage = true;
   bool _isFirstLoadRunning = false;
@@ -59,7 +58,6 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
 
     final orderResponseDTO = await ref.read(orderListViewModelProvider.notifier).getList(requestData);
     orderList = orderResponseDTO?.list ?? [];
-    count = orderResponseDTO?.count;
     setState(() {
       _isFirstLoadRunning = false;
     });
@@ -251,10 +249,27 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             final orderData = orderList[index];
-
-                            return OrderListItem(
-                              count: count ?? 0,
-                              orderData: orderData,
+                            final detailList = orderData.detailList ?? [];
+                            return Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              margin: const EdgeInsets.only(top: 20),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                border: Border(
+                                  bottom: BorderSide(color: Color(0xFFEEEEEE)), // 구분선 추가
+                                ),
+                              ),
+                              child: Column(
+                                children: (detailList).map((orderDetailData) {
+                                  return  Container(
+                                    margin: const EdgeInsets.only(bottom: 20),
+                                    child: OrderListItem(
+                                      orderData: orderData,
+                                      detailList: orderDetailData,
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
                             );
                           }
                       ),
