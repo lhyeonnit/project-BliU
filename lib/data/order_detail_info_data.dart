@@ -3,7 +3,7 @@ import 'package:BliU/data/order_detail_info_delivery_data.dart';
 import 'package:BliU/data/order_detail_info_order_data.dart';
 
 class OrderDetailInfoData {
-  final List<OrderDetailData>? product;
+  List<OrderDetailData>? product;
   final OrderDetailInfoDeliveryData? delivery;
   final OrderDetailInfoOrderData? order;
 

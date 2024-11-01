@@ -3,6 +3,7 @@ import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/mypage/component/top/component/exchange_return_info.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_detail_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_item.dart';
 import 'package:BliU/screen/mypage/viewmodel/change_order_detail_view_model.dart';
@@ -16,12 +17,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class OrderDetail extends ConsumerStatefulWidget {
   final OrderData orderData;
-  final int count;
+  final OrderDetailData detailList;
 
   const OrderDetail({
     super.key,
     required this.orderData,
-    required this.count,
+    required this.detailList,
   });
 
   @override
@@ -31,35 +32,29 @@ class OrderDetail extends ConsumerStatefulWidget {
 class OrderDetailState extends ConsumerState<OrderDetail> {
   final ScrollController _scrollController = ScrollController();
   OrderDetailInfoData? orderDetailInfoData;
-  OrderDetailData? orderDetailData;
-  ChangeOrderDetailData? cancelDetailData;
-  ChangeOrderDetailData? exchangeReturnDetailData;
+  ChangeOrderDetailData? changeOrderDetailData;
   int? userType;
-  String? statusTitle;
+  String? type;
 
   @override
   void initState() {
     super.initState();
-    // statusTitle = ;
+    type = widget.detailList.type;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
   }
-
-  // TODO 상태값 가져오기
   String _statusTitle() {
-    if (statusTitle == "C") {
+    if (type == "C") {
       return "취소";
-    } else if (statusTitle == "R") {
+    } else if (type == "R") {
       return "반품/환불";
-    } else if (statusTitle == "X") {
+    } else if (type == "X") {
       return "교환";
     } else {
       return "주문상세";
     }
   }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +63,7 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: Text(
-            _statusTitle(),
+            _statusTitle()
         ),
         titleTextStyle: TextStyle(
           fontFamily: 'Pretendard',
@@ -155,8 +150,6 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
                 // 배송비 정보
                 Container(
                   margin: const EdgeInsets.only(top: 10),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                   decoration: const BoxDecoration(
                     border: Border(
                       top: BorderSide(
@@ -164,6 +157,10 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
                       ),
                     ),
                   ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -184,6 +181,14 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
                       ),
                     ],
                   ),
+                ),
+                Visibility(
+                  visible: type == "-",
+                  child: const SizedBox(height: 20),
+                ),
+                Visibility(
+                  visible: type != "-",
+                    child: ExchangeReturnInfo(userType: userType, returnInfoData: changeOrderDetailData?.returnInfoData, orderDetailData: widget.detailList,),
                 ),
                 OrderDetailItem(orderDetailInfoData: orderDetailInfoData, userType: userType ?? 0,),
               ],
@@ -238,14 +243,14 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
       'type': memberType,
       'mt_idx': mtIdx,
       'temp_mt_id': appToken,
-      'odt_code': widget.orderData.detailList?[0].otCode,
+      'odt_code': widget.detailList.odtCode,
     };
 
     final cancelDetailResponseDTO = await ref.read(changeOrderDetailViewModelProvider.notifier).getCancelDetail(requestData);
     if (cancelDetailResponseDTO != null) {
       if (cancelDetailResponseDTO.result == true) {
         setState(() {
-          cancelDetailData = cancelDetailResponseDTO.data;
+          changeOrderDetailData = cancelDetailResponseDTO.data;
           userType = memberType;
         });
       } else {
@@ -264,9 +269,8 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
       'type': memberType,
       'mt_idx': mtIdx,
       'temp_mt_id': appToken,
-      'odt_code': widget.orderData.detailList?[0].otCode,
-      // TODO ct_type 불러오기
-      // 'ct_type': widget.orderData.detailList?[widget.count].type,
+      'odt_code': widget.detailList.odtCode,
+      'ct_type': type,
     };
 
     final exchangeReturnDetailResponseDTO = await ref.read(changeOrderDetailViewModelProvider.notifier).getReturnDetail(requestData);
@@ -274,7 +278,7 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
       if (exchangeReturnDetailResponseDTO.result == true) {
         setState(() {
           userType = memberType;
-          exchangeReturnDetailData = exchangeReturnDetailResponseDTO.data;
+          changeOrderDetailData = exchangeReturnDetailResponseDTO.data;
         });
       } else {
         if (!mounted) return;

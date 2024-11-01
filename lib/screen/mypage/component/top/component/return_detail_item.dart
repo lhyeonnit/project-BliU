@@ -474,12 +474,10 @@ class ReturnItemState extends State<ReturnItem> {
                       },
                     ),
                   ),
-
-                ExchangeReturnInfo(
-                  userType: widget.userType,
-                  orderDetailInfoData: widget.orderDetailInfoData,
-                  orderDetailData: widget.orderDetailData,
-                ),
+                // TODO 교환/반품 요청 정보
+                // ExchangeReturnInfo(
+                //   userType: widget.userType,
+                // ),
               ],
             ),
           ),

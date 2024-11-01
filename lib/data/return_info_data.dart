@@ -1,14 +1,16 @@
 class ReturnInfoData {
-  final String? octReturnPoint;
-  final String? octDeliveryReturn;
-  final String? octReturnPrice;
+  final int? deliveryPrice;
+  final int? octReturnPoint;
+  final int? octDeliveryReturn;
+  final int? octReturnPrice;
   final String? octReturnType;
-  final String? ortReturnPoint;
-  final String? ortDeliveryReturn;
-  final String? ortReturnPrice;
+  final int? ortReturnPoint;
+  final int? ortDeliveryReturn;
+  final int? ortReturnPrice;
   final String? ortReturnType;
 
   ReturnInfoData({
+    required this.deliveryPrice,
     required this.octReturnPoint,
     required this.octDeliveryReturn,
     required this.octReturnPrice,
@@ -22,6 +24,7 @@ class ReturnInfoData {
   // JSON to Object
   factory ReturnInfoData.fromJson(Map<String, dynamic> json) {
     return ReturnInfoData(
+      deliveryPrice: json['delivery_priece'],
       octReturnPoint: json['oct_return_point'],
       octDeliveryReturn: json['oct_delivery_return'],
       octReturnPrice: json['oct_return_price'],

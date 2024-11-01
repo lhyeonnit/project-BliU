@@ -1,51 +1,25 @@
 import 'package:BliU/data/change_order_detail_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
+import 'package:BliU/data/return_info_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class ExchangeReturnInfo extends StatelessWidget {
-  final OrderDetailInfoData? orderDetailInfoData;
-  final OrderDetailData? orderDetailData;
+  final ReturnInfoData? returnInfoData;
   final int? userType;
-  final ChangeOrderDetailData? changeOrderDetailData;
+  final OrderDetailData orderDetailData;
 
   const ExchangeReturnInfo({
     super.key,
-    this.orderDetailInfoData,
-    this.orderDetailData,
-    this.userType,
-    this.changeOrderDetailData,
+    required this.returnInfoData,
+    required this.orderDetailData,
+    required this.userType,
   });
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = const SizedBox();
-    if ((orderDetailInfoData?.order?.otCouponInfo?.ctName ?? changeOrderDetailData?.order?.otCouponInfo?.ctName ?? "").isNotEmpty) {
-      widget = Padding(
-        padding: const EdgeInsets.only(left: 10.0),
-        child: Container(
-          margin: const EdgeInsets.only(left: 10, top: 10, right: 16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('ㄴ${orderDetailInfoData?.order?.otCouponInfo?.ctName ?? changeOrderDetailData?.order?.otCouponInfo?.ctName ?? ""}',
-                  style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      color: const Color(0xFFA4A4A4))),
-              Text("${orderDetailInfoData?.order?.otCouponInfo?.ctPrice ?? changeOrderDetailData?.order?.otCouponInfo?.ctPrice ?? ""}",
-                  style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      color: const Color(0xFFA4A4A4))),
-            ],
-          ),
-        ),
-      );
-    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -87,20 +61,28 @@ class ExchangeReturnInfo extends StatelessWidget {
                   children: [
                     _buildInfoRow(
                       '포인트환급액',
-                      "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUsePoint ?? changeOrderDetailData?.order?.otUsePoint ?? 0)}원",
+                      "${Utils.getInstance().priceString(returnInfoData?.octReturnPoint ?? returnInfoData?.ortReturnPoint ?? 0)}원",
                       context,
                     ),
-                    Visibility(
-                      visible: orderDetailData?.ctStats == 2 || orderDetailData?.ctStats == 3 ? false : true,
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 15),
-                        child: _buildInfoRow(
-                          '배송비차감액',
-                          "(-) ${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? changeOrderDetailData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원",
-                          context,
-                        ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      child: _buildInfoRow(
+                        '배송비',
+                        "${Utils.getInstance().priceString(returnInfoData?.deliveryPrice ?? returnInfoData?.deliveryPrice ?? 0)}원",
+                        context,
                       ),
-                    )
+                    ),
+                    // Visibility(
+                    //   visible: orderDetailData.ctStats == 2 || orderDetailData.ctStats == 3 ? false : true,
+                    //   child: Container(
+                    //     margin: const EdgeInsets.only(top: 15),
+                    //     child: _buildInfoRow(
+                    //       '배송비차감액',
+                    //       "(-) ${Utils.getInstance().priceString((changeOrderDetailData?.order?.otDeliveryCharge ?? 0) + (changeOrderDetailData?.order?.otDeliveryChargeExtra ?? 0))}원",
+                    //       context,
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
               ),
@@ -129,7 +111,7 @@ class ExchangeReturnInfo extends StatelessWidget {
                 ),
               ),
               Text(
-                "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otSprice ?? changeOrderDetailData?.order?.otSprice ?? 0) - ((orderDetailInfoData?.order?.otUseCoupon ?? changeOrderDetailData?.order?.otUseCoupon ?? 0) + (orderDetailInfoData?.order?.otUsePoint ?? changeOrderDetailData?.order?.otUsePoint ?? 0) + (orderDetailInfoData?.order?.otDeliveryCharge ?? changeOrderDetailData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? changeOrderDetailData?.order?.otDeliveryChargeExtra ?? 0)))}원",
+                "${Utils.getInstance().priceString((returnInfoData?.octReturnPrice ?? returnInfoData?.ortReturnPrice ?? 0))}원",
                 style: TextStyle(
                   fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14),
@@ -151,7 +133,7 @@ class ExchangeReturnInfo extends StatelessWidget {
             ),
           ),
           //TODO 차후 변경 필요
-          child: _buildInfoRow('환불방법', changeOrderDetailData?.returnInfoData?.octReturnType ?? "", context),
+          child: _buildInfoRow('환불방법', returnInfoData?.octReturnType ?? returnInfoData?.ortReturnType ?? "", context),
         ),
       ],
     );
