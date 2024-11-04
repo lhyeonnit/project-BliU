@@ -4,6 +4,7 @@ import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
+import 'package:BliU/data/return_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/cancel_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/exchange_detail_item.dart';
@@ -32,6 +33,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
   List<CategoryData> exchangeCategory = [];
   List<CategoryData> returnCategory = [];
   List<CategoryData> exchangeDeliveryCostCategory = [];
+  ReturnInfoData? returnInfoData;
 
   final ScrollController _scrollController = ScrollController();
 
@@ -79,11 +81,20 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
       'ct_type': 2,
     };
 
+    Map<String, dynamic> requestData4 = {
+      'odt_code': widget.orderDetailData.odtCode,
+    };
+    Map<String, dynamic> requestData = {
+      'type': memberType,
+      'mt_idx': mtIdx,
+      'temp_mt_id': appToken,
+      'odt_code': widget.orderDetailData.odtCode,
+    };
     final orderDetailInfoResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getOrderDetail(requestData1);
     final exchangeCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getCategory(requestData2);
     final returnCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getCategory(requestData3);
-    final exchangeDeliveryCostCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getExchangeDeliveryCostCategory();
-
+    final exchangeDeliveryCostCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getExchangeDeliveryCostCategory(requestData4);
+    final exchangeInfoResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getOrderExchangeReturnInfo(requestData);
     if (orderDetailInfoResponseDTO != null) {
       if (orderDetailInfoResponseDTO.result == true) {
         orderDetailInfoData = orderDetailInfoResponseDTO.data;
@@ -106,6 +117,14 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
     if (exchangeDeliveryCostCategoryResponseDTO != null) {
       if (exchangeDeliveryCostCategoryResponseDTO.result == true) {
         exchangeDeliveryCostCategory = exchangeDeliveryCostCategoryResponseDTO.list ?? [];
+      }
+    }
+    if (exchangeInfoResponseDTO != null) {
+      if (exchangeInfoResponseDTO.result == true) {
+        returnInfoData = exchangeInfoResponseDTO.data;
+      } else {
+        if (!mounted) return;
+        Utils.getInstance().showSnackBar(context, exchangeInfoResponseDTO.message ?? "");
       }
     }
     setState(() {});
@@ -329,6 +348,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
           orderDetailInfoData: orderDetailInfoData,
           orderDetailData: widget.orderDetailData,
           returnCategory: returnCategory,
+          returnInfoData: returnInfoData,
           onDataCollected: (String collectedReason,
               int collectedReasonIdx,
               String collectedDetails,

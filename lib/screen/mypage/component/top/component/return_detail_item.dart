@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
+import 'package:BliU/data/return_info_data.dart';
 import 'package:BliU/screen/mypage/component/top/component/exchange_return_info.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,8 +13,9 @@ import 'package:image_picker/image_picker.dart';
 
 class ReturnItem extends StatefulWidget {
   final OrderDetailInfoData? orderDetailInfoData;
-  final OrderDetailData? orderDetailData;
+  final OrderDetailData orderDetailData;
   final List<CategoryData> returnCategory;
+  final ReturnInfoData? returnInfoData;
   final int userType;
   final Function(
       String reason,
@@ -24,6 +26,7 @@ class ReturnItem extends StatefulWidget {
       List<File> images) onDataCollected;
 
   const ReturnItem({
+    required this.returnInfoData,
     required this.orderDetailInfoData,
     required this.orderDetailData,
     required this.returnCategory,
@@ -474,10 +477,7 @@ class ReturnItemState extends State<ReturnItem> {
                       },
                     ),
                   ),
-                // TODO 교환/반품 요청 정보
-                // ExchangeReturnInfo(
-                //   userType: widget.userType,
-                // ),
+                ExchangeReturnInfo(userType: widget.userType,orderDetailData: widget.orderDetailData, returnInfoData: widget.returnInfoData ),
               ],
             ),
           ),

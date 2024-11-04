@@ -132,7 +132,6 @@ class ExchangeReturnInfo extends StatelessWidget {
               ),
             ),
           ),
-          //TODO 차후 변경 필요
           child: _buildInfoRow('환불방법', returnInfoData?.octReturnType ?? returnInfoData?.ortReturnType ?? "", context),
         ),
       ],

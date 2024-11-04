@@ -1,3 +1,4 @@
+import 'package:BliU/data/change_order_detail_data.dart';
 import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_item_button.dart';
@@ -8,8 +9,9 @@ import 'package:flutter/material.dart';
 class OrderItem extends StatelessWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
+  final ChangeOrderDetailData? changeOrderDetailData;
 
-  const OrderItem({super.key, required this.orderData, required this.orderDetailData});
+  const OrderItem({super.key, required this.orderData, required this.orderDetailData, this.changeOrderDetailData});
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +20,29 @@ class OrderItem extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.only(top: 10),
-          child: Text(
-            orderDetailData.ctStatusTxt ?? "",
-            style: TextStyle(
-              fontFamily: 'Pretendard',
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-              fontSize: Responsive.getFont(context, 15),
-            ),
+          child: Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(right: 7),
+                child: Text(
+                  orderDetailData.ctStatusTxt ?? "",
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                    fontSize: Responsive.getFont(context, 15),
+                  ),
+                ),
+              ),
+              Text(
+                changeOrderDetailData?.octCancelMemo2 ?? changeOrderDetailData?.ortReturnMemo2 ?? "",
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  color: Colors.black,
+                  fontSize: Responsive.getFont(context, 15),
+                ),
+              ),
+            ],
           ),
         ),
         // 상품 정보
