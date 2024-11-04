@@ -1,5 +1,5 @@
-import 'package:BliU/screen/main/page_screen/category/view_model/category_view_model.dart';
 import 'package:BliU/screen/main/main_screen.dart';
+import 'package:BliU/screen/main/page_screen/category/view_model/category_view_model.dart';
 import 'package:BliU/screen/product_list/product_list_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';

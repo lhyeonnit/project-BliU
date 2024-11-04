@@ -1,7 +1,7 @@
 import 'package:BliU/data/notice_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/notice_detail/notice_detail_screen.dart';
 import 'package:BliU/screen/notice/view_model/notice_list_view_model.dart';
+import 'package:BliU/screen/notice_detail/notice_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -25,7 +25,7 @@ class OrderDetailInfoResponseDTO {
     return {
       'result': result,
       'message': message,
-      'data': data?.toJson(),
+      'data': data.toJson(),
     };
   }
 }

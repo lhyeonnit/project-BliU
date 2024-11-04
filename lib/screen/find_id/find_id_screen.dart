@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:BliU/screen/modal_dialog/message_dialog.dart';
-import 'package:BliU/screen/find_id_complete/find_id_complete_screen.dart';
 import 'package:BliU/screen/find_id/view_model/find_id_view_model.dart';
+import 'package:BliU/screen/find_id_complete/find_id_complete_screen.dart';
+import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';

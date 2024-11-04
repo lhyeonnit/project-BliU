@@ -2,8 +2,8 @@
 
 import 'dart:async';
 
-import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/screen/find_password/view_model/find_password_view_model.dart';
+import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';

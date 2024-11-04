@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:BliU/data/product_data.dart';
+import 'package:BliU/screen/product_list/item/product_list_card.dart';
 import 'package:BliU/screen/smart_lens/smart_lens_screen.dart';
 import 'package:BliU/screen/smart_lens/view_model/smart_lens_view_model.dart';
-import 'package:BliU/screen/product_list/item/product_list_card.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:dio/dio.dart';

@@ -1,7 +1,7 @@
 import 'package:BliU/data/qna_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/inquiry_product_detail.dart';
 import 'package:BliU/screen/my_inquiry/view_model/my_inquiry_product_view_model.dart';
+import 'package:BliU/screen/mypage/component/bottom/component/inquiry_product_detail.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';

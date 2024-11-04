@@ -1,8 +1,8 @@
 import 'package:BliU/data/change_order_detail_info_data.dart';
-import 'package:BliU/data/return_info_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_delivery_data.dart';
 import 'package:BliU/data/order_detail_info_order_data.dart';
+import 'package:BliU/data/return_info_data.dart';
 
 class ChangeOrderDetailData {
   final int? cancelIdx;

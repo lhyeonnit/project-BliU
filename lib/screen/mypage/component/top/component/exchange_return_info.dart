@@ -1,6 +1,4 @@
-import 'package:BliU/data/change_order_detail_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
-import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/data/return_info_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
