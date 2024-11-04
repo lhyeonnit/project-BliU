@@ -135,12 +135,12 @@ class SmartLensScreenState extends State<SmartLensScreen> {
                   Container(
                     margin: const EdgeInsets.only(bottom: 20),
                     child: _buildSmartLensInfo(
-                        "assets/images/home/그룹 37779.png",
+                        "assets/images/home/smart_lens2.png",
                         '이미지 검색 기능',
                         '사용자가 사진을 찍거나 이미지를 업로드하면, \n해당 이미지와 유사한 패션 아이템을 찾아줍니다.'),
                   ),
                   _buildSmartLensInfo(
-                      "assets/images/home/그룹 37234.png",
+                      "assets/images/home/smart_lens1.png",
                       '인공지능 기반 추천',
                       '인공지능(AI)을 활용해 사용자의 취향을 분석하고, \n관련된 패션 아이템을 추천')
                 ],
