@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:BliU/data/my_page_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
+import 'package:BliU/screen/main/main_screen.dart';
 import 'package:BliU/screen/my_info_delete/my_info_delete_screen.dart';
 import 'package:BliU/screen/main/page_screen/my/my_screen.dart';
 import 'package:BliU/screen/my_info_edit/view_model/my_info_edit_view_model.dart';
@@ -1237,9 +1238,7 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       Utils.getInstance().showSnackBar(context, defaultResponseDTO.message.toString());
     }
     if(!mounted) return;
-    Navigator.pushReplacement(
-      context, MaterialPageRoute(builder: (context) => const MyScreen()),
-    );
+    Navigator.pop(context);
   }
   void _editMyName() async {
     final pref = await SharedPreferencesManager.getInstance();
