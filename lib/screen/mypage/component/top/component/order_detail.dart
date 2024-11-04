@@ -178,7 +178,8 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
                         style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontSize: Responsive.getFont(context, 14),
-                            color: Colors.black),
+                            color: Colors.black
+                        ),
                       ),
                     ],
                   ),
@@ -186,6 +187,99 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
                 Visibility(
                   visible: type == "-",
                   child: const SizedBox(height: 20),
+                ),
+                Visibility(
+                  visible: type != "-",
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 20),
+                        height: 10,
+                        width: double.infinity,
+                        color: const Color(0xFFF5F9F9),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("요청일",
+                              style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black
+                              ),
+                            ),
+                            Text(changeOrderDetailData?.info?.octWdate ?? '',
+                              style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.black
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.only(top: 10, bottom: 4),
+                        child: Text(changeOrderDetailData?.info?.octCancelTxt ?? changeOrderDetailData?.info?.ortReturnTxt ?? "",
+                          style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.black
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(changeOrderDetailData?.info?.octCancelMemo1 ?? changeOrderDetailData?.info?.ortReturnMemo1 ?? '',
+                          style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.black
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: changeOrderDetailData?.returnIdx != null,
+                        child: Column(
+                          children: [
+                            Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 16),
+                                padding: const EdgeInsets.only(top: 10),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(6.0),
+                                  child: AspectRatio(
+                                      aspectRatio: 1/1,
+                                      child: Image.network(changeOrderDetailData?.info?.ortImg ?? '')),
+                                ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(changeOrderDetailData?.info?.ortReturnBankInfo ?? '',
+                                  style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: Colors.black
+                                  ),
+                                ),
+                                Text('환불 받을 계좌',
+                                  style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: Colors.black
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Visibility(
                   visible: type != "-",
