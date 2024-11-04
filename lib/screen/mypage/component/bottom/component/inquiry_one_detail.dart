@@ -297,7 +297,7 @@ class InquiryOneDetail extends ConsumerWidget {
     if (!context.mounted) return;
 
     if (defaultResponseDTO.result == true) {
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     }
     Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
   }

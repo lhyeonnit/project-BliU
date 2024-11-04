@@ -105,7 +105,7 @@ class MyInquiryOneState extends ConsumerState<MyInquiryOne> {
                               ),
                             ),
                             onTap: () async {
-                              final qtIdx = qnaData.qtIdx;
+                              int? qtIdx = qnaData.qtIdx;
                               if (qtIdx != null) {
                                 final result = await Navigator.push(
                                   context,
