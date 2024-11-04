@@ -84,6 +84,7 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
   }
 
   void _tabChangeCallBack() {
+    print("_tabChangeCallBack");
     _hasNextPage = true;
     _isLoadMoreRunning = false;
 
@@ -270,7 +271,9 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
               setState(() {
                 _selectedCategory = category;
                 _categories = _selectedCategory.subList ?? [];
+                _tabController.removeListener(_tabChangeCallBack);
                 _tabController = TabController(length: _categories.length, vsync: this);
+                _tabController.addListener(_tabChangeCallBack);
                 _getList();
               });
             },
