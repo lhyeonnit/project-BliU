@@ -142,7 +142,7 @@ class SmartLensPhotoCropState extends ConsumerState<SmartLensPhotoCrop> {
               visible: _isLoading, // 로딩 중일 때만 표시
               child: Center(
                 child: Image.asset(
-                  'assets/images/스마트렌즈-로딩.gif',
+                  'assets/images/smart_lens_loading.gif',
                   height: 100,
                   width: 100,
                 ),

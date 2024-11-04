@@ -104,7 +104,7 @@ class RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
           children: [
             Positioned.fill(
               child: Image.asset(
-                'assets/images/마스크 그룹 14.png',
+                'assets/images/onboarding.png',
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: double.infinity,

@@ -209,7 +209,7 @@ class CategoryScreenState extends ConsumerState<CategoryScreen> {
                                     ),
                                   ),
                                   SvgPicture.asset(
-                                    'assets/images/category/그룹 37778.svg',
+                                    'assets/images/category/ic_select_product.svg',
                                     width: 26,
                                     height: 26,
                                   ),
