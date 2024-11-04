@@ -143,6 +143,7 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
                       return OrderItem(
                         orderData: widget.orderData,
                         orderDetailData: orderDetailData,
+                        changeOrderDetailData: changeOrderDetailData,
                       );
                     }).toList(),
                   ),
