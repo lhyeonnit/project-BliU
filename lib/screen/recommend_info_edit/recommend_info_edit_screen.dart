@@ -672,10 +672,7 @@ class RecommendInfoEditScreenState extends ConsumerState<RecommendInfoEditScreen
         pref.login(memberInfo);
 
         if(!mounted) return;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MyScreen()),
-        );
+        Navigator.pop(context);
       } else {
         if(!mounted) return;
         Utils.getInstance().showSnackBar(context, "회원 정보를 불러오지 못했습니다.");
