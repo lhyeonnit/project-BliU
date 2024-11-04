@@ -27,30 +27,15 @@ class CancelScreen extends ConsumerStatefulWidget {
 
 class CancelScreenState extends ConsumerState<CancelScreen> {
   OrderDetailInfoData? orderDetailInfoData;
-
+  final _addItemController = ExpansionTileController();
   final ScrollController _scrollController = ScrollController();
-  OverlayEntry? _overlayEntry;
-  String _dropdownText = '취소사유 선택';
+  String _selectedTitle = "취소사유 선택";
   int _dropdownValue = 0;
   String _detailedReason = '';
-  final LayerLink _layerLink = LayerLink();
   List<CategoryData> _cancelCategory = [];
   int? userType;
   ReturnInfoData? returnInfoData;
 
-  // 드롭다운 생성.
-  void _createOverlay() {
-    if (_overlayEntry == null) {
-      _overlayEntry = _customDropdown();
-      Overlay.of(context).insert(_overlayEntry!);
-    }
-  }
-
-  // 드롭다운 해제.
-  void _removeOverlay() {
-    _overlayEntry?.remove();
-    _overlayEntry = null;
-  }
 
   @override
   void initState() {
@@ -60,11 +45,6 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
     });
   }
 
-  @override
-  void dispose() {
-    _removeOverlay();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,44 +103,57 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
                   orderData: widget.orderData,
                   orderDetailData: widget.orderDetailData,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    if (_overlayEntry == null) {
-                      _createOverlay();
-                    } else {
-                      _removeOverlay();
-                    }
-                  },
-                  child: Center(
-                    child: CompositedTransformTarget(
-                      link: _layerLink,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 16),
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color(0xFFE1E1E1),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                      disabledColor: Colors.transparent,
+                      dividerColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      listTileTheme: ListTileTheme.of(context).copyWith(
+                        dense: true,
+                        minVerticalPadding: 14,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      ),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.all(Radius.circular(6)),
+                        border: Border.all(color: const Color(0xFFE1E1E1)),
+                      ),
+                      child: ExpansionTile(
+                        controller: _addItemController,
+                        title: Text(
+                          _selectedTitle,
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            height: 1.2,
                           ),
-                          borderRadius: BorderRadius.circular(6),
                         ),
-                        child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                          children: [
-                            // 선택값.
-                            Text(
-                              _dropdownText,
+                        iconColor: Colors.black,
+                        collapsedIconColor: Colors.black,
+                        children: _cancelCategory.map((cancelCategory) {
+                          return ListTile(
+                            title: Text(
+                              cancelCategory.ctName ?? "",
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
-                                color: Colors.black,
                                 height: 1.2,
                               ),
                             ),
-                            // 아이콘.
-                            SvgPicture.asset('assets/images/product/ic_select.svg'),
-                          ],
-                        ),
+                            onTap: () {
+                              setState(() {
+                                // 선택한 항목을 _selectedTitle에 저장하고 ExpansionTile을 닫음
+                                _selectedTitle = cancelCategory.ctName ?? "취소사유 선택";
+                                _addItemController.collapse();
+                                _dropdownValue = cancelCategory.ctIdx ?? 0;
+                              });
+                            },
+                          );
+                        }).toList(),
                       ),
                     ),
                   ),
@@ -365,59 +358,5 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
       Navigator.pop(context);
     }
     Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
-  }
-
-  OverlayEntry _customDropdown() {
-    return OverlayEntry(
-      maintainState: true,
-      builder: (context) => Positioned(
-        width: MediaQuery.of(context).size.width * 0.9, // 드롭다운 너비 설정
-        child: CompositedTransformFollower(
-          link: _layerLink,
-          showWhenUnlinked: false,
-          offset: const Offset(0, 50), // 드롭다운이 열리는 위치 설정
-          child: Material(
-            color: Colors.white,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFFE1E1E1)),
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: ListView.builder(
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                shrinkWrap: true,
-                itemCount: _cancelCategory.length,
-                itemBuilder: (context, index) {
-                  return CupertinoButton(
-                    pressedOpacity: 1,
-                    minSize: 0,
-                    onPressed: () {
-                      setState(() {
-                        _dropdownText = _cancelCategory[index].ctName ?? "";
-                        _dropdownValue = _cancelCategory[index].ctIdx ?? 0;
-                      });
-                      _removeOverlay();
-                    },
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        _cancelCategory[index].ctName ?? "",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Colors.black,
-                          height: 1.2,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }
