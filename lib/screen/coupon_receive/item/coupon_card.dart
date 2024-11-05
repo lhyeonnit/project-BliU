@@ -3,7 +3,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CouponCard extends StatefulWidget {
+class CouponItem extends StatefulWidget {
   final String discount;
   final String title;
   final String expiryDate;
@@ -12,7 +12,7 @@ class CouponCard extends StatefulWidget {
   final bool isDownload;
   final VoidCallback onDownload;
 
-  const CouponCard({
+  const CouponItem({
     super.key,
     required this.discount,
     required this.title,
@@ -24,10 +24,10 @@ class CouponCard extends StatefulWidget {
   });
 
   @override
-  State<CouponCard> createState() => CouponCardState();
+  State<CouponItem> createState() => CouponItemState();
 }
 
-class CouponCardState extends State<CouponCard> {
+class CouponItemState extends State<CouponItem> {
   @override
   Widget build(BuildContext context) {
     // 부모로부터 전달된 `isDownloaded` 상태 반영

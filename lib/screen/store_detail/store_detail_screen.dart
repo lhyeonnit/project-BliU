@@ -2,8 +2,8 @@ import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/store_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/product_list/item/product_list_card.dart';
-import 'package:BliU/screen/store_detail/child_view/store_info.dart';
+import 'package:BliU/screen/product_list/item/product_list_item.dart';
+import 'package:BliU/screen/store_detail/child_widget/store_info_child_widget.dart';
 import 'package:BliU/screen/store_detail/view_model/store_product_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -199,7 +199,7 @@ class StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Ticke
                 headerSliverBuilder: (context, innerBoxIsScrolled) {
                   return [
                     SliverToBoxAdapter(
-                      child: StoreInfoPage(storeData: storeData),
+                      child: StoreInfoChildWidget(storeData: storeData),
                     ),
                     SliverToBoxAdapter(
                       child: Column(
@@ -285,7 +285,7 @@ class StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Ticke
       itemBuilder: (context, index) {
         final productData = _productList[index];
 
-        return ProductListCard(productData: productData);
+        return ProductListItem(productData: productData);
       },
     );
   }

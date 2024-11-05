@@ -1,5 +1,5 @@
-import 'package:BliU/screen/my_inquiry/child_view/my_inquiry_one.dart';
-import 'package:BliU/screen/my_inquiry/child_view/my_inquiry_product.dart';
+import 'package:BliU/screen/my_inquiry/child_widget/my_inquiry_one_child_widget.dart';
+import 'package:BliU/screen/my_inquiry/child_widget/my_inquiry_product_child_widget.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -101,8 +101,8 @@ class MyInquiryScreenState extends State<MyInquiryScreen> with SingleTickerProvi
         child: TabBarView(
           controller: _tabController,
           children: const [
-            MyInquiryProduct(),
-            MyInquiryOne(),
+            MyInquiryProductChildWidget(),
+            MyInquiryOneChildWidget(),
           ],
         ),
       ),

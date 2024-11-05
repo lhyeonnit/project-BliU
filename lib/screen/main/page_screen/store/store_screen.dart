@@ -1,5 +1,5 @@
-import 'package:BliU/screen/main/page_screen/store/child_view/store_favorite_page.dart';
-import 'package:BliU/screen/main/page_screen/store/child_view/store_ranking_page.dart';
+import 'package:BliU/screen/main/page_screen/store/child_widget/store_favorite_child_widget.dart';
+import 'package:BliU/screen/main/page_screen/store/child_widget/store_ranking_child_widget.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
@@ -96,8 +96,8 @@ class StoreScreenState extends State<StoreScreen>
         child: TabBarView(
           controller: _tabController,
           children: const [
-            StoreRakingPage(),
-            StoreFavoritePage(),
+            StoreRankingChildWidget(),
+            StoreFavoriteChildWidget(),
           ],
         ),
       ),

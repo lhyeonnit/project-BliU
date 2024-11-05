@@ -7,7 +7,7 @@ import 'package:BliU/dto/search_response_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/product_detail/product_detail_screen.dart';
-import 'package:BliU/screen/product_list/item/product_list_card.dart';
+import 'package:BliU/screen/product_list/item/product_list_item.dart';
 import 'package:BliU/screen/search/item/search_recommend_item.dart';
 import 'package:BliU/screen/search/view_model/search_view_model.dart';
 import 'package:BliU/screen/smart_lens/smart_lens_screen.dart';
@@ -840,7 +840,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
               itemCount: _productList.length,
               itemBuilder: (context, index) {
                 final productData = _productList[index];
-                return ProductListCard(productData: productData);
+                return ProductListItem(productData: productData);
               },
             ),
           ],

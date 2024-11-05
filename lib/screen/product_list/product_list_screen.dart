@@ -9,7 +9,7 @@ import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/modal_dialog/product_category_bottom.dart';
 import 'package:BliU/screen/modal_dialog/product_filter_bottom.dart';
 import 'package:BliU/screen/modal_dialog/product_sort_bottom.dart';
-import 'package:BliU/screen/product_list/item/product_list_card.dart';
+import 'package:BliU/screen/product_list/item/product_list_item.dart';
 import 'package:BliU/screen/product_list/view_model/product_list_view_model.dart';
 import 'package:BliU/screen/search/search_screen.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -644,7 +644,7 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
                   ),
                   itemCount: _productList.length, // 실제 상품 수로 변경
                   itemBuilder: (context, index) {
-                    return ProductListCard(
+                    return ProductListItem(
                       productData: _productList[index],
                     );
                   },

@@ -10,7 +10,7 @@ import 'package:BliU/screen/coupon_receive/coupon_receive_screen.dart';
 import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/screen/modal_dialog/product_order_bottom_option.dart';
 import 'package:BliU/screen/product_detail/view_model/product_detail_view_model.dart';
-import 'package:BliU/screen/product_list/item/product_list_card.dart';
+import 'package:BliU/screen/product_list/item/product_list_item.dart';
 import 'package:BliU/screen/product_review_detail/product_review_detail_screen.dart';
 import 'package:BliU/screen/report/report_screen.dart';
 import 'package:BliU/screen/search/search_screen.dart';
@@ -937,7 +937,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 padding: const EdgeInsets.only(right: 12),
                 child: SizedBox(
                   width: 160, // 가로 너비를 160으로 고정
-                  child: ProductListCard(productData: productData),
+                  child: ProductListItem(productData: productData),
                 ),
               );
             },

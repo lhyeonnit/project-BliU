@@ -1,5 +1,5 @@
-import 'package:BliU/screen/notice/child_view/event_list.dart';
-import 'package:BliU/screen/notice/child_view/notice_list.dart';
+import 'package:BliU/screen/notice/child_widget/event_list_child_widget.dart';
+import 'package:BliU/screen/notice/child_widget/notice_list_child_widget.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -102,8 +102,8 @@ class NoticeScreenState extends State<NoticeScreen> with SingleTickerProviderSta
         child: TabBarView(
           controller: _tabController,
           children: const [
-            NoticeList(),
-            EventList(), // 이벤트 탭 내용은 필요에 따라 채워 넣으세요.
+            NoticeListChildWidget(),
+            EventListChildWidget(), // 이벤트 탭 내용은 필요에 따라 채워 넣으세요.
           ],
         ),
       ),

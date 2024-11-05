@@ -3,14 +3,14 @@ import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/cart/cart_screen.dart';
-import 'package:BliU/screen/main/page_screen/home/child_view/home_body_ai.dart';
-import 'package:BliU/screen/main/page_screen/home/child_view/home_body_category.dart';
-import 'package:BliU/screen/main/page_screen/home/child_view/home_body_exhibition.dart';
-import 'package:BliU/screen/main/page_screen/home/child_view/home_footer.dart';
-import 'package:BliU/screen/main/page_screen/home/child_view/home_header.dart';
+import 'package:BliU/screen/main/page_screen/home/child_widget/home_body_ai_child_widget.dart';
+import 'package:BliU/screen/main/page_screen/home/child_widget/home_body_category_child_widget.dart';
+import 'package:BliU/screen/main/page_screen/home/child_widget/home_body_exhibition_child_widget.dart';
+import 'package:BliU/screen/main/page_screen/home/child_widget/home_footer_child_widget.dart';
+import 'package:BliU/screen/main/page_screen/home/child_widget/home_header_child_widget.dart';
 import 'package:BliU/screen/main/page_screen/home/view_model/home_view_model.dart';
 import 'package:BliU/screen/modal_dialog/store_age_group_selection.dart';
-import 'package:BliU/screen/product_list/item/product_list_card.dart';
+import 'package:BliU/screen/product_list/item/product_list_item.dart';
 import 'package:BliU/screen/search/search_screen.dart';
 import 'package:BliU/screen/smart_lens/smart_lens_screen.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -256,7 +256,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                           height: Responsive.getHeight(context, 40),
                         ),
                         flexibleSpace: const FlexibleSpaceBar(
-                          background: HomeHeader(),
+                          background: HomeHeaderChildWidget(),
                         ),
                         actions: [
                           Container(
@@ -352,13 +352,13 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                       SliverList(
                         delegate: SliverChildListDelegate(
                           [
-                            HomeBodyCategory(categories: _categories,),
-                            const HomeBodyAi(),
+                            HomeBodyCategoryChildWidget(categories: _categories,),
+                            const HomeBodyAiChildWidget(),
                             const Padding(
                               padding: EdgeInsets.symmetric(vertical: 30.0),
                               child: SizedBox(
                                 height: 451, // 고정된 높이
-                                child: HomeBodyExhibition(),
+                                child: HomeBodyExhibitionChildWidget(),
                               ),
                             ),
                             Container(
@@ -464,14 +464,14 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                       itemCount: _productList.length,
                                       itemBuilder: (context, index) {
                                         final productData = _productList[index];
-                                        return ProductListCard(productData: productData);
+                                        return ProductListItem(productData: productData);
                                       },
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            const HomeFooter(),
+                            const HomeFooterChildWidget(),
                           ],
                         ),
                       ),

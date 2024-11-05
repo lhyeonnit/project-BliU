@@ -4,9 +4,9 @@ import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/data/return_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/cancel/child_view/cancel_item.dart';
+import 'package:BliU/screen/cancel/child_widget/cancel_child_widget.dart';
 import 'package:BliU/screen/cancel/view_model/cancel_view_model.dart';
-import 'package:BliU/screen/exchange_return/child_view/exchange_return_info.dart';
+import 'package:BliU/screen/exchange_return/child_widget/exchange_return_info_child_widget.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -98,7 +98,7 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
             ListView(
               controller: _scrollController,
               children: [
-                CancelItem(
+                CancelChildWidget(
                   orderData: widget.orderData,
                   orderDetailData: widget.orderDetailData,
                 ),
@@ -208,7 +208,7 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(bottom: 110),
-                  child: ExchangeReturnInfo(
+                  child: ExchangeReturnInfoChildWidget(
                     returnInfoData: returnInfoData,
                     orderDetailData: widget.orderDetailData,
                     userType: userType ?? 0,

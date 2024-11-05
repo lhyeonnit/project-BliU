@@ -3,8 +3,8 @@ import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/exchange_return/child_view/exchange_return_info.dart';
-import 'package:BliU/screen/order_detail/child_view/order_detail_item.dart';
+import 'package:BliU/screen/exchange_return/child_widget/exchange_return_info_child_widget.dart';
+import 'package:BliU/screen/order_detail/child_widget/order_detail_child_widget.dart';
 import 'package:BliU/screen/order_detail/view_model/order_detail_view_model.dart';
 import 'package:BliU/screen/order_list/item/order_item.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -175,9 +175,9 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                       Text(
                         "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원",
                         style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Colors.black
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: Colors.black,
                         ),
                       ),
                     ],
@@ -205,16 +205,16 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                           children: [
                             Text("요청일",
                               style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: Colors.black
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: Colors.black,
                               ),
                             ),
                             Text(changeOrderDetailData?.info?.octWdate ?? '',
                               style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: Colors.black
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: Colors.black,
                               ),
                             ),
                           ],
@@ -225,9 +225,9 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                         padding: const EdgeInsets.only(top: 10, bottom: 4),
                         child: Text(changeOrderDetailData?.info?.octCancelTxt ?? changeOrderDetailData?.info?.ortReturnTxt ?? "",
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.black
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -235,9 +235,9 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(changeOrderDetailData?.info?.octCancelMemo1 ?? changeOrderDetailData?.info?.ortReturnMemo1 ?? '',
                           style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.black
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -246,30 +246,31 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                         child: Column(
                           children: [
                             Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 16),
-                                padding: const EdgeInsets.only(top: 10),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(6.0),
-                                  child: AspectRatio(
-                                      aspectRatio: 1/1,
-                                      child: Image.network(changeOrderDetailData?.info?.ortImg ?? '')),
+                              margin: const EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.only(top: 10),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(6.0),
+                                child: AspectRatio(
+                                  aspectRatio: 1/1,
+                                  child: Image.network(changeOrderDetailData?.info?.ortImg ?? ''),
                                 ),
+                              ),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(changeOrderDetailData?.info?.ortReturnBankInfo ?? '',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: Colors.black
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: Colors.black,
                                   ),
                                 ),
                                 Text('환불 받을 계좌',
                                   style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: Colors.black
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: Colors.black,
                                   ),
                                 ),
                               ],
@@ -282,13 +283,13 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                 ),
                 Visibility(
                   visible: type != "-",
-                  child: ExchangeReturnInfo(
+                  child: ExchangeReturnInfoChildWidget(
                     userType: userType,
                     returnInfoData: changeOrderDetailData?.returnInfoData,
                     orderDetailData: widget.detailList,
                   ),
                 ),
-                OrderDetailItem(orderDetailInfoData: orderDetailInfoData, userType: userType ?? 0,),
+                OrderDetailChildWidget(orderDetailInfoData: orderDetailInfoData, userType: userType ?? 0,),
               ],
             ),
           ),

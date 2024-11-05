@@ -1,6 +1,6 @@
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/main/page_screen/home/view_model/home_body_ai_view_model.dart';
-import 'package:BliU/screen/product_list/item/product_list_card.dart';
+import 'package:BliU/screen/product_list/item/product_list_item.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +55,7 @@ class SearchRecommendItemState extends ConsumerState<SearchRecommendItem> {
                     margin: EdgeInsets.only(left: index == 0 ? 16 : 0),
                     padding: const EdgeInsets.only(right: 12),
                     width: 160,
-                    child: ProductListCard(productData: productData, bottomVisible: false),
+                    child: ProductListItem(productData: productData, bottomVisible: false),
                   );
                 },
               ),

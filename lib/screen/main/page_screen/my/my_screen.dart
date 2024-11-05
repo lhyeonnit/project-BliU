@@ -4,7 +4,7 @@ import 'package:BliU/screen/alarm/alarm_screen.dart';
 import 'package:BliU/screen/consumer_center/consumer_center_screen.dart';
 import 'package:BliU/screen/faq/faq_screen.dart';
 import 'package:BliU/screen/main/main_screen.dart';
-import 'package:BliU/screen/main/page_screen/my/child_view/non_top_screen.dart';
+import 'package:BliU/screen/main/page_screen/my/child_widget/non_top_child_widget.dart';
 import 'package:BliU/screen/main/page_screen/my/view_model/my_view_model.dart';
 import 'package:BliU/screen/my_coupon/my_coupon_screen.dart';
 import 'package:BliU/screen/my_info_edit/my_info_edit_screen.dart';
@@ -318,7 +318,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
             ),
             Visibility(
               visible: userId.isEmpty,
-              child: const NonTopScreen(),
+              child: const NonTopChildWidget(),
             ),
             Container(
               margin: const EdgeInsets.only(top: 15, bottom: 30),

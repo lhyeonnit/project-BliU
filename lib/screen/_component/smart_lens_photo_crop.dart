@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:BliU/screen/smart_lens/view_model/smart_lens_view_model.dart';
-import 'package:BliU/screen/smart_lens_result/smart_lens_result.dart';
+import 'package:BliU/screen/smart_lens_result/smart_lens_result_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -174,7 +174,7 @@ class SmartLensPhotoCropState extends ConsumerState<SmartLensPhotoCrop> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => SmartLensResult(imagePath: croppedImageFile),
+                builder: (context) => SmartLensResultScreen(imagePath: croppedImageFile),
               ),
             );
           }

@@ -6,9 +6,9 @@ import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/data/return_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/cancel/child_view/cancel_item.dart';
-import 'package:BliU/screen/exchange_return/child_view/exchange_detail_item.dart';
-import 'package:BliU/screen/exchange_return/child_view/return_detail_item.dart';
+import 'package:BliU/screen/cancel/child_widget/cancel_child_widget.dart';
+import 'package:BliU/screen/exchange_return/child_widget/exchange_detail_child_widget.dart';
+import 'package:BliU/screen/exchange_return/child_widget/return_detail_child_widget.dart';
 import 'package:BliU/screen/exchange_return/view_model/exchange_return_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -228,7 +228,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // 주문 날짜 및 ID
-                  CancelItem(
+                  CancelChildWidget(
                     orderData: widget.orderData,
                     orderDetailData: widget.orderDetailData,
                   ),
@@ -321,7 +321,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
     if (selectedIndex == 0) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
-        child: ExchangeItem(
+        child: ExchangeDetailChildWidget(
           orderDetailInfoData: orderDetailInfoData,
           exchangeCategory: exchangeCategory,
           exchangeDeliveryCostCategory: exchangeDeliveryCostCategory,
@@ -343,7 +343,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
     } else {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
-        child: ReturnItem(
+        child: ReturnDetailChildWidget(
           userType: userType ?? 0,
           orderDetailInfoData: orderDetailInfoData,
           orderDetailData: widget.orderDetailData,

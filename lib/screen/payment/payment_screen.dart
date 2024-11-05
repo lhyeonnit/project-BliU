@@ -9,7 +9,7 @@ import 'package:BliU/data/pay_order_detail_data.dart';
 import 'package:BliU/dto/pay_order_result_detail_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/webview_with_daum_post_webivew.dart';
-import 'package:BliU/screen/payment/child_view/payment_order_item.dart';
+import 'package:BliU/screen/payment/child_widget/payment_order_child_widget.dart';
 import 'package:BliU/screen/payment/view_model/payment_view_model.dart';
 import 'package:BliU/screen/payment_complete/payment_complete_screen.dart';
 import 'package:BliU/screen/payment_coupon/payment_coupon_screen.dart';
@@ -693,7 +693,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                               ),
                             ),
                           ),
-                          child: PaymentOrderItem(
+                          child: PaymentOrderChildWidget(
                             cartList: widget.payOrderDetailData.list ?? [],
                           ),
                         ),

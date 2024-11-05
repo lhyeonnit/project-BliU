@@ -99,7 +99,7 @@ class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
                       detailMessage = "최대 ${Utils.getInstance().priceString(couponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
                     }
 
-                    return CouponCard(
+                    return CouponItem(
                       discount: couponDiscount,
                       title: ctName,
                       expiryDate: ctDate,
