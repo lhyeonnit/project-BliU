@@ -215,10 +215,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
           ),
         ),
         // 상태에 따라 버튼 표시
-        // OrderItemButton(
-        //   orderData: _orderData,
-        //   orderDetailData: _orderDetailData,
-        // ),
+        orderItemButton(),
       ],
     );
   }
