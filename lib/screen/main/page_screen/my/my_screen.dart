@@ -184,7 +184,7 @@ class MyScreenState extends ConsumerState<MyScreen> {
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         ClipOval(
                           child: Container(
@@ -200,7 +200,6 @@ class MyScreenState extends ConsumerState<MyScreen> {
                         Expanded(
                           child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 10),
-                            padding: const EdgeInsets.only(top: 15),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -247,7 +246,6 @@ class MyScreenState extends ConsumerState<MyScreen> {
                             }
                           },
                           child: Container(
-                            margin: const EdgeInsets.only(top: 20),
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(4),
