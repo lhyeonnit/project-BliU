@@ -46,6 +46,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   bool _agree3 = false;
 
   final ScrollController _scrollController = ScrollController();
+  bool _isPointFocused = false;
 
   late bool _isUseAddress = false;
 
@@ -82,7 +83,11 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   @override
   void initState() {
     super.initState();
-
+    _pointFocusNode.addListener(() {
+      setState(() {
+        _isPointFocused = _pointFocusNode.hasFocus;
+      });
+    });
     _pointFocusNode.addListener(_focusCheck);
 
     // 주소 셋팅
@@ -1559,6 +1564,21 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                         ),
                                       ),
                                     ],
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: _isPointFocused, // Show the message only when the ID field is focused
+                                  child: Container(
+                                    margin: const EdgeInsets.only(top: 8),
+                                    child: Text(
+                                      '1000p 이상부터 포인트 사용이 가능합니다.',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        color: const Color(0xFFF23728),
+                                        fontSize: Responsive.getFont(context, 12),
+                                        height: 1.2,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
