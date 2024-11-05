@@ -1,6 +1,6 @@
 import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
-import 'package:BliU/screen/mypage/component/top/component/order_detail.dart';
+import 'package:BliU/screen/order_detail/order_detail_screen.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_item.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +54,7 @@ class OrderListItem extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OrderDetail(orderData: orderData, detailList: detailList,),
+                    builder: (context) => OrderDetailScreen(orderData: orderData, detailList: detailList,),
                   ),
                 );
               },

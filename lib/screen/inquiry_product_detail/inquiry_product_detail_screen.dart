@@ -1,7 +1,7 @@
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/qna_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/viewmodel/inquiry_detail_view_model.dart';
+import 'package:BliU/screen/inquiry_product_detail/view_model/inquiry_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -9,10 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class InquiryProductDetail extends ConsumerWidget {
+class InquiryProductDetailScreen extends ConsumerWidget {
   final int qtIdx;
 
-  const InquiryProductDetail({super.key, required this.qtIdx});
+  const InquiryProductDetailScreen({super.key, required this.qtIdx});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

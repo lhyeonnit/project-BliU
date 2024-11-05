@@ -6,7 +6,7 @@ import 'package:BliU/data/return_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/cancel_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/exchange_return_info.dart';
-import 'package:BliU/screen/mypage/viewmodel/cancel_view_model.dart';
+import 'package:BliU/screen/cancel/view_model/cancel_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';

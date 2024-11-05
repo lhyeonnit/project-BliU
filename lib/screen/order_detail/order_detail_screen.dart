@@ -6,8 +6,7 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/exchange_return_info.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_detail_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_item.dart';
-import 'package:BliU/screen/mypage/viewmodel/change_order_detail_view_model.dart';
-import 'package:BliU/screen/mypage/viewmodel/order_detail_view_model.dart';
+import 'package:BliU/screen/order_detail/view_model/order_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -15,21 +14,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class OrderDetail extends ConsumerStatefulWidget {
+class OrderDetailScreen extends ConsumerStatefulWidget {
   final OrderData orderData;
   final OrderDetailData detailList;
 
-  const OrderDetail({
+  const OrderDetailScreen({
     super.key,
     required this.orderData,
     required this.detailList,
   });
 
   @override
-  ConsumerState<OrderDetail> createState() => OrderDetailState();
+  ConsumerState<OrderDetailScreen> createState() => OrderDetailScreenState();
 }
 
-class OrderDetailState extends ConsumerState<OrderDetail> {
+class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
   final ScrollController _scrollController = ScrollController();
   OrderDetailInfoData? orderDetailInfoData;
   ChangeOrderDetailData? changeOrderDetailData;
@@ -341,7 +340,7 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
       'odt_code': widget.detailList.odtCode,
     };
 
-    final cancelDetailResponseDTO = await ref.read(changeOrderDetailViewModelProvider.notifier).getCancelDetail(requestData);
+    final cancelDetailResponseDTO = await ref.read(orderDetailViewModelProvider.notifier).getCancelDetail(requestData);
     if (cancelDetailResponseDTO != null) {
       if (cancelDetailResponseDTO.result == true) {
         setState(() {
@@ -368,7 +367,7 @@ class OrderDetailState extends ConsumerState<OrderDetail> {
       'ct_type': type,
     };
 
-    final exchangeReturnDetailResponseDTO = await ref.read(changeOrderDetailViewModelProvider.notifier).getReturnDetail(requestData);
+    final exchangeReturnDetailResponseDTO = await ref.read(orderDetailViewModelProvider.notifier).getReturnDetail(requestData);
     if (exchangeReturnDetailResponseDTO != null) {
       if (exchangeReturnDetailResponseDTO.result == true) {
         setState(() {
