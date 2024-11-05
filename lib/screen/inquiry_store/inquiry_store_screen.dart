@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:BliU/screen/mypage/viewmodel/inquiry_write_view_model.dart';
+import 'package:BliU/screen/inquiry_store/view_model/inquiry_write_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -11,14 +11,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
-class InquiryStore extends ConsumerStatefulWidget {
-  const InquiryStore({super.key});
+class InquiryStoreScreen extends ConsumerStatefulWidget {
+  const InquiryStoreScreen({super.key});
 
   @override
-  ConsumerState<InquiryStore> createState() => InquiryStoreState();
+  ConsumerState<InquiryStoreScreen> createState() => InquiryStoreScreenState();
 }
 
-class InquiryStoreState extends ConsumerState<InquiryStore> {
+class InquiryStoreScreenState extends ConsumerState<InquiryStoreScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();

@@ -2,9 +2,9 @@ import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/screen/delivery/delivery_screen.dart';
 import 'package:BliU/screen/my_review_edit/my_review_edit_screen.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
+import 'package:BliU/screen/inquiry_service/inquiry_service_screen.dart';
 import 'package:BliU/screen/cancel/cancel_screen.dart';
-import 'package:BliU/screen/mypage/component/top/exchange_return_screen.dart';
+import 'package:BliU/screen/exchange_return/exchange_return_screen.dart';
 import 'package:BliU/screen/mypage/viewmodel/order_item_button_view_model.dart';
 import 'package:BliU/screen/review_write/review_write_screen.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -142,7 +142,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InquiryService(qnaType: '3', ptIdx: _orderDetailData.ptIdx),
+                    builder: (context) => InquiryServiceScreen(qnaType: '3', ptIdx: _orderDetailData.ptIdx),
                   ),
                 );
               },
@@ -224,7 +224,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InquiryService(qnaType: '3', ptIdx: _orderDetailData.ptIdx),
+                    builder: (context) => InquiryServiceScreen(qnaType: '3', ptIdx: _orderDetailData.ptIdx),
                   ),
                 );
               },
@@ -329,7 +329,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InquiryService(qnaType: '3', ptIdx: _orderDetailData.ptIdx,),
+                        builder: (context) => InquiryServiceScreen(qnaType: '3', ptIdx: _orderDetailData.ptIdx,),
                       ),
                     );
                   },
@@ -418,7 +418,7 @@ class OrderItemButtonState extends ConsumerState<OrderItemButton> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InquiryService(qnaType: '3', ptIdx: _orderDetailData.ptIdx,),
+                    builder: (context) => InquiryServiceScreen(qnaType: '3', ptIdx: _orderDetailData.ptIdx,),
                   ),
                 );
               },

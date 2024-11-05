@@ -9,7 +9,7 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/mypage/component/top/component/cancel_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/exchange_detail_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/return_detail_item.dart';
-import 'package:BliU/screen/mypage/viewmodel/exchange_return_view_model.dart';
+import 'package:BliU/screen/exchange_return/view_model/exchange_return_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';

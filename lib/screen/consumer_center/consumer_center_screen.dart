@@ -2,8 +2,8 @@ import 'package:BliU/screen/consumer_center/view_model/consumer_center_view_mode
 import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/screen/my_inquiry/my_inquiry_screen.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/inquiry_service.dart';
-import 'package:BliU/screen/mypage/component/bottom/component/inquiry_store.dart';
+import 'package:BliU/screen/inquiry_service/inquiry_service_screen.dart';
+import 'package:BliU/screen/inquiry_store/inquiry_store_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -126,7 +126,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const InquiryStore()
+                      builder: (context) => const InquiryStoreScreen()
                   ),
                 );
               }),
@@ -134,7 +134,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const InquiryService(qnaType: '1',)
+                      builder: (context) => const InquiryServiceScreen(qnaType: '1',)
                   ),
                 );
               },),

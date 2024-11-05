@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:BliU/screen/mypage/viewmodel/inquiry_write_view_model.dart';
+import 'package:BliU/screen/inquiry_store/view_model/inquiry_write_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -11,17 +11,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
-class InquiryService extends ConsumerStatefulWidget {
+class InquiryServiceScreen extends ConsumerStatefulWidget {
   final String? qnaType; // 1 1:1문의 3 상품
   final int? ptIdx;
 
-  const InquiryService({super.key, required this.qnaType, this.ptIdx});
+  const InquiryServiceScreen({super.key, required this.qnaType, this.ptIdx});
 
   @override
-  ConsumerState<InquiryService> createState() => InquiryServiceState();
+  ConsumerState<InquiryServiceScreen> createState() => InquiryServiceScreenState();
 }
 
-class InquiryServiceState extends ConsumerState<InquiryService> {
+class InquiryServiceScreenState extends ConsumerState<InquiryServiceScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
