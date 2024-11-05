@@ -64,9 +64,26 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
   int _userDeliveryPrice = 0;
 
+  final FocusNode _pointFocusNode = FocusNode();
+
+  void _focusCheck() {
+    if (!_pointFocusNode.hasFocus) {
+      if (_discountPoint != 0) {
+        if (_discountPoint < 1000) {
+          setState(() {
+            _pointController.text = "0";
+            _discountPoint = 0;
+          });
+        }
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+
+    _pointFocusNode.addListener(_focusCheck);
 
     // 주소 셋팅
     if (widget.payOrderDetailData.userDeliveyAdd != null) {
@@ -1481,14 +1498,13 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                     final value = int.parse(text);
                                                     final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
                                                     if (value > maxUsePoint) {
-                                                      _pointController.text =
-                                                          maxUsePoint.toString();
-                                                      _pointCheck(
-                                                          maxUsePoint.toString());
+                                                      _pointController.text = maxUsePoint.toString();
+                                                      _pointCheck(maxUsePoint.toString());
                                                     } else {
                                                       _pointCheck(text);
                                                     }
                                                   },
+                                                  focusNode: _pointFocusNode,
                                                 ),
                                               ),
                                               Container(
