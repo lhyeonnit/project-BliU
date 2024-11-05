@@ -84,7 +84,6 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
   }
 
   void _tabChangeCallBack() {
-    print("_tabChangeCallBack");
     _hasNextPage = true;
     _isLoadMoreRunning = false;
 
