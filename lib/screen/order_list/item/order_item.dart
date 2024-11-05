@@ -47,6 +47,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
+        backgroundColor: Colors.white,
         title: const Text('구매확정'),
         content: const Text('해당 주문을 구매확정 하시겠습니까?'),
         actions: <Widget>[
@@ -54,7 +55,13 @@ class OrderItemState extends ConsumerState<OrderItem> {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text('취소'),
+            child: Text('취소',
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                color: Colors.black,
+                fontSize: Responsive.getFont(context, 14),
+              ),
+            ),
           ),
           TextButton(
             onPressed: () async {
@@ -73,14 +80,20 @@ class OrderItemState extends ConsumerState<OrderItem> {
                 if (!mounted) return;
                 Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
                 if (defaultResponseDTO.result == true) {
-                  Navigator.pop(context);
                   setState(() {
                     _ctStatus = 8;
                   });
                 }
+                Navigator.pop(context);
               }
             },
-            child: const Text('확인'),
+            child: Text('확인',
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                color: Colors.black,
+                fontSize: Responsive.getFont(context, 14),
+              ),
+            ),
           )
         ],
       ),
