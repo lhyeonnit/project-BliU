@@ -5,13 +5,13 @@ import 'package:BliU/dto/review_detail_response_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OrderItemButtonModel {}
+class OrderItemModel {}
 
-class OrderItemButtonViewModel extends StateNotifier<OrderItemButtonModel?> {
+class OrderItemViewModel extends StateNotifier<OrderItemModel?> {
   final Ref ref;
   final repository = DefaultRepository();
 
-  OrderItemButtonViewModel(super.state, this.ref);
+  OrderItemViewModel(super.state, this.ref);
 
   Future<DefaultResponseDTO?> requestOrder(Map<String, dynamic> requestData) async {
     try {
@@ -55,7 +55,7 @@ class OrderItemButtonViewModel extends StateNotifier<OrderItemButtonModel?> {
 }
 
 
-final orderItemButtonViewModelProvider =
-StateNotifierProvider<OrderItemButtonViewModel, OrderItemButtonModel?>((req) {
-  return OrderItemButtonViewModel(null, req);
+final orderItemViewModelProvider =
+StateNotifierProvider<OrderItemViewModel, OrderItemModel?>((req) {
+  return OrderItemViewModel(null, req);
 });
