@@ -4,7 +4,7 @@ import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/data/return_info_data.dart';
-import 'package:BliU/screen/mypage/component/top/component/exchange_return_info.dart';
+import 'package:BliU/screen/exchange_return/child_view/exchange_return_info.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -66,8 +66,7 @@ class ReturnItemState extends State<ReturnItem> {
   // 드롭다운 생성 (취소 사유).
   void _createOverlayReason() {
     if (_overlayEntryReason == null) {
-      _overlayEntryReason =
-          _customDropdown(_returnReasons, _layerLinkReason, (int index) {
+      _overlayEntryReason = _customDropdown(_returnReasons, _layerLinkReason, (int index) {
         setState(() {
           _dropdownText = _returnReasons[index].ctName ?? "";
           _dropdownValue = _returnReasons[index].ctIdx ?? 0;
@@ -167,8 +166,7 @@ class ReturnItemState extends State<ReturnItem> {
                     child: CompositedTransformTarget(
                       link: _layerLinkReason, // 취소 사유 LayerLink
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 14),
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
                         decoration: BoxDecoration(
                           border: Border.all(color: const Color(0xFFE1E1E1)),
                           borderRadius: BorderRadius.circular(6),
@@ -196,8 +194,9 @@ class ReturnItemState extends State<ReturnItem> {
                   child: Text(
                     '! 판매자 귀책이 아닐 시 반품 비용이 발생할 수 있습니다.',
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 12)),
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 12),
+                    ),
                   ),
                 ),
                 Padding(
@@ -205,21 +204,20 @@ class ReturnItemState extends State<ReturnItem> {
                   child: TextField(
                     onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                     style: TextStyle(
-                        decorationThickness: 0,
-                        height: 1.2,
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14)
+                      decorationThickness: 0,
+                      height: 1.2,
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
                     ),
                     maxLines: 4,
                     maxLength: 500,
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 15),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '세부 내용 입력',
                       hintStyle: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: const Color(0xFF595959)
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        color: const Color(0xFF595959),
                       ),
                       enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -486,8 +484,7 @@ class ReturnItemState extends State<ReturnItem> {
     );
   }
 
-  OverlayEntry _customDropdown(
-      List<dynamic> items, LayerLink link, Function(int) onSelect) {
+  OverlayEntry _customDropdown(List<dynamic> items, LayerLink link, Function(int) onSelect) {
     return OverlayEntry(
       maintainState: true,
       builder: (context) => Positioned(
@@ -555,7 +552,6 @@ class ReturnItemState extends State<ReturnItem> {
     String returnBank = _dropdownAccount;
     String returnAccount = _returnAccount;
     List<File> images = _selectedImages; // 이미지를 리스트로 수집
-    widget.onDataCollected(
-        reason, reasonIdx, details, returnBank, returnAccount, images);
+    widget.onDataCollected(reason, reasonIdx, details, returnBank, returnAccount, images);
   }
 }

@@ -3,8 +3,8 @@ import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/mypage/component/top/component/exchange_return_info.dart';
-import 'package:BliU/screen/mypage/component/top/component/order_detail_item.dart';
+import 'package:BliU/screen/exchange_return/child_view/exchange_return_info.dart';
+import 'package:BliU/screen/order_detail/child_view/order_detail_item.dart';
 import 'package:BliU/screen/mypage/component/top/component/order_item.dart';
 import 'package:BliU/screen/order_detail/view_model/order_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -282,7 +282,11 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                 ),
                 Visibility(
                   visible: type != "-",
-                    child: ExchangeReturnInfo(userType: userType, returnInfoData: changeOrderDetailData?.returnInfoData, orderDetailData: widget.detailList,),
+                  child: ExchangeReturnInfo(
+                    userType: userType,
+                    returnInfoData: changeOrderDetailData?.returnInfoData,
+                    orderDetailData: widget.detailList,
+                  ),
                 ),
                 OrderDetailItem(orderDetailInfoData: orderDetailInfoData, userType: userType ?? 0,),
               ],
