@@ -8,6 +8,7 @@ import 'package:BliU/screen/main/page_screen/home/child_widget/home_body_categor
 import 'package:BliU/screen/main/page_screen/home/child_widget/home_body_exhibition_child_widget.dart';
 import 'package:BliU/screen/main/page_screen/home/child_widget/home_footer_child_widget.dart';
 import 'package:BliU/screen/main/page_screen/home/child_widget/home_header_child_widget.dart';
+import 'package:BliU/screen/main/page_screen/home/view_model/home_footer_view_model.dart';
 import 'package:BliU/screen/main/page_screen/home/view_model/home_view_model.dart';
 import 'package:BliU/screen/modal_dialog/store_age_group_selection.dart';
 import 'package:BliU/screen/product_list/item/product_list_item.dart';
@@ -81,6 +82,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void _afterBuild(BuildContext context) {
+    ref.read(homeFooterViewModelProvider.notifier).getFoot();
     _getCategoryList();
     _getCartCount();
     _getList();

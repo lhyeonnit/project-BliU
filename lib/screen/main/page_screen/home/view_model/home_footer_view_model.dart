@@ -5,45 +5,44 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeFooterModel {
-  final FootResponseDTO? footResponseDTO;
-
-  HomeFooterModel({
-    required this.footResponseDTO,
-  });
+  bool isExpand = true;
+  FootResponseDTO? footResponseDTO;
 }
 
-class HomeFooterViewModel extends StateNotifier<HomeFooterModel?> {
+class HomeFooterViewModel extends StateNotifier<HomeFooterModel> {
   final Ref ref;
   final repository = DefaultRepository();
 
   HomeFooterViewModel(super.state, this.ref);
 
-  Future<HomeFooterModel?> getFoot() async {
+  void getFoot() async {
+    print("getFoot");
     final response = await repository.reqGet(url: Constant.apiFootUrl);
     try {
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
           FootResponseDTO footResponseDTO = FootResponseDTO.fromJson(responseData);
-          state = HomeFooterModel(footResponseDTO: footResponseDTO);
-          return state;
+          state.footResponseDTO = footResponseDTO;
+          ref.notifyListeners();
         }
       }
-      state = HomeFooterModel(footResponseDTO: FootResponseDTO(result: false, message: "Network Or Data Error"));
-      return state;
     } catch(e) {
       // Catch and log any exceptions
       if (kDebugMode) {
         print('Error request Api: $e');
       }
-      state = HomeFooterModel(footResponseDTO: FootResponseDTO(result: false, message: e.toString()));
-      return state;
     }
+  }
+
+  void changeExpand() {
+    state.isExpand = !state.isExpand;
+    ref.notifyListeners();
   }
 }
 
 // ViewModel Provider 정의
 final homeFooterViewModelProvider =
-StateNotifierProvider<HomeFooterViewModel, HomeFooterModel?>((ref) {
-  return HomeFooterViewModel(null, ref);
+StateNotifierProvider<HomeFooterViewModel, HomeFooterModel>((ref) {
+  return HomeFooterViewModel(HomeFooterModel(), ref);
 });
