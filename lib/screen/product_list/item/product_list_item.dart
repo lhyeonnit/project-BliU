@@ -145,26 +145,43 @@ class ProductListItemState extends ConsumerState<ProductListItem> {
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
                     children: [
+                      Visibility(
+                        visible: (productData.ptDiscountPer ?? 0) > 0 ? true : false,
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 2),
+                          child: Stack(
+                            children: [
+                              // 원래 텍스트 (원래 가격)
+                              Text(
+                                '${Utils.getInstance().priceString(productData.ptSellingPrice ?? 0)}원',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: const Color(0xFFABABAB),
+                                  height: 1.2,
+                                ),
+                              ),
+                              // 커스텀 취소선
+                              Positioned(
+                                top: 7, // 텍스트 가운데쯤에 맞춰서 위치
+                                left: 0,
+                                right: 0,
+                                child: Container(
+                                  height: 1, // 선의 두께
+                                  color: const Color(0xFFABABAB), // 취소선 색상
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       Text(
-                        '${productData.ptDiscountPer ?? 0}%',
+                        "${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원",
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
-                          color: const Color(0xFFFF6192),
                           fontWeight: FontWeight.bold,
                           height: 1.2,
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 2),
-                        child: Text(
-                          "${Utils.getInstance().priceString(productData.ptPrice ?? 0)}원",
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            fontWeight: FontWeight.bold,
-                            height: 1.2,
-                          ),
                         ),
                       ),
                     ],

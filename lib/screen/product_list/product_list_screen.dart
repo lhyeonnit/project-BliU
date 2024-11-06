@@ -445,7 +445,7 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
                           ),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                            padding: const EdgeInsets.only(top: 15, bottom: 10),
+                            padding: const EdgeInsets.only(top: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -587,7 +587,7 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
       children: [
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16.0),
-          padding: const EdgeInsets.only(bottom: 20),
+          padding: const EdgeInsets.only(bottom: 20, top: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
