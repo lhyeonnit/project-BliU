@@ -46,8 +46,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   bool _agree3 = false;
 
   final ScrollController _scrollController = ScrollController();
-  bool _isPointFocused = false;
-
   late bool _isUseAddress = false;
 
   final TextEditingController _recipientNameController = TextEditingController();
@@ -83,11 +81,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   @override
   void initState() {
     super.initState();
-    _pointFocusNode.addListener(() {
-      setState(() {
-        _isPointFocused = _pointFocusNode.hasFocus;
-      });
-    });
     _pointFocusNode.addListener(_focusCheck);
 
     // 주소 셋팅
@@ -1486,6 +1479,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                   controller: _pointController,
                                                   keyboardType: TextInputType.number,
                                                   // 숫자 입력만 가능하게 설정
+                                                  enabled: _point >= 1000,
                                                   decoration: InputDecoration(
                                                     border: InputBorder.none,
                                                     // 테두리 제거
@@ -1500,13 +1494,15 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                   textAlign: TextAlign.right,
                                                   // 텍스트를 오른쪽 정렬
                                                   onChanged: (text) {
-                                                    final value = int.parse(text);
-                                                    final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
-                                                    if (value > maxUsePoint) {
-                                                      _pointController.text = maxUsePoint.toString();
-                                                      _pointCheck(maxUsePoint.toString());
-                                                    } else {
-                                                      _pointCheck(text);
+                                                    if (_point >= 1000) { // 포인트가 1000 이상일 때만 변경 처리
+                                                      final value = int.parse(text);
+                                                      final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
+                                                      if (value > maxUsePoint) {
+                                                        _pointController.text = maxUsePoint.toString();
+                                                        _pointCheck(maxUsePoint.toString());
+                                                      } else {
+                                                        _pointCheck(text);
+                                                      }
                                                     }
                                                   },
                                                   focusNode: _pointFocusNode,
@@ -1537,7 +1533,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             border: Border.all(color: const Color(0xFFDDDDDD)),
                                           ),
                                           child: GestureDetector(
-                                            onTap: () {
+                                            onTap:  _point >= 1000 ? () { // 포인트가 1000 이상일 때만 활성화
                                               final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
                                               if (_point > 0) {
                                                 if (_point > maxUsePoint) {
@@ -1548,13 +1544,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                   _pointCheck(_point.toString());
                                                 }
                                               }
-                                            },
+                                            } : null,
                                             child: Center(
                                               child: Text(
                                                 '전액사용',
                                                 style: TextStyle(
                                                   fontFamily: 'Pretendard',
                                                   fontSize: Responsive.getFont(context, 14),
+                                                  color: _point >= 1000 ? Colors.black : const Color(0xFFA4A4A4),
                                                   fontWeight: FontWeight.normal,
                                                   height: 1.2,
                                                 ),
@@ -1566,18 +1563,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     ],
                                   ),
                                 ),
-                                Visibility(
-                                  visible: _isPointFocused, // Show the message only when the ID field is focused
-                                  child: Container(
-                                    margin: const EdgeInsets.only(top: 8),
-                                    child: Text(
-                                      '1000p 이상부터 포인트 사용이 가능합니다.',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        color: const Color(0xFFF23728),
-                                        fontSize: Responsive.getFont(context, 12),
-                                        height: 1.2,
-                                      ),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 8),
+                                  child: Text(
+                                    '1000p 이상부터 포인트 사용이 가능합니다.',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 12),
+                                      height: 1.2,
                                     ),
                                   ),
                                 ),
