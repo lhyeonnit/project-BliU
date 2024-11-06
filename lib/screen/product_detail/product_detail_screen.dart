@@ -609,20 +609,23 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       children: [
                         Visibility(
                           visible: (productData?.ptDiscountPer ?? 0) > 0 ? true : false,
-                          child: Text(
-                            "${productData?.ptDiscountPer ?? 0}%",
-                            // 할인률
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 18),
-                              color: const Color(0xFFFF6192),
-                              fontWeight: FontWeight.bold,
-                              height: 1.2,
+                          child: Container(
+                            margin: const EdgeInsets.only(right: 6),
+                            child: Text(
+                              "${productData?.ptDiscountPer ?? 0}%",
+                              // 할인률
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 18),
+                                color: const Color(0xFFFF6192),
+                                fontWeight: FontWeight.bold,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.only(left: 6, right: 5),
+                          margin: const EdgeInsets.only(right: 5),
                           child: Text(
                             '${Utils.getInstance().priceString(productData?.ptPrice ?? 0)}원', // 할인된 가격
                             style: TextStyle(
