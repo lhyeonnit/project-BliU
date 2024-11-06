@@ -37,6 +37,7 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
 
         if (exhibitionList.isNotEmpty) {
           if (_timer != null) {
+            _currentPage = 0;
             _timer?.cancel();
           }
           _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
