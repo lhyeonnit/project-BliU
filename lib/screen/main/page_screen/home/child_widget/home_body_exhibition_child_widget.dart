@@ -17,18 +17,9 @@ class HomeBodyExhibitionChildWidget extends ConsumerStatefulWidget {
 
 class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitionChildWidget> {
   final PageController _pageController = PageController();
-  List<ExhibitionData> _exhibitionList = [];
 
   Timer? _timer;
   int _currentPage = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _afterBuild(context);
-    });
-  }
 
   @override
   void dispose() {
@@ -39,66 +30,62 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          //width: Responsive.getWidth(context, 380),
-          margin: const EdgeInsets.only(left: 16, right: 16),
-          height: 420,
-          child: PageView.builder(
-            controller: _pageController,
-            itemCount: _exhibitionList.length,
-            itemBuilder: (context, index) {
-              final exhibitionData = _exhibitionList[index];
-              return buildPage(exhibitionData);
-            },
-          ),
-        ),
-        const SizedBox(height: 25),
-        Center(
-          child: SmoothPageIndicator(
-            controller: _pageController,
-            count: _exhibitionList.length,
-            effect: const WormEffect(
-              dotWidth: 6.0,
-              dotHeight: 6.0,
-              activeDotColor: Colors.black,
-              dotColor: Colors.grey,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+    return Consumer(
+      builder: (context, ref, widget) {
+        final model = ref.watch(homeBodyExhibitionViewModelProvider);
+        final exhibitionList = model.exhibitionListResponseDTO?.list ?? [];
 
-  void _afterBuild(BuildContext context) {
-    _getList();
-  }
-
-  void _getList() async {
-    final exhibitionListResponseDTO = await ref.read(homeBodyExhibitionViewModelProvider.notifier).getList();
-    if (exhibitionListResponseDTO != null) {
-      if (exhibitionListResponseDTO.result == true) {
-        setState(() {
-          _exhibitionList = exhibitionListResponseDTO.list ?? [];
-        });
-
-        // 타이머를 이용한 페이지 자동 넘기기
-        _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
-          if (_currentPage < _exhibitionList.length - 1) {
-            _currentPage++;
-          } else {
-            _currentPage = 0;
+        if (exhibitionList.isNotEmpty) {
+          if (_timer != null) {
+            _timer?.cancel();
           }
+          _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+            if (_currentPage < exhibitionList.length - 1) {
+              _currentPage++;
+            } else {
+              _currentPage = 0;
+            }
 
-          _pageController.animateToPage(
-            _currentPage,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeIn,
-          );
-        });
-      }
-    }
+            _pageController.animateToPage(
+              _currentPage,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeIn,
+            );
+          });
+        }
+
+        return Column(
+          children: [
+            Container(
+              //width: Responsive.getWidth(context, 380),
+              margin: const EdgeInsets.only(left: 16, right: 16),
+              height: 420,
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: exhibitionList.length,
+                itemBuilder: (context, index) {
+                  final exhibitionData = exhibitionList[index];
+                  return buildPage(exhibitionData);
+                },
+              ),
+            ),
+            const SizedBox(height: 25),
+            Center(
+              child: SmoothPageIndicator(
+                controller: _pageController,
+                count: exhibitionList.length,
+                effect: const WormEffect(
+                  dotWidth: 6.0,
+                  dotHeight: 6.0,
+                  activeDotColor: Colors.black,
+                  dotColor: Colors.grey,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Widget buildPage(ExhibitionData exhibitionData) {

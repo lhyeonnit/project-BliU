@@ -19,7 +19,7 @@ class HomeFooterChildWidget extends ConsumerWidget {
         '주소 : ####################';
 
     final model = ref.watch(homeFooterViewModelProvider);
-    bool isExpand = model?.isExpand ?? true;
+    bool isExpand = model.isExpand;
     final footResponseDTO = model.footResponseDTO;
     if (footResponseDTO != null) {
       var data = footResponseDTO.data;
