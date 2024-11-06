@@ -5,37 +5,37 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeBodyAiModel {
+  ProductListResponseDTO? productListResponseDTO;
 }
 
-class HomeBodyAiViewModel extends StateNotifier<HomeBodyAiModel?> {
+class HomeBodyAiViewModel extends StateNotifier<HomeBodyAiModel> {
   final Ref ref;
   final repository = DefaultRepository();
 
   HomeBodyAiViewModel(super.state, this.ref);
 
-  Future<ProductListResponseDTO?> getList(Map<String, dynamic> requestData) async {
+  void getList(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiMainAiListUrl, data: requestData);
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
           ProductListResponseDTO productListResponseDTO = ProductListResponseDTO.fromJson(responseData);
-          return productListResponseDTO;
+          state.productListResponseDTO = productListResponseDTO;
+          ref.notifyListeners();
         }
       }
-      return null;
     } catch (e) {
       // Catch and log any exceptions
       if (kDebugMode) {
         print('Error fetching : $e');
       }
-      return null;
     }
   }
 }
 
 // ViewModel Provider 정의
 final homeBodyAiViewModelProvider =
-StateNotifierProvider<HomeBodyAiViewModel, HomeBodyAiModel?>((ref) {
-  return HomeBodyAiViewModel(null, ref);
+StateNotifierProvider<HomeBodyAiViewModel, HomeBodyAiModel>((ref) {
+  return HomeBodyAiViewModel(HomeBodyAiModel(), ref);
 });
