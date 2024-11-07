@@ -19,6 +19,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_plus/share_plus.dart';
@@ -876,7 +877,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   minHeight: _isExpanded ? 750 : 0,
                   maxHeight: _isExpanded ? double.infinity : 50,
                 ),
-                child: Text(content),
+                child: Html(data: content),
               ),
             ),
             // 버튼
