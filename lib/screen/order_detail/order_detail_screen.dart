@@ -248,32 +248,53 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                             Container(
                               margin: const EdgeInsets.symmetric(horizontal: 16),
                               padding: const EdgeInsets.only(top: 10),
+                              height: 100, // 세로 크기 제한
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(6.0),
-                                child: AspectRatio(
-                                  aspectRatio: 1/1,
-                                  child: Image.network('${changeOrderDetailData?.info?.ortImg ?? []}'),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: changeOrderDetailData?.info?.ortImg?.length ?? 0,
+                                  itemBuilder: (context, index) {
+                                    final imageUrl = changeOrderDetailData?.info?.ortImg?[index] ?? '';
+                                    return AspectRatio(
+                                      aspectRatio: 1 / 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(right: 8.0), // 이미지 간격 설정
+                                        child: Image.network(
+                                          imageUrl,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(changeOrderDetailData?.info?.ortReturnBankInfo ?? '',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    color: Colors.black,
-                                  ),
+                            Visibility(
+                              visible: type == "R",
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 16),
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(changeOrderDetailData?.info?.ortReturnBankInfo ?? '',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Text('환불 받을 계좌',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Text('환불 받을 계좌',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ],
                         ),
@@ -282,14 +303,19 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                   ),
                 ),
                 Visibility(
-                  visible: type != "-",
+                  visible: type != "-" && type != "X",
                   child: ExchangeReturnInfoChildWidget(
                     userType: userType,
                     returnInfoData: changeOrderDetailData?.returnInfoData,
                     orderDetailData: widget.detailList,
+
                   ),
                 ),
-                OrderDetailChildWidget(orderDetailInfoData: orderDetailInfoData, userType: userType ?? 0,),
+                Visibility(
+                  visible: type == "X",
+                  child: const SizedBox(height: 20),
+                ),
+                OrderDetailChildWidget(orderDetailInfoData: orderDetailInfoData, userType: userType ?? 0, changeOrderDetailData: changeOrderDetailData,),
               ],
             ),
           ),
@@ -378,6 +404,7 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
         setState(() {
           userType = memberType;
           changeOrderDetailData = exchangeReturnDetailResponseDTO.data;
+
         });
       } else {
         if (!mounted) return;
