@@ -1,5 +1,4 @@
 import 'package:BliU/data/category_data.dart';
-import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/cart/cart_screen.dart';
@@ -33,22 +32,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class HomeScreenState extends ConsumerState<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
-  String _cartCount = "0";
-  List<CategoryData> _categories = [];
-  List<CategoryData> _ageCategories = [];
+
   bool _isScrolled = false;
-
-  CategoryData? _selectedAgeGroup;
-  int _selectedCategoryIndex = 0;
-  final List<CategoryData> _productCategories = [
-    CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', catIdx: 0, catName: '', subList: [])
-  ];
-  List<ProductData> _productList = [];
-
-  int _page = 1;
-  bool _hasNextPage = true;
-  bool _isFirstLoadRunning = false;
-  bool _isLoadMoreRunning = false;
 
   @override
   void initState() {
@@ -65,7 +50,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
       }
 
       if (_scrollController.position.maxScrollExtent - _scrollController.offset < 100) {
-        _nextLoad();
+        ref.read(homeViewModelProvider.notifier).listNextLoad();
       }
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -82,27 +67,18 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   void _viewWillAppear(BuildContext context) {
     ref.read(homeHeaderViewModelProvider.notifier).getBanner();
     ref.read(homeBodyExhibitionViewModelProvider.notifier).getList();
+    ref.read(homeViewModelProvider.notifier).listLoad();
+
     _getAiList();
     _getCartCount();
-    _getList();
   }
 
   void _afterBuild(BuildContext context) {
     ref.read(homeFooterViewModelProvider.notifier).getFoot();
-    _getCategoryList();
-    // _getCartCount();
-    // _getList();
-  }
 
-  void _getCategoryList() async {
     Map<String, dynamic> requestData = {'category_type': '2'};
-    final categoryResponseDTO = await ref.read(homeViewModelProvider.notifier).getCategory(requestData);
-    final ageCategoryResponseDTO = await ref.read(homeViewModelProvider.notifier).getAgeCategory();
-    setState(() {
-      _categories = categoryResponseDTO?.list ?? [];
-      _ageCategories = ageCategoryResponseDTO?.list ?? [];
-      _productCategories.addAll(_categories);
-    });
+    ref.read(homeViewModelProvider.notifier).getCategory(requestData);
+    ref.read(homeViewModelProvider.notifier).getAgeCategory();
   }
 
   void _getCartCount() async {
@@ -119,8 +95,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
       'temp_mt_id': pref.getToken(),
     };
 
-    _cartCount = await ref.read(homeViewModelProvider.notifier).getCartCount(requestData) ?? "0";
-    setState(() {});
+    ref.read(homeViewModelProvider.notifier).getCartCount(requestData);
   }
 
   void _getAiList() async {
@@ -133,82 +108,12 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     ref.read(homeBodyAiViewModelProvider.notifier).getList(requestData);
   }
 
-  void _getList() async {
-    setState(() {
-      _isFirstLoadRunning = true;
-    });
-    _page = 1;
-    _hasNextPage = true;
-
-    final requestData = await _makeRequestData();
-
-    setState(() {
-      _productList = [];
-    });
-
-    final productListResponseDTO = await ref.read(homeViewModelProvider.notifier).getList(requestData);
-    _productList = productListResponseDTO?.list ?? [];
-
-    setState(() {
-      _isFirstLoadRunning = false;
-    });
-  }
-
-  void _nextLoad() async {
-    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning){
-      setState(() {
-        _isLoadMoreRunning = true;
-      });
-      _page += 1;
-
-      final requestData = await _makeRequestData();
-
-      final productListResponseDTO = await ref.read(homeViewModelProvider.notifier).getList(requestData);
-      if (productListResponseDTO != null) {
-        if (productListResponseDTO.list.isNotEmpty) {
-          setState(() {
-            _productList.addAll(productListResponseDTO.list);
-          });
-        } else {
-          setState(() {
-            _hasNextPage = false;
-          });
-        }
-      }
-
-      setState(() {
-        _isLoadMoreRunning = false;
-      });
-    }
-  }
-
-  Future<Map<String, dynamic>> _makeRequestData() async {
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    final category = _productCategories[_selectedCategoryIndex];
-
-    String categoryStr = "all";
-    if (_selectedCategoryIndex > 0) {
-      categoryStr = category.ctIdx.toString();
-    }
-
-    String ageStr = "all";
-    if (_selectedAgeGroup != null) {
-      ageStr = (_selectedAgeGroup?.catIdx ?? 0).toString();
-    }
-
-    Map<String, dynamic> requestData = {
-      'mt_idx' : mtIdx ?? "",
-      'category' : categoryStr,
-      'age' : ageStr,
-      'pg': _page
-    };
-
-    return requestData;
-  }
-
   void _showAgeGroupSelection() {
+    final viewModel = ref.read(homeViewModelProvider.notifier);
+    final model = ref.watch(homeViewModelProvider);
+    final ageCategories = model.ageCategories;
+    final selectedAgeGroup = model.selectedAgeGroup;
+
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
@@ -218,26 +123,16 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
       builder: (BuildContext context) {
         return SafeArea(
           child: StoreAgeGroupSelection(
-            ageCategories: _ageCategories,
-            selectedAgeGroup: _selectedAgeGroup,
+            ageCategories: ageCategories,
+            selectedAgeGroup: selectedAgeGroup,
             onSelectionChanged: (CategoryData? newSelection) {
-              setState(() {
-                _selectedAgeGroup = newSelection;
-              });
-              _getList();
+              viewModel.setSelectedAgeGroup(newSelection);
+              viewModel.listLoad();
             },
           ),
         );
       },
     );
-  }
-
-  String getSelectedAgeGroupText() {
-    if (_selectedAgeGroup == null) {
-      return '연령';
-    } else {
-      return _selectedAgeGroup?.catName ?? "";
-    }
   }
 
   @override
@@ -246,81 +141,54 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
       onFocusGained: () {
         _viewWillAppear(context);
       },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Stack(
-          children: [
-            Column(
+      child: Consumer(
+        builder: (context, ref, widget){
+          final viewModel = ref.read(homeViewModelProvider.notifier);
+          final model = ref.watch(homeViewModelProvider);
+          final cartCount = model.cartCount;
+          final categories = model.categories;
+          final productCategories = model.productCategories;
+          final productList = model.productList;
+
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: Stack(
               children: [
-                Expanded(
-                  child: CustomScrollView(
-                    controller: _scrollController,
-                    slivers: [
-                      SliverAppBar(
-                        scrolledUnderElevation: 0,
-                        pinned: true,
-                        automaticallyImplyLeading: false,
-                        // 기본 뒤로가기 버튼을 숨김
-                        backgroundColor: _isScrolled ? Colors.white : Colors.transparent,
-                        expandedHeight: MediaQuery.of(context).size.width * 1.4,
-                        centerTitle: false,
-                        title: SvgPicture.asset(
-                          'assets/images/home/bottom_home.svg', // SVG 파일 경로
-                          colorFilter: ColorFilter.mode(
-                            _isScrolled ? Colors.black : Colors.white,
-                            BlendMode.srcIn,
-                          ),
-                          // 색상 조건부 변경
-                          height: Responsive.getHeight(context, 40),
-                        ),
-                        flexibleSpace: const FlexibleSpaceBar(
-                          background: HomeHeaderChildWidget(),
-                        ),
-                        actions: [
-                          Container(
-                            padding: EdgeInsets.only(right: Responsive.getWidth(context, 8)),
-                            // 왼쪽 여백 추가
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  icon: SvgPicture.asset(
-                                    "assets/images/home/ic_top_sch_w.svg",
-                                    colorFilter: ColorFilter.mode(
-                                      _isScrolled ? Colors.black : Colors.white,
-                                      BlendMode.srcIn,
-                                    ),
-                                    height: Responsive.getHeight(context, 30),
-                                    width: Responsive.getWidth(context, 30),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const SearchScreen(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                IconButton(
-                                  icon: SvgPicture.asset(
-                                    _isScrolled ? "assets/images/product/ic_smart.svg" : "assets/images/home/ic_smart_w.svg",
-                                    height: Responsive.getHeight(context, 30),
-                                    width: Responsive.getWidth(context, 30),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const SmartLensScreen(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                Stack(
+                Column(
+                  children: [
+                    Expanded(
+                      child: CustomScrollView(
+                        controller: _scrollController,
+                        slivers: [
+                          SliverAppBar(
+                            scrolledUnderElevation: 0,
+                            pinned: true,
+                            automaticallyImplyLeading: false,
+                            // 기본 뒤로가기 버튼을 숨김
+                            backgroundColor: _isScrolled ? Colors.white : Colors.transparent,
+                            expandedHeight: MediaQuery.of(context).size.width * 1.4,
+                            centerTitle: false,
+                            title: SvgPicture.asset(
+                              'assets/images/home/bottom_home.svg', // SVG 파일 경로
+                              colorFilter: ColorFilter.mode(
+                                _isScrolled ? Colors.black : Colors.white,
+                                BlendMode.srcIn,
+                              ),
+                              // 색상 조건부 변경
+                              height: Responsive.getHeight(context, 40),
+                            ),
+                            flexibleSpace: const FlexibleSpaceBar(
+                              background: HomeHeaderChildWidget(),
+                            ),
+                            actions: [
+                              Container(
+                                padding: EdgeInsets.only(right: Responsive.getWidth(context, 8)),
+                                // 왼쪽 여백 추가
+                                child: Row(
                                   children: [
                                     IconButton(
                                       icon: SvgPicture.asset(
-                                        "assets/images/product/ic_cart.svg",
+                                        "assets/images/home/ic_top_sch_w.svg",
                                         colorFilter: ColorFilter.mode(
                                           _isScrolled ? Colors.black : Colors.white,
                                           BlendMode.srcIn,
@@ -332,184 +200,226 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => const CartScreen(),
+                                            builder: (context) => const SearchScreen(),
                                           ),
                                         );
                                       },
                                     ),
-                                    Positioned(
-                                      right: 5,
-                                      top: 23,
-                                      child: Visibility(
-                                        visible: _cartCount == "0" ? false : true,
-                                        child: Container(
-                                          padding: const EdgeInsets.all(4),
-                                          decoration: const BoxDecoration(
-                                            color: Color(0xFFFF6191),
-                                            shape: BoxShape.circle,
+                                    IconButton(
+                                      icon: SvgPicture.asset(
+                                        _isScrolled ? "assets/images/product/ic_smart.svg" : "assets/images/home/ic_smart_w.svg",
+                                        height: Responsive.getHeight(context, 30),
+                                        width: Responsive.getWidth(context, 30),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const SmartLensScreen(),
                                           ),
-                                          child: Text(
-                                            _cartCount,
-                                            style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              color: Colors.white,
-                                              fontSize: Responsive.getFont(context, 9),
-                                              height: 1.2,
+                                        );
+                                      },
+                                    ),
+                                    Stack(
+                                      children: [
+                                        IconButton(
+                                          icon: SvgPicture.asset(
+                                            "assets/images/product/ic_cart.svg",
+                                            colorFilter: ColorFilter.mode(
+                                              _isScrolled ? Colors.black : Colors.white,
+                                              BlendMode.srcIn,
+                                            ),
+                                            height: Responsive.getHeight(context, 30),
+                                            width: Responsive.getWidth(context, 30),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => const CartScreen(),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                        Positioned(
+                                          right: 5,
+                                          top: 23,
+                                          child: Visibility(
+                                            visible: cartCount == "0" ? false : true,
+                                            child: Container(
+                                              padding: const EdgeInsets.all(4),
+                                              decoration: const BoxDecoration(
+                                                color: Color(0xFFFF6191),
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: Text(
+                                                cartCount,
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  color: Colors.white,
+                                                  fontSize: Responsive.getFont(context, 9),
+                                                  height: 1.2,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     ),
                                   ],
                                 ),
+                              ),
+                            ],
+                          ),
+                          SliverList(
+                            delegate: SliverChildListDelegate(
+                              [
+                                HomeBodyCategoryChildWidget(categories: categories,),
+                                const HomeBodyAiChildWidget(),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 30.0),
+                                  child: SizedBox(
+                                    height: 451, // 고정된 높이
+                                    child: HomeBodyExhibitionChildWidget(),
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.only(left: 16.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '판매베스트',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 20),
+                                          fontWeight: FontWeight.bold,
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 20),
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: List<Widget>.generate(productCategories.length, (index) {
+                                              return Container(
+                                                padding: const EdgeInsets.only(right: 4.0),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    ref.read(homeViewModelProvider.notifier).setSelectedCategoryIndex(index);
+                                                    ref.read(homeViewModelProvider.notifier).listLoad();
+                                                  },
+                                                  child: categoryTab(index),
+                                                ),
+                                              );
+                                            }),
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.only(top: 20.0),
+                                            padding: const EdgeInsets.only(right: 16.0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                _showAgeGroupSelection();
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.fromLTRB(20, 11, 20, 11),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  shape: BoxShape.rectangle,
+                                                  borderRadius: BorderRadius.circular(22),
+                                                  border: Border.all(
+                                                    color: const Color(0xFFDDDDDD), // 테두리 색상
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      margin: const EdgeInsets.only(right: 5),
+                                                      child: Text(
+                                                        viewModel.getSelectedAgeGroupText(),
+                                                        style: TextStyle(
+                                                          fontFamily: 'Pretendard',
+                                                          fontSize: Responsive.getFont(context, 14),
+                                                          color: Colors.black,
+                                                          height: 1.2,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SvgPicture.asset(
+                                                      "assets/images/product/filter_select.svg",
+                                                      width: 14,
+                                                      height: 14,
+                                                      fit: BoxFit.contain,
+                                                      alignment: Alignment.topCenter,
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Visibility(
+                                        visible: productList.isEmpty,
+                                        child: Container(
+                                          margin: const EdgeInsets.only(bottom: 200),
+                                          child: const NonDataScreen(text: '등록된 상품이 없습니다.',),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(right: 16, bottom: 29),
+                                        child: GridView.builder(
+                                          shrinkWrap: true,
+                                          physics: const NeverScrollableScrollPhysics(),
+                                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            crossAxisSpacing: 12.0,
+                                            mainAxisSpacing: 30.0,
+                                            childAspectRatio: 0.5,
+                                          ),
+                                          itemCount: productList.length,
+                                          itemBuilder: (context, index) {
+                                            final productData = productList[index];
+                                            return ProductListItem(productData: productData);
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const HomeFooterChildWidget(),
                               ],
                             ),
                           ),
                         ],
                       ),
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          [
-                            HomeBodyCategoryChildWidget(categories: _categories,),
-                            const HomeBodyAiChildWidget(),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 30.0),
-                              child: SizedBox(
-                                height: 451, // 고정된 높이
-                                child: HomeBodyExhibitionChildWidget(),
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.only(left: 16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '판매베스트',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 20),
-                                      fontWeight: FontWeight.bold,
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 20),
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: List<Widget>.generate(_productCategories.length, (index) {
-                                          return Container(
-                                            padding: const EdgeInsets.only(right: 4.0),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  _selectedCategoryIndex = index;
-                                                });
-                                                _getList();
-                                              },
-                                              child: categoryTab(index),
-                                            ),
-                                          );
-                                        }),
-                                      ),
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 20.0),
-                                        padding: const EdgeInsets.only(right: 16.0),
-                                        child: GestureDetector(
-                                          onTap: _showAgeGroupSelection,
-                                          child: Container(
-                                            padding: const EdgeInsets.fromLTRB(20, 11, 20, 11),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              shape: BoxShape.rectangle,
-                                              borderRadius: BorderRadius.circular(22),
-                                              border: Border.all(
-                                                color: const Color(0xFFDDDDDD), // 테두리 색상
-                                              ),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  margin: const EdgeInsets.only(right: 5),
-                                                  child: Text(
-                                                    getSelectedAgeGroupText(),
-                                                    style: TextStyle(
-                                                      fontFamily: 'Pretendard',
-                                                      fontSize: Responsive.getFont(context, 14),
-                                                      color: Colors.black,
-                                                      height: 1.2,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SvgPicture.asset(
-                                                  "assets/images/product/filter_select.svg",
-                                                  width: 14,
-                                                  height: 14,
-                                                  fit: BoxFit.contain,
-                                                  alignment: Alignment.topCenter,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Visibility(
-                                    visible: _productList.isEmpty,
-                                    child: Container(
-                                      margin: const EdgeInsets.only(bottom: 200),
-                                      child: const NonDataScreen(text: '등록된 상품이 없습니다.',),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(right: 16, bottom: 29),
-                                    child: GridView.builder(
-                                      shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 12.0,
-                                        mainAxisSpacing: 30.0,
-                                        childAspectRatio: 0.5,
-                                      ),
-                                      itemCount: _productList.length,
-                                      itemBuilder: (context, index) {
-                                        final productData = _productList[index];
-                                        return ProductListItem(productData: productData);
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const HomeFooterChildWidget(),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+                MoveTopButton(scrollController: _scrollController),
               ],
             ),
-            MoveTopButton(scrollController: _scrollController),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
   Widget categoryTab(int index) {
+    final model = ref.watch(homeViewModelProvider);
+    final selectedCategoryIndex = model.selectedCategoryIndex;
+    final productCategories = model.productCategories;
+
     var borderColor = const Color(0xFFDDDDDD);
     var textColor = Colors.black;
 
-    if (_selectedCategoryIndex == index) {
+    if (selectedCategoryIndex == index) {
       borderColor = const Color(0xFFFF6192);
       textColor = const Color(0xFFFF6192);
     }
@@ -526,7 +436,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
       child: Text(
-        _productCategories[index].ctName ?? "",
+        productCategories[index].ctName ?? "",
         style: TextStyle(
           fontFamily: 'Pretendard',
           fontSize: Responsive.getFont(context, 14),
