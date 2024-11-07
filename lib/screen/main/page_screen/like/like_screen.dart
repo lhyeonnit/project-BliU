@@ -1,8 +1,8 @@
-import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/main/page_screen/like/view_model/like_view_model.dart';
+import 'package:BliU/screen/main/view_model/main_view_model.dart';
 import 'package:BliU/screen/product_detail/product_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -22,26 +22,13 @@ class LikeScreen extends ConsumerStatefulWidget {
 class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   late TabController _tabController;
-  final List<CategoryData> _categories = [
-    CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', catIdx: 0, catName: '', subList: [])
-  ];
-
-  int _count = 0;
-  List<ProductData> _productList = [];
-
-  bool _listEmpty = false;
 
   double _maxScrollHeight = 0;// NestedScrollView 사용시 최대 높이를 저장하기 위한 변수
-
-  int _page = 1;
-  bool _hasNextPage = true;
-  bool _isFirstLoadRunning = false;
-  bool _isLoadMoreRunning = false;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: _categories.length, vsync: this);
+    _tabController = TabController(length: 1, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -49,125 +36,18 @@ class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderState
 
   @override
   void dispose() {
-    _tabController.removeListener(_tabChangeCallBack);
+    _tabController.removeListener(_getList);
     _tabController.dispose();
     super.dispose();
   }
 
   void _afterBuild(BuildContext context) {
-    _getCategoryList();
     _getList();
   }
 
-  void _getCategoryList() async {
-    Map<String, dynamic> requestData = {'category_type': '1'};
-    final categoryResponseDTO = await ref.read(likeViewModelProvider.notifier).getCategory(requestData);
-    if (categoryResponseDTO != null) {
-      if (categoryResponseDTO.result == true) {
-        final list = categoryResponseDTO.list ?? [];
-        for (var item in list) {
-          _categories.add(item);
-        }
-
-        setState(() {
-          _tabController = TabController(length: _categories.length, vsync: this);
-          _tabController.addListener(_tabChangeCallBack);
-        });
-      }
-    }
-  }
-
-  void _tabChangeCallBack() {
-    _hasNextPage = true;
-    _isLoadMoreRunning = false;
-
-    _getList();
-  }
-
-  void _getList() async {
-    setState(() {
-      _isFirstLoadRunning = true;
-    });
-    _page = 1;
+  void _getList() {
     _maxScrollHeight = 0;
-
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    String category = "all";
-    final categoryData = _categories[_tabController.index];
-    if ((categoryData.ctIdx ?? 0) > 0) {
-      category = categoryData.ctIdx.toString();
-    }
-
-    Map<String, dynamic> requestData = {
-      'mt_idx': mtIdx,
-      'category': category,
-      'sub_category': "all",
-      'pg': _page,
-    };
-
-    // setState(() {
-    //   _count = 0;
-    //   _productList = [];
-    // });
-
-    final productListResponseDTO = await ref.read(likeViewModelProvider.notifier).getList(requestData);
-    _count = productListResponseDTO?.count ?? 0;
-    _productList = productListResponseDTO?.list ?? [];
-
-    setState(() {
-      if (_productList.isNotEmpty) {
-        _listEmpty = false;
-      } else {
-        _listEmpty = true;
-      }
-      _isFirstLoadRunning = false;
-    });
-  }
-
-  void _nextLoad() async {
-
-    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning){
-      setState(() {
-        _isLoadMoreRunning = true;
-      });
-      _page += 1;
-
-      final pref = await SharedPreferencesManager.getInstance();
-      final mtIdx = pref.getMtIdx();
-
-      String category = "all";
-      final categoryData = _categories[_tabController.index];
-      if ((categoryData.ctIdx ?? 0) > 0) {
-        category = categoryData.ctIdx.toString();
-      }
-
-      Map<String, dynamic> requestData = {
-        'mt_idx': mtIdx,
-        'category': category,
-        'sub_category': "all",
-        'pg': _page,
-      };
-
-      final productListResponseDTO = await ref.read(likeViewModelProvider.notifier).getList(requestData);
-      if (productListResponseDTO != null) {
-        _count = productListResponseDTO.count;
-        if (productListResponseDTO.list.isNotEmpty) {
-          setState(() {
-            _productList.addAll(productListResponseDTO.list);
-          });
-        } else {
-          setState(() {
-            _hasNextPage = false;
-          });
-        }
-      }
-
-      setState(() {
-        _isLoadMoreRunning = false;
-      });
-    }
+    ref.read(likeViewModelProvider.notifier).listLoad(_tabController.index);
   }
 
   void _viewWillAppear(BuildContext context) {
@@ -216,108 +96,129 @@ class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderState
             ),
           ),
         ),
-        body: Stack(
-          children: [
-            NotificationListener(
-              onNotification: (scrollNotification){
-                if (scrollNotification is ScrollEndNotification) {
-                  var metrics = scrollNotification.metrics;
-                  if (metrics.axisDirection != AxisDirection.down) return false;
-                  if (_maxScrollHeight < metrics.maxScrollExtent) {
-                    _maxScrollHeight = metrics.maxScrollExtent;
-                  }
-                  if (_maxScrollHeight - metrics.pixels < 50) {
-                    _nextLoad();
-                  }
-                }
-                return false;
-              },
-              child: NestedScrollView(
-                controller: _scrollController,
-                physics: _productList.isEmpty ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics(),
-                headerSliverBuilder: (context, innerBoxIsScrolled) {
-                  return [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 60.0,
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: TabBar(
-                              controller: _tabController,
-                              labelStyle: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                fontWeight: FontWeight.w600,
+        body: Consumer(
+          builder: (context, ref, widget) {
+            ref.listen(
+              mainViewModelProvider,
+              ((previous, next) {
+                final productCategories = next.productCategories;
+                _tabController = TabController(length: productCategories.length, vsync: this);
+                _tabController.addListener(_getList);
+              }),
+            );
+
+            final likeModel = ref.watch(likeViewModelProvider);
+            final mainModel = ref.watch(mainViewModelProvider);
+            final productCategories = mainModel.productCategories;
+
+            final productList = likeModel.productList;
+            final count = likeModel.count;
+            final listEmpty = likeModel.listEmpty;
+
+            return Stack(
+              children: [
+                NotificationListener(
+                  onNotification: (scrollNotification){
+                    if (scrollNotification is ScrollEndNotification) {
+                      var metrics = scrollNotification.metrics;
+                      if (metrics.axisDirection != AxisDirection.down) return false;
+                      if (_maxScrollHeight < metrics.maxScrollExtent) {
+                        _maxScrollHeight = metrics.maxScrollExtent;
+                      }
+                      if (_maxScrollHeight - metrics.pixels < 50) {
+                        ref.read(likeViewModelProvider.notifier).listNextLoad(_tabController.index);
+                      }
+                    }
+                    return false;
+                  },
+                  child: NestedScrollView(
+                    controller: _scrollController,
+                    physics: productList.isEmpty ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics(),
+                    headerSliverBuilder: (context, innerBoxIsScrolled) {
+                      return [
+                        SliverToBoxAdapter(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 60.0,
+                                padding: const EdgeInsets.symmetric(vertical: 5),
+                                child: TabBar(
+                                  controller: _tabController,
+                                  labelStyle: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  overlayColor: WidgetStateColor.transparent,
+                                  indicatorColor: Colors.black,
+                                  indicatorSize: TabBarIndicatorSize.tab,
+                                  dividerColor: const Color(0xFFDDDDDD),
+                                  labelColor: Colors.black,
+                                  unselectedLabelColor: const Color(0xFF7B7B7B),
+                                  isScrollable: true,
+                                  indicatorWeight: 2.0,
+                                  tabAlignment: TabAlignment.start,
+                                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                                  tabs: productCategories.map((category) {
+                                    return Tab(text: category.ctName);
+                                  }).toList(),
+                                ),
                               ),
-                              overlayColor: WidgetStateColor.transparent,
-                              indicatorColor: Colors.black,
-                              indicatorSize: TabBarIndicatorSize.tab,
-                              dividerColor: const Color(0xFFDDDDDD),
-                              labelColor: Colors.black,
-                              unselectedLabelColor: const Color(0xFF7B7B7B),
-                              isScrollable: true,
-                              indicatorWeight: 2.0,
-                              tabAlignment: TabAlignment.start,
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
-                              tabs: _categories.map((category) {
-                                return Tab(text: category.ctName);
-                              }).toList(),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Text(
-                              '상품 $_count', // 상품 수 표시
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                color: Colors.black,
-                                height: 1.2,
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                                padding: const EdgeInsets.symmetric(vertical: 20),
+                                child: Text(
+                                  '상품 $count', // 상품 수 표시
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: Colors.black,
+                                    height: 1.2,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ],
-                      ), // 상단 고정된 컨텐츠
-                    )
-                  ];
-                },
-                body: Visibility(
-                  visible: !_listEmpty,
-                  child: TabBarView(
-                    controller: _tabController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: List.generate(
-                      _categories.length,
-                          (index) {
-                        if (index == _tabController.index) {
-                          return _buildProductGrid();
-                        } else {
-                          return Container();
-                        }
-                      },
+                            ],
+                          ), // 상단 고정된 컨텐츠
+                        )
+                      ];
+                    },
+                    body: Visibility(
+                      visible: !listEmpty,
+                      child: TabBarView(
+                        controller: _tabController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: List.generate(
+                          productCategories.length,
+                              (index) {
+                            if (index == _tabController.index) {
+                              return _buildProductGrid(productList);
+                            } else {
+                              return Container();
+                            }
+                          },
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            Visibility(
-              visible: !_listEmpty,
-              child: MoveTopButton(scrollController: _scrollController),
-            ),
-            Visibility(
-              visible: _listEmpty,
-              child: const NonDataScreen(text: '좋아요하신 상품이 없습니다.',),
-            ),
-          ],
+                Visibility(
+                  visible: !listEmpty,
+                  child: MoveTopButton(scrollController: _scrollController),
+                ),
+                Visibility(
+                  visible: listEmpty,
+                  child: const NonDataScreen(text: '좋아요하신 상품이 없습니다.',),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _buildProductGrid() {
+  Widget _buildProductGrid(List<ProductData> productList) {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -328,9 +229,9 @@ class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderState
         crossAxisSpacing: 12,
         mainAxisSpacing: 30,
       ),
-      itemCount: _productList.length, // 실제 상품 수로 변경
+      itemCount: productList.length, // 실제 상품 수로 변경
       itemBuilder: (context, index) {
-        final productData = _productList[index];
+        final productData = productList[index];
 
         return GestureDetector(
           onTap: () {
@@ -368,7 +269,6 @@ class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderState
                       right: 0,
                       child: GestureDetector(
                         onTap: () async {
-
                           final pref = await SharedPreferencesManager.getInstance();
                           final mtIdx = pref.getMtIdx() ?? "";
                           if (mtIdx.isNotEmpty) {
@@ -377,14 +277,7 @@ class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderState
                               'pt_idx' : productData.ptIdx,
                             };
 
-                            final defaultResponseDTO = await ref.read(likeViewModelProvider.notifier).productLike(requestData);
-                            if(defaultResponseDTO != null) {
-                              if (defaultResponseDTO.result == true) {
-                                setState(() {
-                                  _productList.removeAt(index);
-                                });
-                              }
-                            }
+                            ref.read(likeViewModelProvider.notifier).productLike(requestData, index);
                           }
                         },
                         child: Image.asset(

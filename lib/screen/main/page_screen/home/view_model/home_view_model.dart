@@ -2,22 +2,18 @@ import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/product_data.dart';
-import 'package:BliU/dto/category_response_dto.dart';
 import 'package:BliU/dto/product_list_response_dto.dart';
+import 'package:BliU/screen/main/view_model/main_view_model.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeModel {
   String cartCount = "0";
-  List<CategoryData> categories = [];
-  List<CategoryData> ageCategories = [];
+
+  bool isScrolled = false;
 
   int selectedCategoryIndex = 0;
-  List<CategoryData> productCategories = [
-    CategoryData(ctIdx: 0, cstIdx: 0, img: '', ctName: '전체', catIdx: 0, catName: '', subList: [])
-  ];
-
   CategoryData? selectedAgeGroup;
 
   int page = 1;
@@ -26,7 +22,6 @@ class HomeModel {
   bool isLoadMoreRunning = false;
 
   List<ProductData> productList = [];
-
 }
 
 class HomeViewModel extends StateNotifier<HomeModel> {
@@ -34,46 +29,6 @@ class HomeViewModel extends StateNotifier<HomeModel> {
   final repository = DefaultRepository();
 
   HomeViewModel(super.state, this.ref);
-
-  void getCategory(Map<String, dynamic> requestData) async {
-
-    final response = await repository.reqPost(url: Constant.apiMainCategoryUrl, data: requestData);
-    try {
-      if (response != null) {
-        if (response.statusCode == 200) {
-          Map<String, dynamic> responseData = response.data;
-          CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.fromJson(responseData);
-          state.categories = categoryResponseDTO.list ?? [];
-          state.productCategories.addAll(state.categories);
-          ref.notifyListeners();
-        }
-      }
-    } catch(e) {
-      // Catch and log any exceptions
-      if (kDebugMode) {
-        print('Error request Api: $e');
-      }
-    }
-  }
-
-  void getAgeCategory() async {
-    final response = await repository.reqGet(url: Constant.apiCategoryAgeUrl);
-    try {
-      if (response != null) {
-        if (response.statusCode == 200) {
-          Map<String, dynamic> responseData = response.data;
-          CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.fromJson(responseData);
-          state.ageCategories = categoryResponseDTO.list ?? [];
-          ref.notifyListeners();
-        }
-      }
-    } catch(e) {
-      // Catch and log any exceptions
-      if (kDebugMode) {
-        print('Error request Api: $e');
-      }
-    }
-  }
 
   void getCartCount(Map<String, dynamic> requestData) async {
     final response = await repository.reqPost(url: Constant.apiCartCountUrl, data: requestData);
@@ -103,7 +58,7 @@ class HomeViewModel extends StateNotifier<HomeModel> {
     state.productList = [];
     ref.notifyListeners();
 
-    final productListResponseDTO = await ref.read(homeViewModelProvider.notifier).getList(requestData);
+    final productListResponseDTO = await _getList(requestData);
     state.productList = productListResponseDTO?.list ?? [];
 
     state.isFirstLoadRunning = false;
@@ -117,7 +72,7 @@ class HomeViewModel extends StateNotifier<HomeModel> {
 
       final requestData = await _makeRequestData();
 
-      final productListResponseDTO = await ref.read(homeViewModelProvider.notifier).getList(requestData);
+      final productListResponseDTO = await _getList(requestData);
       if (productListResponseDTO != null) {
         if (productListResponseDTO.list.isNotEmpty) {
           state.productList.addAll(productListResponseDTO.list);
@@ -135,7 +90,9 @@ class HomeViewModel extends StateNotifier<HomeModel> {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
-    final category = state.productCategories[state.selectedCategoryIndex];
+    final productCategories = ref.read(mainViewModelProvider).productCategories;
+
+    final category = productCategories[state.selectedCategoryIndex];
 
     String categoryStr = "all";
     if (state.selectedCategoryIndex > 0) {
@@ -157,7 +114,7 @@ class HomeViewModel extends StateNotifier<HomeModel> {
     return requestData;
   }
 
-  Future<ProductListResponseDTO?> getList(Map<String, dynamic> requestData) async {
+  Future<ProductListResponseDTO?> _getList(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiMainSellRankUrl, data: requestData);
       if (response != null) {
@@ -193,6 +150,11 @@ class HomeViewModel extends StateNotifier<HomeModel> {
     } else {
       return state.selectedAgeGroup?.catName ?? "";
     }
+  }
+
+  void setIsScrolled(bool scrolled) {
+    state.isScrolled = scrolled;
+    ref.notifyListeners();
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/main/page_screen/store/view_model/store_favorite_view_model.dart';
 import 'package:BliU/screen/main/page_screen/store/view_model/store_ranking_view_model.dart';
+import 'package:BliU/screen/main/view_model/main_view_model.dart';
 import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/screen/modal_dialog/store_age_group_selection.dart';
 import 'package:BliU/screen/modal_dialog/store_style_group_selection.dart';
@@ -26,9 +27,6 @@ class StoreRankingChildWidget extends ConsumerStatefulWidget {
 
 class StoreRankingChildWidgetState extends ConsumerState<StoreRankingChildWidget> {
   final ScrollController _scrollController = ScrollController();
-
-  late List<CategoryData> _ageCategories;
-  late List<StyleCategoryData> _styleCategories;
 
   List<StoreRankData> storeRankList = [];
 
@@ -53,6 +51,9 @@ class StoreRankingChildWidgetState extends ConsumerState<StoreRankingChildWidget
   }
 
   void _showAgeGroupSelection() {
+    final mainModel = ref.read(mainViewModelProvider);
+    final ageCategories = mainModel.ageCategories;
+
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
@@ -62,7 +63,7 @@ class StoreRankingChildWidgetState extends ConsumerState<StoreRankingChildWidget
       builder: (BuildContext context) {
         return SafeArea(
           child: StoreAgeGroupSelection(
-            ageCategories: _ageCategories,
+            ageCategories: ageCategories,
             selectedAgeGroup: _selectedAgeGroup,
             onSelectionChanged: (CategoryData? newSelection) {
               setState(() {
@@ -85,6 +86,9 @@ class StoreRankingChildWidgetState extends ConsumerState<StoreRankingChildWidget
   }
 
   void _showStyleSelection() {
+    final mainModel = ref.read(mainViewModelProvider);
+    final styleCategories = mainModel.styleCategories;
+
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
@@ -96,7 +100,7 @@ class StoreRankingChildWidgetState extends ConsumerState<StoreRankingChildWidget
       builder: (BuildContext context) {
         return SafeArea(
           child: StyleSelectionSheet(
-            styleCategories: _styleCategories,
+            styleCategories: styleCategories,
             selectedStyle: _selectedStyle,
             onSelectionChanged: (StyleCategoryData? newSelection) {
               setState(() {
@@ -120,16 +124,7 @@ class StoreRankingChildWidgetState extends ConsumerState<StoreRankingChildWidget
   }
 
   void _afterBuild(BuildContext context) {
-    _getFilterCategory();
     _getList();
-  }
-
-  void _getFilterCategory() async {
-    final ageCategoryResponseDTO = await ref.read(storeRankingViewModelProvider.notifier).getAgeCategory();
-    _ageCategories = ageCategoryResponseDTO?.list ?? [];
-
-    final styleCategoryResponseDTO = await ref.read(storeRankingViewModelProvider.notifier).getStyleCategory();
-    _styleCategories = styleCategoryResponseDTO?.list ?? [];
   }
 
   void _getList() async {

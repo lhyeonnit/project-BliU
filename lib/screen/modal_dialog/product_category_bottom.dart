@@ -1,5 +1,5 @@
 import 'package:BliU/data/category_data.dart';
-import 'package:BliU/screen/main/page_screen/category/view_model/category_view_model.dart';
+import 'package:BliU/screen/main/view_model/main_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,8 +22,8 @@ class ProductCategoryBottomState extends State<ProductCategoryBottom> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, widget) {
-        final model = ref.watch(categoryViewModelProvider);
-        final categories = model.categoryResponseDTO?.list ?? [];
+        final model = ref.watch(mainViewModelProvider);
+        final categories = model.categories2;
 
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),

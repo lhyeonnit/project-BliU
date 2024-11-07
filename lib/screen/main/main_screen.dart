@@ -10,6 +10,7 @@ import 'package:BliU/screen/main/page_screen/home/home_screen.dart';
 import 'package:BliU/screen/main/page_screen/like/like_screen.dart';
 import 'package:BliU/screen/main/page_screen/my/my_screen.dart';
 import 'package:BliU/screen/main/page_screen/store/store_screen.dart';
+import 'package:BliU/screen/main/view_model/main_view_model.dart';
 import 'package:BliU/screen/my_coupon/my_coupon_screen.dart';
 import 'package:BliU/screen/order_list/order_list_screen.dart';
 import 'package:BliU/screen/product_detail/product_detail_screen.dart';
@@ -58,6 +59,15 @@ class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProvide
         firebaseService.saveFcmData = null;
       }
     });
+
+    _getCategory();
+  }
+
+  void _getCategory() {
+    ref.read(mainViewModelProvider.notifier).getCategory('1');
+    ref.read(mainViewModelProvider.notifier).getCategory('2');
+    ref.read(mainViewModelProvider.notifier).getAgeCategory();
+    ref.read(mainViewModelProvider.notifier).getStyleCategory();
   }
 
   void _onItemTapped(int index) {

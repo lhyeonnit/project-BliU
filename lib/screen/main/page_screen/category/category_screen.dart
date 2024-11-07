@@ -1,11 +1,13 @@
 import 'package:BliU/screen/main/main_screen.dart';
-import 'package:BliU/screen/main/page_screen/category/view_model/category_view_model.dart';
+import 'package:BliU/screen/main/view_model/main_view_model.dart';
 import 'package:BliU/screen/product_list/product_list_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+final categoryStateProvider = StateProvider<int>((_) => 0);
 
 class CategoryScreen extends ConsumerStatefulWidget {
   const CategoryScreen({super.key});
@@ -15,6 +17,7 @@ class CategoryScreen extends ConsumerStatefulWidget {
 }
 
 class CategoryScreenState extends ConsumerState<CategoryScreen> {
+
   final ItemScrollController _scrollController = ItemScrollController();
   final ItemPositionsListener _itemPositionsListener = ItemPositionsListener.create();
 
@@ -22,20 +25,17 @@ class CategoryScreenState extends ConsumerState<CategoryScreen> {
   void initState() {
     super.initState();
     _itemPositionsListener.itemPositions.addListener(_itemPositionListener);
-
-    Map<String, dynamic> requestData = {'category_type': '2'};
-    ref.read(categoryViewModelProvider.notifier).getCategory(requestData);
   }
 
   void _itemPositionListener() {
     final last = _itemPositionsListener.itemPositions.value.last;
-    final model = ref.watch(categoryViewModelProvider);
-    final categories = model.categoryResponseDTO?.list ?? [];
-    final selectedCategoryIndex = model.selectedCategoryIndex;
+
+    final categories = ref.read(mainViewModelProvider).categories2;
+    final selectedCategoryIndex = ref.read(categoryStateProvider.notifier).state;
     if (last.index == (categories.length - 1)) {
       if (last.itemTrailingEdge < 1.001) {
         if (selectedCategoryIndex != last.index) {
-          ref.read(categoryViewModelProvider.notifier).setSelectedCategoryIndex(last.index);
+          ref.read(categoryStateProvider.notifier).state = last.index;
         }
         return;
       }
@@ -44,7 +44,7 @@ class CategoryScreenState extends ConsumerState<CategoryScreen> {
     ItemPosition position = _itemPositionsListener.itemPositions.value.firstWhere((element) => element.itemLeadingEdge <= 0);
     final itemIndex = position.index;
     if (selectedCategoryIndex != itemIndex) {
-      ref.read(categoryViewModelProvider.notifier).setSelectedCategoryIndex(itemIndex);
+      ref.read(categoryStateProvider.notifier).state = itemIndex;
     }
   }
 
@@ -99,9 +99,8 @@ class CategoryScreenState extends ConsumerState<CategoryScreen> {
       ),
       body: Consumer(
         builder: (context, ref, widget) {
-          final model = ref.watch(categoryViewModelProvider);
-          final categories = model.categoryResponseDTO?.list ?? [];
-          final selectedCategoryIndex = model.selectedCategoryIndex;
+          final categories = ref.watch(mainViewModelProvider).categories2;
+          final selectedCategoryIndex = ref.watch(categoryStateProvider);
 
           return Row(
             children: [

@@ -12,6 +12,7 @@ import 'package:BliU/screen/main/page_screen/home/view_model/home_body_exhibitio
 import 'package:BliU/screen/main/page_screen/home/view_model/home_footer_view_model.dart';
 import 'package:BliU/screen/main/page_screen/home/view_model/home_header_view_model.dart';
 import 'package:BliU/screen/main/page_screen/home/view_model/home_view_model.dart';
+import 'package:BliU/screen/main/view_model/main_view_model.dart';
 import 'package:BliU/screen/modal_dialog/store_age_group_selection.dart';
 import 'package:BliU/screen/product_list/item/product_list_item.dart';
 import 'package:BliU/screen/search/search_screen.dart';
@@ -33,20 +34,17 @@ class HomeScreen extends ConsumerStatefulWidget {
 class HomeScreenState extends ConsumerState<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
 
-  bool _isScrolled = false;
-
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      if (_scrollController.offset > 50 && !_isScrolled) {
-        setState(() {
-          _isScrolled = true;
-        });
-      } else if (_scrollController.offset <= 50 && _isScrolled) {
-        setState(() {
-          _isScrolled = false;
-        });
+      final viewModel = ref.read(homeViewModelProvider.notifier);
+      final model = ref.read(homeViewModelProvider);
+      final isScrolled = model.isScrolled;
+      if (_scrollController.offset > 50 && !isScrolled) {
+        viewModel.setIsScrolled(true);
+      } else if (_scrollController.offset <= 50 && isScrolled) {
+        viewModel.setIsScrolled(false);
       }
 
       if (_scrollController.position.maxScrollExtent - _scrollController.offset < 100) {
@@ -75,10 +73,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
   void _afterBuild(BuildContext context) {
     ref.read(homeFooterViewModelProvider.notifier).getFoot();
-
-    Map<String, dynamic> requestData = {'category_type': '2'};
-    ref.read(homeViewModelProvider.notifier).getCategory(requestData);
-    ref.read(homeViewModelProvider.notifier).getAgeCategory();
   }
 
   void _getCartCount() async {
@@ -110,9 +104,10 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
   void _showAgeGroupSelection() {
     final viewModel = ref.read(homeViewModelProvider.notifier);
-    final model = ref.watch(homeViewModelProvider);
-    final ageCategories = model.ageCategories;
-    final selectedAgeGroup = model.selectedAgeGroup;
+    final mainModel = ref.read(mainViewModelProvider);
+    final homeModel = ref.read(homeViewModelProvider);
+    final ageCategories = mainModel.ageCategories;
+    final selectedAgeGroup = homeModel.selectedAgeGroup;
 
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
@@ -144,11 +139,14 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
       child: Consumer(
         builder: (context, ref, widget){
           final viewModel = ref.read(homeViewModelProvider.notifier);
-          final model = ref.watch(homeViewModelProvider);
-          final cartCount = model.cartCount;
-          final categories = model.categories;
-          final productCategories = model.productCategories;
-          final productList = model.productList;
+          final mainModel = ref.watch(mainViewModelProvider);
+          final homeModel = ref.watch(homeViewModelProvider);
+          final cartCount = homeModel.cartCount;
+          final productList = homeModel.productList;
+
+          final productCategories = mainModel.productCategories;
+
+          final isScrolled = homeModel.isScrolled;
 
           return Scaffold(
             backgroundColor: Colors.white,
@@ -165,13 +163,13 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                             pinned: true,
                             automaticallyImplyLeading: false,
                             // 기본 뒤로가기 버튼을 숨김
-                            backgroundColor: _isScrolled ? Colors.white : Colors.transparent,
+                            backgroundColor: isScrolled ? Colors.white : Colors.transparent,
                             expandedHeight: MediaQuery.of(context).size.width * 1.4,
                             centerTitle: false,
                             title: SvgPicture.asset(
                               'assets/images/home/bottom_home.svg', // SVG 파일 경로
                               colorFilter: ColorFilter.mode(
-                                _isScrolled ? Colors.black : Colors.white,
+                                isScrolled ? Colors.black : Colors.white,
                                 BlendMode.srcIn,
                               ),
                               // 색상 조건부 변경
@@ -190,7 +188,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                       icon: SvgPicture.asset(
                                         "assets/images/home/ic_top_sch_w.svg",
                                         colorFilter: ColorFilter.mode(
-                                          _isScrolled ? Colors.black : Colors.white,
+                                          isScrolled ? Colors.black : Colors.white,
                                           BlendMode.srcIn,
                                         ),
                                         height: Responsive.getHeight(context, 30),
@@ -207,7 +205,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                     ),
                                     IconButton(
                                       icon: SvgPicture.asset(
-                                        _isScrolled ? "assets/images/product/ic_smart.svg" : "assets/images/home/ic_smart_w.svg",
+                                        isScrolled ? "assets/images/product/ic_smart.svg" : "assets/images/home/ic_smart_w.svg",
                                         height: Responsive.getHeight(context, 30),
                                         width: Responsive.getWidth(context, 30),
                                       ),
@@ -226,7 +224,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                           icon: SvgPicture.asset(
                                             "assets/images/product/ic_cart.svg",
                                             colorFilter: ColorFilter.mode(
-                                              _isScrolled ? Colors.black : Colors.white,
+                                              isScrolled ? Colors.black : Colors.white,
                                               BlendMode.srcIn,
                                             ),
                                             height: Responsive.getHeight(context, 30),
@@ -274,7 +272,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                           SliverList(
                             delegate: SliverChildListDelegate(
                               [
-                                HomeBodyCategoryChildWidget(categories: categories,),
+                                const HomeBodyCategoryChildWidget(),
                                 const HomeBodyAiChildWidget(),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 30.0),
@@ -412,9 +410,10 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget categoryTab(int index) {
-    final model = ref.watch(homeViewModelProvider);
-    final selectedCategoryIndex = model.selectedCategoryIndex;
-    final productCategories = model.productCategories;
+    final mainModel = ref.watch(mainViewModelProvider);
+    final homeModel = ref.watch(homeViewModelProvider);
+    final selectedCategoryIndex = homeModel.selectedCategoryIndex;
+    final productCategories = mainModel.productCategories;
 
     var borderColor = const Color(0xFFDDDDDD);
     var textColor = Colors.black;
