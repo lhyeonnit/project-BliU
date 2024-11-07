@@ -402,27 +402,25 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
                     ],
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(6),
-                    ),
-                    border: Border.all(color: const Color(0xFFDDDDDD)),
-                  ),
-                  child: GestureDetector(
-                    onTap: _pickImages, // 이미지 선택 함수 호출
+                GestureDetector(
+                  onTap: _pickImages, // 이미지 선택 함수 호출
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(6)),
+                        border: Border.all(color: const Color(0xFFDDDDDD))),
                     child: Center(
-                      child: Text(
-                        '첨부하기',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
+                        child: Text(
+                          '첨부하기',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.normal,
+                            height: 1.2,
+                          ),
+                        )
                     ),
                   ),
                 ),
