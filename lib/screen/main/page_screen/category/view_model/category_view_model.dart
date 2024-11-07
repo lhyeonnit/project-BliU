@@ -6,42 +6,42 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CategoryModel {
   CategoryResponseDTO? categoryResponseDTO;
-
-  CategoryModel({
-    this.categoryResponseDTO,
-  });
+  int selectedCategoryIndex = 0;
 }
 
-class CategoryViewModel extends StateNotifier<CategoryModel?> {
+class CategoryViewModel extends StateNotifier<CategoryModel> {
   final Ref ref;
   final repository = DefaultRepository();
 
   CategoryViewModel(super.state, this.ref);
 
-  Future<void> getCategory(Map<String, dynamic> requestData) async {
+  void getCategory(Map<String, dynamic> requestData) async {
     final response = await repository.reqPost(url: Constant.apiMainCategoryUrl, data: requestData);
     try {
       if (response != null) {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
           CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.fromJson(responseData);
-          state = CategoryModel(categoryResponseDTO: categoryResponseDTO);
-          return;
+          state.categoryResponseDTO = categoryResponseDTO;
+          ref.notifyListeners();
         }
       }
-      state = CategoryModel(categoryResponseDTO: CategoryResponseDTO(result: false, message: "Network Or Data Error"));
     } catch(e) {
       // Catch and log any exceptions
       if (kDebugMode) {
         print('Error request Api: $e');
       }
-      state = CategoryModel(categoryResponseDTO: CategoryResponseDTO(result: false, message: e.toString()));
     }
+  }
+
+  void setSelectedCategoryIndex(int index) {
+    state.selectedCategoryIndex = index;
+    ref.notifyListeners();
   }
 }
 
 // ViewModel Provider 정의
 final categoryViewModelProvider =
-StateNotifierProvider<CategoryViewModel, CategoryModel?>((ref) {
-  return CategoryViewModel(null, ref);
+StateNotifierProvider<CategoryViewModel, CategoryModel>((ref) {
+  return CategoryViewModel(CategoryModel(), ref);
 });

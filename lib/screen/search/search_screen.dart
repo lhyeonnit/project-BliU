@@ -6,9 +6,10 @@ import 'package:BliU/data/search_store_data.dart';
 import 'package:BliU/dto/search_response_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
+import 'package:BliU/screen/main/page_screen/home/view_model/home_body_ai_view_model.dart';
 import 'package:BliU/screen/product_detail/product_detail_screen.dart';
 import 'package:BliU/screen/product_list/item/product_list_item.dart';
-import 'package:BliU/screen/search/item/search_recommend_item.dart';
+import 'package:BliU/screen/search/child_widget/search_recommend_child_widget.dart';
 import 'package:BliU/screen/search/view_model/search_view_model.dart';
 import 'package:BliU/screen/smart_lens/smart_lens_screen.dart';
 import 'package:BliU/screen/store_detail/store_detail_screen.dart';
@@ -67,6 +68,17 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
   void _afterBuild(BuildContext context) {
     _searchMyList();
     _getPopularList();
+    _getAiList();
+  }
+
+  void _getAiList() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx() ?? '';
+    Map<String, dynamic> requestData = {
+      'mt_idx': mtIdx,
+    };
+
+    ref.read(homeBodyAiViewModelProvider.notifier).getList(requestData);
   }
 
   void _getList(String research) async {
@@ -632,7 +644,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                     _buildSearchHistory(), // 검색 기록을 표시하는 위젯
                   ],
                   _buildPopularSearches(),
-                  const SearchRecommendItem(),
+                  const SearchRecommendChildWidget(),
                 ],
               ),
             ),

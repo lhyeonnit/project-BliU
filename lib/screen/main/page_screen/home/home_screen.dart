@@ -8,6 +8,10 @@ import 'package:BliU/screen/main/page_screen/home/child_widget/home_body_categor
 import 'package:BliU/screen/main/page_screen/home/child_widget/home_body_exhibition_child_widget.dart';
 import 'package:BliU/screen/main/page_screen/home/child_widget/home_footer_child_widget.dart';
 import 'package:BliU/screen/main/page_screen/home/child_widget/home_header_child_widget.dart';
+import 'package:BliU/screen/main/page_screen/home/view_model/home_body_ai_view_model.dart';
+import 'package:BliU/screen/main/page_screen/home/view_model/home_body_exhibition_view_model.dart';
+import 'package:BliU/screen/main/page_screen/home/view_model/home_footer_view_model.dart';
+import 'package:BliU/screen/main/page_screen/home/view_model/home_header_view_model.dart';
 import 'package:BliU/screen/main/page_screen/home/view_model/home_view_model.dart';
 import 'package:BliU/screen/modal_dialog/store_age_group_selection.dart';
 import 'package:BliU/screen/product_list/item/product_list_item.dart';
@@ -76,14 +80,18 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void _viewWillAppear(BuildContext context) {
+    ref.read(homeHeaderViewModelProvider.notifier).getBanner();
+    ref.read(homeBodyExhibitionViewModelProvider.notifier).getList();
+    _getAiList();
     _getCartCount();
     _getList();
   }
 
   void _afterBuild(BuildContext context) {
+    ref.read(homeFooterViewModelProvider.notifier).getFoot();
     _getCategoryList();
-    _getCartCount();
-    _getList();
+    // _getCartCount();
+    // _getList();
   }
 
   void _getCategoryList() async {
@@ -113,6 +121,16 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
     _cartCount = await ref.read(homeViewModelProvider.notifier).getCartCount(requestData) ?? "0";
     setState(() {});
+  }
+
+  void _getAiList() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx() ?? '';
+    Map<String, dynamic> requestData = {
+      'mt_idx': mtIdx,
+    };
+
+    ref.read(homeBodyAiViewModelProvider.notifier).getList(requestData);
   }
 
   void _getList() async {

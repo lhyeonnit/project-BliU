@@ -23,7 +23,7 @@ class ProductCategoryBottomState extends State<ProductCategoryBottom> {
     return Consumer(
       builder: (context, ref, widget) {
         final model = ref.watch(categoryViewModelProvider);
-        final categories = model?.categoryResponseDTO?.list ?? [];
+        final categories = model.categoryResponseDTO?.list ?? [];
 
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),

@@ -2,54 +2,35 @@ import 'package:BliU/screen/main/page_screen/home/view_model/home_footer_view_mo
 import 'package:BliU/screen/notice/notice_screen.dart';
 import 'package:BliU/screen/terms_detail/terms_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
-import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class HomeFooterChildWidget extends ConsumerStatefulWidget {
-  const HomeFooterChildWidget({ super.key });
+class HomeFooterChildWidget extends ConsumerWidget {
+
+  const HomeFooterChildWidget({super.key});
 
   @override
-  ConsumerState<HomeFooterChildWidget> createState() => HomeFooterChildWidgetState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
 
-class HomeFooterChildWidgetState extends ConsumerState<HomeFooterChildWidget> with TickerProviderStateMixin {
-  bool isExpand = true;
-  String footInfo = '회사명 : #####  |  대표 : ###\n'
-      '사업자등록번호 ############\n'
-      '제 통신판매업신고번호 : ###############\n'
-      '주소 : ####################';
+    String footInfo = '회사명 : #####  |  대표 : ###\n'
+        '사업자등록번호 ############\n'
+        '제 통신판매업신고번호 : ###############\n'
+        '주소 : ####################';
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      ref.read(homeFooterViewModelProvider.notifier).getFoot().then((model) {
-        if (model?.footResponseDTO != null) {
-          if (model?.footResponseDTO?.result == true) {
-            var data = model?.footResponseDTO?.data;
-            if (data != null) {
-              setState(() {
-                footInfo = '회사명 : ${data.stCompanyName}  |  대표 : ${data.stCompanyBoss}\n'
-                    '사업자등록번호 ${data.stCompanyNum1}\n'
-                    '제 통신판매업신고번호 : ${data.stCompanyNum2}\n'
-                    '주소 : ${data.stCompanyAdd}';
-              });
-            }
-          } else {
-            Future.delayed(Duration.zero, () {
-              if (!mounted) return;
-              Utils.getInstance().showSnackBar(context, model?.footResponseDTO?.message ?? "");
-            });
-          }
-        }
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+    final model = ref.watch(homeFooterViewModelProvider);
+    bool isExpand = model.isExpand;
+    final footResponseDTO = model.footResponseDTO;
+    if (footResponseDTO != null) {
+      var data = footResponseDTO.data;
+      if (footResponseDTO.result == true && data != null) {
+        footInfo =
+        '회사명 : ${data.stCompanyName}  |  대표 : ${data.stCompanyBoss}\n'
+            '사업자등록번호 ${data.stCompanyNum1}\n'
+            '제 통신판매업신고번호 : ${data.stCompanyNum2}\n'
+            '주소 : ${data.stCompanyAdd}';
+      }
+    }
 
     return Container(
       color: const Color(0xFFF5F9F9), // 배경 색상
@@ -81,9 +62,9 @@ class HomeFooterChildWidgetState extends ConsumerState<HomeFooterChildWidget> wi
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: const BoxDecoration(
-                  border: Border.symmetric(
-                    vertical: BorderSide(color: Color(0xFFDDDDDD))
-                  )
+                    border: Border.symmetric(
+                        vertical: BorderSide(color: Color(0xFFDDDDDD))
+                    )
                 ),
                 child: GestureDetector(
                   onTap: () {
@@ -128,9 +109,7 @@ class HomeFooterChildWidgetState extends ConsumerState<HomeFooterChildWidget> wi
           ),
           GestureDetector(
             onTap: () {
-              setState(() {
-                isExpand = !isExpand;
-              });
+              ref.read(homeFooterViewModelProvider.notifier).changeExpand();
             },
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 15),
@@ -221,3 +200,4 @@ class HomeFooterChildWidgetState extends ConsumerState<HomeFooterChildWidget> wi
     );
   }
 }
+

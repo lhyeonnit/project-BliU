@@ -4,7 +4,7 @@ import 'package:BliU/data/faq_category_data.dart';
 import 'package:BliU/dto/faq_category_response_dto.dart';
 import 'package:BliU/dto/faq_response_dto.dart';
 import 'package:flutter/foundation.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FaqModel {}
 
