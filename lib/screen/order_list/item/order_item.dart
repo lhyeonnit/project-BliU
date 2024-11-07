@@ -76,6 +76,8 @@ class OrderItemState extends ConsumerState<OrderItem> {
               };
 
               final defaultResponseDTO = await ref.read(orderItemViewModelProvider.notifier).requestOrder(requestData);
+              if (!mounted) return;
+              Navigator.pop(context);
               if (defaultResponseDTO != null) {
                 if (!mounted) return;
                 Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
@@ -84,7 +86,6 @@ class OrderItemState extends ConsumerState<OrderItem> {
                     _ctStatus = 8;
                   });
                 }
-                Navigator.pop(context);
               }
             },
             child: Text('확인',

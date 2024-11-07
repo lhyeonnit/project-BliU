@@ -7,7 +7,7 @@ class ChangeOrderDetailInfoData {
   final int? ortReturn;
   final String? ortReturnTxt;
   final String? ortReturnMemo1;
-  final String? ortImg;
+  final List<dynamic>? ortImg;
   final String? ortReturnBankInfo;
 
   ChangeOrderDetailInfoData({

@@ -210,7 +210,7 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                                 color: Colors.black,
                               ),
                             ),
-                            Text(changeOrderDetailData?.info?.octWdate ?? '',
+                            Text(changeOrderDetailData?.info?.octWdate ?? changeOrderDetailData?.info?.ortWdate ?? '',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
@@ -252,7 +252,7 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                                 borderRadius: BorderRadius.circular(6.0),
                                 child: AspectRatio(
                                   aspectRatio: 1/1,
-                                  child: Image.network(changeOrderDetailData?.info?.ortImg ?? ''),
+                                  child: Image.network('${changeOrderDetailData?.info?.ortImg ?? []}'),
                                 ),
                               ),
                             ),

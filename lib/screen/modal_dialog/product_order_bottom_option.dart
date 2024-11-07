@@ -220,13 +220,28 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                               collapsedIconColor: Colors.black,
                               children: _ptAddArr.map((ptAdd) {
                                 return ListTile(
-                                  title: Text(
-                                    ptAdd.option ?? "",
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
-                                    ),
+                                  title: Row(
+                                    children: [
+                                      Text(
+                                        ptAdd.option ?? "",
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                      Visibility(
+                                        visible: ptAdd.patPrice != null,
+                                        child: Text(
+                                          " +${ptAdd.patPrice ?? 0}",
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   onTap: () {
                                     if (_addPtAddArr.isEmpty) {
@@ -287,12 +302,30 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            _addPtOptionArr[index].option ?? "",
-                                            style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(context, 14),
-                                              height: 1.2,
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  _addPtOptionArr[index].option ?? "",
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pretendard',
+                                                    fontSize: Responsive.getFont(context, 14),
+                                                    height: 1.2,
+                                                  ),
+                                                ),
+                                                Visibility(
+                                                  visible: _addPtOptionArr[index].potPrice != 0,
+                                                  child: Text(
+                                                    ' +${_addPtOptionArr[index].potPrice ?? 0}',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Pretendard',
+                                                      fontSize: Responsive.getFont(context, 14),
+                                                      fontWeight: FontWeight.w600,
+                                                      height: 1.2,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                           GestureDetector(
@@ -777,11 +810,13 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
       }
     }
     if (isAllChecked) {
+      bool optionExists = false;
       for (int i = 0; i < _ptOption.length; i++) {
         _ptOption[i].selectedValue = "";
       }
       for (int i = 0; i < _ptOptionArr.length; i++) {
         if (_ptOptionArr[i].option == optionStr) {
+          optionExists = true;
           if (_addPtOptionArr.isEmpty) {
             setState(() {
               _addPtOptionArr.add(_ptOptionArr[i]);
@@ -798,11 +833,14 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                 _addPtOptionArr.add(_ptOptionArr[i]);
               });
             } else {
-              //Utils.getInstance().showToast('이미 추가한 옵션 입니다.');
               Utils.getInstance().showSnackBar(context, '이미 추가한 옵션 입니다.');
             }
+            break;
           }
         }
+      }
+      if (!optionExists) {
+        Utils.getInstance().showSnackBar(context, '해당 옵션의 상품은 판매가 불가합니다.');
       }
     }
   }
