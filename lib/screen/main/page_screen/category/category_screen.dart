@@ -17,38 +17,34 @@ class CategoryScreen extends ConsumerStatefulWidget {
 class CategoryScreenState extends ConsumerState<CategoryScreen> {
   final ItemScrollController _scrollController = ItemScrollController();
   final ItemPositionsListener _itemPositionsListener = ItemPositionsListener.create();
-  int _selectedCategoryIndex = 0; // 선택된 카테고리의 인덱스
 
   @override
   void initState() {
     super.initState();
     _itemPositionsListener.itemPositions.addListener(_itemPositionListener);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _afterBuild(context);
-    });
+
+    Map<String, dynamic> requestData = {'category_type': '2'};
+    ref.read(categoryViewModelProvider.notifier).getCategory(requestData);
   }
 
   void _itemPositionListener() {
     final last = _itemPositionsListener.itemPositions.value.last;
-    final categories = ref.watch(categoryViewModelProvider)?.categoryResponseDTO?.list ?? [];
+    final model = ref.watch(categoryViewModelProvider);
+    final categories = model.categoryResponseDTO?.list ?? [];
+    final selectedCategoryIndex = model.selectedCategoryIndex;
     if (last.index == (categories.length - 1)) {
       if (last.itemTrailingEdge < 1.001) {
-        if (_selectedCategoryIndex != last.index) {
-          setState(() {
-            _selectedCategoryIndex = last.index;
-          });
+        if (selectedCategoryIndex != last.index) {
+          ref.read(categoryViewModelProvider.notifier).setSelectedCategoryIndex(last.index);
         }
         return;
       }
     }
 
-    ItemPosition position = _itemPositionsListener.itemPositions.value
-        .firstWhere((element) => element.itemLeadingEdge <= 0);
+    ItemPosition position = _itemPositionsListener.itemPositions.value.firstWhere((element) => element.itemLeadingEdge <= 0);
     final itemIndex = position.index;
-    if (_selectedCategoryIndex != itemIndex) {
-      setState(() {
-        _selectedCategoryIndex = itemIndex;
-      });
+    if (selectedCategoryIndex != itemIndex) {
+      ref.read(categoryViewModelProvider.notifier).setSelectedCategoryIndex(itemIndex);
     }
   }
 
@@ -104,7 +100,8 @@ class CategoryScreenState extends ConsumerState<CategoryScreen> {
       body: Consumer(
         builder: (context, ref, widget) {
           final model = ref.watch(categoryViewModelProvider);
-          final categories = model?.categoryResponseDTO?.list ?? [];
+          final categories = model.categoryResponseDTO?.list ?? [];
+          final selectedCategoryIndex = model.selectedCategoryIndex;
 
           return Row(
             children: [
@@ -116,12 +113,9 @@ class CategoryScreenState extends ConsumerState<CategoryScreen> {
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
                     final categoryData = categories[index];
-                    final bool isSelectCategory = _selectedCategoryIndex == index;
+                    final bool isSelectCategory = selectedCategoryIndex == index;
                     return GestureDetector(
                       onTap: () {
-                        // setState(() {
-                        //   _selectedCategoryIndex = index;
-                        // });
                         _scrollController.scrollTo(index: index, duration: const Duration(milliseconds: 1));
                       },
                       child: Container(
@@ -276,10 +270,5 @@ class CategoryScreenState extends ConsumerState<CategoryScreen> {
         },
       ),
     );
-  }
-
-  void _afterBuild(BuildContext context) {
-    Map<String, dynamic> requestData = {'category_type': '2'};
-    ref.read(categoryViewModelProvider.notifier).getCategory(requestData);
   }
 }

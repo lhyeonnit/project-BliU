@@ -18,7 +18,7 @@ class NonTopChildWidgetState extends State<NonTopChildWidget> {
   int _currentPage = 0;
   final int _totalPages = 4;
 
-  final List<String> banners = [
+  final List<String> _banners = [
     'assets/images/non/not_member_bn01.png',
     'assets/images/non/not_member_bn02.png',
     'assets/images/non/not_member_bn03.png',
@@ -155,7 +155,7 @@ class NonTopChildWidgetState extends State<NonTopChildWidget> {
             itemBuilder: (context, index) {
               return ClipRRect(
                 borderRadius: BorderRadius.circular(6),
-                child: Image.asset(banners[index]),
+                child: Image.asset(_banners[index]),
               );
             },
           ),

@@ -16,7 +16,6 @@ class HomeFooterViewModel extends StateNotifier<HomeFooterModel> {
   HomeFooterViewModel(super.state, this.ref);
 
   void getFoot() async {
-    print("getFoot");
     final response = await repository.reqGet(url: Constant.apiFootUrl);
     try {
       if (response != null) {
