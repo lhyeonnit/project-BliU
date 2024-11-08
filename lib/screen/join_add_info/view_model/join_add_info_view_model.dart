@@ -94,8 +94,6 @@ class JoinAddInfoViewModel extends StateNotifier<JoinAddInfoModel?> {
       );
     }
   }
-
-
 }
 
 final joinAddInfoViewModelProvider =

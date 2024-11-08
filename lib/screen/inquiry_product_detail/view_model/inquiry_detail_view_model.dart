@@ -7,13 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class InquiryDetailModel {
   QnaDetailResponseDTO? qnaDetailResponseDTO;
-
-  InquiryDetailModel({
-    this.qnaDetailResponseDTO,
-  });
 }
 
-class InquiryDetailViewModel extends StateNotifier<InquiryDetailModel?> {
+class InquiryDetailViewModel extends StateNotifier<InquiryDetailModel> {
   final Ref ref;
   final repository = DefaultRepository();
 
@@ -26,27 +22,28 @@ class InquiryDetailViewModel extends StateNotifier<InquiryDetailModel?> {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
           QnaDetailResponseDTO qnaDetailResponseDTO = QnaDetailResponseDTO.fromJson(responseData);
-          state = InquiryDetailModel(qnaDetailResponseDTO: qnaDetailResponseDTO);
+          state.qnaDetailResponseDTO = qnaDetailResponseDTO;
+          ref.notifyListeners();
           return;
         }
       }
-      state = InquiryDetailModel(
-          qnaDetailResponseDTO: QnaDetailResponseDTO(
-              result: false,
-              message: "Network Or Data Error",
-              data: null)
+      state.qnaDetailResponseDTO = QnaDetailResponseDTO(
+        result: false,
+        message: "Network Or Data Error",
+        data: null,
       );
+      ref.notifyListeners();
     } catch (e) {
       // Catch and log any exceptions
       if (kDebugMode) {
         print('Error fetching : $e');
       }
-      state = InquiryDetailModel(
-          qnaDetailResponseDTO: QnaDetailResponseDTO(
-              result: false,
-              message: e.toString(),
-              data: null)
+      state.qnaDetailResponseDTO = QnaDetailResponseDTO(
+        result: false,
+        message: e.toString(),
+        data: null,
       );
+      ref.notifyListeners();
     }
   }
 
@@ -72,6 +69,6 @@ class InquiryDetailViewModel extends StateNotifier<InquiryDetailModel?> {
 }
 
 final inquiryDetailViewModelProvider =
-StateNotifierProvider<InquiryDetailViewModel, InquiryDetailModel?>((req) {
-  return InquiryDetailViewModel(null, req);
+StateNotifierProvider<InquiryDetailViewModel, InquiryDetailModel>((req) {
+  return InquiryDetailViewModel(InquiryDetailModel(), req);
 });

@@ -75,16 +75,16 @@ class InquiryProductDetailScreen extends ConsumerWidget {
               builder: (context, ref, widget) {
                 final model = ref.watch(inquiryDetailViewModelProvider);
 
-                if (model?.qnaDetailResponseDTO?.result == false) {
+                if (model.qnaDetailResponseDTO?.result == false) {
                   Future.delayed(Duration.zero, () {
                     if (!context.mounted) return;
-                    Utils.getInstance().showSnackBar(context, model?.qnaDetailResponseDTO?.message ?? "");
-                    model?.qnaDetailResponseDTO = null;
+                    Utils.getInstance().showSnackBar(context, model.qnaDetailResponseDTO?.message ?? "");
+                    model.qnaDetailResponseDTO = null;
                   });
                   return Container();
                 }
 
-                final detailData = model?.qnaDetailResponseDTO?.data;
+                final detailData = model.qnaDetailResponseDTO?.data;
                 final product = detailData?.product;
                 final contentImgList = detailData?.qtContentImg ?? [];
 
@@ -319,22 +319,23 @@ class InquiryProductDetailScreen extends ConsumerWidget {
           Row(
             children: [
               Container(
-                  width: 50,
-                  height: 50,
-                  margin: const EdgeInsets.only(right: 10),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                width: 50,
+                height: 50,
+                margin: const EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: const Color(0xFFDDDDDD)),
+                ),
+                child: ClipOval(
+                  child: Image.network(
+                      detailData?.stProfile ?? "",
+                      fit: BoxFit.cover,
+                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                      return const SizedBox();
+                    }
                   ),
-                  child: ClipOval(
-                    child: Image.network(
-                        detailData?.stProfile ?? "",
-                        fit: BoxFit.cover,
-                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                        return const SizedBox();
-                      }
-                    ),
-                  )),
+                ),
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

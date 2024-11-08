@@ -1,4 +1,3 @@
-import 'package:BliU/data/coupon_data.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/my_coupon/view_model/my_coupon_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -18,15 +17,6 @@ class MyCouponScreen extends ConsumerStatefulWidget {
 class MyCouponScreenState extends ConsumerState<MyCouponScreen> {
   final ScrollController _scrollController = ScrollController();
   final List<String> _categories = ['사용가능', '완료/만료'];
-  int _selectedCategoryIndex = 0;
-
-  List<CouponData> _couponList = [];
-  int _couponCount = 0;
-
-  int _page = 1;
-  bool _hasNextPage = true;
-  bool _isFirstLoadRunning = false;
-  bool _isLoadMoreRunning = false;
 
   @override
   void initState() {
@@ -48,56 +38,14 @@ class MyCouponScreenState extends ConsumerState<MyCouponScreen> {
   }
 
   void _getList() async {
-    setState(() {
-      _isFirstLoadRunning = true;
-    });
-    _page = 1;
-    _hasNextPage = true;
-
     final requestData = await _makeRequestData();
-
-    setState(() {
-      _couponCount = 0;
-      _couponList = [];
-    });
-
-    final productCouponResponseDTO =
-        await ref.read(myCouponViewModelProvider.notifier).getList(requestData);
-    _couponCount = productCouponResponseDTO?.count ?? 0;
-    _couponList = productCouponResponseDTO?.list ?? [];
-
-    setState(() {
-      _isFirstLoadRunning = false;
-    });
+    ref.read(myCouponViewModelProvider.notifier).listLoad(requestData);
   }
 
   void _nextLoad() async {
-    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning && _scrollController.position.extentAfter < 200) {
-      setState(() {
-        _isLoadMoreRunning = true;
-      });
-      _page += 1;
-
+    if (_scrollController.position.extentAfter < 200) {
       final requestData = await _makeRequestData();
-
-      final productCouponResponseDTO = await ref
-          .read(myCouponViewModelProvider.notifier)
-          .getList(requestData);
-      if (productCouponResponseDTO != null) {
-        if ((productCouponResponseDTO.list ?? []).isNotEmpty) {
-          setState(() {
-            _couponList.addAll(productCouponResponseDTO.list ?? []);
-          });
-        } else {
-          setState(() {
-            _hasNextPage = false;
-          });
-        }
-      }
-
-      setState(() {
-        _isLoadMoreRunning = false;
-      });
+      ref.read(myCouponViewModelProvider.notifier).listNextLoad(requestData);
     }
   }
 
@@ -105,15 +53,16 @@ class MyCouponScreenState extends ConsumerState<MyCouponScreen> {
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
+    final model = ref.read(myCouponViewModelProvider);
+
     String couponStatus = "Y";
-    if (_selectedCategoryIndex == 1) {
+    if (model.selectedCategoryIndex == 1) {
       couponStatus = "N";
     }
 
     final Map<String, dynamic> requestData = {
       'mt_idx': mtIdx,
       'coupon_status': couponStatus,
-      'pg': _page
     };
 
     return requestData;
@@ -163,217 +112,225 @@ class MyCouponScreenState extends ConsumerState<MyCouponScreen> {
         ),
       ),
       body: SafeArea(
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 38,
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _categories.length,
-                      itemBuilder: (context, index) {
-                        final bool isSelected = _selectedCategoryIndex == index;
+        child: Consumer(
+          builder: (context, ref, widget) {
+            final viewModel = ref.read(myCouponViewModelProvider.notifier);
+            final model = ref.watch(myCouponViewModelProvider);
+            final selectedCategoryIndex = model.selectedCategoryIndex;
+            final couponCount = model.couponCount;
+            final couponList = model.couponList;
 
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 4.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedCategoryIndex = index;
-                                _getList();
-                              });
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(19),
-                                border: Border.all(
-                                  color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-                                  width: 1.0,
-                                ),
-                                color: Colors.white,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  _categories[index],
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    color: isSelected ? const Color(0xFFFF6192) : Colors.black,
-                                    height: 1.2,
+            return Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 38,
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _categories.length,
+                          itemBuilder: (context, index) {
+                            final bool isSelected = selectedCategoryIndex == index;
+
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 4.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  viewModel.setSelectedCategoryIndex(index);
+                                  _getList();
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(19),
+                                    border: Border.all(
+                                      color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                      width: 1.0,
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      _categories[index],
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                                        height: 1.2,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Visibility(
-                    visible: _couponList.isNotEmpty,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        '쿠폰 $_couponCount',
-                        style: const TextStyle(
-                          height: 1.2,
+                            );
+                          },
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Visibility(
-                    visible: _couponList.isNotEmpty,
-                    child: Expanded(
-                      flex: 1,
-                      child: ListView.builder(
-                        controller: _scrollController,
-                        itemCount: _couponList.length,
-                        itemBuilder: (context, index) {
-                          final productCouponData = _couponList[index];
+                      const SizedBox(height: 20),
+                      Visibility(
+                        visible: couponList.isNotEmpty,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                            '쿠폰 $couponCount',
+                            style: const TextStyle(
+                              height: 1.2,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Visibility(
+                        visible: couponList.isNotEmpty,
+                        child: Expanded(
+                          flex: 1,
+                          child: ListView.builder(
+                            controller: _scrollController,
+                            itemCount: couponList.length,
+                            itemBuilder: (context, index) {
+                              final productCouponData = couponList[index];
 
-                          final couponDiscount = productCouponData.couponDiscount ?? "0";
-                          final ctName = productCouponData.ctName ?? "";
-                          final couponName = productCouponData.couponName ?? "";
-                          final ctDate = "${productCouponData.ctDate ?? ""}까지 사용가능";
-                          final couponStatus = productCouponData.couponStatus ?? "";
+                              final couponDiscount = productCouponData.couponDiscount ?? "0";
+                              final ctName = productCouponData.ctName ?? "";
+                              final couponName = productCouponData.couponName ?? "";
+                              final ctDate = "${productCouponData.ctDate ?? ""}까지 사용가능";
+                              final couponStatus = productCouponData.couponStatus ?? "";
 
-                          String detailMessage = "구매금액 ${Utils.getInstance().priceString(productCouponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
-                          if (productCouponData.ctMaxPrice != null) {
-                            detailMessage = "최대 ${Utils.getInstance().priceString(productCouponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
-                          }
+                              String detailMessage = "구매금액 ${Utils.getInstance().priceString(productCouponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
+                              if (productCouponData.ctMaxPrice != null) {
+                                detailMessage = "최대 ${Utils.getInstance().priceString(productCouponData.ctMaxPrice ?? 0)} 할인 가능\n$detailMessage";
+                              }
 
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Container(
-                              margin: const EdgeInsets.only(bottom: 15.0),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  style: BorderStyle.solid,
-                                  color: const Color(0xFFDDDDDD),
-                                ),
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: IntrinsicHeight(
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 8,
-                                      child: Container(
-                                        margin: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                child: Container(
+                                  margin: const EdgeInsets.only(bottom: 15.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      style: BorderStyle.solid,
+                                      color: const Color(0xFFDDDDDD),
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  child: IntrinsicHeight(
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 8,
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
+                                            child: Column(
                                               crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  couponDiscount,
-                                                  style: TextStyle(
-                                                    fontFamily: 'Pretendard',
-                                                    fontSize: Responsive.getFont(context, 16),
-                                                    fontWeight: FontWeight.bold,
-                                                    color: couponStatus == "사용가능" ? const Color(0xFFFF6192) : const Color(0xFFA4A4A4),
-                                                    height: 1.2,
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Container(
-                                                    margin: const EdgeInsets.only(left: 6),
-                                                    child: Text(
-                                                      ctName.isEmpty ? couponName : ctName,
+                                                Row(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      couponDiscount,
                                                       style: TextStyle(
                                                         fontFamily: 'Pretendard',
-                                                        fontSize:
-                                                        Responsive.getFont(context, 16),
+                                                        fontSize: Responsive.getFont(context, 16),
                                                         fontWeight: FontWeight.bold,
-                                                        color: couponStatus == "사용가능" ? Colors.black : const Color(0xFFA4A4A4),
+                                                        color: couponStatus == "사용가능" ? const Color(0xFFFF6192) : const Color(0xFFA4A4A4),
                                                         height: 1.2,
                                                       ),
-                                                      softWrap: true,
                                                     ),
+                                                    Expanded(
+                                                      child: Container(
+                                                        margin: const EdgeInsets.only(left: 6),
+                                                        child: Text(
+                                                          ctName.isEmpty ? couponName : ctName,
+                                                          style: TextStyle(
+                                                            fontFamily: 'Pretendard',
+                                                            fontSize:
+                                                            Responsive.getFont(context, 16),
+                                                            fontWeight: FontWeight.bold,
+                                                            color: couponStatus == "사용가능" ? Colors.black : const Color(0xFFA4A4A4),
+                                                            height: 1.2,
+                                                          ),
+                                                          softWrap: true,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Container(
+                                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                                  child: Text(
+                                                    ctDate,
+                                                    style: TextStyle(
+                                                      fontFamily: 'Pretendard',
+                                                      fontSize: Responsive.getFont(context, 14),
+                                                      color: couponStatus == "사용가능" ? Colors.black : const Color(0xFFA4A4A4),
+                                                      height: 1.2,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  detailMessage,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pretendard',
+                                                    fontSize:
+                                                    Responsive.getFont(context, 12),
+                                                    color: const Color(0xFFA4A4A4),
+                                                    height: 1.2,
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                            Container(
-                                              padding: const EdgeInsets.symmetric(vertical: 10),
-                                              child: Text(
-                                                ctDate,
-                                                style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  fontSize: Responsive.getFont(context, 14),
-                                                  color: couponStatus == "사용가능" ? Colors.black : const Color(0xFFA4A4A4),
-                                                  height: 1.2,
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              detailMessage,
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize:
-                                                Responsive.getFont(context, 12),
-                                                color: const Color(0xFFA4A4A4),
-                                                height: 1.2,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Visibility(
-                                      visible: couponStatus != "사용가능" ? true : false,
-                                      child: Expanded(
-                                        flex: 3,
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(
-                                                child: Text(
-                                                  productCouponData.couponStatus ?? "",
-                                                  style: TextStyle(
-                                                    fontFamily: 'Pretendard',
-                                                    fontSize: Responsive.getFont(context, 12),
-                                                    color: Colors.grey,
-                                                    height: 1.2,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
                                           ),
                                         ),
-                                      ),
-                                    )
-                                  ],
+                                        Visibility(
+                                          visible: couponStatus != "사용가능" ? true : false,
+                                          child: Expanded(
+                                            flex: 3,
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                                children: [
+                                                  SizedBox(
+                                                    child: Text(
+                                                      productCouponData.couponStatus ?? "",
+                                                      style: TextStyle(
+                                                        fontFamily: 'Pretendard',
+                                                        fontSize: Responsive.getFont(context, 12),
+                                                        color: Colors.grey,
+                                                        height: 1.2,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        },
+                              );
+                            },
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            Visibility(
-              visible: _couponList.isEmpty,
-              child: const NonDataScreen(text: '등록된 쿠폰이 없습니다.'),
-            ),
-          ],
+                ),
+                Visibility(
+                  visible: couponList.isEmpty,
+                  child: const NonDataScreen(text: '등록된 쿠폰이 없습니다.'),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

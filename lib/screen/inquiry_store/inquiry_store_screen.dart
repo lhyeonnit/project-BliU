@@ -159,9 +159,10 @@ class InquiryStoreScreenState extends ConsumerState<InquiryStoreScreen> {
                                 height: 100,
                                 margin: const EdgeInsets.only(right: 10),
                                 decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                    border: Border.all(color: const Color(0xFFE7EAEF))),
+                                  color: Colors.white,
+                                  borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                  border: Border.all(color: const Color(0xFFE7EAEF)),
+                                ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,

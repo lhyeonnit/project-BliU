@@ -117,10 +117,9 @@ class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
               ),
             ),
             Visibility(
-                visible: _couponList.isEmpty,
-                child: const NonDataScreen(text: '등록된 쿠폰이 없습니다.',)
+              visible: _couponList.isEmpty,
+              child: const NonDataScreen(text: '등록된 쿠폰이 없습니다.',),
             ),
-
             Visibility(
               visible: _couponList.isNotEmpty,
               child: Positioned(

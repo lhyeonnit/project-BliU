@@ -73,16 +73,16 @@ class InquiryOneDetailScreen extends ConsumerWidget {
               builder: (context, ref, widget) {
                 final model = ref.watch(inquiryDetailViewModelProvider);
 
-                if (model?.qnaDetailResponseDTO?.result == false) {
+                if (model.qnaDetailResponseDTO?.result == false) {
                   Future.delayed(Duration.zero, () {
                     if (!context.mounted) return;
-                    Utils.getInstance().showSnackBar(context, model?.qnaDetailResponseDTO?.message ?? "");
-                    model?.qnaDetailResponseDTO = null;
+                    Utils.getInstance().showSnackBar(context, model.qnaDetailResponseDTO?.message ?? "");
+                    model.qnaDetailResponseDTO = null;
                   });
                   return Container();
                 }
 
-                final detailData = model?.qnaDetailResponseDTO?.data;
+                final detailData = model.qnaDetailResponseDTO?.data;
                 final contentImgList = detailData?.qtContentImg ?? [];
 
                 List<Widget> contentImgWidgetList = [];

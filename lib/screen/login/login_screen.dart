@@ -247,9 +247,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       margin: const EdgeInsets.symmetric(horizontal: 15),
                       decoration: const BoxDecoration(
-                          border: Border.symmetric(
-                              vertical: BorderSide(color: Color(0xFFDDDDDD))
-                          )
+                        border: Border.symmetric(
+                          vertical: BorderSide(color: Color(0xFFDDDDDD)),
+                        ),
                       ),
                       child: GestureDetector(
                         onTap: () async {
