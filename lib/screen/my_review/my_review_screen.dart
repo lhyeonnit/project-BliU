@@ -140,7 +140,7 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(6.0),
                                 child: Image.network(
-                                  reviewData.rtImg ?? "",
+                                  reviewData.ptImg ?? "",
                                   width: 90,
                                   height: 90,
                                   fit: BoxFit.cover,
@@ -165,7 +165,7 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 4),
+                                    padding: const EdgeInsets.only(top: 4, bottom: 10),
                                     child: Text(
                                       reviewData.ptName ?? "",
                                       style: TextStyle(
@@ -178,7 +178,7 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
                                     ),
                                   ),
                                   Text(
-                                    reviewData.ctOptName ?? "",
+                                    reviewData.ctOptValue ?? "",
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 13),
