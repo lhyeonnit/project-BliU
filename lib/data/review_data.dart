@@ -7,6 +7,7 @@ class ReviewData {
   final String? rtWdate;
   final List<String>? imgArr;
   final String? rtImg;
+  final String? ptImg;
   final String? stName;
   final String? ptName;
   final String? ctOptName;
@@ -21,6 +22,7 @@ class ReviewData {
     required this.rtWdate,
     required this.imgArr,
     required this.rtImg,
+    required this.ptImg,
     required this.stName,
     required this.ptName,
     required this.ctOptName,
@@ -42,6 +44,7 @@ class ReviewData {
       rtWdate: json['rt_wdate'],
       imgArr: imgArr,
       rtImg: json['rt_img'],
+      ptImg: json['pt_img'],
       stName: json['st_name'],
       ptName: json['pt_name'],
       ctOptName: json['ct_opt_name'],
@@ -60,6 +63,7 @@ class ReviewData {
       'rt_wdate': rtWdate,
       'img_arr': imgArr,
       'rt_img': rtImg,
+      'pt_img': ptImg,
       'st_name': stName,
       'pt_name': ptName,
       'ct_opt_name': ctOptName,
