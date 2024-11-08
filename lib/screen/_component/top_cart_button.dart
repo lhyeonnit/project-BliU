@@ -47,7 +47,7 @@ class TopCartButton extends ConsumerWidget {
       child: Consumer(
         builder: (context, ref, widget) {
           final model = ref.watch(topCartButtonViewModelProvider);
-          String cartCount = model?.cartCount ?? "0";
+          String cartCount = model.cartCount ?? "0";
 
           return Stack(
             children: [

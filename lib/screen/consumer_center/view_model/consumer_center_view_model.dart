@@ -13,7 +13,7 @@ class ConsumerCenterModel {
   });
 }
 
-class ConsumerCenterViewModel extends StateNotifier<ConsumerCenterModel?> {
+class ConsumerCenterViewModel extends StateNotifier<ConsumerCenterModel> {
   final Ref ref;
   final repository = DefaultRepository();
 
@@ -44,6 +44,6 @@ class ConsumerCenterViewModel extends StateNotifier<ConsumerCenterModel?> {
 }
 
 final consumerCenterViewModelProvider =
-StateNotifierProvider<ConsumerCenterViewModel, ConsumerCenterModel?>((req) {
-  return ConsumerCenterViewModel(null, req);
+StateNotifierProvider<ConsumerCenterViewModel, ConsumerCenterModel>((req) {
+  return ConsumerCenterViewModel(ConsumerCenterModel(), req);
 });

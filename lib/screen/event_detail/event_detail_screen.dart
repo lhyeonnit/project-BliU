@@ -64,14 +64,14 @@ class EventDetailScreen extends ConsumerWidget {
           margin: const EdgeInsets.only(top: 40.0),
           child: Consumer(builder: (context, ref, widget) {
             final model = ref.watch(eventDetailViewModelProvider);
-            if (model?.eventDetailResponseDTO?.result == false) {
+            if (model.eventDetailResponseDTO?.result == false) {
               Future.delayed(Duration.zero, () {
                 if (!context.mounted) return;
-                Utils.getInstance().showSnackBar(context, model?.eventDetailResponseDTO?.message ?? "");
+                Utils.getInstance().showSnackBar(context, model.eventDetailResponseDTO?.message ?? "");
               });
             }
 
-            final eventData = model?.eventDetailResponseDTO?.data;
+            final eventData = model.eventDetailResponseDTO?.data;
             final btTitle = eventData?.btTitle ?? "";
             final btWdate = eventData?.btWdate ?? "";
             final btImage = eventData?.btImg ?? "";
@@ -108,10 +108,10 @@ class EventDetailScreen extends ConsumerWidget {
                 ),
                 //Image.asset('assets/images/my/event_dt.png'),
                 Image.network(
-                    btImage,
-                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                      return const SizedBox();
-                    }
+                  btImage,
+                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    return const SizedBox();
+                  },
                 )
               ],
             );

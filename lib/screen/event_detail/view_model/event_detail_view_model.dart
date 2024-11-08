@@ -6,13 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class EventDetailModel {
   EventDetailResponseDTO? eventDetailResponseDTO;
-
-  EventDetailModel({
-    required this.eventDetailResponseDTO,
-  });
 }
 
-class EventDetailViewModel extends StateNotifier<EventDetailModel?> {
+class EventDetailViewModel extends StateNotifier<EventDetailModel> {
   final Ref ref;
   final repository = DefaultRepository();
 
@@ -25,34 +21,33 @@ class EventDetailViewModel extends StateNotifier<EventDetailModel?> {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseData = response.data;
           EventDetailResponseDTO eventDetailResponseDTO = EventDetailResponseDTO.fromJson(responseData);
-          state = EventDetailModel(eventDetailResponseDTO: eventDetailResponseDTO);
+          state.eventDetailResponseDTO = eventDetailResponseDTO;
+          ref.notifyListeners();
           return;
         }
       }
-      state = EventDetailModel(
-          eventDetailResponseDTO: EventDetailResponseDTO(
-              result: false,
-              message: "Network Or Data Error",
-              data: null
-          )
+      state.eventDetailResponseDTO = EventDetailResponseDTO(
+        result: false,
+        message: "Network Or Data Error",
+        data: null,
       );
+      ref.notifyListeners();
     } catch (e) {
       // Catch and log any exceptions
       if (kDebugMode) {
         print('Error fetching : $e');
       }
-      state = EventDetailModel(
-          eventDetailResponseDTO: EventDetailResponseDTO(
-              result: false,
-              message: e.toString(),
-              data: null
-          )
+      state.eventDetailResponseDTO = EventDetailResponseDTO(
+        result: false,
+        message: e.toString(),
+        data: null,
       );
+      ref.notifyListeners();
     }
   }
 }
 
 final eventDetailViewModelProvider =
-StateNotifierProvider<EventDetailViewModel, EventDetailModel?>((req) {
-  return EventDetailViewModel(null, req);
+StateNotifierProvider<EventDetailViewModel, EventDetailModel>((req) {
+  return EventDetailViewModel(EventDetailModel(), req);
 });

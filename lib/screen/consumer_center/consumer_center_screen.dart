@@ -75,7 +75,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
                     _buildInfoRow(
                       context,
                       '메일문의',
-                      model?.stCustomerEmail ?? 'email@email.com',
+                      model.stCustomerEmail ?? 'email@email.com',
                       Colors.black,
                       false,
                     ),
@@ -96,7 +96,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              String telNumber = model?.stCustomerTel ?? '02-000-000';
+                              String telNumber = model.stCustomerTel ?? '02-000-000';
                               telNumber = telNumber.replaceAll("-", "");
                               final url = Uri.parse("tel:$telNumber");
                               if (await canLaunchUrl(url)) {
@@ -104,7 +104,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
                               }
                             },
                             child: Text(
-                              model?.stCustomerTel ?? '02-000-000',
+                              model.stCustomerTel ?? '02-000-000',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
@@ -177,8 +177,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildInfoRow(BuildContext context, String title, String content,
-      Color contentColor, bool underline) {
+  Widget _buildInfoRow(BuildContext context, String title, String content, Color contentColor, bool underline) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -216,8 +215,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildCustomTile(
-      BuildContext context, String title, VoidCallback onTap) {
+  Widget _buildCustomTile(BuildContext context, String title, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       child: Padding(
