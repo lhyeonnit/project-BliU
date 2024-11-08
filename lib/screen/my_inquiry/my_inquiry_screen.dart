@@ -100,7 +100,7 @@ class MyInquiryScreenState extends State<MyInquiryScreen> with SingleTickerProvi
       body: SafeArea(
         child: TabBarView(
           controller: _tabController,
-          children: const [
+          children: [
             MyInquiryProductChildWidget(),
             MyInquiryOneChildWidget(),
           ],

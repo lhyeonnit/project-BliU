@@ -6,14 +6,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MyInquiryOneModel {
-  QnaListResponseDTO? qnaListResponseDTO;
+  int currentPage = 1;
+  int totalPages = 1;
 
-  MyInquiryOneModel({
-    this.qnaListResponseDTO,
-  });
+  int count = 0;
+  List<QnaData> qnaList = [];
 }
 
-class MyInquiryOneViewModel extends StateNotifier<MyInquiryOneModel?> {
+class MyInquiryOneViewModel extends StateNotifier<MyInquiryOneModel> {
   final Ref ref;
   final repository = DefaultRepository();
 
@@ -27,30 +27,41 @@ class MyInquiryOneViewModel extends StateNotifier<MyInquiryOneModel?> {
           Map<String, dynamic> responseData = response.data;
           QnaListResponseDTO qnaListResponseDTO = QnaListResponseDTO.fromJson(responseData);
 
-          var list = state?.qnaListResponseDTO?.list ?? [];
+          state.count =  qnaListResponseDTO.count ?? 0;
           List<QnaData> addList = qnaListResponseDTO.list ?? [];
           for (var item in  addList) {
-            list.add(item);
+            state.qnaList.add(item);
           }
 
-          qnaListResponseDTO.list = list;
+          if (state.count > 0) {
+            state.totalPages = (state.count~/10);
+            if ((state.count%10) > 0) {
+              state.totalPages = state.totalPages + 1;
+            }
+          }
 
-          state = MyInquiryOneModel(qnaListResponseDTO: qnaListResponseDTO);
+          ref.notifyListeners();
           return;
         }
       }
-      state = state;
     } catch (e) {
       // Catch and log any exceptions
       if (kDebugMode) {
         print('Error fetching : $e');
       }
-      state = state;
     }
+  }
+
+  void clearQnaList() {
+    state.qnaList.clear();
+  }
+
+  void setCurrentPage(int page) {
+    state.currentPage = page;
   }
 }
 
 final myInquiryOneViewModelProvider =
-StateNotifierProvider<MyInquiryOneViewModel, MyInquiryOneModel?>((req) {
-  return MyInquiryOneViewModel(null, req);
+StateNotifierProvider<MyInquiryOneViewModel, MyInquiryOneModel>((req) {
+  return MyInquiryOneViewModel(MyInquiryOneModel(), req);
 });
