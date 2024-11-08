@@ -129,6 +129,8 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
   }
 
   void _getList() async {
+    _maxScrollHeight = 0;
+
     final requestProductData = await _makeRequestData();
     ref.read(storeFavoriteViewModelProvider.notifier).listLoad(requestProductData);
   }
@@ -491,7 +493,6 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                                                 child: GestureDetector(
                                                   onTap: () {
                                                     _searchController.clear();
-                                                    setState(() {});
                                                   },
                                                   child: SvgPicture.asset(
                                                     'assets/images/ic_word_del.svg',
@@ -502,7 +503,6 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                                               suffixIconConstraints: BoxConstraints.tight(const Size(24, 24)),
                                             ),
                                             onChanged: (value) {
-                                              setState(() {});
                                             },
                                             onSubmitted: (value) {
                                               _getList();

@@ -25,8 +25,6 @@ class StoreFavoriteModel {
   bool hasNextPage = true;
   bool isFirstLoadRunning = false;
   bool isLoadMoreRunning = false;
-
-  BookmarkResponseDTO? bookmarkResponseDTO;
 }
 
 class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel> {
@@ -80,7 +78,7 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel> {
     state.productList = [];
     ref.notifyListeners();
 
-    final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestProductData);
+    final productListResponseDTO = await _getProductList(requestProductData);
     state.count = productListResponseDTO?.count ?? 0;
     state.productList = productListResponseDTO?.list ?? [];
 
@@ -97,7 +95,7 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel> {
         'pg': state.page,
       });
 
-      final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestProductData);
+      final productListResponseDTO = await _getProductList(requestProductData);
       if (productListResponseDTO != null) {
         if (productListResponseDTO.list.isNotEmpty) {
           state.productList.addAll(productListResponseDTO.list);
@@ -110,7 +108,7 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel> {
     }
   }
 
-  Future<ProductListResponseDTO?> getProductList(Map<String, dynamic> requestData) async {
+  Future<ProductListResponseDTO?> _getProductList(Map<String, dynamic> requestData) async {
     try {
       final response = await repository.reqPost(url: Constant.apiStoreProductsUrl, data: requestData);
       if (response != null) {
@@ -152,38 +150,7 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel> {
 
   /// 북마크 상태를 토글하는 메서드
   Future<void> toggleLike(Map<String, dynamic> requestData) async {
-    try {
-      final response = await repository.reqPost(url: Constant.apiStoreLikeUrl, data: requestData,);
-
-      if (response != null && response.statusCode == 200) {
-        bool result = response.data['result'];
-        int stIdx = requestData['st_idx'];
-
-        if (result) {
-          // 북마크 리스트에서 stIdx를 찾아 상태 반전
-          List<BookmarkData>? updatedList = state.bookmarkResponseDTO?.list?.map((store) {
-            if (store.stIdx == stIdx) {
-              store.stLike = store.stLike == 1 ? 0 : 1; // 북마크 상태 반전
-            }
-            return store;
-          }).toList();
-
-          final bookmarkResponseDTO = BookmarkResponseDTO(
-            result: state.bookmarkResponseDTO?.result ?? false,
-            count: updatedList?.length ?? 0,
-            list: updatedList,
-          );
-
-          // 상태 업데이트
-          state.bookmarkResponseDTO = bookmarkResponseDTO;
-          ref.notifyListeners();
-        }
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error toggling like: $e');
-      }
-    }
+    await repository.reqPost(url: Constant.apiStoreLikeUrl, data: requestData,);
   }
 
   void setSortOptionSelected(String sortOptionSelected) {
