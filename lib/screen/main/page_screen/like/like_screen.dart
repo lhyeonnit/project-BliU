@@ -36,7 +36,6 @@ class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderState
 
   @override
   void dispose() {
-    _tabController.removeListener(_getList);
     _tabController.dispose();
     super.dispose();
   }
@@ -102,8 +101,12 @@ class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderState
               mainViewModelProvider,
               ((previous, next) {
                 final productCategories = next.productCategories;
-                _tabController = TabController(length: productCategories.length, vsync: this);
-                _tabController.addListener(_getList);
+                _tabController = TabController(length: productCategories.length, vsync: this)
+                  ..addListener(() {
+                    if (!_tabController.indexIsChanging) {
+                      _getList();
+                    }
+                  });
               }),
             );
 

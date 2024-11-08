@@ -73,7 +73,6 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
 
   @override
   void dispose() {
-    _tabController.removeListener(_tabChangeCallBack);
     _tabController.dispose();
     super.dispose();
   }
@@ -84,10 +83,12 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
   }
 
   void _tabChangeCallBack() {
-    _hasNextPage = true;
-    _isLoadMoreRunning = false;
+    if (!_tabController.indexIsChanging) {
+      _hasNextPage = true;
+      _isLoadMoreRunning = false;
 
-    _getList();
+      _getList();
+    }
   }
 
   void _getList() async {

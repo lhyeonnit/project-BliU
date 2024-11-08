@@ -82,10 +82,12 @@ class StoreDetailScreenState extends ConsumerState<StoreDetailScreen> with Ticke
   }
 
   void _tabChangeCallBack() {
-    _hasNextPage = true;
-    _isLoadMoreRunning = false;
+    if (_tabController.indexIsChanging) {
+      _hasNextPage = true;
+      _isLoadMoreRunning = false;
 
-    _getList();
+      _getList();
+    }
   }
   void _getList() async {
     setState(() {

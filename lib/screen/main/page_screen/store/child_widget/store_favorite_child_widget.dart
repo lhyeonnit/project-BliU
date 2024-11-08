@@ -1,6 +1,5 @@
 import 'package:BliU/data/bookmark_data.dart';
 import 'package:BliU/data/category_data.dart';
-import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/main/page_screen/store/view_model/store_favorite_view_model.dart';
@@ -31,23 +30,8 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
 
   final PageController _pageController = PageController();
   final ScrollController _scrollController = ScrollController();
-  String sortOption = '인기순';
-  String sortOptionSelected = '';
-
-  CategoryData? selectedAgeGroup;
-  int _bookMarkCount = 0;
-  int _bookMarkVisibleCount = 0;
-  final List<List<BookmarkData>> _bookMarkList = [];
-
-  int _count = 0;
-  List<ProductData> _productList = [];
 
   double _maxScrollHeight = 0;// NestedScrollView 사용시 최대 높이를 저장하기 위한 변수
-
-  int _page = 1;
-  bool _hasNextPage = true;
-  bool _isFirstLoadRunning = false;
-  bool _isLoadMoreRunning = false;
 
   @override
   void initState() {
@@ -67,8 +51,12 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
   void _afterBuild(BuildContext context) {
     final mainModel = ref.read(mainViewModelProvider);
     final productCategories = mainModel.productCategories;
-    _tabController = TabController(length: productCategories.length, vsync: this);
-    _tabController.addListener(_getList);
+    _tabController = TabController(length: productCategories.length, vsync: this)
+      ..addListener(() {
+        if (!_tabController.indexIsChanging) {
+          _getList();
+        }
+      });
 
     _getList();
     _getBookMark(1);
@@ -82,22 +70,13 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
       'mt_idx': mtIdx,
       'pg': page,
     };
-    final bookmarkResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getBookmark(requestBookmarkData);
-    setState(() {
-      _bookMarkCount = bookmarkResponseDTO?.count ?? 0;
-      final list = bookmarkResponseDTO?.list ?? [];
-      _bookMarkVisibleCount = list.length;
 
-      if (_bookMarkList.length >= page) {
-        _bookMarkList[page - 1] = list;
-      } else {
-        _bookMarkList.add([]);
-        _bookMarkList[page - 1] = list;
-      }
-    });
+    ref.read(storeFavoriteViewModelProvider.notifier).getBookmark(requestBookmarkData, page);
   }
 
   Future<Map<String, dynamic>> _makeRequestData() async {
+    final model = ref.read(storeFavoriteViewModelProvider);
+
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
@@ -112,13 +91,13 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
     }
 
     String ageStr = "all";
-    if (selectedAgeGroup != null) {
-      ageStr = (selectedAgeGroup?.catIdx ?? 0).toString();
+    if (model.selectedAgeGroup != null) {
+      ageStr = (model.selectedAgeGroup?.catIdx ?? 0).toString();
     }
 
     int sort = 1;
     // 1 최신순 2 인기순 3: 추천수, 4: 가격 낮은수, 5: 가격 높은수
-    switch (sortOptionSelected) {
+    switch (model.sortOptionSelected) {
       case "최신순":
         sort = 1;
         break;
@@ -140,7 +119,6 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
 
     Map<String, dynamic> requestProductData = {
       'mt_idx': mtIdx,
-      'pg': _page,
       'search_txt': searchTxt,
       'category': category,
       'age': ageStr,
@@ -151,70 +129,27 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
   }
 
   void _getList() async {
-    setState(() {
-      _isFirstLoadRunning = true;
-    });
-    _page = 1;
-    _hasNextPage = true;
-
     final requestProductData = await _makeRequestData();
-
-    setState(() {
-      _count = 0;
-      _productList = [];
-    });
-
-    final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestProductData);
-    _count = productListResponseDTO?.count ?? 0;
-    _productList = productListResponseDTO?.list ?? [];
-
-    setState(() {
-      _isFirstLoadRunning = false;
-    });
+    ref.read(storeFavoriteViewModelProvider.notifier).listLoad(requestProductData);
   }
 
   void _nextLoad() async {
-
-    if (_hasNextPage && !_isFirstLoadRunning && !_isLoadMoreRunning){
-      setState(() {
-        _isLoadMoreRunning = true;
-      });
-      _page += 1;
-
-      final requestProductData = await _makeRequestData();
-
-      final productListResponseDTO = await ref.read(storeFavoriteViewModelProvider.notifier).getProductList(requestProductData);
-      if (productListResponseDTO != null) {
-        if (productListResponseDTO.list.isNotEmpty) {
-          setState(() {
-            _productList.addAll(productListResponseDTO.list);
-          });
-        } else {
-          setState(() {
-            _hasNextPage = false;
-          });
-        }
-      }
-
-      setState(() {
-        _isLoadMoreRunning = false;
-      });
-    }
+    final requestProductData = await _makeRequestData();
+    ref.read(storeFavoriteViewModelProvider.notifier).listNextLoad(requestProductData);
   }
 
   void _openSortBottomSheet() {
+    final viewModel = ref.read(storeFavoriteViewModelProvider.notifier);
+    final model = ref.read(storeFavoriteViewModelProvider);
     showModalBottomSheet(
       context: context,
       builder: (context) {
         return SafeArea(
           child: ProductSortBottom(
-            sortOption: sortOption,
+            sortOption: model.sortOptionSelected,
             onSortOptionSelected: (selectedOption) {
-              setState(() {
-                sortOptionSelected = selectedOption;
-                sortOption = selectedOption; // 선택된 정렬 옵션으로 업데이트
-                _getList();
-              });
+              viewModel.setSortOptionSelected(selectedOption);
+              _getList();
             },
           ),
         );
@@ -225,6 +160,8 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
   void _showAgeGroupSelection() {
     final mainModel = ref.read(mainViewModelProvider);
     final ageCategories = mainModel.ageCategories;
+    final viewModel = ref.read(storeFavoriteViewModelProvider.notifier);
+    final model = ref.read(storeFavoriteViewModelProvider);
 
     showModalBottomSheet(
       context: context,
@@ -233,12 +170,10 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
         return SafeArea(
           child: StoreAgeGroupSelection(
             ageCategories: ageCategories,
-            selectedAgeGroup: selectedAgeGroup,
+            selectedAgeGroup: model.selectedAgeGroup,
             onSelectionChanged: (CategoryData? newSelection) {
-              setState(() {
-                selectedAgeGroup = newSelection;
-                _getList();
-              });
+              viewModel.setSelectedAgeGroup(newSelection);
+              _getList();
             },
           ),
         );
@@ -247,10 +182,11 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
   }
 
   String getSelectedAgeGroupText() {
-    if (selectedAgeGroup == null) {
+    final model = ref.read(storeFavoriteViewModelProvider);
+    if (model.selectedAgeGroup == null) {
       return '연령';
     } else {
-      return selectedAgeGroup?.catName ?? "";
+      return model.selectedAgeGroup?.catName ?? "";
     }
   }
 
@@ -278,22 +214,21 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
         body: SafeArea(
           child: Consumer(
             builder: (context, ref, widget) {
-              ref.listen(
-                mainViewModelProvider,
-                ((previous, next) {
-                  final productCategories = next.productCategories;
-                  _tabController = TabController(length: productCategories.length, vsync: this);
-                  _tabController.addListener(_getList);
-                }),
-              );
-
               final mainModel = ref.watch(mainViewModelProvider);
               final productCategories = mainModel.productCategories;
+
+              final model = ref.watch(storeFavoriteViewModelProvider);
+              final bookMarkCount = model.bookMarkCount;
+              final bookMarkVisibleCount = model.bookMarkVisibleCount;
+              final bookMarkList = model.bookMarkList;
+
+              final count = model.count;
+              final productList = model.productList;
 
               return Stack(
                 children: [
                   Visibility(
-                    visible: _bookMarkCount > 0,
+                    visible: bookMarkCount > 0,
                     child: NotificationListener(
                       onNotification: (scrollNotification) {
                         if (scrollNotification is ScrollEndNotification) {
@@ -320,7 +255,7 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                                   Container(
                                     margin: const EdgeInsets.symmetric(horizontal: 16),
                                     padding: const EdgeInsets.only(top: 20, bottom: 17),
-                                    child: Text('즐겨찾기 $_bookMarkCount',
+                                    child: Text('즐겨찾기 $bookMarkCount',
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(context, 14),
@@ -330,18 +265,18 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                                   ),
                                   Container(
                                     margin: const EdgeInsets.symmetric(horizontal: 16),
-                                    height: _bookMarkVisibleCount <= 5 ? (_bookMarkVisibleCount * 60.0) : 305,
+                                    height: bookMarkVisibleCount <= 5 ? (bookMarkVisibleCount * 60.0) : 305,
                                     width: Responsive.getWidth(context, 378),
                                     child: PageView.builder(
                                       controller: _pageController,
-                                      itemCount: (_bookMarkCount / 5).ceil(),
+                                      itemCount: (bookMarkCount / 5).ceil(),
                                       onPageChanged: (int page) {
                                         _getBookMark(page + 1);
                                       },
                                       itemBuilder: (context, pageIndex) {
                                         List<BookmarkData> storeList = [];
                                         try {
-                                          storeList = _bookMarkList[pageIndex];
+                                          storeList = bookMarkList[pageIndex];
                                         } catch(e) {
                                           if (kDebugMode) {
                                             print(e);
@@ -503,10 +438,10 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                                     ),
                                   ),
                                   Visibility(
-                                    visible: _bookMarkCount > 5 ? true : false,
+                                    visible: bookMarkCount > 5 ? true : false,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
-                                      children: List.generate((_bookMarkCount / 5).ceil(), (index) {
+                                      children: List.generate((bookMarkCount / 5).ceil(), (index) {
                                         final currentPage = _pageController.hasClients && _pageController.page != null ? _pageController.page!.round() : 0;
                                         return Container(
                                           margin: const EdgeInsets.only(right: 6, top: 25),
@@ -639,7 +574,7 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                                               Container(
                                                 margin: const EdgeInsets.only(left: 5),
                                                 child: Text(
-                                                  sortOptionSelected.isNotEmpty ? sortOptionSelected : '인기순', // 선택된 정렬 옵션 표시
+                                                  model.sortOptionSelected.isNotEmpty ? model.sortOptionSelected : '인기순', // 선택된 정렬 옵션 표시
                                                   style: TextStyle(
                                                     fontFamily: 'Pretendard',
                                                     fontSize: Responsive.getFont(context, 14),
@@ -693,7 +628,7 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                                     margin: const EdgeInsets.symmetric(horizontal: 16.0),
                                     padding: const EdgeInsets.only(bottom: 20),
                                     child: Text(
-                                      '상품 $_count', // 상품 수 표시
+                                      '상품 $count', // 상품 수 표시
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
                                         fontSize: Responsive.getFont(context, 14),
@@ -703,7 +638,7 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                                     ),
                                   ),
                                   Visibility(
-                                    visible: _productList.isEmpty,
+                                    visible: productList.isEmpty,
                                     child: const NonDataScreen(text: '등록된 상품이 없습니다.',),
                                   ),
                                 ],
@@ -728,9 +663,9 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                       ),
                     ),
                   ),
-                  if (_bookMarkCount > 0) MoveTopButton(scrollController: _scrollController),
+                  if (bookMarkCount > 0) MoveTopButton(scrollController: _scrollController),
                   Visibility(
-                    visible: _bookMarkCount == 0,
+                    visible: bookMarkCount == 0,
                     child:Center(
                       child: Column(
                         children: [
@@ -749,7 +684,6 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                               fontWeight: FontWeight.w300,
                               color: const Color(0xFF7B7B7B),
                               height: 1.2,
-
                             ),
                           ),
                         ],
@@ -766,6 +700,8 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
   }
 
   Widget _buildProductGrid() {
+    final model = ref.read(storeFavoriteViewModelProvider);
+    final productList = model.productList;
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -776,9 +712,9 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
         crossAxisSpacing: 12,
         mainAxisSpacing: 30,
       ),
-      itemCount: _productList.length, // 실제 상품 수로 변경
+      itemCount: productList.length, // 실제 상품 수로 변경
       itemBuilder: (context, index) {
-        final productData = _productList[index];
+        final productData = productList[index];
 
         return ProductListItem(productData: productData);
       },
