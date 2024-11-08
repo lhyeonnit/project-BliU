@@ -73,11 +73,11 @@ class ConsumerCenterScreen extends ConsumerWidget {
                 return Column(
                   children: [
                     _buildInfoRow(
-                        context,
-                        '메일문의',
-                        model?.stCustomerEmail ?? 'email@email.com',
-                        Colors.black,
-                        false
+                      context,
+                      '메일문의',
+                      model?.stCustomerEmail ?? 'email@email.com',
+                      Colors.black,
+                      false,
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 20, bottom: 10),
@@ -126,7 +126,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const InquiryStoreScreen()
+                    builder: (context) => const InquiryStoreScreen(),
                   ),
                 );
               }),
@@ -134,7 +134,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const InquiryServiceScreen(qnaType: '1',)
+                    builder: (context) => const InquiryServiceScreen(qnaType: '1',),
                   ),
                 );
               },),
@@ -148,7 +148,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MyInquiryScreen()
+                        builder: (context) => const MyInquiryScreen(),
                       ),
                     );
                   } else {
@@ -169,8 +169,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
                     );
                   }
                 });
-              },
-              ),
+              }),
             ],
           ),
         ),
@@ -197,9 +196,6 @@ class ConsumerCenterScreen extends ConsumerWidget {
           onTap: () {
             // 텍스트를 클릭했을 때 클립보드에 복사
             Clipboard.setData(ClipboardData(text: content));
-            // ScaffoldMessenger.of(context).showSnackBar(
-            //   SnackBar(content: Text('$content 복사되었습니다.')),
-            // );
             Utils.getInstance().showSnackBar(context, '$content 복사되었습니다.');
           },
           child: Text(

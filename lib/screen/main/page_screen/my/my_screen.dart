@@ -133,7 +133,7 @@ class MyScreen extends ConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AlarmScreen(),
+                        builder: (context) => AlarmScreen(),
                       ),
                     );
                   },

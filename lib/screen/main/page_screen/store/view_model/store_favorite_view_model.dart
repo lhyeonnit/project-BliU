@@ -64,13 +64,13 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel> {
     }
   }
 
-  void listLoad(Map<String, dynamic> requestProductData) async {
+  void listLoad(Map<String, dynamic> requestData) async {
 
     state.isFirstLoadRunning = true;
     state.page = 1;
     state.hasNextPage = true;
 
-    requestProductData.addAll({
+    requestData.addAll({
       'pg': state.page,
     });
 
@@ -78,7 +78,7 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel> {
     state.productList = [];
     ref.notifyListeners();
 
-    final productListResponseDTO = await _getProductList(requestProductData);
+    final productListResponseDTO = await _getProductList(requestData);
     state.count = productListResponseDTO?.count ?? 0;
     state.productList = productListResponseDTO?.list ?? [];
 
@@ -86,16 +86,16 @@ class StoreFavoriteViewModel extends StateNotifier<StoreFavoriteModel> {
     ref.notifyListeners();
   }
 
-  void listNextLoad(Map<String, dynamic> requestProductData) async {
+  void listNextLoad(Map<String, dynamic> requestData) async {
     if (state.hasNextPage && !state.isFirstLoadRunning && !state.isLoadMoreRunning){
       state.isLoadMoreRunning = true;
       state.page += 1;
 
-      requestProductData.addAll({
+      requestData.addAll({
         'pg': state.page,
       });
 
-      final productListResponseDTO = await _getProductList(requestProductData);
+      final productListResponseDTO = await _getProductList(requestData);
       if (productListResponseDTO != null) {
         if (productListResponseDTO.list.isNotEmpty) {
           state.productList.addAll(productListResponseDTO.list);
