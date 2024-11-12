@@ -73,8 +73,17 @@ class StoreInfoChildWidgetState extends ConsumerState<StoreInfoChildWidget> {
                   height: 500,
                   fit: BoxFit.cover,
                   errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    return const SizedBox();
-                  }
+                    return SizedBox(
+                      width: 90,
+                      height: 500,
+                      child: Center(
+                        child: SvgPicture.asset(
+                          'assets/images/no_imge.svg',
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
               Positioned(
@@ -98,7 +107,11 @@ class StoreInfoChildWidgetState extends ConsumerState<StoreInfoChildWidget> {
                       height: 70,
                       fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                        return const SizedBox();
+                        return SizedBox(
+                          width: 70,
+                          height: 70,
+                          child: SvgPicture.asset('assets/images/no_imge_shop.svg'),
+                        );
                       }
                     ),
                   ),

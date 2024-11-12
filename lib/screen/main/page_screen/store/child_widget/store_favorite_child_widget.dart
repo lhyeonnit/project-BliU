@@ -320,7 +320,9 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                                                           store.stProfile ?? "",
                                                           fit: BoxFit.contain,
                                                           errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                                            return Image.asset('assets/images/home/exhi.png');
+                                                            return SizedBox(
+                                                              child: SvgPicture.asset('assets/images/no_imge_shop.svg'),
+                                                            );
                                                           },
                                                         ),
                                                       ),

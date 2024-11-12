@@ -230,7 +230,16 @@ class InquiryOneDetailScreen extends ConsumerWidget {
           height: 90,
           fit: BoxFit.cover,
           errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-            return const SizedBox();
+            return SizedBox(
+              width: 90,
+              height: 90,
+              child: Center(
+                child: SvgPicture.asset(
+                  'assets/images/no_imge.svg',
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+            );
           },
         ),
       ),

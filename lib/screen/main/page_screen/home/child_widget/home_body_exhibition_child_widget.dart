@@ -6,6 +6,7 @@ import 'package:BliU/screen/main/page_screen/home/view_model/home_body_exhibitio
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeBodyExhibitionChildWidget extends ConsumerStatefulWidget {
@@ -110,7 +111,14 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                 exhibitionData.etBanner ?? "",
                 fit: BoxFit.cover, // 이미지를 부모 위젯에 맞게 설정
                 errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                  return const SizedBox();
+                  return SizedBox(
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'assets/images/no_imge.svg',
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                  );
                 }
               ),
             ),
@@ -180,7 +188,14 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                                     height: Responsive.getHeight(context, 84),
                                     fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                      return const SizedBox();
+                                      return SizedBox(
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                            'assets/images/no_imge.svg',
+                                            fit: BoxFit.fitWidth,
+                                          ),
+                                        ),
+                                      );
                                     },
                                   ),
                                 ),
@@ -198,7 +213,14 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                                     height: Responsive.getHeight(context, 84),
                                     fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                      return const SizedBox();
+                                      return SizedBox(
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                            'assets/images/no_imge.svg',
+                                            fit: BoxFit.fitWidth,
+                                          ),
+                                        ),
+                                      );
                                     },
                                   ),
                                 ),
@@ -216,7 +238,14 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                                     height: Responsive.getHeight(context, 84),
                                     fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                      return const SizedBox();
+                                      return SizedBox(
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                            'assets/images/no_imge.svg',
+                                            fit: BoxFit.fitWidth,
+                                          ),
+                                        ),
+                                      );
                                     },
                                   ),
                                 ),

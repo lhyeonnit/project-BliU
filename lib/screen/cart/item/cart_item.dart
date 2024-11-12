@@ -87,7 +87,9 @@ class CartItemState extends State<CartItem> {
                   widget.item.ptImg ?? "",
                   fit: BoxFit.cover,
                   errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    return const SizedBox();
+                    return SizedBox(
+                      child: SvgPicture.asset('assets/images/no_imge.svg'),
+                    );
                   }
                 ),
               )

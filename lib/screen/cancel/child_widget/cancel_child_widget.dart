@@ -4,6 +4,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CancelChildWidget extends ConsumerStatefulWidget {
   final OrderData? orderData;
@@ -92,7 +93,11 @@ class CancelChildWidgetState extends ConsumerState<CancelChildWidget> {
                           height: 90,
                           fit: BoxFit.cover,
                           errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                            return const SizedBox();
+                            return SizedBox(
+                              width: 90,
+                              height: 90,
+                              child: SvgPicture.asset('assets/images/no_imge.svg'),
+                            );
                           }
                         ),
                       ),

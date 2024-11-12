@@ -5,6 +5,7 @@ import 'package:BliU/screen/main/page_screen/home/view_model/home_header_view_mo
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeHeaderChildWidget extends ConsumerStatefulWidget {
@@ -84,7 +85,14 @@ class HomeHeaderChildWidgetState extends ConsumerState<HomeHeaderChildWidget> {
                             banner.btImg ?? "",
                             fit: BoxFit.fitWidth, // 이미지를 전체 화면에 맞추고 가로 여백 없이 설정
                             errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                              return const SizedBox();
+                              return SizedBox(
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    'assets/images/no_imge.svg',
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                                ),
+                              );
                             },
                           ),
                         ),

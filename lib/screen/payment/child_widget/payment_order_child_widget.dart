@@ -2,6 +2,7 @@ import 'package:BliU/data/cart_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PaymentOrderChildWidget extends StatefulWidget {
   final List<CartData> cartList;
@@ -55,7 +56,9 @@ class PaymentOrderChildWidgetState extends State<PaymentOrderChildWidget> {
                           item.stProfile ?? "", // 스토어 로고
                           fit: BoxFit.cover,
                           errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                            return const SizedBox();
+                            return SizedBox(
+                              child: SvgPicture.asset('assets/images/no_imge_shop.svg'),
+                            );
                           }
                         ),
                       ),
@@ -96,7 +99,14 @@ class PaymentOrderChildWidgetState extends State<PaymentOrderChildWidget> {
                             pItem.ptImg ?? "",
                             fit: BoxFit.cover,
                             errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                              return const SizedBox();
+                              return SizedBox(
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    'assets/images/no_imge.svg',
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                                ),
+                              );
                             }
                           ),
                         ),

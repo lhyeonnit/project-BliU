@@ -495,7 +495,9 @@ class CartScreenState extends ConsumerState<CartScreen> {
                                               cartItem.stProfile ?? "",
                                               fit: BoxFit.cover,
                                               errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                                return const SizedBox();
+                                                return SizedBox(
+                                                  child: SvgPicture.asset('assets/images/no_imge_shop.svg'),
+                                                );
                                               },
                                             ),
                                           ),

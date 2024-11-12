@@ -340,7 +340,9 @@ class StoreRankingChildWidgetState extends ConsumerState<StoreRankingChildWidget
                                                       rankData.stProfile ?? "",
                                                       fit: BoxFit.contain,
                                                       errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                                        return const SizedBox();
+                                                        return SizedBox(
+                                                          child: SvgPicture.asset('assets/images/no_imge_shop.svg'),
+                                                        );
                                                       },
                                                     ),
                                                   ),
@@ -483,7 +485,14 @@ class StoreRankingChildWidgetState extends ConsumerState<StoreRankingChildWidget
                                                             // null인 경우 빈 문자열을 처리
                                                             fit: BoxFit.cover,
                                                             errorBuilder: (context, error, stackTrace) {
-                                                              return const Icon(Icons.error); // 이미지 로딩에 실패한 경우 표시할 위젯
+                                                              return SizedBox(
+                                                                child: Center(
+                                                                  child: SvgPicture.asset(
+                                                                    'assets/images/no_imge.svg',
+                                                                    fit: BoxFit.fitWidth,
+                                                                  ),
+                                                                ),
+                                                              );
                                                             },
                                                           ),
                                                         ),

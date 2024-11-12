@@ -110,7 +110,12 @@ class EventDetailScreen extends ConsumerWidget {
                 Image.network(
                   btImage,
                   errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    return const SizedBox();
+                    return Center(
+                      child: SvgPicture.asset(
+                        'assets/images/no_imge.svg',
+                        fit: BoxFit.fitWidth,
+                      ),
+                    );
                   },
                 )
               ],

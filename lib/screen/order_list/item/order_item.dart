@@ -13,6 +13,7 @@ import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class OrderItem extends ConsumerStatefulWidget {
   final OrderData orderData;
@@ -173,7 +174,16 @@ class OrderItemState extends ConsumerState<OrderItem> {
                     height: 90,
                     fit: BoxFit.cover,
                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                      return const SizedBox();
+                      return SizedBox(
+                        width: 90,
+                        height: 90,
+                        child: Center(
+                          child: SvgPicture.asset(
+                            'assets/images/no_imge.svg',
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                      );
                     }
                   ),
                 ),

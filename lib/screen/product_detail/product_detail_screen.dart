@@ -436,7 +436,16 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   width: double.infinity,
                   height: double.infinity,
                   errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    return const SizedBox();
+                    return SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: Center(
+                        child: SvgPicture.asset(
+                          'assets/images/no_imge.svg',
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ),
+                    );
                   }
                 ),
               );
@@ -517,19 +526,31 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     MaterialPageRoute(builder: (context) => StoreDetailScreen(stIdx: storeData?.stIdx ?? 0)),
                   );
                 },
-                child: Container(
-                  margin: const EdgeInsets.only(top: 9, right: 10),
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xFFDDDDDD)),
-                    shape: BoxShape.circle, // 이미지를 동그랗게 만들기
-                    image: DecorationImage(
-                      image: NetworkImage(
+                child: ClipRect(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 9, right: 10),
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0xFFDDDDDD)),
+                      shape: BoxShape.circle, // 이미지를 동그랗게 만들기
+                    ),
+                    child: ClipOval(
+                      child: Image.network(
                         storeData?.stProfile ?? "",
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                          return SizedBox(
+                            child: Center(
+                              child: SvgPicture.asset(
+                                'assets/images/no_imge.svg',
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      fit: BoxFit.cover
-                    )
+                    ),
                   ),
                 ),
               ),
@@ -1650,13 +1671,22 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
                             child: Image.network(
-                                imagePath,
-                                width: 90,
-                                height: 90,
-                                fit: BoxFit.cover,
-                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                  return const SizedBox();
-                                }
+                              imagePath,
+                              width: 90,
+                              height: 90,
+                              fit: BoxFit.cover,
+                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                return SizedBox(
+                                  width: 90,
+                                  height: 90,
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      'assets/images/no_imge.svg',
+                                      fit: BoxFit.fitWidth,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         );

@@ -56,7 +56,14 @@ class ProductListItemState extends ConsumerState<ProductListItem> {
                       productData.ptImg ?? "",
                       fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                        return const SizedBox();
+                        return SizedBox(
+                          child: Center(
+                            child: SvgPicture.asset(
+                              'assets/images/no_imge.svg',
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
+                        );
                       }
                     ),
                   ),

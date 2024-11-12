@@ -763,9 +763,20 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: const Color(0xFFDDDDDD)),
-                          image: DecorationImage(
-                            image: NetworkImage(result.stProfile ?? ''),
+                          // image: DecorationImage(
+                          //   image: NetworkImage(result.stProfile ?? ''),
+                          //   fit: BoxFit.cover,
+                          // ),
+                        ),
+                        child: ClipOval(
+                          child: Image.network(
+                            result.stProfile ?? "",
                             fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              return SizedBox(
+                                child: SvgPicture.asset('assets/images/no_imge_shop.svg'),
+                              );
+                            },
                           ),
                         ),
                       ),

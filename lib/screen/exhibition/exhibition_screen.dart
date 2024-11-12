@@ -150,7 +150,14 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                             fit: BoxFit.cover,
                             alignment: Alignment.topCenter,
                             errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                              return const SizedBox();
+                              return SizedBox(
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    'assets/images/no_imge.svg',
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                                ),
+                              );
                             },
                           ),
                         ),
