@@ -344,16 +344,6 @@ class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderState
                               ),
                             ),
                           ),
-                          // Text(
-                          //   '${productData.ptDiscountPer ?? 0}%',
-                          //   style: TextStyle(
-                          //     fontFamily: 'Pretendard',
-                          //     fontSize: Responsive.getFont(context, 14),
-                          //     color: const Color(0xFFFF6192),
-                          //     fontWeight: FontWeight.bold,
-                          //     height: 1.2,
-                          //   ),
-                          // ),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 2),
                             child: Text(
