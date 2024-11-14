@@ -121,13 +121,14 @@ class EventListChildWidgetState extends ConsumerState<EventListChildWidget> {
                         height: 1.2,
                       ),
                     ),
-                    subtitle: Text(eventData.btWdate ?? "",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          color: const Color(0xFF7B7B7B),
-                          fontSize: Responsive.getFont(context, 14),
-                          height: 1.2,
-                        )
+                    subtitle: Text(
+                      eventData.btWdate ?? "",
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        color: const Color(0xFF7B7B7B),
+                        fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                      ),
                     ),
                     trailing: SvgPicture.asset('assets/images/ic_link.svg'),
                     onTap: () {
@@ -144,11 +145,11 @@ class EventListChildWidgetState extends ConsumerState<EventListChildWidget> {
                     },
                   ),
                   Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      child: const Divider(
-                        thickness: 1,
-                        color: Color(0xFFEEEEEE),
-                      )
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    child: const Divider(
+                      thickness: 1,
+                      color: Color(0xFFEEEEEE),
+                    ),
                   )
                 ],
               );

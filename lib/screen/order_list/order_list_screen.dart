@@ -246,31 +246,31 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
                     Visibility(
                       visible: orderList.isNotEmpty,
                       child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: orderList.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            final orderData = orderList[index];
-                            final detailList = orderData.detailList ?? [];
-                            return Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
-                              margin: const EdgeInsets.only(top: 20),
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                border: Border(
-                                  bottom: BorderSide(color: Color(0xFFEEEEEE)), // 구분선 추가
-                                ),
+                        shrinkWrap: true,
+                        itemCount: orderList.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          final orderData = orderList[index];
+                          final detailList = orderData.detailList ?? [];
+                          return Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            margin: const EdgeInsets.only(top: 20),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              border: Border(
+                                bottom: BorderSide(color: Color(0xFFEEEEEE)), // 구분선 추가
                               ),
-                              child: Column(
-                                children: (detailList).map((orderDetailData) {
-                                  return  Container(
-                                    margin: const EdgeInsets.only(bottom: 20),
-                                    child: orderListItem(orderData, orderDetailData),
-                                  );
-                                }).toList(),
-                              ),
-                            );
-                          }
+                            ),
+                            child: Column(
+                              children: (detailList).map((orderDetailData) {
+                                return  Container(
+                                  margin: const EdgeInsets.only(bottom: 20),
+                                  child: orderListItem(orderData, orderDetailData),
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],

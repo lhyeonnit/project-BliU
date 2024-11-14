@@ -1621,32 +1621,31 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                             children: [
                               Container(
                                 margin: const EdgeInsets.only(bottom: 10),
-                                child: _buildInfoRow(
-                                    '상품 금액',
-                                    '${Utils.getInstance().priceString(totalAmount)}원', context),
+                                child: _buildInfoRow('상품 금액', '${Utils.getInstance().priceString(totalAmount)}원', context),
                               ),
-                              _buildInfoRow(
-                                  '배송비',
-                                  '${Utils.getInstance().priceString(shippingCost)}원', context),
+                              _buildInfoRow('배송비', '${Utils.getInstance().priceString(shippingCost)}원', context),
                               Visibility(
                                 visible: widget.memberType == 1,
                                 child: Container(
-                                    margin: const EdgeInsets.symmetric(vertical: 10),
-                                    child: _buildInfoRow(
-                                        '할인금액',
-                                        couponDiscount != 0
-                                            ? '- ${Utils.getInstance().priceString(couponDiscount)}원'
-                                            : '${Utils.getInstance().priceString(couponDiscount)}원', // 0이 아니면 '-' 추가
-                                        context)),
+                                  margin: const EdgeInsets.symmetric(vertical: 10),
+                                  child: _buildInfoRow(
+                                    '할인금액',
+                                    couponDiscount != 0
+                                        ? '- ${Utils.getInstance().priceString(couponDiscount)}원'
+                                        : '${Utils.getInstance().priceString(couponDiscount)}원', // 0이 아니면 '-' 추가
+                                    context,
+                                  ),
+                                ),
                               ),
                               Visibility(
                                 visible: widget.memberType == 1,
                                 child: _buildInfoRow(
-                                    '포인트할인',
-                                    pointsDiscount != 0
-                                        ? '- ${Utils.getInstance().priceString(pointsDiscount)}원'
-                                        : '${Utils.getInstance().priceString(pointsDiscount)}원', // 0이 아니면 '-' 추가
-                                    context),
+                                  '포인트할인',
+                                  pointsDiscount != 0
+                                      ? '- ${Utils.getInstance().priceString(pointsDiscount)}원'
+                                      : '${Utils.getInstance().priceString(pointsDiscount)}원', // 0이 아니면 '-' 추가
+                                  context,
+                                ),
                               ),
                               Container(
                                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -1783,19 +1782,15 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                 const BorderRadius.all(
                                                     Radius.circular(6)),
                                                 border: Border.all(
-                                                  color: _agree1
-                                                      ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                                  color: _agree1 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                                                 ),
-                                                color: _agree1
-                                                    ? const Color(0xFFFF6191) : Colors.white,
+                                                color: _agree1 ? const Color(0xFFFF6191) : Colors.white,
                                               ),
                                               child: SvgPicture.asset(
                                                 'assets/images/check01_off.svg',
                                                 // 체크박스 아이콘
                                                 colorFilter: ColorFilter.mode(
-                                                  _agree1
-                                                      ? Colors.white
-                                                      : const Color(0xFFCCCCCC),
+                                                  _agree1 ? Colors.white : const Color(0xFFCCCCCC),
                                                   BlendMode.srcIn,
                                                 ),
                                                 height: 10,
@@ -1946,21 +1941,15 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                 const BorderRadius.all(
                                                     Radius.circular(6)),
                                                 border: Border.all(
-                                                  color: _agree3
-                                                      ? const Color(0xFFFF6191)
-                                                      : const Color(0xFFCCCCCC),
+                                                  color: _agree3 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                                                 ),
-                                                color: _agree3
-                                                    ? const Color(0xFFFF6191)
-                                                    : Colors.white,
+                                                color: _agree3 ? const Color(0xFFFF6191) : Colors.white,
                                               ),
                                               child: SvgPicture.asset(
                                                 'assets/images/check01_off.svg',
                                                 // 체크박스 아이콘
                                                 colorFilter: ColorFilter.mode(
-                                                  _agree3
-                                                      ? Colors.white
-                                                      : const Color(0xFFCCCCCC),
+                                                  _agree3 ? Colors.white : const Color(0xFFCCCCCC),
                                                   BlendMode.srcIn,
                                                 ),
                                                 height: 10,
@@ -1974,7 +1963,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                               style: TextStyle(
                                                 fontFamily: 'Pretendard',
                                                 fontSize: Responsive.getFont(
-                                                    context, 14),
+                                                  context, 14,
+                                                ),
                                                 height: 1.2,
                                               ),
                                             )

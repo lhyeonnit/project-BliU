@@ -105,16 +105,16 @@ class NonOrderScreenState extends ConsumerState<NonOrderScreen> {
                     keyboardType: TextInputType.text,
                   ),
                   Container(
-                      margin: const EdgeInsets.only(top: 8),
-                      child: Text(
-                        '주문번호는 주문자의 휴대폰 번호로 발송됩니다. \n주문번호 확인이 어려울 시, 고객센터로 문의 바랍니다.',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 12),
-                          height: 1.2,
-                        ),
-                      )
-                  )
+                    margin: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      '주문번호는 주문자의 휴대폰 번호로 발송됩니다. \n주문번호 확인이 어려울 시, 고객센터로 문의 바랍니다.',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 12),
+                        height: 1.2,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -64,139 +64,139 @@ class MyInquiryOneChildWidget extends ConsumerWidget {
             Visibility(
               visible: count > 0,
               child: Container(
-              margin: const EdgeInsets.only(top: 10),
-              color: Colors.white,
-              child: Column(
-                children: [
-                  // 문의 리스트
-                  Expanded(
-                    flex: 1,
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      itemCount: qnaList.length,
-                      itemBuilder: (context, index) {
-                        final qnaData = qnaList[index];
+                margin: const EdgeInsets.only(top: 10),
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    // 문의 리스트
+                    Expanded(
+                      flex: 1,
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: qnaList.length,
+                        itemBuilder: (context, index) {
+                          final qnaData = qnaList[index];
 
-                        return Column(
-                          children: [
-                            ListTile(
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                              title: Row(
-                                children: [
-                                  Text(
-                                    qnaData.qtStatusTxt ?? "",
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 11),
-                                    child: Text(qnaData.qtWdate ?? "",
+                          return Column(
+                            children: [
+                              ListTile(
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                                title: Row(
+                                  children: [
+                                    Text(
+                                      qnaData.qtStatusTxt ?? "",
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 12),
-                                        color: const Color(0xFF7B7B7B),
+                                        fontSize: Responsive.getFont(context, 14),
+                                        fontWeight: FontWeight.w600,
                                         height: 1.2,
                                       ),
                                     ),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 11),
+                                      child: Text(qnaData.qtWdate ?? "",
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 12),
+                                          color: const Color(0xFF7B7B7B),
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Text(qnaData.qtTitle ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.2,
                                   ),
-                                ],
+                                ),
+                                onTap: () async {
+                                  int? qtIdx = qnaData.qtIdx;
+                                  if (qtIdx != null) {
+                                    final result = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => InquiryOneDetailScreen(qtIdx: qtIdx,),
+                                      ),
+                                    );
+                                    if (result == true) {
+                                      _getList(true, ref);
+                                    }
+                                  }
+                                },
                               ),
-                              subtitle: Text(qnaData.qtTitle ?? "",
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.2,
+                              const Divider(thickness: 1, color: Color(0xFFEEEEEE),),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    // 페이지 네비게이션
+                    Visibility(
+                      visible: count == 0 ? false : true,
+                      child: Container(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 30.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                icon: SvgPicture.asset('assets/images/product/pager_prev.svg'),
+                                onPressed: () {
+
+                                  if (currentPage > 1) {
+                                    viewModel.setCurrentPage(currentPage - 1);
+                                    _getList(false, ref);
+                                  }
+                                },
+                              ),
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      currentPageStr,
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 16),
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                    Text(
+                                      ' / $totalPagesStr',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 16),
+                                        color: const Color(0xFFCCCCCC),
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              onTap: () async {
-                                int? qtIdx = qnaData.qtIdx;
-                                if (qtIdx != null) {
-                                  final result = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => InquiryOneDetailScreen(qtIdx: qtIdx,),
-                                    ),
-                                  );
-                                  if (result == true) {
-                                    _getList(true, ref);
+                              IconButton(
+                                icon: SvgPicture.asset('assets/images/product/pager_next.svg'),
+                                onPressed: () {
+                                  if (currentPage < totalPages) {
+                                    viewModel.setCurrentPage(currentPage + 1);
+                                    _getList(false, ref);
                                   }
-                                }
-                              },
-                            ),
-                            const Divider(thickness: 1, color: Color(0xFFEEEEEE),),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                  // 페이지 네비게이션
-                  Visibility(
-                    visible: count == 0 ? false : true,
-                    child: Container(
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 30.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              icon: SvgPicture.asset('assets/images/product/pager_prev.svg'),
-                              onPressed: () {
-
-                                if (currentPage > 1) {
-                                  viewModel.setCurrentPage(currentPage - 1);
-                                  _getList(false, ref);
-                                }
-                              },
-                            ),
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    currentPageStr,
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 16),
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                  Text(
-                                    ' / $totalPagesStr',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 16),
-                                      color: const Color(0xFFCCCCCC),
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                ],
+                                },
                               ),
-                            ),
-                            IconButton(
-                              icon: SvgPicture.asset('assets/images/product/pager_next.svg'),
-                              onPressed: () {
-                                if (currentPage < totalPages) {
-                                  viewModel.setCurrentPage(currentPage + 1);
-                                  _getList(false, ref);
-                                }
-                              },
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
             ),
             MoveTopButton(scrollController: _scrollController)
           ],

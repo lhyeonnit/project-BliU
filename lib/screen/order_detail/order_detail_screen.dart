@@ -62,7 +62,7 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         title: Text(
-            _statusTitle()
+          _statusTitle(),
         ),
         titleTextStyle: TextStyle(
           fontFamily: 'Pretendard',

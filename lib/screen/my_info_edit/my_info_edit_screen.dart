@@ -243,9 +243,10 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
                           Expanded(
                             flex: 7,
                             child: _buildPhoneField(
-                                '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
-                                keyboardType: TextInputType.phone,
-                                isEnable: _phoneAuthChecked ? true : false),
+                              '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
+                              keyboardType: TextInputType.phone,
+                              isEnable: _phoneAuthChecked ? true : false,
+                            ),
                           ),
                           Visibility(
                             visible: !_phoneAuthChecked,

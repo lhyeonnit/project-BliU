@@ -160,8 +160,7 @@ class MyInfoDeleteScreenState extends ConsumerState<MyInfoDeleteScreen> {
                   child: Container(
                     width: double.infinity,
                     height: 48,
-                    margin: const EdgeInsets.only(
-                        right: 16.0, left: 16, top: 9, bottom: 8),
+                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
                     decoration: BoxDecoration(
                       color: _isChecked ? Colors.black : const Color(0xFFDDDDDD),
                       borderRadius: const BorderRadius.all(

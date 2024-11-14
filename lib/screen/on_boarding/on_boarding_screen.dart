@@ -99,8 +99,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const MainScreen(),
-                              settings: const RouteSettings(name: "/")
+                            builder: (context) => const MainScreen(),
+                            settings: const RouteSettings(name: "/"),
                           ),
                         );
                       },

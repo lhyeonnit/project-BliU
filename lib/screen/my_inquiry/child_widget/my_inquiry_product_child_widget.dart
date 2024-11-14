@@ -143,13 +143,13 @@ class MyInquiryProductChildWidget extends ConsumerWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               IconButton(
-                                  icon: SvgPicture.asset('assets/images/product/pager_prev.svg'),
-                                  onPressed: () {
-                                    if (currentPage > 1) {
-                                      viewModel.setCurrentPage(currentPage - 1);
-                                      _getList(false, ref);
-                                    }
+                                icon: SvgPicture.asset('assets/images/product/pager_prev.svg'),
+                                onPressed: () {
+                                  if (currentPage > 1) {
+                                    viewModel.setCurrentPage(currentPage - 1);
+                                    _getList(false, ref);
                                   }
+                                },
                               ),
                               Container(
                                 margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -178,13 +178,13 @@ class MyInquiryProductChildWidget extends ConsumerWidget {
                                 ),
                               ),
                               IconButton(
-                                  icon: SvgPicture.asset('assets/images/product/pager_next.svg'),
-                                  onPressed: () {
-                                    if (currentPage < totalPages) {
-                                      viewModel.setCurrentPage(currentPage + 1);
-                                      _getList(false, ref);
-                                    }
+                                icon: SvgPicture.asset('assets/images/product/pager_next.svg'),
+                                onPressed: () {
+                                  if (currentPage < totalPages) {
+                                    viewModel.setCurrentPage(currentPage + 1);
+                                    _getList(false, ref);
                                   }
+                                },
                               ),
                             ],
                           ),

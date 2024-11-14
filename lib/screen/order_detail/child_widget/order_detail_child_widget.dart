@@ -23,16 +23,22 @@ class OrderDetailChildWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('ㄴ${orderDetailInfoData?.order?.otCouponInfo?.ctName ?? ""}',
-                  style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      color: const Color(0xFFA4A4A4))),
-              Text("${Utils.getInstance().priceString(orderDetailInfoData?.order?.otCouponInfo?.ctPrice ?? 0)}원",
-                  style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      color: const Color(0xFFA4A4A4))),
+              Text(
+                'ㄴ${orderDetailInfoData?.order?.otCouponInfo?.ctName ?? ""}',
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: const Color(0xFFA4A4A4),
+                ),
+              ),
+              Text(
+                "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otCouponInfo?.ctPrice ?? 0)}원",
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: const Color(0xFFA4A4A4),
+                ),
+              ),
             ],
           ),
         ),
@@ -53,9 +59,10 @@ class OrderDetailChildWidget extends StatelessWidget {
           child: Text(
             '배송지 정보',
             style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 18),
-                fontWeight: FontWeight.bold),
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 18),
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         // 배송지 정보 세부 내용
@@ -71,22 +78,23 @@ class OrderDetailChildWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildInfoRow(
-                  '수령인', orderDetailInfoData?.delivery?.otRname ?? "", context),
+              _buildInfoRow('수령인', orderDetailInfoData?.delivery?.otRname ?? "", context),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 child: _buildInfoRow('휴대폰번호',
-                    orderDetailInfoData?.delivery?.otRtel ?? "", context),
+                  orderDetailInfoData?.delivery?.otRtel ?? "", context,
+                ),
               ),
               _buildAddressRow(
-                  '주소',
-                  "[${orderDetailInfoData?.delivery?.otRzip ?? ""}]${orderDetailInfoData?.delivery?.otRadd1 ?? ""}",
-                  orderDetailInfoData?.delivery?.otRadd1 ?? "",
-                  context),
+                '주소',
+                "[${orderDetailInfoData?.delivery?.otRzip ?? ""}]${orderDetailInfoData?.delivery?.otRadd1 ?? ""}",
+                orderDetailInfoData?.delivery?.otRadd1 ?? "",
+                context,
+              ),
               Container(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: _buildInfoRow('배송메모',
-                      orderDetailInfoData?.delivery?.otRmemo1 ?? "", context)),
+                padding: const EdgeInsets.only(top: 15),
+                child: _buildInfoRow('배송메모', orderDetailInfoData?.delivery?.otRmemo1 ?? "", context),
+              ),
             ],
           ),
         ),
@@ -106,16 +114,18 @@ class OrderDetailChildWidget extends StatelessWidget {
                   Text(
                     '결제 금액',
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 18),
-                        fontWeight: FontWeight.bold),
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 18),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
                     '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otSprice ?? 0)}원',
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        fontWeight: FontWeight.bold),
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -133,15 +143,18 @@ class OrderDetailChildWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildInfoRow(
-                      '총 상품 금액',
-                      "${Utils.getInstance().priceString(_getTotalPrice())}원",
-                      context),
+                    '총 상품 금액',
+                    "${Utils.getInstance().priceString(_getTotalPrice())}원",
+                    context,
+                  ),
                   Container(
-                      margin: const EdgeInsets.only(top: 15),
-                      child: _buildInfoRow(
-                          '총 배송비',
-                          "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원",
-                          context)),
+                    margin: const EdgeInsets.only(top: 15),
+                    child: _buildInfoRow(
+                      '총 배송비',
+                      "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원",
+                      context,
+                    ),
+                  ),
                   Visibility(
                     visible: userType == 1,
                     child: Container(
@@ -149,9 +162,10 @@ class OrderDetailChildWidget extends StatelessWidget {
                       child: Column(
                         children: [
                           _buildInfoRow(
-                              '할인금액',
-                              "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUseCoupon ?? 0)}원",
-                              context),
+                            '할인금액',
+                            "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUseCoupon ?? 0)}원",
+                            context,
+                          ),
                           widget,
                         ],
                       ),
@@ -160,11 +174,11 @@ class OrderDetailChildWidget extends StatelessWidget {
                   Visibility(
                     visible: userType == 1,
                     child: _buildInfoRow(
-                        '포인트할인',
-                        '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUsePoint ?? 0)}원',
-                        context),
+                      '포인트할인',
+                      '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUsePoint ?? 0)}원',
+                      context,
+                    ),
                   ),
-
                 ],
               ),
             ),
@@ -181,9 +195,10 @@ class OrderDetailChildWidget extends StatelessWidget {
           child: Text(
             '결제 수단',
             style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: Responsive.getFont(context, 18),
-                fontWeight: FontWeight.bold),
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 18),
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         Container(
@@ -201,17 +216,22 @@ class OrderDetailChildWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(orderDetailInfoData?.order?.otPayType ?? "",
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        color: Colors.black)),
                 Text(
-                    '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otSprice ?? 0)}원',
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        color: Colors.black)),
+                  orderDetailInfoData?.order?.otPayType ?? "",
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 14),
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otSprice ?? 0)}원',
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 14),
+                    color: Colors.black,
+                  ),
+                ),
               ],
             ),
           ),

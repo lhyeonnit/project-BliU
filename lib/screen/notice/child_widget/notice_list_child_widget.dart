@@ -146,7 +146,7 @@ class NoticeListChildWidgetState extends ConsumerState<NoticeListChildWidget> {
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 16),
                     child: const Divider(thickness: 1, color: Color(0xFFEEEEEE),),
-                  )
+                  ),
                 ],
               );
             },
