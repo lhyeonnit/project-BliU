@@ -194,11 +194,11 @@ class PaymentCouponScreenState extends State<PaymentCouponScreen> {
                       ),
                       // 쿠폰 사이의 선
                       Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
-                          child: const Divider(
-                              thickness: 1,
-                              color: Color(0xFFEEEEEE)
-                          )
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        child: const Divider(
+                          thickness: 1,
+                          color: Color(0xFFEEEEEE),
+                        ),
                       ),
                     ],
                   );

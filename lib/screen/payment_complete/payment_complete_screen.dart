@@ -225,8 +225,7 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                         color: const Color(0xFFF5F9F9),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -330,11 +329,11 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                               '${Utils.getInstance().priceString(payOrderResultDetailData?.allDeliveryPrice ?? 0)}원',
                             ),
                             Visibility(
-                                visible: widget.memberType == 1,
-                                child: Container(
-                                  margin: const EdgeInsets.only(top: 15),
-                                  child: const Divider(color: Color(0xFFEEEEEE)),
-                                ),
+                              visible: widget.memberType == 1,
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 15),
+                                child: const Divider(color: Color(0xFFEEEEEE)),
+                              ),
                             ),
                             Visibility(
                               visible: widget.memberType == 1,
