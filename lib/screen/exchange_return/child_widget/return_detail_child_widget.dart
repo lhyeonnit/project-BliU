@@ -412,15 +412,15 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
                         borderRadius: const BorderRadius.all(Radius.circular(6)),
                         border: Border.all(color: const Color(0xFFDDDDDD))),
                     child: Center(
-                        child: Text(
-                          '첨부하기',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            fontWeight: FontWeight.normal,
-                            height: 1.2,
-                          ),
-                        )
+                      child: Text(
+                        '첨부하기',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          fontWeight: FontWeight.normal,
+                          height: 1.2,
+                        ),
+                      ),
                     ),
                   ),
                 ),

@@ -126,16 +126,15 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                             ),
                           ),
                         ),
-                        _buildTextField('이름', _nameController, '이름 입력',
-                            keyboardType: TextInputType.name),
+                        _buildTextField('이름', _nameController, '이름 입력', keyboardType: TextInputType.name),
                         Row(
                           children: [
                             Expanded(
                               flex: 7,
                               child: _buildTextField(
-                                  '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
-                                  keyboardType: TextInputType.phone,
-                                  isEnable: _phoneAuthChecked ? false : true
+                                '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
+                                keyboardType: TextInputType.phone,
+                                isEnable: _phoneAuthChecked ? false : true,
                               ),
                             ),
                             Expanded(
@@ -169,42 +168,42 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Visibility(
-                                        visible: _phoneAuthCodeVisible && !_phoneAuthChecked,
-                                        maintainSize: true,
-                                        maintainAnimation: true,
-                                        maintainState: true,
-                                        child: Container(
-                                          margin: const EdgeInsets.only(top: 20, left: 8),
-                                          child: Text(
-                                            _timerStr,
-                                            style: TextStyle(
-                                              color: const Color(0xFFFF6192),
-                                              fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(context, 13),
-                                              height: 1.2,
-                                            ),
+                                      visible: _phoneAuthCodeVisible && !_phoneAuthChecked,
+                                      maintainSize: true,
+                                      maintainAnimation: true,
+                                      maintainState: true,
+                                      child: Container(
+                                        margin: const EdgeInsets.only(top: 20, left: 8),
+                                        child: Text(
+                                          _timerStr,
+                                          style: TextStyle(
+                                            color: const Color(0xFFFF6192),
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 13),
+                                            height: 1.2,
                                           ),
-                                        )
+                                        ),
+                                      ),
                                     ),
                                     Container(
-                                        margin: const EdgeInsets.only(top: 10, left: 8),
-                                        padding: const EdgeInsets.symmetric(vertical: 14),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(6),
-                                          border:
-                                          Border.all(
-                                              color: const Color(0xFFDDDDDD)),
+                                      margin: const EdgeInsets.only(top: 10, left: 8),
+                                      padding: const EdgeInsets.symmetric(vertical: 14),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6),
+                                        border:
+                                        Border.all(
+                                            color: const Color(0xFFDDDDDD)),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '인증요청',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            height: 1.2,
+                                          ),
                                         ),
-                                        child: Center(
-                                            child: Text(
-                                              '인증요청',
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 14),
-                                                height: 1.2,
-                                              ),
-                                            )
-                                        )
+                                      ),
                                     )
                                   ],
                                 ),
@@ -219,9 +218,10 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                               Expanded(
                                 flex: 7,
                                 child: _buildCheckField(
-                                    '휴대폰번호', _authCodeController, '인증번호 입력',
-                                    keyboardType: TextInputType.number,
-                                    isEnable: _phoneAuthChecked ? false : true),
+                                  '휴대폰번호', _authCodeController, '인증번호 입력',
+                                  keyboardType: TextInputType.number,
+                                  isEnable: _phoneAuthChecked ? false : true,
+                                ),
                               ),
                               Expanded(
                                 flex: 3,
@@ -232,9 +232,7 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                                     }
                                     FocusScope.of(context).unfocus();
 
-
-                                    final pref = await SharedPreferencesManager
-                                        .getInstance();
+                                    final pref = await SharedPreferencesManager.getInstance();
                                     final phoneNumber = _phoneController.text;
                                     final authCode = _authCodeController.text;
 
@@ -245,8 +243,7 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                                       'code_type': 2,
                                     };
 
-                                    final resultDTO = await ref.read(
-                                        findIdViewModelModelProvider.notifier).checkCode(requestData);
+                                    final resultDTO = await ref.read(findIdViewModelModelProvider.notifier).checkCode(requestData);
                                     if (!context.mounted) return;
                                     Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
                                     if (resultDTO.result == true) {

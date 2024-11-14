@@ -139,8 +139,7 @@ class CartItemState extends State<CartItem> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () =>
-                              widget.onDecrementQuantity(widget.item.ctIdx ?? 0),
+                          onTap: () => widget.onDecrementQuantity(widget.item.ctIdx ?? 0),
                           child: const Icon(Icons.remove, size: 15),
                         ),
                         Text(
@@ -152,8 +151,7 @@ class CartItemState extends State<CartItem> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () =>
-                              widget.onIncrementQuantity(widget.item.ctIdx ?? 0),
+                          onTap: () => widget.onIncrementQuantity(widget.item.ctIdx ?? 0),
                           child: const Icon(Icons.add, size: 15),
                         ),
                       ],

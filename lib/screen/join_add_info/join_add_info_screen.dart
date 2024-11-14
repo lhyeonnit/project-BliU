@@ -147,9 +147,9 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                           Expanded(
                             flex: 7,
                             child: _buildTextField(
-                                '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
-                                keyboardType: TextInputType.phone,
-                                isEnable: _phoneAuthChecked ? false : true
+                              '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
+                              keyboardType: TextInputType.phone,
+                              isEnable: _phoneAuthChecked ? false : true,
                             ),
                           ),
                           Expanded(
@@ -158,22 +158,22 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Visibility(
-                                    visible: _phoneAuthCodeVisible && !_phoneAuthChecked,
-                                    maintainSize: true,
-                                    maintainAnimation: true,
-                                    maintainState: true,
-                                    child: Container(
-                                      margin: const EdgeInsets.only(top: 20, left: 8),
-                                      child: Text(
-                                        _timerStr,
-                                        style: TextStyle(
-                                          color: const Color(0xFFFF6192),
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 13),
-                                          height: 1.2,
-                                        ),
+                                  visible: _phoneAuthCodeVisible && !_phoneAuthChecked,
+                                  maintainSize: true,
+                                  maintainAnimation: true,
+                                  maintainState: true,
+                                  child: Container(
+                                    margin: const EdgeInsets.only(top: 20, left: 8),
+                                    child: Text(
+                                      _timerStr,
+                                      style: TextStyle(
+                                        color: const Color(0xFFFF6192),
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 13),
+                                        height: 1.2,
                                       ),
-                                    )
+                                    ),
+                                  ),
                                 ),
                                 GestureDetector(
                                   onTap: () async {
@@ -202,22 +202,22 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                                     }
                                   },
                                   child: Container(
-                                      height: 44,
-                                      margin: const EdgeInsets.only(top: 10, left: 8),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(6),
-                                        border: Border.all(color: const Color(0xFFDDDDDD)),
+                                    height: 44,
+                                    margin: const EdgeInsets.only(top: 10, left: 8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(color: const Color(0xFFDDDDDD)),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '인증요청',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          height: 1.2,
+                                        ),
                                       ),
-                                      child: Center(
-                                          child: Text(
-                                            '인증요청',
-                                            style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(context, 14),
-                                              height: 1.2,
-                                            ),
-                                          )
-                                      )
+                                    ),
                                   ),
                                 )
                               ],
@@ -398,14 +398,14 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                           children: [
                             Expanded(
                               child: Container(
-                                  margin: const EdgeInsets.only(right: 4),
-                                  child: _buildGenderButton('남자')
+                                margin: const EdgeInsets.only(right: 4),
+                                child: _buildGenderButton('남자'),
                               ),
                             ),
                             Expanded(
                               child: Container(
-                                  margin: const EdgeInsets.only(left: 4),
-                                  child: _buildGenderButton('여자')
+                                margin: const EdgeInsets.only(left: 4),
+                                child: _buildGenderButton('여자'),
                               ),
                             ),
                           ],
@@ -541,13 +541,13 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
               Container(
                   margin: const EdgeInsets.only(left: 4),
                   child: Text('*',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.bold,
-                        fontSize: Responsive.getFont(context, 13),
-                        color: const Color(0xFFFF6192),
-                        height: 1.2,
-                      )
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 13),
+                      color: const Color(0xFFFF6192),
+                      height: 1.2,
+                    ),
                   )
               ),
             ],
@@ -560,10 +560,10 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
               onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
               focusNode: focusNode,
               style: TextStyle(
-                  decorationThickness: 0,
-                  height: 1.2,
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14)
+                decorationThickness: 0,
+                height: 1.2,
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 14),
               ),
               enabled: isEnable,
               controller: controller,
@@ -573,9 +573,9 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 15),
                 hintText: hintText,
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: const Color(0xFF595959)
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: const Color(0xFF595959),
                 ),
                 enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -624,9 +624,10 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
               enabled: isEnable,
               decoration: InputDecoration(
                 hintStyle: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: isEnable ? const Color(0xFF595959) : const Color(0xFFA4A4A4)),
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  color: isEnable ? const Color(0xFF595959) : const Color(0xFFA4A4A4),
+                ),
                 filled: true,
                 contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                 border: UnderlineInputBorder(
@@ -662,25 +663,25 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
         });
       },
       child: Container(
-          height: 44,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(
-                color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)
+        height: 44,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+              color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)
+          ),
+        ),
+        child: Center(
+          child: Text(
+            gender,
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+              fontSize: Responsive.getFont(context, 14),
+              height: 1.2,
             ),
           ),
-          child: Center(
-              child: Text(
-                gender,
-                style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  color: isSelected ? const Color(0xFFFF6192) : Colors.black,
-                  fontSize: Responsive.getFont(context, 14),
-                  height: 1.2,
-                ),
-              )
-          )
+        ),
       ),
     );
   }

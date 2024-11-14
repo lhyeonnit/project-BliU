@@ -91,10 +91,10 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       TextField(
                         onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                         style: TextStyle(
-                            decorationThickness: 0,
-                            height: 1.2,
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14)
+                          decorationThickness: 0,
+                          height: 1.2,
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
                         ),
                         controller: _idController,
                         decoration: InputDecoration(
@@ -325,7 +325,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                         children: [
                           IconButton(
                             icon: ClipOval(
-                                child: SvgPicture.asset('assets/images/login/sns_k.svg')
+                              child: SvgPicture.asset('assets/images/login/sns_k.svg'),
                             ),
                             iconSize: 60,
                             onPressed: () {
@@ -334,7 +334,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                           IconButton(
                             icon: ClipOval(
-                                child: SvgPicture.asset('assets/images/login/sns_n.svg')
+                              child: SvgPicture.asset('assets/images/login/sns_n.svg'),
                             ),
                             iconSize: 60,
                             onPressed: () {
@@ -345,7 +345,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                             visible: Platform.isIOS ? true : false,
                             child: IconButton(
                               icon: ClipOval(
-                                  child: SvgPicture.asset('assets/images/login/sns_a.svg')
+                                child: SvgPicture.asset('assets/images/login/sns_a.svg'),
                               ),
                               iconSize: 60,
                               onPressed: () {
@@ -364,7 +364,8 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const NonOrderScreen()), // 비회원일 때의 화면
+                          builder: (context) => const NonOrderScreen(),
+                        ), // 비회원일 때의 화면
                       );
                     },
                     child: Text(

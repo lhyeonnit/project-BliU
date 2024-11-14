@@ -160,13 +160,13 @@ class DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                                   ),
                                 ),
                                 Text(
-                                    orderDeliveryData?.ctDeliveryNumber ?? "",
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: Colors.black,
-                                      height: 1.2,
-                                    )
+                                  orderDeliveryData?.ctDeliveryNumber ?? "",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: Colors.black,
+                                    height: 1.2,
+                                  ),
                                 ),
                               ],
                             ),
@@ -178,13 +178,13 @@ class DeliveryScreenState extends ConsumerState<DeliveryScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                    '택배사',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: Colors.black,
-                                      height: 1.2,
-                                    )
+                                  '택배사',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: Colors.black,
+                                    height: 1.2,
+                                  ),
                                 ),
                                 Text(
                                   orderDeliveryData?.ctDeliveryCom ?? "",

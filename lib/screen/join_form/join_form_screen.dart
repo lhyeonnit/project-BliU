@@ -193,22 +193,22 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                 }
                               },
                               child: Container(
-                                  height: 44,
-                                  margin: const EdgeInsets.only(top: 47, left: 8),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    border: Border.all(color: const Color(0xFFDDDDDD)),
+                                height: 44,
+                                margin: const EdgeInsets.only(top: 47, left: 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(color: const Color(0xFFDDDDDD)),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '중복확인',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      height: 1.2,
+                                    ),
                                   ),
-                                  child: Center(
-                                      child: Text(
-                                        '중복확인',
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 14),
-                                          height: 1.2,
-                                        ),
-                                      )
-                                  )
+                                ),
                               ),
                             ),
                           ),
@@ -237,9 +237,9 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                           Expanded(
                             flex: 7,
                             child: _buildTextField(
-                                '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
-                                keyboardType: TextInputType.phone,
-                                isEnable: _phoneAuthChecked ? false : true
+                              '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
+                              keyboardType: TextInputType.phone,
+                              isEnable: _phoneAuthChecked ? false : true,
                             ),
                           ),
                           Expanded(
@@ -248,22 +248,22 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Visibility(
-                                    visible: _phoneAuthCodeVisible && !_phoneAuthChecked,
-                                    maintainSize: true,
-                                    maintainAnimation: true,
-                                    maintainState: true,
-                                    child: Container(
-                                      margin: const EdgeInsets.only(top: 20, left: 8),
-                                      child: Text(
-                                        _timerStr,
-                                        style: TextStyle(
-                                          color: const Color(0xFFFF6192),
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 13),
-                                          height: 1.2,
-                                        ),
+                                  visible: _phoneAuthCodeVisible && !_phoneAuthChecked,
+                                  maintainSize: true,
+                                  maintainAnimation: true,
+                                  maintainState: true,
+                                  child: Container(
+                                    margin: const EdgeInsets.only(top: 20, left: 8),
+                                    child: Text(
+                                      _timerStr,
+                                      style: TextStyle(
+                                        color: const Color(0xFFFF6192),
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 13),
+                                        height: 1.2,
                                       ),
-                                    )
+                                    ),
+                                  ),
                                 ),
                                 GestureDetector(
                                   onTap: () async {
@@ -292,22 +292,22 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                                     }
                                   },
                                   child: Container(
-                                      height: 44,
-                                      margin: const EdgeInsets.only(top: 10, left: 8),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(6),
-                                        border: Border.all(color: const Color(0xFFDDDDDD)),
+                                    height: 44,
+                                    margin: const EdgeInsets.only(top: 10, left: 8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(color: const Color(0xFFDDDDDD)),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '인증요청',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          height: 1.2,
+                                        ),
                                       ),
-                                      child: Center(
-                                          child: Text(
-                                            '인증요청',
-                                            style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(context, 14),
-                                              height: 1.2,
-                                            ),
-                                          )
-                                      )
+                                    ),
                                   ),
                                 )
                               ],
@@ -491,14 +491,14 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                           children: [
                             Expanded(
                               child: Container(
-                                  margin: const EdgeInsets.only(right: 4),
-                                  child: _buildGenderButton('남자')
+                                margin: const EdgeInsets.only(right: 4),
+                                child: _buildGenderButton('남자'),
                               ),
                             ),
                             Expanded(
                               child: Container(
-                                  margin: const EdgeInsets.only(left: 4),
-                                  child: _buildGenderButton('여자')
+                                margin: const EdgeInsets.only(left: 4),
+                                child: _buildGenderButton('여자'),
                               ),
                             ),
                           ],
@@ -716,9 +716,10 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                 enabled: isEnable,
                 decoration: InputDecoration(
                   hintStyle: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                      color: isEnable ? const Color(0xFF595959) : const Color(0xFFA4A4A4)),
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 14),
+                    color: isEnable ? const Color(0xFF595959) : const Color(0xFFA4A4A4),
+                  ),
                   filled: true,
                   contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                   border: UnderlineInputBorder(

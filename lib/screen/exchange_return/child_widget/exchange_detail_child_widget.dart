@@ -34,9 +34,7 @@ class ExchangeDetailChildWidgetState extends State<ExchangeDetailChildWidget> {
   final LayerLink _layerLink = LayerLink();
 
   List<CategoryData> get _exchangeReasons => widget.exchangeCategory;
-
-  List<CategoryData> get _exchangeDeliveryCostMethod =>
-      widget.exchangeDeliveryCostCategory;
+  List<CategoryData> get _exchangeDeliveryCostMethod => widget.exchangeDeliveryCostCategory;
 
   // 이미지 리스트
   final List<File> _selectedImages = [];
@@ -70,16 +68,17 @@ class ExchangeDetailChildWidgetState extends State<ExchangeDetailChildWidget> {
       setState(() {
         // 현재 선택된 이미지 개수에 따라 추가될 이미지를 제한
         if (_selectedImages.length + images.length <= 3) {
-          _selectedImages
-              .addAll(images.map((image) => File(image.path)).toList());
+          _selectedImages.addAll(images.map((image) => File(image.path)).toList());
           _updateCollectedData();
         } else {
           // 남은 자리에만 이미지를 추가
           int remainingSlots = 3 - _selectedImages.length;
-          _selectedImages.addAll(images
-              .take(remainingSlots)
-              .map((image) => File(image.path))
-              .toList());
+          _selectedImages.addAll(
+            images
+            .take(remainingSlots)
+            .map((image) => File(image.path))
+            .toList()
+          );
         }
       });
     }
@@ -119,8 +118,7 @@ class ExchangeDetailChildWidgetState extends State<ExchangeDetailChildWidget> {
                     child: CompositedTransformTarget(
                       link: _layerLink,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 14),
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: const Color(0xFFE1E1E1),
@@ -153,16 +151,15 @@ class ExchangeDetailChildWidgetState extends State<ExchangeDetailChildWidget> {
                   child: TextField(
                     onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                     style: TextStyle(
-                        decorationThickness: 0,
-                        height: 1.2,
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14)
+                      decorationThickness: 0,
+                      height: 1.2,
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
                     ),
                     maxLines: 4,
                     maxLength: 500,
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 15),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                       hintText: '세부 내용 입력',
                       hintStyle: TextStyle(
                         fontFamily: 'Pretendard',
@@ -243,18 +240,19 @@ class ExchangeDetailChildWidgetState extends State<ExchangeDetailChildWidget> {
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(6)),
-                        border: Border.all(color: const Color(0xFFDDDDDD))),
+                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(color: const Color(0xFFDDDDDD)),
+                    ),
                     child: Center(
-                        child: Text(
-                          '첨부하기',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            fontWeight: FontWeight.normal,
-                            height: 1.2,
-                          ),
-                        )
+                      child: Text(
+                        '첨부하기',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          fontWeight: FontWeight.normal,
+                          height: 1.2,
+                        ),
+                      ),
                     ),
                   ),
                 ),

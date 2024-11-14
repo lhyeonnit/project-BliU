@@ -215,9 +215,10 @@ class FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                           Expanded(
                             flex: 7,
                             child: _buildCheckField(
-                                '휴대폰번호', _authCodeController, '인증번호 입력',
-                                keyboardType: TextInputType.number,
-                                isEnable: _phoneAuthChecked ? false : true),
+                              '휴대폰번호', _authCodeController, '인증번호 입력',
+                              keyboardType: TextInputType.number,
+                              isEnable: _phoneAuthChecked ? false : true,
+                            ),
                           ),
                           Expanded(
                             flex: 3,

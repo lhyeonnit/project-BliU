@@ -117,10 +117,10 @@ class FAQScreenState extends ConsumerState<FAQScreen> {
                               child: TextField(
                                 onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                                 style: TextStyle(
-                                    decorationThickness: 0,
-                                    height: 1.2,
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14)
+                                  decorationThickness: 0,
+                                  height: 1.2,
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
                                 ),
                                 controller: _searchController,
                                 decoration: InputDecoration(
@@ -131,9 +131,9 @@ class FAQScreenState extends ConsumerState<FAQScreen> {
                                   ),
                                   hintText: '내용을 입력해 주세요.',
                                   hintStyle: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: const Color(0xFF595959)
+                                    fontFamily: 'Pretendard',
+                                    fontSize: Responsive.getFont(context, 14),
+                                    color: const Color(0xFF595959),
                                   ),
                                   border: InputBorder.none,
                                   suffixIcon: _searchController.text.isNotEmpty
