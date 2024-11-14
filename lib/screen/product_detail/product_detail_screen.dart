@@ -895,7 +895,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               duration: const Duration(milliseconds: 500),
               child: Container(
                 constraints: BoxConstraints(
-                  minHeight: _isExpanded ? 750 : 0,
+                  minHeight: _isExpanded ? 10 : 0,
                   maxHeight: _isExpanded ? double.infinity : 50,
                 ),
                 child: Html(data: content),

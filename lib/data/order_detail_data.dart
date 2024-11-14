@@ -13,7 +13,7 @@ class OrderDetailData {
   final int? ctOptQty;
   final int? ptPrice;
   final String? ptImg;
-  final String? reviewWrite;
+  String? reviewWrite;
   final int? rtIdx;
 
   OrderDetailData({

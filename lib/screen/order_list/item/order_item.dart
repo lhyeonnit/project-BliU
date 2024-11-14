@@ -85,6 +85,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
                 if (defaultResponseDTO.result == true) {
                   setState(() {
                     _ctStatus = 8;
+                    _orderDetailData.reviewWrite = "Y";
                   });
                 }
               }
@@ -118,7 +119,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => MyReviewEditScreen(reviewData: reviewData!,)
+            builder: (context) => MyReviewEditScreen(reviewData: reviewData!,),
           ),
         );
       }
@@ -496,16 +497,19 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                if (_orderDetailData.reviewWrite == "N") {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ReviewWriteScreen(orderDetailData: _orderDetailData),
-                    ),
-                  );
-                } else {
-                  // 수정 페이지로
-                  _getReviewDetail(_orderDetailData.rtIdx ?? 0);
+                if (_orderDetailData.reviewWrite == "Y") {
+                  final rtIdx = _orderDetailData.rtIdx ?? 0;
+                  if (rtIdx > 0) {
+                    // 수정 페이지로
+                    _getReviewDetail(_orderDetailData.rtIdx ?? 0);
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ReviewWriteScreen(orderDetailData: _orderDetailData),
+                      ),
+                    );
+                  }
                 }
               },
               style: TextButton.styleFrom(
