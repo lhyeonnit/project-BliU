@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:BliU/data/add_option_data.dart';
 import 'package:BliU/data/product_data.dart';
+import 'package:BliU/data/product_option_data.dart';
 import 'package:BliU/data/product_option_type_data.dart';
 import 'package:BliU/data/product_option_type_detail_data.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
@@ -72,6 +73,7 @@ class ProductOrderBottomOptionContent extends ConsumerStatefulWidget {
 
 class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBottomOptionContent> {
   late ProductData _productData;
+  ProductOptionData? _productOptionData;
   List<ProductOptionTypeData> _ptOption = [];
   List<ProductOptionTypeDetailData> _ptOptionArr = [];
   List<AddOptionData> _ptAddArr = [];
@@ -149,6 +151,18 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                             index: index,
                             onSelected: (selectedOption) {
                               setState(() {
+                                // TODO 조합 단독 구분해서 변경
+                                if (_productOptionData?.ptOptionChk != "Y") {
+                                  Utils.getInstance().showSnackBar(context, "해당 상품의 옵션을 사용할 수 없습니다.");
+                                  return;
+                                }
+
+                                if (_productOptionData?.ptOptionType == "1") {
+                                  // 조합
+                                } else {
+                                  // 단독
+                                }
+
                                 // 선택된 옵션 값을 저장
                                 optionData.selectedValue = selectedOption;
                                 _selectedOptions[title] = selectedOption;
@@ -572,6 +586,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
     final responseDto = await ref.read(productOrderBottomOptionViewModelProvider.notifier).getList(requestData);
     if (responseDto != null) {
       setState(() {
+        _productOptionData = responseDto.data;
         _ptOption = responseDto.data?.ptOption ?? [];
         _ptOptionArr = responseDto.data?.ptOptionArr ?? [];
         _ptAddArr = responseDto.data?.ptAddArr ?? [];
@@ -797,6 +812,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
 
   // 옵션 확인
   void _selectOptionCheck() {
+    // TODO - 단독 & 조합 구분해서 변경
     bool isAllChecked = true;
     String optionStr = "";
     for (int i = 0; i < _ptOption.length; i++) {
@@ -809,6 +825,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
         optionStr += " | ${_ptOption[i].selectedValue}";
       }
     }
+
     if (isAllChecked) {
       bool optionExists = false;
       for (int i = 0; i < _ptOption.length; i++) {
