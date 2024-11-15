@@ -13,6 +13,7 @@ import 'package:BliU/screen/payment/child_widget/payment_order_child_widget.dart
 import 'package:BliU/screen/payment/view_model/payment_view_model.dart';
 import 'package:BliU/screen/payment_complete/payment_complete_screen.dart';
 import 'package:BliU/screen/payment_coupon/payment_coupon_screen.dart';
+import 'package:BliU/screen/payment_iamport/payment_iamport_screen.dart';
 import 'package:BliU/screen/terms_detail/terms_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -507,48 +508,49 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 buyerAddr: "",
                 buyerPostcode: "");
 
-            // TODO 결제모듈 차후 다시 테스트
-            // final Map<String, String>? paymentResult = await Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => PaymentIamport(iamportPayData : iamportPayData)),
-            // );
-            // if (paymentResult != null) {
-            //   if (paymentResult['imp_success'] == 'true' || paymentResult['success'] == 'true') {
-            //
-            //     Map<String, dynamic> orderRequestData = {
-            //       'orderId': payOrderDetailData.otCode ?? "",
-            //       'imp_uid': paymentResult['imp_uid'].toString(),
-            //       'merchant_uid': paymentResult['merchant_uid'].toString(),
-            //     };
-            //     final defaultResponseDTO = await ref.read(paymentViewModelProvider.notifier).orderCheck(orderRequestData);
-            //     // 결제검증 결과값 ex)  return res.status(200).json({'result': true, 'data':{'message': '결제 완료.'}});
-            //     if (defaultResponseDTO?.result == true) {
-            //       _paymentComplete(payOrderDetailData);
-            //     } else {
-            //       if (!mounted) return;
-            //       Utils.getInstance().showSnackBar(context, defaultResponseDTO?.message ?? "");
-            //     }
-            //   } else {
-            //     if (!mounted) return;
-            //     Utils.getInstance().showSnackBar(context, paymentResult["error_msg"].toString());
-            //   }
-            // }
 
-            // TODO 테스트용
-            Map<String, dynamic> orderRequestData = {
-              'orderId': payOrderDetailData.otCode ?? "",
-              'imp_uid': '',
-              'merchant_uid': '',
-            };
-            final defaultResponseDTO = await ref.read(paymentViewModelProvider.notifier).orderCheck(orderRequestData);
-            // 결제검증 결과값 ex)  return res.status(200).json({'result': true, 'data':{'message': '결제 완료.'}});
-            if (defaultResponseDTO?.result == true) {
-              _paymentComplete(payOrderDetailData);
-              return;
-            } else {
-              if (!mounted) return;
-              Utils.getInstance().showSnackBar(context, defaultResponseDTO?.message ?? "");
+            final Map<String, String>? paymentResult = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PaymentIamportScreen(iamportPayData : iamportPayData)),
+            );
+            if (paymentResult != null) {
+              final error_code = paymentResult['error_code'];
+              final error_msg = paymentResult['error_msg'].toString();
+
+              if (error_code == null) {
+                Map<String, dynamic> orderRequestData = {
+                  'orderId': payOrderDetailData.otCode ?? "",
+                  'imp_uid': paymentResult['imp_uid'].toString(),
+                  'merchant_uid': paymentResult['merchant_uid'].toString(),
+                };
+                final defaultResponseDTO = await ref.read(paymentViewModelProvider.notifier).orderCheck(orderRequestData);
+                // 결제검증 결과값 ex)  return res.status(200).json({'result': true, 'data':{'message': '결제 완료.'}});
+                if (defaultResponseDTO?.result == true) {
+                  _paymentComplete(payOrderDetailData);
+                } else {
+                  if (!mounted) return;
+                  Utils.getInstance().showSnackBar(context, defaultResponseDTO?.message ?? "");
+                }
+              } else {
+                if (!mounted) return;
+                Utils.getInstance().showSnackBar(context, error_msg);
+              }
             }
+
+            // // TODO 테스트용
+            // Map<String, dynamic> orderRequestData = {
+            //   'orderId': payOrderDetailData.otCode ?? "",
+            //   'imp_uid': '',
+            //   'merchant_uid': '',
+            // };
+            // final defaultResponseDTO = await ref.read(paymentViewModelProvider.notifier).orderCheck(orderRequestData);
+            // if (defaultResponseDTO?.result == true) {
+            //   _paymentComplete(payOrderDetailData);
+            //   return;
+            // } else {
+            //   if (!mounted) return;
+            //   Utils.getInstance().showSnackBar(context, defaultResponseDTO?.message ?? "");
+            // }
           } else {
             if (!mounted) return;
             Utils.getInstance().showSnackBar(context, response['data']['message'] ?? "");
