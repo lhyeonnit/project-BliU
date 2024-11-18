@@ -117,7 +117,7 @@
 		<key>NSMicrophoneUsageDescription</key>
 		<string>This app required NSMicrophoneUsageDescription permission</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>앱에서 이미지 업로드를 위해 사진 라이브러리 사용 권한이 필요합니다.</string>
+		<string>앱에서 이미지를 통한 연관 상품 검색 및 문의사항 및 리뷰의 이미지 업로드를 위해 사진 라이브러리 사용 권한이 필요합니다.</string>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>UIBackgroundModes</key>
