@@ -158,26 +158,10 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                                 }
 
                                 if (_productOptionData?.ptOptionType == "1") {
-                                  // 조합
-                                } else {
                                   // 단독
-                                }
 
-                                // 선택된 옵션 값을 저장
-                                optionData.selectedValue = selectedOption;
-                                _selectedOptions[title] = selectedOption;
+                                  optionData.selectedValue = selectedOption;
 
-                                // 모든 옵션이 선택되었는지 확인
-                                bool allOptionsSelected = true;
-                                for (var option in _ptOption) {
-                                  if (option.selectedValue.isEmpty) {
-                                    allOptionsSelected = false;
-                                    break;
-                                  }
-                                }
-
-                                // 모든 항목이 선택되면 타이틀을 초기화
-                                if (allOptionsSelected) {
                                   _isOptionSelected = true;
 
                                   // 모든 옵션의 타이틀 초기화
@@ -186,7 +170,33 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                                     selectedOption = title;
                                   }
                                 } else {
-                                  _isOptionSelected = false;  // 모든 옵션이 선택되지 않으면 false
+                                  // 조합
+
+                                  // 선택된 옵션 값을 저장
+                                  optionData.selectedValue = selectedOption;
+                                  _selectedOptions[title] = selectedOption;
+
+                                  // 모든 옵션이 선택되었는지 확인
+                                  bool allOptionsSelected = true;
+                                  for (var option in _ptOption) {
+                                    if (option.selectedValue.isEmpty) {
+                                      allOptionsSelected = false;
+                                      break;
+                                    }
+                                  }
+
+                                  // 모든 항목이 선택되면 타이틀을 초기화
+                                  if (allOptionsSelected) {
+                                    _isOptionSelected = true;
+
+                                    // 모든 옵션의 타이틀 초기화
+                                    for (var option in _ptOption) {
+                                      _selectedOptions[option.title ?? ''] = null;  // 타이틀 초기화
+                                      selectedOption = title;
+                                    }
+                                  } else {
+                                    _isOptionSelected = false;  // 모든 옵션이 선택되지 않으면 false
+                                  }
                                 }
 
                                 // 옵션 선택 후 처리
@@ -812,28 +822,21 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
 
   // 옵션 확인
   void _selectOptionCheck() {
-    // TODO - 단독 & 조합 구분해서 변경
-    bool isAllChecked = true;
-    String optionStr = "";
-    for (int i = 0; i < _ptOption.length; i++) {
-      if (_ptOption[i].selectedValue.isEmpty) {
-        isAllChecked = false;
-      }
-      if (optionStr.isEmpty) {
-        optionStr = _ptOption[i].selectedValue;
-      } else {
-        optionStr += " | ${_ptOption[i].selectedValue}";
-      }
-    }
-
-    if (isAllChecked) {
-      bool optionExists = false;
+    if (_productOptionData?.ptOptionType == "1") {
+      // 단독
+      var titleValue = "";
+      var optionValue = "";
       for (int i = 0; i < _ptOption.length; i++) {
-        _ptOption[i].selectedValue = "";
+        if (_ptOption[i].selectedValue.isNotEmpty) {
+          titleValue = _ptOption[i].title ?? "";
+          optionValue = _ptOption[i].selectedValue ?? "";
+
+          _ptOption[i].selectedValue = "";
+        }
       }
+
       for (int i = 0; i < _ptOptionArr.length; i++) {
-        if (_ptOptionArr[i].option == optionStr) {
-          optionExists = true;
+        if (_ptOptionArr[i].title == titleValue && _ptOptionArr[i].option == optionValue) {
           if (_addPtOptionArr.isEmpty) {
             setState(() {
               _addPtOptionArr.add(_ptOptionArr[i]);
@@ -856,8 +859,54 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
           }
         }
       }
-      if (!optionExists) {
-        Utils.getInstance().showSnackBar(context, '해당 옵션의 상품은 판매가 불가합니다.');
+    } else {
+      // 조합
+      bool isAllChecked = true;
+      String optionStr = "";
+      for (int i = 0; i < _ptOption.length; i++) {
+        if (_ptOption[i].selectedValue.isEmpty) {
+          isAllChecked = false;
+        }
+        if (optionStr.isEmpty) {
+          optionStr = _ptOption[i].selectedValue;
+        } else {
+          optionStr += " | ${_ptOption[i].selectedValue}";
+        }
+      }
+
+      if (isAllChecked) {
+        bool optionExists = false;
+        for (int i = 0; i < _ptOption.length; i++) {
+          _ptOption[i].selectedValue = "";
+        }
+        for (int i = 0; i < _ptOptionArr.length; i++) {
+          if (_ptOptionArr[i].option == optionStr) {
+            optionExists = true;
+            if (_addPtOptionArr.isEmpty) {
+              setState(() {
+                _addPtOptionArr.add(_ptOptionArr[i]);
+              });
+            } else {
+              bool isAdd = true;
+              for (int j = 0; j < _addPtOptionArr.length; j++) {
+                if (_addPtOptionArr[j].idx == _ptOptionArr[i].idx) {
+                  isAdd = false;
+                }
+              }
+              if (isAdd) {
+                setState(() {
+                  _addPtOptionArr.add(_ptOptionArr[i]);
+                });
+              } else {
+                Utils.getInstance().showSnackBar(context, '이미 추가한 옵션 입니다.');
+              }
+              break;
+            }
+          }
+        }
+        if (!optionExists) {
+          Utils.getInstance().showSnackBar(context, '해당 옵션의 상품은 판매가 불가합니다.');
+        }
       }
     }
   }
