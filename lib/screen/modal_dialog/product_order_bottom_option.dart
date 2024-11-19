@@ -151,7 +151,6 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                             index: index,
                             onSelected: (selectedOption) {
                               setState(() {
-                                // TODO 조합 단독 구분해서 변경
                                 if (_productOptionData?.ptOptionChk != "Y") {
                                   Utils.getInstance().showSnackBar(context, "해당 상품의 옵션을 사용할 수 없습니다.");
                                   return;
@@ -287,7 +286,6 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                                           _addPtAddArr.add(ptAdd);
                                         });
                                       } else {
-                                        //Utils.getInstance().showToast('이미 추가한 상품 입니다.');
                                         Utils.getInstance().showSnackBar(context, '이미 추가한 상품 입니다.');
                                       }
                                     }
@@ -829,7 +827,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
       for (int i = 0; i < _ptOption.length; i++) {
         if (_ptOption[i].selectedValue.isNotEmpty) {
           titleValue = _ptOption[i].title ?? "";
-          optionValue = _ptOption[i].selectedValue ?? "";
+          optionValue = _ptOption[i].selectedValue;
 
           _ptOption[i].selectedValue = "";
         }
