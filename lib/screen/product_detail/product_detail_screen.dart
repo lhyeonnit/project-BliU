@@ -1370,14 +1370,10 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     margin: const EdgeInsets.only(top: 12, right: 16, left: 16),
                     child: Row(
                       children: [
-                        myQna == "N"
-                            ? SvgPicture.asset(
-                            'assets/images/product/ic_lock.svg')
-                            : const SizedBox(),
+                        myQna == "N" ? SvgPicture.asset('assets/images/product/ic_lock.svg') : const SizedBox(),
                         Expanded(
                           child: Container(
-                            margin: myQna == "N" ? const EdgeInsets.symmetric(
-                                horizontal: 8) : null,
+                            margin: myQna == "N" ? const EdgeInsets.symmetric(horizontal: 8) : null,
                             child: Text(
                               qnaData.qtTitle ?? "",
                               style: TextStyle(
@@ -1393,8 +1389,8 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     ),
                   ),
                   Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      child: const Divider(thickness: 1, color: Color(0xFFEEEEEE))
+                    margin: const EdgeInsets.only(top: 20),
+                    child: const Divider(thickness: 1, color: Color(0xFFEEEEEE)),
                   ),
                 ],
               );
@@ -1424,7 +1420,6 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       fontWeight: FontWeight.w300,
                       color: const Color(0xFF7B7B7B),
                       height: 1.2,
-
                     ),
                   ),
                 ),
@@ -1695,8 +1690,8 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   ),
                 ),
                 Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    child: const Divider(thickness: 1, color: Color(0xFFEEEEEE))
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  child: const Divider(thickness: 1, color: Color(0xFFEEEEEE)),
                 ),
               ],
             ),
@@ -1711,15 +1706,15 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                    icon: SvgPicture.asset('assets/images/product/pager_prev.svg'),
-                    onPressed: () {
-                      if (_productReviewCurrentPage > 1) {
-                        setState(() {
-                          _productReviewCurrentPage--;
-                          _getProductReviewList();
-                        });
-                      }
+                  icon: SvgPicture.asset('assets/images/product/pager_prev.svg'),
+                  onPressed: () {
+                    if (_productReviewCurrentPage > 1) {
+                      setState(() {
+                        _productReviewCurrentPage--;
+                        _getProductReviewList();
+                      });
                     }
+                  },
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -1748,15 +1743,15 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   ),
                 ),
                 IconButton(
-                    icon: SvgPicture.asset('assets/images/product/pager_next.svg'),
-                    onPressed: () {
-                      if (_productReviewCurrentPage < _productReviewTotalPages) {
-                        setState(() {
-                          _productReviewCurrentPage++;
-                          _getProductReviewList();
-                        });
-                      }
+                  icon: SvgPicture.asset('assets/images/product/pager_next.svg'),
+                  onPressed: () {
+                    if (_productReviewCurrentPage < _productReviewTotalPages) {
+                      setState(() {
+                        _productReviewCurrentPage++;
+                        _getProductReviewList();
+                      });
                     }
+                  },
                 ),
               ],
             ),

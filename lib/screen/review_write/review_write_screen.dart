@@ -192,19 +192,19 @@ class ReviewWriteScreenState extends ConsumerState<ReviewWriteScreen> {
                             onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                             controller: _reviewController,
                             style: TextStyle(
-                                decorationThickness: 0,
-                                height: 1.2,
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14)
+                              decorationThickness: 0,
+                              height: 1.2,
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
                             ),
                             maxLines: 9,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                               hintText: '최소 10자 이상 입력해주세요. \n구매하신 상품에 대한 솔직한 리뷰를 남겨주세요. :)',
                               hintStyle: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: const Color(0xFF595959)
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: const Color(0xFF595959),
                               ),
                               enabledBorder: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -255,9 +255,9 @@ class ReviewWriteScreenState extends ConsumerState<ReviewWriteScreen> {
                               height: 100,
                               margin: const EdgeInsets.only(right: 10),
                               decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                  border: Border.all(color: const Color(0xFFE7EAEF))
+                                color: Colors.white,
+                                borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                border: Border.all(color: const Color(0xFFE7EAEF)),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -338,28 +338,28 @@ class ReviewWriteScreenState extends ConsumerState<ReviewWriteScreen> {
               left: 0,
               right: 0,
               child: GestureDetector(
-                  onTap: _submitReview,
-                  child: Container(
-                    width: double.infinity,
-                    height: 48,
-                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.all(Radius.circular(6),),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '등록',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: Colors.white,
-                          height: 1.2,
-                          fontWeight: FontWeight.w600,
-                        ),
+                onTap: _submitReview,
+                child: Container(
+                  width: double.infinity,
+                  height: 48,
+                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.all(Radius.circular(6),),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '등록',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        color: Colors.white,
+                        height: 1.2,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  )
+                  ),
+                ),
               ),
             ),
           ],

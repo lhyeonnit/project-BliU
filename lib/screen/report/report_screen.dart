@@ -165,10 +165,10 @@ class ReportScreenState extends ConsumerState<ReportScreen> {
                           child: TextField(
                             onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                             style: TextStyle(
-                                decorationThickness: 0,
-                                height: 1.2,
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14)
+                              decorationThickness: 0,
+                              height: 1.2,
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
                             ),
                             controller: _controller,
                             maxLines: 4,
@@ -176,9 +176,9 @@ class ReportScreenState extends ConsumerState<ReportScreen> {
                               contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
                               hintText: '직접 입력해주세요',
                               hintStyle: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: Responsive.getFont(context, 14),
-                                  color: const Color(0xFF595959)
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: const Color(0xFF595959),
                               ),
                               enabledBorder: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(6)),

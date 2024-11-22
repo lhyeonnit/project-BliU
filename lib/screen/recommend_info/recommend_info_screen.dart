@@ -494,8 +494,7 @@ class RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.all(Radius.circular(6)),
-            border: Border.all(
-                color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+            border: Border.all(color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -692,17 +691,19 @@ class RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                                     if (selectedDay > maxDay) selectedDay = maxDay;
                                   });
                                 },
-                                children: List<Widget>.generate(12, (int index) => Center(
-                                  child: Text(
-                                    '${index + 1}월',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 16),
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.2,
+                                children: List<Widget>.generate(12, (int index) =>
+                                  Center(
+                                    child: Text(
+                                      '${index + 1}월',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 16),
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.2,
+                                      ),
                                     ),
                                   ),
-                                )),
+                                ),
                               ),
                             ),
                             Expanded(
@@ -725,9 +726,8 @@ class RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                                     selectedDay = index + 1;
                                   });
                                 },
-                                children: List<Widget>.generate(
-                                  maxDay,
-                                      (int index) => Center(
+                                children: List<Widget>.generate(maxDay, (int index) =>
+                                  Center(
                                     child: Text(
                                       '${index + 1}일',
                                       style: TextStyle(

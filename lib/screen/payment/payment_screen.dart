@@ -508,7 +508,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 buyerAddr: "",
                 buyerPostcode: "");
 
-
             final Map<String, String>? paymentResult = await Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => PaymentIamportScreen(iamportPayData : iamportPayData)),

@@ -406,10 +406,10 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                         child: TextField(
                           onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                           style: TextStyle(
-                              decorationThickness: 0,
-                              height: 1.2,
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14)
+                            decorationThickness: 0,
+                            height: 1.2,
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
                           ),
                           controller: _searchController,
                           decoration: InputDecoration(
@@ -782,7 +782,8 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                       ),
                       title: Container(
                         margin: const EdgeInsets.only(bottom: 10),
-                        child: _buildHighlightedText(result.stName ?? '', _searchController.text),),
+                        child: _buildHighlightedText(result.stName ?? '', _searchController.text),
+                      ),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -845,9 +846,9 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
             Text(
               '상품 $_count',
               style: TextStyle(
-                  height: 1.2,
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 14)
+                height: 1.2,
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 14),
               ),
             ),
             GridView.builder(

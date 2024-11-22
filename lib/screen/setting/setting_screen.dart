@@ -154,7 +154,8 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const TermsDetailScreen(type: 0)),
+                            builder: (context) => const TermsDetailScreen(type: 0),
+                          ),
                         );
                       },
                     ),
@@ -165,7 +166,8 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const TermsDetailScreen(type: 1)),
+                            builder: (context) => const TermsDetailScreen(type: 1),
+                          ),
                         );
                       },
                     ),

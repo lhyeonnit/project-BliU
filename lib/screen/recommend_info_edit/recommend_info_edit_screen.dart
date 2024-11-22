@@ -294,8 +294,7 @@ class RecommendInfoEditScreenState extends ConsumerState<RecommendInfoEditScreen
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.all(Radius.circular(6)),
-            border: Border.all(
-                color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+            border: Border.all(color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

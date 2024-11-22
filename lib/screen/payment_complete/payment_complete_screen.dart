@@ -119,7 +119,6 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
               children: [
                 Container(
                   margin: const EdgeInsets.only(bottom: 30),
-
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

@@ -136,18 +136,18 @@ class ProductReviewDetailScreenState extends ConsumerState<ProductReviewDetailSc
                       },
                       itemBuilder: (context, index) {
                         return Image.network(
-                            images[index],
-                            fit: BoxFit.cover,
-                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                              return SizedBox(
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    'assets/images/no_imge.svg',
-                                    fit: BoxFit.fitWidth,
-                                  ),
+                          images[index],
+                          fit: BoxFit.cover,
+                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                            return SizedBox(
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  'assets/images/no_imge.svg',
+                                  fit: BoxFit.fitWidth,
                                 ),
-                              );
-                            }
+                              ),
+                            );
+                          },
                         );
                       },
                     ),
@@ -262,7 +262,7 @@ class ProductReviewDetailScreenState extends ConsumerState<ProductReviewDetailSc
                             final result = await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MyReviewEditScreen(reviewData: _reviewData!,)
+                                builder: (context) => MyReviewEditScreen(reviewData: _reviewData!,),
                               ),
                             );
                             if (result == true) {
