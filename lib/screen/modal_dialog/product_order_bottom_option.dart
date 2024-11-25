@@ -1090,11 +1090,16 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                 }
                 return;
               }
+            } else {
+              if (!mounted) return;
+              Utils.getInstance().showSnackBar(context, "Network Error");
             }
+          } else {
+            if (!mounted) return;
+            Utils.getInstance().showSnackBar(context, "Network Error");
           }
         }
       } else {
-        //Utils.getInstance().showToast(responseData['data']['message'].message ?? "");
         if (!mounted) return;
         Utils.getInstance().showSnackBar(context, responseData['data']['message'].message ?? "");
       }

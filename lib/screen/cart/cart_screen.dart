@@ -303,31 +303,26 @@ class CartScreenState extends ConsumerState<CartScreen> {
       final payOrderDetailData = payOrderDetailDTO.data;
       final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;
       if (payOrderDetailData != null) {
-        if (mounted) {
-          if (userInfoCheck == "Y" || memberType == 2) {
-            if(!mounted) return;
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PaymentScreen(
-                  payOrderDetailData: payOrderDetailData,
-                  memberType: memberType,
-                ),
-              ),
-            );
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => JoinAddInfoScreen(
-                payOrderDetailData: payOrderDetailData,
-                memberType: memberType,
-              ),
-              ),
-            );
-          }
-          return;
+        if(!mounted) return;
+        if (userInfoCheck == "Y" || memberType == 2) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PaymentScreen(payOrderDetailData: payOrderDetailData, memberType: memberType,),),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => JoinAddInfoScreen(payOrderDetailData: payOrderDetailData, memberType: memberType,),),
+          );
         }
+        return;
+      } else {
+        if (!mounted) return;
+        Utils.getInstance().showSnackBar(context, "Network Error");
       }
+    } else {
+      if (!mounted) return;
+      Utils.getInstance().showSnackBar(context, "Network Error");
     }
   }
 
