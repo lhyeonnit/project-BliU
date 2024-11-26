@@ -5,6 +5,8 @@ class StoreData {
   final String? stName;
   final String? stProfile;
   final String? stBackground;
+  final String? stBusiness;
+  final String? stHp;
   int? stLike;
   final String? stStyle;
   final String? stStyleTxt;
@@ -21,6 +23,8 @@ class StoreData {
     required this.stName,
     required this.stProfile,
     required this.stBackground,
+    required this.stBusiness,
+    required this.stHp,
     required this.stLike,
     required this.stStyle,
     required this.stStyleTxt,
@@ -47,6 +51,8 @@ class StoreData {
       stName: json['st_name'],
       stProfile: json['st_profile'],
       stBackground: json['st_background'],
+      stBusiness: json['st_business'],
+      stHp: json['st_hp'],
       stLike: json['st_like'],
       stStyle: json['st_style'],
       stStyleTxt: json['st_style_txt'],
@@ -67,6 +73,8 @@ class StoreData {
       'st_name': stName,
       'st_profile': stProfile,
       'st_background': stBackground,
+      'st_business': stBusiness,
+      'st_hp': stHp,
       'st_like': stLike,
       'st_style': stStyle,
       'st_style_txt': stStyleTxt,

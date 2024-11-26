@@ -1855,7 +1855,6 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   //상품정보제공고시 테이블 구성 만들기
   Widget _makeProductInfoTable() {
-    // TODO 작업 필요
     List<TableRow> tableRows = [];
     final ptCategory = _productData?.ptCategory ?? "";
     List<String> typeList = [];
@@ -1881,6 +1880,10 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       '취급방법 및 취급시 주의사항', '품질보증기간', 'A/S 책임자와 전화번호'
     ];
 
+    List<String> typeValue = [];
+
+    final pat = _productData?.ptAttribute;
+
     switch(ptCategory) {
       // 아우터, 상의, 하의, 원피스, 세트/한벌옷, 언더웨어/홈웨어
       case "1":
@@ -1890,23 +1893,42 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       case "6":
       case "7":
         typeList = type1;
+        typeValue = [
+          pat?.patName ?? "", pat?.patKc ?? "", pat?.patSize ?? "", pat?.patColor ?? "",
+          pat?.patTexture ?? "", pat?.patAge ?? "", pat?.patSdate ?? "", pat?.patImporter ?? "",
+          pat?.patFrom ?? "", pat?.patDanger ?? "", pat?.patQuality ?? "", pat?.patAs ?? "",
+        ];
         break;
       //슈즈
       case "5":
         typeList = type2;
+        typeValue = [
+          pat?.patTexture ?? "", pat?.patKc ?? "", pat?.patColor ?? "", pat?.patSize ?? "", pat?.patImporter ?? "",
+          pat?.patFrom ?? "", pat?.patDanger ?? "", pat?.patQuality ?? "", pat?.patAs ?? "",
+        ];
         break;
       //악세서리
       case "8":
         typeList = type3;
+        typeValue = [
+          pat?.patKind ?? "", pat?.patKc ?? "", pat?.patTexture ?? "", pat?.patSize ?? "", pat?.patImporter ?? "",
+          pat?.patFrom ?? "", pat?.patDanger ?? "", pat?.patQuality ?? "", pat?.patAs ?? "",
+        ];
         break;
       //베이비 잡화
       case "9":
         typeList = type4;
+        typeValue = [
+          pat?.patKind ?? "", pat?.patKc ?? "", pat?.patTexture ?? "", pat?.patSize ?? "", pat?.patImporter ?? "",
+          pat?.patFrom ?? "", pat?.patDanger ?? "", pat?.patQuality ?? "", pat?.patAs ?? "",
+        ];
         break;
     }
 
-    for (var name in typeList) {
-      tableRows.add(_makeTableRow(name, '상품상세참조'));
+    for (int i = 0; i < typeList.length; i++) {
+      final name = typeList[i];
+      final value = typeValue[i];
+      tableRows.add(_makeTableRow(name, value));
     }
 
     return Table(
@@ -1923,7 +1945,6 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   }
   // 판매자 정보
   Widget _makeSellerInfoTable() {
-    // TODO 작업 필요
     return Table(
       border: TableBorder.all(
         color: const Color(0xFFDDDDDD),
@@ -1933,9 +1954,9 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         1: FractionColumnWidth(0.55),
       },
       children: [
-        _makeTableRow('상호명', '베베쥬'),
-        _makeTableRow('사업자등록번호', '12345678'),
-        _makeTableRow('대표전화', '02-1234-5678'),
+        _makeTableRow('상호명', _storeData?.stName ?? ""),
+        _makeTableRow('사업자등록번호', _storeData?.stBusiness ?? ""),
+        _makeTableRow('대표전화', _storeData?.stHp ?? ""),
       ],
     );
   }

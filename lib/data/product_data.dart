@@ -1,4 +1,5 @@
 import 'package:BliU/data/delivery_data.dart';
+import 'package:BliU/data/product_attribute_data.dart';
 
 class ProductData {
   final int? stIdx;
@@ -21,6 +22,7 @@ class ProductData {
   final DeliveryData? deliveryInfo;
   final String? ptContent;
   final List<String>? imgArr;
+  final ProductAttributeData? ptAttribute;
 
   ProductData({
     required this.stIdx,
@@ -43,6 +45,7 @@ class ProductData {
     required this.deliveryInfo,
     required this.ptContent,
     required this.imgArr,
+    required this.ptAttribute,
   });
 
   // Factory method to create a ProductDTO from JSON
@@ -77,6 +80,7 @@ class ProductData {
       deliveryInfo: deliveryInfo,
       ptContent: json['pt_content'],
       imgArr: imgArr,
+      ptAttribute: json['pt_attribute'],
     );
   }
 
@@ -103,6 +107,7 @@ class ProductData {
       'delivery_info': deliveryInfo,
       'pt_content': ptContent,
       'img_arr': imgArr,
+      'pt_attribute': ptAttribute,
     };
   }
 }
