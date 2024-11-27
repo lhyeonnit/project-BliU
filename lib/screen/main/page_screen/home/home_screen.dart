@@ -38,18 +38,19 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      final viewModel = ref.read(homeViewModelProvider.notifier);
-      final model = ref.read(homeViewModelProvider);
-      final isScrolled = model.isScrolled;
-      if (_scrollController.offset > 50 && !isScrolled) {
-        viewModel.setIsScrolled(true);
-      } else if (_scrollController.offset <= 50 && isScrolled) {
-        viewModel.setIsScrolled(false);
-      }
-
-      if (_scrollController.position.maxScrollExtent - _scrollController.offset < 100) {
-        ref.read(homeViewModelProvider.notifier).listNextLoad();
-      }
+      // 페이징
+      // final viewModel = ref.read(homeViewModelProvider.notifier);
+      // final model = ref.read(homeViewModelProvider);
+      // final isScrolled = model.isScrolled;
+      // if (_scrollController.offset > 50 && !isScrolled) {
+      //   viewModel.setIsScrolled(true);
+      // } else if (_scrollController.offset <= 50 && isScrolled) {
+      //   viewModel.setIsScrolled(false);
+      // }
+      //
+      // if (_scrollController.position.maxScrollExtent - _scrollController.offset < 100) {
+      //   ref.read(homeViewModelProvider.notifier).listNextLoad();
+      // }
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
@@ -315,64 +316,56 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                           ),
                                         ),
                                       ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(top: 20.0),
-                                            padding: const EdgeInsets.only(right: 16.0),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                _showAgeGroupSelection();
-                                              },
-                                              child: Container(
-                                                padding: const EdgeInsets.fromLTRB(20, 11, 20, 11),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  shape: BoxShape.rectangle,
-                                                  borderRadius: BorderRadius.circular(22),
-                                                  border: Border.all(
-                                                    color: const Color(0xFFDDDDDD), // 테두리 색상
-                                                  ),
+                                      Container(
+                                        alignment: Alignment.centerRight,
+                                        margin: const EdgeInsets.only(top: 20.0),
+                                        padding: const EdgeInsets.only(right: 16.0),
+                                        child: FittedBox(
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              _showAgeGroupSelection();
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.fromLTRB(20, 11, 20, 11),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                shape: BoxShape.rectangle,
+                                                borderRadius: BorderRadius.circular(22),
+                                                border: Border.all(
+                                                  color: const Color(0xFFDDDDDD), // 테두리 색상
                                                 ),
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      margin: const EdgeInsets.only(right: 5),
-                                                      child: Text(
-                                                        viewModel.getSelectedAgeGroupText(),
-                                                        style: TextStyle(
-                                                          fontFamily: 'Pretendard',
-                                                          fontSize: Responsive.getFont(context, 14),
-                                                          color: Colors.black,
-                                                          height: 1.2,
-                                                        ),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    margin: const EdgeInsets.only(right: 5),
+                                                    child: Text(
+                                                      viewModel.getSelectedAgeGroupText(),
+                                                      style: TextStyle(
+                                                        fontFamily: 'Pretendard',
+                                                        fontSize: Responsive.getFont(context, 14),
+                                                        color: Colors.black,
+                                                        height: 1.2,
                                                       ),
                                                     ),
-                                                    SvgPicture.asset(
-                                                      "assets/images/product/filter_select.svg",
-                                                      width: 14,
-                                                      height: 14,
-                                                      fit: BoxFit.contain,
-                                                      alignment: Alignment.topCenter,
-                                                    )
-                                                  ],
-                                                ),
+                                                  ),
+                                                  SvgPicture.asset(
+                                                    "assets/images/product/filter_select.svg",
+                                                    width: 14,
+                                                    height: 14,
+                                                    fit: BoxFit.contain,
+                                                    alignment: Alignment.topCenter,
+                                                  )
+                                                ],
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      Visibility(
-                                        visible: productList.isEmpty,
-                                        child: Container(
-                                          margin: const EdgeInsets.only(bottom: 200),
-                                          child: const NonDataScreen(text: '등록된 상품이 없습니다.',),
                                         ),
                                       ),
                                       Container(
-                                        margin: const EdgeInsets.only(right: 16, bottom: 29),
+                                        margin: const EdgeInsets.only(right: 16, bottom: 29, top: 20),
                                         child: GridView.builder(
+                                          padding: EdgeInsets.zero,
                                           shrinkWrap: true,
                                           physics: const NeverScrollableScrollPhysics(),
                                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -386,6 +379,13 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                             final productData = productList[index];
                                             return ProductListItem(productData: productData);
                                           },
+                                        ),
+                                      ),
+                                      Visibility(
+                                        visible: productList.isEmpty,
+                                        child: Container(
+                                          margin: const EdgeInsets.only(bottom: 200),
+                                          child: const NonDataScreen(text: '등록된 상품이 없습니다.',),
                                         ),
                                       ),
                                     ],
