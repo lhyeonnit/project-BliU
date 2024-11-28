@@ -282,7 +282,7 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  '+${exhibitionData.etProductCount}',
+                                  '+${exhibitionData.etProductCount ?? 0}',
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 14),

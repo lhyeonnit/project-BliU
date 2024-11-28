@@ -59,6 +59,11 @@ class ProductData {
       imgArr = List<String>.from(json['img_arr']);
     }
 
+    ProductAttributeData? ptAttribute;
+    if (json['pt_attribute'] != null) {
+      ptAttribute = ProductAttributeData.fromJson(json['pt_attribute']);
+    }
+
     return ProductData(
       stIdx: json['st_idx'],
       stName: json['st_name'],
@@ -80,7 +85,7 @@ class ProductData {
       deliveryInfo: deliveryInfo,
       ptContent: json['pt_content'],
       imgArr: imgArr,
-      ptAttribute: json['pt_attribute'],
+      ptAttribute: ptAttribute,
     );
   }
 
