@@ -947,10 +947,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
     final responseData = await ref.read(productOrderBottomOptionViewModelProvider.notifier).addCart(requestData1);
     if (responseData != null) {
       if (responseData['result'] == true) {
-        if(!mounted) return;
-
         if (addType == 0) {
-          //Utils.getInstance().showToast(responseData['data']['message'] ?? "");
           Utils.getInstance().showSnackBar(context, responseData['data']['message'] ?? "");
           ref.read(cartProvider.notifier).cartRefresh(true);
           Navigator.pop(context);
@@ -989,7 +986,6 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                         onTap: () {
                           Navigator.pop(context);
                           Future.delayed(const Duration(milliseconds: 100), () {
-                            if (!context.mounted) return;
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -1069,40 +1065,37 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
             final payOrderDetailData = payOrderDetailDTO.data;
             final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;
             if (payOrderDetailData != null) {
-              if (mounted) {
-                if (userInfoCheck == "Y" || memberType == 2) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentScreen(
-                        payOrderDetailData: payOrderDetailData,
-                        memberType: memberType,
-                      ),
+              if (userInfoCheck == "Y" || memberType == 2) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PaymentScreen(
+                      payOrderDetailData: payOrderDetailData,
+                      memberType: memberType,
                     ),
-                  );
-                } else {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => JoinAddInfoScreen(payOrderDetailData: payOrderDetailData, memberType: memberType,),
-                    ),
-                  );
-                }
-                return;
+                  ),
+                );
+              } else {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => JoinAddInfoScreen(payOrderDetailData: payOrderDetailData, memberType: memberType,),
+                  ),
+                );
               }
+              return;
             } else {
-              if (!mounted) return;
               Utils.getInstance().showSnackBar(context, "Network Error");
             }
           } else {
-            if (!mounted) return;
             Utils.getInstance().showSnackBar(context, "Network Error");
           }
         }
       } else {
-        if (!mounted) return;
         Utils.getInstance().showSnackBar(context, responseData['data']['message'].message ?? "");
       }
+    } else {
+      Utils.getInstance().showSnackBar(context, "Network Error");
     }
   }
 }
