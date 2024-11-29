@@ -23,6 +23,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final int? ptIdx;
@@ -57,6 +58,10 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   int _bannerCurrentPage = 0;
   bool _isDeliveryInfoVisible = false;
   bool _isExpanded = false;
+
+  double _weviewHeight = 100;
+
+  late InAppWebViewController _controller;
 
   final _infoThemeData = ThemeData(
     /// Prevents to splash effect when clicking.
@@ -1193,13 +1198,25 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       borderRadius: BorderRadius.circular(6.0),
                     ),
                     padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      infoData?.returnVal ?? "",
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        color: const Color(0xFF7B7B7B),
-                        fontSize: Responsive.getFont(context, 14),
-                        height: 1.2,
+                    child: SizedBox(
+                      height: _weviewHeight,
+                      child: InAppWebView(
+                        initialFile: "assets/html/exchange.html",
+                        initialSettings: InAppWebViewSettings(
+                          transparentBackground: true,
+                        ),
+                        onWebViewCreated: (controller) async {
+                          _controller = controller;
+                        },
+                        onProgressChanged: (controller, progress) {
+                          if (progress == 100) {
+                            controller.getContentHeight().then((height) {
+                              setState(() {
+                                _weviewHeight = double.parse(height.toString());
+                              });
+                            });
+                          }
+                        },
                       ),
                     ),
                   ),
