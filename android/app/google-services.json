@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "997399886578",
     "project_id": "bliu-be62b",
-    "storage_bucket": "bliu-be62b.appspot.com"
+    "storage_bucket": "bliu-be62b.firebasestorage.app"
   },
   "client": [
     {
@@ -10,6 +10,25 @@
         "mobilesdk_app_id": "1:997399886578:android:a9e20008de5331604a2e6b",
         "android_client_info": {
           "package_name": "com.dmonster.BliU"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZyPF0_XZ105BRHpsOmlygeXbUn7XboSA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997399886578:android:c84ee8a8553d876f4a2e6b",
+        "android_client_info": {
+          "package_name": "com.dmonster.BliU_aos"
         }
       },
       "oauth_client": [],
