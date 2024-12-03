@@ -59,7 +59,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   bool _isDeliveryInfoVisible = false;
   bool _isExpanded = false;
 
-  double _weviewHeight = 100;
+  double _webviewHeight = 100;
 
   late InAppWebViewController _controller;
 
@@ -1199,7 +1199,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     ),
                     padding: const EdgeInsets.all(16.0),
                     child: SizedBox(
-                      height: _weviewHeight,
+                      height: _webviewHeight,
                       child: InAppWebView(
                         initialFile: "assets/html/exchange.html",
                         initialSettings: InAppWebViewSettings(
@@ -1212,7 +1212,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           if (progress == 100) {
                             controller.getContentHeight().then((height) {
                               setState(() {
-                                _weviewHeight = double.parse(height.toString());
+                                _webviewHeight = double.parse(height.toString());
                               });
                             });
                           }
