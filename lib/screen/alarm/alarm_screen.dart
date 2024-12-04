@@ -97,7 +97,7 @@ class AlarmScreen extends ConsumerWidget {
                            * */
                           switch (pushData.ptLink) {
                             case "home":
-                              Navigator.popUntil(context, ModalRoute.withName("/"));
+                              Navigator.popUntil(context, ModalRoute.withName("/index"));
                               ref.read(mainScreenProvider.notifier).selectNavigation(2);
                               break;
                             case "order_list":

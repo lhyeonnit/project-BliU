@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:BliU/screen/event_detail/event_detail_screen.dart';
 import 'package:BliU/screen/main/page_screen/home/view_model/home_header_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -69,7 +70,7 @@ class HomeHeaderChildWidgetState extends ConsumerState<HomeHeaderChildWidget> {
                     children: [
                       SizedBox(
                         width: double.infinity,
-                        height: double.infinity,
+                        height: Utils.getInstance().isWeb() ? 450 * 1.4 : double.infinity,
                         child: GestureDetector(
                           onTap: () {
                             if (banner.btContentType == "Y") {

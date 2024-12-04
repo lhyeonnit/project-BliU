@@ -14,7 +14,6 @@ import 'package:BliU/screen/my_review/my_review_screen.dart';
 import 'package:BliU/screen/non_order/non_order_screen.dart';
 import 'package:BliU/screen/notice/notice_screen.dart';
 import 'package:BliU/screen/order_list/order_list_screen.dart';
-import 'package:BliU/screen/recommend_info/recommend_info_screen.dart';
 import 'package:BliU/screen/recommend_info_edit/recommend_info_edit_screen.dart';
 import 'package:BliU/screen/setting/setting_screen.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -80,12 +79,7 @@ class MyScreen extends ConsumerWidget {
 
             String? childCk = memberInfoResponseDTO.data?.childCk;
             if (childCk == "N" && context.mounted) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const RecommendInfoScreen(),
-                ),
-              );
+              Navigator.pushReplacementNamed(context, '/recommend_info');
             }
           }
 

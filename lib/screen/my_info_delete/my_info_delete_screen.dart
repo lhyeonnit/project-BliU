@@ -248,10 +248,7 @@ class MyInfoDeleteScreenState extends ConsumerState<MyInfoDeleteScreen> {
     Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
     await pref.logOut();
     if (!mounted) return;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-    );
+    Navigator.pushReplacementNamed(context, '/index');
 
     setState(() {
       ref.read(mainScreenProvider.notifier).selectNavigation(2);

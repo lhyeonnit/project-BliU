@@ -1,7 +1,6 @@
 import 'package:BliU/screen/consumer_center/view_model/consumer_center_view_model.dart';
 import 'package:BliU/screen/inquiry_service/inquiry_service_screen.dart';
 import 'package:BliU/screen/inquiry_store/inquiry_store_screen.dart';
-import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/screen/my_inquiry/my_inquiry_screen.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -159,10 +158,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
                         return MessageDialog(
                           title: "알림", message: "로그인이 필요합니다.",
                           doConfirm: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => const LoginScreen()),
-                            );
+                            Navigator.pushReplacementNamed(context, "/login");
                           },
                         );
                       },

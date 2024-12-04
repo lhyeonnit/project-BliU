@@ -82,7 +82,7 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
         actions: [
           GestureDetector(
             onTap: () {
-              Navigator.popUntil(context, ModalRoute.withName("/"));
+              Navigator.popUntil(context, ModalRoute.withName("/index"));
             },
             child: Container(
               margin: const EdgeInsets.only(right: 16),
@@ -190,7 +190,7 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: () {
-                                      Navigator.popUntil(context, ModalRoute.withName("/"));
+                                      Navigator.popUntil(context, ModalRoute.withName("/index"));
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(vertical: 14),

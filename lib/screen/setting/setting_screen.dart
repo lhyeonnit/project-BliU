@@ -1,5 +1,4 @@
 import 'package:BliU/screen/setting/view_model/setting_view_model.dart';
-import 'package:BliU/screen/terms_detail/terms_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
@@ -149,26 +148,14 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                     }),
                     _buildCustomTile(
                       context,
-                      '이용약관',
-                          () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const TermsDetailScreen(type: 0),
-                          ),
-                        );
+                      '이용약관', () {
+                        Navigator.pushNamed(context, "/terms_detail/0");
                       },
                     ),
                     _buildCustomTile(
                       context,
-                      '개인정보처리방침',
-                          () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const TermsDetailScreen(type: 1),
-                          ),
-                        );
+                      '개인정보처리방침', () {
+                        Navigator.pushNamed(context, "/terms_detail/1");
                       },
                     ),
                   ],

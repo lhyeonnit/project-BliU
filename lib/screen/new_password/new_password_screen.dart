@@ -1,4 +1,3 @@
-import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/screen/new_password/view_model/new_password_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -159,12 +158,7 @@ class NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
                     final findIdResponseDTO = await ref.read(newPasswordViewModelProvider.notifier).changePassword(requestData);
                     if (findIdResponseDTO?.result == true) {
                       if (!context.mounted) return;
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ),
-                      );
+                      Navigator.pushReplacementNamed(context, "/login");
                     }
                   }
                 },

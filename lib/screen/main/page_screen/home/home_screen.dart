@@ -19,6 +19,7 @@ import 'package:BliU/screen/search/search_screen.dart';
 import 'package:BliU/screen/smart_lens/smart_lens_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -165,7 +166,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                             automaticallyImplyLeading: false,
                             // 기본 뒤로가기 버튼을 숨김
                             backgroundColor: isScrolled ? Colors.white : Colors.transparent,
-                            expandedHeight: MediaQuery.of(context).size.width * 1.4,
+                            expandedHeight: Utils.getInstance().isWeb() ? 450 * 1.4 : MediaQuery.of(context).size.width * 1.4,
                             centerTitle: false,
                             title: SvgPicture.asset(
                               'assets/images/home/bottom_home.svg', // SVG 파일 경로

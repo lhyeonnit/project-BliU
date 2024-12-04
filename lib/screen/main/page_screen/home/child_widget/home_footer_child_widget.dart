@@ -1,6 +1,5 @@
 import 'package:BliU/screen/main/page_screen/home/view_model/home_footer_view_model.dart';
 import 'package:BliU/screen/notice/notice_screen.dart';
-import 'package:BliU/screen/terms_detail/terms_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -68,12 +67,7 @@ class HomeFooterChildWidget extends ConsumerWidget {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TermsDetailScreen(type: 0),
-                      ),
-                    );
+                    Navigator.pushNamed(context, "/terms_detail/0");
                   },
                   child: Text(
                     '이용약관',
@@ -88,12 +82,7 @@ class HomeFooterChildWidget extends ConsumerWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const TermsDetailScreen(type: 1),
-                    ),
-                  );
+                  Navigator.pushNamed(context, "/terms_detail/1");
                 },
                 child: Text(
                   '개인정보처리방침',

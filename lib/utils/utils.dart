@@ -109,4 +109,33 @@ class Utils {
       }
     });
   }
+
+  bool isWeb() {
+    bool kIsWeb;
+    try {
+      if (Platform.isIOS || Platform.isAndroid) {
+        kIsWeb = false;
+      } else {
+        kIsWeb = true;
+      }
+    } catch(e) {
+      kIsWeb = true;
+    }
+    return kIsWeb;
+  }
+
+  Widget isWebView(Widget content, {bool isHeight = false}) {
+    if (isWeb()) {
+      return Container(
+        alignment: Alignment.center,
+        child: SizedBox(
+          width: 450,
+          height: isHeight ? null : 1080,
+          child: content,
+        )
+      );
+    } else {
+      return content;
+    }
+  }
 }

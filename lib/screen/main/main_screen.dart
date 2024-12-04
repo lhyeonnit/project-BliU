@@ -131,7 +131,7 @@ class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProvide
       if (ptLink.isNotEmpty) {
         switch (ptLink) {
           case "home":
-            Navigator.popUntil(context, ModalRoute.withName("/"));
+            Navigator.popUntil(context, ModalRoute.withName("/index"));
             ref.read(mainScreenProvider.notifier).selectNavigation(2);
             break;
           case "order_list":
@@ -200,20 +200,23 @@ class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProvide
       onPopInvokedWithResult: (bool didPop, Object? result) {
         _backPressed();
       },
-      child: Scaffold(
-        body: PreloadPageView.builder(
-          itemCount: 5,
-          preloadPagesCount: 5,
-          controller: _preloadPageController,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (BuildContext context, int index) {
-            return _widgetOptions[index];
-          },
+      child: Utils.getInstance().isWebView(
+        Scaffold(
+          body: PreloadPageView.builder(
+            itemCount: 5,
+            preloadPagesCount: 5,
+            controller: _preloadPageController,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              return _widgetOptions[index];
+            },
+          ),
+          bottomNavigationBar: CustomBottomNavigationBar(
+            selectedIndex: _selectedIndex,
+            onItemTapped: _onItemTapped,
+          ),
         ),
-        bottomNavigationBar: CustomBottomNavigationBar(
-          selectedIndex: _selectedIndex,
-          onItemTapped: _onItemTapped,
-        ),
+        isHeight: true
       ),
     );
   }

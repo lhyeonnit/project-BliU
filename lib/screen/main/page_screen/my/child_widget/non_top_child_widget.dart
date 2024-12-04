@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:BliU/screen/login/login_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -114,10 +113,7 @@ class NonTopChildWidgetState extends State<NonTopChildWidget> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                  );
+                  Navigator.pushNamed(context, "/login");
                 },
                 child: Container(
                   height: 38,

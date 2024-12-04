@@ -417,10 +417,7 @@ class RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
                                         memberInfo.childCk == 'Y';
                                       });
                                       if(context.mounted) {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => const MainScreen()),
-                                        );
+                                        Navigator.pushReplacementNamed(context, '/index');
                                         ref.read(mainScreenProvider.notifier).selectNavigation(2);
                                         return;
                                       }

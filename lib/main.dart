@@ -1,8 +1,8 @@
 import 'package:BliU/api/default_repository.dart';
 import 'package:BliU/const/constant.dart';
 import 'package:BliU/dto/member_info_response_dto.dart';
-import 'package:BliU/screen/on_boarding/on_boarding_screen.dart';
 import 'package:BliU/utils/firebase_service.dart';
+import 'package:BliU/utils/get_x_routes.dart';
 import 'package:BliU/utils/navigation_service.dart';
 import 'package:BliU/utils/permission_manager.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -10,7 +10,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:uuid/uuid.dart';
+
+import 'utils/utils.dart';
 
 // 자동 로그인
 Future<MemberInfoResponseDTO?> _authAutoLogin(Map<String, dynamic> requestData) async {
@@ -38,6 +43,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final pref = await SharedPreferencesManager.getInstance();
 
+  usePathUrlStrategy();
+
   KakaoSdk.init(
       nativeAppKey: '525bbbd40b4de98d500d446c14f28bd4'
   );
@@ -48,10 +55,21 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  FirebaseService firebaseService = FirebaseService();
-  await firebaseService.initMessage();
+  if (!Utils.getInstance().isWeb()) {
+    FirebaseService firebaseService = FirebaseService();
+    await firebaseService.initMessage();
 
-  await PermissionManager().requestPermission();
+    await PermissionManager().requestPermission();
+  } else {
+    final pref = await SharedPreferencesManager.getInstance();
+    final token = pref.getToken() ?? "";
+    if (token.isEmpty) {
+      final uuid= const Uuid().v4();
+      print("test11 =====> ${uuid}");
+      pref.setToken(uuid);
+    }
+  }
+
   if (pref.getAutoLogin()) {
     Map<String, dynamic> requestData = {
       'app_token': pref.getToken(),
@@ -85,7 +103,7 @@ class MyApp extends ConsumerWidget {
     FirebaseService firebaseService = FirebaseService();
     firebaseService.setRef(ref);
 
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Colors.black,
@@ -94,7 +112,8 @@ class MyApp extends ConsumerWidget {
       themeMode: ThemeMode.light,
       navigatorKey: NavigationService.navigatorKey,
       debugShowCheckedModeBanner: false,
-      home: const OnBoardingScreen(), // OnBoardingScreen을 초기 화면으로 설정
+      initialRoute: '/onboard',
+      getPages: GetXRoutes.pages,
     );
   }
 }

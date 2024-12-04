@@ -2,8 +2,6 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../login/login_screen.dart';
-
 class FindIdOverlapScreen extends StatelessWidget {
   final String userId = "ID_1234";
 
@@ -87,12 +85,7 @@ class FindIdOverlapScreen extends StatelessWidget {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ),
-                    );
+                    Navigator.pushNamed(context, "/login");
                   },
                   child: Center(
                     child: Text(

@@ -14,7 +14,6 @@ import 'package:BliU/screen/payment/view_model/payment_view_model.dart';
 import 'package:BliU/screen/payment_complete/payment_complete_screen.dart';
 import 'package:BliU/screen/payment_coupon/payment_coupon_screen.dart';
 import 'package:BliU/screen/payment_iamport/payment_iamport_screen.dart';
-import 'package:BliU/screen/terms_detail/terms_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -1814,12 +1813,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => const TermsDetailScreen(type: 2),
-                                          ),
-                                        );
+                                        Navigator.pushNamed(context, "/terms_detail/2");
                                       },
                                       child: Container(
                                         width: 50,
@@ -1894,11 +1888,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => const TermsDetailScreen(type: 3),
-                                          ),
-                                        );
+                                        Navigator.pushNamed(context, "/terms_detail/3");
                                       },
                                       child: Container(
                                         width: 50,
@@ -1975,12 +1965,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => const TermsDetailScreen(type: 4),
-                                          ),
-                                        );
+                                        Navigator.pushNamed(context, "/terms_detail/4");
                                       },
                                       child: Container(
                                         width: 50,

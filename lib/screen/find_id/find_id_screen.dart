@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:BliU/screen/find_id/view_model/find_id_view_model.dart';
-import 'package:BliU/screen/find_id_complete/find_id_complete_screen.dart';
 import 'package:BliU/screen/modal_dialog/message_dialog.dart';
+import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -83,143 +83,60 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: SvgPicture.asset("assets/images/login/ic_back.svg"),
-          onPressed: () {
-            Navigator.pop(context); // 뒤로가기 동작
-          },
+      appBar: MyAppBar(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: SvgPicture.asset("assets/images/login/ic_back.svg"),
+            onPressed: () {
+              Navigator.pop(context); // 뒤로가기 동작
+            },
+          ),
         ),
       ),
       body: SafeArea(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                SingleChildScrollView(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '아이디 찾기',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 20),
-                            fontWeight: FontWeight.bold,
-                            height: 1.2,
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 8, bottom: 10),
-                          child: Text(
-                            '아이디를 찾으려면 아래 정보를 입력하세요.',
+        child: Utils.getInstance().isWebView(
+          Stack(
+            children: [
+              Column(
+                children: [
+                  SingleChildScrollView(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '아이디 찾기',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: const Color(0xFF7B7B7B),
+                              fontSize: Responsive.getFont(context, 20),
+                              fontWeight: FontWeight.bold,
                               height: 1.2,
                             ),
                           ),
-                        ),
-                        _buildTextField('이름', _nameController, '이름 입력', keyboardType: TextInputType.name),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 7,
-                              child: _buildTextField(
-                                '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
-                                keyboardType: TextInputType.phone,
-                                isEnable: _phoneAuthChecked ? false : true,
+                          Container(
+                            margin: const EdgeInsets.only(top: 8, bottom: 10),
+                            child: Text(
+                              '아이디를 찾으려면 아래 정보를 입력하세요.',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: const Color(0xFF7B7B7B),
+                                height: 1.2,
                               ),
                             ),
-                            Expanded(
-                              flex: 3,
-                              child: GestureDetector(
-                                onTap: () async {
-                                  if (_phoneController.text.isEmpty ||
-                                      _phoneAuthChecked) {
-                                    return;
-                                  }
-
-                                  final pref = await SharedPreferencesManager.getInstance();
-                                  final phoneNumber = _phoneController.text;
-
-                                  Map<String, dynamic> requestData = {
-                                    'app_token': pref.getToken(),
-                                    'phone_num': phoneNumber,
-                                    'code_type': 2,
-                                  };
-                                  final resultDTO = await ref.read(
-                                      findIdViewModelModelProvider.notifier)
-                                      .reqPhoneAuthCode(requestData);
-                                  if (resultDTO?.result == true) {
-                                    setState(() {
-                                      _phoneAuthCodeVisible = true;
-                                      _authTimerStart();
-                                    });
-                                  }
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Visibility(
-                                      visible: _phoneAuthCodeVisible && !_phoneAuthChecked,
-                                      maintainSize: true,
-                                      maintainAnimation: true,
-                                      maintainState: true,
-                                      child: Container(
-                                        margin: const EdgeInsets.only(top: 20, left: 8),
-                                        child: Text(
-                                          _timerStr,
-                                          style: TextStyle(
-                                            color: const Color(0xFFFF6192),
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(context, 13),
-                                            height: 1.2,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(top: 10, left: 8),
-                                      padding: const EdgeInsets.symmetric(vertical: 14),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(6),
-                                        border:
-                                        Border.all(
-                                            color: const Color(0xFFDDDDDD)),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          '인증요청',
-                                          style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(context, 14),
-                                            height: 1.2,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Visibility(
-                          visible: _phoneAuthCodeVisible,
-                          child: Row(
+                          ),
+                          _buildTextField('이름', _nameController, '이름 입력', keyboardType: TextInputType.name),
+                          Row(
                             children: [
                               Expanded(
                                 flex: 7,
-                                child: _buildCheckField(
-                                  '휴대폰번호', _authCodeController, '인증번호 입력',
-                                  keyboardType: TextInputType.number,
+                                child: _buildTextField(
+                                  '휴대폰번호', _phoneController, "'-'없이 숫자만 입력",
+                                  keyboardType: TextInputType.phone,
                                   isEnable: _phoneAuthChecked ? false : true,
                                 ),
                               ),
@@ -227,133 +144,215 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                                 flex: 3,
                                 child: GestureDetector(
                                   onTap: () async {
-                                    if (_authCodeController.text.isEmpty || _phoneAuthChecked) {
+                                    if (_phoneController.text.isEmpty ||
+                                        _phoneAuthChecked) {
                                       return;
                                     }
-                                    FocusScope.of(context).unfocus();
 
                                     final pref = await SharedPreferencesManager.getInstance();
                                     final phoneNumber = _phoneController.text;
-                                    final authCode = _authCodeController.text;
 
                                     Map<String, dynamic> requestData = {
                                       'app_token': pref.getToken(),
                                       'phone_num': phoneNumber,
-                                      'code_num': authCode,
                                       'code_type': 2,
                                     };
-
-                                    final resultDTO = await ref.read(findIdViewModelModelProvider.notifier).checkCode(requestData);
-                                    if (!context.mounted) return;
-                                    Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
-                                    if (resultDTO.result == true) {
+                                    final resultDTO = await ref.read(
+                                        findIdViewModelModelProvider.notifier)
+                                        .reqPhoneAuthCode(requestData);
+                                    if (resultDTO?.result == true) {
                                       setState(() {
-                                        _phoneAuthChecked = true;
-                                        _checkIfAllFieldsFilled();
+                                        _phoneAuthCodeVisible = true;
+                                        _authTimerStart();
                                       });
                                     }
                                   },
-                                  child: Container(
-                                    margin: const EdgeInsets.only(top: 10, left: 8),
-                                    padding: const EdgeInsets.symmetric(vertical: 14),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
-                                      color: _phoneAuthChecked ? const Color(0xFFDDDDDD) : Colors.black,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        '확인',
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 14),
-                                          color: _phoneAuthChecked ? const Color(0xFF7B7B7B) : Colors.white,
-                                          height: 1.2,
-                                          fontWeight: FontWeight.w600,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Visibility(
+                                        visible: _phoneAuthCodeVisible && !_phoneAuthChecked,
+                                        maintainSize: true,
+                                        maintainAnimation: true,
+                                        maintainState: true,
+                                        child: Container(
+                                          margin: const EdgeInsets.only(top: 20, left: 8),
+                                          child: Text(
+                                            _timerStr,
+                                            style: TextStyle(
+                                              color: const Color(0xFFFF6192),
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 13),
+                                              height: 1.2,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 10, left: 8),
+                                        padding: const EdgeInsets.symmetric(vertical: 14),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(6),
+                                          border:
+                                          Border.all(
+                                              color: const Color(0xFFDDDDDD)),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            '인증요청',
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: GestureDetector(
-                onTap: () async {
-                  if (!_isAllFieldsFilled) {
-                    return;
-                  }
+                          Visibility(
+                            visible: _phoneAuthCodeVisible,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 7,
+                                  child: _buildCheckField(
+                                    '휴대폰번호', _authCodeController, '인증번호 입력',
+                                    keyboardType: TextInputType.number,
+                                    isEnable: _phoneAuthChecked ? false : true,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      if (_authCodeController.text.isEmpty || _phoneAuthChecked) {
+                                        return;
+                                      }
+                                      FocusScope.of(context).unfocus();
 
-                  final name = _nameController.text;
-                  final phoneNum = _phoneController.text;
-                  final phoneNumChk = _phoneAuthChecked ? "Y" : "N";
+                                      final pref = await SharedPreferencesManager.getInstance();
+                                      final phoneNumber = _phoneController.text;
+                                      final authCode = _authCodeController.text;
 
-                  Map<String, dynamic> requestData = {
-                    'name': name,
-                    'phone_num': phoneNum,
-                    'phone_num_chk': phoneNumChk,
-                  };
+                                      Map<String, dynamic> requestData = {
+                                        'app_token': pref.getToken(),
+                                        'phone_num': phoneNumber,
+                                        'code_num': authCode,
+                                        'code_type': 2,
+                                      };
 
-                  final findIdResponseDTO = await ref.read(findIdViewModelModelProvider.notifier).findId(requestData);
-                  if (findIdResponseDTO?.result == true) {
-                    id = findIdResponseDTO?.id;
-                    if (!context.mounted) return;
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FindIdCompleteScreen(id: id),
+                                      final resultDTO = await ref.read(findIdViewModelModelProvider.notifier).checkCode(requestData);
+                                      if (!context.mounted) return;
+                                      Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
+                                      if (resultDTO.result == true) {
+                                        setState(() {
+                                          _phoneAuthChecked = true;
+                                          _checkIfAllFieldsFilled();
+                                        });
+                                      }
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.only(top: 10, left: 8),
+                                      padding: const EdgeInsets.symmetric(vertical: 14),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6),
+                                        color: _phoneAuthChecked ? const Color(0xFFDDDDDD) : Colors.black,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '확인',
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 14),
+                                            color: _phoneAuthChecked ? const Color(0xFF7B7B7B) : Colors.white,
+                                            height: 1.2,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    );
-                  } else {
-                    if (!context.mounted) return;
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        final message = findIdResponseDTO?.message ?? "";
-
-                        return MessageDialog(
-                          title: "알림", message: message,
-                        );
-                      },
-                    );
-                  }
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 48,
-                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
-                  decoration: BoxDecoration(
-                    color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
-                    borderRadius: const BorderRadius.all(Radius.circular(6),
                     ),
                   ),
-                  child: Center(
-                    child: Text(
-                      '확인',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
-                        height: 1.2,
-                        fontWeight: FontWeight.w600,
+                ],
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: GestureDetector(
+                  onTap: () async {
+                    if (!_isAllFieldsFilled) {
+                      return;
+                    }
+
+                    final name = _nameController.text;
+                    final phoneNum = _phoneController.text;
+                    final phoneNumChk = _phoneAuthChecked ? "Y" : "N";
+
+                    Map<String, dynamic> requestData = {
+                      'name': name,
+                      'phone_num': phoneNum,
+                      'phone_num_chk': phoneNumChk,
+                    };
+
+                    final findIdResponseDTO = await ref.read(findIdViewModelModelProvider.notifier).findId(requestData);
+                    if (findIdResponseDTO?.result == true) {
+                      id = findIdResponseDTO?.id;
+                      if (!context.mounted) return;
+                      Navigator.pushReplacementNamed(context, '/find_id_complete/$id');
+                    } else {
+                      if (!context.mounted) return;
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) {
+                          final message = findIdResponseDTO?.message ?? "";
+
+                          return MessageDialog(
+                            title: "알림", message: message,
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 48,
+                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 8, bottom: 9),
+                    decoration: BoxDecoration(
+                      color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                      borderRadius: const BorderRadius.all(Radius.circular(6),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '확인',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
+                          height: 1.2,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
