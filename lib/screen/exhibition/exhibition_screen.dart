@@ -2,7 +2,6 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/exhibition/view_model/exhibition_view_model.dart';
 import 'package:BliU/screen/product_list/item/product_list_item.dart';
-import 'package:BliU/screen/search/search_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
@@ -124,12 +123,7 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                 IconButton(
                   icon: SvgPicture.asset("assets/images/exhibition/ic_top_sch.svg"),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SearchScreen(),
-                      ),
-                    );
+                    Navigator.pushNamed(context, '/search');
                   },
                 ),
                 const TopCartButton(),

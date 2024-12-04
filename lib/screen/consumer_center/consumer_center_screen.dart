@@ -1,5 +1,4 @@
 import 'package:BliU/screen/consumer_center/view_model/consumer_center_view_model.dart';
-import 'package:BliU/screen/inquiry_service/inquiry_service_screen.dart';
 import 'package:BliU/screen/inquiry_store/inquiry_store_screen.dart';
 import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/screen/my_inquiry/my_inquiry_screen.dart';
@@ -130,12 +129,8 @@ class ConsumerCenterScreen extends ConsumerWidget {
                 );
               }),
               _buildCustomTile(context, '고객센터 문의하기', () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const InquiryServiceScreen(qnaType: '1',),
-                  ),
-                );
+                final map = {'qnaType' : '1'};
+                Navigator.pushNamed(context, '/inquiry_service', arguments: map);
               },),
               _buildCustomTile(context, '문의내역', () {
 

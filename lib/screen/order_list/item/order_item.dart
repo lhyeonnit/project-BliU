@@ -1,13 +1,7 @@
 import 'package:BliU/data/change_order_detail_data.dart';
 import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
-import 'package:BliU/screen/cancel/cancel_screen.dart';
-import 'package:BliU/screen/delivery/delivery_screen.dart';
-import 'package:BliU/screen/exchange_return/exchange_return_screen.dart';
-import 'package:BliU/screen/inquiry_service/inquiry_service_screen.dart';
-import 'package:BliU/screen/my_review_edit/my_review_edit_screen.dart';
 import 'package:BliU/screen/order_list/view_model/order_item_view_model.dart';
-import 'package:BliU/screen/review_write/review_write_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -116,12 +110,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
       if (reviewDetailResponseDTO.result == true) {
         final reviewData = reviewDetailResponseDTO.data;
         if(!mounted) return;
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MyReviewEditScreen(reviewData: reviewData!,),
-          ),
-        );
+        Navigator.pushNamed(context, '/my_review_edit', arguments: reviewData!);
       }
     }
   }
@@ -252,12 +241,8 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CancelScreen(orderData: _orderData, orderDetailData: _orderDetailData),
-                  ),
-                );
+                final map = {'orderData' : _orderData, 'orderDetailData': _orderDetailData};
+                Navigator.pushNamed(context, '/cancel', arguments: map);
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
@@ -278,12 +263,8 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => InquiryServiceScreen(qnaType: '3', ptIdx: _orderDetailData.ptIdx),
-                  ),
-                );
+                final map = {'qnaType' : '3', 'ptIdx': _orderDetailData.ptIdx};
+                Navigator.pushNamed(context, '/inquiry_service', arguments: map);
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
@@ -308,12 +289,8 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ExchangeReturnScreen(orderData: _orderData, orderDetailData: _orderDetailData),
-                  ),
-                );
+                final map = {'orderData' : _orderData, 'orderDetailData': _orderDetailData};
+                Navigator.pushNamed(context, '/exchange_return', arguments: map);
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
@@ -334,12 +311,8 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? "", deliveryType: 1,),
-                  ),
-                );
+                final map = {'odtCode' : _orderDetailData.otCode ?? "", 'deliveryType': 1};
+                Navigator.pushNamed(context, '/delivery', arguments: map);
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
@@ -360,12 +333,8 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => InquiryServiceScreen(qnaType: '3', ptIdx: _orderDetailData.ptIdx),
-                  ),
-                );
+                final map = {'qnaType' : '3', 'ptIdx': _orderDetailData.ptIdx};
+                Navigator.pushNamed(context, '/inquiry_service', arguments: map);
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
@@ -413,12 +382,8 @@ class OrderItemState extends ConsumerState<OrderItem> {
               Expanded(
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ExchangeReturnScreen(orderData: _orderData, orderDetailData: _orderDetailData),
-                      ),
-                    );
+                    final map = {'orderData' : _orderData, 'orderDetailData': _orderDetailData};
+                    Navigator.pushNamed(context, '/exchange_return', arguments: map);
                   },
                   style: TextButton.styleFrom(
                     side: const BorderSide(color: Color(0xFFDDDDDD)),
@@ -439,12 +404,8 @@ class OrderItemState extends ConsumerState<OrderItem> {
               Expanded(
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? "", deliveryType: 1,),
-                      ),
-                    );
+                    final map = {'odtCode' : _orderDetailData.otCode ?? "", 'deliveryType': 1};
+                    Navigator.pushNamed(context, '/delivery', arguments: map);
                   },
                   style: TextButton.styleFrom(
                     side: const BorderSide(color: Color(0xFFDDDDDD)),
@@ -465,12 +426,8 @@ class OrderItemState extends ConsumerState<OrderItem> {
               Expanded(
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => InquiryServiceScreen(qnaType: '3', ptIdx: _orderDetailData.ptIdx,),
-                      ),
-                    );
+                    final map = {'qnaType' : '3', 'ptIdx': _orderDetailData.ptIdx};
+                    Navigator.pushNamed(context, '/inquiry_service', arguments: map);
                   },
                   style: TextButton.styleFrom(
                     side: const BorderSide(color: Color(0xFFDDDDDD)),
@@ -503,12 +460,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
                     // 수정 페이지로
                     _getReviewDetail(_orderDetailData.rtIdx ?? 0);
                   } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ReviewWriteScreen(orderDetailData: _orderDetailData),
-                      ),
-                    );
+                    Navigator.pushNamed(context, '/review_write', arguments: _orderDetailData);
                   }
                 }
               },
@@ -531,12 +483,8 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? "", deliveryType: 1,),
-                  ),
-                );
+                final map = {'odtCode' : _orderDetailData.otCode ?? "", 'deliveryType': 1};
+                Navigator.pushNamed(context, '/delivery', arguments: map);
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
@@ -557,12 +505,8 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => InquiryServiceScreen(qnaType: '3', ptIdx: _orderDetailData.ptIdx,),
-                  ),
-                );
+                final map = {'qnaType' : '3', 'ptIdx': _orderDetailData.ptIdx};
+                Navigator.pushNamed(context, '/inquiry_service', arguments: map);
               },
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Color(0xFFDDDDDD)),
@@ -586,12 +530,8 @@ class OrderItemState extends ConsumerState<OrderItem> {
         width: double.infinity,
         child: TextButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DeliveryScreen(odtCode: _orderDetailData.otCode ?? "", deliveryType: 2,),
-              ),
-            );
+            final map = {'odtCode' : _orderDetailData.otCode ?? "", 'deliveryType': 2};
+            Navigator.pushNamed(context, '/delivery', arguments: map);
           },
           style: TextButton.styleFrom(
             side: const BorderSide(color: Color(0xFFDDDDDD)),

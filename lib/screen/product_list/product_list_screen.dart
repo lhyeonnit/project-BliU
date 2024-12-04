@@ -11,7 +11,6 @@ import 'package:BliU/screen/modal_dialog/product_filter_bottom.dart';
 import 'package:BliU/screen/modal_dialog/product_sort_bottom.dart';
 import 'package:BliU/screen/product_list/item/product_list_item.dart';
 import 'package:BliU/screen/product_list/view_model/product_list_view_model.dart';
-import 'package:BliU/screen/search/search_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
@@ -385,10 +384,7 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
             ),
             color: Colors.black,
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SearchScreen()),
-              );
+              Navigator.pushNamed(context, '/search');
             },
           ),
           const TopCartButton(),

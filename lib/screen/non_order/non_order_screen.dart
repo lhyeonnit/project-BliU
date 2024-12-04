@@ -1,5 +1,6 @@
 import 'package:BliU/screen/non_order/view_model/non_order_view_model.dart';
 import 'package:BliU/screen/order_list/order_list_screen.dart';
+import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -42,154 +43,158 @@ class NonOrderScreenState extends ConsumerState<NonOrderScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.white,
-        title: const Text('비회원구매조회'),
-        titleTextStyle: TextStyle(
-          fontFamily: 'Pretendard',
-          fontSize: Responsive.getFont(context, 18),
-          fontWeight: FontWeight.w600,
-          color: Colors.black,
-          height: 1.2,
-        ),
-        leading: IconButton(
-          icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
-          onPressed: () {
-            Navigator.pop(context); // 뒤로가기 동작
-          },
-        ),
-        titleSpacing: -1.0,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
-          child: Container(
-            color: const Color(0x0D000000), // 하단 구분선 색상
-            height: 1.0, // 구분선의 두께 설정
+      appBar: MyAppBar(
+        appBar: AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: Colors.white,
+          title: const Text('비회원구매조회'),
+          titleTextStyle: TextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 18),
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+            height: 1.2,
+          ),
+          leading: IconButton(
+            icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
+            onPressed: () {
+              Navigator.pop(context); // 뒤로가기 동작
+            },
+          ),
+          titleSpacing: -1.0,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
             child: Container(
-              height: 1.0, // 그림자 부분의 높이
-              decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x0D000000),
-                    blurRadius: 6.0,
-                    spreadRadius: 0.1,
-                    offset: Offset(0, 3),
-                  ),
-                ],
+              color: const Color(0x0D000000), // 하단 구분선 색상
+              height: 1.0, // 구분선의 두께 설정
+              child: Container(
+                height: 1.0, // 그림자 부분의 높이
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x0D000000),
+                      blurRadius: 6.0,
+                      spreadRadius: 0.1,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
       body: SafeArea(
-        child: Stack(
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: const EdgeInsets.only(top: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTextField('이름', _nameController, '수령인 이름 입력',
-                      keyboardType: TextInputType.name),
-                  _buildTextField(
-                    '휴대폰번호',
-                    _phoneController,
-                    '휴대폰 번호 입력',
-                    keyboardType: TextInputType.phone,
-                  ),
-                  _buildTextField(
-                    '주문번호',
-                    _deliveryCodeController,
-                    '주문번호 입력',
-                    keyboardType: TextInputType.text,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      '주문번호는 주문자의 휴대폰 번호로 발송됩니다. \n주문번호 확인이 어려울 시, 고객센터로 문의 바랍니다.',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 12),
-                        height: 1.2,
+        child: Utils.getInstance().isWebView(
+          Stack(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.only(top: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTextField('이름', _nameController, '수령인 이름 입력',
+                        keyboardType: TextInputType.name),
+                    _buildTextField(
+                      '휴대폰번호',
+                      _phoneController,
+                      '휴대폰 번호 입력',
+                      keyboardType: TextInputType.phone,
+                    ),
+                    _buildTextField(
+                      '주문번호',
+                      _deliveryCodeController,
+                      '주문번호 입력',
+                      keyboardType: TextInputType.text,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        '주문번호는 주문자의 휴대폰 번호로 발송됩니다. \n주문번호 확인이 어려울 시, 고객센터로 문의 바랍니다.',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 12),
+                          height: 1.2,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: GestureDetector(
-                onTap: () async {
-                  final name = _nameController.text;
-                  final phone = _phoneController.text;
-                  final deliveryCode = _deliveryCodeController.text;
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: GestureDetector(
+                  onTap: () async {
+                    final name = _nameController.text;
+                    final phone = _phoneController.text;
+                    final deliveryCode = _deliveryCodeController.text;
 
-                  if(name.isEmpty) {
-                    Utils.getInstance().showSnackBar(context, "이름을 입력해 주세요.");
-                    return;
-                  }
-
-                  if(phone.isEmpty) {
-                    Utils.getInstance().showSnackBar(context, "휴대폰 번호를 입력해 주세요.");
-                    return;
-                  }
-
-                  if(deliveryCode.isEmpty) {
-                    Utils.getInstance().showSnackBar(context, "주문 번호를 입력해 주세요.");
-                    return;
-                  }
-
-                  Map<String, dynamic> requestData = {
-                    'name' : name,
-                    'hp' : phone,
-                    'ot_code' : deliveryCode,
-                  };
-
-                  final responseData = await ref.read(nonOrderViewModelProvider.notifier).getFindOrder(requestData);
-                  if (responseData != null) {
-                    if (responseData["result"] == true) {
-                      if (!context.mounted) return;
-                      final otCode = responseData["data"]["ot_code"].toString();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => OrderListScreen(otCode: otCode)),
-                      );
-                    } else {
-                      if (!context.mounted) return;
-                      Utils.getInstance().showSnackBar(context, responseData["data"]["message"]);
+                    if(name.isEmpty) {
+                      Utils.getInstance().showSnackBar(context, "이름을 입력해 주세요.");
+                      return;
                     }
-                  }
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 48,
-                  margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                  decoration: BoxDecoration(
-                    color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(6),
+
+                    if(phone.isEmpty) {
+                      Utils.getInstance().showSnackBar(context, "휴대폰 번호를 입력해 주세요.");
+                      return;
+                    }
+
+                    if(deliveryCode.isEmpty) {
+                      Utils.getInstance().showSnackBar(context, "주문 번호를 입력해 주세요.");
+                      return;
+                    }
+
+                    Map<String, dynamic> requestData = {
+                      'name' : name,
+                      'hp' : phone,
+                      'ot_code' : deliveryCode,
+                    };
+
+                    final responseData = await ref.read(nonOrderViewModelProvider.notifier).getFindOrder(requestData);
+                    if (responseData != null) {
+                      if (responseData["result"] == true) {
+                        if (!context.mounted) return;
+                        final otCode = responseData["data"]["ot_code"].toString();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => OrderListScreen(otCode: otCode)),
+                        );
+                      } else {
+                        if (!context.mounted) return;
+                        Utils.getInstance().showSnackBar(context, responseData["data"]["message"]);
+                      }
+                    }
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 48,
+                    margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                    decoration: BoxDecoration(
+                      color: _isAllFieldsFilled ? Colors.black : const Color(0xFFDDDDDD),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(6),
+                      ),
                     ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      '확인',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
-                        height: 1.2,
-                        fontWeight: FontWeight.w600,
+                    child: Center(
+                      child: Text(
+                        '확인',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 14),
+                          color: _isAllFieldsFilled ? Colors.white : const Color(0xFF7B7B7B),
+                          height: 1.2,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

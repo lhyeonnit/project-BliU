@@ -1,5 +1,3 @@
-//비밀번호 찾가
-
 import 'dart:async';
 
 import 'package:BliU/screen/find_password/view_model/find_password_view_model.dart';

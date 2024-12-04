@@ -13,7 +13,6 @@ import 'package:BliU/screen/main/page_screen/store/store_screen.dart';
 import 'package:BliU/screen/main/view_model/main_view_model.dart';
 import 'package:BliU/screen/my_coupon/my_coupon_screen.dart';
 import 'package:BliU/screen/order_list/order_list_screen.dart';
-import 'package:BliU/screen/product_detail/product_detail_screen.dart';
 import 'package:BliU/utils/firebase_service.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -88,12 +87,7 @@ class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProvide
         if (idx == 0) return;
         switch(act) {
           case "product":
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProductDetailScreen(ptIdx: idx),
-              ),
-            );
+            Navigator.pushNamed(context, '/product_detail/$idx');
             break;
           case "exhibition":
             Navigator.push(

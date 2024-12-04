@@ -1,6 +1,5 @@
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/my_review/view_model/my_review_view_model.dart';
-import 'package:BliU/screen/product_review_detail/product_review_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -128,12 +127,7 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
 
                         return GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProductReviewDetailScreen(rtIdx: reviewData.rtIdx ?? 0),
-                              ),
-                            );
+                            Navigator.pushNamed(context, '/product_review_detail/${reviewData.rtIdx ?? 0}');
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),

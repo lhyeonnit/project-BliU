@@ -15,8 +15,6 @@ import 'package:BliU/screen/main/page_screen/home/view_model/home_view_model.dar
 import 'package:BliU/screen/main/view_model/main_view_model.dart';
 import 'package:BliU/screen/modal_dialog/store_age_group_selection.dart';
 import 'package:BliU/screen/product_list/item/product_list_item.dart';
-import 'package:BliU/screen/search/search_screen.dart';
-import 'package:BliU/screen/smart_lens/smart_lens_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -197,12 +195,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                         width: Responsive.getWidth(context, 30),
                                       ),
                                       onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => const SearchScreen(),
-                                          ),
-                                        );
+                                        Navigator.pushNamed(context, '/search');
                                       },
                                     ),
                                     IconButton(
@@ -212,12 +205,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                         width: Responsive.getWidth(context, 30),
                                       ),
                                       onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => const SmartLensScreen(),
-                                          ),
-                                        );
+                                        Navigator.pushNamed(context, '/smart_lens');
                                       },
                                     ),
                                     Stack(

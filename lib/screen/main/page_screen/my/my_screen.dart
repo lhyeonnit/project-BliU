@@ -11,11 +11,9 @@ import 'package:BliU/screen/my_info_edit/my_info_edit_screen.dart';
 import 'package:BliU/screen/my_info_edit_check/my_info_edit_check_screen.dart';
 import 'package:BliU/screen/my_point/my_point_screen.dart';
 import 'package:BliU/screen/my_review/my_review_screen.dart';
-import 'package:BliU/screen/non_order/non_order_screen.dart';
 import 'package:BliU/screen/notice/notice_screen.dart';
 import 'package:BliU/screen/order_list/order_list_screen.dart';
 import 'package:BliU/screen/recommend_info_edit/recommend_info_edit_screen.dart';
-import 'package:BliU/screen/setting/setting_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
@@ -305,12 +303,7 @@ class MyScreen extends ConsumerWidget {
                 Visibility(
                   visible: userId.isEmpty,
                   child: _buildSectionItem(context, '비회원 주문조회', () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NonOrderScreen(),
-                      ), // 비회원일 때의 화면
-                    );
+                    Navigator.pushNamed(context, '/non_order');// 비회원일 때의 화면
                   }),
                 ),
                 const SizedBox(
@@ -342,12 +335,7 @@ class MyScreen extends ConsumerWidget {
                   );
                 }),
                 _buildSectionItem(context, '설정', () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SettingScreen(),
-                    ),
-                  );
+                  Navigator.pushNamed(context, '/setting');
                 }),
                 Visibility(
                   visible: userId.isNotEmpty,

@@ -3,7 +3,6 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/main/page_screen/like/view_model/like_view_model.dart';
 import 'package:BliU/screen/main/view_model/main_view_model.dart';
-import 'package:BliU/screen/product_detail/product_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -238,12 +237,7 @@ class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderState
 
         return GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProductDetailScreen(ptIdx: productData.ptIdx),
-              ),
-            );
+            Navigator.pushNamed(context, '/product_detail/${productData.ptIdx}');
           },
           child: Container(
             decoration: const BoxDecoration(

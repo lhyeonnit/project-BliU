@@ -1,5 +1,7 @@
 import 'package:BliU/screen/_component/grid_photo.dart';
+import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -79,157 +81,161 @@ class SmartLensScreenState extends State<SmartLensScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        title: const Text("스마트렌즈"),
-        titleTextStyle: TextStyle(
-          fontFamily: 'Pretendard',
-          fontSize: Responsive.getFont(context, 18),
-          fontWeight: FontWeight.w600,
-          color: Colors.black,
-          height: 1.2,
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
-          child: Container(
-            color: const Color(0x0D000000), // 하단 구분선 색상
-            height: 1.0, // 구분선의 두께 설정
-            child: Container(
-              height: 1.0, // 그림자 부분의 높이
-              decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x0D000000),
-                    blurRadius: 6.0,
-                    spreadRadius: 0.1,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-            ),
+      appBar: MyAppBar(
+        appBar: AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: const Text("스마트렌즈"),
+          titleTextStyle: TextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 18),
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+            height: 1.2,
           ),
-        ),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
             child: Container(
-              margin: const EdgeInsets.only(right: 16),
-              child: SvgPicture.asset('assets/images/product/ic_close.svg'),
-            ),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 40),
-              padding: const EdgeInsets.only(left: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 20),
-                    child: _buildSmartLensInfo(
-                      "assets/images/home/smart_lens2.png",
-                      '이미지 검색 기능',
-                      '사용자가 사진을 찍거나 이미지를 업로드하면, \n해당 이미지와 유사한 패션 아이템을 찾아줍니다.',
+              color: const Color(0x0D000000), // 하단 구분선 색상
+              height: 1.0, // 구분선의 두께 설정
+              child: Container(
+                height: 1.0, // 그림자 부분의 높이
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x0D000000),
+                      blurRadius: 6.0,
+                      spreadRadius: 0.1,
+                      offset: Offset(0, 3),
                     ),
-                  ),
-                  _buildSmartLensInfo(
-                    "assets/images/home/smart_lens1.png",
-                    '인공지능 기반 추천',
-                    '인공지능(AI)을 활용해 사용자의 취향을 분석하고, \n관련된 패션 아이템을 추천',
-                  )
-                ],
+                  ],
+                ),
               ),
             ),
-            Container(
-              color: Colors.white,
-              margin: const EdgeInsets.only(left: 16),
-              child: _albums.isNotEmpty
-                  ? GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    backgroundColor: Colors.white,
-                    builder: (BuildContext context) {
-                      return SafeArea(
-                        child: SizedBox(
-                          height: 400, // 모달의 높이를 제한하여 스크롤이 가능하도록 설정
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: _albums.length,
-                            itemBuilder: (context, index) {
-                              final album = _albums[index];
-                              return Container(
-                                margin: const EdgeInsets.symmetric(vertical: 2.0),
-                                child: ListTile(
-                                  title: Text(
-                                    album.name,
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    getPhotos(album, albumChange: true);
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 20),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        _currentAlbum.name,
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black, // 텍스트 색상
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        child: SvgPicture.asset(
-                          'assets/images/product/ic_select.svg',
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-                  : const SizedBox(),
-            ),
-            Expanded(
-              child: NotificationListener<ScrollNotification>(
-                onNotification: (ScrollNotification scroll) {
-                  final scrollPixels = scroll.metrics.pixels / scroll.metrics.maxScrollExtent;
-                  if (scrollPixels > 0.7) getPhotos(_currentAlbum);
-                  return false;
-                },
-                child: SafeArea(
-                  child: _paths == null ? const Center(child: CircularProgressIndicator()) : GridPhoto(images: _images),
-                ),
+          ),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                margin: const EdgeInsets.only(right: 16),
+                child: SvgPicture.asset('assets/images/product/ic_close.svg'),
               ),
             ),
           ],
+        ),
+      ),
+      body: SafeArea(
+        child: Utils.getInstance().isWebView(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 40),
+                padding: const EdgeInsets.only(left: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 20),
+                      child: _buildSmartLensInfo(
+                        "assets/images/home/smart_lens2.png",
+                        '이미지 검색 기능',
+                        '사용자가 사진을 찍거나 이미지를 업로드하면, \n해당 이미지와 유사한 패션 아이템을 찾아줍니다.',
+                      ),
+                    ),
+                    _buildSmartLensInfo(
+                      "assets/images/home/smart_lens1.png",
+                      '인공지능 기반 추천',
+                      '인공지능(AI)을 활용해 사용자의 취향을 분석하고, \n관련된 패션 아이템을 추천',
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                color: Colors.white,
+                margin: const EdgeInsets.only(left: 16),
+                child: _albums.isNotEmpty
+                    ? GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.white,
+                      builder: (BuildContext context) {
+                        return SafeArea(
+                          child: SizedBox(
+                            height: 400, // 모달의 높이를 제한하여 스크롤이 가능하도록 설정
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: _albums.length,
+                              itemBuilder: (context, index) {
+                                final album = _albums[index];
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 2.0),
+                                  child: ListTile(
+                                    title: Text(
+                                      album.name,
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      getPhotos(album, albumChange: true);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          _currentAlbum.name,
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black, // 텍스트 색상
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          child: SvgPicture.asset(
+                            'assets/images/product/ic_select.svg',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+                    : const SizedBox(),
+              ),
+              Expanded(
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification scroll) {
+                    final scrollPixels = scroll.metrics.pixels / scroll.metrics.maxScrollExtent;
+                    if (scrollPixels > 0.7) getPhotos(_currentAlbum);
+                    return false;
+                  },
+                  child: SafeArea(
+                    child: _paths == null ? const Center(child: CircularProgressIndicator()) : GridPhoto(images: _images),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

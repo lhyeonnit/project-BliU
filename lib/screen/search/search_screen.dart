@@ -7,14 +7,13 @@ import 'package:BliU/dto/search_response_dto.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/main/page_screen/home/view_model/home_body_ai_view_model.dart';
-import 'package:BliU/screen/product_detail/product_detail_screen.dart';
 import 'package:BliU/screen/product_list/item/product_list_item.dart';
 import 'package:BliU/screen/search/child_widget/search_recommend_child_widget.dart';
 import 'package:BliU/screen/search/view_model/search_view_model.dart';
-import 'package:BliU/screen/smart_lens/smart_lens_screen.dart';
-import 'package:BliU/screen/store_detail/store_detail_screen.dart';
+import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -360,171 +359,170 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.white,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
-          child: Container(
-            color: const Color(0x0D000000), // 하단 구분선 색상
-            height: 1.0, // 구분선의 두께 설정
+      appBar: MyAppBar(
+        appBar: AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: Colors.white,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
             child: Container(
-              height: 1.0, // 그림자 부분의 높이
-              decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x0D000000),
-                    blurRadius: 6.0,
-                    spreadRadius: 0.1,
-                    offset: Offset(0, 3),
-                  ),
-                ],
+              color: const Color(0x0D000000), // 하단 구분선 색상
+              height: 1.0, // 구분선의 두께 설정
+              child: Container(
+                height: 1.0, // 그림자 부분의 높이
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x0D000000),
+                      blurRadius: 6.0,
+                      spreadRadius: 0.1,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        leading: IconButton(
-          icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
-          onPressed: () => Navigator.pop(context),
-        ),
-        titleSpacing: -1.0,
-        title: SizedBox(
-          width: double.infinity,
-          height: 56,
-          child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF5F9F9),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                          style: TextStyle(
-                            decorationThickness: 0,
-                            height: 1.2,
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                          ),
-                          controller: _searchController,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.only(left: 16, bottom: 8),
-                            hintText: '검색어를 입력해 주세요',
-                            hintStyle: TextStyle(
-                                fontFamily: 'Pretendard',
+          leading: IconButton(
+            icon: SvgPicture.asset("assets/images/store/ic_back.svg"),
+            onPressed: () => Navigator.pop(context),
+          ),
+          titleSpacing: -1.0,
+          title: SizedBox(
+            width: double.infinity,
+            height: 56,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF5F9F9),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                            style: TextStyle(
+                              decorationThickness: 0,
                               height: 1.2,
+                              fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),
-                              color: const Color(0xFF595959)
                             ),
-                            border: InputBorder.none,
-                            suffixIcon: Visibility(
-                              visible: _searchController.text.isNotEmpty,
-                              child: GestureDetector(
-                                onTap: () {
-                                  _searchController.clear();
-                                  setState(() {
-                                    searchMyList.clear();
-                                    _resetSearch();
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                  'assets/images/ic_word_del.svg',
-                                  fit: BoxFit.contain,
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(left: 16, bottom: 8),
+                              hintText: '검색어를 입력해 주세요',
+                              hintStyle: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  height: 1.2,
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: const Color(0xFF595959)
+                              ),
+                              border: InputBorder.none,
+                              suffixIcon: Visibility(
+                                visible: _searchController.text.isNotEmpty,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _searchController.clear();
+                                    setState(() {
+                                      searchMyList.clear();
+                                      _resetSearch();
+                                    });
+                                  },
+                                  child: SvgPicture.asset(
+                                    'assets/images/ic_word_del.svg',
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
                               ),
+                              suffixIconConstraints: BoxConstraints.tight(const Size(24, 24)),
                             ),
-                            suffixIconConstraints: BoxConstraints.tight(const Size(24, 24)),
-                          ),
-                          onChanged: (value) {
-                            if (value.isEmpty) {
-                              setState(() {
-                                _isSearching = false;
-                                _isFirst = true;
-                              });
-                            } else {
-                              setState(() {
-                                _isSearching = true;
-                                _isFirst = false;
-                              });
-                              _getList('N');
-                            }
-                          },
-                          // 검색 중인 상태
-                          onSubmitted: (value) {
-                            if (value.isNotEmpty) {
-                              _searchAction(); // 검색어를 입력하고 검색을 실행
-                            }
-                          }, // 검색 완료 시
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8, left: 10, bottom: 8, right: 15),
-                        child: GestureDetector(
-                          onTap: () {
-                            String search = _searchController.text;
-                            if (search.isNotEmpty) {
-                              _searchAction(); // 검색어를 입력하고 검색을 실행
-                            }
-                          },
-                          child: SvgPicture.asset(
-                            'assets/images/home/ic_top_sch_w.svg',
-                            colorFilter: const ColorFilter.mode(
-                              Colors.black,
-                              BlendMode.srcIn,
-                            ),
-                            fit: BoxFit.contain,
+                            onChanged: (value) {
+                              if (value.isEmpty) {
+                                setState(() {
+                                  _isSearching = false;
+                                  _isFirst = true;
+                                });
+                              } else {
+                                setState(() {
+                                  _isSearching = true;
+                                  _isFirst = false;
+                                });
+                                _getList('N');
+                              }
+                            },
+                            // 검색 중인 상태
+                            onSubmitted: (value) {
+                              if (value.isNotEmpty) {
+                                _searchAction(); // 검색어를 입력하고 검색을 실행
+                              }
+                            }, // 검색 완료 시
                           ),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 10, bottom: 8, right: 15),
+                          child: GestureDetector(
+                            onTap: () {
+                              String search = _searchController.text;
+                              if (search.isNotEmpty) {
+                                _searchAction(); // 검색어를 입력하고 검색을 실행
+                              }
+                            },
+                            child: SvgPicture.asset(
+                              'assets/images/home/ic_top_sch_w.svg',
+                              colorFilter: const ColorFilter.mode(
+                                Colors.black,
+                                BlendMode.srcIn,
+                              ),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+              ],
+            ),
+          ),
+          actions: [
+            GestureDetector(
+              child: Container(
+                margin: const EdgeInsets.only(right: 16, left: 17),
+                child: SvgPicture.asset("assets/images/product/ic_smart.svg"),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, '/smart_lens');
+              },
+            ),
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: Utils.getInstance().isWebView(
+          Stack(
+            children: [
+              Visibility(
+                visible: _isSearching,
+                child: _buildSearching(), // 검색 중 로딩 상태 UI
+              ),
+              Visibility(
+                visible: _searchCompleted,
+                child: _buildSearchResults(), // 검색 결과를 보여주는 UI
+              ),
+              Visibility(
+                visible: _searchFailed,
+                child: _buildNoResults(), // 검색 실패 시의 UI
+              ),
+              Visibility(
+                visible: _isFirst,
+                child: _buildDefaultSearchPage(),
               ),
             ],
           ),
-        ),
-        actions: [
-          GestureDetector(
-            child: Container(
-              margin: const EdgeInsets.only(right: 16, left: 17),
-              child: SvgPicture.asset("assets/images/product/ic_smart.svg"),
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SmartLensScreen(),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Visibility(
-              visible: _isSearching,
-              child: _buildSearching(), // 검색 중 로딩 상태 UI
-            ),
-            Visibility(
-              visible: _searchCompleted,
-              child: _buildSearchResults(), // 검색 결과를 보여주는 UI
-            ),
-            Visibility(
-              visible: _searchFailed,
-              child: _buildNoResults(), // 검색 실패 시의 UI
-            ),
-            Visibility(
-              visible: _isFirst,
-              child: _buildDefaultSearchPage(),
-            ),
-          ],
         ),
       ),
     );
@@ -785,12 +783,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                         child: _buildHighlightedText(result.stName ?? '', _searchController.text),
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => StoreDetailScreen(stIdx: result.stIdx ?? 0,),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/store_detail/${result.stIdx ?? 0}');
                       },
                     );
                   } else {
@@ -812,12 +805,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                         child: _buildHighlightedText(result.ptName ?? '', _searchController.text),
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProductDetailScreen(ptIdx: result.ptIdx ?? 0),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/product_detail/${result.ptIdx ?? 0}');
                       },
                     );
                   }

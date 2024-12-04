@@ -3,6 +3,7 @@ import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -87,41 +88,31 @@ class TermsDetailScreen extends ConsumerWidget {
       body: SafeArea(
         child: Utils.getInstance().isWebView(
           Container(
-              margin: const EdgeInsets.only(top: 40),
-              padding: const EdgeInsets.all(16.0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Consumer(
-                  builder: (context, ref, widget) {
-                    String content = "";
+            padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
+              child: Consumer(
+                builder: (context, ref, widget) {
+                  String content = "";
+                  final model = ref.watch(termsDetailViewModelProvider);
 
-                    final model = ref.watch(termsDetailViewModelProvider);
-
-                    if (model?.defaultResponseDTO != null) {
-                      if (model?.defaultResponseDTO?.result == true) {
-                        content = model?.defaultResponseDTO?.message ?? "";
-                      } else {
-                        Future.delayed(Duration.zero, () {
-                          if (!context.mounted) return;
-                          Utils.getInstance().showSnackBar(context, model?.defaultResponseDTO?.message ?? "");
-                        });
-                      }
+                  if (model?.defaultResponseDTO != null) {
+                    if (model?.defaultResponseDTO?.result == true) {
+                      content = model?.defaultResponseDTO?.message ?? "";
+                      content = content.replaceAll('font-feature-settings: normal;', '');
+                      return Html(data: content,);
+                    } else {
+                      Future.delayed(Duration.zero, () {
+                        if (!context.mounted) return;
+                        Utils.getInstance().showSnackBar(context, model?.defaultResponseDTO?.message ?? "");
+                      });
                     }
+                  }
 
-                    return Text(
-                      content,
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                        fontSize: Responsive.getFont(context, 14),
-                        height: 1.2,
-                      ),
-                    );
-                  },
-                ),
+                  return const SizedBox();
+                },
               ),
             ),
+          ),
         ),
       ),
     );

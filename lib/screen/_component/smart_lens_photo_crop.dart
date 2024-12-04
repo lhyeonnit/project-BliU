@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:BliU/screen/smart_lens/view_model/smart_lens_view_model.dart';
-import 'package:BliU/screen/smart_lens_result/smart_lens_result_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -171,12 +170,7 @@ class SmartLensPhotoCropState extends ConsumerState<SmartLensPhotoCrop> {
         if (!mounted) return;
         if (resultData != null) {
           if (resultData.result == true) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SmartLensResultScreen(imagePath: croppedImageFile),
-              ),
-            );
+            Navigator.pushReplacementNamed(context, '/smart_lens_result', arguments: croppedImageFile);
           }
         } else {
           Utils.getInstance().showSnackBar(context, "Network Or Data Error");

@@ -1,6 +1,5 @@
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/modal_dialog/message_dialog.dart';
-import 'package:BliU/screen/product_detail/product_detail_screen.dart';
 import 'package:BliU/screen/product_list/view_model/product_list_item_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -32,12 +31,7 @@ class ProductListItemState extends ConsumerState<ProductListItem> {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductDetailScreen(ptIdx: productData.ptIdx),
-          ),
-        );
+        Navigator.pushNamed(context, '/product_detail/${productData.ptIdx}');
       },
       child: Container(
         decoration: const BoxDecoration(

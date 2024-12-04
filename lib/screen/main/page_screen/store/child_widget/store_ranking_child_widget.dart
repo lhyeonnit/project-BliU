@@ -7,8 +7,6 @@ import 'package:BliU/screen/main/view_model/main_view_model.dart';
 import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/screen/modal_dialog/store_age_group_selection.dart';
 import 'package:BliU/screen/modal_dialog/store_style_group_selection.dart';
-import 'package:BliU/screen/product_detail/product_detail_screen.dart';
-import 'package:BliU/screen/store_detail/store_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
@@ -292,12 +290,7 @@ class StoreRankingChildWidgetState extends ConsumerState<StoreRankingChildWidget
                                           child: GestureDetector(
                                             onTap: () {
                                               // Navigate to store_detail page when item is tapped
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => StoreDetailScreen(stIdx: rankData.stIdx ?? 0,),
-                                                ),
-                                              );
+                                              Navigator.pushNamed(context, '/store_detail/${rankData.stIdx ?? 0}');
                                             },
                                             child: Row(
                                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -466,12 +459,7 @@ class StoreRankingChildWidgetState extends ConsumerState<StoreRankingChildWidget
                                                     return GestureDetector(
                                                       onTap: () {
                                                         // Navigate to store_detail page when item is tapped
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) => ProductDetailScreen(ptIdx: productData?.ptIdx),
-                                                          ),
-                                                        );
+                                                        Navigator.pushNamed(context, '/product_detail/${productData?.ptIdx}');
                                                       },
                                                       child: Container(
                                                         width: 120,

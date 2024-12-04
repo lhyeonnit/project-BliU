@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:BliU/screen/login/view_model/login_view_model.dart';
 import 'package:BliU/screen/main/main_screen.dart';
-import 'package:BliU/screen/non_order/non_order_screen.dart';
 import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -349,12 +348,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                   Center(
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const NonOrderScreen(),
-                          ), // 비회원일 때의 화면
-                        );
+                        Navigator.pushReplacementNamed(context, '/non_order');// 비회원일 때의 화면
                       },
                       child: Text(
                         '비회원 배송조회',

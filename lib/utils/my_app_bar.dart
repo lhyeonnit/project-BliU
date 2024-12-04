@@ -15,16 +15,20 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.center,
-      child: Container(
+    if (Utils.getInstance().isWeb()) {
+      return Align(
         alignment: Alignment.center,
-        color: Colors.pink,
-        // we can set width here with conditions
-        width: Utils.getInstance().isWeb() ? 450 : null,
-        height: kToolbarHeight,
-        child: appBar,
-      ),
-    );
+        child: Container(
+          alignment: Alignment.center,
+          color: Colors.pink,
+          // we can set width here with conditions
+          width: 450,
+          height: kToolbarHeight,
+          child: appBar,
+        ),
+      );
+    } else {
+      return appBar;
+    }
   }
 }

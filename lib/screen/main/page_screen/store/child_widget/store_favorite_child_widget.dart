@@ -8,7 +8,6 @@ import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/screen/modal_dialog/product_sort_bottom.dart';
 import 'package:BliU/screen/modal_dialog/store_age_group_selection.dart';
 import 'package:BliU/screen/product_list/item/product_list_item.dart';
-import 'package:BliU/screen/store_detail/store_detail_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/foundation.dart';
@@ -295,12 +294,7 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                                             return GestureDetector(
                                               onTap: () {
                                                 // 상점 상세 화면으로 이동 (필요 시 구현)
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) => StoreDetailScreen(stIdx: store.stIdx ?? 0),
-                                                  ),
-                                                );
+                                                Navigator.pushNamed(context, '/store_detail/${store.stIdx ?? 0}');
                                               },
                                               child: Container(
                                                 margin: const EdgeInsets.only(bottom: 15),
