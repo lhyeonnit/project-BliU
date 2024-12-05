@@ -6,6 +6,7 @@ import 'package:BliU/utils/get_x_routes.dart';
 import 'package:BliU/utils/navigation_service.dart';
 import 'package:BliU/utils/permission_manager.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,8 +15,6 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:uuid/uuid.dart';
-
-import 'utils/utils.dart';
 
 // 자동 로그인
 Future<MemberInfoResponseDTO?> _authAutoLogin(Map<String, dynamic> requestData) async {
@@ -65,7 +64,6 @@ Future<void> main() async {
     final token = pref.getToken() ?? "";
     if (token.isEmpty) {
       final uuid= const Uuid().v4();
-      print("test11 =====> ${uuid}");
       pref.setToken(uuid);
     }
   }

@@ -27,14 +27,26 @@ class ProductDetailResponseDto {
         return ProductData.fromJson(item as Map<String, dynamic>);
       }).toList());
     }
+    StoreData? storeData;
+    if (json['data']['store'] != null) {
+      storeData = StoreData.fromJson(json['data']['store']);
+    }
+    ProductData? productData;
+    if (json['data']['product'] != null) {
+      productData = ProductData.fromJson(json['data']['product']);
+    }
+    InfoData? infoData;
+    if (json['data']['info'] != null) {
+      infoData = InfoData.fromJson(json['data']['info']);
+    }
 
     return ProductDetailResponseDto(
       result: json['result'],
       message: json['data']['message'],
-      store: StoreData.fromJson(json['data']['store']),
+      store: storeData,
       sameList: list,
-      product: ProductData.fromJson(json['data']['product']),
-      info: InfoData.fromJson(json['data']['info']),
+      product: productData,
+      info: infoData,
     );
   }
 

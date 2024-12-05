@@ -153,7 +153,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
                         return MessageDialog(
                           title: "알림", message: "로그인이 필요합니다.",
                           doConfirm: () {
-                            Navigator.pushReplacementNamed(context, "/login");
+                            Navigator.pushReplacementNamed(context, "/login/N");
                           },
                         );
                       },

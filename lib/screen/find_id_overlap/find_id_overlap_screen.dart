@@ -85,7 +85,7 @@ class FindIdOverlapScreen extends StatelessWidget {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, "/login");
+                    Navigator.pushNamed(context, "/login/N");
                   },
                   child: Center(
                     child: Text(

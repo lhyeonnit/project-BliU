@@ -77,7 +77,7 @@ class JoinCompleteScreen extends StatelessWidget {
                 right: 0,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, "/login");
+                    Navigator.pushReplacementNamed(context, "/login/N");
                   },
                   child: Container(
                     width: double.infinity,

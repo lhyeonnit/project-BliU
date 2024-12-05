@@ -5,11 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TermsDetailModel {
-  final DefaultResponseDTO? defaultResponseDTO;
-
-  TermsDetailModel({
-    required this.defaultResponseDTO,
-  });
 }
 
 class TermsDetailViewModel extends StateNotifier<TermsDetailModel?> {
@@ -18,7 +13,7 @@ class TermsDetailViewModel extends StateNotifier<TermsDetailModel?> {
 
   TermsDetailViewModel(super.state, this.ref);
 
-  Future<void> getTermsAndPrivacy(int type) async {
+  Future<DefaultResponseDTO?> getTermsAndPrivacy(int type) async {
     // type 0 - 이용약관 1 - 개인정보 처리 방침 2 - 개인정보 수집 이용 동의 3 - 개인정보 제 3자 정보 제공 동의 4 - 결제대행 서비스 이용약관 동의
     String url = Constant.apiMyPageTermsUrl;
     String key = "terms";
@@ -53,25 +48,23 @@ class TermsDetailViewModel extends StateNotifier<TermsDetailModel?> {
           Map<String, dynamic> responseData = response.data;
 
           String? message = responseData["data"]["message"];
-          //print("message $message");
           if (message == null || message.isEmpty) {
             String content = (responseData["data"][key]).toString();
             DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO(result: true, message: content);
-            state = TermsDetailModel(defaultResponseDTO: defaultResponseDTO);
+            return defaultResponseDTO;
           } else {
             DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO(result: false, message: message);
-            state = TermsDetailModel(defaultResponseDTO: defaultResponseDTO);
+            return defaultResponseDTO;
           }
-          return;
         }
       }
-      state = TermsDetailModel(defaultResponseDTO: DefaultResponseDTO(result: false, message: "Network Or Data Error"));
+      return DefaultResponseDTO(result: false, message: "Network Or Data Error");
     } catch(e) {
       // Catch and log any exceptions
       if (kDebugMode) {
         print('Error request Api: $e');
       }
-      state = TermsDetailModel(defaultResponseDTO: DefaultResponseDTO(result: false, message: e.toString()));
+      return DefaultResponseDTO(result: false, message: e.toString());
     }
   }
 }

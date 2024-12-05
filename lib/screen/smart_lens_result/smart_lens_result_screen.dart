@@ -41,7 +41,7 @@ class SmartLensResultScreenState extends ConsumerState<SmartLensResultScreen> {
         appBar: AppBar(
           scrolledUnderElevation: 0,
           backgroundColor: Colors.white,
-          title: const Text('스마트렌즈'),
+          title: const Text('블리유AI렌즈'),
           titleTextStyle: TextStyle(
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 18),

@@ -157,14 +157,15 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                                       'phone_num': phoneNumber,
                                       'code_type': 2,
                                     };
-                                    final resultDTO = await ref.read(
-                                        findIdViewModelModelProvider.notifier)
-                                        .reqPhoneAuthCode(requestData);
+                                    final resultDTO = await ref.read(findIdViewModelModelProvider.notifier).reqPhoneAuthCode(requestData);
                                     if (resultDTO?.result == true) {
                                       setState(() {
                                         _phoneAuthCodeVisible = true;
                                         _authTimerStart();
                                       });
+                                    } else {
+                                      if (!context.mounted) return;
+                                      Utils.getInstance().showSnackBar(context, resultDTO?.message ?? "");
                                     }
                                   },
                                   child: Column(
@@ -193,9 +194,7 @@ class FindIdScreenState extends ConsumerState<FindIdScreen> {
                                         padding: const EdgeInsets.symmetric(vertical: 14),
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(6),
-                                          border:
-                                          Border.all(
-                                              color: const Color(0xFFDDDDDD)),
+                                          border: Border.all(color: const Color(0xFFDDDDDD),),
                                         ),
                                         child: Center(
                                           child: Text(

@@ -17,6 +17,7 @@ import 'package:BliU/screen/on_boarding/on_boarding_screen.dart';
 import 'package:BliU/screen/product_detail/product_detail_screen.dart';
 import 'package:BliU/screen/product_review_detail/product_review_detail_screen.dart';
 import 'package:BliU/screen/recommend_info/recommend_info_screen.dart';
+import 'package:BliU/screen/recommend_info_edit/recommend_info_edit_screen.dart';
 import 'package:BliU/screen/report/report_screen.dart';
 import 'package:BliU/screen/review_write/review_write_screen.dart';
 import 'package:BliU/screen/search/search_screen.dart';
@@ -38,7 +39,7 @@ class GetXRoutes {
       page: () => const OnBoardingScreen(),
     ),
     GetPage(
-      name: '/login',
+      name: '/login/:isPay',
       page: () => const LoginScreen(),
     ),
     GetPage(
@@ -127,7 +128,10 @@ class GetXRoutes {
 
 
 
-
+    GetPage(
+      name: '/recommend_info_edit',
+      page: () => const RecommendInfoEditScreen(),
+    ),
     GetPage(
       name: '/report/:rt_idx',
       page: () => const ReportScreen(),

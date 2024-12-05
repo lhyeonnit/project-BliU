@@ -86,7 +86,7 @@ class SmartLensScreenState extends State<SmartLensScreen> {
           scrolledUnderElevation: 0,
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
-          title: const Text("스마트렌즈"),
+          title: const Text("블리유AI렌즈"),
           titleTextStyle: TextStyle(
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 18),

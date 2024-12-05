@@ -54,9 +54,10 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   bool _isDeliveryInfoVisible = false;
   bool _isExpanded = false;
 
-  double _webviewHeight = 100;
+  double _detailWebViewHeight = 100;
+  double _deliveryWebViewHeight = 100;
 
-  late InAppWebViewController _controller;
+  late InAppWebViewController? _detailWeViewController;
 
   final _infoThemeData = ThemeData(
     /// Prevents to splash effect when clicking.
@@ -114,6 +115,8 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         _productData = productDetailResponseDto.product;
         _sameList = productDetailResponseDto.sameList ?? [];
         _infoData = productDetailResponseDto.info;
+
+        _detailWeViewController?.loadData(data: _productData?.ptContent ?? "");
       });
     } else {
       if (!mounted) return;
@@ -891,7 +894,27 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   minHeight: _isExpanded ? 10 : 0,
                   maxHeight: _isExpanded ? double.infinity : 50,
                 ),
-                child: Html(data: content),
+                child: SizedBox(
+                  height: _detailWebViewHeight,
+                  child: InAppWebView(
+                    initialData: InAppWebViewInitialData(data: content),
+                    initialSettings: InAppWebViewSettings(
+                      transparentBackground: true,
+                    ),
+                    onWebViewCreated: (controller) {
+                      _detailWeViewController = controller;
+                    },
+                    onProgressChanged: (controller, progress) {
+                      if (progress == 100) {
+                        controller.getContentHeight().then((height) {
+                          setState(() {
+                            _detailWebViewHeight = double.parse(height.toString());
+                          });
+                        });
+                      }
+                    },
+                  ),
+                ),
               ),
             ),
             // 버튼
@@ -1187,20 +1210,17 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     ),
                     padding: const EdgeInsets.all(16.0),
                     child: SizedBox(
-                      height: _webviewHeight,
+                      height: _deliveryWebViewHeight,
                       child: InAppWebView(
                         initialFile: "assets/html/exchange.html",
                         initialSettings: InAppWebViewSettings(
                           transparentBackground: true,
                         ),
-                        onWebViewCreated: (controller) async {
-                          _controller = controller;
-                        },
                         onProgressChanged: (controller, progress) {
                           if (progress == 100) {
                             controller.getContentHeight().then((height) {
                               setState(() {
-                                _webviewHeight = double.parse(height.toString());
+                                _deliveryWebViewHeight = double.parse(height.toString());
                               });
                             });
                           }

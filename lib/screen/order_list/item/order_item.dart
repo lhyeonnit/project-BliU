@@ -8,6 +8,7 @@ import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 class OrderItem extends ConsumerStatefulWidget {
   final OrderData orderData;
@@ -462,6 +463,8 @@ class OrderItemState extends ConsumerState<OrderItem> {
                   } else {
                     Navigator.pushNamed(context, '/review_write', arguments: _orderDetailData);
                   }
+                } else {
+                  Utils.getInstance().showSnackBar(context, "리뷰를 쓸 수 없는 주문입니다.");
                 }
               },
               style: TextButton.styleFrom(

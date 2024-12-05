@@ -3,44 +3,81 @@ import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-//약관 or 개인정보 처리방치등
-class TermsDetailScreen extends ConsumerWidget {
+
+class TermsDetailScreen extends ConsumerStatefulWidget {
   const TermsDetailScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    String title = "";
-    int type = 0;// type 0 - 이용약관 1 - 개인정보 처리 방침 2 - 개인정보 수집 이용 동의 3 - 개인정보 제 3자 정보 제공 동의 4 - 결제대행 서비스 이용약관 동의
+  ConsumerState<TermsDetailScreen> createState() => TermsDetailScreenState();
+}
+
+class TermsDetailScreenState extends ConsumerState<TermsDetailScreen> {
+  String _title = "";
+  int _type = 0;// type 0 - 이용약관 1 - 개인정보 처리 방침 2 - 개인정보 수집 이용 동의 3 - 개인정보 제 3자 정보 제공 동의 4 - 결제대행 서비스 이용약관 동의
+  String _content = "";
+  InAppWebViewController? _controller;
+
+  @override
+  void initState() {
+    super.initState();
     try {
-      type = int.parse(Get.parameters["type"].toString());
+      _type = int.parse(Get.parameters["type"].toString());
     } catch(e) {
-     //
+      //
     }
 
-    switch(type) {
+    switch(_type) {
       case 0:
-        title = "이용약관";
+        _title = "이용약관";
         break;
       case 1:
-        title = "개인정보처리방침";
+        _title = "개인정보처리방침";
         break;
       case 2:
-        title = "개인정보 수집 이용 동의";
+        _title = "개인정보 수집 이용 동의";
         break;
       case 3:
-        title = "개인정보 제 3자 정보 제공 동의";
+        _title = "개인정보 제 3자 정보 제공 동의";
         break;
       case 4:
-        title = "결제대행 서비스 이용약관 동의";
+        _title = "결제대행 서비스 이용약관 동의";
         break;
     }
 
-    ref.read(termsDetailViewModelProvider.notifier).getTermsAndPrivacy(type);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _afterBuild(context);
+    });
+  }
+
+  void _afterBuild(BuildContext context) {
+    _getTermsAndPrivacy();
+  }
+
+  void _getTermsAndPrivacy() async {
+    final defaultResponseDTO = await ref.read(termsDetailViewModelProvider.notifier).getTermsAndPrivacy(_type);
+
+    if (defaultResponseDTO != null) {
+      if (defaultResponseDTO.result == true) {
+        _content = defaultResponseDTO.message ?? "";
+        setState(() {
+          _controller?.loadData(data: _content);
+        });
+      } else {
+        Future.delayed(Duration.zero, () {
+          if (!mounted) return;
+          Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -48,7 +85,7 @@ class TermsDetailScreen extends ConsumerWidget {
         appBar: AppBar(
           scrolledUnderElevation: 0,
           backgroundColor: Colors.white,
-          title: Text(title),
+          title: Text(_title),
           titleTextStyle: TextStyle(
             fontFamily: 'Pretendard',
             fontSize: Responsive.getFont(context, 18),
@@ -89,28 +126,14 @@ class TermsDetailScreen extends ConsumerWidget {
         child: Utils.getInstance().isWebView(
           Container(
             padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              child: Consumer(
-                builder: (context, ref, widget) {
-                  String content = "";
-                  final model = ref.watch(termsDetailViewModelProvider);
-
-                  if (model?.defaultResponseDTO != null) {
-                    if (model?.defaultResponseDTO?.result == true) {
-                      content = model?.defaultResponseDTO?.message ?? "";
-                      content = content.replaceAll('font-feature-settings: normal;', '');
-                      return Html(data: content,);
-                    } else {
-                      Future.delayed(Duration.zero, () {
-                        if (!context.mounted) return;
-                        Utils.getInstance().showSnackBar(context, model?.defaultResponseDTO?.message ?? "");
-                      });
-                    }
-                  }
-
-                  return const SizedBox();
-                },
+            child: InAppWebView(
+              initialData: InAppWebViewInitialData(data: _content),
+              initialSettings: InAppWebViewSettings(
+                transparentBackground: true,
               ),
+              onWebViewCreated: (controller) async {
+                _controller = controller;
+              },
             ),
           ),
         ),

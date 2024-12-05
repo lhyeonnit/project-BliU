@@ -113,7 +113,7 @@ class NonTopChildWidgetState extends State<NonTopChildWidget> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, "/login");
+                  Navigator.pushNamed(context, "/login/N");
                 },
                 child: Container(
                   height: 38,

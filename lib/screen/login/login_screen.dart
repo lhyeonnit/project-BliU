@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -23,6 +24,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class LoginScreenState extends ConsumerState<LoginScreen> {
+  String _isPay = "N";
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   var _isAutoLogin = true;
@@ -31,6 +33,11 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    final isPay = Get.parameters["isPay"].toString();
+    if (isPay.isNotEmpty) {
+      _isPay = isPay;
+    }
+
     try {
       if(Platform.isIOS) {
         _appleLoginVisible = true;
@@ -348,10 +355,14 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                   Center(
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacementNamed(context, '/non_order');// 비회원일 때의 화면
+                        if (_isPay == "N") {
+                          Navigator.pushReplacementNamed(context, '/non_order');// 비회원일 때의 화면
+                        } else {
+                          Navigator.pop(context, 'guest');
+                        }
                       },
                       child: Text(
-                        '비회원 배송조회',
+                        _isPay == 'N' ? '비회원 배송조회' : '비회원으로 구매하기',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
@@ -547,6 +558,11 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
           final childCk = loginData.childCk ?? "N"; // childCk 값 가져오기
 
           if (mounted) {
+            if (_isPay == 'Y') {
+              Navigator.pop(context, 'member');
+              return;
+            }
+
             if (childCk == "Y") {
               // childCk가 "Y"인 경우 메인 화면으로 이동
               Navigator.pushReplacementNamed(context, '/index');

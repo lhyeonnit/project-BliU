@@ -163,6 +163,9 @@ class FindPasswordScreenState extends ConsumerState<FindPasswordScreen> {
                                     _phoneAuthCodeVisible = true;
                                     _authTimerStart();
                                   });
+                                } else {
+                                  if (!context.mounted) return;
+                                  Utils.getInstance().showSnackBar(context, resultDTO?.message ?? "");
                                 }
                               },
                               child: Column(

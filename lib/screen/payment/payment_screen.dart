@@ -63,6 +63,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
   int _userDeliveryPrice = 0;
 
+  int _memberType = -1;
+
   final FocusNode _pointFocusNode = FocusNode();
 
   void _focusCheck() {
@@ -81,6 +83,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   @override
   void initState() {
     super.initState();
+    _memberType = widget.memberType;
     _pointFocusNode.addListener(_focusCheck);
 
     // 주소 셋팅
@@ -742,7 +745,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                               ),
                             ),
                             Visibility(
-                              visible: widget.memberType == 1,
+                              visible: _memberType == 1,
                               child: Row(
                                 children: [
                                   GestureDetector(
@@ -1308,7 +1311,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                     ),
                   ),
                   Visibility(
-                    visible: widget.memberType == 1,
+                    visible: _memberType == 1,
                     child: Container(
                       height: 10,
                       width: double.infinity,
@@ -1316,7 +1319,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                     ),
                   ),
                   Visibility(
-                    visible: widget.memberType == 1,
+                    visible: _memberType == 1,
                     child: ListTileTheme(
                       horizontalTitleGap: 0,
                       child: ExpansionTile(
@@ -1625,7 +1628,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                               ),
                               _buildInfoRow('배송비', '${Utils.getInstance().priceString(shippingCost)}원', context),
                               Visibility(
-                                visible: widget.memberType == 1,
+                                visible: _memberType == 1,
                                 child: Container(
                                   margin: const EdgeInsets.symmetric(vertical: 10),
                                   child: _buildInfoRow(
@@ -1638,7 +1641,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                 ),
                               ),
                               Visibility(
-                                visible: widget.memberType == 1,
+                                visible: _memberType == 1,
                                 child: _buildInfoRow(
                                   '포인트할인',
                                   pointsDiscount != 0
@@ -2000,8 +2003,25 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 children: [
                   MoveTopButton(scrollController: _scrollController),
                   GestureDetector(
-                    onTap: () {
-                      _payment();
+                    onTap: () async {
+                      final pref = await SharedPreferencesManager.getInstance();
+                      final mtIdx = pref.getMtIdx() ?? "";
+                      if (mtIdx.isEmpty) {
+                        if(!context.mounted) return;
+                        final result = await Navigator.pushNamed(context, '/login/Y');
+                        if (result != null) {
+                          if (result == 'guest') {
+                            _payment();
+                          } else if(result == 'member') {
+                            // TODO 결제정보 이전 작업 필요
+                            setState(() {
+                              _memberType = 1;
+                            });
+                          }
+                        }
+                      } else {
+                        _payment();
+                      }
                     },
                     child: Container(
                       width: double.infinity,
