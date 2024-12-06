@@ -1,7 +1,6 @@
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/screen/main/main_screen.dart';
 import 'package:BliU/screen/main/view_model/main_view_model.dart';
-import 'package:BliU/screen/product_list/product_list_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,10 +41,8 @@ class HomeBodyCategoryChildWidget extends ConsumerWidget {
                     if (index == 0) {
                       ref.read(mainScreenProvider.notifier).selectNavigation(0);
                     } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ProductListScreen(selectedCategory: category)),
-                      );
+                      final map = { 'selectedCategory' : category, 'selectSubCategoryIndex' : null };
+                      Navigator.pushNamed(context, '/product_list', arguments: map);
                     }
                   },
                   child: Padding(

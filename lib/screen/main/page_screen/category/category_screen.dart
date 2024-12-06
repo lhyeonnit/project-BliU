@@ -1,6 +1,5 @@
 import 'package:BliU/screen/main/main_screen.dart';
 import 'package:BliU/screen/main/view_model/main_view_model.dart';
-import 'package:BliU/screen/product_list/product_list_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -158,14 +157,8 @@ class CategoryScreenState extends ConsumerState<CategoryScreen> {
                             padding: const EdgeInsets.only(left: 20, right: 15, bottom: 10),
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProductListScreen(
-                                      selectedCategory: category,
-                                    ),
-                                  ),
-                                );
+                                final map = { 'selectedCategory' : category, 'selectSubCategoryIndex' : null };
+                                Navigator.pushNamed(context, '/product_list', arguments: map);
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -217,15 +210,8 @@ class CategoryScreenState extends ConsumerState<CategoryScreen> {
                               child: GestureDetector(
                                 onTap: () {
                                   // 하위 카테고리 선택 시 처리
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ProductListScreen(
-                                        selectedCategory: category,
-                                        selectSubCategoryIndex: subCategories.indexOf(subCategory),
-                                      ),
-                                    ),
-                                  );
+                                  final map = { 'selectedCategory' : category, 'selectSubCategoryIndex' : subCategories.indexOf(subCategory) };
+                                  Navigator.pushNamed(context, '/product_list', arguments: map);
                                 },
                                 child: Row(
                                   children: [

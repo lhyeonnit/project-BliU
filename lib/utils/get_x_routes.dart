@@ -14,7 +14,14 @@ import 'package:BliU/screen/main/main_screen.dart';
 import 'package:BliU/screen/my_review_edit/my_review_edit_screen.dart';
 import 'package:BliU/screen/non_order/non_order_screen.dart';
 import 'package:BliU/screen/on_boarding/on_boarding_screen.dart';
+import 'package:BliU/screen/order_detail/order_detail_screen.dart';
+import 'package:BliU/screen/order_list/order_list_screen.dart';
+import 'package:BliU/screen/payment/payment_screen.dart';
+import 'package:BliU/screen/payment_complete/payment_complete_screen.dart';
+import 'package:BliU/screen/payment_coupon/payment_coupon_screen.dart';
+import 'package:BliU/screen/payment_iamport/payment_iamport_screen.dart';
 import 'package:BliU/screen/product_detail/product_detail_screen.dart';
+import 'package:BliU/screen/product_list/product_list_screen.dart';
 import 'package:BliU/screen/product_review_detail/product_review_detail_screen.dart';
 import 'package:BliU/screen/recommend_info/recommend_info_screen.dart';
 import 'package:BliU/screen/recommend_info_edit/recommend_info_edit_screen.dart';
@@ -67,15 +74,9 @@ class GetXRoutes {
       page: () => const FindPasswordScreen(),
     ),
 
-    GetPage(
-      name: '/product_detail/:pt_idx',
-      page: () => const ProductDetailScreen(),
-    ),
 
-    GetPage(
-      name: '/product_review_detail/:rt_idx',
-      page: () => const ProductReviewDetailScreen(),
-    ),
+
+
 
     GetPage(
       name: '/my_review_edit',
@@ -89,22 +90,33 @@ class GetXRoutes {
 
     GetPage(
       name: '/exchange_return',
-      page: () => ExchangeReturnScreen(orderData: Get.arguments["orderData"], orderDetailData: Get.arguments["orderDetailData"]),
+      page: () => ExchangeReturnScreen(
+        orderData: Get.arguments["orderData"],
+        orderDetailData: Get.arguments["orderDetailData"],
+      ),
     ),
 
     GetPage(
       name: '/delivery',
-      page: () => DeliveryScreen(odtCode: Get.arguments['odtCode'], deliveryType: Get.arguments['deliveryType'],),
+      page: () => DeliveryScreen(
+        odtCode: Get.arguments['odtCode'],
+        deliveryType: Get.arguments['deliveryType'],
+      ),
     ),
 
     GetPage(
       name: '/cancel',
-      page: () => CancelScreen(orderData: Get.arguments["orderData"], orderDetailData: Get.arguments["orderDetailData"]),
+      page: () => CancelScreen(
+        orderData: Get.arguments["orderData"],
+        orderDetailData: Get.arguments["orderDetailData"],),
     ),
 
     GetPage(
       name: '/inquiry_service',
-      page: () => InquiryServiceScreen(qnaType: Get.arguments['qnaType'], ptIdx: Get.arguments['ptIdx']),
+      page: () => InquiryServiceScreen(
+        qnaType: Get.arguments['qnaType'],
+        ptIdx: Get.arguments['ptIdx'],
+      ),
     ),
 
 
@@ -113,21 +125,75 @@ class GetXRoutes {
       name: '/non_order',
       page: () => const NonOrderScreen(),
     ),
+
+
+
+
+
+    GetPage(
+      name: '/order_detail',
+      page: () => OrderDetailScreen(
+        orderData: Get.arguments['orderData'],
+        detailList: Get.arguments['detailList'],
+      ),
+    ),
+    GetPage(
+      name: '/order_list',
+      page: () => const OrderListScreen(),
+    ),
+    GetPage(
+      name: '/order_list',
+      page: () => const OrderListScreen(),
+    ),
+    GetPage(
+      name: '/payment',
+      page: () => PaymentScreen(
+        payOrderDetailData: Get.arguments['payOrderDetailData'],
+        memberType: Get.arguments['memberType'],
+      ),
+    ),
+    GetPage(
+      name: '/payment_complete',
+      page: () => PaymentCompleteScreen(
+        memberType: Get.arguments['memberType'],
+        payType: Get.arguments['payType'],
+        payOrderResultDetailData: Get.arguments['payOrderResultDetailData'],
+        savedRecipientName: Get.arguments['savedRecipientName'],
+        savedRecipientPhone: Get.arguments['savedRecipientPhone'],
+        savedAddressRoad: Get.arguments['savedAddressRoad'],
+        savedAddressDetail: Get.arguments['savedAddressDetail'],
+        savedMemo: Get.arguments['savedMemo'],
+      ),
+    ),
+    GetPage(
+      name: '/payment_coupon',
+      page: () => PaymentCouponScreen(couponList: Get.arguments,),
+    ),
+    GetPage(
+      name: '/payment_iamport',
+      page: () => PaymentIamportScreen(
+        iamportPayData: Get.arguments,
+      ),
+    ),
+    GetPage(
+      name: '/product_detail/:pt_idx',
+      page: () => const ProductDetailScreen(),
+    ),
+    GetPage(
+      name: '/product_list',
+      page: () => ProductListScreen(
+        selectedCategory: Get.arguments['selectedCategory'],
+        selectSubCategoryIndex: Get.arguments['selectSubCategoryIndex'],
+      ),
+    ),
+    GetPage(
+      name: '/product_review_detail/:rt_idx',
+      page: () => const ProductReviewDetailScreen(),
+    ),
     GetPage(
       name: '/recommend_info',
       page: () => const RecommendInfoScreen(),
     ),
-
-
-
-
-
-
-
-
-
-
-
     GetPage(
       name: '/recommend_info_edit',
       page: () => const RecommendInfoEditScreen(),

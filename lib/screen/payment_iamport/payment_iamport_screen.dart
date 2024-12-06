@@ -12,7 +12,6 @@ class PaymentIamportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return IamportPayment(
       appBar: AppBar(
         title: const Text('결제'),

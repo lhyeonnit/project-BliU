@@ -11,8 +11,10 @@ import 'package:BliU/screen/modal_dialog/product_filter_bottom.dart';
 import 'package:BliU/screen/modal_dialog/product_sort_bottom.dart';
 import 'package:BliU/screen/product_list/item/product_list_item.dart';
 import 'package:BliU/screen/product_list/view_model/product_list_view_model.dart';
+import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -318,225 +320,229 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: SvgPicture.asset("assets/images/product/ic_back.svg"),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        titleSpacing: -1.0,
-        title: InkWell(
-          onTap: _openCategoryBottomSheet, // Open the bottom sheet on tap
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(right: 8),
-                child: Text(
-                  _selectedCategory.ctName ?? "",
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.bold,
-                    fontSize: Responsive.getFont(context, 18),
-                    height: 1.2,
-                  ),
-                ),
-              ),
-              SvgPicture.asset(
-                'assets/images/product/ic_select.svg',
-                colorFilter: const ColorFilter.mode(
-                  Colors.black,
-                  BlendMode.srcIn,
-                ),
-              ),
-            ],
-          ),
-        ),
-        centerTitle: true,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
-          child: Container(
-            color: const Color(0x0D000000), // 하단 구분선 색상
-            height: 1.0, // 구분선의 두께 설정
-            child: Container(
-              height: 1.0, // 그림자 부분의 높이
-              decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x0D000000),
-                    blurRadius: 6.0,
-                    spreadRadius: 0.1,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: SvgPicture.asset("assets/images/product/ic_top_sch.svg",
-              height: Responsive.getHeight(context, 30),
-              width: Responsive.getWidth(context, 30),
-            ),
-            color: Colors.black,
+      appBar: MyAppBar(
+        appBar: AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: SvgPicture.asset("assets/images/product/ic_back.svg"),
             onPressed: () {
-              Navigator.pushNamed(context, '/search');
+              Navigator.pop(context);
             },
           ),
-          const TopCartButton(),
-        ],
+          titleSpacing: -1.0,
+          title: InkWell(
+            onTap: _openCategoryBottomSheet, // Open the bottom sheet on tap
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  child: Text(
+                    _selectedCategory.ctName ?? "",
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 18),
+                      height: 1.2,
+                    ),
+                  ),
+                ),
+                SvgPicture.asset(
+                  'assets/images/product/ic_select.svg',
+                  colorFilter: const ColorFilter.mode(
+                    Colors.black,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          centerTitle: true,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
+            child: Container(
+              color: const Color(0x0D000000), // 하단 구분선 색상
+              height: 1.0, // 구분선의 두께 설정
+              child: Container(
+                height: 1.0, // 그림자 부분의 높이
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x0D000000),
+                      blurRadius: 6.0,
+                      spreadRadius: 0.1,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: SvgPicture.asset("assets/images/product/ic_top_sch.svg",
+                height: Responsive.getHeight(context, 30),
+                width: Responsive.getWidth(context, 30),
+              ),
+              color: Colors.black,
+              onPressed: () {
+                Navigator.pushNamed(context, '/search');
+              },
+            ),
+            const TopCartButton(),
+          ],
+        ),
       ),
       body: SafeArea(
-        child: Stack(
-          children: [
-            NotificationListener(
-              onNotification: (scrollNotification){
-                if (scrollNotification is ScrollEndNotification) {
-                  var metrics = scrollNotification.metrics;
-                  if (metrics.axisDirection != AxisDirection.down) return false;
-                  if (_maxScrollHeight < metrics.maxScrollExtent) {
-                    _maxScrollHeight = metrics.maxScrollExtent;
+        child: Utils.getInstance().isWebView(
+          Stack(
+            children: [
+              NotificationListener(
+                onNotification: (scrollNotification){
+                  if (scrollNotification is ScrollEndNotification) {
+                    var metrics = scrollNotification.metrics;
+                    if (metrics.axisDirection != AxisDirection.down) return false;
+                    if (_maxScrollHeight < metrics.maxScrollExtent) {
+                      _maxScrollHeight = metrics.maxScrollExtent;
+                    }
+                    if (_maxScrollHeight - metrics.pixels < 50) {
+                      _nextLoad();
+                    }
                   }
-                  if (_maxScrollHeight - metrics.pixels < 50) {
-                    _nextLoad();
-                  }
-                }
-                return false;
-              },
-              child: NestedScrollView(
-                controller: _scrollController,
-                headerSliverBuilder: (context, innerBoxIsScrolled) {
-                  return [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 60.0,
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: TabBar(
-                              controller: _tabController,
-                              labelStyle: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                fontWeight: FontWeight.w600,
-                              ),
-                              overlayColor: WidgetStateColor.transparent,
-                              indicatorColor: Colors.black,
-                              dividerColor: const Color(0xFFDDDDDD),
-                              indicatorSize: TabBarIndicatorSize.tab,
-                              labelColor: Colors.black,
-                              unselectedLabelColor: const Color(0xFF7B7B7B),
-                              isScrollable: true,
-                              indicatorWeight: 2.0,
-                              tabAlignment: TabAlignment.start,
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
-                              tabs: (_categories).map((subCategory) {
-                                return Tab(text: subCategory.ctName);
-                              }).toList(),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                            padding: const EdgeInsets.only(top: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _isTodayStart = !_isTodayStart;
-                                      _getList();
-                                    });
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(right: 10),
-                                        padding: const EdgeInsets.all(6),
-                                        height: 22,
-                                        width: 22,
-                                        decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                          border: Border.all(
-                                            color: _isTodayStart ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
-                                          ),
-                                          color: _isTodayStart ? const Color(0xFFFF6191) : Colors.white,
-                                        ),
-                                        child: SvgPicture.asset(
-                                          'assets/images/check01_off.svg', // 체크박스 아이콘
-                                          colorFilter: ColorFilter.mode(
-                                            _isTodayStart ? Colors.white : const Color(0xFFCCCCCC),
-                                            BlendMode.srcIn,
-                                          ),
-                                          height: 10,
-                                          width: 10,
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                      Image.asset(
-                                        'assets/images/product/today_start.png',
-                                        width: 70,
-                                        height: 18,
-                                        fit: BoxFit.cover,
-                                      )
-                                    ],
-                                  ),
+                  return false;
+                },
+                child: NestedScrollView(
+                  controller: _scrollController,
+                  headerSliverBuilder: (context, innerBoxIsScrolled) {
+                    return [
+                      SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 60.0,
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: TabBar(
+                                controller: _tabController,
+                                labelStyle: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  fontWeight: FontWeight.w600,
                                 ),
-                                const SizedBox(width: 20),
-                                Expanded(
-                                  flex: 1,
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
+                                overlayColor: WidgetStateColor.transparent,
+                                indicatorColor: Colors.black,
+                                dividerColor: const Color(0xFFDDDDDD),
+                                indicatorSize: TabBarIndicatorSize.tab,
+                                labelColor: Colors.black,
+                                unselectedLabelColor: const Color(0xFF7B7B7B),
+                                isScrollable: true,
+                                indicatorWeight: 2.0,
+                                tabAlignment: TabAlignment.start,
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                tabs: (_categories).map((subCategory) {
+                                  return Tab(text: subCategory.ctName);
+                                }).toList(),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding: const EdgeInsets.only(top: 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _isTodayStart = !_isTodayStart;
+                                        _getList();
+                                      });
+                                    },
                                     child: Row(
                                       children: [
-                                        Visibility(
-                                          visible: _selectedCategory.ctName == "악세서리" ? false : true,
-                                          child: _buildFilterButton(getSelectedAgeGroupText(), false),
-                                        ),
                                         Container(
-                                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                                          child: _buildFilterButton(getSelectedStyleText(), false),
+                                          margin: const EdgeInsets.only(right: 10),
+                                          padding: const EdgeInsets.all(6),
+                                          height: 22,
+                                          width: 22,
+                                          decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                            border: Border.all(
+                                              color: _isTodayStart ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                            ),
+                                            color: _isTodayStart ? const Color(0xFFFF6191) : Colors.white,
+                                          ),
+                                          child: SvgPicture.asset(
+                                            'assets/images/check01_off.svg', // 체크박스 아이콘
+                                            colorFilter: ColorFilter.mode(
+                                              _isTodayStart ? Colors.white : const Color(0xFFCCCCCC),
+                                              BlendMode.srcIn,
+                                            ),
+                                            height: 10,
+                                            width: 10,
+                                            fit: BoxFit.contain,
+                                          ),
                                         ),
-                                        _buildFilterButton(getSelectedRangeValues(), true),
+                                        Image.asset(
+                                          'assets/images/product/today_start.png',
+                                          width: 70,
+                                          height: 18,
+                                          fit: BoxFit.cover,
+                                        )
                                       ],
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ), // 상단 고정된 컨텐츠
-                    )
-                  ];
-                },
-                body: TabBarView(
-                  controller: _tabController,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: List.generate(
-                    _categories.length,
-                        (index) {
-                      // 상품 리스트
-                      if (index == _tabController.index) {
-                        return _buildProductGrid();
-                      } else {
-                        return Container();
-                      }
-                    },
+                                  const SizedBox(width: 20),
+                                  Expanded(
+                                    flex: 1,
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: [
+                                          Visibility(
+                                            visible: _selectedCategory.ctName == "악세서리" ? false : true,
+                                            child: _buildFilterButton(getSelectedAgeGroupText(), false),
+                                          ),
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(horizontal: 4),
+                                            child: _buildFilterButton(getSelectedStyleText(), false),
+                                          ),
+                                          _buildFilterButton(getSelectedRangeValues(), true),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ), // 상단 고정된 컨텐츠
+                      )
+                    ];
+                  },
+                  body: TabBarView(
+                    controller: _tabController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: List.generate(
+                      _categories.length,
+                          (index) {
+                        // 상품 리스트
+                        if (index == _tabController.index) {
+                          return _buildProductGrid();
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-            Visibility(
-              visible: _productList.isNotEmpty,
-              child: MoveTopButton(scrollController: _scrollController)
-            ),
-          ],
+              Visibility(
+                  visible: _productList.isNotEmpty,
+                  child: MoveTopButton(scrollController: _scrollController)
+              ),
+            ],
+          ),
         ),
       ),
     );

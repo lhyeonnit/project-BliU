@@ -8,7 +8,6 @@ import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 class OrderItem extends ConsumerStatefulWidget {
   final OrderData orderData;

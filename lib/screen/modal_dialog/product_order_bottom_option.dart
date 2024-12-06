@@ -9,7 +9,6 @@ import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/cart/cart_screen.dart';
 import 'package:BliU/screen/join_add_info/join_add_info_screen.dart';
 import 'package:BliU/screen/modal_dialog/view_model/product_order_bottom_option_view_model.dart';
-import 'package:BliU/screen/payment/payment_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -1066,15 +1065,11 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
             final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;
             if (payOrderDetailData != null) {
               if (userInfoCheck == "Y" || memberType == 2) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PaymentScreen(
-                      payOrderDetailData: payOrderDetailData,
-                      memberType: memberType,
-                    ),
-                  ),
-                );
+                final map = {
+                  'payOrderDetailData': payOrderDetailData,
+                  'memberType': memberType,
+                };
+                Navigator.pushReplacementNamed(context, '/payment', arguments: map);
               } else {
                 Navigator.pushReplacement(
                   context,

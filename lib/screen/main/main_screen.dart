@@ -129,10 +129,7 @@ class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProvide
             ref.read(mainScreenProvider.notifier).selectNavigation(2);
             break;
           case "order_list":
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const OrderListScreen()),
-            );
+            Navigator.pushNamed(context, '/order_list');
             break;
           case "cart_list":
             Navigator.push(

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:BliU/data/pay_order_detail_data.dart';
 import 'package:BliU/screen/join_add_info/view_model/join_add_info_view_model.dart';
-import 'package:BliU/screen/payment/payment_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -467,15 +466,11 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                         Utils.getInstance().showSnackBar(context, "추가정보 입력이 완료되었습니다.");
                         return;
                       }
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PaymentScreen(
-                            payOrderDetailData: widget.payOrderDetailData,
-                            memberType: widget.memberType,
-                          ),
-                        ),
-                      );
+                      final map = {
+                        'payOrderDetailData': widget.payOrderDetailData,
+                        'memberType': widget.memberType,
+                      };
+                      Navigator.pushReplacementNamed(context, '/payment', arguments: map);
                     } else {
                       if (!context.mounted) return;
                       final message = myPageInfoDTO.message ?? "";

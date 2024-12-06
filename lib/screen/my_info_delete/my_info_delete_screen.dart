@@ -1,4 +1,5 @@
 import 'package:BliU/screen/main/main_screen.dart';
+import 'package:BliU/screen/modal_dialog/confirm_dialog.dart';
 import 'package:BliU/screen/my_info_edit/view_model/my_info_edit_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -237,21 +238,34 @@ class MyInfoDeleteScreenState extends ConsumerState<MyInfoDeleteScreen> {
       ),
     );
   }
-  void _retire() async {
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-    Map<String, dynamic> requestData = {
-      'mt_idx': mtIdx,
-    };
-    final resultDTO = await ref.read(myInfoEditViewModelProvider.notifier).retire(requestData);
-    if (!mounted) return;
-    Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
-    await pref.logOut();
-    if (!mounted) return;
-    Navigator.pushReplacementNamed(context, '/index');
+  void _retire() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return ConfirmDialog(
+          title: '알림',
+          message: '정말 탈퇴 하시겠습니까?',
+          doConfirm: () {
+            Future.delayed(const Duration(seconds: 1), () async {
+              final pref = await SharedPreferencesManager.getInstance();
+              final mtIdx = pref.getMtIdx();
+              Map<String, dynamic> requestData = {
+                'mt_idx': mtIdx,
+              };
+              final resultDTO = await ref.read(myInfoEditViewModelProvider.notifier).retire(requestData);
+              if (!context.mounted) return;
+              Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
+              await pref.logOut();
+              if (!context.mounted) return;
+              Navigator.pushReplacementNamed(context, '/index');
 
-    setState(() {
-      ref.read(mainScreenProvider.notifier).selectNavigation(2);
-    });
+              setState(() {
+                ref.read(mainScreenProvider.notifier).selectNavigation(2);
+              });
+            });
+          },
+        );
+      },
+    );
   }
 }

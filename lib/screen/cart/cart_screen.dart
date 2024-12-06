@@ -7,7 +7,6 @@ import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/cart/item/cart_item.dart';
 import 'package:BliU/screen/cart/view_model/cart_view_model.dart';
 import 'package:BliU/screen/join_add_info/join_add_info_screen.dart';
-import 'package:BliU/screen/payment/payment_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -305,10 +304,11 @@ class CartScreenState extends ConsumerState<CartScreen> {
       if (payOrderDetailData != null) {
         if(!mounted) return;
         if (userInfoCheck == "Y" || memberType == 2) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PaymentScreen(payOrderDetailData: payOrderDetailData, memberType: memberType,),),
-          );
+          final map = {
+            'payOrderDetailData': payOrderDetailData,
+            'memberType': memberType,
+          };
+          Navigator.pushNamed(context, '/payment', arguments: map);
         } else {
           Navigator.push(
             context,

@@ -2,6 +2,7 @@ import 'package:BliU/data/style_category_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/recommend_info/view_model/recommend_info_view_model.dart';
 import 'package:BliU/screen/recommend_info_edit/view_model/recommend_info_edit_view_model.dart';
+import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -44,124 +45,90 @@ class RecommendInfoEditScreenState extends ConsumerState<RecommendInfoEditScreen
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.white,
-        title: const Text('추천정보'),
-        titleTextStyle: TextStyle(
-          fontFamily: 'Pretendard',
-          fontSize: Responsive.getFont(context, 18),
-          fontWeight: FontWeight.w600,
-          color: Colors.black,
-          height: 1.2,
-        ),
-        leading: IconButton(
-          icon: SvgPicture.asset("assets/images/product/ic_back.svg"),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        titleSpacing: -1.0,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
-          child: Container(
-            color: const Color(0x0D000000), // 하단 구분선 색상
-            height: 1.0, // 구분선의 두께 설정
+      appBar: MyAppBar(
+        appBar: AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: Colors.white,
+          title: const Text('추천정보'),
+          titleTextStyle: TextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 18),
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+            height: 1.2,
+          ),
+          leading: IconButton(
+            icon: SvgPicture.asset("assets/images/product/ic_back.svg"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          titleSpacing: -1.0,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
             child: Container(
-              height: 1.0, // 그림자 부분의 높이
-              decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x0D000000),
-                    blurRadius: 6.0,
-                    spreadRadius: 0.1,
-                    offset: Offset(0, 3),
-                  ),
-                ],
+              color: const Color(0x0D000000), // 하단 구분선 색상
+              height: 1.0, // 구분선의 두께 설정
+              child: Container(
+                height: 1.0, // 그림자 부분의 높이
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x0D000000),
+                      blurRadius: 6.0,
+                      spreadRadius: 0.1,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
       body: SafeArea(
-        child: Stack(
-          children: [
-            ListView(
-              controller: _scrollController,
+        child: Utils.getInstance().isWebView(
+          Stack(
               children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 40, bottom: 80),
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
+                ListView(
+                  controller: _scrollController,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 40, bottom: 80),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '자녀의 출생년도',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 15),
-                              fontWeight: FontWeight.w600,
-                              height: 1.2,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '자녀의 출생년도',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 15),
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(top: 15),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                  border: Border.all(color: const Color(0xFFDDDDDD)),
+                                ),
+                                child: birthdayText(),
+                              ),
+                            ],
                           ),
                           Container(
-                            margin: const EdgeInsets.only(top: 15),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: const BorderRadius.all(Radius.circular(6)),
-                              border: Border.all(color: const Color(0xFFDDDDDD)),
-                            ),
-                            child: birthdayText(),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 30),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '자녀의 성별',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 15),
-                                fontWeight: FontWeight.w600,
-                                height: 1.2,
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 15),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  _genderSelect(
-                                      'assets/images/gender_select_boy.png',
-                                      'Boy'
-                                  ),
-                                  const SizedBox(width: 10,),
-                                  _genderSelect(
-                                      'assets/images/gender_select_girl.png',
-                                      'Girl'
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            margin: const EdgeInsets.symmetric(vertical: 30),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '선호 스타일',
+                                  '자녀의 성별',
                                   style: TextStyle(
                                     fontFamily: 'Pretendard',
                                     fontSize: Responsive.getFont(context, 15),
@@ -169,105 +136,143 @@ class RecommendInfoEditScreenState extends ConsumerState<RecommendInfoEditScreen
                                     height: 1.2,
                                   ),
                                 ),
-                                Text(
-                                  '* 다중선택가능',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 13),
-                                    color: const Color(0xFFFF6192),
-                                    height: 1.2,
+                                Container(
+                                  margin: const EdgeInsets.only(top: 15),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      _genderSelect(
+                                          'assets/images/gender_select_boy.png',
+                                          'Boy'
+                                      ),
+                                      const SizedBox(width: 10,),
+                                      _genderSelect(
+                                          'assets/images/gender_select_girl.png',
+                                          'Girl'
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          Wrap(
-                            spacing: 4.0,
-                            runSpacing: 10.0,
-                            children: styleCategories.map((style) {
-                              final isSelected = _selectedStyles.any((selected) => selected.fsIdx == style.fsIdx);
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (isSelected) {
-                                      // 이미 선택된 경우 선택 해제
-                                      _selectedStyles.removeWhere((selected) => selected.fsIdx == style.fsIdx);
-                                    } else {
-                                      // 선택되지 않은 경우 추가
-                                      _selectedStyles.add(style);
-                                    }
-                                  });
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(19),
-                                    border: Border.all(
-                                      color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-                                      width: 1.0,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '선호 스타일',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 15),
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.2,
+                                      ),
                                     ),
-                                    color: Colors.white,
-                                  ),
-                                  child: Text(
-                                    style.cstName ?? '',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: isSelected ? const Color(0xFFFF6192) : Colors.black,
-                                      height: 1.2,
+                                    Text(
+                                      '* 다중선택가능',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 13),
+                                        color: const Color(0xFFFF6192),
+                                        height: 1.2,
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              );
-                            }).toList(),
-                          )
+                              ),
+                              Wrap(
+                                spacing: 4.0,
+                                runSpacing: 10.0,
+                                children: styleCategories.map((style) {
+                                  final isSelected = _selectedStyles.any((selected) => selected.fsIdx == style.fsIdx);
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (isSelected) {
+                                          // 이미 선택된 경우 선택 해제
+                                          _selectedStyles.removeWhere((selected) => selected.fsIdx == style.fsIdx);
+                                        } else {
+                                          // 선택되지 않은 경우 추가
+                                          _selectedStyles.add(style);
+                                        }
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(19),
+                                        border: Border.all(
+                                          color: isSelected ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                          width: 1.0,
+                                        ),
+                                        color: Colors.white,
+                                      ),
+                                      child: Text(
+                                        style.cstName ?? '',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          color: isSelected ? const Color(0xFFFF6192) : Colors.black,
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              )
+                            ],
+                          ),
                         ],
+                      ),
+                    ),
+                  ],
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Column(
+                    children: [
+                      MoveTopButton(scrollController: _scrollController),
+                      Container(
+                        width: double.infinity,
+                        color: Colors.white,
+                        child: GestureDetector(
+                          onTap: () => _editRecommendInfo(),
+                          child: Container(
+                            height: 48,
+                            margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                            decoration: const BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(6),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '확인',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 14),
+                                  color: Colors.white,
+                                  height: 1.2,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Column(
-                children: [
-                  MoveTopButton(scrollController: _scrollController),
-                  Container(
-                    width: double.infinity,
-                    color: Colors.white,
-                    child: GestureDetector(
-                      onTap: () => _editRecommendInfo(),
-                      child: Container(
-                        height: 48,
-                        margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                        decoration: const BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(6),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '확인',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.white,
-                              height: 1.2,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
         ),
       ),
     );

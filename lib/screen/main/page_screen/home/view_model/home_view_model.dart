@@ -55,8 +55,8 @@ class HomeViewModel extends StateNotifier<HomeModel> {
     state.hasNextPage = true;
 
     final requestData = await _makeRequestData();
-    state.productList = [];
-    ref.notifyListeners();
+    // state.productList = [];
+    // ref.notifyListeners();
 
     final productListResponseDTO = await _getList(requestData);
     state.productList = productListResponseDTO?.list ?? [];

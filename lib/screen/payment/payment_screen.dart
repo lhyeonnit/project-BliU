@@ -11,9 +11,7 @@ import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/_component/webview_with_daum_post_webivew.dart';
 import 'package:BliU/screen/payment/child_widget/payment_order_child_widget.dart';
 import 'package:BliU/screen/payment/view_model/payment_view_model.dart';
-import 'package:BliU/screen/payment_complete/payment_complete_screen.dart';
-import 'package:BliU/screen/payment_coupon/payment_coupon_screen.dart';
-import 'package:BliU/screen/payment_iamport/payment_iamport_screen.dart';
+import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
@@ -510,11 +508,12 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 buyerAddr: "",
                 buyerPostcode: "");
 
-            final Map<String, String>? paymentResult = await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PaymentIamportScreen(iamportPayData : iamportPayData)),
-            );
-            if (paymentResult != null) {
+            // TODO 웹일 경우 결제모듈 변경 할수 있음
+            var result = await Navigator.pushNamed(context, '/payment_iamport', arguments: iamportPayData);
+
+            if (result != null) {
+              final paymentResult = result as Map<String, String>;
+
               final error_code = paymentResult['error_code'];
               final error_msg = paymentResult['error_msg'].toString();
 
@@ -581,22 +580,33 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       if (payOrderResult.result == true) {
         final payOrderResultDetailData = payOrderResult.data;
         if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    PaymentCompleteScreen(
-                      memberType: mtIdx.isNotEmpty ? 1 : 2,
-                      payType: _payType,
-                      payOrderResultDetailData: payOrderResultDetailData,
-                      savedRecipientName: _recipientNameController.text,
-                      savedRecipientPhone: _recipientPhoneController.text,
-                      savedAddressRoad: _addressRoadController.text,
-                      savedAddressDetail: _addressDetailController.text,
-                      savedMemo: _memoController.text,
-                    )
-            ),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //       builder: (context) =>
+          //           PaymentCompleteScreen(
+          //             memberType: mtIdx.isNotEmpty ? 1 : 2,
+          //             payType: _payType,
+          //             payOrderResultDetailData: payOrderResultDetailData,
+          //             savedRecipientName: _recipientNameController.text,
+          //             savedRecipientPhone: _recipientPhoneController.text,
+          //             savedAddressRoad: _addressRoadController.text,
+          //             savedAddressDetail: _addressDetailController.text,
+          //             savedMemo: _memoController.text,
+          //           )
+          //   ),
+          // );
+          final map = {
+            'memberType' : mtIdx.isNotEmpty ? 1 : 2,
+            'payType' : _payType,
+            'payOrderResultDetailData' : payOrderResultDetailData,
+            'savedRecipientName' : _recipientNameController.text,
+            'savedRecipientPhone' : _recipientPhoneController.text,
+            'savedAddressRoad' : _addressRoadController.text,
+            'savedAddressDetail' : _addressDetailController.text,
+            'savedMemo' : _memoController.text,
+          };
+          Navigator.pushReplacementNamed(context, '/payment_complete', arguments: map);
           return;
         }
       }
@@ -634,618 +644,550 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: SvgPicture.asset("assets/images/exhibition/ic_back.svg"),
-          onPressed: () {
-            _showCancelDialog(context);
-          },
-        ),
-        titleSpacing: -1.0,
-        title: const Text("결제하기"),
-        titleTextStyle: TextStyle(
-          fontFamily: 'Pretendard',
-          fontSize: Responsive.getFont(context, 18),
-          fontWeight: FontWeight.w600,
-          color: Colors.black,
-          height: 1.2,
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
-          child: Container(
-            color: const Color(0x0D000000), // 하단 구분선 색상
-            height: 1.0, // 구분선의 두께 설정
+      appBar: MyAppBar(
+        appBar: AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: SvgPicture.asset("assets/images/exhibition/ic_back.svg"),
+            onPressed: () {
+              _showCancelDialog(context);
+            },
+          ),
+          titleSpacing: -1.0,
+          title: const Text("결제하기"),
+          titleTextStyle: TextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: Responsive.getFont(context, 18),
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+            height: 1.2,
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1.0), // 하단 구분선의 높이 설정
             child: Container(
-              height: 1.0, // 그림자 부분의 높이
-              decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x0D000000),
-                    blurRadius: 6.0,
-                    spreadRadius: 0.1,
-                    offset: Offset(0, 3),
-                  ),
-                ],
+              color: const Color(0x0D000000), // 하단 구분선 색상
+              height: 1.0, // 구분선의 두께 설정
+              child: Container(
+                height: 1.0, // 그림자 부분의 높이
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x0D000000),
+                      blurRadius: 6.0,
+                      spreadRadius: 0.1,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
       body: SafeArea(
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 80.0),
-              child: ListView(
-                controller: _scrollController,
-                children: [
-                  ListTileTheme(
-                    horizontalTitleGap: 0,
-                    child: ExpansionTile(
-                      initiallyExpanded: true,
-                      shape: const Border(
-                        top: BorderSide(color: Colors.transparent, width: 0),
-                        bottom: BorderSide(color: Colors.transparent, width: 0),
-                      ),
-                      title: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Text(
-                          '주문상품',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 18),
-                            fontWeight: FontWeight.bold,
-                          ),
+        child: Utils.getInstance().isWebView(
+          Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 80.0),
+                child: ListView(
+                  controller: _scrollController,
+                  children: [
+                    ListTileTheme(
+                      horizontalTitleGap: 0,
+                      child: ExpansionTile(
+                        initiallyExpanded: true,
+                        shape: const Border(
+                          top: BorderSide(color: Colors.transparent, width: 0),
+                          bottom: BorderSide(color: Colors.transparent, width: 0),
                         ),
-                      ),
-                      iconColor: Colors.black,
-                      collapsedIconColor: Colors.black,
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                color: Color(0xFFEEEEEE),
-                              ),
+                        title: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            '주문상품',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 18),
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          child: PaymentOrderChildWidget(
-                            cartList: widget.payOrderDetailData.list ?? [],
-                          ),
                         ),
-                      ],
+                        iconColor: Colors.black,
+                        collapsedIconColor: Colors.black,
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                  color: Color(0xFFEEEEEE),
+                                ),
+                              ),
+                            ),
+                            child: PaymentOrderChildWidget(
+                              cartList: widget.payOrderDetailData.list ?? [],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    height: 10,
-                    width: double.infinity,
-                    color: const Color(0xFFF5F9F9),
-                  ),
-                  ListTileTheme(
-                    horizontalTitleGap: 0,
-                    child: ExpansionTile(
-                      initiallyExpanded: true,
-                      shape: const Border(
-                        top: BorderSide(color: Colors.transparent, width: 0),
-                        bottom: BorderSide(color: Colors.transparent, width: 0),
-                      ),
-                      title: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '배송지 정보',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 18),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Visibility(
-                              visible: _memberType == 1,
-                              child: Row(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        _isUseAddress = !_isUseAddress;
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.all(6),
-                                      height: 22,
-                                      width: 22,
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                        border: Border.all(
-                                          color: _isUseAddress ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
-                                        ),
-                                        color: _isUseAddress ? const Color(0xFFFF6191) : Colors.white,
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/images/check01_off.svg', // 체크박스 아이콘
-                                        colorFilter: ColorFilter.mode(
-                                          _isUseAddress ? Colors.white : const Color(0xFFCCCCCC),
-                                          BlendMode.srcIn,
-                                        ),
-                                        height: 10,
-                                        width: 10,
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    '다음에도 이 배송지 사용',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                    Container(
+                      height: 10,
+                      width: double.infinity,
+                      color: const Color(0xFFF5F9F9),
+                    ),
+                    ListTileTheme(
+                      horizontalTitleGap: 0,
+                      child: ExpansionTile(
+                        initiallyExpanded: true,
+                        shape: const Border(
+                          top: BorderSide(color: Colors.transparent, width: 0),
+                          bottom: BorderSide(color: Colors.transparent, width: 0),
                         ),
-                      ),
-                      iconColor: Colors.black,
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                color: Color(0xFFEEEEEE),
-                              ),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        title: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                margin: const EdgeInsets.only(top: 20),
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                              Text(
+                                '배송지 정보',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 18),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Visibility(
+                                visible: _memberType == 1,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Expanded(
-                                      flex: 2,
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(right: 4),
-                                            child: Text(
-                                              '수령인',
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 13),
-                                                height: 1.2,
-                                              ),
-                                            ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _isUseAddress = !_isUseAddress;
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(6),
+                                        height: 22,
+                                        width: 22,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                          border: Border.all(
+                                            color: _isUseAddress ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                                           ),
-                                          Text(
-                                            '*',
-                                            style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              color: const Color(0xFFFF6192),
-                                              fontSize: Responsive.getFont(context, 13),
-                                              height: 1.2,
-                                            ),
+                                          color: _isUseAddress ? const Color(0xFFFF6191) : Colors.white,
+                                        ),
+                                        child: SvgPicture.asset(
+                                          'assets/images/check01_off.svg', // 체크박스 아이콘
+                                          colorFilter: ColorFilter.mode(
+                                            _isUseAddress ? Colors.white : const Color(0xFFCCCCCC),
+                                            BlendMode.srcIn,
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 8,
-                                      child: SizedBox(
-                                        height: 44,
-                                        child: TextField(
-                                          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                                          controller: _recipientNameController,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                            decorationThickness: 0,
-                                            height: 1.2,
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(context, 14),
-                                          ),
-                                          decoration: InputDecoration(
-                                            contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-                                            hintText: '수령인',
-                                            hintStyle: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(context, 14),
-                                              color: const Color(0xFF595959),
-                                            ),
-                                            enabledBorder: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(6)),
-                                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                            ),
-                                            focusedBorder: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(6)),
-                                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                            ),
-                                          ),
+                                          height: 10,
+                                          width: 10,
+                                          fit: BoxFit.contain,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 10),
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      flex: 2,
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(right: 4),
-                                            child: Text(
-                                              '휴대폰',
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 13),
-                                                height: 1.2,
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              color: const Color(0xFFFF6192),
-                                              fontSize: Responsive.getFont(context, 13),
-                                              height: 1.2,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 8,
-                                      child: SizedBox(
-                                        height: 44,
-                                        child: TextField(
-                                          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                                          controller: _recipientPhoneController,
-                                          keyboardType: TextInputType.phone,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                            decorationThickness: 0,
-                                            height: 1.2,
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(context, 14),
-                                          ),
-                                          decoration: InputDecoration(
-                                            contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-                                            hintText: '‘-’ 없이 번호만 입력',
-                                            hintStyle: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              fontSize: Responsive.getFont(context, 14),
-                                              color: const Color(0xFF595959),
-                                            ),
-                                            enabledBorder: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(6)),
-                                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                            ),
-                                            focusedBorder: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(6)),
-                                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                            ),
-                                          ),
-                                        ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      '다음에도 이 배송지 사용',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        height: 1.2,
                                       ),
                                     ),
                                   ],
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                                  textBaseline: TextBaseline.alphabetic,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      flex: 2,
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(right: 4),
-                                            child: Text(
-                                              '주소',
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 13),
-                                                height: 1.2,
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              color: const Color(0xFFFF6192),
-                                              fontSize: Responsive.getFont(context, 13),
-                                              height: 1.2,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 8,
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Expanded(
-                                                flex: 7,
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    _addressSearch();
-                                                  },
-                                                  child: SizedBox(
-                                                    height: 44,
-                                                    child: TextField(
-                                                      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                                                      controller: _addressRoadController,
-                                                      enabled: false,
-                                                      maxLines: 1,
-                                                      style: TextStyle(
-                                                        decorationThickness: 0,
-                                                        height: 1.2,
-                                                        fontFamily: 'Pretendard',
-                                                        fontSize: Responsive.getFont(context, 14),
-                                                      ),
-                                                      decoration: InputDecoration(
-                                                        contentPadding: const EdgeInsets.symmetric( horizontal: 15),
-                                                        //hintText: '주소를 검색해 주세요.',
-                                                        hintStyle: TextStyle(
-                                                          fontFamily: 'Pretendard',
-                                                          fontSize: Responsive.getFont(context, 14),
-                                                          color: const Color(0xFF595959),
-                                                        ),
-                                                        border: const OutlineInputBorder(
-                                                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                                                          borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 3,
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    _addressSearch();
-                                                  },
-                                                  child: Container(
-                                                    height: 44,
-                                                    margin: const EdgeInsets.only(left: 8),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                                      border: Border.all(color: const Color(0xFFE1E1E1)),
-                                                    ),
-                                                    child: Center(
-                                                      child: Text(
-                                                        '주소검색',
-                                                        style: TextStyle(
-                                                          fontFamily: 'Pretendard',
-                                                          fontSize: Responsive.getFont(context, 14),
-                                                          fontWeight: FontWeight.normal,
-                                                          height: 1.2,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Container(
-                                            height: 44,
-                                            margin: const EdgeInsets.only(top: 10),
-                                            child: TextField(
-                                              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                                              controller: _addressDetailController,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                decorationThickness: 0,
-                                                height: 1.2,
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 14),
-                                              ),
-                                              decoration: InputDecoration(
-                                                contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-                                                hintText: '상세주소 입력',
-                                                hintStyle: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  fontSize: Responsive.getFont(context, 14),
-                                                  color: const Color(0xFF595959),
-                                                ),
-                                                enabledBorder: const OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                                                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                                ),
-                                                focusedBorder: const OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                                                  borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 20),
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                child: TextField(
-                                  onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                                  style: TextStyle(
-                                    decorationThickness: 0,
-                                    height: 1.2,
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                  ),
-                                  controller: _memoController,
-                                  maxLines: 4,
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                                    hintText: '배송 메모 입력',
-                                    hintStyle: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 14),
-                                      color: const Color(0xFF595959),
-                                    ),
-                                    enabledBorder: const OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                                      borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                    ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                                      borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                                    ),
-                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 10,
-                    width: double.infinity,
-                    color: const Color(0xFFF5F9F9),
-                  ),
-                  ListTileTheme(
-                    horizontalTitleGap: 0,
-                    child: ExpansionTile(
-                      initiallyExpanded: true,
-                      shape: const Border(
-                        top: BorderSide(color: Colors.transparent, width: 0),
-                        bottom: BorderSide(color: Colors.transparent, width: 0),
-                      ),
-                      title: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Text(
-                          '결제수단',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 18),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      iconColor: Colors.black,
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                color: Color(0xFFEEEEEE),
+                        iconColor: Colors.black,
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                  color: Color(0xFFEEEEEE),
+                                ),
                               ),
                             ),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      height: 44,
-                                      margin: const EdgeInsets.only(right: 4),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _payType = 1;
-                                          });
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(6),
-                                            border: Border.all(
-                                              color: _payType == 1 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(top: 20),
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(right: 4),
+                                              child: Text(
+                                                '수령인',
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(context, 13),
+                                                  height: 1.2,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              '카드결제',
+                                            Text(
+                                              '*',
                                               style: TextStyle(
                                                 fontFamily: 'Pretendard',
-                                                color: _payType == 1 ? const Color(0xFFFF6192) : Colors.black,
+                                                color: const Color(0xFFFF6192),
+                                                fontSize: Responsive.getFont(context, 13),
+                                                height: 1.2,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 8,
+                                        child: SizedBox(
+                                          height: 44,
+                                          child: TextField(
+                                            onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                                            controller: _recipientNameController,
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              decorationThickness: 0,
+                                              height: 1.2,
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                            ),
+                                            decoration: InputDecoration(
+                                              contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+                                              hintText: '수령인',
+                                              hintStyle: TextStyle(
+                                                fontFamily: 'Pretendard',
                                                 fontSize: Responsive.getFont(context, 14),
+                                                color: const Color(0xFF595959),
+                                              ),
+                                              enabledBorder: const OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                              ),
+                                              focusedBorder: const OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                                               ),
                                             ),
                                           ),
                                         ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 10),
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(right: 4),
+                                              child: Text(
+                                                '휴대폰',
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(context, 13),
+                                                  height: 1.2,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              '*',
+                                              style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                color: const Color(0xFFFF6192),
+                                                fontSize: Responsive.getFont(context, 13),
+                                                height: 1.2,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 8,
+                                        child: SizedBox(
+                                          height: 44,
+                                          child: TextField(
+                                            onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                                            controller: _recipientPhoneController,
+                                            keyboardType: TextInputType.phone,
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              decorationThickness: 0,
+                                              height: 1.2,
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                            ),
+                                            decoration: InputDecoration(
+                                              contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+                                              hintText: '‘-’ 없이 번호만 입력',
+                                              hintStyle: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                fontSize: Responsive.getFont(context, 14),
+                                                color: const Color(0xFF595959),
+                                              ),
+                                              enabledBorder: const OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                              ),
+                                              focusedBorder: const OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                                    textBaseline: TextBaseline.alphabetic,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(right: 4),
+                                              child: Text(
+                                                '주소',
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(context, 13),
+                                                  height: 1.2,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              '*',
+                                              style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                color: const Color(0xFFFF6192),
+                                                fontSize: Responsive.getFont(context, 13),
+                                                height: 1.2,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 8,
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                  flex: 7,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      _addressSearch();
+                                                    },
+                                                    child: SizedBox(
+                                                      height: 44,
+                                                      child: TextField(
+                                                        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                                                        controller: _addressRoadController,
+                                                        enabled: false,
+                                                        maxLines: 1,
+                                                        style: TextStyle(
+                                                          decorationThickness: 0,
+                                                          height: 1.2,
+                                                          fontFamily: 'Pretendard',
+                                                          fontSize: Responsive.getFont(context, 14),
+                                                        ),
+                                                        decoration: InputDecoration(
+                                                          contentPadding: const EdgeInsets.symmetric( horizontal: 15),
+                                                          //hintText: '주소를 검색해 주세요.',
+                                                          hintStyle: TextStyle(
+                                                            fontFamily: 'Pretendard',
+                                                            fontSize: Responsive.getFont(context, 14),
+                                                            color: const Color(0xFF595959),
+                                                          ),
+                                                          border: const OutlineInputBorder(
+                                                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                            borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 3,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      _addressSearch();
+                                                    },
+                                                    child: Container(
+                                                      height: 44,
+                                                      margin: const EdgeInsets.only(left: 8),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                                        border: Border.all(color: const Color(0xFFE1E1E1)),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          '주소검색',
+                                                          style: TextStyle(
+                                                            fontFamily: 'Pretendard',
+                                                            fontSize: Responsive.getFont(context, 14),
+                                                            fontWeight: FontWeight.normal,
+                                                            height: 1.2,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Container(
+                                              height: 44,
+                                              margin: const EdgeInsets.only(top: 10),
+                                              child: TextField(
+                                                onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                                                controller: _addressDetailController,
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                  decorationThickness: 0,
+                                                  height: 1.2,
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(context, 14),
+                                                ),
+                                                decoration: InputDecoration(
+                                                  contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+                                                  hintText: '상세주소 입력',
+                                                  hintStyle: TextStyle(
+                                                    fontFamily: 'Pretendard',
+                                                    fontSize: Responsive.getFont(context, 14),
+                                                    color: const Color(0xFF595959),
+                                                  ),
+                                                  enabledBorder: const OutlineInputBorder(
+                                                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                    borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                                  ),
+                                                  focusedBorder: const OutlineInputBorder(
+                                                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                    borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 20),
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: TextField(
+                                    onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                                    style: TextStyle(
+                                      decorationThickness: 0,
+                                      height: 1.2,
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                    ),
+                                    controller: _memoController,
+                                    maxLines: 4,
+                                    decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                                      hintText: '배송 메모 입력',
+                                      hintStyle: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: Responsive.getFont(context, 14),
+                                        color: const Color(0xFF595959),
+                                      ),
+                                      enabledBorder: const OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                                      ),
+                                      focusedBorder: const OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
                                       ),
                                     ),
                                   ),
-                                  Expanded(
-                                    child: Container(
-                                      height: 44,
-                                      margin: const EdgeInsets.only(left: 4),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _payType = 2;
-                                          });
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                            BorderRadius.circular(6),
-                                            border: Border.all(
-                                              color: _payType == 2 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              '휴대폰',
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                color: _payType == 2 ? const Color(0xFFFF6192) : Colors.black,
-                                                fontSize: Responsive.getFont(context, 14),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 10,
+                      width: double.infinity,
+                      color: const Color(0xFFF5F9F9),
+                    ),
+                    ListTileTheme(
+                      horizontalTitleGap: 0,
+                      child: ExpansionTile(
+                        initiallyExpanded: true,
+                        shape: const Border(
+                          top: BorderSide(color: Colors.transparent, width: 0),
+                          bottom: BorderSide(color: Colors.transparent, width: 0),
+                        ),
+                        title: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            '결제수단',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 18),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        iconColor: Colors.black,
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                  color: Color(0xFFEEEEEE),
+                                ),
                               ),
-                              Container(
-                                height: 44,
-                                margin: const EdgeInsets.only(top: 10),
-                                child: Row(
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                            child: Column(
+                              children: [
+                                Row(
                                   children: [
                                     Expanded(
                                       child: Container(
+                                        height: 44,
                                         margin: const EdgeInsets.only(right: 4),
                                         child: GestureDetector(
                                           onTap: () {
                                             setState(() {
-                                              _payType = 3;
+                                              _payType = 1;
                                             });
                                           },
                                           child: Container(
@@ -1253,15 +1195,15 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                               color: Colors.white,
                                               borderRadius: BorderRadius.circular(6),
                                               border: Border.all(
-                                                color: _payType == 3 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                                color: _payType == 1 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
                                               ),
                                             ),
                                             child: Center(
                                               child: Text(
-                                                '계좌이체',
+                                                '카드결제',
                                                 style: TextStyle(
                                                   fontFamily: 'Pretendard',
-                                                  color: _payType == 3 ? const Color(0xFFFF6192) : Colors.black,
+                                                  color: _payType == 1 ? const Color(0xFFFF6192) : Colors.black,
                                                   fontSize: Responsive.getFont(context, 14),
                                                 ),
                                               ),
@@ -1277,22 +1219,24 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                         child: GestureDetector(
                                           onTap: () {
                                             setState(() {
-                                              _payType = 4;
+                                              _payType = 2;
                                             });
                                           },
                                           child: Container(
                                             decoration: BoxDecoration(
                                               color: Colors.white,
-                                              borderRadius: BorderRadius.circular(6),
+                                              borderRadius:
+                                              BorderRadius.circular(6),
                                               border: Border.all(
-                                                  color: _payType == 4 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                                color: _payType == 2 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
+                                              ),
                                             ),
                                             child: Center(
                                               child: Text(
-                                                '네이버페이',
+                                                '휴대폰',
                                                 style: TextStyle(
                                                   fontFamily: 'Pretendard',
-                                                  color: _payType == 4 ? const Color(0xFFFF6192) : Colors.black,
+                                                  color: _payType == 2 ? const Color(0xFFFF6192) : Colors.black,
                                                   fontSize: Responsive.getFont(context, 14),
                                                 ),
                                               ),
@@ -1300,263 +1244,70 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                           ),
                                         ),
                                       ),
-                                    ),
+                                    )
                                   ],
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Visibility(
-                    visible: _memberType == 1,
-                    child: Container(
-                      height: 10,
-                      width: double.infinity,
-                      color: const Color(0xFFF5F9F9),
-                    ),
-                  ),
-                  Visibility(
-                    visible: _memberType == 1,
-                    child: ListTileTheme(
-                      horizontalTitleGap: 0,
-                      child: ExpansionTile(
-                        initiallyExpanded: true,
-                        shape: const Border(
-                          top: BorderSide(color: Colors.transparent, width: 0),
-                          bottom: BorderSide(color: Colors.transparent, width: 0),
-                        ),
-                        title: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Text(
-                            '할인적용',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 18),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        iconColor: Colors.black,
-                        children: [
-                          Container(
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                top: BorderSide(
-                                  color: Color(0xFFEEEEEE),
-                                ),
-                              ),
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '쿠폰',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 13),
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                    Text(
-                                      '보유 쿠폰 ${_couponList.length}장',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 13),
-                                        color: const Color(0xFF7B7B7B),
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                GestureDetector(
-                                  onTap: () async {
-                                    if (_couponList.isNotEmpty) {
-                                      CouponData? selectedCoupon = await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => PaymentCouponScreen(couponList: _couponList),
-                                        ),
-                                      );
-                                      if (selectedCoupon != null) {
-                                        setState(() {
-                                          _couponText = "${selectedCoupon.couponDiscount} 할인 적용";
-                                          _selectedCouponData = selectedCoupon;
-                                        });
-                                      }
-                                    }
-                                  },
-                                  child: Container(
-                                    height: 44,
-                                    padding: const EdgeInsets.symmetric(horizontal: 20,),
-                                    margin: const EdgeInsets.only(top: 10, bottom: 20),
-                                    decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                      border: Border.all(color: const Color(0xFFDDDDDD)),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          _couponText,
-                                          style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            fontSize: Responsive.getFont(context, 14),
-                                            fontWeight: FontWeight.normal,
-                                            height: 1.2,
-                                          ),
-                                        ),
-                                        SvgPicture.asset(
-                                          'assets/images/ic_link.svg',
-                                          width: 14,
-                                          height: 14,
-                                          colorFilter: const ColorFilter.mode(
-                                            Color(0xFF7B7B7B),
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '포인트 사용',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 13),
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                    Text(
-                                      '보유 포인트 ${Utils.getInstance().priceString(_point)}P',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 13),
-                                        color: const Color(0xFF7B7B7B),
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
+                                Container(
+                                  height: 44,
+                                  margin: const EdgeInsets.only(top: 10),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(
-                                        flex: 7,
                                         child: Container(
-                                          height: 44,
-                                          margin: const EdgeInsets.only(right: 8),
-                                          decoration: BoxDecoration(
-                                            borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                            border: Border.all(color: const Color(0xFFDDDDDD)),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.baseline,
-                                            textBaseline: TextBaseline.alphabetic,
-                                            children: [
-                                              Expanded(
-                                                child: TextField(
-                                                  onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                                                  style: TextStyle(
-                                                    decorationThickness: 0,
-                                                    height: 1.2,
-                                                    fontFamily: 'Pretendard',
-                                                    fontSize: Responsive.getFont(context, 14),
-                                                  ),
-                                                  controller: _pointController,
-                                                  keyboardType: TextInputType.number,
-                                                  // 숫자 입력만 가능하게 설정
-                                                  enabled: _point >= 1000,
-                                                  decoration: InputDecoration(
-                                                    border: InputBorder.none,
-                                                    // 테두리 제거
-                                                    hintText: '0',
-                                                    hintStyle: TextStyle(
-                                                      fontFamily: 'Pretendard',
-                                                      fontSize: Responsive.getFont(context, 14),
-                                                      color:
-                                                      const Color(0xFF707070),
-                                                    ),
-                                                  ),
-                                                  textAlign: TextAlign.right,
-                                                  // 텍스트를 오른쪽 정렬
-                                                  onChanged: (text) {
-                                                    if (_point >= 1000) { // 포인트가 1000 이상일 때만 변경 처리
-                                                      final value = int.parse(text);
-                                                      final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
-                                                      if (value > maxUsePoint) {
-                                                        _pointController.text = maxUsePoint.toString();
-                                                        _pointCheck(maxUsePoint.toString());
-                                                      } else {
-                                                        _pointCheck(text);
-                                                      }
-                                                    }
-                                                  },
-                                                  focusNode: _pointFocusNode,
+                                          margin: const EdgeInsets.only(right: 4),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                _payType = 3;
+                                              });
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(6),
+                                                border: Border.all(
+                                                  color: _payType == 3 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD),
                                                 ),
                                               ),
-                                              Container(
-                                                padding: const EdgeInsets.only(right: 15, left: 10),
+                                              child: Center(
                                                 child: Text(
-                                                  'P',
+                                                  '계좌이체',
                                                   style: TextStyle(
                                                     fontFamily: 'Pretendard',
+                                                    color: _payType == 3 ? const Color(0xFFFF6192) : Colors.black,
                                                     fontSize: Responsive.getFont(context, 14),
-                                                    fontWeight: FontWeight.normal,
-                                                    height: 1.2,
                                                   ),
                                                 ),
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ),
                                       ),
                                       Expanded(
-                                        flex: 3,
                                         child: Container(
                                           height: 44,
-                                          decoration: BoxDecoration(
-                                            borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                            border: Border.all(color: const Color(0xFFDDDDDD)),
-                                          ),
+                                          margin: const EdgeInsets.only(left: 4),
                                           child: GestureDetector(
-                                            onTap:  _point >= 1000 ? () { // 포인트가 1000 이상일 때만 활성화
-                                              final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
-                                              if (_point > 0) {
-                                                if (_point > maxUsePoint) {
-                                                  _pointController.text = maxUsePoint.toString();
-                                                  _pointCheck(maxUsePoint.toString());
-                                                } else {
-                                                  _pointController.text = _point.toString();
-                                                  _pointCheck(_point.toString());
-                                                }
-                                              }
-                                            } : null,
-                                            child: Center(
-                                              child: Text(
-                                                '전액사용',
-                                                style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  fontSize: Responsive.getFont(context, 14),
-                                                  color: _point >= 1000 ? Colors.black : const Color(0xFFA4A4A4),
-                                                  fontWeight: FontWeight.normal,
-                                                  height: 1.2,
+                                            onTap: () {
+                                              setState(() {
+                                                _payType = 4;
+                                              });
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(6),
+                                                border: Border.all(
+                                                    color: _payType == 4 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '네이버페이',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pretendard',
+                                                    color: _payType == 4 ? const Color(0xFFFF6192) : Colors.black,
+                                                    fontSize: Responsive.getFont(context, 14),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -1565,136 +1316,293 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                       ),
                                     ],
                                   ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(top: 8),
-                                  child: Text(
-                                    '1000p 이상부터 포인트 사용이 가능합니다.',
-                                    style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontSize: Responsive.getFont(context, 12),
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                ),
+                                )
                               ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                  Container(
-                    height: 10,
-                    width: double.infinity,
-                    color: const Color(0xFFF5F9F9),
-                  ),
-                  ListTileTheme(
-                    horizontalTitleGap: 0,
-                    child: ExpansionTile(
-                      initiallyExpanded: true,
-                      shape: const Border(
-                        top: BorderSide(color: Colors.transparent, width: 0),
-                        bottom: BorderSide(color: Colors.transparent, width: 0),
+                    Visibility(
+                      visible: _memberType == 1,
+                      child: Container(
+                        height: 10,
+                        width: double.infinity,
+                        color: const Color(0xFFF5F9F9),
                       ),
-                      title: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Text(
-                          '결제금액',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 18),
-                            fontWeight: FontWeight.bold,
+                    ),
+                    Visibility(
+                      visible: _memberType == 1,
+                      child: ListTileTheme(
+                        horizontalTitleGap: 0,
+                        child: ExpansionTile(
+                          initiallyExpanded: true,
+                          shape: const Border(
+                            top: BorderSide(color: Colors.transparent, width: 0),
+                            bottom: BorderSide(color: Colors.transparent, width: 0),
                           ),
-                        ),
-                      ),
-                      iconColor: Colors.black,
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                color: Color(0xFFEEEEEE),
+                          title: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              '할인적용',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 18),
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          padding: const EdgeInsets.symmetric(vertical: 20.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 10),
-                                child: _buildInfoRow('상품 금액', '${Utils.getInstance().priceString(totalAmount)}원', context),
-                              ),
-                              _buildInfoRow('배송비', '${Utils.getInstance().priceString(shippingCost)}원', context),
-                              Visibility(
-                                visible: _memberType == 1,
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(vertical: 10),
-                                  child: _buildInfoRow(
-                                    '할인금액',
-                                    couponDiscount != 0
-                                        ? '- ${Utils.getInstance().priceString(couponDiscount)}원'
-                                        : '${Utils.getInstance().priceString(couponDiscount)}원', // 0이 아니면 '-' 추가
-                                    context,
+                          iconColor: Colors.black,
+                          children: [
+                            Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                    color: Color(0xFFEEEEEE),
                                   ),
                                 ),
                               ),
-                              Visibility(
-                                visible: _memberType == 1,
-                                child: _buildInfoRow(
-                                  '포인트할인',
-                                  pointsDiscount != 0
-                                      ? '- ${Utils.getInstance().priceString(pointsDiscount)}원'
-                                      : '${Utils.getInstance().priceString(pointsDiscount)}원', // 0이 아니면 '-' 추가
-                                  context,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                                child: const Divider(color: Color(0xFFEEEEEE)),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '결제 금액',
+                              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '쿠폰',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 13),
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                      Text(
+                                        '보유 쿠폰 ${_couponList.length}장',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 13),
+                                          color: const Color(0xFF7B7B7B),
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      if (_couponList.isNotEmpty) {
+                                        CouponData? selectedCoupon = await Navigator.pushNamed(
+                                          context,
+                                          '/payment_coupon',
+                                          arguments: _couponList,
+                                        );
+
+                                        if (selectedCoupon != null) {
+                                          setState(() {
+                                            _couponText = "${selectedCoupon.couponDiscount} 할인 적용";
+                                            _selectedCouponData = selectedCoupon;
+                                          });
+                                        }
+                                      }
+                                    },
+                                    child: Container(
+                                      height: 44,
+                                      padding: const EdgeInsets.symmetric(horizontal: 20,),
+                                      margin: const EdgeInsets.only(top: 10, bottom: 20),
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                        border: Border.all(color: const Color(0xFFDDDDDD)),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            _couponText,
+                                            style: TextStyle(
+                                              fontFamily: 'Pretendard',
+                                              fontSize: Responsive.getFont(context, 14),
+                                              fontWeight: FontWeight.normal,
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                          SvgPicture.asset(
+                                            'assets/images/ic_link.svg',
+                                            width: 14,
+                                            height: 14,
+                                            colorFilter: const ColorFilter.mode(
+                                              Color(0xFF7B7B7B),
+                                              BlendMode.srcIn,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '포인트 사용',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 13),
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                      Text(
+                                        '보유 포인트 ${Utils.getInstance().priceString(_point)}P',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 13),
+                                          color: const Color(0xFF7B7B7B),
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          flex: 7,
+                                          child: Container(
+                                            height: 44,
+                                            margin: const EdgeInsets.only(right: 8),
+                                            decoration: BoxDecoration(
+                                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                              border: Border.all(color: const Color(0xFFDDDDDD)),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                                              textBaseline: TextBaseline.alphabetic,
+                                              children: [
+                                                Expanded(
+                                                  child: TextField(
+                                                    onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                                                    style: TextStyle(
+                                                      decorationThickness: 0,
+                                                      height: 1.2,
+                                                      fontFamily: 'Pretendard',
+                                                      fontSize: Responsive.getFont(context, 14),
+                                                    ),
+                                                    controller: _pointController,
+                                                    keyboardType: TextInputType.number,
+                                                    // 숫자 입력만 가능하게 설정
+                                                    enabled: _point >= 1000,
+                                                    decoration: InputDecoration(
+                                                      border: InputBorder.none,
+                                                      // 테두리 제거
+                                                      hintText: '0',
+                                                      hintStyle: TextStyle(
+                                                        fontFamily: 'Pretendard',
+                                                        fontSize: Responsive.getFont(context, 14),
+                                                        color:
+                                                        const Color(0xFF707070),
+                                                      ),
+                                                    ),
+                                                    textAlign: TextAlign.right,
+                                                    // 텍스트를 오른쪽 정렬
+                                                    onChanged: (text) {
+                                                      if (_point >= 1000) { // 포인트가 1000 이상일 때만 변경 처리
+                                                        final value = int.parse(text);
+                                                        final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
+                                                        if (value > maxUsePoint) {
+                                                          _pointController.text = maxUsePoint.toString();
+                                                          _pointCheck(maxUsePoint.toString());
+                                                        } else {
+                                                          _pointCheck(text);
+                                                        }
+                                                      }
+                                                    },
+                                                    focusNode: _pointFocusNode,
+                                                  ),
+                                                ),
+                                                Container(
+                                                  padding: const EdgeInsets.only(right: 15, left: 10),
+                                                  child: Text(
+                                                    'P',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Pretendard',
+                                                      fontSize: Responsive.getFont(context, 14),
+                                                      fontWeight: FontWeight.normal,
+                                                      height: 1.2,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 3,
+                                          child: Container(
+                                            height: 44,
+                                            decoration: BoxDecoration(
+                                              borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                              border: Border.all(color: const Color(0xFFDDDDDD)),
+                                            ),
+                                            child: GestureDetector(
+                                              onTap:  _point >= 1000 ? () { // 포인트가 1000 이상일 때만 활성화
+                                                final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
+                                                if (_point > 0) {
+                                                  if (_point > maxUsePoint) {
+                                                    _pointController.text = maxUsePoint.toString();
+                                                    _pointCheck(maxUsePoint.toString());
+                                                  } else {
+                                                    _pointController.text = _point.toString();
+                                                    _pointCheck(_point.toString());
+                                                  }
+                                                }
+                                              } : null,
+                                              child: Center(
+                                                child: Text(
+                                                  '전액사용',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pretendard',
+                                                    fontSize: Responsive.getFont(context, 14),
+                                                    color: _point >= 1000 ? Colors.black : const Color(0xFFA4A4A4),
+                                                    fontWeight: FontWeight.normal,
+                                                    height: 1.2,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 8),
+                                    child: Text(
+                                      '1000p 이상부터 포인트 사용이 가능합니다.',
                                       style: TextStyle(
                                         fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        color: Colors.black,
+                                        fontSize: Responsive.getFont(context, 12),
                                         height: 1.2,
                                       ),
                                     ),
-                                    Text(
-                                      '${Utils.getInstance().priceString(total)}원',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: Responsive.getFont(context, 14),
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    height: 10,
-                    width: double.infinity,
-                    color: const Color(0xFFF5F9F9),
-                  ),
-                  Theme(
-                    data: Theme.of(context).copyWith(splashColor: Colors.transparent),
-                    child: ListTileTheme(
+                    Container(
+                      height: 10,
+                      width: double.infinity,
+                      color: const Color(0xFFF5F9F9),
+                    ),
+                    ListTileTheme(
                       horizontalTitleGap: 0,
                       child: ExpansionTile(
                         initiallyExpanded: true,
@@ -1702,55 +1610,17 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                           top: BorderSide(color: Colors.transparent, width: 0),
                           bottom: BorderSide(color: Colors.transparent, width: 0),
                         ),
-                        leading: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _allAgree = !_allAgree;
-                              _agree1 = _allAgree;
-                              _agree2 = _allAgree;
-                              _agree3 = _allAgree;
-                            });
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: Container(
-                              padding: const EdgeInsets.all(6),
-                              height: 22,
-                              width: 22,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                border: Border.all(
-                                  color: _allAgree ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
-                                ),
-                                color: _allAgree ? const Color(0xFFFF6191) : Colors.white,
-                              ),
-                              child: SvgPicture.asset(
-                                'assets/images/check01_off.svg', // 체크박스 아이콘
-                                colorFilter: ColorFilter.mode(
-                                  _allAgree ? Colors.white : const Color(0xFFCCCCCC),
-                                  BlendMode.srcIn,
-                                ),
-                                height: 10,
-                                width: 10,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                        ),
                         title: Container(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: Text(
-                            "주문내용 확인 및 결제동의",
+                            '결제금액',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 18),
                               fontWeight: FontWeight.bold,
-                              height: 1.2,
                             ),
                           ),
                         ),
-                        collapsedBackgroundColor: Colors.white,
-                        backgroundColor: Colors.white,
                         iconColor: Colors.black,
                         children: [
                           Container(
@@ -1761,302 +1631,446 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                 ),
                               ),
                             ),
-                            padding: const EdgeInsets.only(left: 16, top: 20, right: 16, bottom: 7.5),
+                            padding: const EdgeInsets.symmetric(vertical: 20.0),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _agree1 = !_agree1;
-                                            _agreeCheck();
-                                          });
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.all(6),
-                                              height: 22,
-                                              width: 22,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(6)),
-                                                border: Border.all(
-                                                  color: _agree1 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
-                                                ),
-                                                color: _agree1 ? const Color(0xFFFF6191) : Colors.white,
-                                              ),
-                                              child: SvgPicture.asset(
-                                                'assets/images/check01_off.svg',
-                                                // 체크박스 아이콘
-                                                colorFilter: ColorFilter.mode(
-                                                  _agree1 ? Colors.white : const Color(0xFFCCCCCC),
-                                                  BlendMode.srcIn,
-                                                ),
-                                                height: 10,
-                                                width: 10,
-                                                fit: BoxFit.contain,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Text(
-                                              '개인정보 수집 이용 동의',
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 14),
-                                                height: 1.2,
-                                              ),
-                                            )
-                                          ],
+                                Container(
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                  child: _buildInfoRow('상품 금액', '${Utils.getInstance().priceString(totalAmount)}원', context),
+                                ),
+                                _buildInfoRow('배송비', '${Utils.getInstance().priceString(shippingCost)}원', context),
+                                Visibility(
+                                  visible: _memberType == 1,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(vertical: 10),
+                                    child: _buildInfoRow(
+                                      '할인금액',
+                                      couponDiscount != 0
+                                          ? '- ${Utils.getInstance().priceString(couponDiscount)}원'
+                                          : '${Utils.getInstance().priceString(couponDiscount)}원', // 0이 아니면 '-' 추가
+                                      context,
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: _memberType == 1,
+                                  child: _buildInfoRow(
+                                    '포인트할인',
+                                    pointsDiscount != 0
+                                        ? '- ${Utils.getInstance().priceString(pointsDiscount)}원'
+                                        : '${Utils.getInstance().priceString(pointsDiscount)}원', // 0이 아니면 '-' 추가
+                                    context,
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                                  child: const Divider(color: Color(0xFFEEEEEE)),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '결제 금액',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          color: Colors.black,
+                                          height: 1.2,
                                         ),
                                       ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.pushNamed(context, "/terms_detail/2");
-                                      },
-                                      child: Container(
-                                        width: 50,
-                                        alignment: Alignment.centerRight,
-                                        child: SvgPicture.asset(
-                                          'assets/images/ic_link.svg',
-                                          colorFilter: const ColorFilter.mode(
-                                            Colors.black,
-                                            BlendMode.srcIn,
-                                          ),
+                                      Text(
+                                        '${Utils.getInstance().priceString(total)}원',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          height: 1.2,
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 16),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _agree2 = !_agree2;
-                                            _agreeCheck();
-                                          });
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.all(6),
-                                              height: 22,
-                                              width: 22,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(6)),
-                                                border: Border.all(
-                                                  color: _agree2 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
-                                                ),
-                                                color: _agree2 ? const Color(0xFFFF6191) : Colors.white,
-                                              ),
-                                              child: SvgPicture.asset(
-                                                'assets/images/check01_off.svg',
-                                                // 체크박스 아이콘
-                                                colorFilter: ColorFilter.mode(
-                                                  _agree2 ? Colors.white : const Color(0xFFCCCCCC),
-                                                  BlendMode.srcIn,
-                                                ),
-                                                height: 10,
-                                                width: 10,
-                                                fit: BoxFit.contain,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Text(
-                                              '개인정보 제 3자 정보 제공 동의',
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(context, 14),
-                                                height: 1.2,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.pushNamed(context, "/terms_detail/3");
-                                      },
-                                      child: Container(
-                                        width: 50,
-                                        alignment: Alignment.centerRight,
-                                        child: SvgPicture.asset(
-                                          'assets/images/ic_link.svg',
-                                          colorFilter: const ColorFilter.mode(
-                                            Colors.black,
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(left: 16, top: 7.5, right: 16, bottom: 20),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _agree3 = !_agree3;
-                                            _agreeCheck();
-                                          });
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.all(6),
-                                              height: 22,
-                                              width: 22,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(6)),
-                                                border: Border.all(
-                                                  color: _agree3 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
-                                                ),
-                                                color: _agree3 ? const Color(0xFFFF6191) : Colors.white,
-                                              ),
-                                              child: SvgPicture.asset(
-                                                'assets/images/check01_off.svg',
-                                                // 체크박스 아이콘
-                                                colorFilter: ColorFilter.mode(
-                                                  _agree3 ? Colors.white : const Color(0xFFCCCCCC),
-                                                  BlendMode.srcIn,
-                                                ),
-                                                height: 10,
-                                                width: 10,
-                                                fit: BoxFit.contain,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Text(
-                                              '결제대행 서비스 이용약관 동의',
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: Responsive.getFont(
-                                                  context, 14,
-                                                ),
-                                                height: 1.2,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.pushNamed(context, "/terms_detail/4");
-                                      },
-                                      child: Container(
-                                        width: 50,
-                                        alignment: Alignment.centerRight,
-                                        child: SvgPicture.asset(
-                                          'assets/images/ic_link.svg',
-                                          colorFilter: const ColorFilter.mode(
-                                            Colors.black,
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 40)
-                ],
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Column(
-                children: [
-                  MoveTopButton(scrollController: _scrollController),
-                  GestureDetector(
-                    onTap: () async {
-                      final pref = await SharedPreferencesManager.getInstance();
-                      final mtIdx = pref.getMtIdx() ?? "";
-                      if (mtIdx.isEmpty) {
-                        if(!context.mounted) return;
-                        final result = await Navigator.pushNamed(context, '/login/Y');
-                        if (result != null) {
-                          if (result == 'guest') {
-                            _payment();
-                          } else if(result == 'member') {
-                            // TODO 결제정보 이전 작업 필요
-                            setState(() {
-                              _memberType = 1;
-                            });
-                          }
-                        }
-                      } else {
-                        _payment();
-                      }
-                    },
-                    child: Container(
+                    Container(
+                      height: 10,
                       width: double.infinity,
-                      height: 48,
-                      margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(6),
+                      color: const Color(0xFFF5F9F9),
+                    ),
+                    Theme(
+                      data: Theme.of(context).copyWith(splashColor: Colors.transparent),
+                      child: ListTileTheme(
+                        horizontalTitleGap: 0,
+                        child: ExpansionTile(
+                          initiallyExpanded: true,
+                          shape: const Border(
+                            top: BorderSide(color: Colors.transparent, width: 0),
+                            bottom: BorderSide(color: Colors.transparent, width: 0),
+                          ),
+                          leading: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _allAgree = !_allAgree;
+                                _agree1 = _allAgree;
+                                _agree2 = _allAgree;
+                                _agree3 = _allAgree;
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Container(
+                                padding: const EdgeInsets.all(6),
+                                height: 22,
+                                width: 22,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                  border: Border.all(
+                                    color: _allAgree ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                  ),
+                                  color: _allAgree ? const Color(0xFFFF6191) : Colors.white,
+                                ),
+                                child: SvgPicture.asset(
+                                  'assets/images/check01_off.svg', // 체크박스 아이콘
+                                  colorFilter: ColorFilter.mode(
+                                    _allAgree ? Colors.white : const Color(0xFFCCCCCC),
+                                    BlendMode.srcIn,
+                                  ),
+                                  height: 10,
+                                  width: 10,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          ),
+                          title: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              "주문내용 확인 및 결제동의",
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 18),
+                                fontWeight: FontWeight.bold,
+                                height: 1.2,
+                              ),
+                            ),
+                          ),
+                          collapsedBackgroundColor: Colors.white,
+                          backgroundColor: Colors.white,
+                          iconColor: Colors.black,
+                          children: [
+                            Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                    color: Color(0xFFEEEEEE),
+                                  ),
+                                ),
+                              ),
+                              padding: const EdgeInsets.only(left: 16, top: 20, right: 16, bottom: 7.5),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _agree1 = !_agree1;
+                                              _agreeCheck();
+                                            });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                padding: const EdgeInsets.all(6),
+                                                height: 22,
+                                                width: 22,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(6)),
+                                                  border: Border.all(
+                                                    color: _agree1 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                                  ),
+                                                  color: _agree1 ? const Color(0xFFFF6191) : Colors.white,
+                                                ),
+                                                child: SvgPicture.asset(
+                                                  'assets/images/check01_off.svg',
+                                                  // 체크박스 아이콘
+                                                  colorFilter: ColorFilter.mode(
+                                                    _agree1 ? Colors.white : const Color(0xFFCCCCCC),
+                                                    BlendMode.srcIn,
+                                                  ),
+                                                  height: 10,
+                                                  width: 10,
+                                                  fit: BoxFit.contain,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                '개인정보 수집 이용 동의',
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(context, 14),
+                                                  height: 1.2,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushNamed(context, "/terms_detail/2");
+                                        },
+                                        child: Container(
+                                          width: 50,
+                                          alignment: Alignment.centerRight,
+                                          child: SvgPicture.asset(
+                                            'assets/images/ic_link.svg',
+                                            colorFilter: const ColorFilter.mode(
+                                              Colors.black,
+                                              BlendMode.srcIn,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 16),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _agree2 = !_agree2;
+                                              _agreeCheck();
+                                            });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                padding: const EdgeInsets.all(6),
+                                                height: 22,
+                                                width: 22,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(6)),
+                                                  border: Border.all(
+                                                    color: _agree2 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                                  ),
+                                                  color: _agree2 ? const Color(0xFFFF6191) : Colors.white,
+                                                ),
+                                                child: SvgPicture.asset(
+                                                  'assets/images/check01_off.svg',
+                                                  // 체크박스 아이콘
+                                                  colorFilter: ColorFilter.mode(
+                                                    _agree2 ? Colors.white : const Color(0xFFCCCCCC),
+                                                    BlendMode.srcIn,
+                                                  ),
+                                                  height: 10,
+                                                  width: 10,
+                                                  fit: BoxFit.contain,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                '개인정보 제 3자 정보 제공 동의',
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(context, 14),
+                                                  height: 1.2,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushNamed(context, "/terms_detail/3");
+                                        },
+                                        child: Container(
+                                          width: 50,
+                                          alignment: Alignment.centerRight,
+                                          child: SvgPicture.asset(
+                                            'assets/images/ic_link.svg',
+                                            colorFilter: const ColorFilter.mode(
+                                              Colors.black,
+                                              BlendMode.srcIn,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(left: 16, top: 7.5, right: 16, bottom: 20),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _agree3 = !_agree3;
+                                              _agreeCheck();
+                                            });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                padding: const EdgeInsets.all(6),
+                                                height: 22,
+                                                width: 22,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(6)),
+                                                  border: Border.all(
+                                                    color: _agree3 ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                                                  ),
+                                                  color: _agree3 ? const Color(0xFFFF6191) : Colors.white,
+                                                ),
+                                                child: SvgPicture.asset(
+                                                  'assets/images/check01_off.svg',
+                                                  // 체크박스 아이콘
+                                                  colorFilter: ColorFilter.mode(
+                                                    _agree3 ? Colors.white : const Color(0xFFCCCCCC),
+                                                    BlendMode.srcIn,
+                                                  ),
+                                                  height: 10,
+                                                  width: 10,
+                                                  fit: BoxFit.contain,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                '결제대행 서비스 이용약관 동의',
+                                                style: TextStyle(
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: Responsive.getFont(
+                                                    context, 14,
+                                                  ),
+                                                  height: 1.2,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushNamed(context, "/terms_detail/4");
+                                        },
+                                        child: Container(
+                                          width: 50,
+                                          alignment: Alignment.centerRight,
+                                          child: SvgPicture.asset(
+                                            'assets/images/ic_link.svg',
+                                            colorFilter: const ColorFilter.mode(
+                                              Colors.black,
+                                              BlendMode.srcIn,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      child: Center(
-                        child: Text(
-                          '결제하기',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            color: Colors.white,
-                            height: 1.2,
-                            fontWeight: FontWeight.w600,
+                    ),
+                    const SizedBox(height: 40)
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Column(
+                  children: [
+                    MoveTopButton(scrollController: _scrollController),
+                    GestureDetector(
+                      onTap: () async {
+                        final pref = await SharedPreferencesManager.getInstance();
+                        final mtIdx = pref.getMtIdx() ?? "";
+                        if (mtIdx.isEmpty) {
+                          if(!context.mounted) return;
+                          final result = await Navigator.pushNamed(context, '/login/Y');
+                          if (result != null) {
+                            if (result == 'guest') {
+                              _payment();
+                            } else if(result == 'member') {
+                              // TODO 결제정보 이전 작업 필요
+                              setState(() {
+                                _memberType = 1;
+                              });
+                            }
+                          }
+                        } else {
+                          _payment();
+                        }
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 48,
+                        margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(6),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '결제하기',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: Colors.white,
+                              height: 1.2,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Visibility(
-              visible: _isLoading,
-              child: const Center(
-                child: CircularProgressIndicator(),
+              Visibility(
+                visible: _isLoading,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -15,7 +15,6 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -88,6 +87,10 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     } catch(e) {
       //
     }
+
+    // TODO 테스트 용
+    _ptIdx = 1430;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -116,7 +119,8 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         _sameList = productDetailResponseDto.sameList ?? [];
         _infoData = productDetailResponseDto.info;
 
-        _detailWeViewController?.loadData(data: _productData?.ptContent ?? "");
+        String content = _contentAddHtml(_productData?.ptContent ?? "");
+        _detailWeViewController?.loadData(data: content);
       });
     } else {
       if (!mounted) return;
@@ -420,6 +424,54 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         ),
       ),
     );
+  }
+
+  String _contentAddHtml(String content) {
+    content = content.trim();
+    return content = """
+    <html>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body>
+    <style>
+			html { font-size:10px; } 
+			body { margin:0 auto; padding:5px;color:#000;}
+
+			html, h1, h2, h3, h4, h5, h6, form, fieldset, img { margin:0; padding:0; border:0 } 
+			article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display:block } 
+
+			ul, dl,dt,dd { margin:0; padding:0; list-style: disc;padding-lefT:2.0rem; }
+			ul{list-style: none;padding-lefT:1.4rem;}
+			ul li{position: relative;}
+			ul li:before {
+				content: "·";
+				font-size: 2.0rem;
+				vertical-align: middle;
+				margin-right: 0.8rem;
+				position: absolute;
+				left: -1.2rem;
+				line-height: 1.8rem;
+			}
+			.ul_line{list-style: none;padding-lefT:1.0rem;}
+			.ul_line li:before {
+				content:"-";
+				vertical-align:middle;
+				margin-right:0.5rem;
+			}
+			ol{margin:0; padding:0;list-style: auto;padding-lefT:1.5rem;}
+			ol > li{list-style: auto;}
+			p { margin:0; padding:0;} 
+			hr { display:none } 
+			a { text-decoration:none;} 
+			a:hover { text-decoration: none; }
+			img { max-width:100%; display:inline-block; height: auto; }
+			.return_cont{font-size:1.2rem;color:#7B7B7B;}
+		</style>
+    $content
+    </body>
+    </html>
+    """;
   }
 
   Widget _productBanner(List<String> imgArr) {
@@ -879,6 +931,8 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   }
 
   Widget _productInfoContent(String content) {
+
+
     return SingleChildScrollView(
       // 페이지 전체를 스크롤 가능하게 만듦
       child: Padding(
@@ -890,30 +944,31 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             AnimatedSize(
               duration: const Duration(milliseconds: 500),
               child: Container(
+                height: _detailWebViewHeight,
                 constraints: BoxConstraints(
-                  minHeight: _isExpanded ? 10 : 0,
-                  maxHeight: _isExpanded ? double.infinity : 50,
+                  minHeight: _isExpanded ? 150 : 0,
+                  maxHeight: _isExpanded ? double.infinity : 150,
                 ),
-                child: SizedBox(
-                  height: _detailWebViewHeight,
-                  child: InAppWebView(
-                    initialData: InAppWebViewInitialData(data: content),
-                    initialSettings: InAppWebViewSettings(
-                      transparentBackground: true,
-                    ),
-                    onWebViewCreated: (controller) {
-                      _detailWeViewController = controller;
-                    },
-                    onProgressChanged: (controller, progress) {
-                      if (progress == 100) {
+                child: InAppWebView(
+                  initialData: InAppWebViewInitialData(data: content),
+                  initialSettings: InAppWebViewSettings(
+                    transparentBackground: true,
+                  ),
+                  onWebViewCreated: (controller) {
+                    _detailWeViewController = controller;
+                  },
+                  onProgressChanged: (controller, progress) {
+                    if (progress == 100) {
+                      Future.delayed(const Duration(seconds: 1), () {
                         controller.getContentHeight().then((height) {
                           setState(() {
                             _detailWebViewHeight = double.parse(height.toString());
+                            //print("_detailWebViewHeight $_detailWebViewHeight");
                           });
                         });
-                      }
-                    },
-                  ),
+                      });
+                    }
+                  },
                 ),
               ),
             ),

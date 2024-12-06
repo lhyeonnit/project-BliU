@@ -14,10 +14,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:focus_detector_v2/focus_detector_v2.dart';
+import 'package:get/get.dart';
 
 class OrderListScreen extends ConsumerStatefulWidget {
-  final String? otCode;//비회원일 경우 사용
-  const OrderListScreen({super.key, this.otCode});
+  const OrderListScreen({super.key});
 
   @override
   ConsumerState<OrderListScreen> createState() => OrderListScreenState();
@@ -25,6 +25,8 @@ class OrderListScreen extends ConsumerStatefulWidget {
 
 class OrderListScreenState extends ConsumerState<OrderListScreen> {
   final ScrollController _scrollController = ScrollController();
+
+  String? _otCode;//비회원일 경우 사용
 
   final List<String> categories = ['전체', '배송중', '배송완료', '취소/교환반품'];
   int selectedCategoryIndex = 0;
@@ -38,6 +40,7 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
   @override
   void initState() {
     super.initState();
+    _otCode = Get.parameters["ot_code"].toString();
     _scrollController.addListener(_nextLoad);
   }
 
@@ -121,7 +124,7 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
       'type': memberType,
       'mt_idx': mtIdx,
       'temp_mt_id': appToken,
-      'ot_code': widget.otCode ?? "",
+      'ot_code': _otCode ?? "",
       'ct_status': ctStatus,
       'pg': _page,
     };

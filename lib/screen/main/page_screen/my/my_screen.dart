@@ -231,12 +231,7 @@ class MyScreen extends ConsumerWidget {
                           children: [
                             _buildIconButton(context, '주문·배송',
                                 'assets/images/my/mypage_ic01.svg', () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const OrderListScreen(),
-                                    ),
-                                  );
+                                  Navigator.pushNamed(context, '/order_list');
                                 }, ''),
                             _buildIconButton(
                                 context, '나의리뷰', 'assets/images/my/mypage_ic02.svg',

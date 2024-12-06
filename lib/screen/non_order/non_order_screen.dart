@@ -158,10 +158,7 @@ class NonOrderScreenState extends ConsumerState<NonOrderScreen> {
                       if (responseData["result"] == true) {
                         if (!context.mounted) return;
                         final otCode = responseData["data"]["ot_code"].toString();
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => OrderListScreen(otCode: otCode)),
-                        );
+                        Navigator.pushReplacementNamed(context, '/order_list?ot_code$otCode');
                       } else {
                         if (!context.mounted) return;
                         Utils.getInstance().showSnackBar(context, responseData["data"]["message"]);
