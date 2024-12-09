@@ -1,6 +1,5 @@
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/main/page_screen/like/view_model/like_view_model.dart';
 import 'package:BliU/screen/main/view_model/main_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -210,7 +209,29 @@ class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderState
                 ),
                 Visibility(
                   visible: listEmpty,
-                  child: const NonDataScreen(text: '좋아요하신 상품이 없습니다.',),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 200, bottom: 15),
+                          child: Image.asset('assets/images/product/empty_like.png',
+                            width: 180,
+                            height: 180,
+                          ),
+                        ),
+                        Text(
+                          '아직 좋아요를 누른 상품이 없어요!',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.w300,
+                            color: const Color(0xFF7B7B7B),
+                            height: 1.2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             );

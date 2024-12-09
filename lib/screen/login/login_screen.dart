@@ -175,13 +175,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(Radius.circular(6)),
                                   border: Border.all(
-                                    color: _isAutoLogin
-                                        ? const Color(0xFFFF6191)
-                                        : const Color(0xFFCCCCCC),
+                                    color: _isAutoLogin ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
                                   ),
-                                  color: _isAutoLogin
-                                      ? const Color(0xFFFF6191)
-                                      : Colors.white,
+                                  color: _isAutoLogin ? const Color(0xFFFF6191) : Colors.white,
                                 ),
                                 child: SvgPicture.asset(
                                   'assets/images/check01_off.svg', // 체크박스 아이콘
@@ -240,8 +236,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       GestureDetector(
                         onTap: () {
                           // 회원가입 버튼 동작
-                          Navigator.pushNamed(context, '/join_complete');
-                          //Navigator.pushNamed(context, "/join_agree");
+                          Navigator.pushNamed(context, "/join_agree");
                         },
                         child: Text(
                           '회원가입',

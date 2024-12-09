@@ -515,7 +515,7 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
                                       child: Row(
                                         children: [
                                           Visibility(
-                                            visible: _selectedCategory.ctName == "악세서리" ? false : true,
+                                            visible: _selectedCategory.ctName == "베이비 잡화" ? false : true,
                                             child: _buildFilterButton(getSelectedAgeGroupText(), false),
                                           ),
                                           Container(

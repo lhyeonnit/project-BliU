@@ -150,14 +150,8 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                             index: index,
                             onSelected: (selectedOption) {
                               setState(() {
-                                if (_productOptionData?.ptOptionChk != "Y") {
-                                  Utils.getInstance().showSnackBar(context, "해당 상품의 옵션을 사용할 수 없습니다.");
-                                  return;
-                                }
-
-                                if (_productOptionData?.ptOptionType == "1") {
+                                if (_productOptionData?.ptOptionType == "1" || _productOptionData?.ptOptionChk != "Y") {
                                   // 단독
-
                                   optionData.selectedValue = selectedOption;
 
                                   _isOptionSelected = true;
@@ -169,7 +163,6 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                                   }
                                 } else {
                                   // 조합
-
                                   // 선택된 옵션 값을 저장
                                   optionData.selectedValue = selectedOption;
                                   _selectedOptions[title] = selectedOption;
@@ -821,7 +814,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
 
   // 옵션 확인
   void _selectOptionCheck() {
-    if (_productOptionData?.ptOptionType == "1") {
+    if (_productOptionData?.ptOptionType == "1" && _productOptionData?.ptOptionChk != "Y") {
       // 단독
       var titleValue = "";
       var optionValue = "";

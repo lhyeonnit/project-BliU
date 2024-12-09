@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:BliU/data/cart_data.dart';
 import 'package:BliU/data/cart_item_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
-import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/cart/item/cart_item.dart';
 import 'package:BliU/screen/cart/view_model/cart_view_model.dart';
 import 'package:BliU/screen/join_add_info/join_add_info_screen.dart';

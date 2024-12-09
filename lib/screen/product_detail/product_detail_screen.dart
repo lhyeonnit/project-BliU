@@ -1270,14 +1270,16 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         ),
                         onProgressChanged: (controller, progress) {
                           if (progress == 100) {
-                            Future.delayed(const Duration(seconds: 1), () {
-                              controller.getContentHeight().then((height) {
-                                setState(() {
-                                  _deliveryWebViewHeight = double.parse(height.toString());
-                                });
+                            controller.getContentHeight().then((height) {
+                              setState(() {
+                                _deliveryWebViewHeight = double.parse(height.toString());
+                                //print("_deliveryWebViewHeight === ${_deliveryWebViewHeight}");
                               });
                             });
                           }
+                        },
+                        onZoomScaleChanged: (controller, o, n) {
+                          controller.reload();
                         },
                       ),
                     ),
