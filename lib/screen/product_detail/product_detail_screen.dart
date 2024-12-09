@@ -53,8 +53,8 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   bool _isDeliveryInfoVisible = false;
   bool _isExpanded = false;
 
-  double _detailWebViewHeight = 100;
-  double _deliveryWebViewHeight = 100;
+  double _detailWebViewHeight = 300;
+  double _deliveryWebViewHeight = 300;
 
   late InAppWebViewController? _detailWeViewController;
 
@@ -1273,7 +1273,13 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             controller.getContentHeight().then((height) {
                               setState(() {
                                 _deliveryWebViewHeight = double.parse(height.toString());
-                                //print("_deliveryWebViewHeight === ${_deliveryWebViewHeight}");
+                              });
+                            });
+                            Future.delayed(const Duration(seconds: 1), () {
+                              controller.getContentHeight().then((height) {
+                                setState(() {
+                                  _deliveryWebViewHeight = double.parse(height.toString());
+                                });
                               });
                             });
                           }

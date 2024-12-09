@@ -151,15 +151,21 @@ class CartScreenState extends ConsumerState<CartScreen> {
   }
 
   void _toggleSelectAll() {
-    setState(() {
-      _isAllSelected = !_isAllSelected;
-
-      // 모든 아이템의 선택 상태 업데이트
-      for (var item in _cartItems) {
-        for (var product in item.productList ?? [] as List<CartItemData>) {
+    // 모든 아이템의 선택 상태 업데이트
+    for (var item in _cartItems) {
+      for (var product in item.productList ?? [] as List<CartItemData>) {
+        if ((product.ptJaego ?? 0) > 0) {
           _cartSelectedList.add(product.ctIdx ?? 0);
         }
       }
+    }
+
+    if (!_isAllSelected && _cartSelectedList.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      _isAllSelected = !_isAllSelected;
 
       if (!_isAllSelected) {
         _cartSelectedList = [];
