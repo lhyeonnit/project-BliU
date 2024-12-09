@@ -1076,7 +1076,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
               }
               return;
             } else {
-              Utils.getInstance().showSnackBar(context, "Network Error");
+              Utils.getInstance().showSnackBar(context, payOrderDetailDTO.message ?? "");
             }
           } else {
             Utils.getInstance().showSnackBar(context, "Network Error");

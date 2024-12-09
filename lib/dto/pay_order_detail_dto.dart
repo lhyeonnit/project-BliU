@@ -13,10 +13,16 @@ class PayOrderDetailDTO {
 
   // JSON to Object
   factory PayOrderDetailDTO.fromJson(Map<String, dynamic> json) {
+    PayOrderDetailData? data;
+    try {
+      data = PayOrderDetailData.fromJson(json['data']);
+    } catch(e) {
+      //
+    }
     return PayOrderDetailDTO(
       result: json['result'],
       message: json['data']['message'],
-      data: PayOrderDetailData.fromJson(json['data']),
+      data: data,
     );
   }
 

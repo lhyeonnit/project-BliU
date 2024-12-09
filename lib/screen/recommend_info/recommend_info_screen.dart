@@ -409,9 +409,12 @@ class RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
 
                                     if (defaultResponseDTO != null && defaultResponseDTO.result == true) {
                                       if (memberInfo != null) {
-                                        formattedDate = memberInfo.mctBirth ?? '';
-                                        _selectedGender = memberInfo.mctGender ?? '';
-                                        selectedStyleIds = memberInfo.mctStyle ?? [];
+                                        memberInfo.mctBirth = formattedDate;
+                                        memberInfo.mctGender = _selectedGender;
+                                        memberInfo.mctStyle = selectedStyleIds;
+                                        // formattedDate = memberInfo.mctBirth ?? '';
+                                        // _selectedGender = memberInfo.mctGender ?? '';
+                                        // selectedStyleIds = memberInfo.mctStyle ?? [];
                                         pref.login(memberInfo);
 
                                         setState(() {
@@ -563,10 +566,11 @@ class RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
               ),
               controller: _birthController,
               style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: Responsive.getFont(context, 16),
-                  color: const Color(0xFFFF6192),
-                  fontWeight: FontWeight.bold),
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 16),
+                color: const Color(0xFFFF6192),
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),

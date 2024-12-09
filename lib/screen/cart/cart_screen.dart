@@ -306,26 +306,31 @@ class CartScreenState extends ConsumerState<CartScreen> {
 
     final payOrderDetailDTO = await ref.read(cartViewModelProvider.notifier).orderDetail(requestData);
     if (payOrderDetailDTO != null) {
-      final payOrderDetailData = payOrderDetailDTO.data;
-      final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;
-      if (payOrderDetailData != null) {
-        if(!mounted) return;
-        if (userInfoCheck == "Y" || memberType == 2) {
-          final map = {
-            'payOrderDetailData': payOrderDetailData,
-            'memberType': memberType,
-          };
-          Navigator.pushNamed(context, '/payment', arguments: map);
+      if (payOrderDetailDTO.result ?? false) {
+        final payOrderDetailData = payOrderDetailDTO.data;
+        final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;
+        if (payOrderDetailData != null) {
+          if(!mounted) return;
+          if (userInfoCheck == "Y" || memberType == 2) {
+            final map = {
+              'payOrderDetailData': payOrderDetailData,
+              'memberType': memberType,
+            };
+            Navigator.pushNamed(context, '/payment', arguments: map);
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => JoinAddInfoScreen(payOrderDetailData: payOrderDetailData, memberType: memberType,),),
+            );
+          }
+          return;
         } else {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => JoinAddInfoScreen(payOrderDetailData: payOrderDetailData, memberType: memberType,),),
-          );
+          if (!mounted) return;
+          Utils.getInstance().showSnackBar(context, "Network Error");
         }
-        return;
       } else {
         if (!mounted) return;
-        Utils.getInstance().showSnackBar(context, "Network Error");
+        Utils.getInstance().showSnackBar(context, payOrderDetailDTO.message ?? "");
       }
     } else {
       if (!mounted) return;
