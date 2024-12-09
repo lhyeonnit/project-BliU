@@ -18,6 +18,14 @@ class SharedPreferencesManager {
 
   SharedPreferencesManager._(SharedPreferences prefs) : _prefs = prefs;
 
+  bool getAppFirst() {
+    return _prefs.getBool('app_first') ?? true;
+  }
+
+  Future<void> setAppFirst() async {
+    await _prefs.setBool("app_first", false);
+  }
+
   // mtId를 불러오는 함수
   String? getMtId() {
     return _prefs.getString('mt_id');

@@ -104,37 +104,13 @@ class MyInfoDeleteScreenState extends ConsumerState<MyInfoDeleteScreen> {
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(color: const Color(0xFFDDDDDD)),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '계정 삭제',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            height: 1.2,
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 4),
-                          child: Text(
-                            '포인트, 쿠폰 삭제',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              height: 1.2,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          '내 평점, 리뷰 삭제',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 14),
-                            height: 1.2,
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      """블리유를 이용해주셔서 감사합니다.\n\n회원 탈퇴 시 아래 데이터는 복구가 불가합니다:\n- 계정 정보\n- 주문 내역 및 구매 이력\n- 보유 중인 포인트 및 쿠폰\n- 기타 개인화된 서비스 데이터\n\n또한, 탈퇴일로부터 180일 동안 동일한 명의와 연락처로 재가입이 불가합니다.\n\n블리유와 함께했던 순간들이 즐거우셨길 바라며, 더 나은 모습으로 다시 만나 뵙기를 기대하겠습니다.\n\n감사합니다.""",
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        height: 1.2,
+                      ),
                     ),
                   ),
                   _buildAllAgreement(
@@ -157,7 +133,11 @@ class MyInfoDeleteScreenState extends ConsumerState<MyInfoDeleteScreen> {
                 width: double.infinity,
                 color: Colors.white,
                 child: GestureDetector(
-                  onTap: () => _retire(),
+                  onTap: () {
+                    if (_isChecked) {
+                      _retire();
+                    }
+                  },
                   child: Container(
                     width: double.infinity,
                     height: 48,
@@ -241,22 +221,22 @@ class MyInfoDeleteScreenState extends ConsumerState<MyInfoDeleteScreen> {
   void _retire() {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (mContext) {
         return ConfirmDialog(
           title: '알림',
           message: '정말 탈퇴 하시겠습니까?',
-          doConfirm: () {
-            Future.delayed(const Duration(seconds: 1), () async {
-              final pref = await SharedPreferencesManager.getInstance();
-              final mtIdx = pref.getMtIdx();
-              Map<String, dynamic> requestData = {
-                'mt_idx': mtIdx,
-              };
-              final resultDTO = await ref.read(myInfoEditViewModelProvider.notifier).retire(requestData);
-              if (!context.mounted) return;
-              Utils.getInstance().showSnackBar(context, resultDTO.message.toString());
-              await pref.logOut();
-              if (!context.mounted) return;
+          doConfirm: () async {
+            final pref = await SharedPreferencesManager.getInstance();
+            final mtIdx = pref.getMtIdx();
+            Map<String, dynamic> requestData = {
+              'mt_idx': mtIdx,
+            };
+            final resultDTO = await ref.read(myInfoEditViewModelProvider.notifier).retire(requestData);
+            if (!mContext.mounted) return;
+            Utils.getInstance().showSnackBar(mContext, resultDTO.message.toString());
+            await pref.logOut();
+            Future.delayed(const Duration(seconds: 2), () {
+              if (!mounted) return;
               Navigator.pushReplacementNamed(context, '/index');
 
               setState(() {

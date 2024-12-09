@@ -9,6 +9,7 @@ class Constant {
   //회원관리
   static const apiAuthLoginUrl = "auth/login";//로그인
   static const apiAuthAutoLoginUrl = "auth/auto_login";//자동 로그인
+  static const apiAuthLogout = "auth/logout";//로그아웃
   static const apiAuthJoinUrl = "auth/join";//회원가입
   static const apiAuthSnsLoginUrl = "auth/sns_login";//sns 회원가입
   static const apiAuthCheckIdUrl = "auth/check_id";//아이디 중복 확인

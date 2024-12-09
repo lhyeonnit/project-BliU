@@ -16,6 +16,8 @@ import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:uuid/uuid.dart';
 
+String initialRoute = "/onboard";
+
 // 자동 로그인
 Future<MemberInfoResponseDTO?> _authAutoLogin(Map<String, dynamic> requestData) async {
   final repository = DefaultRepository();
@@ -60,12 +62,18 @@ Future<void> main() async {
 
     await PermissionManager().requestPermission();
   } else {
-    final pref = await SharedPreferencesManager.getInstance();
     final token = pref.getToken() ?? "";
     if (token.isEmpty) {
       final uuid= const Uuid().v4();
       pref.setToken(uuid);
     }
+  }
+
+  final appFirst = pref.getAppFirst();
+  if(!appFirst) {
+    initialRoute = "/index";
+  } else {
+    pref.setAppFirst();
   }
 
   if (pref.getAutoLogin()) {
@@ -110,7 +118,7 @@ class MyApp extends ConsumerWidget {
       themeMode: ThemeMode.light,
       navigatorKey: NavigationService.navigatorKey,
       debugShowCheckedModeBanner: false,
-      initialRoute: '/onboard',
+      initialRoute: initialRoute,
       getPages: GetXRoutes.pages,
     );
   }

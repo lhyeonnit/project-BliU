@@ -91,6 +91,21 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
   }
 
   Widget buildPage(ExhibitionData exhibitionData) {
+    var ptImg0 = "";
+    var ptImg1 = "";
+    var ptImg2 = "";
+
+    for (int i = 0; i < (exhibitionData.ptImg?.length ?? 0); i++) {
+      final ptImg = exhibitionData.ptImg?[i];
+      if(i==0) {
+        ptImg0 = ptImg ?? "";
+      } else if (i==1) {
+        ptImg1 = ptImg ?? "";
+      } else if (i==2) {
+        ptImg2 = ptImg ?? "";
+      }
+    }
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -184,7 +199,7 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                                 child: AspectRatio(
                                   aspectRatio: 1,
                                   child: Image.network(
-                                    exhibitionData.ptImg?[0] ?? "",
+                                    ptImg0,
                                     height: Responsive.getHeight(context, 84),
                                     fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
@@ -209,7 +224,7 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                                 child: AspectRatio(
                                   aspectRatio: 1,
                                   child: Image.network(
-                                    exhibitionData.ptImg?[1] ?? "",
+                                    ptImg1,
                                     height: Responsive.getHeight(context, 84),
                                     fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
@@ -234,7 +249,7 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                                 child: AspectRatio(
                                   aspectRatio: 1,
                                   child: Image.network(
-                                    exhibitionData.ptImg?[2] ?? "",
+                                    ptImg2,
                                     height: Responsive.getHeight(context, 84),
                                     fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
                                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {

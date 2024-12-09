@@ -39,7 +39,7 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
   List<StyleCategoryData> _styleCategories = [];
 
   bool _isTodayStart = true;
-  String _sortOption = '최신순';
+  String _sortOption = '추천순';
   String _sortOptionSelected = '';
 
   CategoryData? selectedAgeGroup;
@@ -60,7 +60,7 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
   void initState() {
     super.initState();
     _selectedCategory = widget.selectedCategory;
-    _categories = _selectedCategory.subList ?? [];
+    _initCategory();
     _tabController = TabController(length: _categories.length, vsync: this);
     _tabController.addListener(_tabChangeCallBack);
 
@@ -81,6 +81,21 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
   void _afterBuild(BuildContext context) {
     _getList();
     _getFilterCategory();
+  }
+
+  void _initCategory() {
+    _categories = [
+      CategoryData(
+        ctIdx: 0,
+        cstIdx: 0,
+        img: '',
+        ctName: '전체',
+        subList: [],
+        catIdx: null,
+        catName: null,
+      )
+    ];
+    _categories.addAll(_selectedCategory.subList ?? []);
   }
 
   void _tabChangeCallBack() {
@@ -154,7 +169,7 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
       subCategory = categoryData.ctIdx.toString();
     }
 
-    int sort = 1;
+    int sort = 3;
     // 1 최신순 2 인기순 3: 추천수, 4: 가격 낮은수, 5: 가격 높은수
     switch (_sortOptionSelected) {
       case "최신순":
@@ -271,7 +286,7 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
             onCategorySelected: (category) {
               setState(() {
                 _selectedCategory = category;
-                _categories = _selectedCategory.subList ?? [];
+                _initCategory();
                 _tabController.removeListener(_tabChangeCallBack);
                 _tabController = TabController(length: _categories.length, vsync: this);
                 _tabController.addListener(_tabChangeCallBack);
@@ -611,7 +626,7 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
                     Container(
                       margin: const EdgeInsets.only(left: 5),
                       child: Text(
-                        _sortOptionSelected.isNotEmpty ? _sortOptionSelected : '최신순', // 선택된 정렬 옵션 표시
+                        _sortOptionSelected.isNotEmpty ? _sortOptionSelected : '추천순', // 선택된 정렬 옵션 표시
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),

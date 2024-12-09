@@ -520,8 +520,11 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                   width: double.infinity,
                   color: Colors.white,
                   child: GestureDetector(
-                    onTap: _isAllFieldsFilled
-                        ? () async {
+                    onTap: () async {
+                      if (!_isAllFieldsFilled) {
+                        return;
+                      }
+
                       if (_passwordController.text != _confirmPasswordController.text) {
                         Utils.getInstance().showSnackBar(context, "비밀번호가 서로 다릅니다 다시 입력해 주세요.");
                         return;
@@ -570,14 +573,13 @@ class JoinFormScreenState extends ConsumerState<JoinFormScreen> {
                         gender = myPageInfoDTO.data?.mtGender ?? '';
 
                         if (!context.mounted) return;
-                        Navigator.pushReplacementNamed(context, 'join_complete');
+                        Navigator.pushReplacementNamed(context, '/join_complete');
                       } else {
                         if (!context.mounted) return;
                         final message = myPageInfoDTO.message ?? "";
                         Utils.getInstance().showSnackBar(context, message);
                       }
-                    }
-                        : null,
+                    },
                     child: Container(
                       width: double.infinity,
                       height: 48,

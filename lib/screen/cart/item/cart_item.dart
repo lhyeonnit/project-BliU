@@ -47,9 +47,11 @@ class CartItemState extends State<CartItem> {
           children: [
             GestureDetector(
               onTap: () {
-                setState(() {
-                  widget.onToggleSelection(widget.item.ctIdx ?? 0, !widget.isSelected); // 부모로 선택 상태 전달
-                });
+                if ((widget.item.ptJaego ?? 0) > 0) {
+                  setState(() {
+                    widget.onToggleSelection(widget.item.ctIdx ?? 0, !widget.isSelected); // 부모로 선택 상태 전달
+                  });
+                }
               },
               child: Container(
                 padding: const EdgeInsets.all(6),
@@ -83,14 +85,37 @@ class CartItemState extends State<CartItem> {
               ),
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(6)),
-                child: Image.network(
-                  widget.item.ptImg ?? "",
-                  fit: BoxFit.cover,
-                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    return SizedBox(
-                      child: SvgPicture.asset('assets/images/no_imge.svg'),
-                    );
-                  }
+                child: Stack(
+                  children: [
+                    Image.network(
+                      widget.item.ptImg ?? "",
+                      fit: BoxFit.cover,
+                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                        return SizedBox(
+                          child: SvgPicture.asset('assets/images/no_imge.svg'),
+                        );
+                      },
+                    ),
+                    Visibility(
+                      visible: (widget.item.ptJaego ?? 0) <= 0 ? true : false,
+                      child: Container(
+                        color: const Color(0x66000000),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "품절", // widget.item 사용
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              height: 1.2,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               )
             ),

@@ -445,6 +445,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                                 setState(() {
                                   _isSearching = false;
                                   _isFirst = true;
+                                  _resetSearch();
                                 });
                               } else {
                                 setState(() {

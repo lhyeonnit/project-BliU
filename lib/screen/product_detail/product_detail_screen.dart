@@ -88,9 +88,6 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       //
     }
 
-    // TODO 테스트 용
-    _ptIdx = 1430;
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -569,7 +566,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
     final deliveryPriceInfoStr1 = '$deliveryBasicPriceStr원 ($deliveryMinPriceStr원 이상 $deliveryPriceStr';
 
-    final deliveryPriceInfoStr2 = '배송비: 기본 배송비 $deliveryBasicPriceStr원 / $deliveryMinPriceStr 이상 무료';
+    final deliveryPriceInfoStr2 = '배송비: 기본 배송비 $deliveryBasicPriceStr원 / $deliveryMinPriceStr원 이상 무료';
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
@@ -870,7 +867,8 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         ],
                       ),
                       const SizedBox(height: 5),
-                      Text('배송 기간: 평균 2-5일 이내 발송 (영업일 기준), 재고현황에 따라 배송이 다소 지연될 수 있습니다.',
+                      Text(
+                        '배송 기간: 평균 2-5일 이내 발송 (영업일 기준), 재고현황에 따라 배송이 다소 지연될 수 있습니다.',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 10),
@@ -946,8 +944,8 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               child: Container(
                 height: _detailWebViewHeight,
                 constraints: BoxConstraints(
-                  minHeight: _isExpanded ? 150 : 0,
-                  maxHeight: _isExpanded ? double.infinity : 150,
+                  minHeight: _isExpanded ? 500 : 500,
+                  maxHeight: _isExpanded ? double.infinity : 500,
                 ),
                 child: InAppWebView(
                   initialData: InAppWebViewInitialData(data: content),
@@ -963,7 +961,6 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         controller.getContentHeight().then((height) {
                           setState(() {
                             _detailWebViewHeight = double.parse(height.toString());
-                            //print("_detailWebViewHeight $_detailWebViewHeight");
                           });
                         });
                       });
@@ -1141,7 +1138,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                         productData?.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0
                                     )}원 / ${Utils.getInstance().priceString(
                                         productData?.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0
-                                    )} 이상 무료',
+                                    )}원 이상 무료',
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),
@@ -1273,9 +1270,11 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         ),
                         onProgressChanged: (controller, progress) {
                           if (progress == 100) {
-                            controller.getContentHeight().then((height) {
-                              setState(() {
-                                _deliveryWebViewHeight = double.parse(height.toString());
+                            Future.delayed(const Duration(seconds: 1), () {
+                              controller.getContentHeight().then((height) {
+                                setState(() {
+                                  _deliveryWebViewHeight = double.parse(height.toString());
+                                });
                               });
                             });
                           }

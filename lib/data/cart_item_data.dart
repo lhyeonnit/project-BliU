@@ -5,6 +5,7 @@ class CartItemData {
   final String? ptName;
   final String? ptTitle;
   final int? ptCount;
+  final int? ptJaego;
   final String? ptImg;
   final String? sellStatus;
   final String? sellStatusTxt;
@@ -25,6 +26,7 @@ class CartItemData {
     required this.ptName,
     required this.ptTitle,
     required this.ptCount,
+    required this.ptJaego,
     required this.ptImg,
     required this.sellStatus,
     required this.sellStatusTxt,
@@ -48,6 +50,7 @@ class CartItemData {
       ptName: json['pt_name'],
       ptTitle: json['pt_title'],
       ptCount: json['pt_count'],
+      ptJaego: json['pt_jaego'],
       ptImg: json['pt_img'],
       sellStatus: json['sell_status'],
       sellStatusTxt: json['sell_status_txt'],
@@ -72,6 +75,7 @@ class CartItemData {
       'pt_name': ptName,
       'pt_title': ptTitle,
       'pt_count': ptCount,
+      'pt_jaego': ptJaego,
       'pt_img': ptImg,
       'sell_status': sellStatus,
       'sell_status_txt': sellStatusTxt,

@@ -667,13 +667,13 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                         children: [
                           Container(
                             margin: const EdgeInsets.only(top: 130, bottom: 15),
-                            child: SvgPicture.asset('assets/images/product/no_data_img.svg',
-                              width: 90,
-                              height: 90,
+                            child: Image.asset('assets/images/product/empty_favorite.png',
+                              width: 180,
+                              height: 180,
                             ),
                           ),
                           Text(
-                            '추가된 북마크가 없습니다.',
+                            '아직 즐겨찾기한 스토어가 없어요!',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: Responsive.getFont(context, 14),

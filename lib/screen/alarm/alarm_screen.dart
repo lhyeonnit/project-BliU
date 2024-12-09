@@ -5,7 +5,6 @@ import 'package:BliU/screen/cart/cart_screen.dart';
 import 'package:BliU/screen/exhibition/exhibition_screen.dart';
 import 'package:BliU/screen/main/main_screen.dart';
 import 'package:BliU/screen/my_coupon/my_coupon_screen.dart';
-import 'package:BliU/screen/order_list/order_list_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';

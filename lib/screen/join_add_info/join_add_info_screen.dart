@@ -140,7 +140,6 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                           ),
                         ),
                       ),
-                      _buildTextField('이름', _nameController, '이름 입력', keyboardType: TextInputType.name),
                       Row(
                         children: [
                           Expanded(
@@ -224,6 +223,7 @@ class JoinAddInfoScreenState extends ConsumerState<JoinAddInfoScreen> {
                           ),
                         ],
                       ),
+                      _buildTextField('이름', _nameController, '이름 입력', keyboardType: TextInputType.name),
                       Visibility(
                         visible: _phoneAuthCodeVisible,
                         child: Row(

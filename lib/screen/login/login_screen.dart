@@ -240,7 +240,8 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       GestureDetector(
                         onTap: () {
                           // 회원가입 버튼 동작
-                          Navigator.pushNamed(context, "/join_agree");
+                          Navigator.pushNamed(context, '/join_complete');
+                          //Navigator.pushNamed(context, "/join_agree");
                         },
                         child: Text(
                           '회원가입',
@@ -570,6 +571,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
             } else {
               // childCk가 "N"인 경우 RecommendInfoScreen으로 이동
               Navigator.pushReplacementNamed(context, '/recommend_info');
+              ref.read(mainScreenProvider.notifier).selectNavigation(2); // 네비게이션 선택
             }
             return;
           }

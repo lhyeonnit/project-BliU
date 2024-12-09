@@ -404,6 +404,8 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                                                     setState(() {
                                                       _addPtOptionArr[index].count += 1;
                                                     });
+                                                  } else {
+                                                    Utils.getInstance().showSnackBar(context, "재고가 부족합니다.");
                                                   }
                                                 },
                                                 child: const Icon(Icons.add, size: 20),
@@ -1071,6 +1073,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                 };
                 Navigator.pushReplacementNamed(context, '/payment', arguments: map);
               } else {
+                // TODO 추가 정보 입력
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -1087,7 +1090,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
           }
         }
       } else {
-        Utils.getInstance().showSnackBar(context, responseData['data']['message'].message ?? "");
+        Utils.getInstance().showSnackBar(context, responseData['data']['message'] ?? "");
       }
     } else {
       Utils.getInstance().showSnackBar(context, "Network Error");

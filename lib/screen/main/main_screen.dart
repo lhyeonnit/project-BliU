@@ -12,7 +12,6 @@ import 'package:BliU/screen/main/page_screen/my/my_screen.dart';
 import 'package:BliU/screen/main/page_screen/store/store_screen.dart';
 import 'package:BliU/screen/main/view_model/main_view_model.dart';
 import 'package:BliU/screen/my_coupon/my_coupon_screen.dart';
-import 'package:BliU/screen/order_list/order_list_screen.dart';
 import 'package:BliU/utils/firebase_service.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';

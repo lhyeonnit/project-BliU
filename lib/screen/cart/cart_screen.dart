@@ -77,7 +77,9 @@ class CartScreenState extends ConsumerState<CartScreen> {
           _cartSelectedList = [];
           for (var item in _cartItems) {
             for (var product in (item.productList ?? [] as List<CartItemData>)) {
-              _cartSelectedList.add(product.ctIdx ?? 0);
+              if ((product.ptJaego ?? 0) > 0) {
+                _cartSelectedList.add(product.ctIdx ?? 0);
+              }
             }
           }
           if (_cartSelectedList.isEmpty) {
@@ -780,7 +782,29 @@ class CartScreenState extends ConsumerState<CartScreen> {
             ),
             Visibility(
               visible: _cartItems.isEmpty,
-              child: const NonDataScreen(text: '장바구니에 담은 상품이 없습니다.'),
+              child: Center(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 200, bottom: 15),
+                      child: Image.asset('assets/images/product/empty_cart.png',
+                        width: 180,
+                        height: 180,
+                      ),
+                    ),
+                    Text(
+                      '아직 상품을 담지 않았어요!',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        fontWeight: FontWeight.w300,
+                        color: const Color(0xFF7B7B7B),
+                        height: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             Visibility(
               visible: _cartItems.isEmpty,
