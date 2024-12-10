@@ -1287,6 +1287,14 @@ class MyInfoEditScreenState extends ConsumerState<MyInfoEditScreen> {
       'pwd_chk' :confirmPassword,
       'pwd_token' :pref.getToken(),
     };
-    await ref.read(myInfoEditViewModelProvider.notifier).editMyPassword(requestData);
+    final defaultResponseDTO = await ref.read(myInfoEditViewModelProvider.notifier).editMyPassword(requestData);
+    if (!mounted) return;
+    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+    if(defaultResponseDTO.result == true) {
+      setState(() {
+        _passwordController.clear();
+        _confirmPasswordController.clear();
+      });
+    }
   }
 }

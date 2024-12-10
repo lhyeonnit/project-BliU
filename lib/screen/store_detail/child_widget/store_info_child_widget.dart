@@ -1,10 +1,9 @@
 import 'package:BliU/data/store_data.dart';
 import 'package:BliU/screen/modal_dialog/message_dialog.dart';
+import 'package:BliU/screen/modal_dialog/store_coupon_bottom.dart';
 import 'package:BliU/screen/store_detail/view_model/store_info_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
-import 'package:BliU/utils/utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,35 +22,6 @@ class StoreInfoChildWidgetState extends ConsumerState<StoreInfoChildWidget> {
   @override
   void initState() {
     super.initState();
-  }
-  Future<void> _downloadCoupon() async {
-    // 쿠폰 다운로드를 위한 requestData 준비
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-    final Map<String, dynamic> requestData = {
-      'mt_idx': mtIdx,
-      'st_idx': widget.storeData?.stIdx, // 실제 쿠폰 ID 값을 여기 넣어야 합니다
-    };
-
-    try {
-      // 쿠폰 다운로드 요청 수행
-      await ref.read(storeInfoViewModelProvider.notifier).downStoreCoupon(requestData);
-
-      // 다운로드가 완료되었으면 사용자에게 알림
-      final storeDownloadResponse = ref.read(storeInfoViewModelProvider)?.storeDownloadResponseDTO;
-      if (!mounted) return;
-      Utils.getInstance().showSnackBar(context, storeDownloadResponse!.data.toString());
-      setState(() {
-        widget.storeData?.downCoupon = "N";
-      });
-    } catch (e) {
-      // 오류 발생 시 로그 및 사용자에게 알림
-      if (kDebugMode) {
-        print("쿠폰 다운로드 중 오류 발생: $e");
-      }
-      if (!mounted) return;
-      Utils.getInstance().showSnackBar(context, "쿠폰 다운로드 중 오류가 발생했습니다.");
-    }
   }
 
   @override
@@ -205,7 +175,7 @@ class StoreInfoChildWidgetState extends ConsumerState<StoreInfoChildWidget> {
                         child: Row(
                           children: [
                             Text(
-                              '즐겨찾기 ${widget.storeData?.stLike}',
+                              '즐겨찾기 ${widget.storeData?.stLike ?? 0}',
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
@@ -214,7 +184,6 @@ class StoreInfoChildWidgetState extends ConsumerState<StoreInfoChildWidget> {
                               ),
                             ),
                             const SizedBox(width: 8), // 텍스트와 아이콘 사이의 간격
-
                             widget.storeData?.checkMark == "Y" ? SvgPicture.asset(
                               'assets/images/store/book_mark.svg',
                               colorFilter: const ColorFilter.mode(
@@ -253,7 +222,15 @@ class StoreInfoChildWidgetState extends ConsumerState<StoreInfoChildWidget> {
               margin: const EdgeInsets.only(bottom: 15),
               child: GestureDetector(
                 onTap: () {
-                  _downloadCoupon();
+                  if (widget.storeData != null) {
+                    StoreCouponBottom.showBottomSheet(context, widget.storeData!, (isAllDown) {
+                      if (isAllDown) {
+                        setState(() {
+                          widget.storeData?.downCoupon = "N";
+                        });
+                      }
+                    });
+                  }
                 },
                 child: Container(
                   width: double.infinity,

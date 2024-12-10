@@ -21,7 +21,7 @@ class CouponReceiveScreen extends ConsumerStatefulWidget {
 }
 
 class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
-  late int _ptIdx;
+  late int _stIdx;
   bool _isAllDownload = false;
 
   List<CouponData> _couponList = [];
@@ -29,9 +29,9 @@ class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
   @override
   void initState() {
     super.initState();
-    _ptIdx = 0;
+    _stIdx = 0;
     try {
-      _ptIdx = int.parse(Get.parameters["pt_idx"].toString());
+      _stIdx = int.parse(Get.parameters["st_idx"].toString());
     } catch(e) {
       //
     }
@@ -219,7 +219,7 @@ class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
     final pref = await SharedPreferencesManager.getInstance();
     Map<String, dynamic> requestData = {
       'mt_idx': pref.getMtIdx(),
-      'pt_idx': _ptIdx,
+      'st_idx': _stIdx,
     };
 
     final productCouponResponseDTO = await ref.read(couponReceiveViewModelProvider.notifier).getList(requestData);

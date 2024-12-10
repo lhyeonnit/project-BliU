@@ -329,7 +329,6 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
     _getOrderDetail();
     _getCancelDetail();
     _getReturnDetail();
-
   }
 
   void _getOrderDetail() async {

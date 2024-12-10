@@ -12,6 +12,7 @@ class ProductFilterBottom extends StatefulWidget {
   final List<StyleCategoryData> selectedStyleOption;
   final RangeValues selectedRangeValuesOption;
   final ValueChanged<Map<String, dynamic>> onValueSelected;
+  final bool? ageVisible;
 
   const ProductFilterBottom({
     super.key,
@@ -22,6 +23,7 @@ class ProductFilterBottom extends StatefulWidget {
     required this.selectedStyleOption,
     required this.selectedRangeValuesOption,
     required this.onValueSelected,
+    this.ageVisible,
   });
 
   @override
@@ -35,6 +37,7 @@ class ProductFilterBottomState extends State<ProductFilterBottom> {
   late CategoryData? _tempSelectedAgeGroup;
   late List<StyleCategoryData> _tempSelectedStyle;
   late RangeValues _tempSelectedRange;
+  late bool _ageVisible;
 
   @override
   void initState() {
@@ -44,6 +47,7 @@ class ProductFilterBottomState extends State<ProductFilterBottom> {
     _tempSelectedAgeGroup = widget.selectedAgeOption;
     _tempSelectedStyle = List.from(widget.selectedStyleOption);
     _tempSelectedRange = widget.selectedRangeValuesOption;
+    _ageVisible = widget.ageVisible ?? true;
     WidgetsBinding.instance.addPostFrameCallback((_){
       if (widget.isMoveBottom) {
         _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
@@ -100,38 +104,46 @@ class ProductFilterBottomState extends State<ProductFilterBottom> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 7, bottom: 10),
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          '연령',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 18),
-                            fontWeight: FontWeight.bold,
-                            height: 1.2,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                      Visibility(
+                        visible: _ageVisible,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: List.generate(
-                            _ageCategories.length, (index) {
-                              final ageCategory = _ageCategories[index];
-                              return Container(
-                                margin: const EdgeInsets.only(top: 10),
-                                child: _buildAgeGroupChip(ageCategory),
-                              );
-                            }
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: const Color(0xFFEEEEEE)),
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 7, bottom: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(
+                                '연령',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: Responsive.getFont(context, 18),
+                                  fontWeight: FontWeight.bold,
+                                  height: 1.2,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: List.generate(
+                                    _ageCategories.length, (index) {
+                                  final ageCategory = _ageCategories[index];
+                                  return Container(
+                                    margin: const EdgeInsets.only(top: 10),
+                                    child: _buildAgeGroupChip(ageCategory),
+                                  );
+                                }
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 1, color: const Color(0xFFEEEEEE)),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Container(

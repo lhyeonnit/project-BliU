@@ -89,7 +89,7 @@ class MyPointViewModel extends StateNotifier<MyPointModel> {
   }
 
   void setSelectedCategoryIndex(int index) {
-    state.selectedCategoryIndex;
+    state.selectedCategoryIndex = index;
     ref.notifyListeners();
   }
 }

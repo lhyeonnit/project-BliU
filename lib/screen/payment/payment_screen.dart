@@ -189,7 +189,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
   void _addressSearch() async {
     // 주소 검색 API 호출
-    DaumPostData? result = await Navigator.push(
+    final result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => const WebViewWithDaumPostWebView(), // 주소 검색 창으로 이동
@@ -197,6 +197,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     );
 
     if (result != null) {
+      result as DaumPostData;
       setState(() {
         _addressRoadController.text = result.roadAddress;
         _savedZip = result.zonecode;
@@ -580,22 +581,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       if (payOrderResult.result == true) {
         final payOrderResultDetailData = payOrderResult.data;
         if (mounted) {
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //       builder: (context) =>
-          //           PaymentCompleteScreen(
-          //             memberType: mtIdx.isNotEmpty ? 1 : 2,
-          //             payType: _payType,
-          //             payOrderResultDetailData: payOrderResultDetailData,
-          //             savedRecipientName: _recipientNameController.text,
-          //             savedRecipientPhone: _recipientPhoneController.text,
-          //             savedAddressRoad: _addressRoadController.text,
-          //             savedAddressDetail: _addressDetailController.text,
-          //             savedMemo: _memoController.text,
-          //           )
-          //   ),
-          // );
           final map = {
             'memberType' : mtIdx.isNotEmpty ? 1 : 2,
             'payType' : _payType,
@@ -1297,8 +1282,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                               decoration: BoxDecoration(
                                                 color: Colors.white,
                                                 borderRadius: BorderRadius.circular(6),
-                                                border: Border.all(
-                                                    color: _payType == 4 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
+                                                border: Border.all(color: _payType == 4 ? const Color(0xFFFF6192) : const Color(0xFFDDDDDD)),
                                               ),
                                               child: Center(
                                                 child: Text(
@@ -1393,13 +1377,16 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                   GestureDetector(
                                     onTap: () async {
                                       if (_couponList.isNotEmpty) {
-                                        CouponData? selectedCoupon = await Navigator.pushNamed(
+                                        final map = {'couponList' : _couponList};
+
+                                        final selectedCoupon = await Navigator.pushNamed(
                                           context,
                                           '/payment_coupon',
-                                          arguments: _couponList,
+                                          arguments: map,
                                         );
 
                                         if (selectedCoupon != null) {
+                                          selectedCoupon as CouponData;
                                           setState(() {
                                             _couponText = "${selectedCoupon.couponDiscount} 할인 적용";
                                             _selectedCouponData = selectedCoupon;
@@ -1552,12 +1539,14 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                               onTap:  _point >= 1000 ? () { // 포인트가 1000 이상일 때만 활성화
                                                 final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
                                                 if (_point > 0) {
-                                                  if (_point > maxUsePoint) {
-                                                    _pointController.text = maxUsePoint.toString();
-                                                    _pointCheck(maxUsePoint.toString());
-                                                  } else {
-                                                    _pointController.text = _point.toString();
-                                                    _pointCheck(_point.toString());
+                                                  if (maxUsePoint > 1000) {
+                                                    if (_point > maxUsePoint) {
+                                                      _pointController.text = maxUsePoint.toString();
+                                                      _pointCheck(maxUsePoint.toString());
+                                                    } else {
+                                                      _pointController.text = _point.toString();
+                                                      _pointCheck(_point.toString());
+                                                    }
                                                   }
                                                 }
                                               } : null,

@@ -317,6 +317,7 @@ class ProductListScreenState extends ConsumerState<ProductListScreen> with Ticke
             selectedStyleOption: selectedStyles,
             selectedAgeOption: selectedAgeGroup,
             selectedRangeValuesOption: selectedRangeValues,
+            ageVisible: _selectedCategory.ctName == "베이비 잡화" ? false : true,
             onValueSelected: (Map<String, dynamic> selectedValue) {
               setState(() {
                 selectedAgeGroup = selectedValue['age'];

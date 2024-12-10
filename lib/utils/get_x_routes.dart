@@ -84,7 +84,7 @@ class GetXRoutes {
     ),
 
     GetPage(
-      name: '/coupon_receive/:pt_idx',
+      name: '/coupon_receive/:st_idx',
       page: () => const CouponReceiveScreen(),
     ),
 
@@ -167,7 +167,7 @@ class GetXRoutes {
     ),
     GetPage(
       name: '/payment_coupon',
-      page: () => PaymentCouponScreen(couponList: Get.arguments,),
+      page: () => PaymentCouponScreen(couponList: Get.arguments['couponList'],),
     ),
     GetPage(
       name: '/payment_iamport',

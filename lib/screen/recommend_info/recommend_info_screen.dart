@@ -170,8 +170,8 @@ class RecommendInfoScreenState extends ConsumerState<RecommendInfoScreen>
               SlideTransition(
                 position: _bottomSheetSlideAnimation,
                 child: DraggableScrollableSheet(
-                  initialChildSize: 0.5, // 바텀 시트가 처음 열릴 때 높이
-                  minChildSize: 0.5,
+                  initialChildSize: 0.65, // 바텀 시트가 처음 열릴 때 높이
+                  minChildSize: 0.65,
                   maxChildSize: 0.95,
                   builder: (context, scrollController) {
                     return Stack(
