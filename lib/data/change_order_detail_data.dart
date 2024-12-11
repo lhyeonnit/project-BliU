@@ -20,7 +20,6 @@ class ChangeOrderDetailData {
   final OrderDetailInfoDeliveryData? delivery;
   final OrderDetailInfoOrderData? order;
 
-
   ChangeOrderDetailData({
     required this.cancelIdx,
     required this.ctWdate,

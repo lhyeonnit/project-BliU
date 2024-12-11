@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class ReturnDetailChildWidget extends StatefulWidget {
   final OrderDetailInfoData? orderDetailInfoData;
@@ -23,7 +24,8 @@ class ReturnDetailChildWidget extends StatefulWidget {
       String detail,
       String returnAccount,
       String returnBank,
-      List<File> images) onDataCollected;
+      List<File> images,
+      bool isAgree) onDataCollected;
 
   const ReturnDetailChildWidget({
     required this.returnInfoData,
@@ -46,6 +48,9 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
   String _dropdownAccount = '은행명';
   String _detailedReason = '';
   String _returnAccount = '';
+  bool _infoVisible = false;
+  bool _isAgree = false;
+  double _deliveryWebViewHeight = 300;
 
   final LayerLink _layerLinkReason = LayerLink(); // 취소 사유 드롭다운을 위한 LayerLink
   final LayerLink _layerLinkBank = LayerLink(); // 은행명 드롭다운을 위한 LayerLink
@@ -70,6 +75,9 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
         setState(() {
           _dropdownText = _returnReasons[index].ctName ?? "";
           _dropdownValue = _returnReasons[index].ctIdx ?? 0;
+          if (_dropdownValue == 8 || _dropdownValue == 9) {
+            _infoVisible = true;
+          }
           _updateCollectedData();
         });
       });
@@ -168,7 +176,9 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
                         decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xFFE1E1E1)),
+                          border: Border.all(
+                            color: const Color(0xFFE1E1E1),
+                          ),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Row(
@@ -180,6 +190,7 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
                                 fontFamily: 'Pretendard',
                                 fontSize: Responsive.getFont(context, 14),
                                 color: Colors.black,
+                                height: 1.2,
                               ),
                             ),
                             SvgPicture.asset('assets/images/product/ic_select.svg'),
@@ -189,13 +200,17 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
                     ),
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(top: 8, bottom: 10),
-                  child: Text(
-                    '! 판매자 귀책이 아닐 시 반품 비용이 발생할 수 있습니다.',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 12),
+                Visibility(
+                  visible: _infoVisible,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 8, bottom: 10),
+                    child: Text(
+                      '! 불량·파손·오배송 시 판매자 부담으로 처리됩니다.',
+                      style: TextStyle(
+                        color: const Color(0xFFFF6192),
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 12),
+                      ),
                     ),
                   ),
                 ),
@@ -477,6 +492,99 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
               ],
             ),
           ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 20),
+            height: 10,
+            width: double.infinity,
+            color: const Color(0xFFF5F9F9),
+          ),
+          Container(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+            child: Text(
+              '교환/반품 정책',
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 18),
+                fontWeight: FontWeight.bold,
+                height: 1.2,
+              ),
+            ),
+          ),
+          Container(
+            height: _deliveryWebViewHeight,
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+            child: InAppWebView(
+              initialFile: "assets/html/exchange.html",
+              initialSettings: InAppWebViewSettings(
+                transparentBackground: true,
+              ),
+              onProgressChanged: (controller, progress) {
+                if (progress == 100) {
+                  controller.getContentHeight().then((height) {
+                    setState(() {
+                      _deliveryWebViewHeight = double.parse(height.toString());
+                    });
+                  });
+                  Future.delayed(const Duration(seconds: 1), () {
+                    controller.getContentHeight().then((height) {
+                      setState(() {
+                        _deliveryWebViewHeight = double.parse(height.toString());
+                      });
+                    });
+                  });
+                }
+              },
+              onZoomScaleChanged: (controller, o, n) {
+                controller.reload();
+              },
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _isAgree = !_isAgree;
+                _updateCollectedData();
+              });
+            },
+            child: Container(
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+              child: Row(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.all(6),
+                    height: 22,
+                    width: 22,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(
+                        color: _isAgree ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                      ),
+                      color: _isAgree ? const Color(0xFFFF6191) : Colors.white,
+                    ),
+                    child: SvgPicture.asset(
+                      'assets/images/check01_off.svg', // 체크박스 아이콘
+                      colorFilter: ColorFilter.mode(
+                        _isAgree ? Colors.white : const Color(0xFFCCCCCC),
+                        BlendMode.srcIn,
+                      ),
+                      height: 10,
+                      width: 10,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  Text(
+                    '교환/반품 안내사항을 확인했습니다.',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      height: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -550,6 +658,7 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
     String returnBank = _dropdownAccount;
     String returnAccount = _returnAccount;
     List<File> images = _selectedImages; // 이미지를 리스트로 수집
-    widget.onDataCollected(reason, reasonIdx, details, returnBank, returnAccount, images);
+    bool isAgree = _isAgree;
+    widget.onDataCollected(reason, reasonIdx, details, returnBank, returnAccount, images, isAgree);
   }
 }

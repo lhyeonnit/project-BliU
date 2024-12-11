@@ -13,8 +13,9 @@ class OrderItem extends ConsumerStatefulWidget {
   final OrderData orderData;
   final OrderDetailData orderDetailData;
   final ChangeOrderDetailData? changeOrderDetailData;
+  final bool? isList;
 
-  const OrderItem({super.key, required this.orderData, required this.orderDetailData, this.changeOrderDetailData});
+  const OrderItem({super.key, required this.orderData, required this.orderDetailData, this.changeOrderDetailData, required this.isList});
 
   @override
   ConsumerState<OrderItem> createState() => OrderItemState();
@@ -22,19 +23,12 @@ class OrderItem extends ConsumerStatefulWidget {
 
 
 class OrderItemState extends ConsumerState<OrderItem> {
-  late OrderData _orderData;
-  late OrderDetailData _orderDetailData;
-  late ChangeOrderDetailData? _changeOrderDetailData;
   late int _ctStatus;
 
   @override
   void initState() {
     super.initState();
-
-    _orderData = widget.orderData;
-    _orderDetailData = widget.orderDetailData;
-    _changeOrderDetailData = widget.changeOrderDetailData;
-    _ctStatus = _orderDetailData.ctStats ?? 0;
+    _ctStatus = widget.orderDetailData.ctStats ?? 0;
     //_ctStatus = 81; //테스트용
   }
 
@@ -67,7 +61,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
                 'type' : mtIdx.isNotEmpty ? 1 : 2,
                 'mt_idx' : mtIdx,
                 'temp_mt_id' : pref.getToken(),
-                'ct_idx' : _orderDetailData.ctIdx,
+                'ct_idx' : widget.orderDetailData.ctIdx,
               };
 
               final defaultResponseDTO = await ref.read(orderItemViewModelProvider.notifier).requestOrder(requestData);
@@ -79,7 +73,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
                 if (defaultResponseDTO.result == true) {
                   setState(() {
                     _ctStatus = 8;
-                    _orderDetailData.reviewWrite = "Y";
+                    widget.orderDetailData.reviewWrite = "Y";
                   });
                 }
               }
@@ -127,23 +121,26 @@ class OrderItemState extends ConsumerState<OrderItem> {
               Container(
                 margin: const EdgeInsets.only(right: 7),
                 child: Text(
-                  _orderDetailData.ctStatusTxt ?? "",
+                  widget.orderDetailData.ctStatusTxt ?? "",
                   style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                    color: (widget.isList ?? true) ? Colors.black : const Color(0xFFFF6192),
                     fontSize: Responsive.getFont(context, 15),
                   ),
                 ),
               ),
-              Text(
-                _changeOrderDetailData?.octCancelMemo2 ?? _changeOrderDetailData?.ortReturnMemo2 ?? "",
-                style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  color: Colors.black,
-                  fontSize: Responsive.getFont(context, 15),
+              Visibility(
+                visible: !(widget.isList ?? true),
+                child: Text(
+                  widget.changeOrderDetailData?.octCancelMemo2 ?? widget.changeOrderDetailData?.ortReturnMemo2 ?? "",
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    color: Colors.black,
+                    fontSize: Responsive.getFont(context, 15),
+                  ),
                 ),
-              ),
+              )
             ],
           ),
         ),
@@ -159,7 +156,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(6.0),
                   child: Image.network(
-                    _orderDetailData.ptImg ?? "",
+                    widget.orderDetailData.ptImg ?? "",
                     width: 90,
                     height: 90,
                     fit: BoxFit.cover,
@@ -174,7 +171,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
                           ),
                         ),
                       );
-                    }
+                    },
                   ),
                 ),
               ),
@@ -184,7 +181,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _orderDetailData.stName ?? "",
+                      widget.orderDetailData.stName ?? "",
                       style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 12),
@@ -194,7 +191,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
                     Padding(
                       padding: const EdgeInsets.only(top: 4, bottom: 8),
                       child: Text(
-                        _orderDetailData.ptName ?? "",
+                        widget.orderDetailData.ptName ?? "",
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 14),
@@ -204,7 +201,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
                       ),
                     ),
                     Text(
-                      "${_orderDetailData.ctOptValue} ${_orderDetailData.ctOptQty}개",
+                      "${widget.orderDetailData.ctOptValue} ${widget.orderDetailData.ctOptQty}개",
                       style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: Responsive.getFont(context, 13),
@@ -214,7 +211,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        "${Utils.getInstance().priceString(_orderDetailData.ptPrice ?? 0)}원",
+                        "${Utils.getInstance().priceString(widget.orderDetailData.ptPrice ?? 0)}원",
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontWeight: FontWeight.bold,
@@ -241,7 +238,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                final map = {'orderData' : _orderData, 'orderDetailData': _orderDetailData};
+                final map = {'orderData' : widget.orderData, 'orderDetailData': widget.orderDetailData};
                 Navigator.pushNamed(context, '/cancel', arguments: map);
               },
               style: TextButton.styleFrom(
@@ -263,7 +260,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                final map = {'qnaType' : '3', 'ptIdx': _orderDetailData.ptIdx};
+                final map = {'qnaType' : '3', 'ptIdx': widget.orderDetailData.ptIdx};
                 Navigator.pushNamed(context, '/inquiry_service', arguments: map);
               },
               style: TextButton.styleFrom(
@@ -289,7 +286,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                final map = {'orderData' : _orderData, 'orderDetailData': _orderDetailData};
+                final map = {'orderData' : widget.orderData, 'orderDetailData': widget.orderDetailData};
                 Navigator.pushNamed(context, '/exchange_return', arguments: map);
               },
               style: TextButton.styleFrom(
@@ -311,7 +308,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                final map = {'odtCode' : _orderDetailData.otCode ?? "", 'deliveryType': 1};
+                final map = {'odtCode' : widget.orderDetailData.otCode ?? "", 'deliveryType': 1};
                 Navigator.pushNamed(context, '/delivery', arguments: map);
               },
               style: TextButton.styleFrom(
@@ -333,7 +330,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                final map = {'qnaType' : '3', 'ptIdx': _orderDetailData.ptIdx};
+                final map = {'qnaType' : '3', 'ptIdx': widget.orderDetailData.ptIdx};
                 Navigator.pushNamed(context, '/inquiry_service', arguments: map);
               },
               style: TextButton.styleFrom(
@@ -382,7 +379,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
               Expanded(
                 child: TextButton(
                   onPressed: () {
-                    final map = {'orderData' : _orderData, 'orderDetailData': _orderDetailData};
+                    final map = {'orderData' : widget.orderData, 'orderDetailData': widget.orderDetailData};
                     Navigator.pushNamed(context, '/exchange_return', arguments: map);
                   },
                   style: TextButton.styleFrom(
@@ -404,7 +401,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
               Expanded(
                 child: TextButton(
                   onPressed: () {
-                    final map = {'odtCode' : _orderDetailData.otCode ?? "", 'deliveryType': 1};
+                    final map = {'odtCode' : widget.orderDetailData.otCode ?? "", 'deliveryType': 1};
                     Navigator.pushNamed(context, '/delivery', arguments: map);
                   },
                   style: TextButton.styleFrom(
@@ -426,7 +423,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
               Expanded(
                 child: TextButton(
                   onPressed: () {
-                    final map = {'qnaType' : '3', 'ptIdx': _orderDetailData.ptIdx};
+                    final map = {'qnaType' : '3', 'ptIdx': widget.orderDetailData.ptIdx};
                     Navigator.pushNamed(context, '/inquiry_service', arguments: map);
                   },
                   style: TextButton.styleFrom(
@@ -454,13 +451,13 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                if (_orderDetailData.reviewWrite == "Y") {
-                  final rtIdx = _orderDetailData.rtIdx ?? 0;
+                if (widget.orderDetailData.reviewWrite == "Y") {
+                  final rtIdx = widget.orderDetailData.rtIdx ?? 0;
                   if (rtIdx > 0) {
                     // 수정 페이지로
-                    _getReviewDetail(_orderDetailData.rtIdx ?? 0);
+                    _getReviewDetail(widget.orderDetailData.rtIdx ?? 0);
                   } else {
-                    Navigator.pushNamed(context, '/review_write', arguments: _orderDetailData);
+                    Navigator.pushNamed(context, '/review_write', arguments: widget.orderDetailData);
                   }
                 } else {
                   Utils.getInstance().showSnackBar(context, "리뷰를 쓸 수 없는 주문입니다.");
@@ -485,7 +482,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                final map = {'odtCode' : _orderDetailData.otCode ?? "", 'deliveryType': 1};
+                final map = {'odtCode' : widget.orderDetailData.otCode ?? "", 'deliveryType': 1};
                 Navigator.pushNamed(context, '/delivery', arguments: map);
               },
               style: TextButton.styleFrom(
@@ -507,7 +504,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                final map = {'qnaType' : '3', 'ptIdx': _orderDetailData.ptIdx};
+                final map = {'qnaType' : '3', 'ptIdx': widget.orderDetailData.ptIdx};
                 Navigator.pushNamed(context, '/inquiry_service', arguments: map);
               },
               style: TextButton.styleFrom(
@@ -532,7 +529,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
         width: double.infinity,
         child: TextButton(
           onPressed: () {
-            final map = {'odtCode' : _orderDetailData.otCode ?? "", 'deliveryType': 2};
+            final map = {'odtCode' : widget.orderDetailData.otCode ?? "", 'deliveryType': 2};
             Navigator.pushNamed(context, '/delivery', arguments: map);
           },
           style: TextButton.styleFrom(

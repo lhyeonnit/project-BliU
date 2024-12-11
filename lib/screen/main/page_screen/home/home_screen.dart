@@ -164,7 +164,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                             automaticallyImplyLeading: false,
                             // 기본 뒤로가기 버튼을 숨김
                             backgroundColor: isScrolled ? Colors.white : Colors.transparent,
-                            expandedHeight: Utils.getInstance().isWeb() ? 450 * 1.4 : MediaQuery.of(context).size.width * 1.4,
+                            expandedHeight: Utils.getInstance().isWeb() ? 450 * 1.35 : MediaQuery.of(context).size.width * 1.35,
                             centerTitle: false,
                             title: SvgPicture.asset(
                               'assets/images/home/bottom_home.svg', // SVG 파일 경로

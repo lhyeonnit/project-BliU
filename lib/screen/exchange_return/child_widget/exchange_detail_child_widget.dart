@@ -7,12 +7,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class ExchangeDetailChildWidget extends StatefulWidget {
   final OrderDetailInfoData? orderDetailInfoData;
   final List<CategoryData> exchangeCategory;
   final List<CategoryData> exchangeDeliveryCostCategory;
-  final Function(String reason, int reasonIdx, String details, int shippingCost, List<File> images) onDataCollected;
+  final Function(String reason, int reasonIdx, String details, int shippingCost, List<File> images, bool isAgree) onDataCollected;
 
   const ExchangeDetailChildWidget({
     required this.orderDetailInfoData,
@@ -31,6 +32,9 @@ class ExchangeDetailChildWidgetState extends State<ExchangeDetailChildWidget> {
   String _dropdownText = '사유 선택';
   int _dropdownValue = 0;
   String _detailedReason = '';
+  bool _infoVisible = false;
+  bool _isAgree = false;
+  double _deliveryWebViewHeight = 300;
   final LayerLink _layerLink = LayerLink();
 
   List<CategoryData> get _exchangeReasons => widget.exchangeCategory;
@@ -142,6 +146,20 @@ class ExchangeDetailChildWidgetState extends State<ExchangeDetailChildWidget> {
                             SvgPicture.asset('assets/images/product/ic_select.svg'),
                           ],
                         ),
+                      ),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: _infoVisible,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 8, bottom: 10),
+                    child: Text(
+                      '! 불량·파손·오배송 시 판매자 부담으로 처리됩니다.',
+                      style: TextStyle(
+                        color: const Color(0xFFFF6192),
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 12),
                       ),
                     ),
                   ),
@@ -377,6 +395,99 @@ class ExchangeDetailChildWidgetState extends State<ExchangeDetailChildWidget> {
               }),
             ],
           ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 20),
+            height: 10,
+            width: double.infinity,
+            color: const Color(0xFFF5F9F9),
+          ),
+          Container(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+            child: Text(
+              '교환/반품 정책',
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 18),
+                fontWeight: FontWeight.bold,
+                height: 1.2,
+              ),
+            ),
+          ),
+          Container(
+            height: _deliveryWebViewHeight,
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+            child: InAppWebView(
+              initialFile: "assets/html/exchange.html",
+              initialSettings: InAppWebViewSettings(
+                transparentBackground: true,
+              ),
+              onProgressChanged: (controller, progress) {
+                if (progress == 100) {
+                  controller.getContentHeight().then((height) {
+                    setState(() {
+                      _deliveryWebViewHeight = double.parse(height.toString());
+                    });
+                  });
+                  Future.delayed(const Duration(seconds: 1), () {
+                    controller.getContentHeight().then((height) {
+                      setState(() {
+                        _deliveryWebViewHeight = double.parse(height.toString());
+                      });
+                    });
+                  });
+                }
+              },
+              onZoomScaleChanged: (controller, o, n) {
+                controller.reload();
+              },
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _isAgree = !_isAgree;
+                _updateCollectedData();
+              });
+            },
+            child: Container(
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+              child: Row(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.all(6),
+                    height: 22,
+                    width: 22,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(
+                        color: _isAgree ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC),
+                      ),
+                      color: _isAgree ? const Color(0xFFFF6191) : Colors.white,
+                    ),
+                    child: SvgPicture.asset(
+                      'assets/images/check01_off.svg', // 체크박스 아이콘
+                      colorFilter: ColorFilter.mode(
+                        _isAgree ? Colors.white : const Color(0xFFCCCCCC),
+                        BlendMode.srcIn,
+                      ),
+                      height: 10,
+                      width: 10,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  Text(
+                    '교환/반품 안내사항을 확인했습니다.',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 14),
+                      height: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -411,6 +522,9 @@ class ExchangeDetailChildWidgetState extends State<ExchangeDetailChildWidget> {
                       setState(() {
                         _dropdownText = _exchangeReasons[index].ctName ?? "";
                         _dropdownValue = _exchangeReasons[index].ctIdx ?? 0;
+                        if (_dropdownValue == 3 || _dropdownValue == 4) {
+                          _infoVisible = true;
+                        }
                         _updateCollectedData();
                       });
                       _removeOverlay();
@@ -443,6 +557,7 @@ class ExchangeDetailChildWidgetState extends State<ExchangeDetailChildWidget> {
     String details = _detailedReason;
     int shippingCost = _exchangeDeliveryCostMethod[_shippingOption].ctIdx ?? 0;
     List<File> images = _selectedImages; // 이미지를 리스트로 수집
-    widget.onDataCollected(reason, reasonIdx, details, shippingCost, images);
+    bool isAgree = _isAgree;
+    widget.onDataCollected(reason, reasonIdx, details, shippingCost, images, isAgree);
   }
 }

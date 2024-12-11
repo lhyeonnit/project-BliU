@@ -406,6 +406,7 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
         OrderItem(
           orderData: orderData,
           orderDetailData: detailList,
+          isList: true,
         ),
       ],
     );

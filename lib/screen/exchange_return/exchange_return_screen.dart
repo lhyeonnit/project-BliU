@@ -10,6 +10,9 @@ import 'package:BliU/screen/cancel/child_widget/cancel_child_widget.dart';
 import 'package:BliU/screen/exchange_return/child_widget/exchange_detail_child_widget.dart';
 import 'package:BliU/screen/exchange_return/child_widget/return_detail_child_widget.dart';
 import 'package:BliU/screen/exchange_return/view_model/exchange_return_view_model.dart';
+import 'package:BliU/screen/main/main_screen.dart';
+import 'package:BliU/screen/modal_dialog/confirm_dialog.dart';
+import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -48,6 +51,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
   int shippingCost = 0;
   List<File> images = [];
   int? userType;
+  bool isAgree = false;
 
   @override
   void initState() {
@@ -142,37 +146,61 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
       return;
     }
 
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-    String? appToken = pref.getToken();
-    int memberType = (mtIdx != null) ? 1 : 2;
-    String ctType = selectedIndex == 0 ? 'X' : 'R';
-    String ortReturnInfo = "";
-    if (ctType == "X") {
-      ortReturnInfo = shippingCost.toString();
+    if (!isAgree) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const MessageDialog(title: "알림", message: "반품/교환 정책을 확인해 주세요.",);
+        },
+      );
+      return;
     }
 
-    final List<MultipartFile> files = images.map((img) => MultipartFile.fromFileSync(img.path)).toList();
+    showDialog(
+      context: context,
+      builder: (mContext) {
+        return ConfirmDialog(
+          title: '알림',
+          message: '교환/반품 요청 하시겠습니까?',
+          doConfirm: () async {
+            final pref = await SharedPreferencesManager.getInstance();
+            final mtIdx = pref.getMtIdx();
+            String? appToken = pref.getToken();
+            int memberType = (mtIdx != null) ? 1 : 2;
+            String ctType = selectedIndex == 0 ? 'X' : 'R';
+            String ortReturnInfo = "";
+            if (ctType == "X") {
+              ortReturnInfo = shippingCost.toString();
+            }
 
-    final formData = FormData.fromMap({
-      'type': memberType,
-      'mt_idx': mtIdx,
-      'odt_code': widget.orderDetailData.odtCode,
-      'ct_type': ctType,
-      'ct_idx': reasonIdx,
-      'ct_reason': details,
-      'ort_return_info': ortReturnInfo,
-      'ct_img': files,
-      'ort_return_bank_info': "$returnBank $returnAccount",
-      'temp_mt_id': appToken,
-    });
+            final List<MultipartFile> files = images.map((img) => MultipartFile.fromFileSync(img.path)).toList();
 
-    final defaultResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).orderReturn(formData);
-    if (!mounted) return;
-    if (defaultResponseDTO.result) {
-      Navigator.pop(context);
-    }
-    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+            final formData = FormData.fromMap({
+              'type': memberType,
+              'mt_idx': mtIdx,
+              'odt_code': widget.orderDetailData.odtCode,
+              'ct_type': ctType,
+              'ct_idx': reasonIdx,
+              'ct_reason': details,
+              'ort_return_info': ortReturnInfo,
+              'ct_img': files,
+              'ort_return_bank_info': "$returnBank $returnAccount",
+              'temp_mt_id': appToken,
+            });
+
+            final defaultResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).orderReturn(formData);
+            if (!mounted) return;
+            if (defaultResponseDTO.result) {
+              Navigator.pop(context);
+
+              Utils.getInstance().showSnackBar(context, "요청이 완료되었습니다.");
+            } else {
+              Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+            }
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -248,6 +276,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
                             isSelected: selectedIndex == 0,
                             onTap: () {
                               setState(() {
+                                isAgree = false;
                                 selectedIndex = 0;
                               });
                             },
@@ -262,6 +291,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
                             isSelected: selectedIndex == 1,
                             onTap: () {
                               setState(() {
+                                isAgree = false;
                                 selectedIndex = 1;
                               });
                             },
@@ -334,13 +364,15 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
               int collectedReasonIdx,
               String collectedDetails,
               int collectedShippingCost,
-              List<File> collectedImages) {
+              List<File> collectedImages,
+              bool agree) {
             setState(() {
               reason = collectedReason;
               reasonIdx = collectedReasonIdx;
               details = collectedDetails;
               shippingCost = collectedShippingCost;
               images = collectedImages;
+              isAgree = agree;
             });
           },
         ),
@@ -359,7 +391,8 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
               String collectedDetails,
               String collectedReturnBank,
               String collectedReturnAccount,
-              List<File> collectedImages) {
+              List<File> collectedImages,
+              bool agree) {
             setState(() {
               reason = collectedReason;
               reasonIdx = collectedReasonIdx;
@@ -367,6 +400,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
               returnBank = collectedReturnBank;
               returnAccount = collectedReturnAccount;
               images = collectedImages;
+              isAgree = agree;
             });
           },
         ),

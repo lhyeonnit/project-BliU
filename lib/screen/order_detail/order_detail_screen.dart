@@ -143,6 +143,7 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                         orderData: widget.orderData,
                         orderDetailData: orderDetailData,
                         changeOrderDetailData: changeOrderDetailData,
+                        isList: false,
                       );
                     }).toList(),
                   ),
@@ -327,8 +328,12 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
 
   void _afterBuild(BuildContext context) {
     _getOrderDetail();
-    _getCancelDetail();
-    _getReturnDetail();
+
+    if (type == "C") {
+      _getCancelDetail();
+    } else if (type == "R" || type == "X") {
+      _getReturnDetail();
+    }
   }
 
   void _getOrderDetail() async {
@@ -403,7 +408,6 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
         setState(() {
           userType = memberType;
           changeOrderDetailData = exchangeReturnDetailResponseDTO.data;
-
         });
       } else {
         if (!mounted) return;
