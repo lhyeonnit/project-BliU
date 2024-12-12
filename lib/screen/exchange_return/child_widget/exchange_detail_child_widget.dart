@@ -326,74 +326,77 @@ class ExchangeDetailChildWidgetState extends State<ExchangeDetailChildWidget> {
             ),
           ),
           // 교환 배송비 선택
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    Text(
-                      '교환 배송비',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 13),
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                        height: 1.2,
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Text(
-                        '*',
+          Visibility(
+            visible: !_infoVisible,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Text(
+                        '교환 배송비',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: Responsive.getFont(context, 13),
-                          color: const Color(0xFFFF6192),
+                          color: Colors.black,
                           fontWeight: FontWeight.normal,
                           height: 1.2,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              ..._exchangeDeliveryCostMethod.map((categoty) {
-                int index = _exchangeDeliveryCostMethod.indexOf(categoty);
-                return Row(
-                  children: [
-                    Radio(
-                      value: index,
-                      groupValue: _shippingOption,
-                      onChanged: (value) {
-                        setState(() {
-                          _shippingOption = value ?? 0;
-                          _updateCollectedData();
-                        });
-                      },
-                      activeColor: const Color(0xFFFF6192),
-                      fillColor: WidgetStateProperty.resolveWith((states) {
-                        if (!states.contains(WidgetState.selected)) {
-                          return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
-                        }
-                        return const Color(0xFFFF6192); // 선택된 상태의 색상
-                      }),
-                    ),
-                    Expanded(
-                      child: Text(
-                        categoty.ctName ?? "",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          height: 1.2,
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Text(
+                          '*',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 13),
+                            color: const Color(0xFFFF6192),
+                            fontWeight: FontWeight.normal,
+                            height: 1.2,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                );
-              }),
-            ],
+                    ],
+                  ),
+                ),
+                ..._exchangeDeliveryCostMethod.map((category) {
+                  int index = _exchangeDeliveryCostMethod.indexOf(category);
+                  return Row(
+                    children: [
+                      Radio(
+                        value: index,
+                        groupValue: _shippingOption,
+                        onChanged: (value) {
+                          setState(() {
+                            _shippingOption = value ?? 0;
+                            _updateCollectedData();
+                          });
+                        },
+                        activeColor: const Color(0xFFFF6192),
+                        fillColor: WidgetStateProperty.resolveWith((states) {
+                          if (!states.contains(WidgetState.selected)) {
+                            return const Color(0xFFDDDDDD); // 비선택 상태의 라디오 버튼 색상
+                          }
+                          return const Color(0xFFFF6192); // 선택된 상태의 색상
+                        }),
+                      ),
+                      Expanded(
+                        child: Text(
+                          category.ctName ?? "",
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            height: 1.2,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+              ],
+            ),
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 20),

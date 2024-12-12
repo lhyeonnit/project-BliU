@@ -144,6 +144,8 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
   void initState() {
     super.initState();
     _returnReasons = widget.returnCategory;
+
+    print("widget.orderDetailInfoData?.order?.otPayType ${widget.orderDetailInfoData?.order?.otPayType}");
   }
 
   @override
@@ -269,118 +271,126 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
               ],
             ),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-            child: Row(
+          Visibility(
+            visible: widget.orderDetailInfoData?.order?.otPayType == "계좌 이체",
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '환불계좌',
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 13),
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  child: Row(
+                    children: [
+                      Text(
+                        '환불계좌',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 13),
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Text(
+                          '*',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 13),
+                            color: const Color(0xFFFF6192),
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Text(
-                    '*',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 13),
-                      color: const Color(0xFFFF6192),
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 8),
-                    child: GestureDetector(
-                      onTap: () {
-                        if (_overlayEntryBank == null) {
-                          _createOverlayBank();
-                        } else {
-                          _removeOverlayBank();
-                        }
-                      },
-                      child: Center(
-                        child: CompositedTransformTarget(
-                          link: _layerLinkBank, // 은행명 LayerLink
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: const Color(0xFFE1E1E1)),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  _dropdownAccount,
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: Responsive.getFont(context, 14),
-                                    color: Colors.black,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 8),
+                          child: GestureDetector(
+                            onTap: () {
+                              if (_overlayEntryBank == null) {
+                                _createOverlayBank();
+                              } else {
+                                _removeOverlayBank();
+                              }
+                            },
+                            child: Center(
+                              child: CompositedTransformTarget(
+                                link: _layerLinkBank, // 은행명 LayerLink
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: const Color(0xFFE1E1E1)),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        _dropdownAccount,
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 14),
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      SvgPicture.asset('assets/images/product/ic_select.svg'),
+                                    ],
                                   ),
                                 ),
-                                SvgPicture.asset('assets/images/product/ic_select.svg'),
-                              ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 7,
-                  child: TextField(
-                    onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-                    style: TextStyle(
-                      decorationThickness: 0,
-                      height: 1.2,
-                      fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 14),
-                    ),
-                    maxLines: 1,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                      hintText: '환불받을 은행계좌',
-                      hintStyle: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: Responsive.getFont(context, 14),
-                        color: const Color(0xFF595959),
-                        height: 1.2,
+                      Expanded(
+                        flex: 7,
+                        child: TextField(
+                          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                          style: TextStyle(
+                            decorationThickness: 0,
+                            height: 1.2,
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                          ),
+                          maxLines: 1,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                            hintText: '환불받을 은행계좌',
+                            hintStyle: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: Responsive.getFont(context, 14),
+                              color: const Color(0xFF595959),
+                              height: 1.2,
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                            ),
+                            disabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Color(0xFFE1E1E1)),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _returnAccount = value;
+                              _updateCollectedData();
+                            });
+                          },
+                        ),
                       ),
-                      enabledBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                      ),
-                      disabledBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                        borderSide: BorderSide(color: Color(0xFFE1E1E1)),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        _returnAccount = value;
-                        _updateCollectedData();
-                      });
-                    },
+                    ],
                   ),
                 ),
               ],

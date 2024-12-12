@@ -194,24 +194,27 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                           children: [
                             Flexible(
                               flex: 1,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5.0),
-                                child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Image.network(
-                                    ptImg0,
-                                    height: Responsive.getHeight(context, 84),
-                                    fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                      return SizedBox(
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            'assets/images/no_imge.svg',
-                                            fit: BoxFit.fitWidth,
+                              child: Visibility(
+                                visible: ptImg0.isNotEmpty,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Image.network(
+                                      ptImg0,
+                                      height: Responsive.getHeight(context, 84),
+                                      fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                        return SizedBox(
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              'assets/images/no_imge.svg',
+                                              fit: BoxFit.fitWidth,
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
@@ -219,24 +222,27 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                             const SizedBox(width: 10),
                             Flexible(
                               flex: 1,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5.0),
-                                child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Image.network(
-                                    ptImg1,
-                                    height: Responsive.getHeight(context, 84),
-                                    fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                      return SizedBox(
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            'assets/images/no_imge.svg',
-                                            fit: BoxFit.fitWidth,
+                              child: Visibility(
+                                visible: ptImg1.isNotEmpty,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Image.network(
+                                      ptImg1,
+                                      height: Responsive.getHeight(context, 84),
+                                      fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                        return SizedBox(
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              'assets/images/no_imge.svg',
+                                              fit: BoxFit.fitWidth,
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
@@ -244,24 +250,27 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                             const SizedBox(width: 10),
                             Flexible(
                               flex: 1,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5.0),
-                                child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Image.network(
-                                    ptImg2,
-                                    height: Responsive.getHeight(context, 84),
-                                    fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                      return SizedBox(
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            'assets/images/no_imge.svg',
-                                            fit: BoxFit.fitWidth,
+                              child: Visibility(
+                                visible: ptImg2.isNotEmpty,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Image.network(
+                                      ptImg2,
+                                      height: Responsive.getHeight(context, 84),
+                                      fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
+                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                        return SizedBox(
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              'assets/images/no_imge.svg',
+                                              fit: BoxFit.fitWidth,
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),

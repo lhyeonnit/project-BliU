@@ -277,6 +277,7 @@ class InquiryOneDetailScreen extends ConsumerWidget {
           ],
         ),
         Container(
+          width: double.infinity,
           margin: const EdgeInsets.symmetric(vertical: 20),
           child: Text(
             detailData?.qtAnswer ?? "",
