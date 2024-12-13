@@ -139,11 +139,9 @@ class GetXRoutes {
     ),
     GetPage(
       name: '/order_list',
-      page: () => const OrderListScreen(),
-    ),
-    GetPage(
-      name: '/order_list',
-      page: () => const OrderListScreen(),
+      page: () => OrderListScreen(
+        otCode: Get.arguments?['otCode'],
+      ),
     ),
     GetPage(
       name: '/payment',

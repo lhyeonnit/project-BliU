@@ -17,7 +17,8 @@ import 'package:focus_detector_v2/focus_detector_v2.dart';
 import 'package:get/get.dart';
 
 class OrderListScreen extends ConsumerStatefulWidget {
-  const OrderListScreen({super.key});
+  final String? otCode;
+  const OrderListScreen({super.key, this.otCode});
 
   @override
   ConsumerState<OrderListScreen> createState() => OrderListScreenState();
@@ -40,7 +41,7 @@ class OrderListScreenState extends ConsumerState<OrderListScreen> {
   @override
   void initState() {
     super.initState();
-    _otCode = Get.parameters["ot_code"].toString();
+    _otCode = widget.otCode;
     _scrollController.addListener(_nextLoad);
   }
 

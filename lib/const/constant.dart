@@ -144,6 +144,6 @@ class Constant {
   static const iamportUserCode = "imp56882344";// 토스테스트용
   static const iamportPg = "tosspayments";// 테스트용
 
-  //static const iamportUserCode = "imp56882344";// 실서비스
-  //static const iamportPg = "tosspayments";// 실서비스
+  // static const iamportUserCode = "im_bliueeedml";// 실서비스
+  // static const iamportPg = "tosspayments";// 실서비스
 }

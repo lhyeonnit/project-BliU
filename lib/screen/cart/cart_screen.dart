@@ -274,6 +274,8 @@ class CartScreenState extends ConsumerState<CartScreen> {
   }
 
   void _goOrder() async {
+    // TODO 비회원 구매 처리
+
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
@@ -305,12 +307,13 @@ class CartScreenState extends ConsumerState<CartScreen> {
     };
 
     final payOrderDetailDTO = await ref.read(cartViewModelProvider.notifier).orderDetail(requestData);
+    if(!mounted) return;
     if (payOrderDetailDTO != null) {
       if (payOrderDetailDTO.result ?? false) {
         final payOrderDetailData = payOrderDetailDTO.data;
         final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;
         if (payOrderDetailData != null) {
-          if(!mounted) return;
+
           if (userInfoCheck == "Y" || memberType == 2) {
             final map = {
               'payOrderDetailData': payOrderDetailData,
@@ -325,15 +328,12 @@ class CartScreenState extends ConsumerState<CartScreen> {
           }
           return;
         } else {
-          if (!mounted) return;
           Utils.getInstance().showSnackBar(context, "Network Error");
         }
       } else {
-        if (!mounted) return;
         Utils.getInstance().showSnackBar(context, payOrderDetailDTO.message ?? "");
       }
     } else {
-      if (!mounted) return;
       Utils.getInstance().showSnackBar(context, "Network Error");
     }
   }

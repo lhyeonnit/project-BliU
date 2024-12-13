@@ -36,7 +36,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
   bool _isLoading = false;
 
-  int _payType = 1; //1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
+  int _payType = 1; //1 카드결제, 2 휴대폰, 3 계좌이체, 4 카카오페이
 
   bool _allAgree = false;
   bool _agree1 = false;
@@ -378,7 +378,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
     String payMethod = "card";
     switch (_payType) {
-      //1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
+      //1 카드결제, 2 휴대폰, 3 계좌이체, 4 카카오페이
       case 1:
         payMethod = "card";
         break;
@@ -388,7 +388,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       case 3:
         payMethod = "trans";
         break;
-      case 4: // 네이버 결제
+      case 4: // 카카오페이
         break;
     }
 
@@ -1286,7 +1286,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                               ),
                                               child: Center(
                                                 child: Text(
-                                                  '네이버페이',
+                                                  '카카오페이',
                                                   style: TextStyle(
                                                     fontFamily: 'Pretendard',
                                                     color: _payType == 4 ? const Color(0xFFFF6192) : Colors.black,
@@ -1497,6 +1497,12 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                     textAlign: TextAlign.right,
                                                     // 텍스트를 오른쪽 정렬
                                                     onChanged: (text) {
+                                                      final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
+                                                      if (maxUsePoint < 1000) {
+                                                        _pointController.text = "0";
+                                                        _pointCheck("0");
+                                                        return;
+                                                      }
                                                       if (_point >= 1000) { // 포인트가 1000 이상일 때만 변경 처리
                                                         final value = int.parse(text);
                                                         final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
@@ -1538,15 +1544,18 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                             child: GestureDetector(
                                               onTap:  _point >= 1000 ? () { // 포인트가 1000 이상일 때만 활성화
                                                 final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
+                                                if (maxUsePoint < 1000) {
+                                                  _pointController.text = "0";
+                                                  _pointCheck("0");
+                                                  return;
+                                                }
                                                 if (_point > 0) {
-                                                  if (maxUsePoint > 1000) {
-                                                    if (_point > maxUsePoint) {
-                                                      _pointController.text = maxUsePoint.toString();
-                                                      _pointCheck(maxUsePoint.toString());
-                                                    } else {
-                                                      _pointController.text = _point.toString();
-                                                      _pointCheck(_point.toString());
-                                                    }
+                                                  if (_point > maxUsePoint) {
+                                                    _pointController.text = maxUsePoint.toString();
+                                                    _pointCheck(maxUsePoint.toString());
+                                                  } else {
+                                                    _pointController.text = _point.toString();
+                                                    _pointCheck(_point.toString());
                                                   }
                                                 }
                                               } : null,
@@ -2005,25 +2014,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                   children: [
                     MoveTopButton(scrollController: _scrollController),
                     GestureDetector(
-                      onTap: () async {
-                        final pref = await SharedPreferencesManager.getInstance();
-                        final mtIdx = pref.getMtIdx() ?? "";
-                        if (mtIdx.isEmpty) {
-                          if(!context.mounted) return;
-                          final result = await Navigator.pushNamed(context, '/login/Y');
-                          if (result != null) {
-                            if (result == 'guest') {
-                              _payment();
-                            } else if(result == 'member') {
-                              // TODO 결제정보 이전 작업 필요
-                              setState(() {
-                                _memberType = 1;
-                              });
-                            }
-                          }
-                        } else {
-                          _payment();
-                        }
+                      onTap: () {
+                        _payment();
                       },
                       child: Container(
                         width: double.infinity,

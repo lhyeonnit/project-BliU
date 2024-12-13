@@ -30,8 +30,17 @@ class ProductListItemState extends ConsumerState<ProductListItem> {
   Widget build(BuildContext context) {
 
     return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/product_detail/${productData.ptIdx}');
+      onTap: () async {
+        final result = await Navigator.pushNamed(context, '/product_detail/${productData.ptIdx}');
+        if (result != null) {
+          setState(() {
+            if (result == "Y") {
+              productData.likeChk = "Y";
+            } else if (result == "N") {
+              productData.likeChk = "N";
+            }
+          });
+        }
       },
       child: Container(
         decoration: const BoxDecoration(

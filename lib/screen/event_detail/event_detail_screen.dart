@@ -109,6 +109,16 @@ class EventDetailScreen extends ConsumerWidget {
                 //Image.asset('assets/images/my/event_dt.png'),
                 Image.network(
                   btImage,
+                  // loadingBuilder: (BuildContext context, Widget child,
+                  //     ImageChunkEvent? loadingProgress) {
+                  //   if (loadingProgress == null) return child;
+                  //   return Center(
+                  //     child: SvgPicture.asset(
+                  //       'assets/images/no_imge.svg',
+                  //       fit: BoxFit.fitWidth,
+                  //     ),
+                  //   );
+                  // },
                   errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                     return Center(
                       child: SvgPicture.asset(

@@ -184,14 +184,14 @@ class StoreCouponBottomContentState extends ConsumerState<StoreCouponBottomConte
             child: Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.only(top: 100, bottom: 15),
-                  child: SvgPicture.asset('assets/images/product/no_data_img.svg',
-                    width: 90,
-                    height: 90,
+                  margin: const EdgeInsets.only(top: 50, bottom: 15),
+                  child: Image.asset('assets/images/product/empty_coupon.png',
+                    width: 180,
+                    height: 180,
                   ),
                 ),
                 Text(
-                  '등록된 쿠폰이 없습니다.',
+                  '지금은 쿠폰이 없어요!',
                   style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),

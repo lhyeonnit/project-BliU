@@ -99,7 +99,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
     final exchangeCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getCategory(requestData2);
     final returnCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getCategory(requestData3);
     final exchangeDeliveryCostCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getExchangeDeliveryCostCategory(requestData4);
-    final exchangeInfoResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getOrderExchangeReturnInfo(requestData);
+    final exchangeInfoResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier). getOrderExchangeReturnInfo(requestData);
     if (orderDetailInfoResponseDTO != null) {
       if (orderDetailInfoResponseDTO.result == true) {
         orderDetailInfoData = orderDetailInfoResponseDTO.data;

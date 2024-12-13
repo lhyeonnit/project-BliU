@@ -905,7 +905,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
 
   void _buyAndCartProduct(int addType) async {
     final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
+    String? mtIdx = pref.getMtIdx();
     String? appToken = pref.getToken();
     int memberType = (mtIdx != null) ? 1 : 2;
     List<Map<String, dynamic>> products = [];
@@ -928,20 +928,22 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
       addProducts.add(addProduct);
     }
 
-    Map<String, dynamic> requestData1 = {
-      'type': memberType, //회원 1 비회원2
-      'add_type': addType, //장바구니 0  구매하기 1
-      'mt_idx': mtIdx,
-      'temp_mt_id': appToken, //비회원아이디 [앱 토큰]
-      'pt_idx': _productData.ptIdx,
-      'products': json.encode(products),
-      'addProducts': json.encode(addProducts),
-    };
+    if (addType == 0) {
+      // 장바구니 담기
+      Map<String, dynamic> requestData1 = {
+        'type': memberType, //회원 1 비회원2
+        'add_type': addType, //장바구니 0  구매하기 1
+        'mt_idx': mtIdx,
+        'temp_mt_id': appToken, //비회원아이디 [앱 토큰]
+        'pt_idx': _productData.ptIdx,
+        'products': json.encode(products),
+        'addProducts': json.encode(addProducts),
+      };
 
-    final responseData = await ref.read(productOrderBottomOptionViewModelProvider.notifier).addCart(requestData1);
-    if (responseData != null) {
-      if (responseData['result'] == true) {
-        if (addType == 0) {
+      final responseData = await ref.read(productOrderBottomOptionViewModelProvider.notifier).addCart(requestData1);
+      if(!mounted) return;
+      if (responseData != null) {
+        if (responseData['result'] == true) {
           Utils.getInstance().showSnackBar(context, responseData['data']['message'] ?? "");
           ref.read(cartProvider.notifier).cartRefresh(true);
           Navigator.pop(context);
@@ -980,6 +982,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                         onTap: () {
                           Navigator.pop(context);
                           Future.delayed(const Duration(milliseconds: 100), () {
+                            if (!context.mounted) return;
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -1045,7 +1048,34 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
             },
           );
         } else {
+          Utils.getInstance().showSnackBar(context, responseData['data']['message'] ?? "");
+        }
+      } else {
+        Utils.getInstance().showSnackBar(context, "Network Error");
+      }
+    } else {
+      if(memberType == 2) {
+        if(!mounted) return;
+        final result = await Navigator.pushNamed(context, '/login/Y');
+        if (result != null && result == 'member') {
+          mtIdx = pref.getMtIdx();
+          memberType = 1;
+        }
+      }
 
+      Map<String, dynamic> requestData1 = {
+        'type': memberType, //회원 1 비회원2
+        'add_type': addType, //장바구니 0  구매하기 1
+        'mt_idx': mtIdx,
+        'temp_mt_id': appToken, //비회원아이디 [앱 토큰]
+        'pt_idx': _productData.ptIdx,
+        'products': json.encode(products),
+        'addProducts': json.encode(addProducts),
+      };
+      final responseData = await ref.read(productOrderBottomOptionViewModelProvider.notifier).addCart(requestData1);
+      if(!mounted) return;
+      if (responseData != null) {
+        if (responseData['result'] == true) {
           Map<String, dynamic> requestData2 = {
             'type': memberType,
             'ot_idx': '',
@@ -1053,8 +1083,8 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
             'temp_mt_id': appToken,
             'cart_arr': responseData['data']['cart_arr'],
           };
-
           final payOrderDetailDTO = await ref.read(productOrderBottomOptionViewModelProvider.notifier).orderDetail(requestData2);
+          if(!mounted) return;
           if (payOrderDetailDTO != null) {
             final payOrderDetailData = payOrderDetailDTO.data;
             final userInfoCheck = payOrderDetailDTO.data?.userInfoCheck;
@@ -1081,12 +1111,12 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
           } else {
             Utils.getInstance().showSnackBar(context, "Network Error");
           }
+        } else {
+          Utils.getInstance().showSnackBar(context, responseData['data']['message'] ?? "");
         }
       } else {
-        Utils.getInstance().showSnackBar(context, responseData['data']['message'] ?? "");
+        Utils.getInstance().showSnackBar(context, "Network Error");
       }
-    } else {
-      Utils.getInstance().showSnackBar(context, "Network Error");
     }
   }
 }

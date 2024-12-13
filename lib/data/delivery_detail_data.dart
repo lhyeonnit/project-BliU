@@ -4,6 +4,7 @@ class DeliveryDetailData {
   final int? deliveryMinPrice;
   final int? deliveryAddPrice1;
   final int? deliveryAddPrice2;
+  final int? deliveryPriceType;
 
   DeliveryDetailData({
     required this.deliveryCompany,
@@ -11,6 +12,7 @@ class DeliveryDetailData {
     required this.deliveryMinPrice,
     required this.deliveryAddPrice1,
     required this.deliveryAddPrice2,
+    required this.deliveryPriceType,
   });
 
   // JSON to Object
@@ -21,6 +23,7 @@ class DeliveryDetailData {
       deliveryMinPrice: json['delivery_min_price'],
       deliveryAddPrice1: json['delivery_add_price1'],
       deliveryAddPrice2: json['delivery_add_price2'],
+      deliveryPriceType: json['delivery_price_type'],
     );
   }
 
@@ -31,7 +34,7 @@ class DeliveryDetailData {
       'delivery_basic_price': deliveryBasicPrice,
       'delivery_min_price': deliveryMinPrice,
       'delivery_add_price1': deliveryAddPrice1,
-      'delivery_add_price2': deliveryAddPrice2,
+      'delivery_price_type': deliveryPriceType,
     };
   }
 }

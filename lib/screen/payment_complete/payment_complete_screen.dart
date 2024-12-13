@@ -11,7 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class PaymentCompleteScreen extends ConsumerStatefulWidget {
   final int memberType;
-  final int payType;//1 카드결제, 2 휴대폰, 3 계좌이체, 4 네이버페이
+  final int payType;//1 카드결제, 2 휴대폰, 3 계좌이체, 4 카카오페이
   final PayOrderResultDetailData? payOrderResultDetailData;
   final String? savedRecipientName; // 저장된 수령인 이름
   final String? savedRecipientPhone; // 저장된 전화번호
@@ -60,7 +60,7 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
         payTypeStr = "계좌이체";
         break;
       case 4:
-        payTypeStr = "네이버페이";
+        payTypeStr = "카카오페이";
         break;
     }
 
@@ -155,7 +155,10 @@ class PaymentCompleteScreenState extends ConsumerState<PaymentCompleteScreen> {
                                         final mtIdx = pref.getMtIdx() ?? "";
                                         if (!context.mounted) return;
                                         if (mtIdx.isEmpty) {
-                                          Navigator.pushNamed(context, '/order_list?ot_code${payOrderResultDetailData?.otCode ?? ""}');
+                                          final map = {
+                                            'otCode' : payOrderResultDetailData?.otCode ?? "",
+                                          };
+                                          Navigator.pushNamed(context, '/order_list', arguments: map);
                                         } else {
                                           Navigator.pushNamed(context, '/order_list');
                                         }
