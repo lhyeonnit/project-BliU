@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:focus_detector_v2/focus_detector_v2.dart';
-import 'package:get/get.dart';
 
 class OrderListScreen extends ConsumerStatefulWidget {
   final String? otCode;

@@ -1,6 +1,7 @@
 import 'package:BliU/data/cart_item_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -34,9 +35,20 @@ class CartItemState extends State<CartItem> {
     productPrice = (productPrice * productCount);
     return productPrice;
   }
+
   @override
   Widget build(BuildContext context) {
-    print('widget.item.ptJaego ${widget.item.ptJaego}');
+    final ptJaego = widget.item.ptJaego ?? 0;
+    Color borderColor = widget.isSelected ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC);
+    Color boxColor = widget.isSelected ? const Color(0xFFFF6191) : Colors.white;
+    Color checkColor = widget.isSelected ? Colors.white : const Color(0xFFCCCCCC);
+
+    if (ptJaego <= 0) {
+      borderColor = const Color(0x66000000);
+      boxColor = const Color(0x66000000);
+      checkColor = const Color(0xFFCCCCCC);
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
@@ -48,7 +60,7 @@ class CartItemState extends State<CartItem> {
           children: [
             GestureDetector(
               onTap: () {
-                if ((widget.item.ptJaego ?? 0) > 0) {
+                if (ptJaego > 0) {
                   setState(() {
                     widget.onToggleSelection(widget.item.ctIdx ?? 0, !widget.isSelected); // 부모로 선택 상태 전달
                   });
@@ -61,14 +73,14 @@ class CartItemState extends State<CartItem> {
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(6)),
                   border: Border.all(
-                    color: widget.isSelected ? const Color(0xFFFF6191) : const Color(0xFFCCCCCC)
+                    color: borderColor
                   ),
-                  color: widget.isSelected ? const Color(0xFFFF6191) : Colors.white,
+                  color: boxColor,
                 ),
                 child: SvgPicture.asset(
                   'assets/images/check01_off.svg', // 체크박스 아이콘 경로
                   colorFilter: ColorFilter.mode(
-                    widget.isSelected ? Colors.white : const Color(0xFFCCCCCC),
+                    checkColor,
                     BlendMode.srcIn,
                   ),
                   height: 10, // 아이콘의 높이
@@ -88,17 +100,27 @@ class CartItemState extends State<CartItem> {
                 borderRadius: const BorderRadius.all(Radius.circular(6)),
                 child: Stack(
                   children: [
-                    Image.network(
-                      widget.item.ptImg ?? "",
+                    CachedNetworkImage(
+                      imageUrl: widget.item.ptImg ?? "",
+                      width: double.infinity,
+                      height: double.infinity,
                       fit: BoxFit.cover,
-                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                        return SizedBox(
-                          child: SvgPicture.asset('assets/images/no_imge.svg'),
+                      placeholder: (context, url) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                      errorWidget: (context, url, error) {
+                        return SvgPicture.asset(
+                          'assets/images/no_imge.svg',
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.fitWidth,
                         );
                       },
                     ),
                     Visibility(
-                      visible: (widget.item.ptJaego ?? 0) <= 0 ? true : false,
+                      visible: ptJaego <= 0 ? true : false,
                       child: Container(
                         color: const Color(0x66000000),
                         child: Align(

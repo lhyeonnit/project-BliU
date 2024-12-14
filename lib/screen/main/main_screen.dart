@@ -120,6 +120,8 @@ class MainScreenState extends ConsumerState<MainScreen> with SingleTickerProvide
   void _pushCheck(FcmData fcmData) {
     String? ptLink = fcmData.ptLink;
     int etIdx = int.parse(fcmData.etIdx ?? "0");
+    print("ptLink $ptLink");
+    print("etIdx $etIdx");
     if (ptLink != null) {
       if (ptLink.isNotEmpty) {
         switch (ptLink) {

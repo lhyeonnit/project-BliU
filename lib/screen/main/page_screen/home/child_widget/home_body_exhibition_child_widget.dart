@@ -4,6 +4,7 @@ import 'package:BliU/data/exhibition_data.dart';
 import 'package:BliU/screen/exhibition/exhibition_screen.dart';
 import 'package:BliU/screen/main/page_screen/home/view_model/home_body_exhibition_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -122,19 +123,24 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
             height: 420,
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(8)),
-              child: Image.network(
-                exhibitionData.etBanner ?? "",
-                fit: BoxFit.cover, // 이미지를 부모 위젯에 맞게 설정
-                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                  return SizedBox(
-                    child: Center(
-                      child: SvgPicture.asset(
-                        'assets/images/no_imge.svg',
-                        fit: BoxFit.fitWidth,
-                      ),
-                    ),
+              child: CachedNetworkImage(
+                imageUrl: exhibitionData.etBanner ?? "",
+                width: double.infinity,
+                height: double.infinity,
+                fit: BoxFit.cover,
+                placeholder: (context, url) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
-                }
+                },
+                errorWidget: (context, url, error) {
+                  return SvgPicture.asset(
+                    'assets/images/no_imge.svg',
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.fitWidth,
+                  );
+                },
               ),
             ),
           ),
@@ -200,18 +206,21 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                                   borderRadius: BorderRadius.circular(5.0),
                                   child: AspectRatio(
                                     aspectRatio: 1,
-                                    child: Image.network(
-                                      ptImg0,
+                                    child: CachedNetworkImage(
+                                      imageUrl: ptImg0,
+                                      width: double.infinity,
                                       height: Responsive.getHeight(context, 84),
                                       fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                        return SizedBox(
-                                          child: Center(
-                                            child: SvgPicture.asset(
-                                              'assets/images/no_imge.svg',
-                                              fit: BoxFit.fitWidth,
-                                            ),
-                                          ),
+                                      placeholder: (context, url) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
+                                      errorWidget: (context, url, error) {
+                                        return SvgPicture.asset(
+                                          'assets/images/no_imge.svg',
+                                          width: double.infinity,
+                                          fit: BoxFit.fitWidth,
                                         );
                                       },
                                     ),
@@ -228,18 +237,21 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                                   borderRadius: BorderRadius.circular(5.0),
                                   child: AspectRatio(
                                     aspectRatio: 1,
-                                    child: Image.network(
-                                      ptImg1,
+                                    child: CachedNetworkImage(
+                                      imageUrl: ptImg1,
+                                      width: double.infinity,
                                       height: Responsive.getHeight(context, 84),
                                       fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                        return SizedBox(
-                                          child: Center(
-                                            child: SvgPicture.asset(
-                                              'assets/images/no_imge.svg',
-                                              fit: BoxFit.fitWidth,
-                                            ),
-                                          ),
+                                      placeholder: (context, url) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
+                                      errorWidget: (context, url, error) {
+                                        return SvgPicture.asset(
+                                          'assets/images/no_imge.svg',
+                                          width: double.infinity,
+                                          fit: BoxFit.fitWidth,
                                         );
                                       },
                                     ),
@@ -256,18 +268,21 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
                                   borderRadius: BorderRadius.circular(5.0),
                                   child: AspectRatio(
                                     aspectRatio: 1,
-                                    child: Image.network(
-                                      ptImg2,
+                                    child: CachedNetworkImage(
+                                      imageUrl: ptImg2,
+                                      width: double.infinity,
                                       height: Responsive.getHeight(context, 84),
                                       fit: BoxFit.cover, // 이 부분도 추가하면 이미지가 컨테이너를 꽉 채우게 됩니다.
-                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                        return SizedBox(
-                                          child: Center(
-                                            child: SvgPicture.asset(
-                                              'assets/images/no_imge.svg',
-                                              fit: BoxFit.fitWidth,
-                                            ),
-                                          ),
+                                      placeholder: (context, url) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
+                                      errorWidget: (context, url, error) {
+                                        return SvgPicture.asset(
+                                          'assets/images/no_imge.svg',
+                                          width: double.infinity,
+                                          fit: BoxFit.fitWidth,
                                         );
                                       },
                                     ),

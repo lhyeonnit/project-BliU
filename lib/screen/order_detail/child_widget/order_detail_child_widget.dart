@@ -88,7 +88,7 @@ class OrderDetailChildWidget extends StatelessWidget {
               _buildAddressRow(
                 '주소',
                 "[${orderDetailInfoData?.delivery?.otRzip ?? ""}]${orderDetailInfoData?.delivery?.otRadd1 ?? ""}",
-                orderDetailInfoData?.delivery?.otRadd1 ?? "",
+                orderDetailInfoData?.delivery?.otRadd2 ?? "",
                 context,
               ),
               Container(

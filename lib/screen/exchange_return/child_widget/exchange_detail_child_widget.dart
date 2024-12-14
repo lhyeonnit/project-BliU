@@ -5,9 +5,9 @@ import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class ExchangeDetailChildWidget extends StatefulWidget {
   final OrderDetailInfoData? orderDetailInfoData;
@@ -527,6 +527,8 @@ class ExchangeDetailChildWidgetState extends State<ExchangeDetailChildWidget> {
                         _dropdownValue = _exchangeReasons[index].ctIdx ?? 0;
                         if (_dropdownValue == 3 || _dropdownValue == 4) {
                           _infoVisible = true;
+                        } else {
+                          _infoVisible = false;
                         }
                         _updateCollectedData();
                       });

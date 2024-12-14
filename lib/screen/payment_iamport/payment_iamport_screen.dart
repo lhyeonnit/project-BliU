@@ -44,7 +44,7 @@ class PaymentIamportScreen extends StatelessWidget {
         name: iamportPayData.name, // 주문명
         merchantUid: iamportPayData.merchantUid, // 주문번호
         amount: iamportPayData.amount, // 결제금액
-        buyerName: iamportPayData.name, // 구매자 이름
+        buyerName: iamportPayData.buyerName, // 구매자 이름
         buyerTel: iamportPayData.buyerTel ?? '', // 구매자 연락처
         buyerEmail: iamportPayData.buyerEmail ?? '', // 구매자 이메일
         buyerAddr: iamportPayData.buyerAddr, // 구매자 주소

@@ -1,6 +1,7 @@
 import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/my_review/view_model/my_review_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -139,21 +140,22 @@ class MyReviewScreenState extends ConsumerState<MyReviewScreen> {
                                   padding: const EdgeInsets.only(right: 20.0),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(6.0),
-                                    child: Image.network(
-                                      reviewData.ptImg ?? "",
+                                    child: CachedNetworkImage(
+                                      imageUrl: reviewData.ptImg ?? "",
                                       width: 90,
                                       height: 90,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                        return SizedBox(
+                                      placeholder: (context, url) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
+                                      errorWidget: (context, url, error) {
+                                        return SvgPicture.asset(
+                                          'assets/images/no_imge.svg',
                                           width: 90,
                                           height: 90,
-                                          child: Center(
-                                            child: SvgPicture.asset(
-                                              'assets/images/no_imge.svg',
-                                              fit: BoxFit.fitWidth,
-                                            ),
-                                          ),
+                                          fit: BoxFit.fitWidth,
                                         );
                                       },
                                     ),

@@ -4,6 +4,7 @@ import 'package:BliU/screen/event_detail/event_detail_screen.dart';
 import 'package:BliU/screen/main/page_screen/home/view_model/home_header_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -82,17 +83,21 @@ class HomeHeaderChildWidgetState extends ConsumerState<HomeHeaderChildWidget> {
                               );
                             }
                           },
-                          child: Image.network(
-                            banner.btImg ?? "",
+                          child: CachedNetworkImage(
+                            imageUrl: banner.btImg ?? "",
+                            width: double.infinity,
+                            height: double.infinity,
                             fit: BoxFit.fitWidth, // 이미지를 전체 화면에 맞추고 가로 여백 없이 설정
-                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                              return SizedBox(
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    'assets/images/no_imge.svg',
-                                    fit: BoxFit.fitWidth,
-                                  ),
-                                ),
+                            placeholder: (context, url) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                            errorWidget: (context, url, error) {
+                              return SvgPicture.asset(
+                                'assets/images/no_imge.svg',
+                                width: double.infinity,
+                                fit: BoxFit.fitWidth,
                               );
                             },
                           ),

@@ -814,7 +814,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
 
   // 옵션 확인
   void _selectOptionCheck() {
-    if (_productOptionData?.ptOptionType == "1" && _productOptionData?.ptOptionChk != "Y") {
+    if (_productOptionData?.ptOptionType == "1" || _productOptionData?.ptOptionChk != "Y") {
       // 단독
       var titleValue = "";
       var optionValue = "";

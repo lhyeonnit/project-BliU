@@ -14,6 +14,7 @@ import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -485,23 +486,24 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             },
             itemBuilder: (context, index) {
               return ClipRRect(
-                child: Image.network(
-                  imgArr[index],
-                  fit: BoxFit.cover, // 이미지가 컨테이너를 꽉 채우도록 설정
+                child: CachedNetworkImage(
+                  imageUrl: imgArr[index],
                   width: double.infinity,
                   height: double.infinity,
-                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    return SizedBox(
+                  fit: BoxFit.cover, // 이미지가 컨테이너를 꽉 채우도록 설정
+                  placeholder: (context, url) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                  errorWidget: (context, url, error) {
+                    return SvgPicture.asset(
+                      'assets/images/no_imge.svg',
                       width: double.infinity,
                       height: double.infinity,
-                      child: Center(
-                        child: SvgPicture.asset(
-                          'assets/images/no_imge.svg',
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
+                      fit: BoxFit.fitWidth,
                     );
-                  }
+                  },
                 ),
               );
             },
@@ -611,17 +613,22 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       shape: BoxShape.circle, // 이미지를 동그랗게 만들기
                     ),
                     child: ClipOval(
-                      child: Image.network(
-                        storeData?.stProfile ?? "",
+                      child: CachedNetworkImage(
+                        imageUrl: storeData?.stProfile ?? "",
+                        width: double.infinity,
+                        height: double.infinity,
                         fit: BoxFit.cover,
-                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                          return SizedBox(
-                            child: Center(
-                              child: SvgPicture.asset(
-                                'assets/images/no_imge.svg',
-                                fit: BoxFit.fitWidth,
-                              ),
-                            ),
+                        placeholder: (context, url) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                        errorWidget: (context, url, error) {
+                          return SvgPicture.asset(
+                            'assets/images/no_imge.svg',
+                            width: double.infinity,
+                            height: double.infinity,
+                            fit: BoxFit.fitWidth,
                           );
                         },
                       ),
@@ -865,7 +872,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '도서산간 추가배송비: ${Utils.getInstance().priceString(
+                            '제주/도서산간 추가배송비: ${Utils.getInstance().priceString(
                                 productData?.deliveryInfo?.deliveryDetail?.deliveryAddPrice1 ?? 0
                             )}원',
                             style: TextStyle(
@@ -874,16 +881,16 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                               height: 1.2,
                             ),
                           ),
-                          Text(
-                            '제주 추가배송비: ${Utils.getInstance().priceString(
-                              productData?.deliveryInfo?.deliveryDetail?.deliveryAddPrice2 ?? 0
-                            )}원',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 10),
-                              height: 1.2,
-                            ),
-                          ),
+                          // Text(
+                          //   '제주 추가배송비: ${Utils.getInstance().priceString(
+                          //     productData?.deliveryInfo?.deliveryDetail?.deliveryAddPrice2 ?? 0
+                          //   )}원',
+                          //   style: TextStyle(
+                          //     fontFamily: 'Pretendard',
+                          //     fontSize: Responsive.getFont(context, 10),
+                          //     height: 1.2,
+                          //   ),
+                          // ),
                         ],
                       ),
                       const SizedBox(height: 5),
@@ -1194,7 +1201,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        '도서산간 추가배송비 ${Utils.getInstance().priceString(
+                                        '제주/도서산간 추가배송비 ${Utils.getInstance().priceString(
                                             productData?.deliveryInfo?.deliveryDetail?.deliveryAddPrice1 ?? 0
                                         )}원',
                                         style: TextStyle(
@@ -1203,16 +1210,16 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                           height: 1.2,
                                         ),
                                       ),
-                                      Text(
-                                        '제주 추가배송비 ${Utils.getInstance().priceString(
-                                            productData?.deliveryInfo?.deliveryDetail?.deliveryAddPrice2 ?? 0
-                                        )}원',
-                                        style: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize: Responsive.getFont(context, 14),
-                                          height: 1.2,
-                                        ),
-                                      ),
+                                      // Text(
+                                      //   '제주 추가배송비 ${Utils.getInstance().priceString(
+                                      //       productData?.deliveryInfo?.deliveryDetail?.deliveryAddPrice2 ?? 0
+                                      //   )}원',
+                                      //   style: TextStyle(
+                                      //     fontFamily: 'Pretendard',
+                                      //     fontSize: Responsive.getFont(context, 14),
+                                      //     height: 1.2,
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -1453,7 +1460,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         Container(
                           margin: const EdgeInsets.only(left: 11, right: 10),
                           child: Text(
-                            qnaData.mtId ?? "",
+                            (qnaData.mtId ?? "").length > 15 ? "${(qnaData.mtId ?? "").substring(0, 15)}..." : qnaData.mtId ?? "",
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               color: const Color(0xFF7B7B7B),
@@ -1763,21 +1770,22 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 4.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
-                            child: Image.network(
-                              imagePath,
+                            child: CachedNetworkImage(
+                              imageUrl: imagePath,
                               width: 90,
                               height: 90,
                               fit: BoxFit.cover,
-                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                return SizedBox(
+                              placeholder: (context, url) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                              errorWidget: (context, url, error) {
+                                return SvgPicture.asset(
+                                  'assets/images/no_imge.svg',
                                   width: 90,
                                   height: 90,
-                                  child: Center(
-                                    child: SvgPicture.asset(
-                                      'assets/images/no_imge.svg',
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                  ),
+                                  fit: BoxFit.fitWidth,
                                 );
                               },
                             ),

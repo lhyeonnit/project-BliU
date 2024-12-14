@@ -4,6 +4,7 @@ import 'package:BliU/screen/modal_dialog/store_coupon_bottom.dart';
 import 'package:BliU/screen/store_detail/view_model/store_info_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -37,12 +38,17 @@ class StoreInfoChildWidgetState extends ConsumerState<StoreInfoChildWidget> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
-                child: Image.network(
-                  widget.storeData?.stBackground ?? "",
+                child: CachedNetworkImage(
+                  imageUrl: widget.storeData?.stBackground ?? "",
                   width: double.infinity,
                   height: 500,
                   fit: BoxFit.cover,
-                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                  placeholder: (context, url) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                  errorWidget: (context, url, error) {
                     return SizedBox(
                       width: 90,
                       height: 500,
@@ -71,18 +77,24 @@ class StoreInfoChildWidgetState extends ConsumerState<StoreInfoChildWidget> {
                     ],
                   ),
                   child: ClipOval(
-                    child: Image.network(
-                      widget.storeData?.stProfile ?? "",
+                    child: CachedNetworkImage(
+                      imageUrl: widget.storeData?.stProfile ?? "",
                       width: 70,
                       height: 70,
                       fit: BoxFit.cover,
-                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                        return SizedBox(
+                      placeholder: (context, url) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                      errorWidget: (context, url, error) {
+                        return SvgPicture.asset(
+                          'assets/images/no_imge_shop.svg',
                           width: 70,
                           height: 70,
-                          child: SvgPicture.asset('assets/images/no_imge_shop.svg'),
+                          fit: BoxFit.fitWidth,
                         );
-                      }
+                      },
                     ),
                   ),
                 ),

@@ -10,6 +10,7 @@ import 'package:BliU/screen/order_list/item/order_item.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -261,9 +262,24 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                                       aspectRatio: 1 / 1,
                                       child: Padding(
                                         padding: const EdgeInsets.only(right: 8.0), // 이미지 간격 설정
-                                        child: Image.network(
-                                          imageUrl,
+                                        child: CachedNetworkImage(
+                                          imageUrl: imageUrl,
+                                          width: double.infinity,
+                                          height: double.infinity,
                                           fit: BoxFit.cover,
+                                          placeholder: (context, url) {
+                                            return const Center(
+                                              child: CircularProgressIndicator(),
+                                            );
+                                          },
+                                          errorWidget: (context, url, error) {
+                                            return SvgPicture.asset(
+                                              'assets/images/no_imge.svg',
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              fit: BoxFit.fitWidth,
+                                            );
+                                          },
                                         ),
                                       ),
                                     );

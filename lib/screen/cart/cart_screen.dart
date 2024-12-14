@@ -9,6 +9,7 @@ import 'package:BliU/screen/join_add_info/join_add_info_screen.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -498,12 +499,22 @@ class CartScreenState extends ConsumerState<CartScreen> {
                                           ),
                                           child: ClipRRect(
                                             borderRadius: const BorderRadius.all(Radius.circular(20)), // 사진의 모서리만 둥글게 설정
-                                            child: Image.network(
-                                              cartItem.stProfile ?? "",
+                                            child: CachedNetworkImage(
+                                              imageUrl: cartItem.stProfile ?? "",
+                                              width: double.infinity,
+                                              height: double.infinity,
                                               fit: BoxFit.cover,
-                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                                return SizedBox(
-                                                  child: SvgPicture.asset('assets/images/no_imge_shop.svg'),
+                                              placeholder: (context, url) {
+                                                return const Center(
+                                                  child: CircularProgressIndicator(),
+                                                );
+                                              },
+                                              errorWidget: (context, url, error) {
+                                                return SvgPicture.asset(
+                                                  'assets/images/no_imge_shop.svg',
+                                                  width: double.infinity,
+                                                  height: double.infinity,
+                                                  fit: BoxFit.fitWidth,
                                                 );
                                               },
                                             ),

@@ -5,6 +5,7 @@ import 'package:BliU/screen/order_list/view_model/order_item_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -155,21 +156,22 @@ class OrderItemState extends ConsumerState<OrderItem> {
                 padding: const EdgeInsets.only(right: 20.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(6.0),
-                  child: Image.network(
-                    widget.orderDetailData.ptImg ?? "",
+                  child: CachedNetworkImage(
+                    imageUrl: widget.orderDetailData.ptImg ?? "",
                     width: 90,
                     height: 90,
                     fit: BoxFit.cover,
-                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                      return SizedBox(
+                    placeholder: (context, url) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                    errorWidget: (context, url, error) {
+                      return SvgPicture.asset(
+                        'assets/images/no_imge.svg',
                         width: 90,
                         height: 90,
-                        child: Center(
-                          child: SvgPicture.asset(
-                            'assets/images/no_imge.svg',
-                            fit: BoxFit.fitWidth,
-                          ),
-                        ),
+                        fit: BoxFit.fitWidth,
                       );
                     },
                   ),

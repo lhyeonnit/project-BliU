@@ -104,7 +104,7 @@ class FirebaseService {
       if (notification != null) {
         FcmData fcmData = FcmData.fromJson(message.data);
         String fcmDataString = json.encode(fcmData.toJson());
-        //print("notification data = ${message.data}");
+        print("notification data = ${message.data}");
 
         if (Platform.isAndroid) {
           flutterLocalNotificationsPlugin.show(
@@ -126,7 +126,7 @@ class FirebaseService {
 
     // 백그라운드에서 눌러서 들어올시
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      //print("onMessageOpenedApp ${message.data}");
+      print("onMessageOpenedApp ${message.data}");
       FcmData fcmData = FcmData.fromJson(message.data);
       _handleData(fcmData);
     });
@@ -141,6 +141,7 @@ class FirebaseService {
 
   void _handleMessage(String message) {
     var jsonMap = json.decode(message);
+    print('_handleMessage $jsonMap');
     FcmData fcmData = FcmData.fromJson(jsonMap);
     _handleData(fcmData);
   }

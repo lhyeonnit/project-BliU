@@ -1,6 +1,7 @@
 import 'package:BliU/screen/event_detail/view_model/event_detail_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -106,28 +107,25 @@ class EventDetailScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                //Image.asset('assets/images/my/event_dt.png'),
-                Image.network(
-                  btImage,
-                  // loadingBuilder: (BuildContext context, Widget child,
-                  //     ImageChunkEvent? loadingProgress) {
-                  //   if (loadingProgress == null) return child;
-                  //   return Center(
-                  //     child: SvgPicture.asset(
-                  //       'assets/images/no_imge.svg',
-                  //       fit: BoxFit.fitWidth,
-                  //     ),
-                  //   );
-                  // },
-                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    return Center(
-                      child: SvgPicture.asset(
+                Expanded(
+                  flex: 1,
+                  child: CachedNetworkImage(
+                    imageUrl: btImage,
+                    width: double.infinity,
+                    placeholder: (context, url) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                    errorWidget: (context, url, error) {
+                      return SvgPicture.asset(
                         'assets/images/no_imge.svg',
+                        width: double.infinity,
                         fit: BoxFit.fitWidth,
-                      ),
-                    );
-                  },
-                )
+                      );
+                    },
+                  ),
+                ),
               ],
             );
           }),

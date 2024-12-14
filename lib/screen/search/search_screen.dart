@@ -14,6 +14,7 @@ import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -762,18 +763,24 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: const Color(0xFFDDDDDD)),
-                          // image: DecorationImage(
-                          //   image: NetworkImage(result.stProfile ?? ''),
-                          //   fit: BoxFit.cover,
-                          // ),
                         ),
                         child: ClipOval(
-                          child: Image.network(
-                            result.stProfile ?? "",
+                          child: CachedNetworkImage(
+                            imageUrl: result.stProfile ?? "",
+                            width: double.infinity,
+                            height: double.infinity,
                             fit: BoxFit.cover,
-                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                              return SizedBox(
-                                child: SvgPicture.asset('assets/images/no_imge_shop.svg'),
+                            placeholder: (context, url) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                            errorWidget: (context, url, error) {
+                              return SvgPicture.asset(
+                                'assets/images/no_imge_shop.svg',
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.fitWidth,
                               );
                             },
                           ),

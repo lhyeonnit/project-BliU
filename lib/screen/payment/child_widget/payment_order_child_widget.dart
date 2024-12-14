@@ -1,6 +1,7 @@
 import 'package:BliU/data/cart_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -52,14 +53,24 @@ class PaymentOrderChildWidgetState extends State<PaymentOrderChildWidget> {
                       ),
                       child: ClipRRect(
                         borderRadius: const BorderRadius.all(Radius.circular(20)),
-                        child: Image.network(
-                          item.stProfile ?? "", // 스토어 로고
+                        child: CachedNetworkImage(
+                          imageUrl: item.stProfile ?? "", // 스토어 로고
+                          width: double.infinity,
+                          height: double.infinity,
                           fit: BoxFit.cover,
-                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                            return SizedBox(
-                              child: SvgPicture.asset('assets/images/no_imge_shop.svg'),
+                          placeholder: (context, url) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
                             );
-                          }
+                          },
+                          errorWidget: (context, url, error) {
+                            return SvgPicture.asset(
+                              'assets/images/no_imge_shop.svg',
+                              width: double.infinity,
+                              height: double.infinity,
+                              fit: BoxFit.fitWidth,
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -95,19 +106,24 @@ class PaymentOrderChildWidgetState extends State<PaymentOrderChildWidget> {
                         ),
                         child: ClipRRect(
                           borderRadius: const BorderRadius.all(Radius.circular(6)),
-                          child: Image.network(
-                            pItem.ptImg ?? "",
+                          child: CachedNetworkImage(
+                            imageUrl: pItem.ptImg ?? "",
+                            width: double.infinity,
+                            height: double.infinity,
                             fit: BoxFit.cover,
-                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                              return SizedBox(
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    'assets/images/no_imge.svg',
-                                    fit: BoxFit.fitWidth,
-                                  ),
-                                ),
+                            placeholder: (context, url) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
                               );
-                            }
+                            },
+                            errorWidget: (context, url, error) {
+                              return SvgPicture.asset(
+                                'assets/images/no_imge.svg',
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.fitWidth,
+                              );
+                            },
                           ),
                         ),
                       ),

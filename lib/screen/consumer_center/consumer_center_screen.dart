@@ -1,4 +1,3 @@
-import 'package:BliU/screen/consumer_center/view_model/consumer_center_view_model.dart';
 import 'package:BliU/screen/inquiry_store/inquiry_store_screen.dart';
 import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/screen/my_inquiry/my_inquiry_screen.dart';
@@ -16,7 +15,7 @@ class ConsumerCenterScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(consumerCenterViewModelProvider.notifier).getService();
+    //ref.read(consumerCenterViewModelProvider.notifier).getService();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -65,61 +64,112 @@ class ConsumerCenterScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Consumer(builder: (context, ref, widget) {
-                final model = ref.watch(consumerCenterViewModelProvider);
-
-                return Column(
-                  children: [
-                    _buildInfoRow(
-                      context,
-                      '메일문의',
-                      model.stCustomerEmail ?? 'email@email.com',
-                      Colors.black,
-                      false,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20, bottom: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '전화문의',
+              Column(
+                children: [
+                  _buildInfoRow(
+                    context,
+                    '메일문의',
+                    'support@bliu.co.kr',
+                    Colors.black,
+                    false,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20, bottom: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '전화문의',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 15),
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            height: 1.2,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            String telNumber = '1555-7991';
+                            telNumber = telNumber.replaceAll("-", "");
+                            final url = Uri.parse("tel:$telNumber");
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url);
+                            }
+                          },
+                          child: Text(
+                            '1555-7991',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 15),
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
+                              fontSize: Responsive.getFont(context, 14),
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xFFFF6192),
+                              decoration: TextDecoration.underline,
+                              decorationColor: const Color(0xFFFF6192),
                               height: 1.2,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () async {
-                              String telNumber = model.stCustomerTel ?? '02-000-000';
-                              telNumber = telNumber.replaceAll("-", "");
-                              final url = Uri.parse("tel:$telNumber");
-                              if (await canLaunchUrl(url)) {
-                                await launchUrl(url);
-                              }
-                            },
-                            child: Text(
-                              model.stCustomerTel ?? '02-000-000',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: Responsive.getFont(context, 14),
-                                fontWeight: FontWeight.w400,
-                                color: const Color(0xFFFF6192),
-                                decoration: TextDecoration.underline,
-                                decorationColor: const Color(0xFFFF6192),
-                                height: 1.2,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                );
-              }),
+                  ),
+                ],
+              ),
+              // Consumer(builder: (context, ref, widget) {
+              //   final model = ref.watch(consumerCenterViewModelProvider);
+              //
+              //   return Column(
+              //     children: [
+              //       _buildInfoRow(
+              //         context,
+              //         '메일문의',
+              //         model.stCustomerEmail ?? 'email@email.com',
+              //         Colors.black,
+              //         false,
+              //       ),
+              //       Container(
+              //         margin: const EdgeInsets.only(top: 20, bottom: 10),
+              //         child: Row(
+              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           children: [
+              //             Text(
+              //               '전화문의',
+              //               style: TextStyle(
+              //                 fontFamily: 'Pretendard',
+              //                 fontSize: Responsive.getFont(context, 15),
+              //                 color: Colors.black,
+              //                 fontWeight: FontWeight.w500,
+              //                 height: 1.2,
+              //               ),
+              //             ),
+              //             GestureDetector(
+              //               onTap: () async {
+              //                 String telNumber = model.stCustomerTel ?? '02-000-000';
+              //                 telNumber = telNumber.replaceAll("-", "");
+              //                 final url = Uri.parse("tel:$telNumber");
+              //                 if (await canLaunchUrl(url)) {
+              //                   await launchUrl(url);
+              //                 }
+              //               },
+              //               child: Text(
+              //                 model.stCustomerTel ?? '02-000-000',
+              //                 style: TextStyle(
+              //                   fontFamily: 'Pretendard',
+              //                   fontSize: Responsive.getFont(context, 14),
+              //                   fontWeight: FontWeight.w400,
+              //                   color: const Color(0xFFFF6192),
+              //                   decoration: TextDecoration.underline,
+              //                   decorationColor: const Color(0xFFFF6192),
+              //                   height: 1.2,
+              //                 ),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   );
+              // }),
               _buildCustomTile(context, '판매자 입점 문의', () {
                 Navigator.push(
                   context,

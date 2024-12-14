@@ -5,6 +5,7 @@ import 'package:BliU/screen/inquiry_product_detail/view_model/inquiry_detail_vie
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -117,21 +118,22 @@ class InquiryProductDetailScreen extends ConsumerWidget {
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(6),
-                              child: Image.network(
-                                product?.ptMainImg ?? "",
+                              child: CachedNetworkImage(
+                                imageUrl: product?.ptMainImg ?? "",
                                 width: 90,
                                 height: 90,
                                 fit: BoxFit.cover,
-                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                  return SizedBox(
+                                placeholder: (context, url) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                                errorWidget: (context, url, error) {
+                                  return SvgPicture.asset(
+                                    'assets/images/no_imge.svg',
                                     width: 90,
                                     height: 90,
-                                    child: Center(
-                                      child: SvgPicture.asset(
-                                        'assets/images/no_imge.svg',
-                                        fit: BoxFit.fitWidth,
-                                      ),
-                                    ),
+                                    fit: BoxFit.fitWidth,
                                   );
                                 },
                               ),
@@ -305,21 +307,22 @@ class InquiryProductDetailScreen extends ConsumerWidget {
       margin: const EdgeInsets.only(right: 5),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(6),
-        child: Image.network(
-          imgUrl,
+        child: CachedNetworkImage(
+          imageUrl: imgUrl,
           width: 90,
           height: 90,
           fit: BoxFit.cover,
-          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-            return SizedBox(
+          placeholder: (context, url) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+          errorWidget: (context, url, error) {
+            return SvgPicture.asset(
+              'assets/images/no_imge.svg',
               width: 90,
               height: 90,
-              child: Center(
-                child: SvgPicture.asset(
-                  'assets/images/no_imge.svg',
-                  fit: BoxFit.fitWidth,
-                ),
-              ),
+              fit: BoxFit.fitWidth,
             );
           },
         ),
@@ -345,19 +348,24 @@ class InquiryProductDetailScreen extends ConsumerWidget {
                   border: Border.all(color: const Color(0xFFDDDDDD)),
                 ),
                 child: ClipOval(
-                  child: Image.network(
-                    detailData?.stProfile ?? "",
+                  child: CachedNetworkImage(
+                    imageUrl: detailData?.stProfile ?? "",
+                    width: double.infinity,
+                    height: double.infinity,
                     fit: BoxFit.cover,
-                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                      return SizedBox(
-                        child: Center(
-                          child: SvgPicture.asset(
-                            'assets/images/no_imge.svg',
-                            fit: BoxFit.fitWidth,
-                          ),
-                        ),
+                    placeholder: (context, url) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
                       );
-                    }
+                    },
+                    errorWidget: (context, url, error) {
+                      return SvgPicture.asset(
+                        'assets/images/no_imge_shop.svg',
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.fitWidth,
+                      );
+                    },
                   ),
                 ),
               ),

@@ -5,6 +5,7 @@ import 'package:BliU/screen/main/view_model/main_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -273,19 +274,24 @@ class LikeScreenState extends ConsumerState<LikeScreen> with TickerProviderState
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
                       child: AspectRatio(
                         aspectRatio: 1/1,
-                        child: Image.network(
-                          productData.ptImg ?? "",
+                        child: CachedNetworkImage(
+                          imageUrl: productData.ptImg ?? "",
+                          width: double.infinity,
+                          height: double.infinity,
                           fit: BoxFit.cover,
-                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                            return SizedBox(
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  'assets/images/no_imge.svg',
-                                  fit: BoxFit.fitWidth,
-                                ),
-                              ),
+                          placeholder: (context, url) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
                             );
-                          }
+                          },
+                          errorWidget: (context, url, error) {
+                            return SvgPicture.asset(
+                              'assets/images/no_imge.svg',
+                              width: double.infinity,
+                              height: double.infinity,
+                              fit: BoxFit.fitWidth,
+                            );
+                          },
                         ),
                       ),
                     ),

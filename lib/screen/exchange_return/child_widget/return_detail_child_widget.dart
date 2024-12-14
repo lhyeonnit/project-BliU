@@ -8,9 +8,9 @@ import 'package:BliU/screen/exchange_return/child_widget/exchange_return_info_ch
 import 'package:BliU/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class ReturnDetailChildWidget extends StatefulWidget {
   final OrderDetailInfoData? orderDetailInfoData;
@@ -77,6 +77,8 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
           _dropdownValue = _returnReasons[index].ctIdx ?? 0;
           if (_dropdownValue == 8 || _dropdownValue == 9) {
             _infoVisible = true;
+          } else {
+            _infoVisible = false;
           }
           _updateCollectedData();
         });

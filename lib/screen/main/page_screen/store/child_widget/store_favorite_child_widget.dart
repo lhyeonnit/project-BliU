@@ -10,6 +10,7 @@ import 'package:BliU/screen/modal_dialog/store_age_group_selection.dart';
 import 'package:BliU/screen/product_list/item/product_list_item.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -310,12 +311,22 @@ class StoreFavoriteChildWidgetState extends ConsumerState<StoreFavoriteChildWidg
                                                       ),
                                                       child: ClipRRect(
                                                         borderRadius: BorderRadius.circular(20),
-                                                        child:Image.network(
-                                                          store.stProfile ?? "",
+                                                        child: CachedNetworkImage(
+                                                          imageUrl: store.stProfile ?? "",
+                                                          width: double.infinity,
+                                                          height: double.infinity,
                                                           fit: BoxFit.contain,
-                                                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                                            return SizedBox(
-                                                              child: SvgPicture.asset('assets/images/no_imge_shop.svg'),
+                                                          placeholder: (context, url) {
+                                                            return const Center(
+                                                              child: CircularProgressIndicator(),
+                                                            );
+                                                          },
+                                                          errorWidget: (context, url, error) {
+                                                            return SvgPicture.asset(
+                                                              'assets/images/no_imge_shop.svg',
+                                                              width: double.infinity,
+                                                              height: double.infinity,
+                                                              fit: BoxFit.fitWidth,
                                                             );
                                                           },
                                                         ),

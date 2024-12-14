@@ -4,6 +4,7 @@ import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -144,17 +145,22 @@ class ProductReviewDetailScreenState extends ConsumerState<ProductReviewDetailSc
                           });
                         },
                         itemBuilder: (context, index) {
-                          return Image.network(
-                            images[index],
+                          return CachedNetworkImage(
+                            imageUrl: images[index],
+                            width: double.infinity,
+                            height: double.infinity,
                             fit: BoxFit.cover,
-                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                              return SizedBox(
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    'assets/images/no_imge.svg',
-                                    fit: BoxFit.fitWidth,
-                                  ),
-                                ),
+                            placeholder: (context, url) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                            errorWidget: (context, url, error) {
+                              return SvgPicture.asset(
+                                'assets/images/no_imge.svg',
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.fitWidth,
                               );
                             },
                           );
