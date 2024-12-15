@@ -90,7 +90,7 @@ class Constant {
   static const apiMyPageOrderUrl = "mypage/order";//구매확정
   static const apiMyPageOrderListUrl = "mypage/order_list";//주문/배송 리스트
   static const apiMyPageOrderDetailUrl = "mypage/order_detail";//주문/배송 상세
-  static const apiMyPageOrderDeliveryUrl = "mypage/order_delivery";//주문/배송 상세
+  static const apiMyPageOrderDeliveryUrl = "mypage/order_delivery";//배송조회
   static const apiMyPageOrderCancelCategoryUrl = "mypage/order_cancel_category";//주문 취소 카테고리
   static const apiMyPageOrderCancelUrl = "mypage/order_cancel";//주문 취소
   static const apiMyPageOrderCancelDetailUrl = "mypage/order_cancel_detail";//주문 취소 상세

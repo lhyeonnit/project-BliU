@@ -145,7 +145,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     Map<String, dynamic> requestData = {
       'mt_idx': pref.getMtIdx(),
       'store_arr': json.encode(storeArr),
-      'all_price': _getTotalProductPrice(),
+      'all_price': widget.payOrderDetailData.allPrice ?? 0,
     };
 
     final couponResponseDTO = await ref.read(paymentViewModelProvider.notifier).getOrderCoupon(requestData);
@@ -206,25 +206,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     }
   }
 
-  int _getTotalProductPrice() {
-    // 선택된 기준으로 가격 가져오기
-    int totalProductPrice = 0;
-    final cartList = widget.payOrderDetailData.list ?? [];
-    for (var cartItem in cartList) {
-      for (var product in cartItem.productList ?? [] as List<CartItemData>) {
-        totalProductPrice += ((product.ptPrice ?? 0) * (product.ptCount ?? 0));
-      }
-    }
-    return totalProductPrice;
-  }
-
   int _getTotalDeliveryPrice() {
     int totalDeliveryPrice = widget.payOrderDetailData.allDeliveryPrice ?? 0;
-    // final cartList = widget.payOrderDetailData.list ?? [];
-    // for (var cartItem in cartList) {
-    //   totalDeliveryPrice += cartItem.stDeliveryPrice ?? 0;
-    // }
-
     totalDeliveryPrice += _userDeliveryPrice;
     return totalDeliveryPrice;
   }
@@ -232,7 +215,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
   void _pointCheck(String point) {
     if (point.isNotEmpty) {
       int pointValue = int.parse(point);
-      int totalProductPrice = _getTotalProductPrice();
+      int totalProductPrice = widget.payOrderDetailData.allPrice ?? 0;
       if (pointValue > totalProductPrice) {
         pointValue = totalProductPrice;
       }
@@ -515,10 +498,10 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
             if (result != null) {
               final paymentResult = result as Map<String, String>;
 
-              final error_code = paymentResult['error_code'];
-              final error_msg = paymentResult['error_msg'].toString();
+              final errorCode = paymentResult['error_code'];
+              final errorMsg = paymentResult['error_msg'].toString();
 
-              if (error_code == null) {
+              if (errorCode == null) {
                 Map<String, dynamic> orderRequestData = {
                   'orderId': payOrderDetailData.otCode ?? "",
                   'imp_uid': paymentResult['imp_uid'].toString(),
@@ -534,7 +517,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                 }
               } else {
                 if (!mounted) return;
-                Utils.getInstance().showSnackBar(context, error_msg);
+                Utils.getInstance().showSnackBar(context, errorMsg);
               }
             }
 
@@ -604,7 +587,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final totalAmount = _getTotalProductPrice();
+    final totalAmount = widget.payOrderDetailData.allPrice ?? 0;
     final shippingCost = _getTotalDeliveryPrice();
 
     int couponDiscount = 0;

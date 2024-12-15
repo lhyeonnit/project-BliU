@@ -25,11 +25,13 @@ class OrderItem extends ConsumerStatefulWidget {
 
 class OrderItemState extends ConsumerState<OrderItem> {
   late int _ctStatus;
+  late String _ptType;
 
   @override
   void initState() {
     super.initState();
     _ctStatus = widget.orderDetailData.ctStats ?? 0;
+    _ptType = widget.orderDetailData.ptType ?? "";
     //_ctStatus = 81; //테스트용
   }
 
@@ -112,6 +114,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -234,6 +237,9 @@ class OrderItemState extends ConsumerState<OrderItem> {
   }
 
   Widget orderItemButton() {
+    if (_ptType == "A") {
+      return const SizedBox();
+    }
     if (_ctStatus == 3) {
       return Row(
         children: [

@@ -15,6 +15,7 @@ class OrderDetailData {
   final String? ptImg;
   String? reviewWrite;
   final int? rtIdx;
+  final String? ptType;
 
   OrderDetailData({
     required this.type,
@@ -33,6 +34,7 @@ class OrderDetailData {
     required this.ptImg,
     required this.reviewWrite,
     required this.rtIdx,
+    required this.ptType,
   });
 
   // JSON to Object
@@ -54,6 +56,7 @@ class OrderDetailData {
       ptImg: json['pt_img'],
       reviewWrite: json['review_write'],
       rtIdx: json['rt_idx'],
+      ptType: json['pt_type'],
     );
   }
 
@@ -76,6 +79,7 @@ class OrderDetailData {
       'pt_img': ptImg,
       'review_write': reviewWrite,
       'rt_idx': rtIdx,
+      'pt_type': ptType,
     };
   }
 }
