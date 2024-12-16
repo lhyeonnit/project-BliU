@@ -1104,8 +1104,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                                             MainAxisAlignment.spaceBetween,
                                             children: [
                                               GestureDetector(
-                                                child: const Icon(
-                                                    CupertinoIcons.minus, size: 20),
+                                                child: const Icon(CupertinoIcons.minus, size: 20),
                                                 onTap: () {
                                                   if (_addPtAddArr[index].count > 1) {
                                                     setState(() {
@@ -1116,8 +1115,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                                               ),
                                               Container(
                                                 margin:
-                                                const EdgeInsets.symmetric(
-                                                    horizontal: 5),
+                                                const EdgeInsets.symmetric(horizontal: 5),
                                                 child: Text(
                                                   '${_addPtAddArr[index].count}',
                                                   style: TextStyle(
@@ -1129,9 +1127,13 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                  setState(() {
-                                                    _addPtAddArr[index].count += 1;
-                                                  });
+                                                  if ((_addPtAddArr[index].patJaego ?? 0) > _addPtAddArr[index].count) {
+                                                    setState(() {
+                                                      _addPtAddArr[index].count += 1;
+                                                    });
+                                                  } else {
+                                                    Utils.getInstance().showSnackBar(context, "재고가 부족합니다.");
+                                                  }
                                                 },
                                                 child: const Icon(Icons.add, size: 20),
                                               ),

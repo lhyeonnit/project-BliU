@@ -434,25 +434,25 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
           mtSaveAdd = "Y";
         }
 
-        if (_selectedCouponData != null) {
-          Map<String, dynamic> requestCouponData = {
-            'ot_code': payOrderDetailData.otCode,
-            'coupon_idx': _selectedCouponData?.couponIdx,
-            'mt_idx': mtIdx,
-          };
-
-          await ref.read(paymentViewModelProvider.notifier).couponUse(requestCouponData);
-        }
-
-        if (_discountPoint > 0) {
-          Map<String, dynamic> requestPointData = {
-            'ot_code': payOrderDetailData.otCode,
-            'use_point': _discountPoint,
-            'mt_idx': mtIdx,
-          };
-
-          await ref.read(paymentViewModelProvider.notifier).pointUse(requestPointData);
-        }
+        // if (_selectedCouponData != null) {
+        //   Map<String, dynamic> requestCouponData = {
+        //     'ot_code': payOrderDetailData.otCode,
+        //     'coupon_idx': _selectedCouponData?.couponIdx,
+        //     'mt_idx': mtIdx,
+        //   };
+        //
+        //   await ref.read(paymentViewModelProvider.notifier).couponUse(requestCouponData);
+        // }
+        //
+        // if (_discountPoint > 0) {
+        //   Map<String, dynamic> requestPointData = {
+        //     'ot_code': payOrderDetailData.otCode,
+        //     'use_point': _discountPoint,
+        //     'mt_idx': mtIdx,
+        //   };
+        //
+        //   await ref.read(paymentViewModelProvider.notifier).pointUse(requestPointData);
+        // }
 
         Map<String, dynamic> requestData1 = {
           'type': mtIdx.isNotEmpty ? 1 : 2,
@@ -506,6 +506,8 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                   'orderId': payOrderDetailData.otCode ?? "",
                   'imp_uid': paymentResult['imp_uid'].toString(),
                   'merchant_uid': paymentResult['merchant_uid'].toString(),
+                  'coupon_idx': _selectedCouponData?.couponIdx,
+                  'use_point': _discountPoint,
                 };
                 final defaultResponseDTO = await ref.read(paymentViewModelProvider.notifier).orderCheck(orderRequestData);
                 // 결제검증 결과값 ex)  return res.status(200).json({'result': true, 'data':{'message': '결제 완료.'}});

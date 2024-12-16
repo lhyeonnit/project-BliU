@@ -1,4 +1,3 @@
-import 'package:BliU/screen/_component/non_data_screen.dart';
 import 'package:BliU/screen/my_coupon/view_model/my_coupon_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -326,7 +325,30 @@ class MyCouponScreenState extends ConsumerState<MyCouponScreen> {
                 ),
                 Visibility(
                   visible: couponList.isEmpty,
-                  child: const NonDataScreen(text: '등록된 쿠폰이 없습니다.'),
+                  //child: const NonDataScreen(text: '등록된 쿠폰이 없습니다.'),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 200, bottom: 15),
+                          child: Image.asset('assets/images/product/empty_coupon.png',
+                            width: 180,
+                            height: 180,
+                          ),
+                        ),
+                        Text(
+                          '지금은 쿠폰이 없어요!',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            fontWeight: FontWeight.w300,
+                            color: const Color(0xFF7B7B7B),
+                            height: 1.2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             );

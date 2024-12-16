@@ -137,45 +137,45 @@ class PaymentViewModel extends StateNotifier<PaymentModel?> {
     }
   }
   //쿠폰사용
-  Future<DefaultResponseDTO?> couponUse(Map<String, dynamic> requestData) async {
-    try {
-      final response = await repository.reqPost(url: Constant.apiOrderCouponUseUrl, data: requestData);
-      if (response != null) {
-        if (response.statusCode == 200) {
-          Map<String, dynamic> responseData = response.data;
-          DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
-          return defaultResponseDTO;
-        }
-      }
-      return null;
-    } catch (e) {
-      // Catch and log any exceptions
-      if (kDebugMode) {
-        print('Error fetching : $e');
-      }
-      return null;
-    }
-  }
-  //포인트 사용
-  Future<DefaultResponseDTO?> pointUse(Map<String, dynamic> requestData) async {
-    try {
-      final response = await repository.reqPost(url: Constant.apiOrderPointUrl, data: requestData);
-      if (response != null) {
-        if (response.statusCode == 200) {
-          Map<String, dynamic> responseData = response.data;
-          DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
-          return defaultResponseDTO;
-        }
-      }
-      return null;
-    } catch (e) {
-      // Catch and log any exceptions
-      if (kDebugMode) {
-        print('Error fetching : $e');
-      }
-      return null;
-    }
-  }
+  // Future<DefaultResponseDTO?> couponUse(Map<String, dynamic> requestData) async {
+  //   try {
+  //     final response = await repository.reqPost(url: Constant.apiOrderCouponUseUrl, data: requestData);
+  //     if (response != null) {
+  //       if (response.statusCode == 200) {
+  //         Map<String, dynamic> responseData = response.data;
+  //         DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+  //         return defaultResponseDTO;
+  //       }
+  //     }
+  //     return null;
+  //   } catch (e) {
+  //     // Catch and log any exceptions
+  //     if (kDebugMode) {
+  //       print('Error fetching : $e');
+  //     }
+  //     return null;
+  //   }
+  // }
+  // //포인트 사용
+  // Future<DefaultResponseDTO?> pointUse(Map<String, dynamic> requestData) async {
+  //   try {
+  //     final response = await repository.reqPost(url: Constant.apiOrderPointUrl, data: requestData);
+  //     if (response != null) {
+  //       if (response.statusCode == 200) {
+  //         Map<String, dynamic> responseData = response.data;
+  //         DefaultResponseDTO defaultResponseDTO = DefaultResponseDTO.fromJson(responseData);
+  //         return defaultResponseDTO;
+  //       }
+  //     }
+  //     return null;
+  //   } catch (e) {
+  //     // Catch and log any exceptions
+  //     if (kDebugMode) {
+  //       print('Error fetching : $e');
+  //     }
+  //     return null;
+  //   }
+  // }
   //제주/도서산간 추가비용
   Future<Map<String, dynamic>?> orderLocal(Map<String, dynamic> requestData) async {
     try {
