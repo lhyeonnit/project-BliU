@@ -17,6 +17,7 @@ class CouponData {
   final int? ctMaxPrice;
   final String? ctDate;
   final String? down;
+  final String? downText;
 
   CouponData({
     required this.coupon,
@@ -37,6 +38,7 @@ class CouponData {
     required this.ctMaxPrice,
     required this.ctDate,
     required this.down,
+    required this.downText,
   });
 
   // JSON to Object
@@ -60,6 +62,7 @@ class CouponData {
       ctMaxPrice: json['ct_max_price'],
       ctDate: json['ct_date'],
       down: json['down'],
+      downText: json['down_text'],
     );
   }
 
@@ -84,6 +87,7 @@ class CouponData {
       'ct_max_price': ctMaxPrice,
       'ct_date': ctDate,
       'down': down,
+      'down_text': downText,
     };
   }
 }

@@ -44,6 +44,90 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
     });
   }
 
+  void _afterBuild(BuildContext context) {
+    _getOrderDetail();
+    _getOrderCancelInfo();
+  }
+  void _getOrderCancelInfo() async {
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    String? appToken = pref.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
+    Map<String, dynamic> requestData = {
+      'type': memberType,
+      'mt_idx': mtIdx,
+      'temp_mt_id': appToken,
+      'odt_code': widget.orderDetailData.odtCode,
+    };
+
+    final orderCancelInfoResponseDTO = await ref.read(cancelViewModelProvider.notifier).getOrderCancelInfo(requestData);
+
+    if (orderCancelInfoResponseDTO != null) {
+      if (orderCancelInfoResponseDTO.result == true) {
+        returnInfoData = orderCancelInfoResponseDTO.data;
+      } else {
+        if (!mounted) return;
+        Utils.getInstance().showSnackBar(context, orderCancelInfoResponseDTO.message ?? "");
+      }
+    }
+  }
+  void _getOrderDetail() async {
+
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+    String? appToken = pref.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
+    Map<String, dynamic> requestData = {
+      'type': memberType,
+      'mt_idx': mtIdx,
+      'temp_mt_id': appToken,
+      'ot_code': widget.orderData.detailList?[0].otCode,
+    };
+
+    final orderDetailInfoResponseDTO = await ref.read(cancelViewModelProvider.notifier).getOrderDetail(requestData);
+    final categoryResponseDTO = await ref.read(cancelViewModelProvider.notifier).getCategory();
+
+    if (orderDetailInfoResponseDTO != null) {
+      if (orderDetailInfoResponseDTO.result == true) {
+        orderDetailInfoData = orderDetailInfoResponseDTO.data;
+        userType = memberType;
+      } else {
+        if (!mounted) return;
+        Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
+      }
+    }
+
+    if (categoryResponseDTO != null) {
+      if (categoryResponseDTO.result == true) {
+        _cancelCategory = categoryResponseDTO.list ?? [];
+      }
+    }
+    setState(() {});
+  }
+
+  void _orderCancel() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx();
+
+    String? appToken = pref.getToken();
+    int memberType = (mtIdx != null) ? 1 : 2;
+    Map<String, dynamic> requestData = {
+      'type': memberType,
+      'mt_idx': mtIdx,
+      'temp_mt_id': appToken,
+      'odt_code': widget.orderDetailData.odtCode,
+      'ct_idx': _dropdownValue,
+      'ct_reason': _detailedReason,
+    };
+
+    final defaultResponseDTO = await ref.read(cancelViewModelProvider.notifier).orderCancel(requestData);
+    if (!mounted) return;
+    if (defaultResponseDTO.result == true) {
+      Navigator.pop(context);
+    }
+    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -276,90 +360,5 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
         ),
       ),
     );
-  }
-
-  void _afterBuild(BuildContext context) {
-    _getOrderDetail();
-    _getOrderCancelInfo();
-  }
-  void _getOrderCancelInfo() async {
-
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-    String? appToken = pref.getToken();
-    int memberType = (mtIdx != null) ? 1 : 2;
-    Map<String, dynamic> requestData = {
-      'type': memberType,
-      'mt_idx': mtIdx,
-      'temp_mt_id': appToken,
-      'odt_code': widget.orderDetailData.odtCode,
-    };
-
-    final orderCancelInfoResponseDTO = await ref.read(cancelViewModelProvider.notifier).getOrderCancelInfo(requestData);
-
-    if (orderCancelInfoResponseDTO != null) {
-      if (orderCancelInfoResponseDTO.result == true) {
-        returnInfoData = orderCancelInfoResponseDTO.data;
-      } else {
-        if (!mounted) return;
-        Utils.getInstance().showSnackBar(context, orderCancelInfoResponseDTO.message ?? "");
-      }
-    }
-  }
-  void _getOrderDetail() async {
-
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-    String? appToken = pref.getToken();
-    int memberType = (mtIdx != null) ? 1 : 2;
-    Map<String, dynamic> requestData = {
-      'type': memberType,
-      'mt_idx': mtIdx,
-      'temp_mt_id': appToken,
-      'ot_code': widget.orderData.detailList?[0].otCode,
-    };
-
-    final orderDetailInfoResponseDTO = await ref.read(cancelViewModelProvider.notifier).getOrderDetail(requestData);
-    final categoryResponseDTO = await ref.read(cancelViewModelProvider.notifier).getCategory();
-
-    if (orderDetailInfoResponseDTO != null) {
-      if (orderDetailInfoResponseDTO.result == true) {
-        orderDetailInfoData = orderDetailInfoResponseDTO.data;
-        userType = memberType;
-      } else {
-        if (!mounted) return;
-        Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
-      }
-    }
-
-    if (categoryResponseDTO != null) {
-      if (categoryResponseDTO.result == true) {
-        _cancelCategory = categoryResponseDTO.list ?? [];
-      }
-    }
-    setState(() {});
-  }
-
-  void _orderCancel() async {
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-
-    String? appToken = pref.getToken();
-    int memberType = (mtIdx != null) ? 1 : 2;
-    Map<String, dynamic> requestData = {
-      'type': memberType,
-      'mt_idx': mtIdx,
-      'temp_mt_id': appToken,
-      'odt_code': widget.orderDetailData.odtCode,
-      'ct_idx': _dropdownValue,
-      'ct_reason': _detailedReason,
-    };
-
-    final defaultResponseDTO = await ref.read(cancelViewModelProvider.notifier).orderCancel(requestData);
-    if (!mounted) return;
-    if (defaultResponseDTO.result == true) {
-      Navigator.pop(context);
-    }
-    Utils.getInstance().showSnackBar(context, defaultResponseDTO.message ?? "");
   }
 }

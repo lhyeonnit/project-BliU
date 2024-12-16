@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:BliU/data/coupon_data.dart';
 import 'package:BliU/screen/_component/non_data_screen.dart';
-import 'package:BliU/screen/coupon_receive/item/coupon_card.dart';
+import 'package:BliU/screen/coupon_receive/item/coupon_item.dart';
 import 'package:BliU/screen/coupon_receive/view_model/coupon_receive_view_model.dart';
 import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
@@ -21,7 +21,7 @@ class CouponReceiveScreen extends ConsumerStatefulWidget {
 }
 
 class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
-  late int _stIdx;
+  late int _ptIdx;
   bool _isAllDownload = false;
 
   List<CouponData> _couponList = [];
@@ -29,9 +29,9 @@ class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
   @override
   void initState() {
     super.initState();
-    _stIdx = 0;
+    _ptIdx = 0;
     try {
-      _stIdx = int.parse(Get.parameters["st_idx"].toString());
+      _ptIdx = int.parse(Get.parameters["pt_idx"].toString());
     } catch(e) {
       //
     }
@@ -101,6 +101,7 @@ class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
                       final couponDiscount = couponData.couponDiscount ?? "0";
                       final ctName = couponData.ctName ?? "";
                       final ctDate = "${couponData.ctDate ?? ""}까지 사용가능";
+                      final downText = couponData.downText ?? "";
 
                       String detailMessage = "구매금액 ${Utils.getInstance().priceString(couponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
                       if (couponData.ctMaxPrice != null) {
@@ -112,6 +113,7 @@ class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
                         title: ctName,
                         expiryDate: ctDate,
                         discountDetails: detailMessage,
+                        downText: downText,
                         isDownload: couponData.down == "Y" ? true : false,
                         onDownload: () {
                           if ((couponData.ctCode ?? "").isNotEmpty) {
@@ -219,7 +221,7 @@ class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
     final pref = await SharedPreferencesManager.getInstance();
     Map<String, dynamic> requestData = {
       'mt_idx': pref.getMtIdx(),
-      'st_idx': _stIdx,
+      'pt_idx': _ptIdx,
     };
 
     final productCouponResponseDTO = await ref.read(couponReceiveViewModelProvider.notifier).getList(requestData);

@@ -124,7 +124,7 @@ class StoreInfoChildWidgetState extends ConsumerState<StoreInfoChildWidget> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${widget.storeData?.stStyleTxt?.split(',').first ?? ""}, ${widget.storeData?.stAgeTxt ?? ""}',
+                        '${widget.storeData?.stStyleTxt ?? ""}, ${widget.storeData?.stAgeTxt ?? ""}',
                         // 쉼표로 분리 후 첫 번째 값만 가져옴
                         style: TextStyle(
                           fontFamily: 'Pretendard',

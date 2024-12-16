@@ -316,7 +316,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                final map = {'odtCode' : widget.orderDetailData.otCode ?? "", 'deliveryType': 1};
+                final map = {'odtCode' : widget.orderDetailData.odtCode ?? "", 'deliveryType': 1};
                 Navigator.pushNamed(context, '/delivery', arguments: map);
               },
               style: TextButton.styleFrom(
@@ -409,7 +409,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
               Expanded(
                 child: TextButton(
                   onPressed: () {
-                    final map = {'odtCode' : widget.orderDetailData.otCode ?? "", 'deliveryType': 1};
+                    final map = {'odtCode' : widget.orderDetailData.odtCode ?? "", 'deliveryType': 1};
                     Navigator.pushNamed(context, '/delivery', arguments: map);
                   },
                   style: TextButton.styleFrom(
@@ -490,7 +490,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                final map = {'odtCode' : widget.orderDetailData.otCode ?? "", 'deliveryType': 1};
+                final map = {'odtCode' : widget.orderDetailData.odtCode ?? "", 'deliveryType': 1};
                 Navigator.pushNamed(context, '/delivery', arguments: map);
               },
               style: TextButton.styleFrom(
@@ -537,7 +537,7 @@ class OrderItemState extends ConsumerState<OrderItem> {
         width: double.infinity,
         child: TextButton(
           onPressed: () {
-            final map = {'odtCode' : widget.orderDetailData.otCode ?? "", 'deliveryType': 2};
+            final map = {'odtCode' : widget.orderDetailData.odtCode ?? "", 'deliveryType': 2};
             Navigator.pushNamed(context, '/delivery', arguments: map);
           },
           style: TextButton.styleFrom(

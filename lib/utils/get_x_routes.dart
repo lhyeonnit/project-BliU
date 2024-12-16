@@ -84,7 +84,7 @@ class GetXRoutes {
     ),
 
     GetPage(
-      name: '/coupon_receive/:st_idx',
+      name: '/coupon_receive/:pt_idx',
       page: () => const CouponReceiveScreen(),
     ),
 

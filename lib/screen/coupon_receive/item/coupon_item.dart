@@ -9,6 +9,7 @@ class CouponItem extends StatefulWidget {
   final String expiryDate;
   final String discountDetails;
   final String couponKey;
+  final String downText;
   final bool isDownload;
   final VoidCallback onDownload;
 
@@ -19,6 +20,7 @@ class CouponItem extends StatefulWidget {
     required this.expiryDate,
     required this.discountDetails,
     required this.couponKey,
+    required this.downText,
     required this.isDownload,
     required this.onDownload,
   });
@@ -131,22 +133,37 @@ class CouponItemState extends State<CouponItem> {
                       isDownload ? 'assets/images/store/ic_cu_down.svg' : 'assets/images/store/ic_cu_down_end.svg',
                     ),
                   ),
-                  if (!isDownload) // 다운로드된 경우에만 텍스트 표시
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: SizedBox(
-                        child: Text(
-                          '사용완료',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: Responsive.getFont(context, 12),
-                            color: isDownload ? Colors.black : Colors.grey,
-                            height: 1.2,
-                            fontWeight: FontWeight.w600,
-                          ),
+                  // if (!isDownload) // 다운로드된 경우에만 텍스트 표시
+                  //   Padding(
+                  //     padding: const EdgeInsets.only(top: 10.0),
+                  //     child: SizedBox(
+                  //       child: Text(
+                  //         '사용완료',
+                  //         style: TextStyle(
+                  //           fontFamily: 'Pretendard',
+                  //           fontSize: Responsive.getFont(context, 12),
+                  //           color: isDownload ? Colors.black : Colors.grey,
+                  //           height: 1.2,
+                  //           fontWeight: FontWeight.w600,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: SizedBox(
+                      child: Text(
+                        widget.downText,
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: Responsive.getFont(context, 12),
+                          color: isDownload ? Colors.black : Colors.grey,
+                          height: 1.2,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
+                  ),
                 ],
               ),
             ),

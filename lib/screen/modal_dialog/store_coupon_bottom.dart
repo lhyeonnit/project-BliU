@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:BliU/data/coupon_data.dart';
 import 'package:BliU/data/store_data.dart';
-import 'package:BliU/screen/coupon_receive/item/coupon_card.dart';
+import 'package:BliU/screen/coupon_receive/item/coupon_item.dart';
 import 'package:BliU/screen/modal_dialog/view_model/store_coupon_bottom_view_model.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -154,6 +154,7 @@ class StoreCouponBottomContentState extends ConsumerState<StoreCouponBottomConte
                 final couponDiscount = couponData.couponDiscount ?? "0";
                 final ctName = couponData.ctName ?? "";
                 final ctDate = "${couponData.ctDate ?? ""}까지 사용가능";
+                final downText = couponData.downText ?? "";
 
                 String detailMessage = "구매금액 ${Utils.getInstance().priceString(couponData.ctMinPrice ?? 0)}원 이상인경우 사용 가능";
                 if (couponData.ctMaxPrice != null) {
@@ -165,6 +166,7 @@ class StoreCouponBottomContentState extends ConsumerState<StoreCouponBottomConte
                   title: ctName,
                   expiryDate: ctDate,
                   discountDetails: detailMessage,
+                  downText: downText,
                   isDownload: couponData.down == "Y" ? true : false,
                   onDownload: () {
                     if ((couponData.ctCode ?? "").isNotEmpty) {
