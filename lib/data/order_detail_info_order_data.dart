@@ -1,6 +1,7 @@
 import 'package:BliU/data/coupon_data.dart';
 
 class OrderDetailInfoOrderData {
+  final int? otTotal;
   final int? otDeliveryCharge;
   final int? otDeliveryChargeExtra;
   final String? otPayType;
@@ -10,6 +11,7 @@ class OrderDetailInfoOrderData {
   final CouponData? otCouponInfo;
 
   OrderDetailInfoOrderData({
+    required this.otTotal,
     required this.otDeliveryCharge,
     required this.otDeliveryChargeExtra,
     required this.otPayType,
@@ -22,6 +24,7 @@ class OrderDetailInfoOrderData {
   // JSON to Object
   factory OrderDetailInfoOrderData.fromJson(Map<String, dynamic> json) {
     return OrderDetailInfoOrderData(
+      otTotal: json['ot_total'],
       otDeliveryCharge: json['ot_delivery_charge'],
       otDeliveryChargeExtra: json['ot_delivery_charge_extra'],
       otPayType: json['ot_pay_type'],
@@ -35,6 +38,7 @@ class OrderDetailInfoOrderData {
   // Object to JSOn
   Map<String, dynamic> toJson() {
     return {
+      'ot_total': otTotal,
       'ot_delivery_charge': otDeliveryCharge,
       'ot_delivery_charge_extra': otDeliveryChargeExtra,
       'ot_pay_type': otPayType,

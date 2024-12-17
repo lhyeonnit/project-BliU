@@ -37,6 +37,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   ProductData? _productData;
   List<ProductData> _sameList = [];
   InfoData? _infoData;
+  String _couponEnable = 'N';
 
   List<QnaData> _productQnaList = [];
   int _productQnaCount = 0;
@@ -116,6 +117,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         _productData = productDetailResponseDto.product;
         _sameList = productDetailResponseDto.sameList ?? [];
         _infoData = productDetailResponseDto.info;
+        _couponEnable = productDetailResponseDto.couponEnable ?? 'N';
 
         String content = _contentAddHtml(_productData?.ptContent ?? "");
         _detailWeViewController?.loadData(data: content);
@@ -906,46 +908,49 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 8),
-                child: Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(right: 40),
-                      child: Text(
-                        '쿠폰',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: Responsive.getFont(context, 14),
-                          color: const Color(0xFF7B7B7B),
-                          height: 1.2,
+              Visibility(
+                visible: _couponEnable == 'Y' ? true : false,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 8),
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(right: 40),
+                        child: Text(
+                          '쿠폰',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: Responsive.getFont(context, 14),
+                            color: const Color(0xFF7B7B7B),
+                            height: 1.2,
+                          ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/coupon_receive/${storeData?.stIdx}');
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xFFDDDDDD)),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 8),
-                          child: Text(
-                            '쿠폰 다운로드',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 14),
-                              color: Colors.black,
-                              height: 1.2,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/coupon_receive/${storeData?.stIdx}');
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: const Color(0xFFDDDDDD)),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 8),
+                            child: Text(
+                              '쿠폰 다운로드',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 14),
+                                color: Colors.black,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

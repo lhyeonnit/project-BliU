@@ -15,6 +15,7 @@ import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -67,14 +68,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
   void _focusCheck() {
     if (!_pointFocusNode.hasFocus) {
-      if (_discountPoint != 0) {
-        if (_discountPoint < 1000) {
-          setState(() {
-            _pointController.text = "0";
-            _discountPoint = 0;
-          });
-        }
-      }
+      _pointCheck(false);
     }
   }
 
@@ -212,23 +206,65 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     return totalDeliveryPrice;
   }
 
-  void _pointCheck(String point) {
-    if (point.isNotEmpty) {
-      int pointValue = int.parse(point);
-      int totalProductPrice = widget.payOrderDetailData.allPrice ?? 0;
-      if (pointValue > totalProductPrice) {
-        pointValue = totalProductPrice;
-      }
-      _pointController.text = pointValue.toString();
-
-      setState(() {
-        _discountPoint = pointValue;
-      });
-    } else {
-      setState(() {
-        _discountPoint = 0;
-      });
+  void _pointCheck(bool isMax) {
+    if (_point < 1000) {
+      _setPointText('0', 0);
+      return;
     }
+
+    final maxUsePoint = ((widget.payOrderDetailData.maxUsePoint ?? 0) / 10).floor() * 10;
+    String point = "0";
+    if (isMax) {
+      if (maxUsePoint < 1000) {
+        point = "0";
+      } else {
+        if (_point > maxUsePoint) {
+          point = maxUsePoint.toString();
+        } else {
+          point = _point.toString();
+        }
+      }
+    } else {
+      point = _pointController.text;
+    }
+
+    if (point.isNotEmpty) {
+      try {
+        int pointValue = int.parse(point);
+        if (pointValue < 1000) {
+          _setPointText('0', 0);
+          return;
+        }
+
+        int totalProductPrice = widget.payOrderDetailData.allPrice ?? 0;
+        if (pointValue > totalProductPrice) {
+          pointValue = totalProductPrice;
+        }
+
+        pointValue = ((pointValue / 10).floor() * 10);
+
+        if (pointValue > maxUsePoint) {
+          pointValue = maxUsePoint;
+        }
+
+        _setPointText(pointValue.toString(), pointValue);
+      } catch(e) {
+        if (kDebugMode) {
+          print(e);
+        }
+
+        _setPointText('0', 0);
+      }
+    } else {
+      _setPointText('0', 0);
+    }
+  }
+
+  void _setPointText(String pointValueString, int pointValue) {
+    _pointController.text = pointValueString;
+    setState(() {
+      _discountPoint = pointValue;
+    });
   }
 
   void _agreeCheck() {
@@ -1481,25 +1517,16 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                     ),
                                                     textAlign: TextAlign.right,
                                                     // 텍스트를 오른쪽 정렬
-                                                    onChanged: (text) {
-                                                      final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
-                                                      if (maxUsePoint < 1000) {
-                                                        _pointController.text = "0";
-                                                        _pointCheck("0");
-                                                        return;
-                                                      }
-                                                      if (_point >= 1000) { // 포인트가 1000 이상일 때만 변경 처리
-                                                        final value = int.parse(text);
-                                                        final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
-                                                        if (value > maxUsePoint) {
-                                                          _pointController.text = maxUsePoint.toString();
-                                                          _pointCheck(maxUsePoint.toString());
-                                                        } else {
-                                                          _pointCheck(text);
-                                                        }
-                                                      }
-                                                    },
                                                     focusNode: _pointFocusNode,
+                                                    onEditingComplete: () {
+                                                      print("onEditingComplete");
+                                                    },
+                                                    onTap: () {
+                                                      print("onTap");
+                                                    },
+                                                    onSubmitted: (value) {
+                                                      print("onSubmitted $value");
+                                                    },
                                                   ),
                                                 ),
                                                 Container(
@@ -1527,23 +1554,9 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                               border: Border.all(color: const Color(0xFFDDDDDD)),
                                             ),
                                             child: GestureDetector(
-                                              onTap:  _point >= 1000 ? () { // 포인트가 1000 이상일 때만 활성화
-                                                final maxUsePoint = widget.payOrderDetailData.maxUsePoint ?? 0;
-                                                if (maxUsePoint < 1000) {
-                                                  _pointController.text = "0";
-                                                  _pointCheck("0");
-                                                  return;
-                                                }
-                                                if (_point > 0) {
-                                                  if (_point > maxUsePoint) {
-                                                    _pointController.text = maxUsePoint.toString();
-                                                    _pointCheck(maxUsePoint.toString());
-                                                  } else {
-                                                    _pointController.text = _point.toString();
-                                                    _pointCheck(_point.toString());
-                                                  }
-                                                }
-                                              } : null,
+                                              onTap: () { // 포인트가 1000 이상일 때만 활성화
+                                                _pointCheck(true);
+                                              },
                                               child: Center(
                                                 child: Text(
                                                   '전액사용',

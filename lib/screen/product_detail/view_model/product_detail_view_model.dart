@@ -26,12 +26,13 @@ class ProductDetailViewModel extends StateNotifier<ProductDetailModel?> {
         }
       }
       return ProductDetailResponseDto(
-          result: false,
-          message: "Network Or Data Error",
-          store: null,
-          sameList: null,
-          product: null,
-          info: null
+        result: false,
+        message: "Network Or Data Error",
+        store: null,
+        sameList: null,
+        product: null,
+        info: null,
+        couponEnable: 'N',
       );
     } catch (e) {
       // Catch and log any exceptions
@@ -39,12 +40,13 @@ class ProductDetailViewModel extends StateNotifier<ProductDetailModel?> {
         print('Error fetching : $e');
       }
       return ProductDetailResponseDto(
-          result: false,
-          message: e.toString(),
-          store: null,
-          sameList: null,
-          product: null,
-          info: null
+        result: false,
+        message: e.toString(),
+        store: null,
+        sameList: null,
+        product: null,
+        info: null,
+        couponEnable: 'N',
       );
     }
   }

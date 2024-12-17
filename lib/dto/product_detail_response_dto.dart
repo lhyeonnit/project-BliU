@@ -9,6 +9,7 @@ class ProductDetailResponseDto {
   final List<ProductData>? sameList;
   final ProductData? product;
   final InfoData? info;
+  final String? couponEnable;
 
   ProductDetailResponseDto({
     required this.result,
@@ -17,6 +18,7 @@ class ProductDetailResponseDto {
     required this.sameList,
     required this.product,
     required this.info,
+    required this.couponEnable,
   });
 
   // JSON to Object
@@ -47,6 +49,7 @@ class ProductDetailResponseDto {
       sameList: list,
       product: productData,
       info: infoData,
+      couponEnable: json['data']['coupon_enable'],
     );
   }
 
@@ -60,6 +63,7 @@ class ProductDetailResponseDto {
         'same_list' : sameList?.map((it) => it.toJson()).toList(),
         'product' : product?.toJson(),
         'info' : info?.toJson(),
+        'coupon_enable' : couponEnable,
       }
     };
   }

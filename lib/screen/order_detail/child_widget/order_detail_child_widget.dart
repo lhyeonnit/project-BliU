@@ -120,7 +120,7 @@ class OrderDetailChildWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otSprice ?? 0)}원',
+                    '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otTotal ?? 0)}원',
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
@@ -144,7 +144,7 @@ class OrderDetailChildWidget extends StatelessWidget {
                 children: [
                   _buildInfoRow(
                     '총 상품 금액',
-                    "${Utils.getInstance().priceString(_getTotalPrice())}원",
+                    "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otSprice ?? 0)}원",
                     context,
                   ),
                   Container(
@@ -225,7 +225,7 @@ class OrderDetailChildWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otSprice ?? 0)}원',
+                  '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otTotal ?? 0)}원',
                   style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: Responsive.getFont(context, 14),
@@ -311,11 +311,5 @@ class OrderDetailChildWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-  int _getTotalPrice() {
-    int result = (orderDetailInfoData?.order?.otSprice ?? 0) + (orderDetailInfoData?.order?.otUsePoint ?? 0) + (orderDetailInfoData?.order?.otUseCoupon ?? 0);
-    result = result - ((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0));
-
-    return result;
   }
 }

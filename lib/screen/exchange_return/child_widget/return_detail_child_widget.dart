@@ -146,8 +146,6 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
   void initState() {
     super.initState();
     _returnReasons = widget.returnCategory;
-
-    print("widget.orderDetailInfoData?.order?.otPayType ${widget.orderDetailInfoData?.order?.otPayType}");
   }
 
   @override
@@ -532,12 +530,7 @@ class ReturnDetailChildWidgetState extends State<ReturnDetailChildWidget> {
               ),
               onProgressChanged: (controller, progress) {
                 if (progress == 100) {
-                  controller.getContentHeight().then((height) {
-                    setState(() {
-                      _deliveryWebViewHeight = double.parse(height.toString());
-                    });
-                  });
-                  Future.delayed(const Duration(seconds: 1), () {
+                  Future.delayed(const Duration(seconds: 2), () {
                     controller.getContentHeight().then((height) {
                       setState(() {
                         _deliveryWebViewHeight = double.parse(height.toString());

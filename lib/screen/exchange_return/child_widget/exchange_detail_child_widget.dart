@@ -426,12 +426,7 @@ class ExchangeDetailChildWidgetState extends State<ExchangeDetailChildWidget> {
               ),
               onProgressChanged: (controller, progress) {
                 if (progress == 100) {
-                  controller.getContentHeight().then((height) {
-                    setState(() {
-                      _deliveryWebViewHeight = double.parse(height.toString());
-                    });
-                  });
-                  Future.delayed(const Duration(seconds: 1), () {
+                  Future.delayed(const Duration(seconds: 2), () {
                     controller.getContentHeight().then((height) {
                       setState(() {
                         _deliveryWebViewHeight = double.parse(height.toString());
