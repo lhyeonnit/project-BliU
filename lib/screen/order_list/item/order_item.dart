@@ -246,7 +246,11 @@ class OrderItemState extends ConsumerState<OrderItem> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                final map = {'orderData' : widget.orderData, 'orderDetailData': widget.orderDetailData};
+                final map = {
+                  'orderData' : widget.orderData,
+                  'odtCode': widget.orderDetailData.odtCode,
+                  'otCode': widget.orderDetailData.otCode,
+                };
                 Navigator.pushNamed(context, '/cancel', arguments: map);
               },
               style: TextButton.styleFrom(

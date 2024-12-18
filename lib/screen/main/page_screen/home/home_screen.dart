@@ -5,6 +5,7 @@ import 'package:BliU/screen/cart/cart_screen.dart';
 import 'package:BliU/screen/main/page_screen/home/child_widget/home_body_ai_child_widget.dart';
 import 'package:BliU/screen/main/page_screen/home/child_widget/home_body_category_child_widget.dart';
 import 'package:BliU/screen/main/page_screen/home/child_widget/home_body_exhibition_child_widget.dart';
+import 'package:BliU/screen/main/page_screen/home/child_widget/home_body_spotlight_child_widget.dart';
 import 'package:BliU/screen/main/page_screen/home/child_widget/home_footer_child_widget.dart';
 import 'package:BliU/screen/main/page_screen/home/child_widget/home_header_child_widget.dart';
 import 'package:BliU/screen/main/page_screen/home/view_model/home_body_ai_view_model.dart';
@@ -264,11 +265,51 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                               [
                                 const HomeBodyCategoryChildWidget(),
                                 const HomeBodyAiChildWidget(),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 30.0),
-                                  child: SizedBox(
-                                    height: 451, // 고정된 높이
-                                    child: HomeBodyExhibitionChildWidget(),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 30.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 16.0),
+                                        child: Text(
+                                          "BliU'S PICK",
+                                          style: TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontSize: Responsive.getFont(context, 20),
+                                            fontWeight: FontWeight.bold,
+                                            height: 1.2,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 20),
+                                        height: 451, // 고정된 높이
+                                        child: const HomeBodyExhibitionChildWidget(),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.only(left: 16.0, top: 30, bottom: 30, right: 16),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "BliU'S Spotlight",
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: Responsive.getFont(context, 20),
+                                          fontWeight: FontWeight.bold,
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 20),
+                                        height: 271, // 고정된 높이
+                                        child: const HomeBodySpotlightChildWidget(),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 Container(

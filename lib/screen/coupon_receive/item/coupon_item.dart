@@ -65,16 +65,20 @@ class CouponItemState extends State<CouponItem> {
                             height: 1.2,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
-                          child: Text(
-                            widget.title,
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: Responsive.getFont(context, 16),
-                              fontWeight: FontWeight.bold,
-                              color: isDownload ? Colors.black :const Color(0xFFA4A4A4),
-                              height: 1.2,
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 6),
+                            child: Text(
+                              widget.title,
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: Responsive.getFont(context, 16),
+                                fontWeight: FontWeight.bold,
+                                color: isDownload ? Colors.black :const Color(0xFFA4A4A4),
+                                height: 1.2,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),

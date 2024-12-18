@@ -108,7 +108,8 @@ class GetXRoutes {
       name: '/cancel',
       page: () => CancelScreen(
         orderData: Get.arguments["orderData"],
-        orderDetailData: Get.arguments["orderDetailData"],),
+        odtCode: Get.arguments["odtCode"],
+        otCode: Get.arguments["otCode"],),
     ),
 
     GetPage(

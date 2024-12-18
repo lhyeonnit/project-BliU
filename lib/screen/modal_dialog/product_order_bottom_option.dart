@@ -63,8 +63,7 @@ class ProductOrderBottomOptionContent extends ConsumerStatefulWidget {
   final ProductData productData;
   final ScrollController scrollController;
 
-  const ProductOrderBottomOptionContent(
-      {super.key, required this.productData, required this.scrollController});
+  const ProductOrderBottomOptionContent({super.key, required this.productData, required this.scrollController});
 
   @override
   ConsumerState<ProductOrderBottomOptionContent> createState() => ProductOrderBottomOptionContentState();
@@ -94,6 +93,10 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
         _isExpandedList[index] = false; // 해당 타일 닫기
       }
     });
+
+
+
+
   }
 
   @override

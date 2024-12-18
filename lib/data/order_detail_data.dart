@@ -2,6 +2,7 @@ class OrderDetailData {
   final String? type;
   final int? ctIdx;
   final int? ctStats;
+  final int? ctStatus;
   final String? ctStatusTxt;
   final String? otCode;
   final String? odtCode;
@@ -21,6 +22,7 @@ class OrderDetailData {
     required this.type,
     required this.ctIdx,
     required this.ctStats,
+    required this.ctStatus,
     required this.ctStatusTxt,
     required this.otCode,
     required this.odtCode,
@@ -39,10 +41,12 @@ class OrderDetailData {
 
   // JSON to Object
   factory OrderDetailData.fromJson(Map<String, dynamic> json) {
+
     return OrderDetailData(
       type: json['type'],
       ctIdx: json['ct_idx'],
       ctStats: json['ct_stats'],
+      ctStatus: json['ct_status'],
       ctStatusTxt: json['ct_status_txt'],
       otCode: json['ot_code'],
       odtCode: json['odt_code'],
@@ -66,6 +70,7 @@ class OrderDetailData {
       'type': type,
       'ct_idx': ctIdx,
       'ct_stats': ctStats,
+      'ct_status': ctStatus,
       'ct_status_txt': ctStatusTxt,
       'ot_code': otCode,
       'odt_code': odtCode,

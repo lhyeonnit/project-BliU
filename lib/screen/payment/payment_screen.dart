@@ -630,6 +630,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
     int couponDiscount = 0;
     if (_selectedCouponData != null) {
+      // TODO 특정 스토어 쿠폰일경우 해당 스토어 상품만 할인적용???
       String couponDiscountStr = _selectedCouponData!.couponDiscount ?? "";
       int couponDiscountValue = _selectedCouponData!.couponPrice ?? 0;
       if (couponDiscountStr.contains("%")) {

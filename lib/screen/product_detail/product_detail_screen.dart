@@ -928,7 +928,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/coupon_receive/${storeData?.stIdx}');
+                          Navigator.pushNamed(context, '/coupon_receive/$_ptIdx');
                         },
                         child: Container(
                           decoration: BoxDecoration(

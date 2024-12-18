@@ -1,12 +1,10 @@
+import 'package:BliU/data/cancel_info_data.dart';
 import 'package:BliU/data/category_data.dart';
 import 'package:BliU/data/order_data.dart';
 import 'package:BliU/data/order_detail_data.dart';
-import 'package:BliU/data/order_detail_info_data.dart';
-import 'package:BliU/data/return_info_data.dart';
 import 'package:BliU/screen/_component/move_top_button.dart';
 import 'package:BliU/screen/cancel/child_widget/cancel_child_widget.dart';
 import 'package:BliU/screen/cancel/view_model/cancel_view_model.dart';
-import 'package:BliU/screen/exchange_return/child_widget/exchange_return_info_child_widget.dart';
 import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -17,24 +15,25 @@ import 'package:flutter_svg/svg.dart';
 
 class CancelScreen extends ConsumerStatefulWidget {
   final OrderData orderData;
-  final OrderDetailData orderDetailData;
+  final String odtCode;
+  final String otCode;
 
-  const CancelScreen({super.key, required this.orderData, required this.orderDetailData,});
+  const CancelScreen({super.key, required this.orderData, required this.odtCode, required this.otCode});
 
   @override
   ConsumerState<CancelScreen> createState() => CancelScreenState();
 }
 
 class CancelScreenState extends ConsumerState<CancelScreen> {
-  OrderDetailInfoData? orderDetailInfoData;
   final _addItemController = ExpansionTileController();
   final ScrollController _scrollController = ScrollController();
-  String _selectedTitle = "취소사유 선택";
+
   int _dropdownValue = 0;
+  String _selectedTitle = "취소사유 선택";
   String _detailedReason = '';
   List<CategoryData> _cancelCategory = [];
-  int? userType;
-  ReturnInfoData? returnInfoData;
+  int _userType = 2;
+  CancelInfoData? _cancelInfoData;
 
   @override
   void initState() {
@@ -45,7 +44,6 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
   }
 
   void _afterBuild(BuildContext context) {
-    _getOrderDetail();
     _getOrderCancelInfo();
   }
   void _getOrderCancelInfo() async {
@@ -54,47 +52,23 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
     final mtIdx = pref.getMtIdx();
     String? appToken = pref.getToken();
     int memberType = (mtIdx != null) ? 1 : 2;
+    _userType = memberType;
     Map<String, dynamic> requestData = {
       'type': memberType,
       'mt_idx': mtIdx,
       'temp_mt_id': appToken,
-      'odt_code': widget.orderDetailData.odtCode,
+      'odt_code': widget.odtCode,
+      'ot_code': widget.otCode,
     };
-
+    final categoryResponseDTO = await ref.read(cancelViewModelProvider.notifier).getCategory();
     final orderCancelInfoResponseDTO = await ref.read(cancelViewModelProvider.notifier).getOrderCancelInfo(requestData);
 
     if (orderCancelInfoResponseDTO != null) {
       if (orderCancelInfoResponseDTO.result == true) {
-        returnInfoData = orderCancelInfoResponseDTO.data;
+        _cancelInfoData = orderCancelInfoResponseDTO.data;
       } else {
         if (!mounted) return;
         Utils.getInstance().showSnackBar(context, orderCancelInfoResponseDTO.message ?? "");
-      }
-    }
-  }
-  void _getOrderDetail() async {
-
-    final pref = await SharedPreferencesManager.getInstance();
-    final mtIdx = pref.getMtIdx();
-    String? appToken = pref.getToken();
-    int memberType = (mtIdx != null) ? 1 : 2;
-    Map<String, dynamic> requestData = {
-      'type': memberType,
-      'mt_idx': mtIdx,
-      'temp_mt_id': appToken,
-      'ot_code': widget.orderData.detailList?[0].otCode,
-    };
-
-    final orderDetailInfoResponseDTO = await ref.read(cancelViewModelProvider.notifier).getOrderDetail(requestData);
-    final categoryResponseDTO = await ref.read(cancelViewModelProvider.notifier).getCategory();
-
-    if (orderDetailInfoResponseDTO != null) {
-      if (orderDetailInfoResponseDTO.result == true) {
-        orderDetailInfoData = orderDetailInfoResponseDTO.data;
-        userType = memberType;
-      } else {
-        if (!mounted) return;
-        Utils.getInstance().showSnackBar(context, orderDetailInfoResponseDTO.message ?? "");
       }
     }
 
@@ -103,6 +77,7 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
         _cancelCategory = categoryResponseDTO.list ?? [];
       }
     }
+
     setState(() {});
   }
 
@@ -116,9 +91,13 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
       'type': memberType,
       'mt_idx': mtIdx,
       'temp_mt_id': appToken,
-      'odt_code': widget.orderDetailData.odtCode,
+      'ot_code': widget.otCode,
+      'odt_code': _cancelInfoData?.cancelItem ?? "",
       'ct_idx': _dropdownValue,
       'ct_reason': _detailedReason,
+      'oct_all': _cancelInfoData?.octAll ?? "",
+      'price': _cancelInfoData?.octReturnPrice ?? 0,
+      'point': _cancelInfoData?.octReturnPoint ?? 0,
     };
 
     final defaultResponseDTO = await ref.read(cancelViewModelProvider.notifier).orderCancel(requestData);
@@ -131,6 +110,9 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<OrderDetailData> cancelList = [];
+    cancelList = _cancelInfoData?.cancelList ?? [];
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -185,9 +167,13 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
               ListView(
                 controller: _scrollController,
                 children: [
-                  CancelChildWidget(
-                    orderData: widget.orderData,
-                    orderDetailData: widget.orderDetailData,
+                  Column(
+                    children: cancelList.map((orderDetailData){
+                      return CancelChildWidget(
+                        orderData: widget.orderData,
+                        orderDetailData: orderDetailData,
+                      );
+                    }).toList(),
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -295,11 +281,7 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
                   ),
                   Container(
                     margin: const EdgeInsets.only(bottom: 110),
-                    child: ExchangeReturnInfoChildWidget(
-                      returnInfoData: returnInfoData,
-                      orderDetailData: widget.orderDetailData,
-                      userType: userType ?? 0,
-                    ),
+                    child: _cancelInfoWidget(),
                   ),
                 ],
               ),
@@ -358,6 +340,143 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _cancelInfoWidget() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Visibility(
+          visible: _userType == 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 20),
+                height: 10,
+                width: double.infinity,
+                color: const Color(0xFFF5F9F9),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+                child: Text(
+                  '환불정보',
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: Responsive.getFont(context, 18),
+                    fontWeight: FontWeight.bold,
+                    height: 1.2,
+                  ),
+                ),
+              ),
+              // 배송지 정보 세부 내용
+              Container(
+                padding: const EdgeInsets.only(top: 20),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: Color(0xFFEEEEEE),
+                    ),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildInfoRow(
+                      '포인트환급액',
+                      "${Utils.getInstance().priceString(_cancelInfoData?.octReturnPoint ?? 0)}원",
+                      context,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      child: _buildInfoRow(
+                        '배송비',
+                        "${Utils.getInstance().priceString(_cancelInfoData?.deliveryPriece ?? 0)}원",
+                        context,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 20),
+          height: 10,
+          width: double.infinity,
+          color: const Color(0xFFF5F9F9),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          margin: const EdgeInsets.only(bottom: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '환불예정금액',
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 18),
+                  fontWeight: FontWeight.bold,
+                  height: 1.2,
+                ),
+              ),
+              Text(
+                "${Utils.getInstance().priceString((_cancelInfoData?.octReturnPrice ?? 0))}원",
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: Responsive.getFont(context, 14),
+                  fontWeight: FontWeight.bold,
+                  height: 1.2,
+                ),
+              ),
+            ],
+          ),
+        ),
+        // 배송지 정보 세부 내용
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Color(0xFFEEEEEE),
+              ),
+            ),
+          ),
+          child: _buildInfoRow('환불방법', _cancelInfoData?.octReturnType ?? "", context),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoRow(String title, String value, BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 14),
+              color: Colors.black,
+              height: 1.2,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              fontSize: Responsive.getFont(context, 14),
+              color: Colors.black,
+              height: 1.2,
+            ),
+          ),
+        ],
       ),
     );
   }
