@@ -44,7 +44,7 @@ class Constant {
   //상품
   static const apiProductListUrl = "product/list";//상품 리스트
   static const apiProductDetailUrl = "product/detail";//상품 상세
-  static const apiProductOptionUrl = "product/option";//상품 옵션
+  static const apiProductOptionUrl = "product/option3";//상품 옵션
   static const apiProductCouponListUrl = "product/coupon_list";//상품 쿠폰
   static const apiProductCouponDownUrl = "product/coupon_down";//상품 쿠폰 다운로드
   static const apiProductLikeUrl = "product/like";//상품 좋아요

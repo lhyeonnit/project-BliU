@@ -592,6 +592,8 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       }
     }
 
+    print("productData?.ptDelivery ${productData?.ptDelivery} /// deliveryPriceInfoStr1 ${deliveryPriceInfoStr1} //// deliveryPriceInfoStr2 $deliveryPriceInfoStr2");
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
       child: Column(
@@ -1074,6 +1076,29 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   }
 
   Widget _productInfoBeforeOrder(InfoData? infoData, ProductData? productData) {
+    final deliveryBasicPrice = productData?.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0;
+    String deliveryBasicPriceStr = '';
+    if (deliveryBasicPrice == 0) {
+      deliveryBasicPriceStr = "무료";
+    } else {
+      deliveryBasicPriceStr = "기본 배송비 ${Utils.getInstance().priceString(deliveryBasicPrice)}원";
+    }
+
+    final deliveryMinPrice = productData?.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0;
+    final deliveryMinPriceStr = Utils.getInstance().priceString(deliveryMinPrice);
+
+    String deliveryPriceInfoStr = '';
+
+    if (productData?.ptDelivery == 1) {
+      deliveryPriceInfoStr = "배송비: 무료";
+    } else {
+      if (productData?.deliveryInfo?.deliveryDetail?.deliveryPriceType == 1) {
+        deliveryPriceInfoStr = "배송비 : $deliveryBasicPriceStr";
+      } else {
+        deliveryPriceInfoStr = "배송비 : $deliveryBasicPriceStr / $deliveryMinPriceStr원 이상 무료";
+      }
+    }
+
     return Container(
       margin: const EdgeInsets.only(top: 30),
       child: Column(
@@ -1167,11 +1192,7 @@ class ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                 Expanded(
                                   flex: 7,
                                   child: Text(
-                                    '기본 배송비 ${Utils.getInstance().priceString(
-                                        productData?.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0
-                                    )}원 / ${Utils.getInstance().priceString(
-                                        productData?.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0
-                                    )}원 이상 무료',
+                                    deliveryPriceInfoStr,
                                     style: TextStyle(
                                       fontFamily: 'Pretendard',
                                       fontSize: Responsive.getFont(context, 14),

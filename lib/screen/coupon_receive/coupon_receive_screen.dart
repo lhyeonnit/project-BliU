@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:BliU/data/coupon_data.dart';
 import 'package:BliU/screen/coupon_receive/item/coupon_item.dart';
 import 'package:BliU/screen/coupon_receive/view_model/coupon_receive_view_model.dart';
+import 'package:BliU/screen/modal_dialog/message_dialog.dart';
 import 'package:BliU/utils/my_app_bar.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
@@ -114,7 +115,22 @@ class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
                         discountDetails: detailMessage,
                         downText: downText,
                         isDownload: couponData.down == "Y" ? true : false,
-                        onDownload: () {
+                        onDownload: () async {
+
+                          final pref = await SharedPreferencesManager.getInstance();
+                          final mtIdx = pref.getMtIdx() ?? "";
+
+                          if (mtIdx.isEmpty) {
+                            if(!context.mounted) return;
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
+                                }
+                            );
+                            return;
+                          }
+
                           if ((couponData.ctCode ?? "").isNotEmpty) {
                             _couponDownload([(couponData.ctCode ?? "")]);
                           }
@@ -255,6 +271,20 @@ class CouponReceiveScreenState extends ConsumerState<CouponReceiveScreen> {
 
   // 전체쿠폰 다운로드
   void _allCouponDownload() async {
+    final pref = await SharedPreferencesManager.getInstance();
+    final mtIdx = pref.getMtIdx() ?? "";
+
+    if (mtIdx.isEmpty) {
+      if(!mounted) return;
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const MessageDialog(title: "알림", message: "로그인이 필요합니다.",);
+          }
+      );
+      return;
+    }
+
     List<String> ctCodes = [];
     for (var couponData in _couponList) {
       if (couponData.down == "Y") {

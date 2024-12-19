@@ -8,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-
 class TermsDetailScreen extends ConsumerStatefulWidget {
   const TermsDetailScreen({super.key});
 
@@ -64,6 +63,7 @@ class TermsDetailScreenState extends ConsumerState<TermsDetailScreen> {
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _content = defaultResponseDTO.message ?? "";
+        _content = _contentAddHtml(_content);
         setState(() {
           _controller?.loadData(data: _content);
         });
@@ -76,9 +76,45 @@ class TermsDetailScreenState extends ConsumerState<TermsDetailScreen> {
     }
   }
 
+  String _contentAddHtml(String content) {
+    content = content.trim();
+    return content = """
+    <html>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body>
+    <style>
+			html { font-size:10px; }
+			.ql-align-right {
+        text-align: right;
+      }
+      .ql-align-center {
+        text-align: center;
+      }
+      .ql-align-left {
+        text-align: left;
+      }
+      .ql-size-small {
+        font-size: 0.75em;
+      }
+      .ql-size-large {
+        font-size: 1.5em;
+      }
+      .ql-size-huge {
+        font-size: 2.5em;
+      }
+      img { max-width:100%; display:inline-block; height: auto; }
+		</style>
+    $content
+    </body>
+    </html>
+    """;
+  }
+
   @override
   Widget build(BuildContext context) {
-
+    _content = _contentAddHtml(_content);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MyAppBar(

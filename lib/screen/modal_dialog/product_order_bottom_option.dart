@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:BliU/data/add_option_data.dart';
+import 'package:BliU/data/option_data.dart';
 import 'package:BliU/data/product_data.dart';
 import 'package:BliU/data/product_option_data.dart';
-import 'package:BliU/data/product_option_type_data.dart';
-import 'package:BliU/data/product_option_type_detail_data.dart';
 import 'package:BliU/screen/_component/top_cart_button.dart';
 import 'package:BliU/screen/cart/cart_screen.dart';
 import 'package:BliU/screen/join_add_info/join_add_info_screen.dart';
@@ -13,6 +12,7 @@ import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/shared_preferences_manager.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -71,39 +71,24 @@ class ProductOrderBottomOptionContent extends ConsumerStatefulWidget {
 
 class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBottomOptionContent> {
   late ProductData _productData;
+
   ProductOptionData? _productOptionData;
-  List<ProductOptionTypeData> _ptOption = [];
-  List<ProductOptionTypeDetailData> _ptOptionArr = [];
+  List<OptionData> _optionArr = [];
+  final List<OptionData> _addPtOptionArr = [];
   List<AddOptionData> _ptAddArr = [];
 
-  final List<ProductOptionTypeDetailData> _addPtOptionArr = [];
   final List<AddOptionData> _addPtAddArr = [];
   List<bool> _isExpandedList = [];
   bool _isOptionSelected = false;
   final _addItemController = ExpansionTileController();
 
   // 선택된 옵션 값을 저장할 Map, 키는 옵션 제목(title)
-  final Map<String, String?> _selectedOptions = {};
-
-  void _onOptionSelected(String option, String title) {
-    setState(() {
-      _selectedOptions[title] = option; // 선택된 옵션을 저장
-      int index = _ptOption.indexWhere((element) => element.title == title);
-      if (index != -1) {
-        _isExpandedList[index] = false; // 해당 타일 닫기
-      }
-    });
-
-
-
-
-  }
+  Map<String, String?> _selectedOptions = {};
 
   @override
   void initState() {
     super.initState();
     _productData = widget.productData;
-    _isExpandedList = List.generate(_ptOption.length, (index) => false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _afterBuild(context);
     });
@@ -117,23 +102,64 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
     Map<String, dynamic> requestData = {
       'pt_idx': _productData.ptIdx,
     };
-    final responseDto = await ref.read(productOrderBottomOptionViewModelProvider.notifier).getList(requestData);
-    if (responseDto != null) {
+
+    final productOptionResponseDTO = await ref.read(productOrderBottomOptionViewModelProvider.notifier).getList(requestData);
+    if (productOptionResponseDTO != null) {
       setState(() {
-        _productOptionData = responseDto.data;
-        _ptOption = responseDto.data?.ptOption ?? [];
-        _ptOptionArr = responseDto.data?.ptOptionArr ?? [];
-        _ptAddArr = responseDto.data?.ptAddArr ?? [];
+        _productOptionData = productOptionResponseDTO.data;
+        _ptAddArr = productOptionResponseDTO.data?.ptAddOption ?? [];
+
+        _initOption();
       });
+    }
+  }
+
+  void _initOption() {
+    _optionArr = [];
+    final ptOptionSelect = _productOptionData?.ptOptionSelect;
+    ptOptionSelect?.forEach((title) {
+      final option = OptionData(idx: null,
+        title: title,
+        option: null,
+        optionArr: null,
+        potPrice: null,
+        potJaego: null,
+      );
+      _optionArr.add(option);
+    });
+
+    if (_optionArr.isNotEmpty) {
+      try {
+        _isExpandedList = List.generate(_optionArr.length, (index) => false);
+        if (_productOptionData?.ptType == "2") {
+          //조합형
+          final ptOption = _productOptionData?.ptOption ?? [];
+          _optionArr[0].optionArr = ptOption;
+        } else {
+          //단독
+          final ptOptions = _productOptionData?.ptOption ?? [];
+          for (var option in _optionArr) {
+            for (var ptOption in ptOptions) {
+              if (option.title == ptOption.title) {
+                option.optionArr = ptOption.optionArr;
+              }
+            }
+          }
+        }
+      } catch (e) {
+        if (kDebugMode) {
+          print('_initOption error $e');
+        }
+      }
     }
   }
 
   // 색상, 사이즈, 추가상품 옵션 박스
   Widget _buildExpansionTile({
     required String title,
-    required List<String> options,
+    required List<OptionData> options,
     required int index,
-    required Function(String) onSelected,
+    required Function(OptionData) onSelected,
   }) {
     return Theme(
       data: Theme.of(context).copyWith(
@@ -170,30 +196,25 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
           ),
           onExpansionChanged: (bool expanded) {
             setState(() {
-              if (index >= _isExpandedList.length) {
-                _isExpandedList.addAll(List.generate(index - _isExpandedList.length + 1, (_) => false));
+              for (int i = 0; i < _isExpandedList.length; i++) {
+                _isExpandedList[i] = false;
               }
               _isExpandedList[index] = expanded;
             });
           },
           children: options.map((option) {
             bool isSoldOut = false;
-            if (_productOptionData?.ptOptionType == "1" || _productOptionData?.ptOptionChk != "Y") {
-              // 단독일 경우 재고로 품절상태
-              for (int i = 0; i < _ptOptionArr.length; i++) {
-                if (_ptOptionArr[i].title == title && _ptOptionArr[i].option == option) {
-                  if ((_ptOptionArr[i].potJaego ?? 0) > 0) {
-                    isSoldOut = false;
-                  } else {
-                    isSoldOut = true;
-                  }
-                }
+            if (_productOptionData?.ptType != "2") {
+              if ((option.potJaego ?? 0) > 0) {
+                isSoldOut = false;
+              } else {
+                isSoldOut = true;
               }
             }
 
             return ListTile(
               title: Text(
-                option,
+                option.title ?? "",
                 style: TextStyle(
                   fontFamily: 'Pretendard',
                   fontSize: Responsive.getFont(context, 14),
@@ -233,19 +254,20 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
     int totalPrice = optionProductPrice + additionalProductPrice;
 
     String deliveryPriceStr = "";
-    final deliveryMinPrice = _productData.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0;
-    final deliveryBasicPrice = _productData.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0;
-
-    String deliveryBasicPriceStr = "";
-    if (deliveryBasicPrice == 0) {
-      deliveryBasicPriceStr = "무료";
-    } else {
-      deliveryBasicPriceStr = "${Utils.getInstance().priceString(deliveryBasicPrice)}원";
-    }
-
     if (_productData.ptDelivery == 1) {
       deliveryPriceStr = "무료";
     } else {
+
+      final deliveryMinPrice = _productData.deliveryInfo?.deliveryDetail?.deliveryMinPrice ?? 0;
+      final deliveryBasicPrice = _productData.deliveryInfo?.deliveryDetail?.deliveryBasicPrice ?? 0;
+
+      String deliveryBasicPriceStr = "";
+      if (deliveryBasicPrice == 0) {
+        deliveryBasicPriceStr = "무료";
+      } else {
+        deliveryBasicPriceStr = "${Utils.getInstance().priceString(deliveryBasicPrice)}원";
+      }
+
       if (_productData.deliveryInfo?.deliveryDetail?.deliveryPriceType == 1) {
         deliveryPriceStr = deliveryBasicPriceStr;
       } else {
@@ -380,110 +402,6 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
         ],
       ),
     );
-  }
-
-  // 옵션 확인
-  void _selectOptionCheck() {
-    if (_productOptionData?.ptOptionType == "1" || _productOptionData?.ptOptionChk != "Y") {
-      // 단독
-      var titleValue = "";
-      var optionValue = "";
-
-      for (int i = 0; i < _ptOption.length; i++) {
-        if (_ptOption[i].selectedValue.isNotEmpty) {
-          titleValue = _ptOption[i].title ?? "";
-          optionValue = _ptOption[i].selectedValue;
-
-          _ptOption[i].selectedValue = "";
-        }
-      }
-
-      for (int i = 0; i < _ptOptionArr.length; i++) {
-        if (_ptOptionArr[i].title == titleValue && _ptOptionArr[i].option == optionValue) {
-
-          if ((_ptOptionArr[i].potJaego ?? 0) <= 0) {
-            Utils.getInstance().showSnackBar(context, '품절된 옵션 입니다.');
-            break;
-          }
-
-          if (_addPtOptionArr.isEmpty) {
-            setState(() {
-              _addPtOptionArr.add(_ptOptionArr[i]);
-            });
-          } else {
-            bool isAdd = true;
-            for (int j = 0; j < _addPtOptionArr.length; j++) {
-              if (_addPtOptionArr[j].idx == _ptOptionArr[i].idx) {
-                isAdd = false;
-              }
-            }
-            if (isAdd) {
-              setState(() {
-                _addPtOptionArr.add(_ptOptionArr[i]);
-              });
-            } else {
-              Utils.getInstance().showSnackBar(context, '이미 추가한 옵션 입니다.');
-            }
-            break;
-          }
-        }
-      }
-    } else {
-      // 조합
-      bool isAllChecked = true;
-      String optionStr = "";
-      for (int i = 0; i < _ptOption.length; i++) {
-        if (_ptOption[i].selectedValue.isEmpty) {
-          isAllChecked = false;
-        }
-        if (optionStr.isEmpty) {
-          optionStr = _ptOption[i].selectedValue;
-        } else {
-          optionStr += " | ${_ptOption[i].selectedValue}";
-        }
-      }
-
-      if (isAllChecked) {
-        bool optionExists = false;
-        for (int i = 0; i < _ptOption.length; i++) {
-          _ptOption[i].selectedValue = "";
-        }
-        for (int i = 0; i < _ptOptionArr.length; i++) {
-          if (_ptOptionArr[i].option == optionStr) {
-
-            if ((_ptOptionArr[i].potJaego ?? 0) <= 0) {
-              Utils.getInstance().showSnackBar(context, '품절된 옵션 입니다.');
-              break;
-            }
-
-            optionExists = true;
-            if (_addPtOptionArr.isEmpty) {
-              setState(() {
-                _addPtOptionArr.add(_ptOptionArr[i]);
-              });
-            } else {
-              bool isAdd = true;
-              for (int j = 0; j < _addPtOptionArr.length; j++) {
-                if (_addPtOptionArr[j].idx == _ptOptionArr[i].idx) {
-                  isAdd = false;
-                }
-              }
-              if (isAdd) {
-                setState(() {
-                  _addPtOptionArr.add(_ptOptionArr[i]);
-                });
-              } else {
-                Utils.getInstance().showSnackBar(context, '이미 추가한 옵션 입니다.');
-              }
-              break;
-            }
-          }
-        }
-        if (!optionExists) {
-          Utils.getInstance().showSnackBar(context, '해당 옵션의 상품은 판매가 불가합니다.');
-        }
-      }
-    }
   }
 
   void _buyAndCartProduct(int addType) async {
@@ -735,69 +653,60 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,
-                        itemCount: _ptOption.length,
-                        // 리스트의 길이를 사용
+                        itemCount: _optionArr.length,
                         itemBuilder: (context, index) {
-                          final optionData = _ptOption[index];
-                          final title = optionData.title ?? '';
-                          final options = optionData.children ?? [];
-                          // 선택된 값이 있으면 표시하고 없으면 기본 타이틀 표시
-                          String displayTitle = _selectedOptions[title] == null ? title : "${_selectedOptions[title]}";
+                          final selectTitle = _optionArr[index].title ?? "";
+                          final options = _optionArr[index].optionArr ?? [];
+
+                          String displayTitle = _selectedOptions[selectTitle] == null ? selectTitle : "${_selectedOptions[selectTitle]}";
 
                           return _buildExpansionTile(
                             title: displayTitle,
                             options: options,
                             index: index,
                             onSelected: (selectedOption) {
-                              setState(() {
-                                if (_productOptionData?.ptOptionType == "1" || _productOptionData?.ptOptionChk != "Y") {
-                                  // 단독
-                                  optionData.selectedValue = selectedOption;
-
-                                  _isOptionSelected = true;
-
-                                  // 모든 옵션의 타이틀 초기화
-                                  for (var option in _ptOption) {
-                                    _selectedOptions[option.title ?? ''] = null;  // 타이틀 초기화
-                                    selectedOption = title;
-                                  }
-                                } else {
-                                  // 조합
-                                  // 선택된 옵션 값을 저장
-                                  optionData.selectedValue = selectedOption;
-                                  _selectedOptions[title] = selectedOption;
-
-                                  // 모든 옵션이 선택되었는지 확인
-                                  bool allOptionsSelected = true;
-                                  for (var option in _ptOption) {
-                                    if (option.selectedValue.isEmpty) {
-                                      allOptionsSelected = false;
-                                      break;
+                              if (_productOptionData?.ptType == "2") {
+                                //조합형 처리
+                                final optionArr = selectedOption.optionArr ?? [];
+                                if (optionArr.isNotEmpty) {
+                                  final option = optionArr[0];
+                                  if (option.option != null && (option.option ?? "").isNotEmpty) {
+                                    if ((option.potJaego ?? 0) <= 0) {
+                                      Utils.getInstance().showSnackBar(context, '품절된 옵션 입니다.');
+                                      return;
                                     }
-                                  }
 
-                                  // 모든 항목이 선택되면 타이틀을 초기화
-                                  if (allOptionsSelected) {
-                                    _isOptionSelected = true;
-
-                                    // 모든 옵션의 타이틀 초기화
-                                    for (var option in _ptOption) {
-                                      _selectedOptions[option.title ?? ''] = null;  // 타이틀 초기화
-                                      selectedOption = title;
-                                    }
+                                    _addPtOptionArr.add(option);
+                                    _selectedOptions = {};
+                                    _initOption();
                                   } else {
-                                    _isOptionSelected = false;  // 모든 옵션이 선택되지 않으면 false
+                                    final nextTitle = _optionArr[index + 1].title ?? "";
+
+                                    _selectedOptions[selectTitle] = selectedOption.title;
+                                    _selectedOptions[nextTitle] = null;
+                                    for(int i = index + 1; i < optionArr.length; i++) {
+                                      _optionArr[i].optionArr = null;
+                                    }
+
+                                    _optionArr[index + 1].optionArr = optionArr;
                                   }
                                 }
-
-                                // 옵션 선택 후 처리
-                                _selectOptionCheck();
-
-                                if (_addPtOptionArr.isEmpty) {
-                                  _isOptionSelected = false;
+                              } else {
+                                if ((selectedOption.potJaego ?? 0) <= 0) {
+                                  Utils.getInstance().showSnackBar(context, '품절된 옵션 입니다.');
+                                  return;
                                 }
+                                _addPtOptionArr.add(selectedOption);
+                              }
 
-                                _onOptionSelected(selectedOption, title);
+                              setState(() {
+                                _isOptionSelected = _addPtOptionArr.isNotEmpty;
+                                final ptOptionSelect = _productOptionData?.ptOptionSelect ?? [];
+
+                                int index = ptOptionSelect.indexWhere((element) => element == selectTitle);
+                                if (index != -1) {
+                                  _isExpandedList[index] = false; // 해당 타일 닫기
+                                }
                               });
                             },
                           );
@@ -930,7 +839,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                                             child: Row(
                                               children: [
                                                 Text(
-                                                  _addPtOptionArr[index].option ?? "",
+                                                  _addPtOptionArr[index].title ?? "",
                                                   style: TextStyle(
                                                     fontFamily: 'Pretendard',
                                                     fontSize: Responsive.getFont(context, 14),
@@ -956,6 +865,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                                             onTap: () {
                                               setState(() {
                                                 _addPtOptionArr.removeAt(index);
+                                                _isOptionSelected = _addPtOptionArr.isNotEmpty;
                                               });
                                             },
                                             child: SvgPicture.asset('assets/images/ic_del.svg'),

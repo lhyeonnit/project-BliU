@@ -1,56 +1,59 @@
 import 'package:BliU/data/add_option_data.dart';
-import 'package:BliU/data/product_option_type_data.dart';
-import 'package:BliU/data/product_option_type_detail_data.dart';
+import 'package:BliU/data/option_data.dart';
 
 class ProductOptionData {
-  final String? ptOptionChk;
-  final int? ptOptionInputNum;
-  final String? ptOptionType;
-  final List<ProductOptionTypeData>? ptOption;
-  final List<ProductOptionTypeDetailData>? ptOptionArr;
-  final List<AddOptionData>? ptAddArr;
+  final String? ptType;
+  final String? ptTypeText;
+  final List<String>? ptOptionSelect;
+  final List<OptionData>? ptOption;
+  final List<AddOptionData>? ptAddOption;
 
   ProductOptionData({
-    required this.ptOptionChk,
-    required this.ptOptionInputNum,
-    required this.ptOptionType,
+    required this.ptType,
+    required this.ptTypeText,
+    required this.ptOptionSelect,
     required this.ptOption,
-    required this.ptOptionArr,
-    required this.ptAddArr,
+    required this.ptAddOption,
   });
 
   // JSON to Object
   factory ProductOptionData.fromJson(Map<String, dynamic> json) {
-    final ptOptionList = List<ProductOptionTypeData>.from((json['pt_option'])?.map((item) {
-      return ProductOptionTypeData.fromJson(item as Map<String, dynamic>);
-    }).toList());
+    List<String> ptOptionSelect = [];
+    if (json['pt_option_select'] != null) {
+      ptOptionSelect = List<String>.from(json['pt_option_select']);
+    }
 
-    final ptOptionArr = List<ProductOptionTypeDetailData>.from((json['pt_option_arr'])?.map((item) {
-      return ProductOptionTypeDetailData.fromJson(item as Map<String, dynamic>);
-    }).toList());
+    List<OptionData> ptOption = [];
+    if (json['pt_option'] != null) {
+      ptOption = List<OptionData>.from((json['pt_option'])?.map((item) {
+        return OptionData.fromJson(item as Map<String, dynamic>);
+      }).toList());
+    }
 
-    final ptAddArr = List<AddOptionData>.from((json['pt_add_arr'])?.map((item) {
-      return AddOptionData.fromJson(item as Map<String, dynamic>);
-    }).toList());
+    List<AddOptionData> ptAddOption = [];
+    if (json['pt_add_option'] != null) {
+      ptAddOption = List<AddOptionData>.from((json['pt_add_option'])?.map((item) {
+        return AddOptionData.fromJson(item as Map<String, dynamic>);
+      }).toList());
+    }
+
     return ProductOptionData(
-      ptOptionChk: json['pt_option_chk'],
-      ptOptionInputNum: json['pt_option_input_num'],
-      ptOptionType: json['pt_option_type'],
-      ptOption: ptOptionList,
-      ptOptionArr: ptOptionArr,
-      ptAddArr: ptAddArr,
+      ptType: json['pt_type'],
+      ptTypeText: json['pt_type_text'],
+      ptOptionSelect: ptOptionSelect,
+      ptOption:ptOption,
+      ptAddOption: ptAddOption,
     );
   }
 
   // Object to JSOn
   Map<String, dynamic> toJson() {
     return {
-      'pt_option_chk': ptOptionChk,
-      'pt_option_input_num': ptOptionInputNum,
-      'pt_option_type': ptOptionType,
+      'pt_type': ptType,
+      'pt_type_text': ptTypeText,
+      'pt_option_select': ptOptionSelect,
       'pt_option': ptOption?.map((it) => it.toJson()).toList(),
-      'pt_option_arr': ptOptionArr?.map((it) => it.toJson()).toList(),
-      'pt_add_arr': ptAddArr?.map((it) => it.toJson()).toList(),
+      'pt_add_option': ptAddOption?.map((it) => it.toJson()).toList(),
     };
   }
 }

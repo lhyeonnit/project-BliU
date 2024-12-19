@@ -59,17 +59,19 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
 
         return Column(
           children: [
-            Container(
-              //width: Responsive.getWidth(context, 380),
-              margin: const EdgeInsets.only(left: 16, right: 16),
-              height: 420,
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: exhibitionList.length,
-                itemBuilder: (context, index) {
-                  final exhibitionData = exhibitionList[index];
-                  return buildPage(exhibitionData);
-                },
+            AspectRatio(
+              aspectRatio: 38/42,
+              child: Container(
+                //width: Responsive.getWidth(context, 380),
+                margin: const EdgeInsets.only(left: 16, right: 16),
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: exhibitionList.length,
+                  itemBuilder: (context, index) {
+                    final exhibitionData = exhibitionList[index];
+                    return buildPage(exhibitionData);
+                  },
+                ),
               ),
             ),
             const SizedBox(height: 25),
@@ -120,7 +122,7 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
         children: [
           SizedBox(
             width: double.infinity,
-            height: 420,
+            height: double.infinity,
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(8)),
               child: CachedNetworkImage(

@@ -284,7 +284,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                       ),
                                       Container(
                                         margin: const EdgeInsets.only(top: 20),
-                                        height: 451, // 고정된 높이
                                         child: const HomeBodyExhibitionChildWidget(),
                                       ),
                                     ],
@@ -306,7 +305,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                       ),
                                       Container(
                                         margin: const EdgeInsets.only(top: 20),
-                                        height: 271, // 고정된 높이
                                         child: const HomeBodySpotlightChildWidget(),
                                       ),
                                     ],

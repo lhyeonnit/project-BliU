@@ -33,6 +33,7 @@ class PaymentScreen extends ConsumerStatefulWidget {
 class PaymentScreenState extends ConsumerState<PaymentScreen> {
   int _totalPrice = 0;
   CouponData? _selectedCouponData;
+  int _discountCoupon = 0;
   int _discountPoint = 0;
 
   bool _isLoading = false;
@@ -140,6 +141,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
       'mt_idx': pref.getMtIdx(),
       'store_arr': json.encode(storeArr),
       'all_price': widget.payOrderDetailData.allPrice ?? 0,
+      'category_price': widget.payOrderDetailData.categoryPrice,
     };
 
     final couponResponseDTO = await ref.read(paymentViewModelProvider.notifier).getOrderCoupon(requestData);
@@ -470,26 +472,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
           mtSaveAdd = "Y";
         }
 
-        // if (_selectedCouponData != null) {
-        //   Map<String, dynamic> requestCouponData = {
-        //     'ot_code': payOrderDetailData.otCode,
-        //     'coupon_idx': _selectedCouponData?.couponIdx,
-        //     'mt_idx': mtIdx,
-        //   };
-        //
-        //   await ref.read(paymentViewModelProvider.notifier).couponUse(requestCouponData);
-        // }
-        //
-        // if (_discountPoint > 0) {
-        //   Map<String, dynamic> requestPointData = {
-        //     'ot_code': payOrderDetailData.otCode,
-        //     'use_point': _discountPoint,
-        //     'mt_idx': mtIdx,
-        //   };
-        //
-        //   await ref.read(paymentViewModelProvider.notifier).pointUse(requestPointData);
-        // }
-
         Map<String, dynamic> requestData1 = {
           'type': mtIdx.isNotEmpty ? 1 : 2,
           'ot_code': payOrderDetailData.otCode,
@@ -628,21 +610,7 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
     final totalAmount = widget.payOrderDetailData.allPrice ?? 0;
     final shippingCost = _getTotalDeliveryPrice();
 
-    int couponDiscount = 0;
-    if (_selectedCouponData != null) {
-      // TODO 특정 스토어 쿠폰일경우 해당 스토어 상품만 할인적용???
-      String couponDiscountStr = _selectedCouponData!.couponDiscount ?? "";
-      int couponDiscountValue = _selectedCouponData!.couponPrice ?? 0;
-      if (couponDiscountStr.contains("%")) {
-        //할인율
-        if (couponDiscountValue > 0) {
-          double couponDiscountDouble = (couponDiscountValue / 100);
-          couponDiscount = (totalAmount * couponDiscountDouble).toInt();
-        }
-      } else {
-        couponDiscount = couponDiscountValue;
-      }
-    }
+    final couponDiscount = _discountCoupon;
     final pointsDiscount = _discountPoint; // 포인트 할인
     final total = totalAmount + shippingCost - couponDiscount - pointsDiscount;
 
@@ -1409,10 +1377,34 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
 
                                         if (selectedCoupon != null) {
                                           selectedCoupon as CouponData;
-                                          setState(() {
-                                            _couponText = "${selectedCoupon.couponDiscount} 할인 적용";
-                                            _selectedCouponData = selectedCoupon;
-                                          });
+                                          _couponText = "${selectedCoupon.couponDiscount} 할인 적용";
+                                          _selectedCouponData = selectedCoupon;
+
+                                          if (_selectedCouponData != null) {
+                                            final pref = await SharedPreferencesManager.getInstance();
+                                            final mtIdx = pref.getMtIdx() ?? "";
+
+                                            Map<String, dynamic> requestCouponData = {
+                                              'ot_code': widget.payOrderDetailData.otCode,
+                                              'coupon_idx': _selectedCouponData?.couponIdx,
+                                              'mt_idx': mtIdx,
+                                            };
+
+                                            final response = await ref.read(paymentViewModelProvider.notifier).couponUse(requestCouponData);
+                                            if (response != null) {
+                                              if (response['result'] == true) {
+                                                setState(() {
+                                                  _discountCoupon = response['data']['discount_price'];
+                                                });
+                                              } else {
+                                                if(!context.mounted) return;
+                                                Utils.getInstance().showSnackBar(context, response['data']['message'] ?? "");
+                                              }
+                                            } else {
+                                              if(!context.mounted) return;
+                                              Utils.getInstance().showSnackBar(context, "쿠폰 적용에 실패했습니다.");
+                                            }
+                                          }
                                         }
                                       }
                                     },
@@ -1519,15 +1511,6 @@ class PaymentScreenState extends ConsumerState<PaymentScreen> {
                                                     textAlign: TextAlign.right,
                                                     // 텍스트를 오른쪽 정렬
                                                     focusNode: _pointFocusNode,
-                                                    onEditingComplete: () {
-                                                      print("onEditingComplete");
-                                                    },
-                                                    onTap: () {
-                                                      print("onTap");
-                                                    },
-                                                    onSubmitted: (value) {
-                                                      print("onSubmitted $value");
-                                                    },
                                                   ),
                                                 ),
                                                 Container(

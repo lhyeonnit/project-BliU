@@ -55,29 +55,33 @@ class HomeBodySpotlightChildWidgetState extends ConsumerState<HomeBodySpotlightC
 
         return Column(
           children: [
-            SizedBox(
-              height: 240,
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: eList.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      // TODO 탭시 이동
-                    },
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 240,
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(8)),
-                        child: Image.asset(
-                          'assets/images/onbImg01.png',
-                          fit: BoxFit.cover,
+            AspectRatio(
+              aspectRatio: 38/24,
+              child: SizedBox(
+                width: double.infinity,
+                height: double.infinity,
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: eList.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        // TODO 탭시 이동
+                      },
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          child: Image.asset(
+                            'assets/images/onbImg01.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
             const SizedBox(height: 25),

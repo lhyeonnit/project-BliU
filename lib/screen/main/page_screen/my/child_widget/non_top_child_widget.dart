@@ -140,20 +140,22 @@ class NonTopChildWidgetState extends State<NonTopChildWidget> {
         ),
         Container(
           clipBehavior: Clip.antiAlias,
-          height: 80,
           margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
           ),
-          child: PageView.builder(
-            controller: _pageController,
-            itemCount: _totalPages,
-            itemBuilder: (context, index) {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: Image.asset(_banners[index]),
-              );
-            },
+          child:AspectRatio(
+            aspectRatio: 38/8,
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: _totalPages,
+              itemBuilder: (context, index) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: Image.asset(_banners[index]),
+                );
+              },
+            ),
           ),
         ),
         Center(
