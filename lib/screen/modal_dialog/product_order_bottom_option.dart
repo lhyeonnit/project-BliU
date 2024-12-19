@@ -751,7 +751,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                                   title: Row(
                                     children: [
                                       Text(
-                                        ptAdd.option ?? "",
+                                        ptAdd.title ?? "",
                                         style: TextStyle(
                                           fontFamily: 'Pretendard',
                                           fontSize: Responsive.getFont(context, 14),
@@ -973,7 +973,7 @@ class ProductOrderBottomOptionContentState extends ConsumerState<ProductOrderBot
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            _addPtAddArr[index].option ?? "",
+                                            _addPtAddArr[index].title ?? "",
                                             style: TextStyle(
                                               fontFamily: 'Pretendard',
                                               fontSize: Responsive.getFont(context, 14),

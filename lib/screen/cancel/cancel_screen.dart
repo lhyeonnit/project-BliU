@@ -82,6 +82,16 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
   }
 
   void _orderCancel() async {
+    if (_dropdownValue == 0) {
+      Utils.getInstance().showSnackBar(context, "취소사유를 선택해 주세요");
+      return;
+    }
+
+    if (_detailedReason.isEmpty) {
+      Utils.getInstance().showSnackBar(context, "세부 내용을 입력해 주세요.");
+      return;
+    }
+
     final pref = await SharedPreferencesManager.getInstance();
     final mtIdx = pref.getMtIdx();
 
@@ -98,6 +108,8 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
       'oct_all': _cancelInfoData?.octAll ?? "",
       'price': _cancelInfoData?.octReturnPrice ?? 0,
       'point': _cancelInfoData?.octReturnPoint ?? 0,
+      'delivery': _cancelInfoData?.deliveryPriece ?? 0,
+      'coupon': _cancelInfoData?.otUseCoupon ?? 0,
     };
 
     final defaultResponseDTO = await ref.read(cancelViewModelProvider.notifier).orderCancel(requestData);
@@ -298,16 +310,6 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
                       color: Colors.white,
                       child: GestureDetector(
                         onTap: () {
-                          // 확인 버튼 눌렀을 때 처리
-                          if (_dropdownValue == 0) {
-                            Utils.getInstance().showSnackBar(context, "취소사유를 선택해 주세요");
-                            return;
-                          }
-
-                          if (_detailedReason.isEmpty) {
-                            Utils.getInstance().showSnackBar(context, "세부 내용을 입력해 주세요.");
-                            return;
-                          }
                           _orderCancel();
                         },
                         child: Container(

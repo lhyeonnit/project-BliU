@@ -1,13 +1,13 @@
 class AddOptionData {
   final int? idx;
-  final String? option;
+  final String? title;
   final int? patPrice;
   final int? patJaego;
   int count = 1;
 
   AddOptionData({
     required this.idx,
-    required this.option,
+    required this.title,
     required this.patPrice,
     required this.patJaego,
   });
@@ -16,7 +16,7 @@ class AddOptionData {
   factory AddOptionData.fromJson(Map<String, dynamic> json) {
     return AddOptionData(
       idx: json['idx'],
-      option: json['option'],
+      title: json['title'],
       patPrice: json['pat_price'],
       patJaego: json['pat_jaego'],
     );
@@ -26,7 +26,7 @@ class AddOptionData {
   Map<String, dynamic> toJson() {
     return {
       'idx': idx,
-      'option': option,
+      'title': title,
       'pat_price': patPrice,
       'pat_jaego': patJaego,
     };

@@ -9,6 +9,7 @@ class CancelInfoData {
   final String? octReturnType;
   final String? octAll;
   final String? cancelItem;
+  final String? couponName;
 
   CancelInfoData({
     required this.cancelList,
@@ -19,6 +20,7 @@ class CancelInfoData {
     required this.octReturnType,
     required this.octAll,
     required this.cancelItem,
+    required this.couponName,
   });
 
   // JSON to Object
@@ -38,6 +40,7 @@ class CancelInfoData {
       octReturnType: json['oct_return_type'],
       octAll: json['oct_all'],
       cancelItem: json['cancel_item'],
+      couponName: json['coupon_name'],
     );
   }
 
@@ -52,6 +55,7 @@ class CancelInfoData {
       'oct_return_type': octReturnType,
       'oct_all': octAll,
       'cancel_item': cancelItem,
+      'coupon_name': couponName,
     };
   }
 }

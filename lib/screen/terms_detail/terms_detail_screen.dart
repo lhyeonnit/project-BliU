@@ -63,10 +63,12 @@ class TermsDetailScreenState extends ConsumerState<TermsDetailScreen> {
     if (defaultResponseDTO != null) {
       if (defaultResponseDTO.result == true) {
         _content = defaultResponseDTO.message ?? "";
-        _content = _contentAddHtml(_content);
-        setState(() {
+        if (_type <= 1) {
+          _content = _contentAddHtml(_content);
           _controller?.loadData(data: _content);
-        });
+        }
+
+        setState(() { });
       } else {
         Future.delayed(Duration.zero, () {
           if (!mounted) return;
@@ -114,7 +116,7 @@ class TermsDetailScreenState extends ConsumerState<TermsDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _content = _contentAddHtml(_content);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MyAppBar(
@@ -160,20 +162,42 @@ class TermsDetailScreenState extends ConsumerState<TermsDetailScreen> {
       ),
       body: SafeArea(
         child: Utils.getInstance().isWebView(
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            child: InAppWebView(
-              initialData: InAppWebViewInitialData(data: _content),
-              initialSettings: InAppWebViewSettings(
-                transparentBackground: true,
-              ),
-              onWebViewCreated: (controller) async {
-                _controller = controller;
-              },
-            ),
-          ),
+          _contentWidget(),
         ),
       ),
     );
+  }
+
+  Widget _contentWidget() {
+    if (_type > 1) {
+      return Container(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          _content,
+          style: TextStyle(
+            fontFamily: 'Pretendard',
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+            fontSize: Responsive.getFont(context, 14),
+            height: 1.2,
+          ),
+        ),
+      );
+    } else {
+      _content = _contentAddHtml(_content);
+
+      return Container(
+        padding: const EdgeInsets.all(16.0),
+        child: InAppWebView(
+          initialData: InAppWebViewInitialData(data: _content),
+          initialSettings: InAppWebViewSettings(
+            transparentBackground: true,
+          ),
+          onWebViewCreated: (controller) async {
+            _controller = controller;
+          },
+        ),
+      );
+    }
   }
 }

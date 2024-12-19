@@ -136,30 +136,26 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                   SingleChildScrollView(
                     controller: _scrollController,
                     scrollDirection: Axis.vertical,
-                    child: Column(
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
                       children: [
-                        AspectRatio(
-                          aspectRatio: 1/1.5,
-                          child: CachedNetworkImage(
-                            imageUrl: exhibitionData?.etDetailBanner ?? "",
-                            width: double.infinity,
-                            height: double.infinity,
-                            fit: BoxFit.cover,
-                            alignment: Alignment.topCenter,
-                            placeholder: (context, url) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
-                            errorWidget: (context, url, error) {
-                              return SvgPicture.asset(
-                                'assets/images/no_imge.svg',
-                                width: double.infinity,
-                                height: double.infinity,
-                                fit: BoxFit.fitWidth,
-                              );
-                            },
-                          ),
+                        CachedNetworkImage(
+                          imageUrl: exhibitionData?.etDetailBanner ?? '',
+                          width: double.infinity,
+                          fit: BoxFit.fitWidth,
+                          placeholder: (context, url) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                          errorWidget: (context, url, error) {
+                            return SvgPicture.asset(
+                              'assets/images/no_imge.svg',
+                              width: double.infinity,
+                              height: 300,
+                              fit: BoxFit.contain,
+                            );
+                          },
                         ),
                         Container(
                           margin: const EdgeInsets.only(top: 30, bottom: 10),
