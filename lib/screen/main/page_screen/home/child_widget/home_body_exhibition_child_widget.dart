@@ -75,18 +75,19 @@ class HomeBodyExhibitionChildWidgetState extends ConsumerState<HomeBodyExhibitio
               ),
             ),
             const SizedBox(height: 25),
-            Center(
-              child: SmoothPageIndicator(
-                controller: _pageController,
-                count: exhibitionList.length,
-                effect: const WormEffect(
-                  dotWidth: 6.0,
-                  dotHeight: 6.0,
-                  activeDotColor: Colors.black,
-                  dotColor: Colors.grey,
+            if (exhibitionList.isNotEmpty)
+              Center(
+                child: SmoothPageIndicator(
+                  controller: _pageController,
+                  count: exhibitionList.length,
+                  effect: const WormEffect(
+                    dotWidth: 6.0,
+                    dotHeight: 6.0,
+                    activeDotColor: Colors.black,
+                    dotColor: Colors.grey,
+                  ),
                 ),
               ),
-            ),
           ],
         );
       },

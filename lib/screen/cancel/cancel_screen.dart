@@ -391,6 +391,17 @@ class CancelScreenState extends ConsumerState<CancelScreen> {
                       "${Utils.getInstance().priceString(_cancelInfoData?.octReturnPoint ?? 0)}원",
                       context,
                     ),
+                    // Visibility(
+                    //   visible: (_cancelInfoData?.couponName ?? "").isNotEmpty,
+                    //   child: Container(
+                    //     margin: const EdgeInsets.only(top: 10),
+                    //     child: _buildInfoRow(
+                    //       '반환 쿠폰',
+                    //       _cancelInfoData?.couponName ?? "",
+                    //       context,
+                    //     ),
+                    //   ),
+                    // ),
                     Container(
                       margin: const EdgeInsets.only(top: 10),
                       child: _buildInfoRow(

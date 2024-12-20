@@ -1,15 +1,14 @@
-import 'package:BliU/data/change_order_detail_data.dart';
 import 'package:BliU/data/order_detail_info_data.dart';
 import 'package:BliU/utils/responsive.dart';
 import 'package:BliU/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetailChildWidget extends StatelessWidget {
-  final OrderDetailInfoData? orderDetailInfoData;
   final int userType;
-  final ChangeOrderDetailData? changeOrderDetailData;
+  final String? type;
+  final OrderDetailInfoData? orderDetailInfoData;
 
-  const OrderDetailChildWidget({super.key, required this.orderDetailInfoData, required this.userType, required this.changeOrderDetailData});
+  const OrderDetailChildWidget({super.key, required this.userType, required this.type, required this.orderDetailInfoData,});
 
   @override
   Widget build(BuildContext context) {
@@ -45,78 +44,185 @@ class OrderDetailChildWidget extends StatelessWidget {
       );
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          height: 10,
-          width: double.infinity,
-          color: const Color(0xFFF5F9F9),
-        ),
-        // 배송지 정보
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-          child: Text(
-            '배송지 정보',
-            style: TextStyle(
-              fontFamily: 'Pretendard',
-              fontSize: Responsive.getFont(context, 18),
-              fontWeight: FontWeight.bold,
-            ),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 10,
+            width: double.infinity,
+            color: const Color(0xFFF5F9F9),
           ),
-        ),
-        // 배송지 정보 세부 내용
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          decoration: const BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                color: Color(0xFFEEEEEE),
+          // 배송지 정보
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+            child: Text(
+              '배송지 정보',
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 18),
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildInfoRow('수령인', orderDetailInfoData?.delivery?.otRname ?? "", context),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                child: _buildInfoRow('휴대폰번호',
-                  orderDetailInfoData?.delivery?.otRtel ?? "", context,
+          // 배송지 정보 세부 내용
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            decoration: const BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Color(0xFFEEEEEE),
                 ),
               ),
-              _buildAddressRow(
-                '주소',
-                "[${orderDetailInfoData?.delivery?.otRzip ?? ""}]${orderDetailInfoData?.delivery?.otRadd1 ?? ""}",
-                orderDetailInfoData?.delivery?.otRadd2 ?? "",
-                context,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildInfoRow('수령인', orderDetailInfoData?.delivery?.otRname ?? "", context),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: _buildInfoRow('휴대폰번호',
+                    orderDetailInfoData?.delivery?.otRtel ?? "", context,
+                  ),
+                ),
+                _buildAddressRow(
+                  '주소',
+                  "[${orderDetailInfoData?.delivery?.otRzip ?? ""}]${orderDetailInfoData?.delivery?.otRadd1 ?? ""}",
+                  orderDetailInfoData?.delivery?.otRadd2 ?? "",
+                  context,
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: _buildInfoRow('배송메모', orderDetailInfoData?.delivery?.otRmemo1 ?? "", context),
+                ),
+              ],
+            ),
+          ),
+          // 빈 공간
+          Container(
+            height: 10,
+            width: double.infinity,
+            color: const Color(0xFFF5F9F9),
+          ),
+          Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '결제 금액',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 18),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otTotal ?? 0)}원',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: Responsive.getFont(context, 14),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Container(
-                padding: const EdgeInsets.only(top: 15),
-                child: _buildInfoRow('배송메모', orderDetailInfoData?.delivery?.otRmemo1 ?? "", context),
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: Color(0xFFEEEEEE),
+                    ),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildInfoRow(
+                      '총 상품 금액',
+                      "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otSprice ?? 0)}원",
+                      context,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 15),
+                      child: _buildInfoRow(
+                        '총 배송비',
+                        "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원",
+                        context,
+                      ),
+                    ),
+                    Visibility(
+                      visible: userType == 1,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 15),
+                        child: Column(
+                          children: [
+                            _buildInfoRow(
+                              '할인금액',
+                              "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUseCoupon ?? 0)}원",
+                              context,
+                            ),
+                            widget,
+                          ],
+                        ),
+                      ),
+                    ),
+                    Visibility(
+                      visible: userType == 1,
+                      child: _buildInfoRow(
+                        '포인트할인',
+                        '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUsePoint ?? 0)}원',
+                        context,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-        // 빈 공간
-        Container(
-          height: 10,
-          width: double.infinity,
-          color: const Color(0xFFF5F9F9),
-        ),
-        Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+          Container(
+            height: 10,
+            width: double.infinity,
+            color: const Color(0xFFF5F9F9),
+          ),
+          Container(
+            padding:
+            const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+            child: Text(
+              '결제 수단',
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                fontSize: Responsive.getFont(context, 18),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 20),
+            decoration: const BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Color(0xFFEEEEEE),
+                ),
+              ),
+            ),
+            child: Padding(
+              padding:
+              const EdgeInsets.only(right: 16.0, left: 16, bottom: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '결제 금액',
+                    orderDetailInfoData?.order?.otPayType ?? "",
                     style: TextStyle(
                       fontFamily: 'Pretendard',
-                      fontSize: Responsive.getFont(context, 18),
-                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.getFont(context, 14),
+                      color: Colors.black,
                     ),
                   ),
                   Text(
@@ -124,119 +230,81 @@ class OrderDetailChildWidget extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: Responsive.getFont(context, 14),
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          //취소 정보
+          Visibility(
+            visible: type != 'C' && type != 'R' && type != 'X' && (orderDetailInfoData?.cancel?.ctTotal ?? 0) != 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 10,
+                  width: double.infinity,
+                  color: const Color(0xFFF5F9F9),
+                ),
+                Container(
+                  padding:
+                  const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                  child: Text(
+                    '취소 정보',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: Responsive.getFont(context, 18),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              decoration: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: Color(0xFFEEEEEE),
-                  ),
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildInfoRow(
-                    '총 상품 금액',
-                    "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otSprice ?? 0)}원",
+                Container(
+                  margin: const EdgeInsets.only(top: 15),
+                  child: _buildInfoRow(
+                    '총 취소금액',
+                    '${Utils.getInstance().priceString(orderDetailInfoData?.cancel?.ctTotal ?? 0)}원',
                     context,
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 15),
-                    child: _buildInfoRow(
-                      '총 배송비',
-                      "${Utils.getInstance().priceString((orderDetailInfoData?.order?.otDeliveryCharge ?? 0) + (orderDetailInfoData?.order?.otDeliveryChargeExtra ?? 0))}원",
-                      context,
-                    ),
-                  ),
-                  Visibility(
-                    visible: userType == 1,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 15),
-                      child: Column(
-                        children: [
-                          _buildInfoRow(
-                            '할인금액',
-                            "${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUseCoupon ?? 0)}원",
-                            context,
-                          ),
-                          widget,
-                        ],
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: userType == 1,
-                    child: _buildInfoRow(
-                      '포인트할인',
-                      '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otUsePoint ?? 0)}원',
-                      context,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        Container(
-          height: 10,
-          width: double.infinity,
-          color: const Color(0xFFF5F9F9),
-        ),
-        Container(
-          padding:
-          const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-          child: Text(
-            '결제 수단',
-            style: TextStyle(
-              fontFamily: 'Pretendard',
-              fontSize: Responsive.getFont(context, 18),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          decoration: const BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                color: Color(0xFFEEEEEE),
-              ),
-            ),
-          ),
-          child: Padding(
-            padding:
-            const EdgeInsets.only(right: 16.0, left: 16, bottom: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  orderDetailInfoData?.order?.otPayType ?? "",
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Colors.black,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 15),
+                  child: _buildInfoRow(
+                    '할인전 상품 금액',
+                    '${Utils.getInstance().priceString(orderDetailInfoData?.cancel?.ctPrice ?? 0)}원',
+                    context,
                   ),
                 ),
-                Text(
-                  '${Utils.getInstance().priceString(orderDetailInfoData?.order?.otTotal ?? 0)}원',
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: Responsive.getFont(context, 14),
-                    color: Colors.black,
+                Container(
+                  margin: const EdgeInsets.only(top: 15),
+                  child: _buildInfoRow(
+                    '쿠폰 할인 금액',
+                    '${Utils.getInstance().priceString(orderDetailInfoData?.cancel?.ctCoupon ?? 0)}원',
+                    context,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 15),
+                  child: _buildInfoRow(
+                    '포인트 할인 금액',
+                    '${Utils.getInstance().priceString(orderDetailInfoData?.cancel?.ctPoint ?? 0)}원',
+                    context,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 15, bottom: 15),
+                  child: _buildInfoRow(
+                    '배송비',
+                    '${Utils.getInstance().priceString(orderDetailInfoData?.cancel?.ctDelivery ?? 0)}원',
+                    context,
                   ),
                 ),
               ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

@@ -145,22 +145,23 @@ class HomeHeaderChildWidgetState extends ConsumerState<HomeHeaderChildWidget> {
                 }),
               ],
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.width * 1.3,
-              left: Responsive.getWidth(context, 19),
-              child: Center(
-                child: SmoothPageIndicator(
-                  controller: _pageController,
-                  count: bannerList.length,
-                  effect: const WormEffect(
-                    dotWidth: 6.0,
-                    dotHeight: 6.0,
-                    activeDotColor: Colors.white,
-                    dotColor: Colors.grey,
+            if (bannerList.isNotEmpty)
+              Positioned(
+                top: MediaQuery.of(context).size.width * 1.3,
+                left: Responsive.getWidth(context, 19),
+                child: Center(
+                  child: SmoothPageIndicator(
+                    controller: _pageController,
+                    count: bannerList.length,
+                    effect: const WormEffect(
+                      dotWidth: 6.0,
+                      dotHeight: 6.0,
+                      activeDotColor: Colors.white,
+                      dotColor: Colors.grey,
+                    ),
                   ),
                 ),
               ),
-            ),
           ],
         );
       },

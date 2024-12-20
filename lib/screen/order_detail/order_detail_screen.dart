@@ -332,7 +332,7 @@ class OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                   visible: type == "X",
                   child: const SizedBox(height: 20),
                 ),
-                OrderDetailChildWidget(orderDetailInfoData: orderDetailInfoData, userType: userType ?? 0, changeOrderDetailData: changeOrderDetailData,),
+                OrderDetailChildWidget(userType: userType ?? 0, type: type, orderDetailInfoData: orderDetailInfoData, ),
               ],
             ),
           ),

@@ -32,7 +32,6 @@ class OrderItemState extends ConsumerState<OrderItem> {
     super.initState();
     _ctStatus = widget.orderDetailData.ctStats ?? 0;
     _ptType = widget.orderDetailData.ptType ?? "";
-    //_ctStatus = 81; //테스트용
   }
 
   void _requestOrderComplete() {
@@ -235,7 +234,30 @@ class OrderItemState extends ConsumerState<OrderItem> {
       ],
     );
   }
+  /*
+  * const cart_status ={
+    0: "장바구니",
+    1: "결제대기",
+    2: "결제완료",
+    3: "상품준비중",
+    4: "배송준비중",
+    5: "배송중",
+    7: "배송완료",
+    8: "구매확정",
+    70: "취소요청",
+    71: "취소완료",
+    72: "취소반려",
+    80: "교환요청",
+    81: "교환중",
+    82: "교환완료",
+    83: "교환반려",
+    90: "반품요청",
+    91: "반품중",
+    92: "반품완료",
+    93: "반품반려"
+  }
 
+  * */
   Widget orderItemButton() {
     if (_ptType == "A") {
       return const SizedBox();
@@ -295,28 +317,6 @@ class OrderItemState extends ConsumerState<OrderItem> {
     } else if (_ctStatus == 5) {
       return Row(
         children: [
-          Expanded(
-            child: TextButton(
-              onPressed: () {
-                final map = {'orderData' : widget.orderData, 'orderDetailData': widget.orderDetailData};
-                Navigator.pushNamed(context, '/exchange_return', arguments: map);
-              },
-              style: TextButton.styleFrom(
-                side: const BorderSide(color: Color(0xFFDDDDDD)),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                backgroundColor: Colors.white,
-              ),
-              child: Text(
-                '교환/반품 요청',
-                style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  color: Colors.black,
-                  fontSize: Responsive.getFont(context, 14),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
           Expanded(
             child: TextButton(
               onPressed: () {

@@ -93,6 +93,7 @@ class ExchangeReturnScreenState extends ConsumerState<ExchangeReturnScreen> {
       'mt_idx': mtIdx,
       'temp_mt_id': appToken,
       'odt_code': widget.orderDetailData.odtCode,
+      'ot_code': widget.orderDetailData.otCode,
     };
     final orderDetailInfoResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getOrderDetail(requestData1);
     final exchangeCategoryResponseDTO = await ref.read(exchangeReturnViewModelProvider.notifier).getCategory(requestData2);
