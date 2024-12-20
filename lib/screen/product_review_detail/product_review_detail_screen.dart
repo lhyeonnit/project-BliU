@@ -234,6 +234,20 @@ class ProductReviewDetailScreenState extends ConsumerState<ProductReviewDetailSc
                           ),
                         ],
                       ),
+                      // TODO 리뷰옵션 관련
+                      Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        child: Text(
+                          _reviewData?.ctOptValue ?? "리뷰옵션 표시",
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            color: const Color(0xFF7B7B7B),
+                            fontSize: Responsive.getFont(context, 12),
+                            height: 1.2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
                       Container(
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         child: _ratingStars(double.parse(_reviewData?.rtStart ?? "0.0")),

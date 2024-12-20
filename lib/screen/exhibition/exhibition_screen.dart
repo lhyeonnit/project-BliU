@@ -137,25 +137,58 @@ class ExhibitionScreenState extends ConsumerState<ExhibitionScreen> {
                     controller: _scrollController,
                     scrollDirection: Axis.vertical,
                     child: Wrap(
-                      alignment: WrapAlignment.center,
+                      alignment: WrapAlignment.end,
                       children: [
-                        CachedNetworkImage(
-                          imageUrl: exhibitionData?.etDetailBanner ?? '',
-                          width: double.infinity,
-                          fit: BoxFit.fitWidth,
-                          placeholder: (context, url) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          },
-                          errorWidget: (context, url, error) {
-                            return SvgPicture.asset(
-                              'assets/images/no_imge.svg',
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: exhibitionData?.etDetailBanner ?? '',
                               width: double.infinity,
-                              height: 300,
-                              fit: BoxFit.contain,
-                            );
-                          },
+                              fit: BoxFit.fitWidth,
+                              placeholder: (context, url) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                              errorWidget: (context, url, error) {
+                                return SvgPicture.asset(
+                                  'assets/images/no_imge.svg',
+                                  width: double.infinity,
+                                  height: 300,
+                                  fit: BoxFit.contain,
+                                );
+                              },
+                            ),
+                            // TODO 다운로드 작업 필요
+                            Positioned(
+                              bottom: 16,
+                              left: 16,
+                              right: 16,
+                              child: Container(
+                                width: double.infinity,
+                                height: 48,
+                                //margin: const EdgeInsets.only(right: 16.0, left: 16, top: 9, bottom: 8),
+                                decoration: const BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(6),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '쿠폰 다운로드',
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: Responsive.getFont(context, 14),
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Container(
                           margin: const EdgeInsets.only(top: 30, bottom: 10),

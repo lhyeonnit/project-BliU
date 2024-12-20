@@ -74,6 +74,7 @@ class HomeHeaderChildWidgetState extends ConsumerState<HomeHeaderChildWidget> {
                         height: Utils.getInstance().isWeb() ? 450 * 1.4 : double.infinity,
                         child: GestureDetector(
                           onTap: () {
+                            // TODO 추후 기획전 페이지로 이동하게 변경 & API 작업 필요
                             if (banner.btContentType == "Y") {
                               Navigator.push(
                                 context,
